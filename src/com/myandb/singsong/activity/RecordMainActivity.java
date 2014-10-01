@@ -2,12 +2,7 @@ package com.myandb.singsong.activity;
 
 import java.lang.ref.WeakReference;
 
-import org.json.JSONObject;
-
-import com.android.volley.RequestQueue;
-import com.android.volley.Request.Method;
 import com.google.gson.Gson;
-import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 import com.myandb.singsong.audio.Decoder;
 import com.myandb.singsong.audio.ISimplePlayCallback;
@@ -25,14 +20,12 @@ import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Song;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.DownloadManager;
-import com.myandb.singsong.net.OAuthJustRequest;
-import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.receiver.HeadsetReceiver;
 import com.myandb.singsong.secure.Auth;
 import com.myandb.singsong.service.PlayerService;
 import com.myandb.singsong.service.SongUploadService;
 import com.myandb.singsong.util.ImageHelper;
-import com.myandb.singsong.util.LazyCounter;
+import com.myandb.singsong.util.Logger;
 import com.myandb.singsong.util.LrcDisplayer;
 import com.myandb.singsong.util.TimeHelper;
 import com.myandb.singsong.util.Utility;
@@ -613,7 +606,7 @@ public class RecordMainActivity extends BaseActivity {
 					ivThisUserBackground.startAnimation(blink);
 					
 					if (music != null) {
-						LazyCounter.getInstance().count(music.getId());
+						Logger.countAsync(RecordMainActivity.this, "musics", music.getId());
 					}
 					
 					break;
@@ -737,14 +730,6 @@ public class RecordMainActivity extends BaseActivity {
 		
 		isRunning = false;
 		restartNum = 0;
-		
-		JSONObject message = LazyCounter.getInstance().assemble(false);
-		if (message != null) {
-			String url = UrlBuilder.getInstance().l("musics").build();
-			OAuthJustRequest request = new OAuthJustRequest(Method.PUT, url, message);
-			RequestQueue queue = ((App) getApplicationContext()).getQueueInstance();
-			queue.add(request);
-		}
 	}
 	
 	private void finishActivity(String message) {
