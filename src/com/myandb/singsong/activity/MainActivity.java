@@ -3,10 +3,6 @@ package com.myandb.singsong.activity;
 import java.util.ArrayList;
 import java.util.Date;
 
-import org.json.JSONObject;
-
-import com.android.volley.RequestQueue;
-import com.android.volley.Request.Method;
 import com.google.android.gcm.GCMRegistrar;
 import com.myandb.singsong.App;
 import com.myandb.singsong.GCMIntentService;
@@ -24,10 +20,7 @@ import com.myandb.singsong.fragment.WaitingFragment;
 import com.myandb.singsong.model.MenuData;
 import com.myandb.singsong.model.MenuData.PageName;
 import com.myandb.singsong.model.Notice;
-import com.myandb.singsong.net.OAuthJustRequest;
-import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Auth;
-import com.myandb.singsong.util.LazyCounter;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
@@ -358,14 +351,6 @@ public class MainActivity extends BaseActivity {
 		if (noticeDialog != null) {
 			noticeDialog.dismiss();
 			noticeDialog = null;
-		}
-		
-		JSONObject message = LazyCounter.getInstance().assemble(false);
-		if (message != null) {
-			String url = UrlBuilder.getInstance().l("musics").build();
-			OAuthJustRequest request = new OAuthJustRequest(Method.PUT, url, message);
-			RequestQueue queue = ((App) getApplicationContext()).getQueueInstance();
-			queue.add(request); 
 		}
 		
 		isRunning = false;
