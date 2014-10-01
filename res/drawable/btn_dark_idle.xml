@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+	<item>
+		<shape>
+	    	<solid android:color="@color/grey_dark" />
+		</shape>
+	</item>
+	
+	<item
+	    android:right="1dp" >
+		
+		<shape>
+	    	<solid android:color="@color/grey" />
+	    	
+	    	<padding
+				android:top="@dimen/margin"
+				android:bottom="@dimen/margin"
+				android:left="@dimen/margin"
+				android:right="@dimen/margin" />
+	 	</shape>
+	 	
+	</item>
+</layer-list>

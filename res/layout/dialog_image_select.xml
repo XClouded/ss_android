@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="200dp"
+    android:layout_height="400dp"
+    style="@style/DialogBox" >
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primary_dark" >
+	    
+	    <TextView
+	        android:layout_width="wrap_content"
+	        android:text="이미지를 선택하세요"
+	        style="@style/DialogTextViewTitle" />
+	    
+	    <ImageView
+	        android:id="@+id/iv_cancel"
+	        android:src="@drawable/ic_x_inverse"
+	        android:layout_alignParentRight="true"
+	        android:layout_centerVertical="true"
+	        style="@style/BaseImageView" />
+        
+    </RelativeLayout>
+    
+    <com.myandb.singsong.widget.AutoLoadListView
+        android:id="@+id/lv_full_width"
+        android:background="@color/white"
+        android:divider="@color/white"
+        android:dividerHeight="@dimen/margin"
+        android:paddingBottom="@dimen/margin"
+        style="@style/CommonListView" />
+
+</LinearLayout>

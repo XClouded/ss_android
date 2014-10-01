@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+    <style name="BaseImageView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:scaleType">centerCrop</item>
+    </style>
+    
+    <style name="UserImageView" parent="@style/BaseImageView">
+        <item name="android:layout_width">@dimen/photo</item>
+        <item name="android:layout_height">@dimen/photo</item>
+        <item name="android:src">@drawable/user_default</item>
+    </style>
+    
+    <style name="UserSmallImageView" parent="@style/UserImageView">
+        <item name="android:layout_width">@dimen/photo_small</item>
+        <item name="android:layout_height">@dimen/photo_small</item>
+    </style>
+
+    <style name="IconImageView" parent="@style/BaseImageView">
+        <item name="android:layout_width">12dp</item>
+        <item name="android:layout_height">12dp</item>
+        <item name="android:layout_marginRight">@dimen/margin_tiny</item>
+    </style>
+    
+    <style name="BigIconImageView" parent="@style/IconImageView">
+        <item name="android:layout_width">16dp</item>
+        <item name="android:layout_height">16dp</item>
+        <item name="android:layout_marginRight">@dimen/margin_small</item>
+    </style>
+    
+</resources>

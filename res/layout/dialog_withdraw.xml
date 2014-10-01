@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/DialogBox" >
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primary_dark" >
+	    
+	    <TextView
+	        android:layout_width="wrap_content"
+	        android:text="@string/withdraw"
+	        style="@style/DialogTextViewTitle" />
+	    
+	    <ImageView
+	        android:id="@+id/iv_cancel"
+	        android:src="@drawable/ic_x_inverse"
+	        android:layout_alignParentRight="true"
+	        android:layout_centerVertical="true"
+	        style="@style/BaseImageView" />
+        
+    </RelativeLayout>
+    
+    <TextView
+        android:text="@string/dialog_withdraw_ask"
+        style="@style/DialogTextView" />
+    
+    <ImageView
+        style="@style/DividerHorizontal" />
+    
+    <Button
+        android:id="@+id/btn_yes"
+        android:text="@string/yes"
+        style="@style/DialogButton" />
+    
+    <ImageView
+        style="@style/DividerHorizontal" />
+    
+    <Button
+        android:id="@+id/btn_no"
+        android:text="@string/no"
+        style="@style/DialogButton" />
+
+</LinearLayout>

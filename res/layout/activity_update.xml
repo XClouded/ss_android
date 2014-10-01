@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_bg" >
+    
+    <ImageView
+        android:id="@+id/image"
+        android:layout_marginTop="@dimen/margin"
+        android:layout_marginBottom="@dimen/margin"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/img_music_update"
+       	style="@style/BaseImageView" />
+    
+    <Button
+        android:id="@+id/btn_start"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/margin"
+        android:text="@string/close"
+        style="@style/DarkButton" />
+    
+    <com.myandb.singsong.widget.AutoLoadListView
+        android:id="@+id/lv_full_width"
+        android:layout_below="@id/image"
+        android:layout_above="@id/btn_start"
+        android:paddingBottom="@dimen/margin"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginLeft="@dimen/margin_small"
+        android:layout_marginRight="@dimen/margin_small"
+        style="@style/CommonListView" />
+
+</RelativeLayout>

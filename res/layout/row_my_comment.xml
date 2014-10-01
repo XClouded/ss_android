@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.myandb.singsong"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/margin"
+    android:paddingRight="@dimen/margin"
+    android:paddingTop="@dimen/margin_small" >
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/box_song"
+        android:padding="@dimen/margin_small" >
+        
+        <com.myandb.singsong.widget.RoundedImageView
+	        android:id="@+id/iv_album_photo"
+	        android:layout_alignParentRight="true"
+	        android:layout_marginLeft="@dimen/margin"
+	        android:layout_marginBottom="@dimen/margin_small"
+	        app:corner_radius="@dimen/corner_radius"
+	        app:corner_top_left="true"
+	        app:corner_top_right="true"
+	        app:corner_bottom_left="true"
+	        app:corner_bottom_right="true"
+	        style="@style/UserSmallImageView" />
+        
+        <TextView
+            android:id="@+id/tv_music_info"
+            android:layout_width="match_parent"
+            android:layout_toLeftOf="@id/iv_album_photo"
+            android:textSize="@dimen/text_small"
+            style="@style/EllipsizeTextView" />
+        
+        <com.myandb.singsong.widget.RoundedImageView
+	        android:id="@+id/iv_comment_user_photo"
+	        android:layout_marginRight="@dimen/margin_small"
+	        android:layout_below="@id/iv_album_photo"
+	        app:oval="true"
+	        app:border_width="0.1dp"
+	        app:border_color="@color/divider"
+	        style="@style/UserImageView" />
+        
+        <TextView
+            android:id="@+id/tv_comment_created"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@id/iv_comment_user_photo"
+            android:textColor="@color/font_hint"
+            style="@style/BaseTextView" />
+        
+        <TextView
+            android:id="@+id/tv_comment_user_nickname"
+            android:layout_width="match_parent"
+            android:layout_alignTop="@id/iv_comment_user_photo"
+            android:layout_toRightOf="@id/iv_comment_user_photo"
+            android:layout_toLeftOf="@id/tv_comment_created"
+            android:layout_marginBottom="@dimen/margin_tiny"
+            android:textStyle="bold"
+            style="@style/EllipsizeTextView" />
+           
+       <TextView
+			android:id="@+id/tv_comment_content"
+			android:layout_width="match_parent"
+			android:layout_toRightOf="@id/iv_comment_user_photo"
+			android:layout_below="@id/tv_comment_user_nickname"
+			style="@style/BaseTextView" />
+        
+    </RelativeLayout>
+
+</FrameLayout>

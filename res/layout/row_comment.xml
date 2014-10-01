@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.myandb.singsong"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/margin"
+    android:paddingRight="@dimen/margin" >
+    
+    <com.myandb.singsong.widget.RoundedImageView
+        android:id="@+id/iv_comment_user_photo"
+        android:layout_marginRight="@dimen/margin_tiny"
+        app:oval="true"
+        app:border_width="0.1dp"
+        app:border_color="@color/divider"
+        style="@style/UserImageView" />
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/iv_comment_user_photo"
+        android:background="@drawable/bg_comment" >
+        
+	    <TextView
+	        android:id="@+id/tv_comment_user_nickname"
+	        style="@style/SmallTextViewTitle" />
+	    
+	    <TextView
+	        android:id="@+id/tv_comment_created"
+	        android:layout_alignParentTop="true"
+	        android:layout_alignParentRight="true"
+	        style="@style/SmallTextView" />
+	    
+	    <TextView
+	        android:id="@+id/tv_comment_content"
+	        android:layout_below="@id/tv_comment_user_nickname"
+	        android:layout_alignLeft="@id/tv_comment_user_nickname"
+	        style="@style/BaseTextView" />
+	    
+	    <ImageView
+	        android:id="@+id/iv_report_comment"
+	        android:layout_width="25sp"
+	        android:layout_height="25sp"
+	        android:paddingBottom="10sp"
+	        android:paddingLeft="10sp"
+	        android:layout_marginRight="@dimen/margin_small"
+	        android:layout_toLeftOf="@id/tv_comment_created"
+	        android:src="@drawable/ic_alarm"
+	        android:visibility="gone"
+	        style="@style/BaseImageView" />
+	    
+	    <ImageView
+	        android:id="@+id/iv_delete_comment"
+	        android:layout_width="25sp"
+	        android:layout_height="25sp"
+	        android:paddingBottom="10sp"
+	        android:paddingLeft="10sp"
+	        android:layout_marginRight="@dimen/margin_small"
+	        android:layout_toLeftOf="@id/tv_comment_created"
+	        android:src="@drawable/ic_trash"
+	        android:visibility="gone"
+	        style="@style/BaseImageView" />
+        
+    </RelativeLayout>
+    
+</RelativeLayout>

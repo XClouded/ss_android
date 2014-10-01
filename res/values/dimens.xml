@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <dimen name="margin_tiny">4dp</dimen>
+    <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin">12dp</dimen>
+    <dimen name="margin_big">16dp</dimen>
+    <dimen name="margin_bigger">20dp</dimen>
+    
+    <dimen name="text_tiny">11sp</dimen>
+    <dimen name="text_small">12sp</dimen>
+    <dimen name="text">13sp</dimen>
+    <dimen name="text_big">14sp</dimen>
+    <dimen name="text_bigger">15sp</dimen>
+    
+    <dimen name="corner_radius">5dp</dimen>
+    <dimen name="border_width">3dp</dimen>
+    <dimen name="border_width_big">6dp</dimen>
+    
+    <dimen name="photo_tiny">25dp</dimen>
+    <dimen name="photo_small_wrapper">48dp</dimen>
+    <dimen name="photo_small">36dp</dimen>
+    <dimen name="photo_wrapper">54dp</dimen> <!-- photo + border_width * 2 -->
+    <dimen name="photo">48dp</dimen>
+    <dimen name="photo_inverse_margin">-12dp</dimen>
+    <dimen name="photo_profile">100dp</dimen>
+    
+    <dimen name="icon">12dp</dimen>
+    <dimen name="icon_text_inverse_margin">-3sp</dimen>
+    
+    <dimen name="compat_dialog_width">290dp</dimen>
+    <dimen name="compat_dialog_inverse_margin">-10dp</dimen>
+    
+    <dimen name="compat_toast_width">250dp</dimen>
+    
+    <dimen name="compat_actionbar_height">45dp</dimen>
+    <dimen name="compat_actionbar_album_info_width">80dp</dimen>
+    
+    <dimen name="compat_song_image_height">140dp</dimen>
+    <dimen name="compat_song_image_height_half">70dp</dimen>
+    
+    <dimen name="compat_wide_ratio_height">190dp</dimen>
+        
+    <dimen name="form_height">45dp</dimen>
+
+</resources>

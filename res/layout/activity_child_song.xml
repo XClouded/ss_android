@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.myandb.singsong"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <ImageView
+        android:id="@+id/iv_parent_song_image"
+        style="@style/BaseImageView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/compat_song_image_height" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:src="@drawable/mask_rounded_top" />
+
+    <TextView
+        android:id="@+id/tv_music_info"
+        style="@style/BaseTextView"
+        android:layout_alignBottom="@id/iv_parent_song_image"
+        android:layout_marginBottom="@dimen/margin"
+        android:layout_marginLeft="@dimen/margin"
+        android:textColor="@color/font_white" />
+
+    <FrameLayout
+        android:id="@+id/parent_user_photo"
+        android:layout_width="@dimen/photo_wrapper"
+        android:layout_height="@dimen/photo_wrapper"
+        android:layout_below="@id/iv_parent_song_image"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/photo_inverse_margin"
+        android:background="@drawable/circle_white"
+        android:padding="@dimen/border_width" >
+
+        <com.myandb.singsong.widget.RoundedImageView
+            android:id="@+id/iv_parent_user_photo"
+            style="@style/UserImageView"
+            app:border_color="@color/divider"
+            app:border_width="0.1dp"
+            app:oval="true" />
+        
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tv_parent_user_nickname"
+        style="@style/BaseTextView"
+        android:layout_below="@id/parent_user_photo"
+        android:layout_centerHorizontal="true"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_parent_song_message"
+        style="@style/BaseTextView"
+        android:layout_below="@id/tv_parent_user_nickname"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:layout_marginLeft="@dimen/margin_tiny"
+        android:layout_marginRight="@dimen/margin_tiny"
+        android:gravity="center"
+        android:textColor="@color/font_hint" />
+
+    <ImageView
+        android:id="@+id/divider"
+        style="@style/DividerHorizontal"
+        android:layout_below="@id/tv_parent_song_message" />
+
+    <com.myandb.singsong.widget.AutoLoadListView
+        android:id="@+id/lv_full_width"
+        android:layout_below="@id/divider"
+        android:divider="@color/divider"
+        android:dividerHeight="0.1dp"
+        style="@style/CommonListView"
+        android:paddingBottom="@dimen/margin" />
+
+</RelativeLayout>

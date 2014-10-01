@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+    
+    <RelativeLayout
+	    android:id="@+id/rl_gnb_row"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp" >
+        
+	    <ImageView
+	        android:id="@+id/iv_gnb_icon"
+	        android:layout_width="20dp"
+	        android:layout_height="20dp"
+	        android:layout_alignParentLeft="true"
+	        android:layout_marginRight="15dp"
+	        style="@style/BaseImageView" />
+	    
+	    <TextView
+	        android:id="@+id/tv_push_num"
+	        android:layout_alignParentRight="true"
+	        android:layout_centerVertical="true"
+	        android:visibility="invisible"
+	        style="@style/NotificationTextView" />
+	    
+		<TextView 
+		    android:id="@+id/tv_gnb_title"
+		    android:layout_width="match_parent"
+		    android:layout_centerVertical="true"
+		    android:layout_toLeftOf="@id/tv_push_num"
+		    android:layout_toRightOf="@id/iv_gnb_icon"
+		    android:gravity="left|center_vertical"
+		    android:textSize="15sp"
+		    android:textColor="@color/font_white"
+		    android:maxLines="1"
+		    style="@style/BaseTextView" />
+        
+    </RelativeLayout>
+    
+    <ImageView
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:src="@color/gnb_divider"
+        style="@style/DividerHorizontal" />
+    
+</LinearLayout>
+

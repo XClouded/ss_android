@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.myandb.singsong"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/compat_actionbar_height"
+        android:background="@drawable/bg_actionbar" >
+        
+        <ImageView
+            android:id="@+id/iv_actionbar_gnb"
+            android:layout_width="@dimen/compat_actionbar_height"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/ic_gnb"
+            android:background="@drawable/gnb_left_selector"
+            style="@style/BaseImageView" />
+        
+        <com.myandb.singsong.widget.RoundedImageView
+            android:id="@+id/iv_actionbar_album_photo"
+            android:layout_width="@dimen/compat_actionbar_height"
+           	android:layout_height="match_parent"
+           	android:layout_alignParentRight="true"
+           	android:padding="@dimen/margin_small"
+           	android:visibility="gone"
+            android:src="@drawable/ic_note_symbol"
+            app:corner_radius="@dimen/corner_radius"
+            style="@style/BaseImageView" /> 
+            
+        <TextView
+            android:id="@+id/tv_actionbar_album_info"
+            android:layout_width="@dimen/compat_actionbar_album_info_width"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/iv_actionbar_album_photo"
+            android:visibility="gone"
+            android:textColor="@color/font_grey"
+            android:textSize="@dimen/text_tiny"
+            style="@style/MarqueeTextView" />
+        
+        <ImageView
+            android:id="@+id/iv_actionbar_play_control"
+            android:layout_width="@dimen/compat_actionbar_height"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@id/tv_actionbar_album_info"
+           	android:padding="@dimen/margin_small"
+           	android:visibility="gone"
+           	android:src="@drawable/ic_pause_basic"
+           	style="@style/BaseImageView" />
+        
+        <ImageView
+            android:id="@+id/iv_actionbar_kakaotalk"
+            android:layout_width="@dimen/compat_actionbar_height"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:padding="@dimen/margin_tiny"
+            android:visibility="gone"
+            android:src="@drawable/ic_kakao"
+            style="@style/BaseImageView" /> 
+        
+        <ImageView
+            android:id="@+id/iv_actionbar_logo"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/logo_text"
+            style="@style/BaseImageView" />
+        
+    </RelativeLayout>
+    
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:scaleType="fitXY"
+        android:src="@color/primary" />
+    
+	<FrameLayout
+	    android:id="@+id/fl_container"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:background="@color/app_bg" />
+    
+</LinearLayout>

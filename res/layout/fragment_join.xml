@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/margin"
+    android:background="@color/app_bg" >
+    
+    <ImageView
+        android:id="@+id/logo"
+        android:src="@drawable/logo_text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/margin"
+        style="@style/BaseImageView" />
+    
+    <RelativeLayout
+        android:id="@+id/id_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/form_height"
+        android:layout_marginBottom="@dimen/margin"
+        android:layout_below="@id/logo" >
+        
+        <TextView
+            android:id="@+id/tv_valid_username"
+            android:layout_width="@dimen/form_height"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="@dimen/margin"
+            android:text="@string/_check"
+            android:textColor="@color/font_grey"
+            android:background="@drawable/box_basic"
+            android:gravity="center"
+            style="@style/BaseTextView" />
+        
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:layout_toLeftOf="@id/tv_valid_username"
+	        android:background="@drawable/box_basic"
+	        android:orientation="horizontal" >
+	        
+	        <ImageView
+	            android:layout_width="@dimen/form_height"
+	            android:layout_height="match_parent"
+	            android:padding="@dimen/margin_big"
+	            android:src="@drawable/ic_man"
+	            android:background="@color/icon_bg"
+	            style="@style/BaseImageView" />
+	        
+	        <ImageView
+	            style="@style/DividerVertical" />
+	        
+	        <EditText
+		        android:id="@+id/et_user_username"
+		        android:hint="@string/hint_username"
+		        android:inputType="textPersonName"
+		        android:background="@color/white"
+		        style="@style/BaseEditText" />
+	        
+	    </LinearLayout>
+        
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:id="@+id/pw_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/form_height"
+        android:layout_below="@id/id_wrapper"
+        android:layout_marginBottom="@dimen/margin" >
+        
+        <TextView
+            android:id="@+id/tv_valid_password"
+            android:layout_width="@dimen/form_height"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="@dimen/margin"
+            android:text="@string/_check" 
+            android:textColor="@color/font_grey"
+            android:background="@drawable/box_basic"
+            android:gravity="center"
+            style="@style/BaseTextView" />
+        
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:layout_toLeftOf="@id/tv_valid_password"
+	        android:background="@drawable/box_basic"
+	        android:orientation="horizontal" >
+	        
+	        <ImageView
+	            android:layout_width="@dimen/form_height"
+	            android:layout_height="match_parent"
+	            android:padding="@dimen/margin"
+	            android:src="@drawable/ic_lock"
+	            android:background="@color/icon_bg"
+	            style="@style/BaseImageView" />
+	        
+	        <ImageView
+	            style="@style/DividerVertical" />
+	        
+	        <EditText
+		        android:id="@+id/et_user_password"
+		        android:hint="@string/hint_password"
+		        android:maxLength="32"
+		        android:inputType="textPassword"
+		        android:background="@color/white"
+		        style="@style/BaseEditText" />
+	        
+	    </LinearLayout>
+        
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:id="@+id/re_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/form_height"
+        android:layout_below="@id/pw_wrapper"
+        android:layout_marginBottom="@dimen/margin" >
+        
+        <TextView
+            android:id="@+id/tv_valid_password_re"
+            android:layout_width="@dimen/form_height"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="@dimen/margin"
+            android:text="@string/_check"
+            android:textColor="@color/font_grey"
+            android:background="@drawable/box_basic"
+            android:gravity="center"
+            style="@style/BaseTextView" />
+        
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:layout_toLeftOf="@id/tv_valid_password_re"
+	        android:background="@drawable/box_basic"
+	        android:orientation="horizontal" >
+	        
+	        <ImageView
+	            android:layout_width="@dimen/form_height"
+	            android:layout_height="match_parent"
+	            android:padding="@dimen/margin"
+	            android:src="@drawable/ic_lock"
+	            android:background="@color/icon_bg"
+	            style="@style/BaseImageView" />
+	        
+	        <ImageView
+	            style="@style/DividerVertical" />
+	        
+	        <EditText
+		        android:id="@+id/et_user_password_re"
+		        android:hint="@string/hint_re_password"
+		        android:maxLength="32"
+		        android:inputType="textPassword"
+		        android:background="@color/white"
+		        style="@style/BaseEditText" />
+	        
+	    </LinearLayout>
+        
+    </RelativeLayout>
+    
+    <Button
+	    android:id="@+id/btn_signup_complete"
+	    android:layout_below="@id/re_wrapper"
+	    android:layout_marginBottom="@dimen/margin"
+	    android:text="@string/signup"
+	    style="@style/DisabledButton" />
+    
+    <TextView
+        android:id="@+id/tv_agreement_policy"
+        android:layout_below="@id/btn_signup_complete"
+        android:linksClickable="true"
+        style="@style/BaseTextView" />
+    
+    <Button
+	    android:id="@+id/btn_to_login"
+	    android:layout_alignParentBottom="true"
+	    android:text="@string/login"
+	    style="@style/DarkButton" />
+    
+</RelativeLayout>

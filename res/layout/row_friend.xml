@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.myandb.singsong"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/row_selector" >
+    
+    <com.myandb.singsong.widget.RoundedImageView
+        android:id="@+id/iv_user_photo"
+        app:oval="true"
+        app:border_width="0.1dp"
+        app:border_color="@color/divider"
+        style="@style/UserImageView" />
+    
+    <TextView
+        android:id="@+id/tv_user_nickname"
+        android:layout_toRightOf="@id/iv_user_photo"
+        android:layout_marginLeft="@dimen/margin"
+        android:layout_marginRight="@dimen/margin"
+        android:layout_centerVertical="true"
+        android:textSize="14sp"
+        style="@style/BaseTextView" />
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/tv_user_nickname" >
+        
+	    <TextView
+	        android:id="@+id/tv_user_status"
+	        android:layout_alignParentRight="true"
+	        android:textSize="@dimen/text_small"
+	        android:textColor="@color/white"
+	        android:maxLines="2"
+	        android:background="@drawable/bg_status_message"
+	        style="@style/EllipsizeTextView" />
+        
+    </RelativeLayout>
+    
+</RelativeLayout>
+

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/DialogBox" >
+    
+    <TextView
+        android:text="@string/dialog_headset_title"
+        style="@style/DialogTextViewTitle" />
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+        
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_marginLeft="@dimen/margin_small"
+            android:layout_marginRight="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_big"
+            android:layout_marginBottom="@dimen/margin_big"
+            android:src="@drawable/img_headset"
+            style="@style/BaseImageView" />
+	    
+	    <TextView
+	        android:layout_alignTop="@id/icon"
+	        android:layout_alignBottom="@id/icon"
+	        android:layout_toRightOf="@id/icon"
+	        android:gravity="center_vertical"
+	        android:text="@string/dialog_headset_content"
+	        style="@style/SmallTextView" />
+        
+    </RelativeLayout>
+    
+    <ImageView
+        style="@style/DividerHorizontal" />
+    
+    <Button
+        android:id="@+id/btn_no_headset"
+        android:text="@string/dialog_headset_no"
+        style="@style/DialogButton" />
+
+</LinearLayout>
