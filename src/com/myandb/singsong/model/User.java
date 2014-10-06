@@ -9,6 +9,7 @@ public class User extends Model {
 	private String main_photo_url;
 	private Date main_photo_updated_at;
 	private Profile profile;
+	private int is_activated;
 	
 	public String getUsername() {
 		return toString(username);
@@ -51,6 +52,14 @@ public class User extends Model {
 	
 	public void setProfile(Profile profile) {
 		this.profile = profile;
+	}
+	
+	public boolean isActivated() {
+		return is_activated == 1;
+	}
+	
+	public void setActivated() {
+		is_activated = 1;
 	}
 	
 }
