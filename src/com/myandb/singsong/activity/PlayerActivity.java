@@ -14,6 +14,7 @@ import com.myandb.singsong.adapter.CommentAdapter;
 import com.myandb.singsong.dialog.KakaotalkDialog;
 import com.myandb.singsong.dialog.WriteCommentDialog;
 import com.myandb.singsong.event.Listeners;
+import com.myandb.singsong.event.MemberOnlyClickListener;
 import com.myandb.singsong.event.OnVolleyWeakResponse;
 import com.myandb.singsong.event.WeakRunnable;
 import com.myandb.singsong.file.Storage;
@@ -162,15 +163,16 @@ public class PlayerActivity extends BaseActivity {
 				
 				runService();
 				
-				setKakaotalkClickListener(new OnClickListener() {
+				setKakaotalkClickListener(new MemberOnlyClickListener() {
 					
 					@Override
-					public void onClick(View v) {
+					public void onActivated(View v) {
 						if (bitlyUrl != null) {
 							showKakaotalkDialog(bitlyUrl);
 						} else {
 							getBitlyShortUrl();
 						}
+						
 					}
 				});
 			} else {
@@ -354,10 +356,10 @@ public class PlayerActivity extends BaseActivity {
 		ivAutoplayControl.setOnClickListener(autoplayControlClickListener);
 		vStartCollabo.setOnClickListener(Listeners.getCollaboClickListener(this, thisSong));
 		vLikeSong.setOnClickListener(likeClickListener);
-		vWriteComment.setOnClickListener(new OnClickListener() {
+		vWriteComment.setOnClickListener(new MemberOnlyClickListener() {
 			
 			@Override
-			public void onClick(View v) {
+			public void onActivated(View v) {
 				if (commentDialog != null) {
 					commentDialog.show();
 					commentDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -503,10 +505,10 @@ public class PlayerActivity extends BaseActivity {
 		}
 	};
 
-	private OnClickListener likeClickListener = new OnClickListener() {
+	private OnClickListener likeClickListener = new MemberOnlyClickListener() {
 		
 		@Override
-		public void onClick(View v) {
+		public void onActivated(View v) {
 			UrlBuilder urlBuilder = UrlBuilder.getInstance();
 			String url = urlBuilder.l("songs").l(thisSong.getId()).l("likings").build();
 			int method = 0;

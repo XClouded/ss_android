@@ -36,6 +36,7 @@ import com.myandb.singsong.activity.SimpleListActivity;
 import com.myandb.singsong.activity.SimpleListActivity.SimpleListType;
 import com.myandb.singsong.adapter.MySongAdapter;
 import com.myandb.singsong.dialog.UpdateFriendshipDialog;
+import com.myandb.singsong.event.MemberOnlyClickListener;
 import com.myandb.singsong.event.OnCompleteListener;
 import com.myandb.singsong.event.OnVolleyWeakError;
 import com.myandb.singsong.event.OnVolleyWeakResponse;
@@ -363,10 +364,10 @@ public class ProfileRootFragment extends Fragment {
 		}
 	}
 	
-	private OnClickListener followClickListener = new OnClickListener() {
+	private OnClickListener followClickListener = new MemberOnlyClickListener() {
 		
 		@Override
-		public void onClick(View v) {
+		public void onActivated(View v) {
 			UrlBuilder urlBuilder = UrlBuilder.getInstance();
 			String url = urlBuilder.l("friendships").l(thisUser.getId()).build();
 			
