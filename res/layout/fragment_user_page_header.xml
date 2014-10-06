@@ -5,6 +5,33 @@
     android:orientation="vertical" >
     
     <RelativeLayout
+        android:id="@+id/rl_resend_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin"
+        android:visibility="gone" >
+		
+        <Button
+            android:id="@+id/btn_resend_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_small"
+            android:text="인증 메일 재전송"
+            style="@style/DarkButton" />
+        
+        <TextView
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@id/btn_resend_email"
+            android:layout_centerVertical="true"
+            android:text="이메일 인증을 해주세요!\n기능 제한없이 사용하실 수 있습니다."
+            android:textColor="@color/red"
+            style="@style/SmallTextView" />
+        
+    </RelativeLayout>
+    
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="220dp" >
         

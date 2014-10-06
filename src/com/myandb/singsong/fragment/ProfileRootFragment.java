@@ -80,6 +80,8 @@ public class ProfileRootFragment extends Fragment {
 	private Button btnFollow;
 	private Button btnEditProfile;
 	private ListView listView;
+	private View vResendEmail;
+	private Button btnResendEmail;
 	private MySongAdapter adapter;
 	private RequestQueue requestQueue;
 	private UpdateFriendshipDialog dialog;
@@ -120,6 +122,10 @@ public class ProfileRootFragment extends Fragment {
 			loadProfileData();
 			
 			loadUserSong();
+			
+			if (!currentUser.isActivated() && isCurrentUser) {
+				checkUserActivation();
+			}
 		} else {
 			getActivity().finish();
 		}
@@ -141,6 +147,8 @@ public class ProfileRootFragment extends Fragment {
 		ivUserTrashes = (ImageView) view.findViewById(R.id.iv_user_trashes);
 		btnFollow = (Button) view.findViewById(R.id.btn_follow);
 		btnEditProfile = (Button) view.findViewById(R.id.btn_edit_profile);
+		vResendEmail = view.findViewById(R.id.rl_resend_email);
+		btnResendEmail = (Button) view.findViewById(R.id.btn_resend_email);
 	}
 	
 	private void setupView() {
@@ -290,6 +298,49 @@ public class ProfileRootFragment extends Fragment {
 		urlBuilder.l("users").l(thisUser.getId()).l("songs").l("all").q("order", "created_at");
 		adapter = new MySongAdapter(getActivity(), urlBuilder, isCurrentUser, false);
 		listView.setAdapter(adapter);
+	}
+	
+	private void checkUserActivation() {
+		UrlBuilder urlBuilder = UrlBuilder.getInstance();
+		String url = urlBuilder.l("users").l(currentUser.getId()).build();
+		
+		OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
+				Method.GET, url, null,
+				new OnVolleyWeakResponse<ProfileRootFragment, JSONObject>(this, "onCheckActivationResponse", User.class),
+				new OnVolleyWeakError<ProfileRootFragment>(this, "onCheckActivationError")
+		);
+		
+		requestQueue.add(request);
+	}
+	
+	public void onCheckActivationResponse(User user) {
+		if (user.isActivated()) {
+			Auth auth = new Auth();
+			auth.update(user);
+			currentUser = user;
+			
+			vResendEmail.setVisibility(View.GONE);
+		} else {
+			vResendEmail.setVisibility(View.VISIBLE);
+			
+			btnResendEmail.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					UrlBuilder urlBuilder = UrlBuilder.getInstance();
+					String url = urlBuilder.l("activations").build();
+					
+					OAuthJustRequest request = new OAuthJustRequest(Method.POST, url, null);
+					requestQueue.add(request);
+					
+					Toast.makeText(getActivity(), "인증 이메일이 발송되었습니다.", Toast.LENGTH_SHORT).show();
+				}
+			});
+		}
+	}
+	
+	public void onCheckActivationError() {
+		
 	}
 	
 	public void toggleFollowing(boolean isFollowing) {
