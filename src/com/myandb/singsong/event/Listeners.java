@@ -207,11 +207,11 @@ public class Listeners {
 	}
 	
 	public static OnClickListener getRecordClickListener(final Context context, final Music music) {
-		return new OnClickListener() {
+		return new MemberOnlyClickListener() {
 			
 			@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 			@Override
-			public void onClick(View v) {
+			public void onActivated(View v) {
 				Gson gson = Utility.getGsonInstance();
 				String musicInJson = gson.toJson(music, Music.class);
 				
@@ -228,10 +228,10 @@ public class Listeners {
 	}
 	
 	public static OnClickListener getCollaboClickListener(final Context context, final Song song) {
-		return new OnClickListener() {
+		return new MemberOnlyClickListener() {
 			
 			@Override
-			public void onClick(View v) {
+			public void onActivated(View v) {
 				UrlBuilder urlBuilder = UrlBuilder.getInstance();
 				Song parentSong = song.getParentSong() == null ? song : song.getParentSong();
 				parentSong.setMusic(song.getMusic());
@@ -259,6 +259,7 @@ public class Listeners {
 			this.parentSong = parentSong;
 		}
 
+		@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 		@Override
 		protected void onFilteredResponse(Context context, JSONObject response) {
 			Gson gson = Utility.getGsonInstance();
