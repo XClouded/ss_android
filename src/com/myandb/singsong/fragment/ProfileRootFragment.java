@@ -36,6 +36,7 @@ import com.myandb.singsong.activity.SimpleListActivity;
 import com.myandb.singsong.activity.SimpleListActivity.SimpleListType;
 import com.myandb.singsong.adapter.MySongAdapter;
 import com.myandb.singsong.dialog.UpdateFriendshipDialog;
+import com.myandb.singsong.event.MemberOnlyClickListener;
 import com.myandb.singsong.event.OnCompleteListener;
 import com.myandb.singsong.event.OnVolleyWeakError;
 import com.myandb.singsong.event.OnVolleyWeakResponse;
@@ -80,6 +81,8 @@ public class ProfileRootFragment extends Fragment {
 	private Button btnFollow;
 	private Button btnEditProfile;
 	private ListView listView;
+	private View vResendEmail;
+	private Button btnResendEmail;
 	private MySongAdapter adapter;
 	private RequestQueue requestQueue;
 	private UpdateFriendshipDialog dialog;
@@ -120,6 +123,10 @@ public class ProfileRootFragment extends Fragment {
 			loadProfileData();
 			
 			loadUserSong();
+			
+			if (!currentUser.isActivated() && isCurrentUser) {
+				checkUserActivation();
+			}
 		} else {
 			getActivity().finish();
 		}
@@ -141,6 +148,8 @@ public class ProfileRootFragment extends Fragment {
 		ivUserTrashes = (ImageView) view.findViewById(R.id.iv_user_trashes);
 		btnFollow = (Button) view.findViewById(R.id.btn_follow);
 		btnEditProfile = (Button) view.findViewById(R.id.btn_edit_profile);
+		vResendEmail = view.findViewById(R.id.rl_resend_email);
+		btnResendEmail = (Button) view.findViewById(R.id.btn_resend_email);
 	}
 	
 	private void setupView() {
@@ -292,6 +301,49 @@ public class ProfileRootFragment extends Fragment {
 		listView.setAdapter(adapter);
 	}
 	
+	private void checkUserActivation() {
+		UrlBuilder urlBuilder = UrlBuilder.getInstance();
+		String url = urlBuilder.l("users").l(currentUser.getId()).build();
+		
+		OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
+				Method.GET, url, null,
+				new OnVolleyWeakResponse<ProfileRootFragment, JSONObject>(this, "onCheckActivationResponse", User.class),
+				new OnVolleyWeakError<ProfileRootFragment>(this, "onCheckActivationError")
+		);
+		
+		requestQueue.add(request);
+	}
+	
+	public void onCheckActivationResponse(User user) {
+		if (user.isActivated()) {
+			Auth auth = new Auth();
+			auth.update(user);
+			currentUser = user;
+			
+			vResendEmail.setVisibility(View.GONE);
+		} else {
+			vResendEmail.setVisibility(View.VISIBLE);
+			
+			btnResendEmail.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					UrlBuilder urlBuilder = UrlBuilder.getInstance();
+					String url = urlBuilder.l("activations").build();
+					
+					OAuthJustRequest request = new OAuthJustRequest(Method.POST, url, null);
+					requestQueue.add(request);
+					
+					Toast.makeText(getActivity(), "인증 이메일이 발송되었습니다.", Toast.LENGTH_SHORT).show();
+				}
+			});
+		}
+	}
+	
+	public void onCheckActivationError() {
+		
+	}
+	
 	public void toggleFollowing(boolean isFollowing) {
 		isFollowingCurrentState = isFollowing;
 		
@@ -312,10 +364,10 @@ public class ProfileRootFragment extends Fragment {
 		}
 	}
 	
-	private OnClickListener followClickListener = new OnClickListener() {
+	private OnClickListener followClickListener = new MemberOnlyClickListener() {
 		
 		@Override
-		public void onClick(View v) {
+		public void onActivated(View v) {
 			UrlBuilder urlBuilder = UrlBuilder.getInstance();
 			String url = urlBuilder.l("friendships").l(thisUser.getId()).build();
 			

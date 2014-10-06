@@ -125,7 +125,8 @@ public class JoinFragment extends Fragment {
 		});
 		
 		UrlBuilder urlBuilder = UrlBuilder.getInstance();
-		String policyHtml = "가입하기 버튼을 누르시면 자동으로 콜라보 노래방의 ";
+		String policyHtml = "가입하신 이메일로 인증 번호가 전송됩니다. 인증을 하셔야 많은 기능들이 이용가능하니 꼭 본인의 이메일을 입력해주세요 :) <br/><br/>";
+		policyHtml += "가입하기 버튼을 누르시면 자동으로 콜라보 노래방의 ";
 		policyHtml += Utility.getHtmlAnchor(urlBuilder.l("terms").build(), "이용 약관");
 		policyHtml += "과 ";
 		policyHtml += Utility.getHtmlAnchor(urlBuilder.l("privacy").build(), "개인정보 보호정책");
