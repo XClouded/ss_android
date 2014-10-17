@@ -93,6 +93,7 @@ public class MainActivity extends BaseActivity {
 		menuDatas.add(new MenuData("콜라보를 기다려요!", BitmapFactory.decodeResource(getResources(), R.drawable.ic_waiting_menu), PageName.WAITING_COLLABO));
 		menuDatas.add(new MenuData("레전드 콜라보", BitmapFactory.decodeResource(getResources(), R.drawable.ic_crown_menu), PageName.LEGEND));
 		menuDatas.add(new MenuData("친구 찾기", BitmapFactory.decodeResource(getResources(), R.drawable.ic_magnifier_menu), PageName.FIND_USER));
+		menuDatas.add(new MenuData("콜라보 아티스트", BitmapFactory.decodeResource(getResources(), R.drawable.ic_magnifier_menu), PageName.ARTIST));
 		menuDatas.add(new MenuData("공지사항", BitmapFactory.decodeResource(getResources(), R.drawable.ic_balloon_menu), PageName.NOTICE));
 		menuDatas.add(new MenuData("설정", BitmapFactory.decodeResource(getResources(), R.drawable.ic_wheel_menu), PageName.SETTING));
 	}
@@ -218,6 +219,10 @@ public class MainActivity extends BaseActivity {
 					case FIND_USER:
 						intent.setClass(MainActivity.this, SearchActivity.class);
 						intent.putExtra(SearchActivity.INTENT_SEARCH_TYPE, SearchType.USER);
+						break;
+						
+					case ARTIST:
+						intent.setClass(MainActivity.this, ArtistActivity.class);
 						break;
 						
 					case NOTICE:
