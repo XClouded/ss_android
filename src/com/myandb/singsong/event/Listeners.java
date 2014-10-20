@@ -41,7 +41,7 @@ public class Listeners {
 			@Override
 			public void onClick(View v) {
 				Activity activity = notification.getActivity();
-				String url = getUrl(activity, notification.getSourceId());
+				String url = getUrl(activity);
 				
 				OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
 						Method.GET, url, null,
@@ -53,18 +53,19 @@ public class Listeners {
 				queue.add(request); 
 			}
 			
-			private String getUrl(Activity activity, int sourceId) {
+			private String getUrl(Activity activity) {
 				UrlBuilder urlBuilder = UrlBuilder.getInstance();
 				
 				switch(activity.getSourceType()) {
 				case Activity.TYPE_CREATE_FRIENDSHIP:
-					return urlBuilder.l("users").l(sourceId).q("req[]", "profile").build();
+					return urlBuilder.l("users").l(activity.getUserId()).q("req[]", "profile").build();
 					
 				case Activity.TYPE_CREATE_COMMENT:
 				case Activity.TYPE_CREATE_LIKING:
+					return urlBuilder.l("songs").l(activity.getParentId()).q("req[]", "full").build();
 				case Activity.TYPE_CREATE_ROOT_SONG:
 				case Activity.TYPE_CREATE_LEAF_SONG:
-					return urlBuilder.l("songs").l(sourceId).q("req[]", "full").build();
+					return urlBuilder.l("songs").l(activity.getSourceId()).q("req[]", "full").build();
 					
 				default:
 					return "";

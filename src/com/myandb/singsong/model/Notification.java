@@ -1,11 +1,17 @@
 package com.myandb.singsong.model;
 
+import java.util.Date;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.myandb.singsong.util.TimeHelper;
 
 public class Notification extends Model {
 
 	private Activity activity;
+	private int count;
+	private Date updated_at;
 	
 	public Notification(Activity activity) {
 		this.activity = activity;
@@ -21,6 +27,25 @@ public class Notification extends Model {
 		if (activity != null) {
 			try {
 				JSONObject metadata = activity.getMetadata();
+				
+				result += "님";
+				
+				if (activity.getSourceType() == Activity.TYPE_CREATE_COMMENT) {
+					result += "이 회원님의 노래에 ";
+					
+					if (count > 0) {
+						result += String.valueOf(count);
+						result += "개의 ";
+					}
+				} else {
+					if (count > 0) {
+						result += " 외 ";
+						result += String.valueOf(count);
+						result += "명이 ";
+					} else {
+						result += "이 ";
+					}
+				}
 				
 				switch (activity.getSourceType()) {
 				case Activity.TYPE_CREATE_FRIENDSHIP:
@@ -45,7 +70,7 @@ public class Notification extends Model {
 					break;
 					
 				case Activity.TYPE_CREATE_COMMENT:
-					result += "회원님의 노래에 댓글을 달았습니다.\n";
+					result += "댓글을 달았습니다.\n";
 					result += "\"";
 					result += metadata.getString("comment_content");
 					result += "\"";
@@ -53,6 +78,14 @@ public class Notification extends Model {
 					
 				case Activity.TYPE_CREATE_LIKING:
 					result += "회원님의 노래를 좋아합니다.";
+					break;
+					
+				case Activity.TYPE_RECOMMEND_ARTIST:
+					result += "회원님을 콜라보 아티스트에 추천했습니다.";
+					break;
+					
+				case Activity.TYPE_ADMIN_MESSAGE:
+					result += metadata.getString("body");
 					break;
 					
 				default:
@@ -66,25 +99,9 @@ public class Notification extends Model {
 		
 		return result;
 	}
-
-	public int getSourceId() {
-		try {
-			switch(activity.getSourceType()) {
-			case Activity.TYPE_CREATE_FRIENDSHIP:
-				return activity.getUserId();
-				
-			case Activity.TYPE_CREATE_COMMENT:
-				return activity.getMetadata().getInt("commentable_id");
-				
-			case Activity.TYPE_CREATE_LIKING:
-				return activity.getMetadata().getInt("likeable_id");
-				
-			default:
-				return activity.getSourceId();
-			}
-		} catch (JSONException e) {
-			return activity.getSourceId();
-		}
+	
+	public String getWorkedCreatedTime(Date currentDate) {
+		return TimeHelper.getTimeLag(currentDate, updated_at);
 	}
 	
 }

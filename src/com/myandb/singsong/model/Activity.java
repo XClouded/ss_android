@@ -13,10 +13,14 @@ public class Activity extends Model {
 	public static final int TYPE_CREATE_LEAF_SONG = 6;
 	public static final int TYPE_CREATE_COMMENT = 7;
 	public static final int TYPE_CREATE_LIKING = 8;
+	public static final int TYPE_RECOMMEND_ARTIST = 9;
+	
+	public static final int TYPE_ADMIN_MESSAGE = 255;
 
 	private int source_id;
 	private int source_type;
 	private int user_id;
+	private int parent_id;
 	private User user;
 	private String metadata;
 	
@@ -30,6 +34,10 @@ public class Activity extends Model {
 	
 	public int getUserId() {
 		return user_id;
+	}
+	
+	public int getParentId() {
+		return parent_id;
 	}
 	
 	public User getCreator() {
