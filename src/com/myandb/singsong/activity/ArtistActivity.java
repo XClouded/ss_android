@@ -5,10 +5,7 @@ import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.util.Log;
 import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -26,6 +23,8 @@ public class ArtistActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		
 		webView = (WebView) findViewById(R.id.webview);
+		
+		CookieManager.getInstance().removeAllCookie();
 		
 		Map<String, String> header = new HashMap<String, String>();
 		header.put("oauth-token", Auth.getAccessToken());
