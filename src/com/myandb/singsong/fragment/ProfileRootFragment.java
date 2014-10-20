@@ -354,7 +354,7 @@ public class ProfileRootFragment extends Fragment {
 				friendship.setAllowNotify(true);
 			}
 			
-			btnFollow.setBackgroundResource(R.drawable.img_following);
+			btnFollow.setBackgroundResource(R.drawable.img_following_arrow);
 			btnFollow.setOnClickListener(updateFriendshipClickListener);
 		} else {
 			if (friendship != null) {

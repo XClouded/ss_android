@@ -8,8 +8,8 @@ import java.util.Map.Entry;
 
 public class UrlBuilder {
 	
-	public static final String BASE_URL = "http://14.63.171.91:8880/ss_api/public/";
-//	public static final String BASE_URL = "http://14.63.164.15/ss_api_test/public/";
+//	public static final String BASE_URL = "http://14.63.171.91:8880/ss_api/public/";
+	public static final String BASE_URL = "http://14.63.164.15/ss_api/public/";
 	
 	private static UrlBuilder singleton;
 	private ArrayList<String> locations;
