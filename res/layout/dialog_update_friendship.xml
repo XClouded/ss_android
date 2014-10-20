@@ -23,6 +23,14 @@
     </RelativeLayout>
     
     <Button
+        android:id="@+id/btn_recommend_artist"
+        android:text="콜라보 아티스트로 추천하기"
+        style="@style/DialogButton" />
+    
+    <ImageView
+        style="@style/DividerHorizontal" />
+    
+    <Button
         android:id="@+id/btn_allow_push"
         style="@style/DialogButton" />
     
