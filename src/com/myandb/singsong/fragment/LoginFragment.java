@@ -131,7 +131,7 @@ public class LoginFragment extends Fragment {
 		
 		UrlBuilder urlBuilder = UrlBuilder.getInstance();
 		String findHtml = "비밀번호가 기억이 안나시나요? ";
-		findHtml += Utility.getHtmlAnchor(urlBuilder.l("find_password").build(), "비밀번호 찾기");
+		findHtml += Utility.getHtmlAnchor(urlBuilder.l("w").l("find_password").build(), "비밀번호 찾기");
 		
 		tvFindPassword.setMovementMethod(LinkMovementMethod.getInstance());
 		tvFindPassword.setText(Html.fromHtml(findHtml));

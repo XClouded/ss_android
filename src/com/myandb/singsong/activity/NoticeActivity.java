@@ -20,7 +20,7 @@ public class NoticeActivity extends BaseActivity {
 		
 		UrlBuilder urlBuilder = UrlBuilder.getInstance();
 		webView.getSettings().setJavaScriptEnabled(true); 
-		webView.loadUrl(urlBuilder.l("notices").build());
+		webView.loadUrl(urlBuilder.l("w").l("notices").build());
 		webView.setWebViewClient(new WebViewClientClass());  
 	}
 	
