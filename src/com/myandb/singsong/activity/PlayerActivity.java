@@ -188,7 +188,7 @@ public class PlayerActivity extends BaseActivity {
 		final String token = "adaad7e775370d959bdb74ddeafed457a541710c";
 		
 		UrlBuilder urlBuilder = UrlBuilder.getInstance();
-		String longUrl = urlBuilder.l("listen").l(thisSong.getId()).build();
+		String longUrl = urlBuilder.l("w").l("listen").l(thisSong.getId()).build();
 		String requestUrl = apiUrl;
 		requestUrl += "access_token=" + token;
 		requestUrl += "&longUrl=" + longUrl;

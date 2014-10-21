@@ -55,7 +55,6 @@ public class NotificationAdapter extends AutoLoadAdapter<Notification> {
 			Utility.getStyleSpan(nicknameSpan, Typeface.BOLD);
 			
 			notificationHolder.tvNotificationContent.setText(nicknameSpan);
-			notificationHolder.tvNotificationContent.append("´ÔÀÌ ");
 			notificationHolder.tvNotificationContent.append(notification.getContent(currentUser));
 			
 			notificationHolder.tvCreatedTime.setText(notification.getWorkedCreatedTime(getCurrentDate()));

@@ -1,13 +1,19 @@
 package com.myandb.singsong.activity;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.webkit.CookieManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
 import com.myandb.singsong.R;
 import com.myandb.singsong.net.UrlBuilder;
+import com.myandb.singsong.secure.Auth;
 
-public class NoticeActivity extends BaseActivity {
+public class ArtistActivity extends BaseActivity {
 	
 	private WebView webView;
 
@@ -18,18 +24,24 @@ public class NoticeActivity extends BaseActivity {
 		
 		webView = (WebView) findViewById(R.id.webview);
 		
+		CookieManager.getInstance().removeAllCookie();
+		
+		Map<String, String> header = new HashMap<String, String>();
+		header.put("oauth-token", Auth.getAccessToken());
+		
 		UrlBuilder urlBuilder = UrlBuilder.getInstance();
 		webView.getSettings().setJavaScriptEnabled(true); 
-		webView.loadUrl(urlBuilder.l("w").l("notices").build());
+		webView.loadUrl(urlBuilder.l("w").l("apply-candidate").build(), header);
 		webView.setWebViewClient(new WebViewClientClass());  
 	}
-	
-	private class WebViewClientClass extends WebViewClient { 
+
+	private class WebViewClientClass extends WebViewClient {
+		
         @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) { 
-            view.loadUrl(url); 
-            return true; 
-        } 
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+        	view.loadUrl(url);
+        	return true;
+        }
     }
 
 	@Override
@@ -43,7 +55,7 @@ public class NoticeActivity extends BaseActivity {
 
 	@Override
 	protected int getChildLayoutResourceId() {
-		return R.layout.activity_notice;
+		return R.layout.activity_artist;
 	}
 
 	@Override
@@ -53,7 +65,7 @@ public class NoticeActivity extends BaseActivity {
 
 	@Override
 	protected boolean enablePlayingThumb() {
-		return true;
+		return false;
 	}
-
+	
 }

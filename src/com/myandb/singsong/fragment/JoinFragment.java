@@ -125,11 +125,12 @@ public class JoinFragment extends Fragment {
 		});
 		
 		UrlBuilder urlBuilder = UrlBuilder.getInstance();
-		String policyHtml = "가입하신 이메일로 인증 번호가 전송됩니다. 인증을 하셔야 많은 기능들이 이용가능하니 꼭 본인의 이메일을 입력해주세요 :) <br/><br/>";
+		String policyHtml = "가입하신 이메일로 인증 번호가 전송됩니다. 인증을 하셔야 많은 기능들이 이용가능하니 꼭 본인의 이메일을 입력해주세요 :) <br/>";
+		policyHtml += "daum.net 또는 hanmail.net 계정은 이메일이 전송되지 않을 수 있습니다. <br/><br/>";
 		policyHtml += "가입하기 버튼을 누르시면 자동으로 콜라보 노래방의 ";
-		policyHtml += Utility.getHtmlAnchor(urlBuilder.l("terms").build(), "이용 약관");
+		policyHtml += Utility.getHtmlAnchor(urlBuilder.l("w").l("terms").build(), "이용 약관");
 		policyHtml += "과 ";
-		policyHtml += Utility.getHtmlAnchor(urlBuilder.l("privacy").build(), "개인정보 보호정책");
+		policyHtml += Utility.getHtmlAnchor(urlBuilder.l("w").l("privacy").build(), "개인정보 보호정책");
 		policyHtml += "에 동의하는 것으로 간주합니다.";
 		
 		tvAgreementPolicy.setMovementMethod(LinkMovementMethod.getInstance());

@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Request.Method;
@@ -22,6 +23,7 @@ public class UpdateFriendshipDialog extends BaseDiaglog {
 	private ImageView ivCancel;
 	private Button btnAllowPush;
 	private Button btnUnfollow;
+	private Button btnRecommendArtist;
 	private Friendship friendship;
 
 	public UpdateFriendshipDialog(ProfileRootFragment fragment) {
@@ -37,12 +39,14 @@ public class UpdateFriendshipDialog extends BaseDiaglog {
 		ivCancel = (ImageView) findViewById(R.id.iv_cancel);
 		btnAllowPush = (Button) findViewById(R.id.btn_allow_push);
 		btnUnfollow = (Button) findViewById(R.id.btn_unfollow);
+		btnRecommendArtist = (Button) findViewById(R.id.btn_recommend_artist);
 	}
 
 	@Override
 	protected void setupView() {
 		btnAllowPush.setOnClickListener(updateAllowPushClickListener);
 		btnUnfollow.setOnClickListener(unfollowClickListener);
+		btnRecommendArtist.setOnClickListener(recommendClickListener);
 		ivCancel.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -105,6 +109,23 @@ public class UpdateFriendshipDialog extends BaseDiaglog {
 			queue.add(request);
 			
 			parent.toggleFollowing(false);
+			
+			UpdateFriendshipDialog.this.dismiss();
+		}
+	};
+	
+	private View.OnClickListener recommendClickListener = new View.OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			UrlBuilder urlBuilder = UrlBuilder.getInstance();
+			String url = urlBuilder.l("candidates").l(friendship.getFollowingUserId()).build();
+			
+			OAuthJustRequest request = new OAuthJustRequest(Method.POST, url, null);
+			RequestQueue queue = ((App) parent.getActivity().getApplicationContext()).getQueueInstance();
+			queue.add(request);
+			
+			Toast.makeText(getContext(), "추천되었습니다!", Toast.LENGTH_SHORT).show();
 			
 			UpdateFriendshipDialog.this.dismiss();
 		}

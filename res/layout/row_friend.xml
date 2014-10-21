@@ -10,33 +10,37 @@
         app:oval="true"
         app:border_width="0.1dp"
         app:border_color="@color/divider"
+        android:layout_marginRight="@dimen/margin"
         style="@style/UserImageView" />
+    
+    <Button
+	    android:id="@+id/btn_follow"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentRight="true"
+	    android:layout_centerVertical="true"
+	    android:layout_marginLeft="@dimen/margin_small"
+	    android:background="@drawable/img_follow" />
     
     <TextView
         android:id="@+id/tv_user_nickname"
         android:layout_toRightOf="@id/iv_user_photo"
-        android:layout_marginLeft="@dimen/margin"
+        android:layout_toLeftOf="@id/btn_follow"
         android:layout_marginRight="@dimen/margin"
-        android:layout_centerVertical="true"
+        android:layout_marginTop="@dimen/margin_tiny"
+        android:layout_marginBottom="@dimen/margin_tiny"
+        android:layout_alignTop="@id/iv_user_photo"
         android:textSize="14sp"
         style="@style/BaseTextView" />
     
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/tv_user_nickname" >
-        
-	    <TextView
-	        android:id="@+id/tv_user_status"
-	        android:layout_alignParentRight="true"
-	        android:textSize="@dimen/text_small"
-	        android:textColor="@color/white"
-	        android:maxLines="2"
-	        android:background="@drawable/bg_status_message"
-	        style="@style/EllipsizeTextView" />
-        
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/tv_user_status"
+        android:textSize="@dimen/text_small"
+        android:textColor="@color/font_grey"
+        android:layout_toRightOf="@id/iv_user_photo"
+        android:layout_toLeftOf="@id/btn_follow"
+        android:layout_below="@id/tv_user_nickname"
+        style="@style/EllipsizeTextView" />
     
 </RelativeLayout>
 

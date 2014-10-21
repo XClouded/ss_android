@@ -10,6 +10,7 @@ public class User extends Model {
 	private Date main_photo_updated_at;
 	private Profile profile;
 	private int is_activated;
+	private int is_following;
 	
 	public String getUsername() {
 		return toString(username);
@@ -60,6 +61,10 @@ public class User extends Model {
 	
 	public void setActivated() {
 		is_activated = 1;
+	}
+	
+	public boolean isFollowing() {
+		return is_following == 1;
 	}
 	
 }

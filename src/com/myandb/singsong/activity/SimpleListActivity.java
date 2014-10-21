@@ -144,7 +144,7 @@ public class SimpleListActivity extends BaseActivity {
 			return urlBuilder.l("songs").l("trash").q("order", "deleted_at");
 			
 		case NOTIFICATION:
-			return urlBuilder.l("notifications").q("order", "created_at");
+			return urlBuilder.l("notifications").q("order", "updated_at");
 			
 		default:
 			return null;

@@ -350,9 +350,11 @@ public class ProfileRootFragment extends Fragment {
 		if (isFollowingCurrentState) {
 			if (friendship == null) {
 				friendship = new Friendship();
+				friendship.setFollowingUserId(thisUser.getId());
+				friendship.setAllowNotify(true);
 			}
 			
-			btnFollow.setBackgroundResource(R.drawable.img_following);
+			btnFollow.setBackgroundResource(R.drawable.img_following_arrow);
 			btnFollow.setOnClickListener(updateFriendshipClickListener);
 		} else {
 			if (friendship != null) {

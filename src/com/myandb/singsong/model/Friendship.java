@@ -20,5 +20,9 @@ public class Friendship extends Model {
 	public int getFollowingUserId() {
 		return following_id;
 	}
+	
+	public void setFollowingUserId(int id) {
+		this.following_id = id;
+	}
 
 }

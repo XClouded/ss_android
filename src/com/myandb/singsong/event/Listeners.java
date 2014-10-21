@@ -15,6 +15,7 @@ import com.android.volley.Request.Method;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.myandb.singsong.App;
+import com.myandb.singsong.activity.ArtistActivity;
 import com.myandb.singsong.activity.ChildSongActivity;
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.PlayerActivity;
@@ -41,30 +42,37 @@ public class Listeners {
 			@Override
 			public void onClick(View v) {
 				Activity activity = notification.getActivity();
-				String url = getUrl(activity, notification.getSourceId());
 				
-				OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
-						Method.GET, url, null,
-						new OnFetchResponse(context, activity.getSourceType()),
-						new OnFetchError(context, activity.getSourceType())
-				);
-				
-				RequestQueue queue = ((App) context.getApplicationContext()).getQueueInstance();
-				queue.add(request); 
+				if (activity.getSourceType() == Activity.TYPE_RECOMMEND_ARTIST) {
+					Intent intent = new Intent(context, ArtistActivity.class);
+					context.startActivity(intent);
+				} else {
+					String url = getUrl(activity);
+					
+					OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
+							Method.GET, url, null,
+							new OnFetchResponse(context, activity.getSourceType()),
+							new OnFetchError(context, activity.getSourceType())
+							);
+					
+					RequestQueue queue = ((App) context.getApplicationContext()).getQueueInstance();
+					queue.add(request); 
+				}
 			}
 			
-			private String getUrl(Activity activity, int sourceId) {
+			private String getUrl(Activity activity) {
 				UrlBuilder urlBuilder = UrlBuilder.getInstance();
 				
 				switch(activity.getSourceType()) {
 				case Activity.TYPE_CREATE_FRIENDSHIP:
-					return urlBuilder.l("users").l(sourceId).q("req[]", "profile").build();
+					return urlBuilder.l("users").l(activity.getUserId()).q("req[]", "profile").build();
 					
 				case Activity.TYPE_CREATE_COMMENT:
 				case Activity.TYPE_CREATE_LIKING:
+					return urlBuilder.l("songs").l(activity.getParentId()).q("req[]", "full").build();
 				case Activity.TYPE_CREATE_ROOT_SONG:
 				case Activity.TYPE_CREATE_LEAF_SONG:
-					return urlBuilder.l("songs").l(sourceId).q("req[]", "full").build();
+					return urlBuilder.l("songs").l(activity.getSourceId()).q("req[]", "full").build();
 					
 				default:
 					return "";

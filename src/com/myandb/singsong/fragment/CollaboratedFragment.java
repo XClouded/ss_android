@@ -3,11 +3,13 @@ package com.myandb.singsong.fragment;
 import java.util.Calendar;
 
 import com.myandb.singsong.R;
+import com.myandb.singsong.activity.ArtistActivity;
 import com.myandb.singsong.activity.SearchActivity;
 import com.myandb.singsong.activity.SearchActivity.SearchType;
 import com.myandb.singsong.adapter.CollaboratedAdapter;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.util.TimeHelper;
+import com.myandb.singsong.widget.ResizableImageView;
 
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -17,6 +19,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.LayoutParams;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -47,6 +51,18 @@ public class CollaboratedFragment extends Fragment {
 		final String recentString = getResources().getString(R.string.recent);
 		final String checkString = getResources().getString(R.string._check);
 		
+		final ImageView ivBanner = new ResizableImageView(getActivity());
+		ivBanner.setLayoutParams(new AbsListView.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+		ivBanner.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				Intent intent = new Intent(getActivity(), ArtistActivity.class);
+				startActivity(intent);
+			}
+		});
+		listView.addHeaderView(ivBanner);
+		
 		tvSortPopular.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -67,6 +83,7 @@ public class CollaboratedFragment extends Fragment {
 				}
 				
 				listView.setAdapter(popularAdapter);
+				ivBanner.setImageResource(R.drawable.banner_collabo_artist);
 			}
 		});
 		
@@ -87,8 +104,9 @@ public class CollaboratedFragment extends Fragment {
 							UrlBuilder.create().l("songs").l("leaf").q("order", "created_at")
 					);
 				}
-				
+
 				listView.setAdapter(recentAdapter);
+				ivBanner.setImageDrawable(null);
 			}
 		});
 		

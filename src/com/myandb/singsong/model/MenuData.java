@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 
 public class MenuData {
 	
-	public enum PageName { MY_PAGE, NOTIFICATION, WORLD_SONG, MUSIC_LIST,WAITING_COLLABO, LEGEND, FIND_USER, NOTICE, SETTING }
+	public enum PageName { MY_PAGE, NOTIFICATION, WORLD_SONG, MUSIC_LIST,WAITING_COLLABO, LEGEND, FIND_USER, NOTICE, ARTIST, SETTING }
 	
 	public static final int FRAGMENT = 1;
 	public static final int ACTIVITY = 2;
@@ -30,6 +30,7 @@ public class MenuData {
 			
 		case NOTIFICATION:
 		case FIND_USER:
+		case ARTIST:
 		case NOTICE:
 		case SETTING:
 			pageType = ACTIVITY;
