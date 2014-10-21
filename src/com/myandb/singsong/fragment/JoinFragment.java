@@ -358,6 +358,10 @@ public class JoinFragment extends Fragment {
 	
 	public void onJoinError() {
 		((BaseActivity) getActivity()).dismissProgressDialog();
+		
+		etUsername.setText("");
+		etPassword.setText("");
+		etRePassword.setText("");
 
 		Toast.makeText(getActivity(), "가입에 실패하였습니다.", Toast.LENGTH_SHORT).show();
 	}
