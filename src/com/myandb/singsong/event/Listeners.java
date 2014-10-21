@@ -15,6 +15,7 @@ import com.android.volley.Request.Method;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.myandb.singsong.App;
+import com.myandb.singsong.activity.ArtistActivity;
 import com.myandb.singsong.activity.ChildSongActivity;
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.PlayerActivity;
@@ -41,16 +42,22 @@ public class Listeners {
 			@Override
 			public void onClick(View v) {
 				Activity activity = notification.getActivity();
-				String url = getUrl(activity);
 				
-				OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
-						Method.GET, url, null,
-						new OnFetchResponse(context, activity.getSourceType()),
-						new OnFetchError(context, activity.getSourceType())
-				);
-				
-				RequestQueue queue = ((App) context.getApplicationContext()).getQueueInstance();
-				queue.add(request); 
+				if (activity.getSourceType() == Activity.TYPE_RECOMMEND_ARTIST) {
+					Intent intent = new Intent(context, ArtistActivity.class);
+					context.startActivity(intent);
+				} else {
+					String url = getUrl(activity);
+					
+					OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
+							Method.GET, url, null,
+							new OnFetchResponse(context, activity.getSourceType()),
+							new OnFetchError(context, activity.getSourceType())
+							);
+					
+					RequestQueue queue = ((App) context.getApplicationContext()).getQueueInstance();
+					queue.add(request); 
+				}
 			}
 			
 			private String getUrl(Activity activity) {
