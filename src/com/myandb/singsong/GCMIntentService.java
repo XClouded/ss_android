@@ -49,7 +49,9 @@ public class GCMIntentService extends GCMBaseIntentService {
 	
 	public static final String PROJECT_ID = "1079233079703";
 	
-	private Handler handler;
+	private volatile static Toast previousToast = null;
+	
+	private Handler handler = new Handler();
 	private File tempFile;
 	
 	public GCMIntentService() {
@@ -99,15 +101,16 @@ public class GCMIntentService extends GCMBaseIntentService {
 	}
 	
 	private void showToast(final User user, final String message) {
-		if (handler == null) {
-			handler = new Handler();
-		}
-		
 		handler.post(new Runnable() {
 			
 			@Override
 			public void run() {
+				if (previousToast != null) {
+					previousToast.cancel();
+				}
+				
 				PushToast pushToast = new PushToast(getApplicationContext(), user, message);
+				previousToast = pushToast;
 				pushToast.show();
 			}
 		});
@@ -174,8 +177,8 @@ public class GCMIntentService extends GCMBaseIntentService {
 			tvUserName.setText(user.getNickname());
 			tvMessage.setText(message);
 			
-			setGravity(Gravity.TOP|Gravity.FILL_HORIZONTAL, 0, 100);
-			setDuration(Toast.LENGTH_LONG);
+			setGravity(Gravity.TOP|Gravity.FILL_HORIZONTAL, 0, 300);
+			setDuration(Toast.LENGTH_SHORT);
 			setView(view);
 		}
 		

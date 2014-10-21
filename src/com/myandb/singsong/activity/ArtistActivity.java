@@ -6,6 +6,7 @@ import java.util.Map;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -24,6 +25,7 @@ public class ArtistActivity extends BaseActivity {
 		
 		webView = (WebView) findViewById(R.id.webview);
 		
+		CookieSyncManager.createInstance(this);
 		CookieManager.getInstance().removeAllCookie();
 		
 		Map<String, String> header = new HashMap<String, String>();
