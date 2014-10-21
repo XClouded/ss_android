@@ -45,11 +45,15 @@ public class Activity extends Model {
 	}
 	
 	public JSONObject getMetadata() {
-		try {
-			return new JSONObject(metadata);
-		} catch (JSONException e) {
-			e.printStackTrace();
+		if ("".equals(metadata)) {
 			return new JSONObject();
+		} else {
+			try {
+				return new JSONObject(metadata);
+			} catch (JSONException e) {
+				e.printStackTrace();
+				return new JSONObject();
+			}
 		}
 	}
 	

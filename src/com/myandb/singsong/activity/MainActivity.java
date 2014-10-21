@@ -316,6 +316,7 @@ public class MainActivity extends BaseActivity {
 				if (App.REQUEST_MY_PROFILE_FRAGMENT == requestCode) {
 					position = 0;
 				} else if (App.REQUEST_NOTIFICATION_ACTIVITY == requestCode) {
+					performClickGNB(2);
 					position = 1;
 				} else {
 					position = 2;

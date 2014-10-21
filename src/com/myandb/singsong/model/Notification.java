@@ -34,7 +34,7 @@ public class Notification extends Model {
 					result += "이 회원님의 노래에 ";
 					
 					if (count > 0) {
-						result += String.valueOf(count);
+						result += String.valueOf(count + 1);
 						result += "개의 ";
 					}
 				} else {
