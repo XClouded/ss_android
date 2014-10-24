@@ -14,14 +14,17 @@ import com.myandb.singsong.util.Utility;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.DiscCacheUtil;
 
+import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
@@ -255,8 +258,14 @@ public class PlayerService extends Service {
 			Music music = thisSong.getMusic();
 			File albumPhoto = DiscCacheUtil.findInCache(music.getAlbumPhotoUrl(), ImageLoader.getInstance().getDiscCache());
 			if (albumPhoto != null && albumPhoto.exists()) {
+				Resources res = getResources();
+				int width = getNotificationLargeIconWidth(res);
+				int height = getNotificationLargeIconHeight(res);
+				int size = Math.max(width, height);
+				
 				largeIcon = bitmapBuilder.setSource(albumPhoto)
 										 .enableCrop(true)
+										 .setOutputSize(size)
 										 .build();
 			} else {
 				// download if no album photo
@@ -283,6 +292,24 @@ public class PlayerService extends Service {
 		Notification noti = builder.build();
 		
 		startForeground(App.NOTI_ID_PLAY_SONG, noti);
+	}
+	
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	private int getNotificationLargeIconWidth(Resources res) {
+		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1) {
+			return (int) res.getDimensionPixelSize(android.R.dimen.notification_large_icon_width);
+		}
+		
+		return 60;
+	}
+	
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	private int getNotificationLargeIconHeight(Resources res) {
+		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1) {
+			return (int) res.getDimensionPixelSize(android.R.dimen.notification_large_icon_height);
+		}
+		
+		return 60;
 	}
 	
 	public void seekTo(int milliseconds) {

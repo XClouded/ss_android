@@ -6,11 +6,14 @@ import java.io.IOException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.annotation.TargetApi;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
 import android.view.Gravity;
@@ -123,9 +126,15 @@ public class GCMIntentService extends GCMBaseIntentService {
 			@Override
 			public void done(Exception e) {
 				if (e == null) {
+					Resources res = getResources();
+					int width = getNotificationLargeIconWidth(res);
+					int height = getNotificationLargeIconHeight(res);
+					int size = Math.max(width, height);
+					
 					BitmapBuilder builder = new BitmapBuilder();
 					Bitmap bitmap = builder.setSource(tempFile)
 										   .enableCrop(true)
+										   .setOutputSize(size)
 										   .build();
 					
 					if (bitmap != null) {
@@ -137,6 +146,24 @@ public class GCMIntentService extends GCMBaseIntentService {
 			}
 			
 		});
+	}
+	
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	private int getNotificationLargeIconWidth(Resources res) {
+		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1) {
+			return (int) res.getDimensionPixelSize(android.R.dimen.notification_large_icon_width);
+		}
+		
+		return 60;
+	}
+	
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	private int getNotificationLargeIconHeight(Resources res) {
+		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1) {
+			return (int) res.getDimensionPixelSize(android.R.dimen.notification_large_icon_height);
+		}
+		
+		return 60;
 	}
 	
 	private void submitNotification(Bitmap largeIcon, User user, String message) {
