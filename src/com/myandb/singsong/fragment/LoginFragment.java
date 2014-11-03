@@ -24,7 +24,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
-import com.myandb.singsong.activity.BaseActivity;
+import com.myandb.singsong.activity.OldBaseActivity;
 import com.myandb.singsong.activity.MainActivity;
 import com.myandb.singsong.event.OnVolleyWeakError;
 import com.myandb.singsong.event.OnVolleyWeakResponse;
@@ -121,7 +121,7 @@ public class LoginFragment extends Fragment {
 			
 			@Override
 			public void onClick(View v) {
-				BaseActivity parent = (BaseActivity) getActivity();
+				OldBaseActivity parent = (OldBaseActivity) getActivity();
 				
 				if (parent != null) {
 					parent.replaceFragment(new JoinFragment());				
@@ -317,7 +317,7 @@ public class LoginFragment extends Fragment {
 	}
 	
 	private void requestLogin(JSONObject message) {
-		BaseActivity parent = (BaseActivity) getActivity();
+		OldBaseActivity parent = (OldBaseActivity) getActivity();
 		parent.showProgressDialog();
 		
 		UrlBuilder urlBuilder = UrlBuilder.getInstance();
@@ -364,7 +364,7 @@ public class LoginFragment extends Fragment {
 	}
 	
 	public void onLoginComplete() {
-		((BaseActivity) getActivity()).dismissProgressDialog();
+		((OldBaseActivity) getActivity()).dismissProgressDialog();
 		
 		Intent intent = new Intent(getActivity(), MainActivity.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -373,7 +373,7 @@ public class LoginFragment extends Fragment {
 	}
 	
 	public void onLoginError() {
-		((BaseActivity) getActivity()).dismissProgressDialog();
+		((OldBaseActivity) getActivity()).dismissProgressDialog();
 
 		Toast.makeText(getActivity(), "로그인에 실패하였습니다.", Toast.LENGTH_SHORT).show();
 	}

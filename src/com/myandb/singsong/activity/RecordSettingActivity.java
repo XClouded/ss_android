@@ -54,7 +54,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class RecordSettingActivity extends BaseActivity {
+public class RecordSettingActivity extends OldBaseActivity {
 	
 	public static final int R_CODE_PHOTO_PICKER = 100;
 	

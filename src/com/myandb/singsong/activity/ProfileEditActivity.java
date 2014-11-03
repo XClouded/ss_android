@@ -45,7 +45,7 @@ import com.myandb.singsong.util.ImageHelper;
 import com.myandb.singsong.util.ResizeAsyncTask;
 import com.myandb.singsong.util.Utility;
 
-public class ProfileEditActivity extends BaseActivity {
+public class ProfileEditActivity extends OldBaseActivity {
 	
 	public static final int R_CODE_PHOTO_PICKER = 100;
 	

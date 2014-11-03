@@ -51,7 +51,7 @@ import android.widget.ScrollView;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 
-public class RecordMainActivity extends BaseActivity {
+public class RecordMainActivity extends OldBaseActivity {
 	
 	public static final String INTENT_MUSIC = "_music_";
 	public static final String INTENT_PARENT_SONG = "_parent_song_";

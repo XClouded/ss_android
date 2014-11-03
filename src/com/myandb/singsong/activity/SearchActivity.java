@@ -20,7 +20,7 @@ import com.myandb.singsong.adapter.SimpleSongAdapter;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.widget.AutoLoadListView;
 
-public class SearchActivity extends BaseActivity {
+public class SearchActivity extends OldBaseActivity {
 	
 	public enum SearchType {
 		USER, SONG_ROOT, SONG_LEAF, MUSIC

@@ -40,7 +40,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends OldBaseActivity {
 	
 	public static final String INTENT_PAGE_REQUEST = "_page_req_my_";
 

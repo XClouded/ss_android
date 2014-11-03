@@ -49,7 +49,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class PlayerActivity extends BaseActivity {
+public class PlayerActivity extends OldBaseActivity {
 	
 	public String bitlyUrl;
 	

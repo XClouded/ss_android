@@ -17,7 +17,7 @@ import com.google.gson.Gson;
 import com.myandb.singsong.App;
 import com.myandb.singsong.activity.ArtistActivity;
 import com.myandb.singsong.activity.ChildSongActivity;
-import com.myandb.singsong.activity.BaseActivity;
+import com.myandb.singsong.activity.OldBaseActivity;
 import com.myandb.singsong.activity.PlayerActivity;
 import com.myandb.singsong.activity.ProfileRootActivity;
 import com.myandb.singsong.activity.RecordMainActivity;
@@ -107,7 +107,7 @@ public class Listeners {
 			case Activity.TYPE_CREATE_LEAF_SONG:
 				Gson gson = Utility.getGsonInstance();
 				Song song = gson.fromJson(response.toString(), Song.class);
-				BaseActivity activity = (BaseActivity) context;
+				OldBaseActivity activity = (OldBaseActivity) context;
 				PlayerService service = activity.getService();
 				
 				if (service != null) {
@@ -200,7 +200,7 @@ public class Listeners {
 			
 			@Override
 			public void onClick(View v) {
-				BaseActivity activity = (BaseActivity) context;
+				OldBaseActivity activity = (OldBaseActivity) context;
 				PlayerService service = activity.getService();
 				
 				if (service != null) {

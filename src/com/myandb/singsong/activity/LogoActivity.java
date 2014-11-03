@@ -54,7 +54,9 @@ public class LogoActivity extends Activity {
 		);
 		
 		RequestQueue queue = ((App) getApplicationContext()).getQueueInstance();
-		queue.add(request); 
+//		queue.add(request); 
+		
+		transitionToNextActivity(RootActivity.class);
 	}
 	
 	public void onGetDataSuccess(JSONObject response) {

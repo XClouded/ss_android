@@ -12,7 +12,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
-import com.myandb.singsong.activity.BaseActivity;
+import com.myandb.singsong.activity.OldBaseActivity;
 import com.myandb.singsong.activity.MainActivity;
 import com.myandb.singsong.event.OnVolleyWeakError;
 import com.myandb.singsong.event.OnVolleyWeakResponse;
@@ -115,7 +115,7 @@ public class JoinFragment extends Fragment {
 			
 			@Override
 			public void onClick(View v) {
-				BaseActivity parent = (BaseActivity) getActivity();
+				OldBaseActivity parent = (OldBaseActivity) getActivity();
 				
 				if (parent != null) {
 					parent.replaceFragment(new LoginFragment());				
@@ -303,7 +303,7 @@ public class JoinFragment extends Fragment {
 		
 		@Override
 		public void onClick(View v) {
-			BaseActivity parent = (BaseActivity) getActivity();
+			OldBaseActivity parent = (OldBaseActivity) getActivity();
 			
 			try {
 				UrlBuilder urlBuilder = UrlBuilder.getInstance();
@@ -343,7 +343,7 @@ public class JoinFragment extends Fragment {
 			Auth auth = new Auth();
 			auth.login(user, token);
 			
-			((BaseActivity) getActivity()).dismissProgressDialog();
+			((OldBaseActivity) getActivity()).dismissProgressDialog();
 			
 			Intent intent = new Intent(getActivity(), MainActivity.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -357,7 +357,7 @@ public class JoinFragment extends Fragment {
 	}
 	
 	public void onJoinError() {
-		((BaseActivity) getActivity()).dismissProgressDialog();
+		((OldBaseActivity) getActivity()).dismissProgressDialog();
 		
 		etUsername.setText("");
 		etPassword.setText("");

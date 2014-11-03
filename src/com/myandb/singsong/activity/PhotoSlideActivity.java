@@ -7,7 +7,7 @@ import android.widget.ImageView;
 import com.myandb.singsong.R;
 import com.myandb.singsong.util.ImageHelper;
 
-public class PhotoSlideActivity extends BaseActivity {
+public class PhotoSlideActivity extends OldBaseActivity {
 	
 	public static final String INTENT_PHOTO_URL = "_photo_";
 	

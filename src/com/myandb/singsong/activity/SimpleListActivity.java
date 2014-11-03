@@ -19,7 +19,7 @@ import com.myandb.singsong.util.ImageHelper;
 import com.myandb.singsong.util.Utility;
 import com.myandb.singsong.widget.AutoLoadListView;
 
-public class SimpleListActivity extends BaseActivity {
+public class SimpleListActivity extends OldBaseActivity {
 	
 	public enum SimpleListType {
 		FOLLOWINGS, FOLLOWERS, LIKINGS, COMMENTS, TRASHED, NOTIFICATION

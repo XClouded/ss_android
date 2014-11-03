@@ -7,7 +7,7 @@ import android.webkit.WebViewClient;
 import com.myandb.singsong.R;
 import com.myandb.singsong.net.UrlBuilder;
 
-public class NoticeActivity extends BaseActivity {
+public class NoticeActivity extends OldBaseActivity {
 	
 	private WebView webView;
 

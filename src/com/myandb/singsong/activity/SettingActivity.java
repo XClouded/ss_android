@@ -32,7 +32,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
-public class SettingActivity extends BaseActivity implements OnClickListener {
+public class SettingActivity extends OldBaseActivity implements OnClickListener {
 	
 	private WithdrawDialog dialog;
 	

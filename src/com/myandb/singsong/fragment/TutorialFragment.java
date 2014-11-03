@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.myandb.singsong.R;
-import com.myandb.singsong.activity.BaseActivity;
+import com.myandb.singsong.activity.OldBaseActivity;
 import com.myandb.singsong.pager.TutorialPagerAdapter;
 import com.myandb.singsong.secure.Auth;
 
@@ -104,7 +104,7 @@ public class TutorialFragment extends Fragment {
 					getActivity().finish();
 				} else {
 					try {
-						BaseActivity parent = (BaseActivity) getActivity();
+						OldBaseActivity parent = (OldBaseActivity) getActivity();
 						parent.replaceFragment(new LoginFragment());
 					} catch (Exception e) {
 						e.printStackTrace();

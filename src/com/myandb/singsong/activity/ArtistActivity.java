@@ -14,7 +14,7 @@ import com.myandb.singsong.R;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Auth;
 
-public class ArtistActivity extends BaseActivity {
+public class ArtistActivity extends OldBaseActivity {
 	
 	private WebView webView;
 

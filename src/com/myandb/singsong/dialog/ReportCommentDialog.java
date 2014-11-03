@@ -14,7 +14,7 @@ import android.widget.Toast;
 import com.android.volley.RequestQueue;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
-import com.myandb.singsong.activity.BaseActivity;
+import com.myandb.singsong.activity.OldBaseActivity;
 import com.myandb.singsong.model.Comment;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.OAuthJustRequest;
@@ -30,13 +30,13 @@ public class ReportCommentDialog extends BaseDiaglog {
 	private Button btnSubmitReport;
 	private TextView tvTargetCommentContent;
 	private EditText etReportContent;
-	private BaseActivity parent;
+	private OldBaseActivity parent;
 
 	public ReportCommentDialog(Context context, User user) {
 		super(context, android.R.style.Theme_Translucent_NoTitleBar);
 		
 		this.user = user;
-		this.parent = (BaseActivity) context;
+		this.parent = (OldBaseActivity) context;
 	}
 
 	@Override

@@ -19,7 +19,7 @@ import com.myandb.singsong.util.ImageHelper;
 import com.myandb.singsong.util.Utility;
 import com.myandb.singsong.widget.AutoLoadListView;
 
-public class ChildSongActivity extends BaseActivity {
+public class ChildSongActivity extends OldBaseActivity {
 	
 	public static final String INTENT_PARENT_SONG = "_parent_song_";
 	

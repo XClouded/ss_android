@@ -12,7 +12,7 @@ import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
-import com.myandb.singsong.activity.BaseActivity;
+import com.myandb.singsong.activity.OldBaseActivity;
 import com.myandb.singsong.adapter.MySongAdapter;
 import com.myandb.singsong.event.OnVolleyWeakError;
 import com.myandb.singsong.event.OnVolleyWeakResponse;
@@ -25,15 +25,15 @@ public class ChangeSongStateDialog extends BaseDiaglog {
 	private Song song;
 	private ImageView ivCancel;
 	private Button btnChangeState;
-	private BaseActivity parent;
+	private OldBaseActivity parent;
 	private MySongAdapter adapter;
 	private boolean isDeleted;
 
 	public ChangeSongStateDialog(Context context, MySongAdapter adapter, boolean isDeleted) {
 		super(context, android.R.style.Theme_Translucent_NoTitleBar);
 		
-		if (context instanceof BaseActivity) {
-			parent = (BaseActivity) context;
+		if (context instanceof OldBaseActivity) {
+			parent = (OldBaseActivity) context;
 		}
 		
 		this.isDeleted = isDeleted;
