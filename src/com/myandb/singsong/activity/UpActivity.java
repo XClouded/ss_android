@@ -1,11 +1,11 @@
 package com.myandb.singsong.activity;
 
-import android.app.Service;
+import com.myandb.singsong.service.PlayerService;
 
 public class UpActivity extends BaseActivity {
 
 	@Override
-	protected void onPlayerServiceConnected(Service service) {
+	public void onPlayerServiceConnected(PlayerService service) {
 		// TODO Auto-generated method stub
 		
 	}

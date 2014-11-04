@@ -10,7 +10,6 @@ import com.myandb.singsong.fragment.BaseFragment;
 import com.myandb.singsong.service.PlayerService;
 import com.myandb.singsong.service.PlayerServiceConnection;
 
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -25,11 +24,16 @@ public abstract class BaseActivity extends ActionBarActivity {
 	
 	public static final String EXTRA_URI_QUERY = "query";
 	
-	protected Intent playerIntent = new Intent(this, PlayerService.class);
-	
 	private PlayerServiceConnection serviceConnection;
 	private boolean shouldLastestFragmentAddToBackStack = false;
 	
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		Fragment fragment = getFragmentFromIntent(intent);
+		setFragment(fragment);
+	}
+
 	protected Fragment getFragmentFromIntent(Intent intent) {
 		if (intent != null) {
 			if (Intent.ACTION_VIEW.equals(intent.getAction())) {
@@ -55,11 +59,11 @@ public abstract class BaseActivity extends ActionBarActivity {
 	}
 	
 	private String getFragmentNameFromUri(Uri uri) {
-		final String FRAGMENT_PACKAGE = "fragment";
+		final String fragmentPackage = "fragment";
 		
 		String fullName = getPackageName();
 		fullName += ".";
-		fullName += FRAGMENT_PACKAGE;
+		fullName += fragmentPackage;
 		fullName += ".";
 		fullName += uri.getFragment();
 		
@@ -143,6 +147,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 	
 	private void bindPlayerService() {
 		if (serviceConnection == null || !serviceConnection.bind) {
+			Intent playerIntent = new Intent(this, PlayerService.class);
 			serviceConnection = new PlayerServiceConnection(this);
 			getApplicationContext().bindService(playerIntent, serviceConnection, Context.BIND_AUTO_CREATE);
 		}
@@ -178,6 +183,6 @@ public abstract class BaseActivity extends ActionBarActivity {
 		// recursiveRecycle
 	}
 	
-	protected abstract void onPlayerServiceConnected(Service service);
+	public abstract void onPlayerServiceConnected(PlayerService service);
 	
 }

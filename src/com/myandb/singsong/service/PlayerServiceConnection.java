@@ -2,7 +2,7 @@ package com.myandb.singsong.service;
 
 import java.lang.ref.WeakReference;
 
-import com.myandb.singsong.activity.OldBaseActivity;
+import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.service.PlayerService.PlayerBinder;
 
 import android.app.Activity;
@@ -24,10 +24,12 @@ public class PlayerServiceConnection implements ServiceConnection {
 	public void onServiceConnected(ComponentName name, IBinder binder) {
         this.service = ((PlayerBinder) binder).getService();
         
-        OldBaseActivity activity = (OldBaseActivity) weakReference.get();
-        if (activity != null && service != null) {
-        	activity.onPlayerConnected(service);
-        	bind = true;
+        if (weakReference.get() instanceof BaseActivity) {
+        	BaseActivity activity = (BaseActivity) weakReference.get();
+        	if (activity != null && service != null) {
+        		activity.onPlayerServiceConnected(service);
+        		bind = true;
+        	}
         }
 	}
 
