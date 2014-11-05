@@ -44,8 +44,8 @@ public class LogoActivity extends Activity {
 	}
 	
 	private void requestAppMetadata() {
-		UrlBuilder urlBuilder = UrlBuilder.getInstance();
-		String url = urlBuilder.l("android").build();
+		UrlBuilder urlBuilder = new UrlBuilder();
+		String url = urlBuilder.s("android").toString();
 		
 		JsonObjectRequest request = new JsonObjectRequest(
 				Method.GET, url, null,

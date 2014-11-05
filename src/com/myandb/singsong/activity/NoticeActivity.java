@@ -18,9 +18,9 @@ public class NoticeActivity extends OldBaseActivity {
 		
 		webView = (WebView) findViewById(R.id.webview);
 		
-		UrlBuilder urlBuilder = UrlBuilder.getInstance();
+		UrlBuilder urlBuilder = new UrlBuilder();
 		webView.getSettings().setJavaScriptEnabled(true); 
-		webView.loadUrl(urlBuilder.l("w").l("notices").build());
+		webView.loadUrl(urlBuilder.s("w").s("notices").toString());
 		webView.setWebViewClient(new WebViewClientClass());  
 	}
 	

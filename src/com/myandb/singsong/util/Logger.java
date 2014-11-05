@@ -12,8 +12,8 @@ import android.content.Context;
 public class Logger {
 	
 	public static void countAsync(Context context, String entityName, int entityId) {
-		UrlBuilder urlBuilder = UrlBuilder.getInstance();
-		String url = urlBuilder.l(entityName).l(entityId).l("logs").build();
+		UrlBuilder urlBuilder = new UrlBuilder();
+		String url = urlBuilder.s(entityName).s(entityId).s("logs").toString();
 		
 		OAuthJustRequest request = new OAuthJustRequest(url, new JSONObject());
 		

@@ -187,8 +187,8 @@ public class PlayerActivity extends OldBaseActivity {
 		final String apiUrl = "https://api-ssl.bitly.com/v3/shorten?"; 
 		final String token = "adaad7e775370d959bdb74ddeafed457a541710c";
 		
-		UrlBuilder urlBuilder = UrlBuilder.getInstance();
-		String longUrl = urlBuilder.l("w").l("listen").l(thisSong.getId()).build();
+		UrlBuilder urlBuilder = new UrlBuilder();
+		String longUrl = urlBuilder.s("w").s("listen").s(thisSong.getId()).toString();
 		String requestUrl = apiUrl;
 		requestUrl += "access_token=" + token;
 		requestUrl += "&longUrl=" + longUrl;
@@ -258,8 +258,8 @@ public class PlayerActivity extends OldBaseActivity {
 	
 	private void checkUserLikeSong() {
 		if (currentUser != null && thisSong != null) {
-			UrlBuilder urlBuilder = UrlBuilder.getInstance();
-			String url = urlBuilder.l("songs").l(thisSong.getId()).l("likings").q("user_id", currentUser.getId()).build();
+			UrlBuilder urlBuilder = new UrlBuilder();
+			String url = urlBuilder.s("songs").s(thisSong.getId()).s("likings").p("user_id", currentUser.getId()).toString();
 			
 			OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
 					Method.GET, url, null,
@@ -277,8 +277,8 @@ public class PlayerActivity extends OldBaseActivity {
 	}
 	
 	private void requestCommments() {
-		UrlBuilder urlBuilder = UrlBuilder.create();
-		urlBuilder.l("songs").l(thisSong.getId()).l("comments");
+		UrlBuilder urlBuilder = new UrlBuilder();
+		urlBuilder.s("songs").s(thisSong.getId()).s("comments");
 		
 		if (commentAdapter != null) {
 			commentAdapter.resetRequest(urlBuilder);
@@ -509,8 +509,8 @@ public class PlayerActivity extends OldBaseActivity {
 		
 		@Override
 		public void onActivated(View v) {
-			UrlBuilder urlBuilder = UrlBuilder.getInstance();
-			String url = urlBuilder.l("songs").l(thisSong.getId()).l("likings").build();
+			UrlBuilder urlBuilder = new UrlBuilder();
+			String url = urlBuilder.s("songs").s(thisSong.getId()).s("likings").toString();
 			int method = 0;
 			
 			if (isLike) {

@@ -31,9 +31,10 @@ public class ArtistActivity extends OldBaseActivity {
 		Map<String, String> header = new HashMap<String, String>();
 		header.put("oauth-token", Auth.getAccessToken());
 		
-		UrlBuilder urlBuilder = UrlBuilder.getInstance();
+		UrlBuilder urlBuilder = new UrlBuilder();
+		String url = urlBuilder.s("w").s("apply-candidate").toString();
 		webView.getSettings().setJavaScriptEnabled(true); 
-		webView.loadUrl(urlBuilder.l("w").l("apply-candidate").build(), header);
+		webView.loadUrl(url, header);
 		webView.setWebViewClient(new WebViewClientClass());  
 	}
 

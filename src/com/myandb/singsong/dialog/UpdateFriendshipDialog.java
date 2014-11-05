@@ -79,8 +79,8 @@ public class UpdateFriendshipDialog extends BaseDiaglog {
 			boolean isAllowNotify = !friendship.isAllowNotify();
 			
 			try {
-				UrlBuilder urlBuilder = UrlBuilder.getInstance();
-				String url = urlBuilder.l("friendships").l(friendship.getFollowingUserId()).build();
+				UrlBuilder urlBuilder = new UrlBuilder();
+				String url = urlBuilder.s("friendships").s(friendship.getFollowingUserId()).toString();
 				JSONObject message = new JSONObject();
 				message.put("allow_notify", isAllowNotify);
 				
@@ -101,8 +101,8 @@ public class UpdateFriendshipDialog extends BaseDiaglog {
 		
 		@Override
 		public void onClick(View v) {
-			UrlBuilder urlBuilder = UrlBuilder.getInstance();
-			String url = urlBuilder.l("friendships").l(friendship.getFollowingUserId()).build();
+			UrlBuilder urlBuilder = new UrlBuilder();
+			String url = urlBuilder.s("friendships").s(friendship.getFollowingUserId()).toString();
 			
 			OAuthJustRequest request = new OAuthJustRequest(Method.DELETE, url, null);
 			RequestQueue queue = ((App) parent.getActivity().getApplicationContext()).getQueueInstance();
@@ -118,8 +118,8 @@ public class UpdateFriendshipDialog extends BaseDiaglog {
 		
 		@Override
 		public void onClick(View v) {
-			UrlBuilder urlBuilder = UrlBuilder.getInstance();
-			String url = urlBuilder.l("candidates").l(friendship.getFollowingUserId()).build();
+			UrlBuilder urlBuilder = new UrlBuilder();
+			String url = urlBuilder.s("candidates").s(friendship.getFollowingUserId()).toString();
 			
 			OAuthJustRequest request = new OAuthJustRequest(Method.POST, url, null);
 			RequestQueue queue = ((App) parent.getActivity().getApplicationContext()).getQueueInstance();

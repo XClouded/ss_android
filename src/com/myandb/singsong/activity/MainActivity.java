@@ -17,8 +17,8 @@ import com.myandb.singsong.fragment.LegendFragment;
 import com.myandb.singsong.fragment.MusicFragment;
 import com.myandb.singsong.fragment.ProfileRootFragment;
 import com.myandb.singsong.fragment.WaitingFragment;
-import com.myandb.singsong.model.MenuData;
-import com.myandb.singsong.model.MenuData.PageName;
+import com.myandb.singsong.model.OldMenuData;
+import com.myandb.singsong.model.OldMenuData.PageName;
 import com.myandb.singsong.model.Notice;
 import com.myandb.singsong.secure.Auth;
 
@@ -47,7 +47,7 @@ public class MainActivity extends OldBaseActivity {
 	private static boolean isRunning = false;
 	
 	private DrawerLayout drawer;
-	private ArrayList<MenuData> menuDatas;
+	private ArrayList<OldMenuData> menuDatas;
 	private ListView lvNavigation;
 	private Toast toast;
 	private Thread countThread;
@@ -84,24 +84,24 @@ public class MainActivity extends OldBaseActivity {
 	}
 
 	private void initializeMenuData() {
-		menuDatas = new ArrayList<MenuData>();
+		menuDatas = new ArrayList<OldMenuData>();
 		
-		menuDatas.add(new MenuData(Auth.getUser().getNickname(), null, PageName.MY_PAGE));
-		menuDatas.add(new MenuData("새로운 소식", BitmapFactory.decodeResource(getResources(), R.drawable.ic_megaphone_menu), PageName.NOTIFICATION));
-		menuDatas.add(new MenuData("완성된 콜라보 듣기", BitmapFactory.decodeResource(getResources(), R.drawable.ic_collabo_menu), PageName.WORLD_SONG));
-		menuDatas.add(new MenuData("MR(반주) 목록", BitmapFactory.decodeResource(getResources(), R.drawable.ic_mic_menu), PageName.MUSIC_LIST));
-		menuDatas.add(new MenuData("콜라보를 기다려요!", BitmapFactory.decodeResource(getResources(), R.drawable.ic_waiting_menu), PageName.WAITING_COLLABO));
-		menuDatas.add(new MenuData("레전드 콜라보", BitmapFactory.decodeResource(getResources(), R.drawable.ic_crown_menu), PageName.LEGEND));
-		menuDatas.add(new MenuData("친구 찾기", BitmapFactory.decodeResource(getResources(), R.drawable.ic_magnifier_menu), PageName.FIND_USER));
-		menuDatas.add(new MenuData("콜라보 아티스트", BitmapFactory.decodeResource(getResources(), R.drawable.ic_artist_menu), PageName.ARTIST));
-		menuDatas.add(new MenuData("공지사항", BitmapFactory.decodeResource(getResources(), R.drawable.ic_balloon_menu), PageName.NOTICE));
-		menuDatas.add(new MenuData("설정", BitmapFactory.decodeResource(getResources(), R.drawable.ic_wheel_menu), PageName.SETTING));
+		menuDatas.add(new OldMenuData(Auth.getUser().getNickname(), null, PageName.MY_PAGE));
+		menuDatas.add(new OldMenuData("새로운 소식", BitmapFactory.decodeResource(getResources(), R.drawable.ic_megaphone_menu), PageName.NOTIFICATION));
+		menuDatas.add(new OldMenuData("완성된 콜라보 듣기", BitmapFactory.decodeResource(getResources(), R.drawable.ic_collabo_menu), PageName.WORLD_SONG));
+		menuDatas.add(new OldMenuData("MR(반주) 목록", BitmapFactory.decodeResource(getResources(), R.drawable.ic_mic_menu), PageName.MUSIC_LIST));
+		menuDatas.add(new OldMenuData("콜라보를 기다려요!", BitmapFactory.decodeResource(getResources(), R.drawable.ic_waiting_menu), PageName.WAITING_COLLABO));
+		menuDatas.add(new OldMenuData("레전드 콜라보", BitmapFactory.decodeResource(getResources(), R.drawable.ic_crown_menu), PageName.LEGEND));
+		menuDatas.add(new OldMenuData("친구 찾기", BitmapFactory.decodeResource(getResources(), R.drawable.ic_magnifier_menu), PageName.FIND_USER));
+		menuDatas.add(new OldMenuData("콜라보 아티스트", BitmapFactory.decodeResource(getResources(), R.drawable.ic_artist_menu), PageName.ARTIST));
+		menuDatas.add(new OldMenuData("공지사항", BitmapFactory.decodeResource(getResources(), R.drawable.ic_balloon_menu), PageName.NOTICE));
+		menuDatas.add(new OldMenuData("설정", BitmapFactory.decodeResource(getResources(), R.drawable.ic_wheel_menu), PageName.SETTING));
 	}
 
 	private void initializeMenu() {
 		lvNavigation = (ListView) findViewById(R.id.lv_home_menu);
 
-		menuAdapter = new MenuAdapter(this, menuDatas);
+//		menuAdapter = new MenuAdapter(this, menuDatas);
 		lvNavigation.setAdapter(menuAdapter);
 		lvNavigation.setOnItemClickListener(menuClickListener);
 	}
@@ -171,9 +171,9 @@ public class MainActivity extends OldBaseActivity {
 		public void onItemClick(AdapterView<?> parent, View v, int position, long arg3) {
 			drawer.closeDrawers();
 			
-			MenuData menu = (MenuData) parent.getItemAtPosition(position);
+			OldMenuData menu = (OldMenuData) parent.getItemAtPosition(position);
 			if (menu != null) {
-				if (menu.getPageType() == MenuData.FRAGMENT) {
+				if (menu.getPageType() == OldMenuData.FRAGMENT) {
 					Fragment fragment = null;
 					
 					switch (menu.getPageName()) {
@@ -205,7 +205,7 @@ public class MainActivity extends OldBaseActivity {
 					
 					replaceFragment(fragment);
 					currentPosition = position;
-				} else if (menu.getPageType() == MenuData.ACTIVITY) {
+				} else if (menu.getPageType() == OldMenuData.ACTIVITY) {
 					Intent intent = new Intent();
 					
 					switch (menu.getPageName()) {

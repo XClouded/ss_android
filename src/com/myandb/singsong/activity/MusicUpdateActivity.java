@@ -29,8 +29,8 @@ public class MusicUpdateActivity extends Activity {
 		btnStart = (Button) findViewById(R.id.btn_start);
 		
 		final String startDate = TimeHelper.getDateString(Calendar.DATE, -1);
-		UrlBuilder urlBuilder = UrlBuilder.create();
-		urlBuilder.l("musics").start(startDate).q("order", "created_at");
+		UrlBuilder urlBuilder = new UrlBuilder();
+		urlBuilder.s("musics").start(startDate).p("order", "created_at");
 		
 		MusicSquareAdapter adapter = new MusicSquareAdapter(this, urlBuilder);
 		lvUpdate.setAdapter(adapter);

@@ -203,8 +203,8 @@ public class RecordSettingActivity extends OldBaseActivity {
 						JSONObject message = new JSONObject();
 						message.put("url", Model.STORAGE_HOST + Model.STORAGE_IMAGE + imageName);
 						
-						UrlBuilder urlBuilder = UrlBuilder.getInstance();
-						String url = urlBuilder.l("images").build();
+						UrlBuilder urlBuilder = new UrlBuilder();
+						String url = urlBuilder.s("images").toString();
 						OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
 								Method.POST, url, message,
 								new OnVolleyWeakResponse<RecordSettingActivity, JSONObject>(RecordSettingActivity.this, "onUploadSuccess", Image.class),

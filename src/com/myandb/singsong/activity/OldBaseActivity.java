@@ -342,11 +342,11 @@ public abstract class OldBaseActivity extends FragmentActivity {
 	}
 	
 	public void replaceFragment(Fragment fragment) {
-		replaceFragment(fragment, R.id.fl_fragment_container, null);
+		replaceFragment(fragment, R.id.fl_content_fragment_container, null);
 	}
 	
 	public void replaceFragment(Fragment fragment, String tag) {
-		replaceFragment(fragment, R.id.fl_fragment_container, tag);
+		replaceFragment(fragment, R.id.fl_content_fragment_container, tag);
 	}
 	
 	protected void replaceFragment(Fragment fragment, int containerResourceId) {

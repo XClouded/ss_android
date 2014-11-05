@@ -86,7 +86,7 @@ public class SearchActivity extends OldBaseActivity {
 						SearchActivity.this.closeEditText(etSearch, false);
 						
 						urlBuilder = getUrlBuilder(type);
-						urlBuilder.keyword(keyword).q("order", "created_at");
+						urlBuilder.keyword(keyword).p("order", "created_at");
 						
 						adapter.resetRequest(urlBuilder);
 						listView.initializeScroll();
@@ -111,7 +111,7 @@ public class SearchActivity extends OldBaseActivity {
 	private void performInitial(SearchType type, AutoLoadAdapter<?> adapter) {
 		if (type.equals(SearchType.MUSIC)) {
 			urlBuilder = getUrlBuilder(type);
-			urlBuilder.q("order", "title").q("otype", "asc");
+			urlBuilder.p("order", "title").p("otype", "asc");
 			
 			adapter.resetRequest(urlBuilder);
 			listView.initializeScroll();
@@ -138,20 +138,20 @@ public class SearchActivity extends OldBaseActivity {
 	}
 	
 	private UrlBuilder getUrlBuilder(SearchType type) {
-		final UrlBuilder urlBuilder = UrlBuilder.create();
+		final UrlBuilder urlBuilder = new UrlBuilder();
 		
 		switch (type) {
 		case USER:
-			return urlBuilder.l("users").q("req[]", "profile");
+			return urlBuilder.s("users").p("req[]", "profile");
 			
 		case SONG_ROOT:
-			return urlBuilder.l("songs").l("root");
+			return urlBuilder.s("songs").s("root");
 			
 		case SONG_LEAF:
-			return urlBuilder.l("songs").l("leaf");
+			return urlBuilder.s("songs").s("leaf");
 			
 		case MUSIC:
-			return urlBuilder.l("musics");
+			return urlBuilder.s("musics");
 
 		default:
 			return null;

@@ -1,173 +1,82 @@
 package com.myandb.singsong.net;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map.Entry;
+import com.myandb.singsong.App;
+
+import android.net.Uri;
 
 public class UrlBuilder {
+
+	private static final String API_SCHEME = "http";
+	private static final String API_DOMAIN = "14.63.171.91:8880";
+	private static final String API_DOMAIN_TEST = "14.63.164.15";
+	private static final String API_PATH = "/ss_api/public";
+	private static final String API_AUTHORITY = (App.TESTING ? API_DOMAIN_TEST : API_DOMAIN) + API_PATH;
 	
-	public static final String BASE_URL = "http://14.63.171.91:8880/ss_api/public/";
-//	public static final String BASE_URL = "http://14.63.164.15/ss_api/public/";
+	private Uri.Builder builder;
 	
-	private static UrlBuilder singleton;
-	private ArrayList<String> locations;
-	private HashMap<String, String> queryPararmeters;
-	
-	private UrlBuilder() {
-		initialize();
+	public UrlBuilder() {
+		builder = new Uri.Builder();
+		builder.scheme(API_SCHEME);
+		builder.encodedAuthority(API_AUTHORITY);
 	}
 	
-	public static UrlBuilder getInstance() {
-		if (singleton == null) {
-			singleton = UrlBuilder.create();
-		} else {
-			singleton.initialize();
-		}
-		
-		return singleton;
-	}
-	
-	public static UrlBuilder create() {
-		return new UrlBuilder();
-	}
-	
-	private void initialize() {
-		if (locations == null) {
-			locations = new ArrayList<String>();
-		} else {
-			locations.clear();
-		}
-		
-		if (queryPararmeters == null) {
-			queryPararmeters = new HashMap<String, String>();
-		} else {
-			queryPararmeters.clear();
-		}
-	}
-	
-	public UrlBuilder l(String location) {
-		locations.add(location);
-		
+	public UrlBuilder s(String segment) {
+		builder.appendPath(segment);
 		return this;
 	}
 	
-	public UrlBuilder l(int location) {
-		locations.add(String.valueOf(location));
-		
+	public UrlBuilder s(int segment) {
+		builder.appendPath(String.valueOf(segment));
 		return this;
 	}
 	
-	public UrlBuilder q(String key, String value) {
-		queryPararmeters.put(key, value);
-		
+	public UrlBuilder p(String key, String value) {
+		builder.appendQueryParameter(key, value);
 		return this;
 	}
 	
-	public UrlBuilder q(String key, int value) {
-		queryPararmeters.put(key, String.valueOf(value));
-		
+	public UrlBuilder p(String key, int value) {
+		p(key, String.valueOf(value));
 		return this;
-	}
-	
-	public UrlBuilder removeParam(String key) {
-		queryPararmeters.remove(key);
-		
-		return this;
-	}
-	
-	public boolean hasParam(String key) {
-		return queryPararmeters.containsKey(key);
 	}
 	
 	public String getParam(String key) {
-		return queryPararmeters.get(key);
+		Uri uri = builder.build();
+		return uri.getQueryParameter(key);
 	}
 	
 	public UrlBuilder skip(int amount) {
-		q("skip", String.valueOf(amount));
-		
+		p("skip", String.valueOf(amount));
 		return this;
 	}
 	
 	public UrlBuilder take(int amount) {
-		q("take", String.valueOf(amount));
-		
+		p("take", String.valueOf(amount));
 		return this;
 	}
 	
 	public UrlBuilder keyword(String keyword) {
-		q("q", keyword);
-		
+		p("q", keyword);
 		return this;
 	}
 	
 	public UrlBuilder start(String date) {
-		q("start", date);
-		
+		p("start", date);
 		return this;
 	}
 	
 	public UrlBuilder end(String date) {
-		q("end", date);
-		
+		p("end", date);
 		return this;
 	}
 	
-	public String build() {
-		return build(false);
+	public Uri build() {
+		return builder.build();
 	}
 	
-	public String build(boolean isReusable) {
-		String result = BASE_URL;
-		
-		if (!isEndedWithSlash(result)) {
-			result += "/";
-		}
-		
-		for (int i = 0, l = locations.size(); i < l; i++) {
-			result += locations.get(i);
-			if (i < l - 1) {
-				result += "/";
-			}
-		}
-		
-		int length = queryPararmeters.size();
-		if (length > 0) {
-			result += "?";
-		}
-		
-		int i = 0;
-		for (Entry<String, String> queryParameter : queryPararmeters.entrySet()) {
-			result += urlEncode(queryParameter.getKey());
-			result += "=";
-			result += urlEncode(queryParameter.getValue());
-			
-			if (i < length - 1) {
-				result += "&";
-			}
-			
-			i++;
-		}
-		
-		if (!isReusable) {
-			initialize();
-		}
-		
-		return result;
-	}
-	
-	private boolean isEndedWithSlash(String string) {
-		return string.charAt(string.length() - 1) == '/';
-	}
-	
-	private String urlEncode(String string) {
-		try {
-			return URLEncoder.encode(string, "UTF-8").replace("+", "%20").replace("[", "%5B").replace("]", "%5D");
-		} catch (UnsupportedEncodingException e) {
-			return string;
-		}
+	@Override
+	public String toString() {
+		return builder.build().toString();
 	}
 	
 }

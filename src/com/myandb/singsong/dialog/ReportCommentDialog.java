@@ -84,8 +84,8 @@ public class ReportCommentDialog extends BaseDiaglog {
 							message.put("comment_id", comment.getId());
 							message.put("message", reportContent);
 							
-							UrlBuilder urlBuilder = UrlBuilder.getInstance();
-							String url = urlBuilder.l("reports").build();
+							UrlBuilder urlBuilder = new UrlBuilder();
+							String url = urlBuilder.s("reports").toString();
 							OAuthJustRequest request = new OAuthJustRequest(url, message);
 							RequestQueue queue = ((App) getContext().getApplicationContext()).getQueueInstance();
 							queue.add(request);

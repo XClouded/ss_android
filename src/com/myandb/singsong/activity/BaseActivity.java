@@ -1,5 +1,8 @@
 package com.myandb.singsong.activity;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import com.google.analytics.tracking.android.EasyTracker;
@@ -10,6 +13,7 @@ import com.myandb.singsong.fragment.BaseFragment;
 import com.myandb.singsong.service.PlayerService;
 import com.myandb.singsong.service.PlayerServiceConnection;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -22,63 +26,48 @@ import android.support.v7.app.ActionBarActivity;
 
 public abstract class BaseActivity extends ActionBarActivity {
 	
-	public static final String EXTRA_URI_QUERY = "query";
+	public static final String EXTRA_URI_QUERY = "uri_query";
+	public static final String EXTRA_FRAGMENT_NAME = "fragment_name";
+	public static final String EXTRA_FRAGMENT_BUNDLE = "fragment_bundle";
 	
 	private PlayerServiceConnection serviceConnection;
 	private boolean shouldLastestFragmentAddToBackStack = false;
-	
-	@Override
-	protected void onNewIntent(Intent intent) {
-		super.onNewIntent(intent);
-		Fragment fragment = getFragmentFromIntent(intent);
-		setFragment(fragment);
-	}
 
-	protected Fragment getFragmentFromIntent(Intent intent) {
-		if (intent != null) {
-			if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-				Uri uri = intent.getData();
-				if (uri != null) {
-					try {
-						return instantiateFragmentFromUri(uri);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			}
+	protected Fragment instantiateFragmentFromIntent(Intent intent) 
+			throws InstantiationException, UnsupportedEncodingException, NullPointerException {
+		String fragmentName = null;
+		Bundle fragmentBundle = null;
+		
+		if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+			Uri uri = intent.getData();
+			fragmentName = uri.getFragment();
+			fragmentBundle = getBundleFromQuery(uri.getQuery());
+		} else {
+			fragmentName = intent.getStringExtra(EXTRA_FRAGMENT_NAME);
+			fragmentBundle = intent.getBundleExtra(EXTRA_FRAGMENT_BUNDLE);
 		}
 		
-		return null;
+		return Fragment.instantiate(this, fragmentName, fragmentBundle);
 	}
 	
-	private Fragment instantiateFragmentFromUri(Uri uri) throws InstantiationException {
-		String name = getFragmentNameFromUri(uri);
-		Bundle bundle = getQueryBundleFromUri(uri);
-		
-		return Fragment.instantiate(this, name, bundle);
-	}
-	
-	private String getFragmentNameFromUri(Uri uri) {
-		final String fragmentPackage = "fragment";
-		
-		String fullName = getPackageName();
-		fullName += ".";
-		fullName += fragmentPackage;
-		fullName += ".";
-		fullName += uri.getFragment();
-		
-		return fullName;
-	}
-	
-	private Bundle getQueryBundleFromUri(Uri uri) {
+	private Bundle getBundleFromQuery(String query) throws UnsupportedEncodingException {
 		Bundle bundle = new Bundle();
-		bundle.putString(EXTRA_URI_QUERY, uri.getQuery());
-		
+		String[] pairs = query.split("&");
+		for (String pair : pairs) {
+			final int index = pair.indexOf("=");
+			final String key = URLDecoder.decode(pair.substring(0, index), "UTF-8");
+			final String value = URLDecoder.decode(pair.substring(index + 1), "UTF-8");
+			bundle.putString(key, value);
+		}
 		return bundle;
 	}
 	
-	protected void setFragment(Fragment fragment) {
-		final int containerId = R.id.fl_fragment_container;
+	public void changePage(Intent intent) {
+		onPageChanged(intent);
+	}
+	
+	protected void replaceContentFragment(Fragment fragment) {
+		final int containerId = R.id.fl_content_fragment_container;
 		final int transition = FragmentTransaction.TRANSIT_FRAGMENT_FADE;
 		
 		FragmentManager manager = getSupportFragmentManager();
@@ -113,6 +102,14 @@ public abstract class BaseActivity extends ActionBarActivity {
 	
 	protected int getFragmentBackStackEntryCount() {
 		return getSupportFragmentManager().getBackStackEntryCount();
+	}
+	
+	protected boolean isComponentOf(Intent intent, Class<?> clazz) {
+		ComponentName component = intent.getComponent();
+		if (component == null) {
+			return false;
+		}
+		return clazz.getName().equals(component.getClassName());
 	}
 	
 	@Override
@@ -184,5 +181,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 	}
 	
 	public abstract void onPlayerServiceConnected(PlayerService service);
+	
+	public abstract void onPageChanged(Intent intent);
 	
 }

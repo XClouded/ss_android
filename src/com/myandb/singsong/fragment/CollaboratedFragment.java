@@ -78,7 +78,7 @@ public class CollaboratedFragment extends Fragment {
 					final String startDate = TimeHelper.getDateString(Calendar.DATE, -1);
 					popularAdapter = new CollaboratedAdapter(
 							getActivity(),
-							UrlBuilder.create().l("songs").l("leaf").q("order", "liking_num").start(startDate)
+							new UrlBuilder().s("songs").s("leaf").p("order", "liking_num").start(startDate)
 					);
 				}
 				
@@ -101,7 +101,7 @@ public class CollaboratedFragment extends Fragment {
 				if (recentAdapter == null) {
 					recentAdapter = new CollaboratedAdapter(
 							getActivity(),
-							UrlBuilder.create().l("songs").l("leaf").q("order", "created_at")
+							new UrlBuilder().s("songs").s("leaf").p("order", "created_at")
 					);
 				}
 

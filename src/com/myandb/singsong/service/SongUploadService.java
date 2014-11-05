@@ -183,8 +183,8 @@ public class SongUploadService extends Service {
 				data.put("image_id", imageId);
 			}
 			
-			UrlBuilder urlBuilder = UrlBuilder.getInstance();
-			String url = urlBuilder.l("songs").build();
+			UrlBuilder urlBuilder = new UrlBuilder();
+			String url = urlBuilder.s("songs").toString();
 			OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
 					Method.POST, url, data,
 					new Response.Listener<JSONObject>() {

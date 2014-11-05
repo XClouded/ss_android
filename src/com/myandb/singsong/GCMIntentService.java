@@ -227,8 +227,8 @@ public class GCMIntentService extends GCMBaseIntentService {
 	private void updateRegistrationId(String registrationId) {
 		if (Auth.isLoggedIn()) {
 			try {
-				UrlBuilder urlBuilder = UrlBuilder.getInstance();
-				String url = urlBuilder.l("users").build();
+				UrlBuilder urlBuilder = new UrlBuilder();
+				String url = urlBuilder.s("users").toString();
 				
 				JSONObject message = new JSONObject();
 				message.put("push_id", registrationId);

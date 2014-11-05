@@ -61,18 +61,18 @@ public class Listeners {
 			}
 			
 			private String getUrl(Activity activity) {
-				UrlBuilder urlBuilder = UrlBuilder.getInstance();
+				UrlBuilder urlBuilder = new UrlBuilder();
 				
 				switch(activity.getSourceType()) {
 				case Activity.TYPE_CREATE_FRIENDSHIP:
-					return urlBuilder.l("users").l(activity.getUserId()).q("req[]", "profile").build();
+					return urlBuilder.s("users").s(activity.getUserId()).p("req[]", "profile").toString();
 					
 				case Activity.TYPE_CREATE_COMMENT:
 				case Activity.TYPE_CREATE_LIKING:
-					return urlBuilder.l("songs").l(activity.getParentId()).q("req[]", "full").build();
+					return urlBuilder.s("songs").s(activity.getParentId()).p("req[]", "full").toString();
 				case Activity.TYPE_CREATE_ROOT_SONG:
 				case Activity.TYPE_CREATE_LEAF_SONG:
-					return urlBuilder.l("songs").l(activity.getSourceId()).q("req[]", "full").build();
+					return urlBuilder.s("songs").s(activity.getSourceId()).p("req[]", "full").toString();
 					
 				default:
 					return "";
@@ -240,11 +240,11 @@ public class Listeners {
 			
 			@Override
 			public void onActivated(View v) {
-				UrlBuilder urlBuilder = UrlBuilder.getInstance();
+				UrlBuilder urlBuilder = new UrlBuilder();
 				Song parentSong = song.getParentSong() == null ? song : song.getParentSong();
 				parentSong.setMusic(song.getMusic());
 				
-				String url = urlBuilder.l("songs").l(parentSong.getId()).build();
+				String url = urlBuilder.s("songs").s(parentSong.getId()).toString();
 				OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
 						Method.GET, url, null,
 						new OnCheckResponse(context, parentSong),

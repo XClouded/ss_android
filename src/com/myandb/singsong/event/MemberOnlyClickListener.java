@@ -26,8 +26,8 @@ public abstract class MemberOnlyClickListener implements OnClickListener {
 		if (currentUser.isActivated()) {
 			onActivated(v);
 		} else {
-			UrlBuilder urlBuilder = UrlBuilder.getInstance();
-			String url = urlBuilder.l("users").l(currentUser.getId()).build();
+			UrlBuilder urlBuilder = new UrlBuilder();
+			String url = urlBuilder.s("users").s(currentUser.getId()).toString();
 			
 			OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
 					Method.GET, url, null,

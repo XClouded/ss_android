@@ -64,9 +64,7 @@ public abstract class AutoLoadAdapter<T> extends BaseAdapter {
 			endOfList = false;
 			
 			try {
-				if (urlBuilder.hasParam("take")) {
-					initialLoadNum = Integer.parseInt(urlBuilder.getParam("take"));
-				}
+				initialLoadNum = Integer.parseInt(urlBuilder.getParam("take"));
 			} catch (NumberFormatException e) {
 				initialLoadNum = INITIAL_LOAD_NUM;
 			}
@@ -142,7 +140,7 @@ public abstract class AutoLoadAdapter<T> extends BaseAdapter {
 			requiredTake = take;
 			
 			OAuthJsonArrayRequest request = new OAuthJsonArrayRequest(
-					urlBuilder.build(true),
+					urlBuilder.toString(),
 					new OnVolleyWeakResponse<AutoLoadAdapter<T>, JSONArray>(this, "onLoadResponse"),
 					new OnVolleyWeakError<AutoLoadAdapter<T>>(this, "onLoadError")
 			);

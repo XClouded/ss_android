@@ -170,8 +170,8 @@ public class ProfileRootFragment extends Fragment {
 	}
 	
 	private void loadProfileData() {
-		UrlBuilder urlBuilder = UrlBuilder.getInstance();
-		String url = urlBuilder.l("users").l(thisUser.getId()).l("profile").build();
+		UrlBuilder urlBuilder = new UrlBuilder();
+		String url = urlBuilder.s("users").s(thisUser.getId()).s("profile").toString();
 		
 		OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
 				Method.GET, url, null,
@@ -192,8 +192,8 @@ public class ProfileRootFragment extends Fragment {
 			
 			onPreparationCompleted();
 		} else {
-			UrlBuilder urlBuilder = UrlBuilder.getInstance();
-			String url = urlBuilder.l("friendships").l(thisUser.getId()).build();
+			UrlBuilder urlBuilder = new UrlBuilder();
+			String url = urlBuilder.s("friendships").s(thisUser.getId()).toString();
 			
 			OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
 					Method.GET, url, null,
@@ -295,15 +295,15 @@ public class ProfileRootFragment extends Fragment {
 	}
 	
 	private void loadUserSong() {
-		UrlBuilder urlBuilder = UrlBuilder.create();
-		urlBuilder.l("users").l(thisUser.getId()).l("songs").l("all").q("order", "created_at");
+		UrlBuilder urlBuilder = new UrlBuilder();
+		urlBuilder.s("users").s(thisUser.getId()).s("songs").s("all").p("order", "created_at");
 		adapter = new MySongAdapter(getActivity(), urlBuilder, isCurrentUser, false);
 		listView.setAdapter(adapter);
 	}
 	
 	private void checkUserActivation() {
-		UrlBuilder urlBuilder = UrlBuilder.getInstance();
-		String url = urlBuilder.l("users").l(currentUser.getId()).build();
+		UrlBuilder urlBuilder = new UrlBuilder();
+		String url = urlBuilder.s("users").s(currentUser.getId()).toString();
 		
 		OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
 				Method.GET, url, null,
@@ -328,8 +328,8 @@ public class ProfileRootFragment extends Fragment {
 				
 				@Override
 				public void onClick(View v) {
-					UrlBuilder urlBuilder = UrlBuilder.getInstance();
-					String url = urlBuilder.l("activations").build();
+					UrlBuilder urlBuilder = new UrlBuilder();
+					String url = urlBuilder.s("activations").toString();
 					
 					OAuthJustRequest request = new OAuthJustRequest(Method.POST, url, null);
 					requestQueue.add(request);
@@ -370,8 +370,8 @@ public class ProfileRootFragment extends Fragment {
 		
 		@Override
 		public void onActivated(View v) {
-			UrlBuilder urlBuilder = UrlBuilder.getInstance();
-			String url = urlBuilder.l("friendships").l(thisUser.getId()).build();
+			UrlBuilder urlBuilder = new UrlBuilder();
+			String url = urlBuilder.s("friendships").s(thisUser.getId()).toString();
 			
 			OAuthJustRequest request = new OAuthJustRequest(Method.POST, url, null);
 			requestQueue.add(request);
@@ -540,8 +540,8 @@ public class ProfileRootFragment extends Fragment {
 						JSONObject message = new JSONObject();
 						message.put("main_photo_url", photoUrl);
 						
-						UrlBuilder urlBuilder = UrlBuilder.getInstance();
-						String url = urlBuilder.l("users").build();
+						UrlBuilder urlBuilder = new UrlBuilder();
+						String url = urlBuilder.s("users").toString();
 						OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
 								Method.PUT, url, message,
 								new OnVolleyWeakResponse<ProfileRootFragment, JSONObject>(ProfileRootFragment.this, "onDataUploadSuccess", User.class),
@@ -578,8 +578,8 @@ public class ProfileRootFragment extends Fragment {
 	
 	private void requestUpdateNickname(String nickname) {
 		try {
-			UrlBuilder urlBuilder = UrlBuilder.getInstance();
-			String url = urlBuilder.l("users").build();
+			UrlBuilder urlBuilder = new UrlBuilder();
+			String url = urlBuilder.s("users").toString();
 			
 			JSONObject message = new JSONObject();
 			message.put("nickname", nickname);
@@ -593,8 +593,8 @@ public class ProfileRootFragment extends Fragment {
 	
 	private void requestUpdateProfile(String profileInJson) {
 		try {
-			UrlBuilder urlBuilder = UrlBuilder.getInstance();
-			String url = urlBuilder.l("profile").build();
+			UrlBuilder urlBuilder = new UrlBuilder();
+			String url = urlBuilder.s("profile").toString();
 			JSONObject message = new JSONObject(profileInJson);
 			
 			OAuthJustRequest request = new OAuthJustRequest(Method.PUT, url, message);

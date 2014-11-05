@@ -49,8 +49,8 @@ public class WithdrawDialog extends BaseDiaglog {
 			@Override
 			public void onClick(View v) {
 				parent.showProgressDialog();
-				UrlBuilder urlBuilder = UrlBuilder.getInstance();
-				String url = urlBuilder.l("users").build();
+				UrlBuilder urlBuilder = new UrlBuilder();
+				String url = urlBuilder.s("users").toString();
 				
 				OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
 						Method.DELETE, url, null,

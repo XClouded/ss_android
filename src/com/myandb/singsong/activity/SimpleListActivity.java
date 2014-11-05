@@ -124,27 +124,27 @@ public class SimpleListActivity extends OldBaseActivity {
 	}
 	
 	private UrlBuilder getUrlBuilder(SimpleListType type, User user) {
-		UrlBuilder urlBuilder = UrlBuilder.create();
-		urlBuilder.l("users").l(user.getId());
+		UrlBuilder urlBuilder = new UrlBuilder();
+		urlBuilder.s("users").s(user.getId());
 		
 		switch (type) {
 		case FOLLOWINGS:
-			return urlBuilder.l("followings").q("req[]", "profile").q("order", "friendships.created_at");
+			return urlBuilder.s("followings").p("req[]", "profile").p("order", "friendships.created_at");
 			
 		case FOLLOWERS:
-			return urlBuilder.l("followers").q("req[]", "profile").q("order", "friendships.created_at");
+			return urlBuilder.s("followers").p("req[]", "profile").p("order", "friendships.created_at");
 			
 		case LIKINGS:
-			return urlBuilder.l("songs").l("likings").q("order", "created_at");
+			return urlBuilder.s("songs").s("likings").p("order", "created_at");
 			
 		case COMMENTS:
-			return urlBuilder.l("songs").l("comments").q("order", "created_at");
+			return urlBuilder.s("songs").s("comments").p("order", "created_at");
 			
 		case TRASHED:
-			return urlBuilder.l("songs").l("trash").q("order", "deleted_at");
+			return urlBuilder.s("songs").s("trash").p("order", "deleted_at");
 			
 		case NOTIFICATION:
-			return urlBuilder.l("notifications").q("order", "updated_at");
+			return urlBuilder.s("notifications").p("order", "updated_at");
 			
 		default:
 			return null;

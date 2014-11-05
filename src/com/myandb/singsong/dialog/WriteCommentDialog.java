@@ -95,8 +95,8 @@ public class WriteCommentDialog extends BaseDiaglog {
 					e.printStackTrace();
 				}
 				
-				UrlBuilder urlBuilder = UrlBuilder.getInstance();
-				String url = urlBuilder.l("songs").l(song.getId()).l("comments").build();
+				UrlBuilder urlBuilder = new UrlBuilder();
+				String url = urlBuilder.s("songs").s(song.getId()).s("comments").toString();
 				OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
 						Method.POST, url, message,
 						new OnVolleyWeakResponse<WriteCommentDialog, JSONObject>(WriteCommentDialog.this, "onSubmitSuccess", Comment.class),

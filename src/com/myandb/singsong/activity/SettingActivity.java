@@ -80,8 +80,8 @@ public class SettingActivity extends OldBaseActivity implements OnClickListener 
 	}
 	
 	private void unregisterGCM() {
-		UrlBuilder builder = UrlBuilder.getInstance();
-		String url = builder.l("users").build();
+		UrlBuilder builder = new UrlBuilder();
+		String url = builder.s("users").toString();
 		
 		try {
 			JSONObject message = new JSONObject();
@@ -96,8 +96,8 @@ public class SettingActivity extends OldBaseActivity implements OnClickListener 
 	}
 	
 	private void deleteTokenOnServer() {
-		UrlBuilder builder = UrlBuilder.getInstance();
-		String url = builder.l("token").build();
+		UrlBuilder builder = new UrlBuilder();
+		String url = builder.s("token").toString();
 		
 		OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
 				Method.DELETE, url, null,

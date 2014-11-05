@@ -60,8 +60,8 @@ public class DeleteCommentDialog extends BaseDiaglog {
 				
 				@Override
 				public void onClick(View v) {
-					UrlBuilder urlBuilder = UrlBuilder.getInstance();
-					String url = urlBuilder.l("comments").l(comment.getId()).build();
+					UrlBuilder urlBuilder = new UrlBuilder();
+					String url = urlBuilder.s("comments").s(comment.getId()).toString();
 					
 					OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
 							Method.DELETE, url, null,

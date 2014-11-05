@@ -63,7 +63,7 @@ public class WaitingFragment extends Fragment {
 					final String startDate = TimeHelper.getDateString(Calendar.DATE, -3);
 					popularAdapter = new WaitingAdapter(
 							getActivity(),
-							UrlBuilder.create().l("songs").l("root").q("order", "collabo_num").start(startDate)
+							new UrlBuilder().s("songs").s("root").p("order", "collabo_num").start(startDate)
 					);
 				}
 				
@@ -85,7 +85,7 @@ public class WaitingFragment extends Fragment {
 				if (recentAdapter == null) {
 					recentAdapter = new WaitingAdapter(
 							getActivity(),
-							UrlBuilder.create().l("songs").l("root").q("order", "created_at")
+							new UrlBuilder().s("songs").s("root").p("order", "created_at")
 					);
 				}
 				

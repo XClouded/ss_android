@@ -209,8 +209,8 @@ public class ProfileEditActivity extends OldBaseActivity {
 		
 		@Override
 		public void run() {
-			UrlBuilder urlBuilder = UrlBuilder.getInstance();
-			String url = urlBuilder.l("users").q("nickname", nickname).build();
+			UrlBuilder urlBuilder = new UrlBuilder();
+			String url = urlBuilder.s("users").p("nickname", nickname).toString();
 			lastInputNickname = nickname;
 			
 			JsonObjectRequest request = new JsonObjectRequest(
@@ -348,8 +348,8 @@ public class ProfileEditActivity extends OldBaseActivity {
 							message.put("old_password", encryption.getSha512Convert(oldPassword));
 							message.put("new_password", newPassword);
 							
-							UrlBuilder urlBuilder = UrlBuilder.getInstance();
-							String url = urlBuilder.l("users").build();
+							UrlBuilder urlBuilder = new UrlBuilder();
+							String url = urlBuilder.s("users").toString();
 							OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
 									Method.PUT, url, message,
 									new OnVolleyWeakResponse<ProfileEditActivity, JSONObject>(ProfileEditActivity.this, "onChangePasswordSuccess"),

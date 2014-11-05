@@ -46,7 +46,6 @@
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -58,11 +57,23 @@
             android:name=".activity.RootActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" >
+            <intent-filter>
+			   <action android:name="android.intent.action.VIEW"/>
+			   <category android:name="android.intent.category.DEFAULT"/>
+			   <category android:name="android.intent.category.BROWSABLE" />
+			   <data android:host="root" android:scheme="singsong" />
+			</intent-filter>
         </activity>
         <activity
             android:name=".activity.UpActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" >
+            <intent-filter>
+			   <action android:name="android.intent.action.VIEW"/>
+			   <category android:name="android.intent.category.DEFAULT"/>
+			   <category android:name="android.intent.category.BROWSABLE" />
+			   <data android:host="up" android:scheme="singsong" />
+			</intent-filter>
         </activity>
         <activity
             android:name=".activity.MainActivity"

@@ -129,9 +129,9 @@ public class LoginFragment extends Fragment {
 			}
 		});
 		
-		UrlBuilder urlBuilder = UrlBuilder.getInstance();
+		UrlBuilder urlBuilder = new UrlBuilder();
 		String findHtml = "비밀번호가 기억이 안나시나요? ";
-		findHtml += Utility.getHtmlAnchor(urlBuilder.l("w").l("find_password").build(), "비밀번호 찾기");
+		findHtml += Utility.getHtmlAnchor(urlBuilder.s("w").s("find_password").toString(), "비밀번호 찾기");
 		
 		tvFindPassword.setMovementMethod(LinkMovementMethod.getInstance());
 		tvFindPassword.setText(Html.fromHtml(findHtml));
@@ -320,9 +320,9 @@ public class LoginFragment extends Fragment {
 		OldBaseActivity parent = (OldBaseActivity) getActivity();
 		parent.showProgressDialog();
 		
-		UrlBuilder urlBuilder = UrlBuilder.getInstance();
+		UrlBuilder urlBuilder = new UrlBuilder();
 		JsonObjectRequest request = new JsonObjectRequest(
-				Method.POST, urlBuilder.l("token").build(), message,
+				Method.POST, urlBuilder.s("token").toString(), message,
 				new OnVolleyWeakResponse<LoginFragment, JSONObject>(this, "onLoginSuccess"),
 				new OnVolleyWeakError<LoginFragment>(this, "onLoginError")
 		);

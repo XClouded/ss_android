@@ -80,7 +80,7 @@ public class MusicFragment extends Fragment {
 	};
 	
 	private void loadPopularMusic() {
-		final String url = UrlBuilder.getInstance().l("musics").q("order", "sing_num_this_week").take(5).build();
+		final String url = new UrlBuilder().s("musics").p("order", "sing_num_this_week").take(5).toString();
 		
 		final OAuthJsonArrayRequest request = new OAuthJsonArrayRequest(
 				url,
@@ -127,8 +127,8 @@ public class MusicFragment extends Fragment {
 	
 	private void loadUpdateMusic() {
 		final String startDate = TimeHelper.getDateString(Calendar.DATE, -7);
-		UrlBuilder urlBuilder = UrlBuilder.create();
-		urlBuilder.l("musics").start(startDate).q("order", "created_at");
+		UrlBuilder urlBuilder = new UrlBuilder();
+		urlBuilder.s("musics").start(startDate).p("order", "created_at");
 		
 		MusicSquareAdapter adapter = new MusicSquareAdapter(getActivity(), urlBuilder);
 		lvUpdateMusic.setAdapter(adapter);

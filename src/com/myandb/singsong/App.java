@@ -17,6 +17,8 @@ import android.graphics.Bitmap.CompressFormat;
 
 public class App extends Application {
 
+	public static final boolean TESTING = false;
+	
 	public static final String CACHE_DIRECTORY_NAME = "_IMG_CACHE_";
 	
 	public static final int NOTI_ID_PUSH = 1000;
@@ -26,8 +28,6 @@ public class App extends Application {
 	
 	public static final int REQUEST_MY_PROFILE_FRAGMENT = 2000;
 	public static final int REQUEST_NOTIFICATION_ACTIVITY = 2001;
-	
-	private static final boolean DEBUG = true;
 	
 	private RequestQueue mRequestQueue;
 	
@@ -57,10 +57,6 @@ public class App extends Application {
 		}
 		
 		return mRequestQueue;
-	}
-	
-	public static boolean isDegugging() {
-		return DEBUG;
 	}
 
 }

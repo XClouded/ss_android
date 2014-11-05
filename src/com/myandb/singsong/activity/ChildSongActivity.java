@@ -64,8 +64,8 @@ public class ChildSongActivity extends OldBaseActivity {
 			ChildrenSongAdapter adapter = new ChildrenSongAdapter(this);
 			listView.setAdapter(adapter);
 			
-			UrlBuilder builder = UrlBuilder.create();
-			builder.l("songs").l(parentSong.getId()).l("children");
+			UrlBuilder builder = new UrlBuilder();
+			builder.s("songs").s(parentSong.getId()).s("children");
 			adapter.resetRequest(builder);
 		} else {
 			finish();

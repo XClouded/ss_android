@@ -87,7 +87,7 @@ public class LegendFragment extends Fragment {
 		tvCurrentWeek.append(end);
 		
 		adapter.resetRequest(
-			UrlBuilder.create().l("songs").l("leaf").start(start).end(end).q("order", "liking_num").take(10)
+			new UrlBuilder().s("songs").s("leaf").start(start).end(end).p("order", "liking_num").take(10)
 		);
 	}
 

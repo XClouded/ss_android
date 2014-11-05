@@ -79,8 +79,8 @@ public class ChangeSongStateDialog extends BaseDiaglog {
 			public void onClick(View v) {
 				if (song != null) {
 					int method = isDeleted ? Method.PUT : Method.DELETE;
-					UrlBuilder urlBuilder = UrlBuilder.getInstance();
-					String url = urlBuilder.l("songs").l(song.getId()).build();
+					UrlBuilder urlBuilder = new UrlBuilder();
+					String url = urlBuilder.s("songs").s(song.getId()).toString();
 					
 					OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
 							method, url, null,
