@@ -31,8 +31,22 @@ public abstract class BaseActivity extends ActionBarActivity {
 	public static final String EXTRA_FRAGMENT_BUNDLE = "fragment_bundle";
 	
 	private PlayerServiceConnection serviceConnection;
+	private Fragment contentFragment;
 	private boolean shouldLastestFragmentAddToBackStack = false;
-
+	
+	public void changePage(Intent intent) {
+		onPageChanged(intent);
+	}
+	
+	protected void replaceContentFragmentFromIntent(Intent intent) {
+		try {
+			Fragment fragment = instantiateFragmentFromIntent(intent);
+			replaceContentFragment(fragment);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	protected Fragment instantiateFragmentFromIntent(Intent intent) 
 			throws InstantiationException, UnsupportedEncodingException, NullPointerException {
 		String fragmentName = null;
@@ -51,19 +65,17 @@ public abstract class BaseActivity extends ActionBarActivity {
 	}
 	
 	private Bundle getBundleFromQuery(String query) throws UnsupportedEncodingException {
+		final String charset = "UTF-8";
+		
 		Bundle bundle = new Bundle();
 		String[] pairs = query.split("&");
 		for (String pair : pairs) {
 			final int index = pair.indexOf("=");
-			final String key = URLDecoder.decode(pair.substring(0, index), "UTF-8");
-			final String value = URLDecoder.decode(pair.substring(index + 1), "UTF-8");
+			final String key = URLDecoder.decode(pair.substring(0, index), charset);
+			final String value = URLDecoder.decode(pair.substring(index + 1), charset);
 			bundle.putString(key, value);
 		}
 		return bundle;
-	}
-	
-	public void changePage(Intent intent) {
-		onPageChanged(intent);
 	}
 	
 	protected void replaceContentFragment(Fragment fragment) {
@@ -84,6 +96,12 @@ public abstract class BaseActivity extends ActionBarActivity {
 		if (fragment instanceof BaseFragment) {
 			shouldLastestFragmentAddToBackStack = ((BaseFragment) fragment).addToBackStack();
 		}
+		
+		contentFragment = fragment;
+	}
+	
+	protected Fragment getContentFragment() {
+		return contentFragment;
 	}
 	
 	@Override

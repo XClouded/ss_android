@@ -54,10 +54,11 @@ public class DrawerFragment extends BaseFragment {
 		
 		Intent collabo = new Intent(getActivity(), UpActivity.class);
 		collabo.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, CollaboratedFragment.class.getName());
+		collabo.putExtra(UpActivity.EXTRA_FULL_SCREEN, true);
 		menuItems.add(new GlobalMenu(R.string.follower, collabo, R.drawable.ic_artist_menu));
 		
 		Intent waiting = new Intent(getActivity(), RootActivity.class);
-		waiting.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, WaitingFragment.class.getName());
+		waiting.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, JoinFragment.class.getName());
 		menuItems.add(new GlobalMenu(R.string.following, waiting, R.drawable.ic_collabo_menu));
 		
 		return menuItems;
@@ -66,8 +67,12 @@ public class DrawerFragment extends BaseFragment {
 	@Override
 	protected void onDataChanged() {
 		User currentUser = Auth.getUser();
-		ImageHelper.displayPhoto(currentUser, ivDrawerUserPhoto);
-		tvDrawerUserNickname.setText(currentUser.getNickname());
+		if (currentUser != null) {
+			ImageHelper.displayPhoto(currentUser, ivDrawerUserPhoto);
+			tvDrawerUserNickname.setText(currentUser.getNickname());
+		} else {
+			// hide
+		}
 	}
 
 }

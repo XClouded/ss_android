@@ -1,24 +1,18 @@
 package com.myandb.singsong.util;
 
-import org.json.JSONObject;
-
-import com.android.volley.RequestQueue;
-import com.myandb.singsong.App;
-import com.myandb.singsong.net.OAuthJustRequest;
-import com.myandb.singsong.net.UrlBuilder;
-
-import android.content.Context;
+import android.util.Log;
 
 public class Logger {
 	
-	public static void countAsync(Context context, String entityName, int entityId) {
-		UrlBuilder urlBuilder = new UrlBuilder();
-		String url = urlBuilder.s(entityName).s(entityId).s("logs").toString();
-		
-		OAuthJustRequest request = new OAuthJustRequest(url, new JSONObject());
-		
-		RequestQueue queue = ((App) context.getApplicationContext()).getQueueInstance();
-		queue.add(request);
-	}
+	private static final String TAG = "debug";
 	
+	public static void log(Object... values) {
+		String message = "";
+		for (Object value : values) {
+			message += String.valueOf(value);
+			message += " "; 
+		}
+		Log.e(TAG, message);
+	}
+
 }

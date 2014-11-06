@@ -9,7 +9,7 @@ import com.myandb.singsong.file.Storage;
 import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Song;
 import com.myandb.singsong.util.ImageHelper.BitmapBuilder;
-import com.myandb.singsong.util.Logger;
+import com.myandb.singsong.util.PlayCounter;
 import com.myandb.singsong.util.Utility;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.DiscCacheUtil;
@@ -147,7 +147,7 @@ public class PlayerService extends Service {
 					mp.start();
 					
 					if (thisSong != null) {
-						Logger.countAsync(PlayerService.this, "songs", thisSong.getId());
+						PlayCounter.countAsync(PlayerService.this, "songs", thisSong.getId());
 					}
 				}
 			});
@@ -172,7 +172,7 @@ public class PlayerService extends Service {
 						mp.start();
 						
 						if (thisSong != null) {
-							Logger.countAsync(PlayerService.this, "songs", thisSong.getId());
+							PlayCounter.countAsync(PlayerService.this, "songs", thisSong.getId());
 						}
 					} else {
 						if (callback != null) {

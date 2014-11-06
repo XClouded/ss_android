@@ -24,8 +24,6 @@ public class RootActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		// getIntent()
-		
 		setContentView(R.layout.activity_root);
 		
 		changeActionBarHomeMode();
@@ -35,6 +33,8 @@ public class RootActivity extends BaseActivity {
 		configureDrawer();
 		
 		startPlayerService();
+		
+		replaceContentFragmentFromIntent(getIntent());
 	}
 	
 	private void changeActionBarHomeMode() {
@@ -129,12 +129,7 @@ public class RootActivity extends BaseActivity {
 		if (isComponentOf(intent, UpActivity.class)) {
 			startActivity(intent);
 		} else if (isComponentOf(intent, RootActivity.class)) {
-			try {
-				Fragment fragment = instantiateFragmentFromIntent(intent);
-				replaceContentFragment(fragment);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			replaceContentFragmentFromIntent(intent);
 		}
 	}
 

@@ -25,7 +25,7 @@ import com.myandb.singsong.secure.Auth;
 import com.myandb.singsong.service.PlayerService;
 import com.myandb.singsong.service.SongUploadService;
 import com.myandb.singsong.util.ImageHelper;
-import com.myandb.singsong.util.Logger;
+import com.myandb.singsong.util.PlayCounter;
 import com.myandb.singsong.util.LrcDisplayer;
 import com.myandb.singsong.util.TimeHelper;
 import com.myandb.singsong.util.Utility;
@@ -606,7 +606,7 @@ public class RecordMainActivity extends OldBaseActivity {
 					ivThisUserBackground.startAnimation(blink);
 					
 					if (music != null) {
-						Logger.countAsync(RecordMainActivity.this, "musics", music.getId());
+						PlayCounter.countAsync(RecordMainActivity.this, "musics", music.getId());
 					}
 					
 					break;

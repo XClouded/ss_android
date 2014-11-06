@@ -27,6 +27,10 @@ public abstract class BaseFragment extends Fragment {
 	public void notifyDataChanged() {
 		onDataChanged();
 	}
+	
+	public void onBackPressed() {
+		getActivity().finish();
+	}
 
 	public abstract boolean addToBackStack();
 	
