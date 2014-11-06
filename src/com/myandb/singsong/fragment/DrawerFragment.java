@@ -47,13 +47,13 @@ public class DrawerFragment extends BaseFragment {
 		List<GlobalMenu> menuItems = new ArrayList<GlobalMenu>();
 		
 		Intent collabo = new Intent(getActivity(), RootActivity.class);
-		collabo.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, CollaboratedFragment.class.getName());
+		collabo.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, WaitingFragment.class.getName());
 		collabo.putExtra(BaseActivity.EXTRA_FRAGMENT_ROOT, true);
 		menuItems.add(new GlobalMenu(R.string.follower, collabo, R.drawable.ic_artist_menu));
 		
 		Intent waiting = new Intent(getActivity(), RootActivity.class);
-		waiting.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, WaitingFragment.class.getName());
-		waiting.putExtra(BaseActivity.EXTRA_FRAGMENT_ROOT, false);
+		waiting.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, LegendFragment.class.getName());
+		waiting.putExtra(BaseActivity.EXTRA_FRAGMENT_ROOT, true);
 		menuItems.add(new GlobalMenu(R.string.following, waiting, R.drawable.ic_collabo_menu));
 		
 		return menuItems;
