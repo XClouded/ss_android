@@ -26,11 +26,6 @@ public class DrawerFragment extends BaseFragment {
 	private ListView lvMenu;
 
 	@Override
-	public boolean addToBackStack() {
-		return false;
-	}
-
-	@Override
 	protected int getResourceId() {
 		return R.layout.fragment_drawer;
 	}

@@ -32,8 +32,6 @@ public abstract class BaseFragment extends Fragment {
 		getActivity().finish();
 	}
 
-	public abstract boolean addToBackStack();
-	
 	protected abstract int getResourceId();
 	
 	protected abstract void initiateChildViews(View parent);
