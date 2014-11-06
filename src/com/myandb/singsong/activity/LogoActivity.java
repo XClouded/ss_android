@@ -12,6 +12,7 @@ import com.myandb.singsong.dialog.BaseDiaglog;
 import com.myandb.singsong.event.OnVolleyWeakError;
 import com.myandb.singsong.event.OnVolleyWeakResponse;
 import com.myandb.singsong.file.Storage;
+import com.myandb.singsong.fragment.CollaboratedFragment;
 import com.myandb.singsong.model.Notice;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Auth;
@@ -56,7 +57,15 @@ public class LogoActivity extends Activity {
 		RequestQueue queue = ((App) getApplicationContext()).getQueueInstance();
 //		queue.add(request); 
 		
-		transitionToNextActivity(RootActivity.class);
+		testStartRootActivity();
+	}
+	
+	private void testStartRootActivity() {
+		Intent intent = new Intent(this, RootActivity.class);
+		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, CollaboratedFragment.class.getName());
+		startActivity(intent);
+		overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+		finish();
 	}
 	
 	public void onGetDataSuccess(JSONObject response) {

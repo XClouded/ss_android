@@ -9,7 +9,6 @@ import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.ExceptionParser;
 import com.google.analytics.tracking.android.ExceptionReporter;
 import com.myandb.singsong.R;
-import com.myandb.singsong.fragment.BaseFragment;
 import com.myandb.singsong.service.PlayerService;
 import com.myandb.singsong.service.PlayerServiceConnection;
 
@@ -29,11 +28,11 @@ public abstract class BaseActivity extends ActionBarActivity {
 	public static final String EXTRA_URI_QUERY = "uri_query";
 	public static final String EXTRA_FRAGMENT_NAME = "fragment_name";
 	public static final String EXTRA_FRAGMENT_BUNDLE = "fragment_bundle";
+	public static final String EXTRA_FRAGMENT_ROOT = "fragment_root";
 	
 	private PlayerServiceConnection serviceConnection;
 	private Fragment contentFragment;
-	private boolean shouldLastestFragmentAddToBackStack = false;
-	
+
 	public void changePage(Intent intent) {
 		onPageChanged(intent);
 	}
@@ -41,7 +40,8 @@ public abstract class BaseActivity extends ActionBarActivity {
 	protected void replaceContentFragmentFromIntent(Intent intent) {
 		try {
 			Fragment fragment = instantiateFragmentFromIntent(intent);
-			replaceContentFragment(fragment);
+			boolean isRootFragment = intent.getBooleanExtra(EXTRA_FRAGMENT_ROOT, false);
+			replaceContentFragment(fragment, isRootFragment);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -78,24 +78,19 @@ public abstract class BaseActivity extends ActionBarActivity {
 		return bundle;
 	}
 	
-	protected void replaceContentFragment(Fragment fragment) {
+	protected void replaceContentFragment(Fragment fragment, boolean isRootFragment) {
 		final int containerId = R.id.fl_content_fragment_container;
 		final int transition = FragmentTransaction.TRANSIT_FRAGMENT_FADE;
 		
 		FragmentManager manager = getSupportFragmentManager();
+		if (isRootFragment) {
+			manager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+		}
 		FragmentTransaction transaction = manager.beginTransaction();
 		transaction.replace(containerId, fragment);
 		transaction.setTransition(transition);
-		
-		if (shouldLastestFragmentAddToBackStack) {
-			transaction.addToBackStack(null);
-		}
-		
+		transaction.addToBackStack(null);
 		transaction.commit();
-		
-		if (fragment instanceof BaseFragment) {
-			shouldLastestFragmentAddToBackStack = ((BaseFragment) fragment).addToBackStack();
-		}
 		
 		contentFragment = fragment;
 	}
@@ -103,25 +98,19 @@ public abstract class BaseActivity extends ActionBarActivity {
 	protected Fragment getContentFragment() {
 		return contentFragment;
 	}
-	
+
 	@Override
 	public void onBackPressed() {
-		super.onBackPressed();
-		if (getFragmentBackStackEntryCount() > 0) {
-			popFragmentBackStack();
-		} else {
+		FragmentManager manager = getSupportFragmentManager();
+		int backStackEntryCount = manager.getBackStackEntryCount();
+		boolean isRootFragment = backStackEntryCount < 2;
+		if (isRootFragment) {
 			finish();
+		} else {
+			super.onBackPressed();
 		}
 	}
 
-	protected boolean popFragmentBackStack() {
-		return getSupportFragmentManager().popBackStackImmediate();
-	}
-	
-	protected int getFragmentBackStackEntryCount() {
-		return getSupportFragmentManager().getBackStackEntryCount();
-	}
-	
 	protected boolean isComponentOf(Intent intent, Class<?> clazz) {
 		ComponentName component = intent.getComponent();
 		if (component == null) {

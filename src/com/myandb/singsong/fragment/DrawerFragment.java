@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.RootActivity;
-import com.myandb.singsong.activity.UpActivity;
 import com.myandb.singsong.adapter.MenuAdapter;
 import com.myandb.singsong.model.GlobalMenu;
 import com.myandb.singsong.model.User;
@@ -52,13 +51,14 @@ public class DrawerFragment extends BaseFragment {
 	private List<GlobalMenu> getMenuItems() {
 		List<GlobalMenu> menuItems = new ArrayList<GlobalMenu>();
 		
-		Intent collabo = new Intent(getActivity(), UpActivity.class);
+		Intent collabo = new Intent(getActivity(), RootActivity.class);
 		collabo.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, CollaboratedFragment.class.getName());
-		collabo.putExtra(UpActivity.EXTRA_FULL_SCREEN, true);
+		collabo.putExtra(BaseActivity.EXTRA_FRAGMENT_ROOT, true);
 		menuItems.add(new GlobalMenu(R.string.follower, collabo, R.drawable.ic_artist_menu));
 		
 		Intent waiting = new Intent(getActivity(), RootActivity.class);
-		waiting.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, JoinFragment.class.getName());
+		waiting.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, WaitingFragment.class.getName());
+		waiting.putExtra(BaseActivity.EXTRA_FRAGMENT_ROOT, false);
 		menuItems.add(new GlobalMenu(R.string.following, waiting, R.drawable.ic_collabo_menu));
 		
 		return menuItems;
