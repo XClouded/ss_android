@@ -6,7 +6,7 @@
 
     <uses-sdk
         android:minSdkVersion="10"
-        android:targetSdkVersion="19" />
+        android:targetSdkVersion="20" />
 
     <permission
         android:name="com.myandb.singsong.permission.C2D_MESSAGE"
@@ -33,7 +33,6 @@
         android:largeHeap="true"
         android:theme="@android:style/Theme.NoTitleBar" >
 
-        <!-- facebook -->
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/fb_app_id" />
@@ -48,10 +47,6 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".activity.GuideActivity"
-            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".activity.RootActivity"
@@ -75,99 +70,18 @@
 			   <data android:host="up" android:scheme="singsong" />
 			</intent-filter>
         </activity>
-        <activity
-            android:name=".activity.MainActivity"
-            android:screenOrientation="portrait" >
-            <intent-filter>
-                <action android:name="com.myandb.singsong.activity.MainActivity" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".activity.SearchActivity"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name=".activity.SettingActivity"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name=".activity.PlayerActivity"
-            android:screenOrientation="portrait" >
-            <intent-filter>
-                <action android:name="com.myandb.singsong.activity.PlayerActivity" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".activity.RecordMainActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
-        </activity>
-        <activity
-            android:name=".activity.RecordSettingActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
-        </activity>
-        <activity
-            android:name=".activity.ProfileRootActivity"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name=".activity.SimpleListActivity"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name=".activity.ChildSongActivity"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name=".activity.ProfileEditActivity"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name=".activity.PhotoSlideActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
-        </activity>
-        <activity
-            android:name=".activity.MusicUpdateActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
-        </activity>
-        <activity
-            android:name=".activity.NoticeActivity"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name=".activity.ArtistActivity"
-            android:screenOrientation="portrait" >
-        </activity>
-
-        <service
-            android:name=".service.PlayerService" >
-        </service>
-        
-        <service
-            android:name=".service.SongUploadService"
-            android:enabled="true"
-            android:exported="false" >
-            <intent-filter>
-                <action android:name="com.myandb.singsong.service.SongUploadService" />
-            </intent-filter>
-        </service>
+        <service android:name=".service.PlayerService" />
+        <service android:name=".service.SongUploadService" />
         <service android:name=".GCMIntentService" />
 
         <receiver
             android:name="com.google.android.gcm.GCMBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
+                <category android:name="com.myandb.singsong" />
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-
-                <category android:name="com.myandb.singsong" />
             </intent-filter>
         </receiver>
 
