@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager.OnBackStackChangedListener;
+import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 
 public class RootActivity extends BaseActivity {
@@ -26,7 +28,7 @@ public class RootActivity extends BaseActivity {
 		
 		setContentView(R.layout.activity_root);
 		
-		changeActionBarHomeMode();
+		configureActionBar();
 		
 		configureSlidingPlayer();
 		
@@ -37,10 +39,30 @@ public class RootActivity extends BaseActivity {
 		replaceContentFragmentFromIntent(getIntent());
 	}
 	
-	private void changeActionBarHomeMode() {
-		getSupportActionBar().setDisplayShowHomeEnabled(true);
-		getSupportActionBar().setHomeButtonEnabled(true);
+	private void configureActionBar() {
+		ActionBar actionBar = getSupportActionBar();
+		actionBar.setHomeButtonEnabled(true);
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		
+		FragmentManager manager = getSupportFragmentManager();
+		manager.addOnBackStackChangedListener(onBackStackChangedListener);
 	}
+	
+	private OnBackStackChangedListener onBackStackChangedListener = new OnBackStackChangedListener() {
+		
+		@Override
+		public void onBackStackChanged() {
+			ActionBar actionBar = getSupportActionBar();
+			FragmentManager manager = getSupportFragmentManager();
+			if (manager.getBackStackEntryCount() > 1) {
+				actionBar.setHomeAsUpIndicator(null);
+				actionBar.setTitle(getContentFragment().getClass().getName());
+			} else {
+				actionBar.setHomeAsUpIndicator(null);
+				actionBar.setTitle(RootActivity.this.getTitle());
+			}
+		}
+	};
 	
 	private void configureSlidingPlayer() {
 		slidingPlayerLayout = (SlidingPlayerLayout) findViewById(R.id.sliding_layout);
@@ -79,13 +101,18 @@ public class RootActivity extends BaseActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case android.R.id.home:
-			drawer.toggle();
-			return true;
+			case android.R.id.home:
+				FragmentManager manager = getSupportFragmentManager();
+				if (manager.getBackStackEntryCount() > 1) {
+					onBackPressed();
+				} else {
+					drawer.toggle();
+				}
+				return true;
 			
+			default:
+				return super.onOptionsItemSelected(item);
 		}
-		
-		return super.onOptionsItemSelected(item);
 	}
 	
 	public void onContentInvisible() {
