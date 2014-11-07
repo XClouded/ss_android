@@ -28,7 +28,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 
-public class LogoActivity extends Activity {
+public class LauncherActivity extends Activity {
 
 	private final static boolean IS_MARKET_GOOGLE = true;
 	
@@ -50,8 +50,8 @@ public class LogoActivity extends Activity {
 		
 		JsonObjectRequest request = new JsonObjectRequest(
 				Method.GET, url, null,
-				new OnVolleyWeakResponse<LogoActivity, JSONObject>(this, "onGetDataSuccess"),
-				new OnVolleyWeakError<LogoActivity>(this, "onGetDataError")
+				new OnVolleyWeakResponse<LauncherActivity, JSONObject>(this, "onGetDataSuccess"),
+				new OnVolleyWeakError<LauncherActivity>(this, "onGetDataError")
 		);
 		
 		RequestQueue queue = ((App) getApplicationContext()).getQueueInstance();
@@ -174,7 +174,7 @@ public class LogoActivity extends Activity {
 				@Override
 				public void onClick(View v) {
 					VersionDialog.this.dismiss();
-					LogoActivity.this.finish();
+					LauncherActivity.this.finish();
 				}
 			});
 		}
