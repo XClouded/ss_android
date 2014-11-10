@@ -95,9 +95,9 @@ public class ReportCommentDialog extends BaseDiaglog {
 						
 						ReportCommentDialog.this.dismiss();
 						
-						Toast.makeText(getContext(), "신고가 접수되었습니다. :)", Toast.LENGTH_SHORT).show();
+						Toast.makeText(getContext(), getContext().getString(R.string.t_report_has_accepted), Toast.LENGTH_SHORT).show();
 					} else {
-						Toast.makeText(getContext(), "신고사유를 10자 이상 써주세요.", Toast.LENGTH_SHORT).show();
+						Toast.makeText(getContext(), getContext().getString(R.string.t_report_length_policy), Toast.LENGTH_SHORT).show();
 					}
 				}
 			});

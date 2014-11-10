@@ -98,16 +98,11 @@ public class ChangeSongStateDialog extends BaseDiaglog {
 	
 	public void onChangeStateResponse(JSONObject response) {
 		adapter.removeItem(song);
-		
 		dismiss();
 	}
 	
 	public void onChangeStateError() {
-		if (isDeleted) {
-			Toast.makeText(getContext(), "복구하기에 실패하였습니다. 네트워크 상태를 확인해 주세요.", Toast.LENGTH_SHORT).show();
-		} else {
-			Toast.makeText(getContext(), "삭제하기에 실패하였습니다. 네트워크 상태를 확인해 주세요.", Toast.LENGTH_SHORT).show();
-		}
+		Toast.makeText(getContext(), getContext().getString(R.string.t_poor_network_connection), Toast.LENGTH_SHORT).show();
 	}
 
 	@Override

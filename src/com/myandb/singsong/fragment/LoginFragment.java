@@ -375,7 +375,7 @@ public class LoginFragment extends Fragment {
 	public void onLoginError() {
 		((OldBaseActivity) getActivity()).dismissProgressDialog();
 
-		Toast.makeText(getActivity(), "로그인에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+		Toast.makeText(getActivity(), getString(R.string.t_login_failed), Toast.LENGTH_SHORT).show();
 	}
 
 }

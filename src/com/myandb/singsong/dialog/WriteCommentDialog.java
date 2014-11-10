@@ -108,7 +108,7 @@ public class WriteCommentDialog extends BaseDiaglog {
 				
 				WriteCommentDialog.this.dismiss();
 			} else {
-				Toast.makeText(parent, "댓글을 입력하세요. :)", Toast.LENGTH_SHORT).show();
+				Toast.makeText(parent, parent.getString(R.string.t_comment_length_policy), Toast.LENGTH_SHORT).show();
 			}
 		}
 	};

@@ -81,7 +81,7 @@ public class SearchActivity extends OldBaseActivity {
 					String keyword = etSearch.getText().toString();
 					
 					if (keyword.isEmpty()) {
-						Toast.makeText(SearchActivity.this, "검색어를 입력해주세요.", Toast.LENGTH_SHORT).show();
+						Toast.makeText(SearchActivity.this, getString(R.string.t_keyword_empty), Toast.LENGTH_SHORT).show();
 					} else {
 						SearchActivity.this.closeEditText(etSearch, false);
 						

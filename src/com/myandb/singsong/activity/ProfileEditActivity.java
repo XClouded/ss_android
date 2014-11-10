@@ -364,13 +364,13 @@ public class ProfileEditActivity extends OldBaseActivity {
 							// unhandled json exception
 						}
 					} else {
-						Toast.makeText(ProfileEditActivity.this, "새로운 비밀번호는 기존 비밀번호와 같을 수 없습니다.", Toast.LENGTH_SHORT).show();
+						Toast.makeText(ProfileEditActivity.this, getString(R.string.t_new_password_must_changed), Toast.LENGTH_SHORT).show();
 					}
 				} else {
-					Toast.makeText(ProfileEditActivity.this, "새로운 비밀번호를 정확히 재입력 해주세요.", Toast.LENGTH_SHORT).show();
+					Toast.makeText(ProfileEditActivity.this, getString(R.string.t_password_confirm_failed), Toast.LENGTH_SHORT).show();
 				}
 			} else {
-				Toast.makeText(ProfileEditActivity.this, "비밀번호는 4자리 이상이어야 합니다.", Toast.LENGTH_SHORT).show();
+				Toast.makeText(ProfileEditActivity.this, getString(R.string.t_password_length_policy), Toast.LENGTH_SHORT).show();
 			}
 		}
 	};
@@ -384,7 +384,7 @@ public class ProfileEditActivity extends OldBaseActivity {
 			etNewPassword.setText("");
 			etNewPasswordRe.setText("");
 			
-			Toast.makeText(ProfileEditActivity.this, "비밀번호가 성공적으로 변경되었습니다.", Toast.LENGTH_SHORT).show();
+			Toast.makeText(ProfileEditActivity.this, getString(R.string.t_password_has_changed), Toast.LENGTH_SHORT).show();
 		} catch (JSONException e) {
 			e.printStackTrace();
 		} finally {
@@ -393,7 +393,7 @@ public class ProfileEditActivity extends OldBaseActivity {
 	}
 	
 	public void onChangePasswordError() {
-		Toast.makeText(ProfileEditActivity.this, "잘못된 비밀번호입니다.", Toast.LENGTH_SHORT).show();
+		Toast.makeText(ProfileEditActivity.this, getString(R.string.t_wrong_password), Toast.LENGTH_SHORT).show();
 		
 		dismissProgressDialog();
 	}

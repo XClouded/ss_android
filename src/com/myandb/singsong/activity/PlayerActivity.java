@@ -454,9 +454,9 @@ public class PlayerActivity extends OldBaseActivity {
 			boolean isCurrentLooping = preferences.isPlayerLooping();
 			
 			if (isCurrentLooping) {
-				Toast.makeText(PlayerActivity.this, "반복재생이 해제되었습니다.", Toast.LENGTH_SHORT).show();
+				Toast.makeText(PlayerActivity.this, getString(R.string.t_disable_replay), Toast.LENGTH_LONG).show();
 			} else {
-				Toast.makeText(PlayerActivity.this, "반복재생이 설정되었습니다.", Toast.LENGTH_SHORT).show();
+				Toast.makeText(PlayerActivity.this, getString(R.string.t_enable_replay), Toast.LENGTH_LONG).show();
 			}
 			
 			setPlayerLooping(!isCurrentLooping);
@@ -470,9 +470,9 @@ public class PlayerActivity extends OldBaseActivity {
 			boolean isCurrentAutoplay = preferences.isPlayerAutoplay();
 			
 			if (isCurrentAutoplay) {
-				Toast.makeText(PlayerActivity.this, "자동재생이 해제되었습니다.", Toast.LENGTH_SHORT).show();
+				Toast.makeText(PlayerActivity.this, getString(R.string.t_disable_autoplay), Toast.LENGTH_LONG).show();
 			} else {
-				Toast.makeText(PlayerActivity.this, "자동재생이 설정되었습니다.", Toast.LENGTH_SHORT).show();
+				Toast.makeText(PlayerActivity.this, getString(R.string.t_enable_autoplay), Toast.LENGTH_LONG).show();
 			}
 			
 			setPlayerAutoplay(!isCurrentAutoplay);

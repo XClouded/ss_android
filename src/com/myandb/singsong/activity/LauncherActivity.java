@@ -99,28 +99,23 @@ public class LauncherActivity extends Activity {
 				}
 			}
 		} catch (JSONException e) {
-			showErrorMessage();
+			Toast.makeText(this, getString(R.string.t_unknown_error), Toast.LENGTH_LONG).show();
+			finish();
 		}
 	}
 	
 	public void onGetDataError() {
-		showErrorMessage();
+		Toast.makeText(this, getString(R.string.t_poor_network_connection), Toast.LENGTH_LONG).show();
+		finish();
 	}
 	
 	private void transitionToNextActivity(Class<?> activityClass) {
-		if (activityClass != null) {
-			Intent intent = new Intent(this, activityClass);
-			
-			startActivity(intent);
-			overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-			finish();
-		} else {
-			showErrorMessage();
-		}
-	}
-	
-	public void showErrorMessage() {
-		Toast.makeText(this, "네트워크 상태가 좋지 않습니다. 잠시 후에 다시 이용해주세요 :)", Toast.LENGTH_LONG).show();
+		final int enterAnim = android.R.anim.fade_in;
+		final int exitAnim = android.R.anim.fade_out;
+		
+		Intent intent = new Intent(this, activityClass);
+		startActivity(intent);
+		overridePendingTransition(enterAnim, exitAnim);
 		finish();
 	}
 

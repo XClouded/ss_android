@@ -125,7 +125,7 @@ public class UpdateFriendshipDialog extends BaseDiaglog {
 			RequestQueue queue = ((App) parent.getActivity().getApplicationContext()).getQueueInstance();
 			queue.add(request);
 			
-			Toast.makeText(getContext(), "추천되었습니다!", Toast.LENGTH_SHORT).show();
+			Toast.makeText(getContext(), getContext().getString(R.string.t_recommend_has_accepted), Toast.LENGTH_SHORT).show();
 			
 			UpdateFriendshipDialog.this.dismiss();
 		}

@@ -176,7 +176,7 @@ public class RecordSettingActivity extends OldBaseActivity {
 					finishWithSongUploadResult();
 				}
 			} else {
-				Toast.makeText(RecordSettingActivity.this, "30초 이상 불러주세요 :)", Toast.LENGTH_SHORT).show();
+				Toast.makeText(RecordSettingActivity.this, getString(R.string.t_song_length_policy), Toast.LENGTH_SHORT).show();
 			}
 		}
 		
@@ -230,8 +230,7 @@ public class RecordSettingActivity extends OldBaseActivity {
 	}
 	
 	public void onUploadError() {
-		Toast.makeText(this, "업로드에 실패하였습니다.", Toast.LENGTH_SHORT).show();
-		
+		Toast.makeText(this, getString(R.string.t_upload_failed), Toast.LENGTH_SHORT).show();
 		vUpload.setEnabled(true);
 	}
 	

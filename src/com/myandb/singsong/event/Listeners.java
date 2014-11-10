@@ -1,6 +1,7 @@
 package com.myandb.singsong.event;
 
 import org.json.JSONObject;
+
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
@@ -10,11 +11,13 @@ import android.os.Build.VERSION_CODES;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
+
 import com.android.volley.RequestQueue;
 import com.android.volley.Request.Method;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.myandb.singsong.App;
+import com.myandb.singsong.R;
 import com.myandb.singsong.activity.ArtistActivity;
 import com.myandb.singsong.activity.ChildSongActivity;
 import com.myandb.singsong.activity.OldBaseActivity;
@@ -140,14 +143,14 @@ public class Listeners {
 		public void onFilteredResponse(Context reference, VolleyError error) {
 			switch(sourceType) {
 			case Activity.TYPE_CREATE_FRIENDSHIP:
-				Toast.makeText(reference, "탈퇴한 유저입니다.", Toast.LENGTH_SHORT).show();
+				Toast.makeText(reference, reference.getString(R.string.t_unknown_user), Toast.LENGTH_SHORT).show();
 				break;
 				
 			case Activity.TYPE_CREATE_COMMENT:
 			case Activity.TYPE_CREATE_LIKING:
 			case Activity.TYPE_CREATE_ROOT_SONG:
 			case Activity.TYPE_CREATE_LEAF_SONG:
-				Toast.makeText(reference, "삭제된 노래입니다.", Toast.LENGTH_SHORT).show();
+				Toast.makeText(reference, reference.getString(R.string.t_deleted_song), Toast.LENGTH_SHORT).show();
 				break;
 				
 			default:
@@ -292,7 +295,7 @@ public class Listeners {
 
 		@Override
 		public void onFilteredResponse(Context reference, VolleyError error) {
-			Toast.makeText(reference, "삭제된 노래입니다. :(", Toast.LENGTH_SHORT).show();
+			Toast.makeText(reference, reference.getString(R.string.t_deleted_song), Toast.LENGTH_SHORT).show();
 		}
 		
 	}

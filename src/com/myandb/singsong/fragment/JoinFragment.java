@@ -199,7 +199,7 @@ public class JoinFragment extends Fragment {
 	}
 	
 	public void onUsernameFound(JSONObject response) {
-		Toast toast = Toast.makeText(getActivity(), lastInputUsername + "은 이미 존재하는 이메일입니다. :(", Toast.LENGTH_SHORT);
+		Toast toast = Toast.makeText(getActivity(), lastInputUsername + getString(R.string.t_email_already_exist), Toast.LENGTH_SHORT);
 		toast.setGravity(Gravity.TOP, 0, 100);
 		toast.show();
 		
@@ -363,6 +363,6 @@ public class JoinFragment extends Fragment {
 		etPassword.setText("");
 		etRePassword.setText("");
 
-		Toast.makeText(getActivity(), "가입에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+		Toast.makeText(getActivity(), getString(R.string.t_join_failed), Toast.LENGTH_SHORT).show();
 	}
 }

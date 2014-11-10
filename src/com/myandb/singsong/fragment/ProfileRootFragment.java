@@ -206,7 +206,7 @@ public class ProfileRootFragment extends Fragment {
 	}
 	
 	public void onGetProfileError() {
-		Toast.makeText(getActivity(), "네트워크 상태가 좋지 않습니다. 잠시 후에 다시 이용해주세요.", Toast.LENGTH_SHORT).show();
+		Toast.makeText(getActivity(), getString(R.string.t_poor_network_connection), Toast.LENGTH_SHORT).show();
 		
 		getActivity().finish();
 	}
@@ -334,7 +334,7 @@ public class ProfileRootFragment extends Fragment {
 					OAuthJustRequest request = new OAuthJustRequest(Method.POST, url, null);
 					requestQueue.add(request);
 					
-					Toast.makeText(getActivity(), "인증 이메일이 발송되었습니다.", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), getString(R.string.t_activation_email_send), Toast.LENGTH_SHORT).show();
 				}
 			});
 		}
@@ -573,7 +573,7 @@ public class ProfileRootFragment extends Fragment {
 	}
 	
 	private void onUploadError() {
-		Toast.makeText(getActivity(), "업로드에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+		Toast.makeText(getActivity(), getString(R.string.t_upload_failed), Toast.LENGTH_SHORT).show();
 	}
 	
 	private void requestUpdateNickname(String nickname) {
