@@ -17,7 +17,7 @@ public abstract class BaseFragment extends Fragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
-		initiateChildViews(getView());
+		initialize(getArguments());
 		
 		setupViews();
 		
@@ -34,7 +34,7 @@ public abstract class BaseFragment extends Fragment {
 
 	protected abstract int getResourceId();
 	
-	protected abstract void initiateChildViews(View parent);
+	protected abstract void initialize(Bundle bundle);
 	
 	protected abstract void setupViews();
 	
