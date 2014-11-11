@@ -35,7 +35,7 @@ import com.myandb.singsong.net.OAuthJsonArrayRequest;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.pager.InfinitePagerAdapter;
 import com.myandb.singsong.pager.PopularMusicAdapter;
-import com.myandb.singsong.util.TimeHelper;
+import com.myandb.singsong.util.StringFormatter;
 import com.myandb.singsong.util.Utility;
 
 public class MusicFragment extends Fragment {
@@ -126,7 +126,7 @@ public class MusicFragment extends Fragment {
 	}
 	
 	private void loadUpdateMusic() {
-		final String startDate = TimeHelper.getDateString(Calendar.DATE, -7);
+		final String startDate = StringFormatter.getDateString(Calendar.DATE, -7);
 		UrlBuilder urlBuilder = new UrlBuilder();
 		urlBuilder.s("musics").start(startDate).p("order", "created_at");
 		

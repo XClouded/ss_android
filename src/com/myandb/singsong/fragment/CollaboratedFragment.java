@@ -8,7 +8,7 @@ import com.myandb.singsong.activity.SearchActivity;
 import com.myandb.singsong.activity.SearchActivity.SearchType;
 import com.myandb.singsong.adapter.CollaboratedAdapter;
 import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.util.TimeHelper;
+import com.myandb.singsong.util.StringFormatter;
 import com.myandb.singsong.widget.ResizableImageView;
 
 import android.content.Intent;
@@ -75,7 +75,7 @@ public class CollaboratedFragment extends Fragment {
 				tvSortRecent.setText(recentString);
 				
 				if (popularAdapter == null) {
-					final String startDate = TimeHelper.getDateString(Calendar.DATE, -1);
+					final String startDate = StringFormatter.getDateString(Calendar.DATE, -1);
 					popularAdapter = new CollaboratedAdapter(
 							getActivity(),
 							new UrlBuilder().s("songs").s("leaf").p("order", "liking_num").start(startDate)

@@ -27,7 +27,7 @@ import com.myandb.singsong.service.SongUploadService;
 import com.myandb.singsong.util.ImageHelper;
 import com.myandb.singsong.util.PlayCounter;
 import com.myandb.singsong.util.LrcDisplayer;
-import com.myandb.singsong.util.TimeHelper;
+import com.myandb.singsong.util.StringFormatter;
 import com.myandb.singsong.util.Utility;
 import com.myandb.singsong.widget.CountViewFactory;
 import com.myandb.singsong.widget.SlideAnimation;
@@ -431,8 +431,8 @@ public class RecordMainActivity extends OldBaseActivity {
 		setupLoadingDialogForDecode();
 		startDecoding();
 		
-		int duration = (int) TimeHelper.getDuration(FileManager.getSecure(FileManager.MUSIC_OGG));
-		tvEndTime.setText(TimeHelper.getDuration(duration));
+		int duration = (int) StringFormatter.getDuration(FileManager.getSecure(FileManager.MUSIC_OGG));
+		tvEndTime.setText(StringFormatter.getDuration(duration));
 		pbPlayProgress.setMax(duration);
 	}
 	
@@ -634,7 +634,7 @@ public class RecordMainActivity extends OldBaseActivity {
 	public void updateAudioProgress() {
 		if (recorder != null && recorder.isRecording()) {
 			int position = recorder.getCurrentPosition();
-			tvStartTime.setText(TimeHelper.getDuration(position));
+			tvStartTime.setText(StringFormatter.getDuration(position));
 			pbPlayProgress.setProgress(position);
 			
 			Runnable r = new ProgressRunnable(this);

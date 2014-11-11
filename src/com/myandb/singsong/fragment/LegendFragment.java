@@ -5,7 +5,7 @@ import java.util.Calendar;
 import com.myandb.singsong.R;
 import com.myandb.singsong.adapter.CollaboratedAdapter;
 import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.util.TimeHelper;
+import com.myandb.singsong.util.StringFormatter;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -71,11 +71,11 @@ public class LegendFragment extends Fragment {
 	}
 	
 	private String getStartDate(int index) {
-		return TimeHelper.getDateString(Calendar.WEEK_OF_YEAR, (index - 1), Calendar.SUNDAY);
+		return StringFormatter.getDateString(Calendar.WEEK_OF_YEAR, (index - 1), Calendar.SUNDAY);
 	}
 	
 	private String getEndDate(int index) {
-		return TimeHelper.getDateString(Calendar.WEEK_OF_YEAR, index, Calendar.SUNDAY);
+		return StringFormatter.getDateString(Calendar.WEEK_OF_YEAR, index, Calendar.SUNDAY);
 	}
 	
 	private void fetchLegend(int index) {

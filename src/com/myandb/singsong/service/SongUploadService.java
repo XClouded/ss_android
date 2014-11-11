@@ -20,7 +20,7 @@ import com.myandb.singsong.model.Music;
 import com.myandb.singsong.net.OAuthJsonObjectRequest;
 import com.myandb.singsong.net.UploadManager;
 import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.util.TimeHelper;
+import com.myandb.singsong.util.StringFormatter;
 import com.myandb.singsong.util.ImageHelper.BitmapBuilder;
 
 import android.app.Notification;
@@ -164,7 +164,7 @@ public class SongUploadService extends Service {
 	public void onFileUploadComplete() {
 		updateNotification(95, "노래정보를 갱신하고 있습니다.");
 
-		final int duration = (int) TimeHelper.getDuration(FileManager.getSecure(FileManager.SONG_OGG));
+		final int duration = (int) StringFormatter.getDuration(FileManager.getSecure(FileManager.SONG_OGG));
 		
 		try {
 			JSONObject data = new JSONObject();

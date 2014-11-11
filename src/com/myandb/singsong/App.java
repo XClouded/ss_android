@@ -4,7 +4,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.myandb.singsong.image.ImageLoaderConfig;
 import com.myandb.singsong.secure.Authenticator;
-import com.myandb.singsong.util.TimeHelper;
+import com.myandb.singsong.util.StringFormatter;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import android.app.Application;
@@ -31,7 +31,7 @@ public class App extends Application {
 		
 		Authenticator.initialize(getSharedPreferences(AUTH_PREFERENCE_FILE, Context.MODE_PRIVATE));
 		
-		TimeHelper.initialize(getResources());
+		StringFormatter.initialize(getResources());
 	}
 	
 	public RequestQueue getQueueInstance() {

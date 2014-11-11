@@ -3,7 +3,7 @@ package com.myandb.singsong.model;
 import java.util.List;
 import java.util.Random;
 
-import com.myandb.singsong.util.TimeHelper;
+import com.myandb.singsong.util.StringFormatter;
 
 public class Song extends Model {
 	
@@ -168,7 +168,7 @@ public class Song extends Model {
 	}
 	
 	public String getWorkedDuration() {
-		return TimeHelper.getDuration(duration);
+		return StringFormatter.getDuration(duration);
 	}
 	
 	public List<Image> getPhotos() {

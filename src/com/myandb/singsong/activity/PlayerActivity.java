@@ -28,7 +28,7 @@ import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.service.PlayerService;
 import com.myandb.singsong.service.PlayerService.IPlayStatusCallback;
 import com.myandb.singsong.util.ImageHelper;
-import com.myandb.singsong.util.TimeHelper;
+import com.myandb.singsong.util.StringFormatter;
 import com.myandb.singsong.util.Utility;
 import com.myandb.singsong.widget.AutoLoadListView;
 
@@ -627,7 +627,7 @@ public class PlayerActivity extends OldBaseActivity {
 		int position = playerService.getCurrentPosition();
 		
 		ivPlayControl.setOnClickListener(playControlClickListener);
-		tvStartTime.setText(TimeHelper.getDuration(position));
+		tvStartTime.setText(StringFormatter.getDuration(position));
 		tvEndTime.setText(thisSong.getWorkedDuration());
 		sbPlay.setMax(thisSong.getDuration());
 		sbPlay.setProgress(position);
@@ -652,7 +652,7 @@ public class PlayerActivity extends OldBaseActivity {
 	
 	public void playProgressUpdater() {
 		if (playerService.isPlaying()) {
-			tvStartTime.setText(TimeHelper.getDuration(playerService.getCurrentPosition()));
+			tvStartTime.setText(StringFormatter.getDuration(playerService.getCurrentPosition()));
 			sbPlay.setProgress(playerService.getCurrentPosition());
 		}
 		

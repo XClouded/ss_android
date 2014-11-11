@@ -7,7 +7,7 @@ import com.myandb.singsong.activity.SearchActivity;
 import com.myandb.singsong.activity.SearchActivity.SearchType;
 import com.myandb.singsong.adapter.WaitingAdapter;
 import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.util.TimeHelper;
+import com.myandb.singsong.util.StringFormatter;
 
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -60,7 +60,7 @@ public class WaitingFragment extends Fragment {
 				tvSortRecent.setText(recentString);
 				
 				if (popularAdapter == null) {
-					final String startDate = TimeHelper.getDateString(Calendar.DATE, -3);
+					final String startDate = StringFormatter.getDateString(Calendar.DATE, -3);
 					popularAdapter = new WaitingAdapter(
 							getActivity(),
 							new UrlBuilder().s("songs").s("root").p("order", "collabo_num").start(startDate)
