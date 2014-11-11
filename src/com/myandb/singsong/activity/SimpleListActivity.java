@@ -12,7 +12,6 @@ import com.myandb.singsong.adapter.MyCommentAdapter;
 import com.myandb.singsong.adapter.MyLikeSongAdapter;
 import com.myandb.singsong.adapter.MySongAdapter;
 import com.myandb.singsong.adapter.NotificationAdapter;
-import com.myandb.singsong.file.Storage;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.util.ImageHelper;
@@ -58,8 +57,8 @@ public class SimpleListActivity extends OldBaseActivity {
 		}
 		
 		if (listType.equals(SimpleListType.NOTIFICATION)) {
-			Storage storage = new Storage();
-			storage.readAllNoti();
+//			FileHelper storage = new FileHelper();
+//			storage.readAllNoti();
 		}
 		
 		UrlBuilder urlBuilder = getUrlBuilder(listType, user);

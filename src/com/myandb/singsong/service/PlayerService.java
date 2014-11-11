@@ -5,7 +5,6 @@ import java.io.IOException;
 
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
-import com.myandb.singsong.file.Storage;
 import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Song;
 import com.myandb.singsong.util.ImageHelper.BitmapBuilder;
@@ -39,7 +38,6 @@ public class PlayerService extends Service {
 	private SingSongPlayer player;
 	private Song thisSong = null;
 	private boolean isNew = false;
-	private Storage session;
 	private BitmapBuilder bitmapBuilder;
 
 	@Override
@@ -47,7 +45,6 @@ public class PlayerService extends Service {
 		super.onCreate();
 		
 		player = new SingSongPlayer();
-		session = new Storage();
 		bitmapBuilder = new BitmapBuilder();
 		
 		PhoneStateListener phoneStateListener = new PhoneStateListener() {
@@ -88,7 +85,7 @@ public class PlayerService extends Service {
 	
 	public void startPlaying(IPlayStatusCallback callback, boolean autoplay, boolean looping) {
 		if (thisSong == null) {
-			thisSong = Utility.getGsonInstance().fromJson(session.getString(JSON_KEY), Song.class);
+//			thisSong = Utility.getGsonInstance().fromJson(session.getString(JSON_KEY), Song.class);
 		}
 		
 		if (isNew) {
@@ -401,7 +398,7 @@ public class PlayerService extends Service {
 			
 			stopForeground(true);
 			
-			session.putString(JSON_KEY, Utility.getGsonInstance().toJson(thisSong, Song.class));
+//			session.putString(JSON_KEY, Utility.getGsonInstance().toJson(thisSong, Song.class));
 		} else {
 			isNew = false;
 		}

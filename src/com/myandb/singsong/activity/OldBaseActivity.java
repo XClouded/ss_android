@@ -6,7 +6,6 @@ import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.ExceptionParser;
 import com.google.analytics.tracking.android.ExceptionReporter;
 import com.myandb.singsong.R;
-import com.myandb.singsong.file.Storage;
 import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Song;
 import com.myandb.singsong.service.PlayerService;
@@ -212,7 +211,8 @@ public abstract class OldBaseActivity extends FragmentActivity {
 				ivPlayControl.setVisibility(View.VISIBLE);
 				tvAlbumInfo.setVisibility(View.VISIBLE);
 				
-				Storage preferences = new Storage();
+				/*
+				FileHelper preferences = new FileHelper();
 				playerService.startPlaying(
 						new PlayStatusCallback(this),
 						preferences.isPlayerAutoplay(),
@@ -233,6 +233,7 @@ public abstract class OldBaseActivity extends FragmentActivity {
 					}
 					
 				});
+				*/
 				ivAlbumPhoto.setOnClickListener(new OnClickListener() {
 					
 					@Override

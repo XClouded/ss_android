@@ -7,7 +7,9 @@ import com.myandb.singsong.service.PlayerService;
 import com.myandb.singsong.widget.SlidingPlayerLayout;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -28,6 +30,8 @@ public class RootActivity extends BaseActivity {
 		
 		setContentView(R.layout.activity_root);
 		
+		initializePreference();
+		
 		configureActionBar();
 		
 		configureSlidingPlayer();
@@ -37,6 +41,21 @@ public class RootActivity extends BaseActivity {
 		startPlayerService();
 		
 		replaceContentFragmentFromIntent(getIntent());
+	}
+	
+	private void initializePreference() {
+		final String newPreferenceKey = getNewPreferenceKey();
+		boolean readAgain = mustReadPreferenceXmlAgain(newPreferenceKey);
+		PreferenceManager.setDefaultValues(this, R.xml.preferences, readAgain);
+	}
+	
+	private String getNewPreferenceKey() {
+		return getString(R.string.key_notification);
+	}
+	
+	private boolean mustReadPreferenceXmlAgain(String newPreferenceKey) {
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		return !preferences.contains(newPreferenceKey);
 	}
 	
 	private void configureActionBar() {

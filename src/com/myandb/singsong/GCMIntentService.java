@@ -11,10 +11,12 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.view.Gravity;
 import android.view.View;
@@ -26,10 +28,9 @@ import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.google.android.gcm.GCMBaseIntentService;
 import com.google.gson.Gson;
-import com.myandb.singsong.activity.MainActivity;
 import com.myandb.singsong.activity.RecordMainActivity;
+import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.event.OnCompleteListener;
-import com.myandb.singsong.file.Storage;
 import com.myandb.singsong.model.Activity;
 import com.myandb.singsong.model.Notification;
 import com.myandb.singsong.model.User;
@@ -41,13 +42,6 @@ import com.myandb.singsong.util.ImageHelper;
 import com.myandb.singsong.util.ImageHelper.BitmapBuilder;
 import com.myandb.singsong.util.Utility;
 
-/**
- * GCM server에 단말 등록, 해제, 오류 시 callback 실행 되는 곳
- * push 메세지 왔을 때 처리해줌
- * 
- * @author mhdjang
- *
- */
 public class GCMIntentService extends GCMBaseIntentService {
 	
 	public static final String PROJECT_ID = "1079233079703";
@@ -63,44 +57,137 @@ public class GCMIntentService extends GCMBaseIntentService {
 		try {
 			tempFile = File.createTempFile("_user_photo_", ".tmp");
 		} catch (IOException e) {
-			// permission denied
 			tempFile = null;
 		}
 	}
 	
 	@Override
 	protected void onMessage(Context context, Intent intent) {
-		Storage storage = new Storage();
-		storage.arriveNewPush();
-		
-		if (intent != null && storage.isAllowPush()) {
-			Gson gson = Utility.getGsonInstance();
-			Activity activity = gson.fromJson(intent.getStringExtra("activity"), Activity.class);
-			
-			if (activity != null && Auth.isLoggedIn()) {
-				Notification notification = new Notification(activity);
-				User creator = activity.getCreator();
-				User currentUser = Auth.getUser();
-				String message = notification.getContent(currentUser);
-				
-				if (creator.hasPhoto()) {
-					downloadPhoto(creator, message);
-				} else {
-					BitmapBuilder builder = new BitmapBuilder();
-					Bitmap bitmap = builder.setSource(getResources(), R.drawable.user_default)
-							.enableCrop(true)
-							.build();
-					
-					if (bitmap != null) {
-						submitNotification(bitmap, creator, message);
-					}
-				}
-				
-				if (!RecordMainActivity.isActivityRunning()) {
-					showToast(creator, message);
+		if (Auth.isLoggedIn()) {
+			incrementNotificationCount();
+			if (isEnabledNotification()) {
+				try {
+					notifyUser(intent);
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 			}
 		}
+	}
+	
+	private boolean incrementNotificationCount() {
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		String key = getString(R.string.key_notification_count);
+		int currentCount = getCurrentNotificationCount(preferences);
+		return preferences.edit().putInt(key, (currentCount + 1)).commit();
+	}
+	
+	private int getCurrentNotificationCount(SharedPreferences preferences) {
+		final int defaultValue = 0;
+		try {
+			String key = getString(R.string.key_notification_count);
+			return preferences.getInt(key, defaultValue);
+		} catch (ClassCastException e) {
+			e.printStackTrace();
+			return defaultValue;
+		}
+	}
+	
+	private boolean isEnabledNotification() {
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		final boolean defaultValue = true;
+		try {
+			String key = getString(R.string.key_notification);
+			return preferences.getBoolean(key, defaultValue);
+		} catch (ClassCastException e) {
+			e.printStackTrace();
+			return defaultValue;
+		}
+	}
+	
+	private void notifyUser(Intent intent) throws NullPointerException {
+		Activity activity = getActivityFromIntent(intent);
+		Notification notification = new Notification(activity);
+		User creator = activity.getCreator();
+		User currentUser = Auth.getUser();
+		String message = notification.getContent(currentUser);
+		
+		prepareAndSubmitNotification(creator, message);
+		
+		if (!RecordMainActivity.isActivityRunning()) {
+			showToast(creator, message);
+		}
+	}
+	
+	private Activity getActivityFromIntent(Intent intent) throws NullPointerException {
+		Gson gson = Utility.getGsonInstance();
+		String activityJson = intent.getStringExtra("activity");
+		return gson.fromJson(activityJson, Activity.class);
+	}
+	
+	private void prepareAndSubmitNotification(final User creator, final String message) {
+		if (creator.hasPhoto()) {
+			downloadPhoto(creator.getPhotoUrl(), new OnCompleteListener() {
+				
+				@Override
+				public void done(Exception e) {
+					if (e == null) {
+						Bitmap bitmap = getIconBitmap(tempFile);
+						submitNotification(bitmap, creator, message);
+					} else {
+						e.printStackTrace();
+					}
+				}
+			});
+		} else {
+			Bitmap bitmap = getIconBitmap();
+			submitNotification(bitmap, creator, message);
+		}
+	}
+	
+	private void downloadPhoto(String url, OnCompleteListener listener) {
+		DownloadManager manager = new DownloadManager();
+		manager.start(url, tempFile, listener);
+	}
+	
+	private Bitmap getIconBitmap() {
+		BitmapBuilder builder = new BitmapBuilder();
+		int size = getNotificationIconSize();
+		return builder.setSource(getResources(), R.drawable.user_default)
+				.setOutputSize(size)
+				.enableCrop(true)
+				.build();
+	}
+	
+	private Bitmap getIconBitmap(File file) {
+		BitmapBuilder builder = new BitmapBuilder();
+		int size = getNotificationIconSize();
+		return builder.setSource(file)
+				.setOutputSize(size)
+				.enableCrop(true)
+				.build();
+	}
+	
+	private int getNotificationIconSize() {
+		int width = getNotificationLargeIconWidth(getResources());
+		int height = getNotificationLargeIconHeight(getResources());
+		return Math.max(width, height);
+	}
+	
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	private int getNotificationLargeIconWidth(Resources res) {
+		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1) {
+			return (int) res.getDimensionPixelSize(android.R.dimen.notification_large_icon_width);
+		}
+		return 60;
+	}
+	
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	private int getNotificationLargeIconHeight(Resources res) {
+		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1) {
+			return (int) res.getDimensionPixelSize(android.R.dimen.notification_large_icon_height);
+		}
+		return 60;
 	}
 	
 	private void showToast(final User user, final String message) {
@@ -119,57 +206,9 @@ public class GCMIntentService extends GCMBaseIntentService {
 		});
 	}
 	
-	private void downloadPhoto(final User user, final String message) {
-		DownloadManager networkFile = new DownloadManager();
-		networkFile.start(user.getPhotoUrl(), tempFile, new OnCompleteListener() {
-			
-			@Override
-			public void done(Exception e) {
-				if (e == null) {
-					Resources res = getResources();
-					int width = getNotificationLargeIconWidth(res);
-					int height = getNotificationLargeIconHeight(res);
-					int size = Math.max(width, height);
-					
-					BitmapBuilder builder = new BitmapBuilder();
-					Bitmap bitmap = builder.setSource(tempFile)
-										   .enableCrop(true)
-										   .setOutputSize(size)
-										   .build();
-					
-					if (bitmap != null) {
-						submitNotification(bitmap, user, message);
-					}
-				} else {
-					e.printStackTrace();
-				}
-			}
-			
-		});
-	}
-	
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	private int getNotificationLargeIconWidth(Resources res) {
-		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1) {
-			return (int) res.getDimensionPixelSize(android.R.dimen.notification_large_icon_width);
-		}
-		
-		return 60;
-	}
-	
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	private int getNotificationLargeIconHeight(Resources res) {
-		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1) {
-			return (int) res.getDimensionPixelSize(android.R.dimen.notification_large_icon_height);
-		}
-		
-		return 60;
-	}
-	
 	private void submitNotification(Bitmap largeIcon, User user, String message) {
-		Intent intent = new Intent("com.myandb.singsong.activity.MainActivity");
+		Intent intent = new Intent(this, RootActivity.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		intent.putExtra(MainActivity.INTENT_PAGE_REQUEST, App.REQUEST_NOTIFICATION_ACTIVITY);
 		
 		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
@@ -186,7 +225,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 		}
 		
 		NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-		manager.notify(App.NOTI_ID_PUSH, builder.build());
+		manager.notify(App.NOTI_ID_GCM, builder.build());
 	}
 	
 	private static class PushToast extends Toast {

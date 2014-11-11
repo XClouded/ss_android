@@ -17,7 +17,6 @@ import com.myandb.singsong.event.Listeners;
 import com.myandb.singsong.event.MemberOnlyClickListener;
 import com.myandb.singsong.event.OnVolleyWeakResponse;
 import com.myandb.singsong.event.WeakRunnable;
-import com.myandb.singsong.file.Storage;
 import com.myandb.singsong.model.Comment;
 import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Song;
@@ -92,7 +91,6 @@ public class PlayerActivity extends OldBaseActivity {
 	private Animation blink;
 	private WriteCommentDialog commentDialog;
 	private KakaotalkDialog kakaotalkDialog;
-	private Storage preferences;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +98,6 @@ public class PlayerActivity extends OldBaseActivity {
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		
 		currentUser = Auth.getUser();
-		preferences = new Storage();
 		
 		initializeView();
 	}
@@ -347,9 +344,9 @@ public class PlayerActivity extends OldBaseActivity {
 		
 		displayLikeNum(thisSong.getWorkedLikeNum());
 		
-		setPlayerLooping(preferences.isPlayerLooping());
+//		setPlayerLooping(preferences.isPlayerLooping());
 		
-		setPlayerAutoplay(preferences.isPlayerAutoplay());
+//		setPlayerAutoplay(preferences.isPlayerAutoplay());
 		
 		ivChildSong.setOnClickListener(Listeners.getChildrenClickListener(this, thisSong));
 		ivLoopControl.setOnClickListener(loopControlClickListener);
@@ -427,7 +424,7 @@ public class PlayerActivity extends OldBaseActivity {
 	}
 	
 	private void setPlayerLooping(boolean looping) {
-		preferences.setPlayerLooping(looping);
+//		preferences.setPlayerLooping(looping);
 		playerService.setLooping(looping);
 		
 		if (looping) {
@@ -438,7 +435,7 @@ public class PlayerActivity extends OldBaseActivity {
 	}
 	
 	private void setPlayerAutoplay(boolean autoplay) {
-		preferences.setPlayerAutoplay(autoplay);
+//		preferences.setPlayerAutoplay(autoplay);
 		
 		if (autoplay) {
 			ivAutoplayControl.setImageResource(R.drawable.ic_autoplay_on);
@@ -451,7 +448,8 @@ public class PlayerActivity extends OldBaseActivity {
 		
 		@Override
 		public void onClick(View v) {
-			boolean isCurrentLooping = preferences.isPlayerLooping();
+//			boolean isCurrentLooping = preferences.isPlayerLooping();
+			boolean isCurrentLooping = true;
 			
 			if (isCurrentLooping) {
 				Toast.makeText(PlayerActivity.this, getString(R.string.t_disable_replay), Toast.LENGTH_LONG).show();
@@ -467,7 +465,8 @@ public class PlayerActivity extends OldBaseActivity {
 		
 		@Override
 		public void onClick(View v) {
-			boolean isCurrentAutoplay = preferences.isPlayerAutoplay();
+//			boolean isCurrentAutoplay = preferences.isPlayerAutoplay();
+			boolean isCurrentAutoplay = true;
 			
 			if (isCurrentAutoplay) {
 				Toast.makeText(PlayerActivity.this, getString(R.string.t_disable_autoplay), Toast.LENGTH_LONG).show();
@@ -545,8 +544,9 @@ public class PlayerActivity extends OldBaseActivity {
 	private void runService() {
 		playerService.startPlaying(
 				new PlayStatusCallback(this),
-				preferences.isPlayerAutoplay(),
-				preferences.isPlayerLooping()
+//				preferences.isPlayerAutoplay(),
+//				preferences.isPlayerLooping()
+				true, true
 		);
 	}
 	

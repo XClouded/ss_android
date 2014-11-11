@@ -7,7 +7,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import android.content.Context;
 import android.content.res.Resources;
 import android.media.MediaMetadataRetriever;
 
@@ -21,13 +20,19 @@ public class TimeHelper {
 	
 	private static Calendar today = Calendar.getInstance(Locale.KOREA);
 	private static Calendar varDay = Calendar.getInstance(Locale.KOREA);
-	private static Resources resources;
 	private static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+	private static String nowString;
+	private static String minuteString;
+	private static String hourString;
+	private static String dayString;
 	
 	private TimeHelper() { }
 	
-	public static void initialize(Context context) {
-		resources = context.getResources();
+	public static void initialize(Resources resources) {
+		nowString = resources.getString(R.string.now);
+		minuteString = resources.getString(R.string.minute);
+		hourString = resources.getString(R.string.hour);
+		dayString = resources.getString(R.string.day);
 	}
 	
 	public static int getTodayInNumber() {
@@ -125,22 +130,22 @@ public class TimeHelper {
 		int differenceInSecs = (int) (differenceInMils / 1000);
 		
 		if (differenceInSecs < 60) {
-			return resources.getString(R.string.now);
+			return nowString;
 		} else {
 			int differenceInMins = differenceInSecs / 60;
 			
 			if (differenceInMins < 60) {
-				return String.valueOf(differenceInMins) + resources.getString(R.string.minute);
+				return String.valueOf(differenceInMins) + minuteString;
 			} else {
 				int differenceInHours = differenceInMins / 60;
 				
 				if (differenceInHours < 24) {
-					return String.valueOf(differenceInHours) + resources.getString(R.string.hour);
+					return String.valueOf(differenceInHours) + hourString;
 				} else {
 					int differenceInDays = differenceInHours / 24;
 					
 					if (differenceInDays < 30) {
-						return String.valueOf(differenceInDays) + resources.getString(R.string.day);
+						return String.valueOf(differenceInDays) + dayString;
 					} else {
 						return format.format(createdDate.getTime());
 					}

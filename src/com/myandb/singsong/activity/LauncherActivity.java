@@ -14,12 +14,8 @@ import com.myandb.singsong.Store;
 import com.myandb.singsong.dialog.BaseDiaglog;
 import com.myandb.singsong.event.OnVolleyWeakError;
 import com.myandb.singsong.event.OnVolleyWeakResponse;
-import com.myandb.singsong.file.Storage;
 import com.myandb.singsong.fragment.CollaboratedFragment;
-import com.myandb.singsong.model.Notice;
 import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.secure.Auth;
-import com.myandb.singsong.util.Utility;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -54,49 +50,25 @@ public class LauncherActivity extends Activity {
 		);
 		
 		RequestQueue queue = ((App) getApplicationContext()).getQueueInstance();
-//		queue.add(request); 
-		
-		testStartRootActivity();
-	}
-	
-	private void testStartRootActivity() {
-		Intent intent = new Intent(this, RootActivity.class);
-		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, CollaboratedFragment.class.getName());
-		startActivity(intent);
-		overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-		finish();
+		queue.add(request);
 	}
 	
 	public void onGetDataSuccess(JSONObject response) {
 		try {
 			int latestVersion = response.getInt("latest_version");
 			int forceUpdateVersion = response.getInt("force_update_version");
-			boolean isMusicUpdated = response.getBoolean("is_music_updated");
-			Notice notice = Utility.getGsonInstance()
-					.fromJson(response.getJSONObject("notice").toString(), Notice.class);
+			int latestNoticeId = response.getInt("latest_notice_id");
 			
 			PackageHelper packageHelper = new PackageHelper(getPackageManager());
 			int versionCode = packageHelper.getVersionCode(getPackageName());
 			if (latestVersion > versionCode) {
-				// show there is new update version
-			}
-			
-			if (forceUpdateVersion > versionCode) {
 				versionDialog = new VersionDialog(this);
+				if (forceUpdateVersion > versionCode) {
+					versionDialog.setForceUpdate(true);
+				}
 				versionDialog.show();
 			} else {
-				Storage storage = new Storage();
-				storage.arriveNotice(notice);
-				
-				if (Auth.isLoggedIn()) {
-					if (isMusicUpdated && !storage.hasCheckedUpdate()) {
-						transitionToNextActivity(MusicUpdateActivity.class);
-					} else {
-						transitionToNextActivity(MainActivity.class);
-					}
-				} else {
-					transitionToNextActivity(GuideActivity.class);
-				}
+				startRootActivity(latestNoticeId);
 			}
 		} catch (JSONException e) {
 			Toast.makeText(this, getString(R.string.t_unknown_error), Toast.LENGTH_LONG).show();
@@ -109,11 +81,12 @@ public class LauncherActivity extends Activity {
 		finish();
 	}
 	
-	private void transitionToNextActivity(Class<?> activityClass) {
+	private void startRootActivity(int noticeId) {
 		final int enterAnim = android.R.anim.fade_in;
 		final int exitAnim = android.R.anim.fade_out;
 		
-		Intent intent = new Intent(this, activityClass);
+		Intent intent = new Intent(this, RootActivity.class);
+		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, CollaboratedFragment.class.getName());
 		startActivity(intent);
 		overridePendingTransition(enterAnim, exitAnim);
 		finish();
@@ -123,12 +96,16 @@ public class LauncherActivity extends Activity {
 		
 		private Button btnUpdate;
 		private Button btnExit;
-		private Store store = new GoogleStore();
+		private Store store;
+		private boolean forceUpdate = false;
 
 		public VersionDialog(Context context) {
 			super(context, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
 			
-			store = isStoreInstalled() ? store : new GoogleStore();
+			store = new GoogleStore();
+			if (isStoreUnavailable(store)) {
+				store = new GoogleStore();
+			}
 		}
 
 		@Override
@@ -145,6 +122,14 @@ public class LauncherActivity extends Activity {
 			btnExit.setOnClickListener(exitClickListener);
 		}
 		
+		@Override
+		public void show() {
+			super.show();
+			if (forceUpdate) {
+				// Hide 'skip update'
+			}
+		}
+
 		private View.OnClickListener toStoreClickListener = new View.OnClickListener() {
 			
 			@Override
@@ -176,9 +161,13 @@ public class LauncherActivity extends Activity {
 			((Activity) getContext()).finish();
 		}
 		
-		private boolean isStoreInstalled() {
+		private boolean isStoreUnavailable(Store store) {
 			PackageHelper helper = new PackageHelper(getContext().getPackageManager());
 			return helper.isAppInstalled(store.getPackageName());
+		}
+		
+		public void setForceUpdate(boolean forceUpdate) {
+			this.forceUpdate = forceUpdate;
 		}
 		
 	}

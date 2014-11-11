@@ -11,7 +11,6 @@ import com.myandb.singsong.activity.SearchActivity.SearchType;
 import com.myandb.singsong.activity.SimpleListActivity.SimpleListType;
 import com.myandb.singsong.adapter.MenuAdapter;
 import com.myandb.singsong.dialog.FrontNoticeDialog;
-import com.myandb.singsong.file.Storage;
 import com.myandb.singsong.fragment.CollaboratedFragment;
 import com.myandb.singsong.fragment.LegendFragment;
 import com.myandb.singsong.fragment.MusicFragment;
@@ -150,19 +149,7 @@ public class MainActivity extends OldBaseActivity {
 	}
 	
 	private void checkNewNotice() {
-		Storage preferences = new Storage();
-		Notice notice = preferences.getUnreadNotice();
 		
-		if (notice != null) {
-			Date now = new Date();
-			
-			if (now.before(notice.getStartedTime()) && now.after(notice.getFinishTime())) {
-				if (!notice.getFrontImageUrl().isEmpty()) {
-					noticeDialog = new FrontNoticeDialog(this, notice);
-					noticeDialog.show();
-				}
-			}
-		}
 	}
 	
 	private OnItemClickListener menuClickListener = new OnItemClickListener() {
@@ -312,15 +299,6 @@ public class MainActivity extends OldBaseActivity {
 		if (Auth.isLoggedIn()) {
 			if (!performedMenuClick) {
 				int position = 0;
-				
-				if (App.REQUEST_MY_PROFILE_FRAGMENT == requestCode) {
-					position = 0;
-				} else if (App.REQUEST_NOTIFICATION_ACTIVITY == requestCode) {
-					performClickGNB(2);
-					position = 1;
-				} else {
-					position = 2;
-				}
 				
 				performClickGNB(position);
 				performedMenuClick = true;

@@ -15,7 +15,6 @@ import com.myandb.singsong.dialog.WithdrawDialog;
 import com.myandb.singsong.event.OnVolleyWeakError;
 import com.myandb.singsong.event.OnVolleyWeakResponse;
 import com.myandb.singsong.file.FileManager;
-import com.myandb.singsong.file.Storage;
 import com.myandb.singsong.net.OAuthJsonObjectRequest;
 import com.myandb.singsong.net.OAuthJustRequest;
 import com.myandb.singsong.net.UrlBuilder;
@@ -40,7 +39,7 @@ public class SettingActivity extends OldBaseActivity implements OnClickListener 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		final Storage storage = new Storage();
+//		final FileHelper storage = new FileHelper();
 		
 		Button btnLogout = (Button) findViewById(R.id.btn_logout);
 		Button btnVersion = (Button) findViewById(R.id.btn_version);
@@ -59,7 +58,7 @@ public class SettingActivity extends OldBaseActivity implements OnClickListener 
 			
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				storage.setAllowPush(isChecked);
+//				storage.setAllowPush(isChecked);
 			}
 		});
 		
@@ -70,7 +69,8 @@ public class SettingActivity extends OldBaseActivity implements OnClickListener 
 			e.printStackTrace();
 		}
 		
-		if (storage.isAllowPush()) {
+//		if (storage.isAllowPush()) {
+		if (true) {
 			cbAllowPush.setChecked(true);
 		} else {
 			cbAllowPush.setChecked(false);
