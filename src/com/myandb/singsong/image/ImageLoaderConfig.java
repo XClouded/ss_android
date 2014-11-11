@@ -6,7 +6,7 @@ import android.graphics.Bitmap.Config;
 
 import com.myandb.singsong.R;
 import com.myandb.singsong.file.FileManager;
-import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
+import com.nostra13.universalimageloader.cache.disc.impl.TotalSizeLimitedDiscCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -21,7 +21,7 @@ public class ImageLoaderConfig {
 	public static ImageLoaderConfiguration createDefault(Context context) {
 		final int threadPoolSize = 2;
 		final int memoryCacheSize = 3 * 1024 * 1024;
-		final int discCacheSize = 300 * 1024 * 1024;
+		final int discCacheSize = 500 * 1024 * 1024;
 		final int discCacheImageWidth = 480;
 		final int discCacheImageHeight = 800;
 		final int discCacheImageQuality = 95;
@@ -40,9 +40,7 @@ public class ImageLoaderConfig {
 		ImageLoaderConfiguration.Builder builder = new ImageLoaderConfiguration.Builder(context);
 		builder.threadPoolSize(threadPoolSize)
 			.memoryCache(new LruMemoryCache(memoryCacheSize))
-			.memoryCacheSize(memoryCacheSize)
-			.discCache(new UnlimitedDiscCache(FileManager.getSubDirectory(CACHE_DIRECTORY), new Md5FileNameGenerator()))
-			.discCacheSize(discCacheSize)
+			.discCache(new TotalSizeLimitedDiscCache(FileManager.getSubDirectory(CACHE_DIRECTORY), new Md5FileNameGenerator(), discCacheSize))
 			.discCacheExtraOptions(discCacheImageWidth, discCacheImageHeight, CompressFormat.JPEG, discCacheImageQuality, null)
 			.denyCacheImageMultipleSizesInMemory()
 			.tasksProcessingOrder(QueueProcessingType.LIFO)
