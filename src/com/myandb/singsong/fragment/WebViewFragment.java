@@ -2,11 +2,14 @@ package com.myandb.singsong.fragment;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import com.myandb.singsong.R;
 import com.myandb.singsong.secure.Authenticator;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
@@ -32,7 +35,7 @@ public class WebViewFragment extends BaseFragment {
 	}
 	
 	@Override
-	protected void onViewInflated(View view) {
+	protected void onViewInflated(View view, LayoutInflater inflater) {
 		webView = (WebView) view.findViewById(R.id.webview);
 	}
 

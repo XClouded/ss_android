@@ -20,7 +20,7 @@ public abstract class BaseFragment extends Fragment {
 		
 		onArgumentsReceived(getArguments());
 		
-		onViewInflated(view);
+		onViewInflated(view, getLayoutInflater(savedInstanceState));
 	}
 
 	@Override
@@ -46,7 +46,7 @@ public abstract class BaseFragment extends Fragment {
 	
 	protected abstract void onArgumentsReceived(Bundle bundle);
 	
-	protected abstract void onViewInflated(View view);
+	protected abstract void onViewInflated(View view, LayoutInflater inflater);
 	
 	protected abstract void initialize(Activity activity);
 	
