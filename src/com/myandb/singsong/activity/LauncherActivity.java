@@ -57,7 +57,7 @@ public class LauncherActivity extends Activity {
 		try {
 			int latestVersion = response.getInt("latest_version");
 			int forceUpdateVersion = response.getInt("force_update_version");
-			int latestNoticeId = response.getInt("latest_notice_id");
+			int latestNoticeId = 0;/*response.getInt("latest_notice_id");*/
 			
 			PackageHelper packageHelper = new PackageHelper(getPackageManager());
 			int versionCode = packageHelper.getVersionCode(getPackageName());

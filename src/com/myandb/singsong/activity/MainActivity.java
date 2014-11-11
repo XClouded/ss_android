@@ -207,14 +207,6 @@ public class MainActivity extends OldBaseActivity {
 						intent.setClass(MainActivity.this, SearchActivity.class);
 						intent.putExtra(SearchActivity.INTENT_SEARCH_TYPE, SearchType.USER);
 						break;
-						
-					case ARTIST:
-						intent.setClass(MainActivity.this, ArtistActivity.class);
-						break;
-						
-					case NOTICE:
-						intent.setClass(MainActivity.this, NoticeActivity.class);
-						break;
 					
 					case SETTING:
 						intent.setClass(MainActivity.this, SettingActivity.class);

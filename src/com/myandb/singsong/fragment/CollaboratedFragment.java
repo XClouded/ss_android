@@ -3,7 +3,6 @@ package com.myandb.singsong.fragment;
 import java.util.Calendar;
 
 import com.myandb.singsong.R;
-import com.myandb.singsong.activity.ArtistActivity;
 import com.myandb.singsong.activity.SearchActivity;
 import com.myandb.singsong.activity.SearchActivity.SearchType;
 import com.myandb.singsong.adapter.CollaboratedAdapter;
@@ -57,8 +56,8 @@ public class CollaboratedFragment extends Fragment {
 			
 			@Override
 			public void onClick(View arg0) {
-				Intent intent = new Intent(getActivity(), ArtistActivity.class);
-				startActivity(intent);
+//				Intent intent = new Intent(getActivity(), ArtistActivity.class);
+//				startActivity(intent);
 			}
 		});
 		listView.addHeaderView(ivBanner);

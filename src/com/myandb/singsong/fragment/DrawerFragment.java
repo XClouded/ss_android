@@ -3,6 +3,7 @@ package com.myandb.singsong.fragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -33,16 +34,19 @@ public class DrawerFragment extends BaseFragment {
 	}
 	
 	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
-		
+	protected void onArgumentsReceived(Bundle bundle) {
+		// Nothing to run
+	}
+
+	@Override
+	protected void onViewInflated(View view) {
 		ivDrawerUserPhoto = (ImageView) view.findViewById(R.id.iv_drawer_user_photo);
 		tvDrawerUserNickname = (TextView) view.findViewById(R.id.tv_drawer_user_nickname);
 		lvMenu = (ListView) view.findViewById(R.id.lv_menu);
 	}
 
 	@Override
-	protected void initialize(Bundle bundle) {
+	protected void initialize(Activity activity) {
 		makeMenus();
 	}
 	

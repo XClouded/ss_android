@@ -18,7 +18,6 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
-import com.myandb.singsong.activity.ArtistActivity;
 import com.myandb.singsong.activity.ChildSongActivity;
 import com.myandb.singsong.activity.OldBaseActivity;
 import com.myandb.singsong.activity.PlayerActivity;
@@ -47,8 +46,8 @@ public class Listeners {
 				Activity activity = notification.getActivity();
 				
 				if (activity.getSourceType() == Activity.TYPE_RECOMMEND_ARTIST) {
-					Intent intent = new Intent(context, ArtistActivity.class);
-					context.startActivity(intent);
+//					Intent intent = new Intent(context, ArtistActivity.class);
+//					context.startActivity(intent);
 				} else {
 					String url = getUrl(activity);
 					
