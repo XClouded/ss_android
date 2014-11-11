@@ -21,7 +21,7 @@ import com.myandb.singsong.model.Song;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.DownloadManager;
 import com.myandb.singsong.receiver.HeadsetReceiver;
-import com.myandb.singsong.secure.Auth;
+import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.service.PlayerService;
 import com.myandb.singsong.service.SongUploadService;
 import com.myandb.singsong.util.ImageHelper;
@@ -110,7 +110,7 @@ public class RecordMainActivity extends OldBaseActivity {
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		
 		if (!SongUploadService.isServiceRunning()) {
-			currentUser = Auth.getUser();
+			currentUser = Authenticator.getUser();
 			
 			initializeData(getIntent());
 			
@@ -659,7 +659,7 @@ public class RecordMainActivity extends OldBaseActivity {
 	public void onResumeFragments() {
 		super.onResumeFragments();
 		
-		currentUser = Auth.getUser();
+		currentUser = Authenticator.getUser();
 		if (receiver == null) {
 			receiver = new HeadsetReceiver(this);
 		}

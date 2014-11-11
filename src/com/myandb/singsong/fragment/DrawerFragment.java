@@ -17,7 +17,7 @@ import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.adapter.MenuAdapter;
 import com.myandb.singsong.model.GlobalMenu;
 import com.myandb.singsong.model.User;
-import com.myandb.singsong.secure.Auth;
+import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.util.ImageHelper;
 
 public class DrawerFragment extends BaseFragment {
@@ -74,7 +74,7 @@ public class DrawerFragment extends BaseFragment {
 	
 	@Override
 	protected void onDataChanged() {
-		User currentUser = Auth.getUser();
+		User currentUser = Authenticator.getUser();
 		if (currentUser != null) {
 			ImageHelper.displayPhoto(currentUser, ivDrawerUserPhoto);
 			tvDrawerUserNickname.setText(currentUser.getNickname());

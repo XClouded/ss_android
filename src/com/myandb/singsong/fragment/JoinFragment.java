@@ -18,7 +18,7 @@ import com.myandb.singsong.event.OnVolleyWeakError;
 import com.myandb.singsong.event.OnVolleyWeakResponse;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.secure.Auth;
+import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.secure.Encryption;
 import com.myandb.singsong.util.Utility;
 
@@ -65,7 +65,7 @@ public class JoinFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		if (Auth.isLoggedIn()) {
+		if (Authenticator.isLoggedIn()) {
 			getActivity().finish();
 			
 			// Report to server
@@ -340,7 +340,7 @@ public class JoinFragment extends Fragment {
 			User user = gson.fromJson(response.getJSONObject("user").toString(), User.class);
 			String token = response.getString("oauth-token");
 			
-			Auth auth = new Auth();
+			Authenticator auth = new Authenticator();
 			auth.login(user, token);
 			
 			((OldBaseActivity) getActivity()).dismissProgressDialog();

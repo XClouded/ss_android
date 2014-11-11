@@ -3,7 +3,7 @@ package com.myandb.singsong;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.myandb.singsong.image.ImageLoaderConfig;
-import com.myandb.singsong.secure.Auth;
+import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.util.TimeHelper;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -29,7 +29,7 @@ public class App extends Application {
 		
 		ImageLoader.getInstance().init(ImageLoaderConfig.createDefault(this));
 		
-		Auth.initialize(getSharedPreferences(AUTH_PREFERENCE_FILE, Context.MODE_PRIVATE));
+		Authenticator.initialize(getSharedPreferences(AUTH_PREFERENCE_FILE, Context.MODE_PRIVATE));
 		
 		TimeHelper.initialize(getResources());
 	}

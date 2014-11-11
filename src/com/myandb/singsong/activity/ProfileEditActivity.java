@@ -39,7 +39,7 @@ import com.myandb.singsong.model.Profile;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.OAuthJsonObjectRequest;
 import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.secure.Auth;
+import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.secure.Encryption;
 import com.myandb.singsong.util.ImageHelper;
 import com.myandb.singsong.util.ResizeAsyncTask;
@@ -78,7 +78,7 @@ public class ProfileEditActivity extends OldBaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		if (Auth.isLoggedIn()) {
+		if (Authenticator.isLoggedIn()) {
 			handler = new Handler();
 			
 			colorPrimary = getResources().getColor(R.color.font_highlight);
@@ -98,7 +98,7 @@ public class ProfileEditActivity extends OldBaseActivity {
 			etNewPasswordRe = (EditText) findViewById(R.id.et_new_password_re);
 			tvValidNickname = (TextView) findViewById(R.id.tv_valid_nickname);
 
-			currentUser = Auth.getUser();
+			currentUser = Authenticator.getUser();
 			profile = currentUser.getProfile();
 			
 			etNickname.setText(currentUser.getNickname());
@@ -377,7 +377,7 @@ public class ProfileEditActivity extends OldBaseActivity {
 	
 	public void onChangePasswordSuccess(JSONObject response) {
 		try {
-			Auth auth = new Auth();
+			Authenticator auth = new Authenticator();
 			auth.update(response.getString("oauth-token"));
 			
 			etOldPassword.setText("");

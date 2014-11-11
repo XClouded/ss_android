@@ -37,7 +37,7 @@ import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.OAuthJustRequest;
 import com.myandb.singsong.net.DownloadManager;
 import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.secure.Auth;
+import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.util.ImageHelper;
 import com.myandb.singsong.util.ImageHelper.BitmapBuilder;
 import com.myandb.singsong.util.Utility;
@@ -63,7 +63,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 	
 	@Override
 	protected void onMessage(Context context, Intent intent) {
-		if (Auth.isLoggedIn()) {
+		if (Authenticator.isLoggedIn()) {
 			incrementNotificationCount();
 			if (isEnabledNotification()) {
 				try {
@@ -109,7 +109,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 		Activity activity = getActivityFromIntent(intent);
 		Notification notification = new Notification(activity);
 		User creator = activity.getCreator();
-		User currentUser = Auth.getUser();
+		User currentUser = Authenticator.getUser();
 		String message = notification.getContent(currentUser);
 		
 		prepareAndSubmitNotification(creator, message);
@@ -264,7 +264,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 	}
 	
 	private void updateRegistrationId(String registrationId) {
-		if (Auth.isLoggedIn()) {
+		if (Authenticator.isLoggedIn()) {
 			try {
 				UrlBuilder urlBuilder = new UrlBuilder();
 				String url = urlBuilder.s("users").toString();

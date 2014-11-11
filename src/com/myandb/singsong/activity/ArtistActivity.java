@@ -12,7 +12,7 @@ import android.webkit.WebViewClient;
 
 import com.myandb.singsong.R;
 import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.secure.Auth;
+import com.myandb.singsong.secure.Authenticator;
 
 public class ArtistActivity extends OldBaseActivity {
 	
@@ -29,7 +29,7 @@ public class ArtistActivity extends OldBaseActivity {
 		CookieManager.getInstance().removeAllCookie();
 		
 		Map<String, String> header = new HashMap<String, String>();
-		header.put("oauth-token", Auth.getAccessToken());
+		header.put("oauth-token", Authenticator.getAccessToken());
 		
 		UrlBuilder urlBuilder = new UrlBuilder();
 		String url = urlBuilder.s("w").s("apply-candidate").toString();

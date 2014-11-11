@@ -6,7 +6,7 @@ import com.google.gson.Gson;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.util.Utility;
 
-public class Auth {
+public class Authenticator {
 	
 	private static final String KEY_USER = "_useru_";
 	private static final String KEY_ACCESS_TOKEN = "_token_";
@@ -42,7 +42,7 @@ public class Auth {
 	}
 	
 	public static void initialize(SharedPreferences preferences) {
-		Auth.preferences = preferences;
+		Authenticator.preferences = preferences;
 	}
 	
 	public static boolean isLoggedIn() {

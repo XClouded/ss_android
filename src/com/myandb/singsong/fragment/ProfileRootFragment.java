@@ -49,7 +49,7 @@ import com.myandb.singsong.net.OAuthJsonObjectRequest;
 import com.myandb.singsong.net.OAuthJustRequest;
 import com.myandb.singsong.net.UploadManager;
 import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.secure.Auth;
+import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.util.ImageHelper.BitmapBuilder;
 import com.myandb.singsong.util.ImageHelper.BlurAsyncTask;
 import com.myandb.singsong.util.Utility;
@@ -110,7 +110,7 @@ public class ProfileRootFragment extends Fragment {
 		
 		if (thisUser != null) {
 			requestQueue = ((App) getActivity().getApplicationContext()).getQueueInstance();
-			currentUser = Auth.getUser();
+			currentUser = Authenticator.getUser();
 			isCurrentUser = thisUser.getId() == currentUser.getId();
 			isFollowingCurrentState = false;
 			
@@ -187,7 +187,7 @@ public class ProfileRootFragment extends Fragment {
 		
 		if (isCurrentUser) {
 			currentUser.setProfile(profile);
-			Auth auth = new Auth();
+			Authenticator auth = new Authenticator();
 			auth.update(currentUser);
 			
 			onPreparationCompleted();
@@ -316,7 +316,7 @@ public class ProfileRootFragment extends Fragment {
 	
 	public void onCheckActivationResponse(User user) {
 		if (user.isActivated()) {
-			Auth auth = new Auth();
+			Authenticator auth = new Authenticator();
 			auth.update(user);
 			currentUser = user;
 			
@@ -485,7 +485,7 @@ public class ProfileRootFragment extends Fragment {
 					String nickname = data.getStringExtra(INTENT_NICKNAME);
 					String profileInJson = data.getStringExtra(INTENT_PROFILE);
 					MainActivity home = (MainActivity) getActivity();
-					currentUser = Auth.getUser();
+					currentUser = Authenticator.getUser();
 					
 					if (hasPhotoChanged) {
 						UploadManager manager = new UploadManager();
@@ -518,7 +518,7 @@ public class ProfileRootFragment extends Fragment {
 						requestUpdateProfile(profileInJson);
 					}
 					
-					Auth auth = new Auth();
+					Authenticator auth = new Authenticator();
 					auth.update(currentUser);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -568,7 +568,7 @@ public class ProfileRootFragment extends Fragment {
 		}
 		
 		currentUser.setPhotoUrl(user.getPhotoUrl(), user.getPhotoUpdatedAt());
-		Auth auth = new Auth();
+		Authenticator auth = new Authenticator();
 		auth.update(currentUser);
 	}
 	

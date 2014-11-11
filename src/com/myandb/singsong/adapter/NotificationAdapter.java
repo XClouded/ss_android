@@ -14,7 +14,7 @@ import com.myandb.singsong.event.Listeners;
 import com.myandb.singsong.model.Activity;
 import com.myandb.singsong.model.Notification;
 import com.myandb.singsong.model.User;
-import com.myandb.singsong.secure.Auth;
+import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.util.ImageHelper;
 import com.myandb.singsong.util.Utility;
 
@@ -25,7 +25,7 @@ public class NotificationAdapter extends AutoLoadAdapter<Notification> {
 	public NotificationAdapter(Context context) {
 		super(context, Notification.class, true);
 		
-		currentUser = Auth.getUser();
+		currentUser = Authenticator.getUser();
 	}
 
 	@Override

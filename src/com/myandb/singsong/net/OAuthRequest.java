@@ -10,7 +10,7 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.VolleyError;
-import com.myandb.singsong.secure.Auth;
+import com.myandb.singsong.secure.Authenticator;
 
 public abstract class OAuthRequest<T> extends Request<T> {
 	
@@ -29,7 +29,7 @@ public abstract class OAuthRequest<T> extends Request<T> {
 		Map<String, String> headers = new HashMap<String, String>();
 		
 		if (isAccessTokenRequired) {
-			headers.put("oauth-token", Auth.getAccessToken());
+			headers.put("oauth-token", Authenticator.getAccessToken());
 		}
 		
 		return headers;

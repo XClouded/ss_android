@@ -31,7 +31,7 @@ import com.myandb.singsong.model.Song;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.OAuthJsonObjectRequest;
 import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.secure.Auth;
+import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.service.PlayerService;
 import com.myandb.singsong.util.Utility;
 
@@ -183,7 +183,7 @@ public class Listeners {
 			@Override
 			public void onClick(View v) {
 				if (user != null) {
-					User currentUser = Auth.getUser();
+					User currentUser = Authenticator.getUser();
 					
 					if (user.getId() != currentUser.getId()) {
 						Gson gson = Utility.getGsonInstance();

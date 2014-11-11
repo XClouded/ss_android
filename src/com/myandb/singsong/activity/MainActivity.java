@@ -19,7 +19,7 @@ import com.myandb.singsong.fragment.WaitingFragment;
 import com.myandb.singsong.model.OldMenuData;
 import com.myandb.singsong.model.OldMenuData.PageName;
 import com.myandb.singsong.model.Notice;
-import com.myandb.singsong.secure.Auth;
+import com.myandb.singsong.secure.Authenticator;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
@@ -64,7 +64,7 @@ public class MainActivity extends OldBaseActivity {
 		isRunning = true;
 		requestCode = getIntent().getIntExtra(INTENT_PAGE_REQUEST, -1);
 		
-		if (Auth.isLoggedIn()) {
+		if (Authenticator.isLoggedIn()) {
 			
 			initializeMenuData();
 			
@@ -85,7 +85,7 @@ public class MainActivity extends OldBaseActivity {
 	private void initializeMenuData() {
 		menuDatas = new ArrayList<OldMenuData>();
 		
-		menuDatas.add(new OldMenuData(Auth.getUser().getNickname(), null, PageName.MY_PAGE));
+		menuDatas.add(new OldMenuData(Authenticator.getUser().getNickname(), null, PageName.MY_PAGE));
 		menuDatas.add(new OldMenuData("새로운 소식", BitmapFactory.decodeResource(getResources(), R.drawable.ic_megaphone_menu), PageName.NOTIFICATION));
 		menuDatas.add(new OldMenuData("완성된 콜라보 듣기", BitmapFactory.decodeResource(getResources(), R.drawable.ic_collabo_menu), PageName.WORLD_SONG));
 		menuDatas.add(new OldMenuData("MR(반주) 목록", BitmapFactory.decodeResource(getResources(), R.drawable.ic_mic_menu), PageName.MUSIC_LIST));
@@ -166,7 +166,7 @@ public class MainActivity extends OldBaseActivity {
 					switch (menu.getPageName()) {
 					case MY_PAGE:
 						fragment = new ProfileRootFragment();
-						((ProfileRootFragment)fragment).setUser(Auth.getUser());
+						((ProfileRootFragment)fragment).setUser(Authenticator.getUser());
 						break;
 						
 					case WORLD_SONG:
@@ -199,7 +199,7 @@ public class MainActivity extends OldBaseActivity {
 					case NOTIFICATION:
 						intent.setClass(MainActivity.this, SimpleListActivity.class);
 						intent.putExtra(SimpleListActivity.INTENT_LIST_TYPE, SimpleListType.NOTIFICATION);
-						intent.putExtra(SimpleListActivity.INTENT_USER, Auth.getUserInJson());
+						intent.putExtra(SimpleListActivity.INTENT_USER, Authenticator.getUserInJson());
 						
 						break;
 						
@@ -296,7 +296,7 @@ public class MainActivity extends OldBaseActivity {
 	protected void onResumeFragments() {
 		super.onResumeFragments();
 		
-		if (Auth.isLoggedIn()) {
+		if (Authenticator.isLoggedIn()) {
 			if (!performedMenuClick) {
 				int position = 0;
 				

@@ -9,7 +9,7 @@ import com.myandb.singsong.R;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.OAuthJsonObjectRequest;
 import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.secure.Auth;
+import com.myandb.singsong.secure.Authenticator;
 
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,7 +22,7 @@ public abstract class MemberOnlyClickListener implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		this.view = v;
-		User currentUser = Auth.getUser();
+		User currentUser = Authenticator.getUser();
 		
 		if (currentUser.isActivated()) {
 			onActivated(v);
@@ -43,7 +43,7 @@ public abstract class MemberOnlyClickListener implements OnClickListener {
 	
 	public void onCheckActivationResponse(User user) {
 		if (user.isActivated()) {
-			Auth auth = new Auth();
+			Authenticator auth = new Authenticator();
 			auth.update(user);
 			
 			onActivated(view);

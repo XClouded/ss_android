@@ -18,7 +18,7 @@ import com.myandb.singsong.file.FileManager;
 import com.myandb.singsong.net.OAuthJsonObjectRequest;
 import com.myandb.singsong.net.OAuthJustRequest;
 import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.secure.Auth;
+import com.myandb.singsong.secure.Authenticator;
 
 import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -135,7 +135,7 @@ public class SettingActivity extends OldBaseActivity implements OnClickListener 
 	}
 	
 	public void logout() {
-		Auth auth = new Auth();
+		Authenticator auth = new Authenticator();
 		auth.logout();
 		
 		finish();

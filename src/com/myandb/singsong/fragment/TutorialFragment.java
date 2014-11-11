@@ -6,7 +6,7 @@ import java.util.List;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.OldBaseActivity;
 import com.myandb.singsong.pager.TutorialPagerAdapter;
-import com.myandb.singsong.secure.Auth;
+import com.myandb.singsong.secure.Authenticator;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -100,7 +100,7 @@ public class TutorialFragment extends Fragment {
 			if (currentPosition < lastPosition) {
 				viewPager.setCurrentItem(currentPosition + 1);
 			} else if (currentPosition == lastPosition) {
-				if (Auth.isLoggedIn()) {
+				if (Authenticator.isLoggedIn()) {
 					getActivity().finish();
 				} else {
 					try {

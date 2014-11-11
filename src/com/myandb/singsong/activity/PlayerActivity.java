@@ -24,7 +24,7 @@ import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.OAuthJsonObjectRequest;
 import com.myandb.singsong.net.OAuthJustRequest;
 import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.secure.Auth;
+import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.service.PlayerService;
 import com.myandb.singsong.service.PlayerService.IPlayStatusCallback;
 import com.myandb.singsong.util.ImageHelper;
@@ -97,7 +97,7 @@ public class PlayerActivity extends OldBaseActivity {
 		super.onCreate(savedInstanceState);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		
-		currentUser = Auth.getUser();
+		currentUser = Authenticator.getUser();
 		
 		initializeView();
 	}

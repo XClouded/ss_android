@@ -33,7 +33,7 @@ import com.myandb.singsong.file.FileManager;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.DownloadManager;
 import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.secure.Auth;
+import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.secure.Encryption;
 import com.myandb.singsong.util.Utility;
 
@@ -71,7 +71,7 @@ public class LoginFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		if (Auth.isLoggedIn()) {
+		if (Authenticator.isLoggedIn()) {
 			getActivity().finish();
 			
 			// Report to server
@@ -338,7 +338,7 @@ public class LoginFragment extends Fragment {
 			User user = gson.fromJson(response.getJSONObject("user").toString(), User.class);
 			String token = response.getString("oauth-token");
 
-			Auth auth = new Auth();
+			Authenticator auth = new Authenticator();
 			auth.login(user, token);
 			
 			if (user.hasPhoto()) {

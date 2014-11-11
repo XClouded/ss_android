@@ -31,7 +31,7 @@ import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.OAuthJsonObjectRequest;
 import com.myandb.singsong.net.UploadManager;
 import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.secure.Auth;
+import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.service.SongUploadService;
 import com.myandb.singsong.util.ImageHelper;
 import com.myandb.singsong.util.ResizeAsyncTask;
@@ -183,7 +183,7 @@ public class RecordSettingActivity extends OldBaseActivity {
 		private String generateFileName() {
 			String result = "";
 			
-			User currentUser = Auth.getUser();
+			User currentUser = Authenticator.getUser();
 			result += currentUser.getUsername();
 			result += "_";
 			result += String.valueOf(System.currentTimeMillis());
