@@ -5,9 +5,9 @@ import java.io.IOException;
 
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
+import com.myandb.singsong.image.BitmapBuilder;
 import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Song;
-import com.myandb.singsong.util.ImageHelper.BitmapBuilder;
 import com.myandb.singsong.util.PlayCounter;
 import com.myandb.singsong.util.Utility;
 import com.nostra13.universalimageloader.core.ImageLoader;

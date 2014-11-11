@@ -25,6 +25,7 @@ import com.myandb.singsong.event.OnVolleyWeakError;
 import com.myandb.singsong.event.OnVolleyWeakResponse;
 import com.myandb.singsong.event.WeakRunnable;
 import com.myandb.singsong.file.FileManager;
+import com.myandb.singsong.image.ResizeAsyncTask;
 import com.myandb.singsong.model.Image;
 import com.myandb.singsong.model.Model;
 import com.myandb.singsong.model.User;
@@ -34,7 +35,6 @@ import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.service.SongUploadService;
 import com.myandb.singsong.util.ImageHelper;
-import com.myandb.singsong.util.ResizeAsyncTask;
 
 import android.app.Activity;
 import android.content.Intent;

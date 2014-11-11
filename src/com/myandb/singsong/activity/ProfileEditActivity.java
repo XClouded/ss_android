@@ -35,6 +35,7 @@ import com.myandb.singsong.event.OnVolleyWeakError;
 import com.myandb.singsong.event.OnVolleyWeakResponse;
 import com.myandb.singsong.file.FileManager;
 import com.myandb.singsong.fragment.ProfileRootFragment;
+import com.myandb.singsong.image.ResizeAsyncTask;
 import com.myandb.singsong.model.Profile;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.OAuthJsonObjectRequest;
@@ -42,7 +43,6 @@ import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.secure.Encryption;
 import com.myandb.singsong.util.ImageHelper;
-import com.myandb.singsong.util.ResizeAsyncTask;
 import com.myandb.singsong.util.Utility;
 
 public class ProfileEditActivity extends OldBaseActivity {

@@ -1,4 +1,4 @@
-package com.myandb.singsong.util;
+package com.myandb.singsong.image;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -17,7 +17,6 @@ import android.os.AsyncTask;
 import android.widget.ImageView;
 
 import com.myandb.singsong.file.FileManager;
-import com.myandb.singsong.util.ImageHelper.BitmapBuilder;
 
 public class ResizeAsyncTask extends AsyncTask<InputStream, Integer, Bitmap> {
 

@@ -15,13 +15,13 @@ import com.myandb.singsong.audio.Encoder;
 import com.myandb.singsong.event.OnCompleteListener;
 import com.myandb.singsong.event.OnProgressListener;
 import com.myandb.singsong.file.FileManager;
+import com.myandb.singsong.image.BitmapBuilder;
 import com.myandb.singsong.model.Model;
 import com.myandb.singsong.model.Music;
 import com.myandb.singsong.net.OAuthJsonObjectRequest;
 import com.myandb.singsong.net.UploadManager;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.util.StringFormatter;
-import com.myandb.singsong.util.ImageHelper.BitmapBuilder;
 
 import android.app.Notification;
 import android.app.NotificationManager;
