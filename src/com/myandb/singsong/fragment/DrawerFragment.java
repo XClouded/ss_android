@@ -15,10 +15,10 @@ import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.adapter.MenuAdapter;
+import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.GlobalMenu;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.secure.Authenticator;
-import com.myandb.singsong.util.ImageHelper;
 
 public class DrawerFragment extends BaseFragment {
 	

@@ -5,7 +5,7 @@ import android.view.Window;
 import android.widget.ImageView;
 
 import com.myandb.singsong.R;
-import com.myandb.singsong.util.ImageHelper;
+import com.myandb.singsong.image.ImageHelper;
 
 public class PhotoSlideActivity extends OldBaseActivity {
 	

@@ -11,8 +11,8 @@ import android.widget.TextView;
 
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.PlayerActivity;
+import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.User;
-import com.myandb.singsong.util.ImageHelper;
 
 public class KakaotalkDialog extends BaseDiaglog {
 	

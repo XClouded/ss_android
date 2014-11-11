@@ -4,8 +4,8 @@ import java.util.List;
 
 import com.myandb.singsong.R;
 import com.myandb.singsong.event.Listeners;
+import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Music;
-import com.myandb.singsong.util.ImageHelper;
 
 import android.content.Context;
 import android.content.Intent;

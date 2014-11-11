@@ -12,9 +12,9 @@ import com.myandb.singsong.adapter.MyCommentAdapter;
 import com.myandb.singsong.adapter.MyLikeSongAdapter;
 import com.myandb.singsong.adapter.MySongAdapter;
 import com.myandb.singsong.adapter.NotificationAdapter;
+import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.util.ImageHelper;
 import com.myandb.singsong.util.Utility;
 import com.myandb.singsong.widget.AutoLoadListView;
 

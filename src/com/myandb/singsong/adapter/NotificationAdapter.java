@@ -11,11 +11,11 @@ import android.widget.TextView;
 
 import com.myandb.singsong.R;
 import com.myandb.singsong.event.Listeners;
+import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Activity;
 import com.myandb.singsong.model.Notification;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.secure.Authenticator;
-import com.myandb.singsong.util.ImageHelper;
 import com.myandb.singsong.util.Utility;
 
 public class NotificationAdapter extends AutoLoadAdapter<Notification> {

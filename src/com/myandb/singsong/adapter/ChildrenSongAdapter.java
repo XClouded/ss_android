@@ -2,9 +2,9 @@ package com.myandb.singsong.adapter;
 
 import com.myandb.singsong.R;
 import com.myandb.singsong.event.Listeners;
+import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Song;
 import com.myandb.singsong.model.User;
-import com.myandb.singsong.util.ImageHelper;
 
 import android.content.Context;
 import android.view.View;

@@ -32,6 +32,7 @@ import com.myandb.singsong.activity.RecordMainActivity;
 import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.event.OnCompleteListener;
 import com.myandb.singsong.image.BitmapBuilder;
+import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Activity;
 import com.myandb.singsong.model.Notification;
 import com.myandb.singsong.model.User;
@@ -39,7 +40,6 @@ import com.myandb.singsong.net.OAuthJustRequest;
 import com.myandb.singsong.net.DownloadManager;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
-import com.myandb.singsong.util.ImageHelper;
 import com.myandb.singsong.util.Utility;
 
 public class GCMIntentService extends GCMBaseIntentService {

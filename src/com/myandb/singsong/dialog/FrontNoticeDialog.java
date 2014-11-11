@@ -5,8 +5,8 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.myandb.singsong.R;
+import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Notice;
-import com.myandb.singsong.util.ImageHelper;
 
 public class FrontNoticeDialog extends BaseDiaglog {
 	
