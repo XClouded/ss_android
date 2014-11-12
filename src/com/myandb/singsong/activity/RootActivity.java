@@ -1,6 +1,8 @@
 package com.myandb.singsong.activity;
 
+import com.google.android.gcm.GCMRegistrar;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.myandb.singsong.GCMIntentService;
 import com.myandb.singsong.R;
 import com.myandb.singsong.fragment.DrawerFragment;
 import com.myandb.singsong.service.PlayerService;
@@ -39,6 +41,8 @@ public class RootActivity extends BaseActivity {
 		configureDrawer();
 		
 		startPlayerService();
+		
+		registerGcm();
 		
 		replaceContentFragmentFromIntent(getIntent());
 	}
@@ -115,6 +119,22 @@ public class RootActivity extends BaseActivity {
 	private void startPlayerService() {
 		Intent playerIntent = new Intent(this, PlayerService.class);
 		startService(playerIntent);
+	}
+	
+	private void registerGcm() {
+		try {
+			GCMRegistrar.checkDevice(this);
+			GCMRegistrar.checkManifest(this);
+			String registrationId = GCMRegistrar.getRegistrationId(this);
+			
+			if ("".equals(registrationId)) {
+				GCMRegistrar.register(this, GCMIntentService.PROJECT_ID);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			// Device does not have package com.google.android.gsf
+			// This will not happened
+		}
 	}
 	
 	@Override
