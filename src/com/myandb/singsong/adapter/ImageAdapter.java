@@ -9,8 +9,8 @@ import android.widget.TextView;
 
 import com.myandb.singsong.R;
 import com.myandb.singsong.dialog.ImageSelectDialog;
+import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Image;
-import com.myandb.singsong.util.ImageHelper;
 
 public class ImageAdapter extends AutoLoadAdapter<Image> {
 	

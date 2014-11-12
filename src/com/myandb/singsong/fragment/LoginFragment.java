@@ -24,7 +24,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
-import com.myandb.singsong.activity.BaseActivity;
+import com.myandb.singsong.activity.OldBaseActivity;
 import com.myandb.singsong.activity.MainActivity;
 import com.myandb.singsong.event.OnVolleyWeakError;
 import com.myandb.singsong.event.OnVolleyWeakResponse;
@@ -33,7 +33,7 @@ import com.myandb.singsong.file.FileManager;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.DownloadManager;
 import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.secure.Auth;
+import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.secure.Encryption;
 import com.myandb.singsong.util.Utility;
 
@@ -71,7 +71,7 @@ public class LoginFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		if (Auth.isLoggedIn()) {
+		if (Authenticator.isLoggedIn()) {
 			getActivity().finish();
 			
 			// Report to server
@@ -121,7 +121,7 @@ public class LoginFragment extends Fragment {
 			
 			@Override
 			public void onClick(View v) {
-				BaseActivity parent = (BaseActivity) getActivity();
+				OldBaseActivity parent = (OldBaseActivity) getActivity();
 				
 				if (parent != null) {
 					parent.replaceFragment(new JoinFragment());				
@@ -129,9 +129,9 @@ public class LoginFragment extends Fragment {
 			}
 		});
 		
-		UrlBuilder urlBuilder = UrlBuilder.getInstance();
+		UrlBuilder urlBuilder = new UrlBuilder();
 		String findHtml = "비밀번호가 기억이 안나시나요? ";
-		findHtml += Utility.getHtmlAnchor(urlBuilder.l("w").l("find_password").build(), "비밀번호 찾기");
+		findHtml += Utility.getHtmlAnchor(urlBuilder.s("w").s("find_password").toString(), "비밀번호 찾기");
 		
 		tvFindPassword.setMovementMethod(LinkMovementMethod.getInstance());
 		tvFindPassword.setText(Html.fromHtml(findHtml));
@@ -317,12 +317,12 @@ public class LoginFragment extends Fragment {
 	}
 	
 	private void requestLogin(JSONObject message) {
-		BaseActivity parent = (BaseActivity) getActivity();
+		OldBaseActivity parent = (OldBaseActivity) getActivity();
 		parent.showProgressDialog();
 		
-		UrlBuilder urlBuilder = UrlBuilder.getInstance();
+		UrlBuilder urlBuilder = new UrlBuilder();
 		JsonObjectRequest request = new JsonObjectRequest(
-				Method.POST, urlBuilder.l("token").build(), message,
+				Method.POST, urlBuilder.s("token").toString(), message,
 				new OnVolleyWeakResponse<LoginFragment, JSONObject>(this, "onLoginSuccess"),
 				new OnVolleyWeakError<LoginFragment>(this, "onLoginError")
 		);
@@ -338,7 +338,7 @@ public class LoginFragment extends Fragment {
 			User user = gson.fromJson(response.getJSONObject("user").toString(), User.class);
 			String token = response.getString("oauth-token");
 
-			Auth auth = new Auth();
+			Authenticator auth = new Authenticator();
 			auth.login(user, token);
 			
 			if (user.hasPhoto()) {
@@ -364,7 +364,7 @@ public class LoginFragment extends Fragment {
 	}
 	
 	public void onLoginComplete() {
-		((BaseActivity) getActivity()).dismissProgressDialog();
+		((OldBaseActivity) getActivity()).dismissProgressDialog();
 		
 		Intent intent = new Intent(getActivity(), MainActivity.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -373,9 +373,9 @@ public class LoginFragment extends Fragment {
 	}
 	
 	public void onLoginError() {
-		((BaseActivity) getActivity()).dismissProgressDialog();
+		((OldBaseActivity) getActivity()).dismissProgressDialog();
 
-		Toast.makeText(getActivity(), "로그인에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+		Toast.makeText(getActivity(), getString(R.string.t_login_failed), Toast.LENGTH_SHORT).show();
 	}
 
 }

@@ -6,7 +6,7 @@ import android.support.v4.app.Fragment;
 import com.myandb.singsong.R;
 import com.myandb.singsong.fragment.TutorialFragment;
 
-public class GuideActivity extends BaseActivity {
+public class GuideActivity extends OldBaseActivity {
 	
 	private static final String TAG = "tutorial";
 	

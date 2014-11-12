@@ -11,15 +11,15 @@ import com.google.gson.Gson;
 import com.myandb.singsong.R;
 import com.myandb.singsong.adapter.ChildrenSongAdapter;
 import com.myandb.singsong.event.Listeners;
+import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Song;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.util.ImageHelper;
 import com.myandb.singsong.util.Utility;
 import com.myandb.singsong.widget.AutoLoadListView;
 
-public class ChildSongActivity extends BaseActivity {
+public class ChildSongActivity extends OldBaseActivity {
 	
 	public static final String INTENT_PARENT_SONG = "_parent_song_";
 	
@@ -64,8 +64,8 @@ public class ChildSongActivity extends BaseActivity {
 			ChildrenSongAdapter adapter = new ChildrenSongAdapter(this);
 			listView.setAdapter(adapter);
 			
-			UrlBuilder builder = UrlBuilder.create();
-			builder.l("songs").l(parentSong.getId()).l("children");
+			UrlBuilder builder = new UrlBuilder();
+			builder.s("songs").s(parentSong.getId()).s("children");
 			adapter.resetRequest(builder);
 		} else {
 			finish();

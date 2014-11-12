@@ -56,8 +56,8 @@ public class ImageSelectDialog extends BaseDiaglog {
 	public void show() {
 		super.show();
 		
-		UrlBuilder urlBuilder = UrlBuilder.create();
-		urlBuilder.l("images");
+		UrlBuilder urlBuilder = new UrlBuilder();
+		urlBuilder.s("images");
 		
 		adapter.resetRequest(urlBuilder);
 	}

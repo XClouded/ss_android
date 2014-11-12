@@ -1,7 +1,7 @@
 package com.myandb.singsong.pager;
 
 import com.myandb.singsong.R;
-import com.myandb.singsong.util.ImageHelper.BitmapBuilder;
+import com.myandb.singsong.image.BitmapBuilder;
 
 import android.content.Context;
 import android.graphics.Bitmap;

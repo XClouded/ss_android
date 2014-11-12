@@ -12,14 +12,13 @@ import com.myandb.singsong.adapter.MyCommentAdapter;
 import com.myandb.singsong.adapter.MyLikeSongAdapter;
 import com.myandb.singsong.adapter.MySongAdapter;
 import com.myandb.singsong.adapter.NotificationAdapter;
-import com.myandb.singsong.file.Storage;
+import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.util.ImageHelper;
 import com.myandb.singsong.util.Utility;
 import com.myandb.singsong.widget.AutoLoadListView;
 
-public class SimpleListActivity extends BaseActivity {
+public class SimpleListActivity extends OldBaseActivity {
 	
 	public enum SimpleListType {
 		FOLLOWINGS, FOLLOWERS, LIKINGS, COMMENTS, TRASHED, NOTIFICATION
@@ -58,8 +57,8 @@ public class SimpleListActivity extends BaseActivity {
 		}
 		
 		if (listType.equals(SimpleListType.NOTIFICATION)) {
-			Storage storage = new Storage();
-			storage.readAllNoti();
+//			FileHelper storage = new FileHelper();
+//			storage.readAllNoti();
 		}
 		
 		UrlBuilder urlBuilder = getUrlBuilder(listType, user);
@@ -124,27 +123,27 @@ public class SimpleListActivity extends BaseActivity {
 	}
 	
 	private UrlBuilder getUrlBuilder(SimpleListType type, User user) {
-		UrlBuilder urlBuilder = UrlBuilder.create();
-		urlBuilder.l("users").l(user.getId());
+		UrlBuilder urlBuilder = new UrlBuilder();
+		urlBuilder.s("users").s(user.getId());
 		
 		switch (type) {
 		case FOLLOWINGS:
-			return urlBuilder.l("followings").q("req[]", "profile").q("order", "friendships.created_at");
+			return urlBuilder.s("followings").p("req[]", "profile").p("order", "friendships.created_at");
 			
 		case FOLLOWERS:
-			return urlBuilder.l("followers").q("req[]", "profile").q("order", "friendships.created_at");
+			return urlBuilder.s("followers").p("req[]", "profile").p("order", "friendships.created_at");
 			
 		case LIKINGS:
-			return urlBuilder.l("songs").l("likings").q("order", "created_at");
+			return urlBuilder.s("songs").s("likings").p("order", "created_at");
 			
 		case COMMENTS:
-			return urlBuilder.l("songs").l("comments").q("order", "created_at");
+			return urlBuilder.s("songs").s("comments").p("order", "created_at");
 			
 		case TRASHED:
-			return urlBuilder.l("songs").l("trash").q("order", "deleted_at");
+			return urlBuilder.s("songs").s("trash").p("order", "deleted_at");
 			
 		case NOTIFICATION:
-			return urlBuilder.l("notifications").q("order", "updated_at");
+			return urlBuilder.s("notifications").p("order", "updated_at");
 			
 		default:
 			return null;

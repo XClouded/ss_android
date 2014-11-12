@@ -16,18 +16,18 @@ import com.myandb.singsong.event.OnCompleteWeakListener;
 import com.myandb.singsong.event.OnProgressWeakListener;
 import com.myandb.singsong.event.WeakRunnable;
 import com.myandb.singsong.file.FileManager;
+import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Song;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.DownloadManager;
 import com.myandb.singsong.receiver.HeadsetReceiver;
-import com.myandb.singsong.secure.Auth;
+import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.service.PlayerService;
 import com.myandb.singsong.service.SongUploadService;
-import com.myandb.singsong.util.ImageHelper;
-import com.myandb.singsong.util.Logger;
+import com.myandb.singsong.util.PlayCounter;
 import com.myandb.singsong.util.LrcDisplayer;
-import com.myandb.singsong.util.TimeHelper;
+import com.myandb.singsong.util.StringFormatter;
 import com.myandb.singsong.util.Utility;
 import com.myandb.singsong.widget.CountViewFactory;
 import com.myandb.singsong.widget.SlideAnimation;
@@ -51,7 +51,7 @@ import android.widget.ScrollView;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 
-public class RecordMainActivity extends BaseActivity {
+public class RecordMainActivity extends OldBaseActivity {
 	
 	public static final String INTENT_MUSIC = "_music_";
 	public static final String INTENT_PARENT_SONG = "_parent_song_";
@@ -110,7 +110,7 @@ public class RecordMainActivity extends BaseActivity {
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		
 		if (!SongUploadService.isServiceRunning()) {
-			currentUser = Auth.getUser();
+			currentUser = Authenticator.getUser();
 			
 			initializeData(getIntent());
 			
@@ -431,8 +431,8 @@ public class RecordMainActivity extends BaseActivity {
 		setupLoadingDialogForDecode();
 		startDecoding();
 		
-		int duration = (int) TimeHelper.getDuration(FileManager.getSecure(FileManager.MUSIC_OGG));
-		tvEndTime.setText(TimeHelper.getDuration(duration));
+		int duration = (int) StringFormatter.getDuration(FileManager.getSecure(FileManager.MUSIC_OGG));
+		tvEndTime.setText(StringFormatter.getDuration(duration));
 		pbPlayProgress.setMax(duration);
 	}
 	
@@ -606,7 +606,7 @@ public class RecordMainActivity extends BaseActivity {
 					ivThisUserBackground.startAnimation(blink);
 					
 					if (music != null) {
-						Logger.countAsync(RecordMainActivity.this, "musics", music.getId());
+						PlayCounter.countAsync(RecordMainActivity.this, "musics", music.getId());
 					}
 					
 					break;
@@ -634,7 +634,7 @@ public class RecordMainActivity extends BaseActivity {
 	public void updateAudioProgress() {
 		if (recorder != null && recorder.isRecording()) {
 			int position = recorder.getCurrentPosition();
-			tvStartTime.setText(TimeHelper.getDuration(position));
+			tvStartTime.setText(StringFormatter.getDuration(position));
 			pbPlayProgress.setProgress(position);
 			
 			Runnable r = new ProgressRunnable(this);
@@ -659,7 +659,7 @@ public class RecordMainActivity extends BaseActivity {
 	public void onResumeFragments() {
 		super.onResumeFragments();
 		
-		currentUser = Auth.getUser();
+		currentUser = Authenticator.getUser();
 		if (receiver == null) {
 			receiver = new HeadsetReceiver(this);
 		}

@@ -2,7 +2,7 @@ package com.myandb.singsong.model;
 
 import android.graphics.Bitmap;
 
-public class MenuData {
+public class OldMenuData {
 	
 	public enum PageName { MY_PAGE, NOTIFICATION, WORLD_SONG, MUSIC_LIST,WAITING_COLLABO, LEGEND, FIND_USER, NOTICE, ARTIST, SETTING }
 	
@@ -14,7 +14,7 @@ public class MenuData {
 	private PageName pageName;
 	private int pageType;
 	
-	public MenuData(String out, Bitmap icon, PageName pageName) {
+	public OldMenuData(String out, Bitmap icon, PageName pageName) {
 		this.outText = out;
 		this.icon = icon;
 		this.pageName = pageName;

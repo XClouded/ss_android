@@ -41,6 +41,8 @@ import com.myandb.singsong.event.OnCompleteListener;
 import com.myandb.singsong.event.OnVolleyWeakError;
 import com.myandb.singsong.event.OnVolleyWeakResponse;
 import com.myandb.singsong.file.FileManager;
+import com.myandb.singsong.image.BitmapBuilder;
+import com.myandb.singsong.image.BlurAsyncTask;
 import com.myandb.singsong.model.Friendship;
 import com.myandb.singsong.model.Model;
 import com.myandb.singsong.model.Profile;
@@ -49,9 +51,7 @@ import com.myandb.singsong.net.OAuthJsonObjectRequest;
 import com.myandb.singsong.net.OAuthJustRequest;
 import com.myandb.singsong.net.UploadManager;
 import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.secure.Auth;
-import com.myandb.singsong.util.ImageHelper.BitmapBuilder;
-import com.myandb.singsong.util.ImageHelper.BlurAsyncTask;
+import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.util.Utility;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.DiscCacheUtil;
@@ -110,7 +110,7 @@ public class ProfileRootFragment extends Fragment {
 		
 		if (thisUser != null) {
 			requestQueue = ((App) getActivity().getApplicationContext()).getQueueInstance();
-			currentUser = Auth.getUser();
+			currentUser = Authenticator.getUser();
 			isCurrentUser = thisUser.getId() == currentUser.getId();
 			isFollowingCurrentState = false;
 			
@@ -170,8 +170,8 @@ public class ProfileRootFragment extends Fragment {
 	}
 	
 	private void loadProfileData() {
-		UrlBuilder urlBuilder = UrlBuilder.getInstance();
-		String url = urlBuilder.l("users").l(thisUser.getId()).l("profile").build();
+		UrlBuilder urlBuilder = new UrlBuilder();
+		String url = urlBuilder.s("users").s(thisUser.getId()).s("profile").toString();
 		
 		OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
 				Method.GET, url, null,
@@ -187,13 +187,13 @@ public class ProfileRootFragment extends Fragment {
 		
 		if (isCurrentUser) {
 			currentUser.setProfile(profile);
-			Auth auth = new Auth();
+			Authenticator auth = new Authenticator();
 			auth.update(currentUser);
 			
 			onPreparationCompleted();
 		} else {
-			UrlBuilder urlBuilder = UrlBuilder.getInstance();
-			String url = urlBuilder.l("friendships").l(thisUser.getId()).build();
+			UrlBuilder urlBuilder = new UrlBuilder();
+			String url = urlBuilder.s("friendships").s(thisUser.getId()).toString();
 			
 			OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
 					Method.GET, url, null,
@@ -206,7 +206,7 @@ public class ProfileRootFragment extends Fragment {
 	}
 	
 	public void onGetProfileError() {
-		Toast.makeText(getActivity(), "네트워크 상태가 좋지 않습니다. 잠시 후에 다시 이용해주세요.", Toast.LENGTH_SHORT).show();
+		Toast.makeText(getActivity(), getString(R.string.t_poor_network_connection), Toast.LENGTH_SHORT).show();
 		
 		getActivity().finish();
 	}
@@ -295,15 +295,15 @@ public class ProfileRootFragment extends Fragment {
 	}
 	
 	private void loadUserSong() {
-		UrlBuilder urlBuilder = UrlBuilder.create();
-		urlBuilder.l("users").l(thisUser.getId()).l("songs").l("all").q("order", "created_at");
+		UrlBuilder urlBuilder = new UrlBuilder();
+		urlBuilder.s("users").s(thisUser.getId()).s("songs").s("all").p("order", "created_at");
 		adapter = new MySongAdapter(getActivity(), urlBuilder, isCurrentUser, false);
 		listView.setAdapter(adapter);
 	}
 	
 	private void checkUserActivation() {
-		UrlBuilder urlBuilder = UrlBuilder.getInstance();
-		String url = urlBuilder.l("users").l(currentUser.getId()).build();
+		UrlBuilder urlBuilder = new UrlBuilder();
+		String url = urlBuilder.s("users").s(currentUser.getId()).toString();
 		
 		OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
 				Method.GET, url, null,
@@ -316,7 +316,7 @@ public class ProfileRootFragment extends Fragment {
 	
 	public void onCheckActivationResponse(User user) {
 		if (user.isActivated()) {
-			Auth auth = new Auth();
+			Authenticator auth = new Authenticator();
 			auth.update(user);
 			currentUser = user;
 			
@@ -328,13 +328,13 @@ public class ProfileRootFragment extends Fragment {
 				
 				@Override
 				public void onClick(View v) {
-					UrlBuilder urlBuilder = UrlBuilder.getInstance();
-					String url = urlBuilder.l("activations").build();
+					UrlBuilder urlBuilder = new UrlBuilder();
+					String url = urlBuilder.s("activations").toString();
 					
 					OAuthJustRequest request = new OAuthJustRequest(Method.POST, url, null);
 					requestQueue.add(request);
 					
-					Toast.makeText(getActivity(), "인증 이메일이 발송되었습니다.", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), getString(R.string.t_activation_email_send), Toast.LENGTH_SHORT).show();
 				}
 			});
 		}
@@ -370,8 +370,8 @@ public class ProfileRootFragment extends Fragment {
 		
 		@Override
 		public void onActivated(View v) {
-			UrlBuilder urlBuilder = UrlBuilder.getInstance();
-			String url = urlBuilder.l("friendships").l(thisUser.getId()).build();
+			UrlBuilder urlBuilder = new UrlBuilder();
+			String url = urlBuilder.s("friendships").s(thisUser.getId()).toString();
 			
 			OAuthJustRequest request = new OAuthJustRequest(Method.POST, url, null);
 			requestQueue.add(request);
@@ -485,7 +485,7 @@ public class ProfileRootFragment extends Fragment {
 					String nickname = data.getStringExtra(INTENT_NICKNAME);
 					String profileInJson = data.getStringExtra(INTENT_PROFILE);
 					MainActivity home = (MainActivity) getActivity();
-					currentUser = Auth.getUser();
+					currentUser = Authenticator.getUser();
 					
 					if (hasPhotoChanged) {
 						UploadManager manager = new UploadManager();
@@ -518,7 +518,7 @@ public class ProfileRootFragment extends Fragment {
 						requestUpdateProfile(profileInJson);
 					}
 					
-					Auth auth = new Auth();
+					Authenticator auth = new Authenticator();
 					auth.update(currentUser);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -540,8 +540,8 @@ public class ProfileRootFragment extends Fragment {
 						JSONObject message = new JSONObject();
 						message.put("main_photo_url", photoUrl);
 						
-						UrlBuilder urlBuilder = UrlBuilder.getInstance();
-						String url = urlBuilder.l("users").build();
+						UrlBuilder urlBuilder = new UrlBuilder();
+						String url = urlBuilder.s("users").toString();
 						OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
 								Method.PUT, url, message,
 								new OnVolleyWeakResponse<ProfileRootFragment, JSONObject>(ProfileRootFragment.this, "onDataUploadSuccess", User.class),
@@ -568,18 +568,18 @@ public class ProfileRootFragment extends Fragment {
 		}
 		
 		currentUser.setPhotoUrl(user.getPhotoUrl(), user.getPhotoUpdatedAt());
-		Auth auth = new Auth();
+		Authenticator auth = new Authenticator();
 		auth.update(currentUser);
 	}
 	
 	private void onUploadError() {
-		Toast.makeText(getActivity(), "업로드에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+		Toast.makeText(getActivity(), getString(R.string.t_upload_failed), Toast.LENGTH_SHORT).show();
 	}
 	
 	private void requestUpdateNickname(String nickname) {
 		try {
-			UrlBuilder urlBuilder = UrlBuilder.getInstance();
-			String url = urlBuilder.l("users").build();
+			UrlBuilder urlBuilder = new UrlBuilder();
+			String url = urlBuilder.s("users").toString();
 			
 			JSONObject message = new JSONObject();
 			message.put("nickname", nickname);
@@ -593,8 +593,8 @@ public class ProfileRootFragment extends Fragment {
 	
 	private void requestUpdateProfile(String profileInJson) {
 		try {
-			UrlBuilder urlBuilder = UrlBuilder.getInstance();
-			String url = urlBuilder.l("profile").build();
+			UrlBuilder urlBuilder = new UrlBuilder();
+			String url = urlBuilder.s("profile").toString();
 			JSONObject message = new JSONObject(profileInJson);
 			
 			OAuthJustRequest request = new OAuthJustRequest(Method.PUT, url, message);

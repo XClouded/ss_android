@@ -5,7 +5,7 @@ import java.util.Date;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.myandb.singsong.util.TimeHelper;
+import com.myandb.singsong.util.StringFormatter;
 
 public class Notification extends Model {
 
@@ -101,7 +101,7 @@ public class Notification extends Model {
 	}
 	
 	public String getWorkedCreatedTime(Date currentDate) {
-		return TimeHelper.getTimeLag(currentDate, updated_at);
+		return StringFormatter.getTimeLag(currentDate, updated_at);
 	}
 	
 }

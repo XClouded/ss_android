@@ -14,7 +14,7 @@ import com.android.volley.RequestQueue;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.myandb.singsong.App;
-import com.myandb.singsong.activity.BaseActivity;
+import com.myandb.singsong.activity.OldBaseActivity;
 import com.myandb.singsong.event.OnVolleyWeakError;
 import com.myandb.singsong.event.OnVolleyWeakResponse;
 import com.myandb.singsong.net.OAuthJsonArrayRequest;
@@ -28,7 +28,7 @@ public abstract class AutoLoadAdapter<T> extends BaseAdapter {
 	
 	protected List<T> datas;
 	private Date currentDate;
-	private BaseActivity parent;
+	private OldBaseActivity parent;
 	private Context context;
 	private boolean append  		   	= false;
 	private boolean loading 		   	= false;
@@ -47,8 +47,8 @@ public abstract class AutoLoadAdapter<T> extends BaseAdapter {
 		currentDate = new Date();
 		datas = new ArrayList<T>();
 		
-		if (context instanceof BaseActivity) {
-			parent = (BaseActivity) context;
+		if (context instanceof OldBaseActivity) {
+			parent = (OldBaseActivity) context;
 		}
 	}
 	
@@ -64,9 +64,7 @@ public abstract class AutoLoadAdapter<T> extends BaseAdapter {
 			endOfList = false;
 			
 			try {
-				if (urlBuilder.hasParam("take")) {
-					initialLoadNum = Integer.parseInt(urlBuilder.getParam("take"));
-				}
+				initialLoadNum = Integer.parseInt(urlBuilder.getParam("take"));
 			} catch (NumberFormatException e) {
 				initialLoadNum = INITIAL_LOAD_NUM;
 			}
@@ -142,7 +140,7 @@ public abstract class AutoLoadAdapter<T> extends BaseAdapter {
 			requiredTake = take;
 			
 			OAuthJsonArrayRequest request = new OAuthJsonArrayRequest(
-					urlBuilder.build(true),
+					urlBuilder.toString(),
 					new OnVolleyWeakResponse<AutoLoadAdapter<T>, JSONArray>(this, "onLoadResponse"),
 					new OnVolleyWeakError<AutoLoadAdapter<T>>(this, "onLoadError")
 			);

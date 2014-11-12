@@ -25,16 +25,16 @@ import com.myandb.singsong.event.OnVolleyWeakError;
 import com.myandb.singsong.event.OnVolleyWeakResponse;
 import com.myandb.singsong.event.WeakRunnable;
 import com.myandb.singsong.file.FileManager;
+import com.myandb.singsong.image.ImageHelper;
+import com.myandb.singsong.image.ResizeAsyncTask;
 import com.myandb.singsong.model.Image;
 import com.myandb.singsong.model.Model;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.OAuthJsonObjectRequest;
 import com.myandb.singsong.net.UploadManager;
 import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.secure.Auth;
+import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.service.SongUploadService;
-import com.myandb.singsong.util.ImageHelper;
-import com.myandb.singsong.util.ResizeAsyncTask;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -54,7 +54,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class RecordSettingActivity extends BaseActivity {
+public class RecordSettingActivity extends OldBaseActivity {
 	
 	public static final int R_CODE_PHOTO_PICKER = 100;
 	
@@ -176,14 +176,14 @@ public class RecordSettingActivity extends BaseActivity {
 					finishWithSongUploadResult();
 				}
 			} else {
-				Toast.makeText(RecordSettingActivity.this, "30초 이상 불러주세요 :)", Toast.LENGTH_SHORT).show();
+				Toast.makeText(RecordSettingActivity.this, getString(R.string.t_song_length_policy), Toast.LENGTH_SHORT).show();
 			}
 		}
 		
 		private String generateFileName() {
 			String result = "";
 			
-			User currentUser = Auth.getUser();
+			User currentUser = Authenticator.getUser();
 			result += currentUser.getUsername();
 			result += "_";
 			result += String.valueOf(System.currentTimeMillis());
@@ -203,8 +203,8 @@ public class RecordSettingActivity extends BaseActivity {
 						JSONObject message = new JSONObject();
 						message.put("url", Model.STORAGE_HOST + Model.STORAGE_IMAGE + imageName);
 						
-						UrlBuilder urlBuilder = UrlBuilder.getInstance();
-						String url = urlBuilder.l("images").build();
+						UrlBuilder urlBuilder = new UrlBuilder();
+						String url = urlBuilder.s("images").toString();
 						OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
 								Method.POST, url, message,
 								new OnVolleyWeakResponse<RecordSettingActivity, JSONObject>(RecordSettingActivity.this, "onUploadSuccess", Image.class),
@@ -230,8 +230,7 @@ public class RecordSettingActivity extends BaseActivity {
 	}
 	
 	public void onUploadError() {
-		Toast.makeText(this, "업로드에 실패하였습니다.", Toast.LENGTH_SHORT).show();
-		
+		Toast.makeText(this, getString(R.string.t_upload_failed), Toast.LENGTH_SHORT).show();
 		vUpload.setEnabled(true);
 	}
 	

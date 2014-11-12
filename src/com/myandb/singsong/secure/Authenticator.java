@@ -1,27 +1,28 @@
 package com.myandb.singsong.secure;
 
-import android.content.SharedPreferences.Editor;
+import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
-import com.myandb.singsong.file.Storage;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.util.Utility;
 
-public class Auth {
+public class Authenticator {
 	
 	private static final String KEY_USER = "_useru_";
 	private static final String KEY_ACCESS_TOKEN = "_token_";
+	
+	private static SharedPreferences preferences;
 
 	public void login(User user, String token) {
 		Gson gson = Utility.getGsonInstance();
-		Editor editor = Storage.getInstance().edit();
-		editor.putString(KEY_USER, gson.toJson(user, User.class))
+		preferences.edit()
+			.putString(KEY_USER, gson.toJson(user, User.class))
 			.putString(KEY_ACCESS_TOKEN, token)
 			.commit();
 	}
 	
 	public void logout() {
-		Storage.getInstance().edit().clear().commit();
+		preferences.edit().clear().commit();
 	}
 	
 	public void update(User user) {
@@ -29,22 +30,23 @@ public class Auth {
 			User currentUser = getUser();
 			if (currentUser.getId() == user.getId()) {
 				Gson gson = Utility.getGsonInstance();
-				Editor editor = Storage.getInstance().edit();
-				editor.putString(KEY_USER, gson.toJson(user, User.class)).commit();
+				preferences.edit().putString(KEY_USER, gson.toJson(user, User.class)).commit();
 			}
 		}
 	}
 	
 	public void update(String token) {
 		if (isLoggedIn()) {
-			Editor editor = Storage.getInstance().edit();
-			editor.putString(KEY_ACCESS_TOKEN, token).commit();
+			preferences.edit().putString(KEY_ACCESS_TOKEN, token).commit();
 		}
 	}
 	
+	public static void initialize(SharedPreferences preferences) {
+		Authenticator.preferences = preferences;
+	}
+	
 	public static boolean isLoggedIn() {
-		return Storage.getInstance().contains(KEY_USER)
-				&& Storage.getInstance().contains(KEY_ACCESS_TOKEN);
+		return preferences.contains(KEY_USER) && preferences.contains(KEY_ACCESS_TOKEN);
 	}
 	
 	public static User getUser() {
@@ -59,7 +61,7 @@ public class Auth {
 	public static String getUserInJson() {
 		if (isLoggedIn()) {
 			try {
-				return Storage.getInstance().getString(KEY_USER, "");
+				return preferences.getString(KEY_USER, "");
 			} catch (ClassCastException e) {
 				return "";
 			}
@@ -70,7 +72,7 @@ public class Auth {
 	
 	public static String getAccessToken() {
 		try {
-			return Storage.getInstance().getString(KEY_ACCESS_TOKEN, "");
+			return preferences.getString(KEY_ACCESS_TOKEN, "");
 		} catch (ClassCastException e) {
 			return "";
 		}

@@ -12,13 +12,13 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
-import com.myandb.singsong.activity.BaseActivity;
+import com.myandb.singsong.activity.OldBaseActivity;
 import com.myandb.singsong.activity.MainActivity;
 import com.myandb.singsong.event.OnVolleyWeakError;
 import com.myandb.singsong.event.OnVolleyWeakResponse;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.secure.Auth;
+import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.secure.Encryption;
 import com.myandb.singsong.util.Utility;
 
@@ -65,7 +65,7 @@ public class JoinFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		if (Auth.isLoggedIn()) {
+		if (Authenticator.isLoggedIn()) {
 			getActivity().finish();
 			
 			// Report to server
@@ -115,7 +115,7 @@ public class JoinFragment extends Fragment {
 			
 			@Override
 			public void onClick(View v) {
-				BaseActivity parent = (BaseActivity) getActivity();
+				OldBaseActivity parent = (OldBaseActivity) getActivity();
 				
 				if (parent != null) {
 					parent.replaceFragment(new LoginFragment());				
@@ -124,13 +124,13 @@ public class JoinFragment extends Fragment {
 			
 		});
 		
-		UrlBuilder urlBuilder = UrlBuilder.getInstance();
+		UrlBuilder urlBuilder = new UrlBuilder();
 		String policyHtml = "가입하신 이메일로 인증 번호가 전송됩니다. 인증을 하셔야 많은 기능들이 이용가능하니 꼭 본인의 이메일을 입력해주세요 :) <br/>";
 		policyHtml += "daum.net 또는 hanmail.net 계정은 이메일이 전송되지 않을 수 있습니다. <br/><br/>";
 		policyHtml += "가입하기 버튼을 누르시면 자동으로 콜라보 노래방의 ";
-		policyHtml += Utility.getHtmlAnchor(urlBuilder.l("w").l("terms").build(), "이용 약관");
+		policyHtml += Utility.getHtmlAnchor(urlBuilder.s("w").s("terms").toString(), "이용 약관");
 		policyHtml += "과 ";
-		policyHtml += Utility.getHtmlAnchor(urlBuilder.l("w").l("privacy").build(), "개인정보 보호정책");
+		policyHtml += Utility.getHtmlAnchor(urlBuilder.s("w").s("privacy").toString(), "개인정보 보호정책");
 		policyHtml += "에 동의하는 것으로 간주합니다.";
 		
 		tvAgreementPolicy.setMovementMethod(LinkMovementMethod.getInstance());
@@ -181,8 +181,8 @@ public class JoinFragment extends Fragment {
 		
 		@Override
 		public void run() {
-			UrlBuilder urlBuilder = UrlBuilder.getInstance();
-			String url = urlBuilder.l("users").q("username", username).build();
+			UrlBuilder urlBuilder = new UrlBuilder();
+			String url = urlBuilder.s("users").p("username", username).toString();
 			lastInputUsername = username;
 			
 			JsonObjectRequest request = new JsonObjectRequest(
@@ -199,7 +199,7 @@ public class JoinFragment extends Fragment {
 	}
 	
 	public void onUsernameFound(JSONObject response) {
-		Toast toast = Toast.makeText(getActivity(), lastInputUsername + "은 이미 존재하는 이메일입니다. :(", Toast.LENGTH_SHORT);
+		Toast toast = Toast.makeText(getActivity(), lastInputUsername + getString(R.string.t_email_already_exist), Toast.LENGTH_SHORT);
 		toast.setGravity(Gravity.TOP, 0, 100);
 		toast.show();
 		
@@ -303,15 +303,15 @@ public class JoinFragment extends Fragment {
 		
 		@Override
 		public void onClick(View v) {
-			BaseActivity parent = (BaseActivity) getActivity();
+			OldBaseActivity parent = (OldBaseActivity) getActivity();
 			
 			try {
-				UrlBuilder urlBuilder = UrlBuilder.getInstance();
+				UrlBuilder urlBuilder = new UrlBuilder();
 				JSONObject message = new JSONObject();
 				Encryption encryption = new Encryption();
 				String username = etUsername.getText().toString();
 				String password = etPassword.getText().toString();
-				String url = urlBuilder.l("users").build();
+				String url = urlBuilder.s("users").toString();
 				
 				message.put("username", username);
 				message.put("password", password);
@@ -340,10 +340,10 @@ public class JoinFragment extends Fragment {
 			User user = gson.fromJson(response.getJSONObject("user").toString(), User.class);
 			String token = response.getString("oauth-token");
 			
-			Auth auth = new Auth();
+			Authenticator auth = new Authenticator();
 			auth.login(user, token);
 			
-			((BaseActivity) getActivity()).dismissProgressDialog();
+			((OldBaseActivity) getActivity()).dismissProgressDialog();
 			
 			Intent intent = new Intent(getActivity(), MainActivity.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -357,12 +357,12 @@ public class JoinFragment extends Fragment {
 	}
 	
 	public void onJoinError() {
-		((BaseActivity) getActivity()).dismissProgressDialog();
+		((OldBaseActivity) getActivity()).dismissProgressDialog();
 		
 		etUsername.setText("");
 		etPassword.setText("");
 		etRePassword.setText("");
 
-		Toast.makeText(getActivity(), "가입에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+		Toast.makeText(getActivity(), getString(R.string.t_join_failed), Toast.LENGTH_SHORT).show();
 	}
 }

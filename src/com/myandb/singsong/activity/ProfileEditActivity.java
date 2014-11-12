@@ -35,17 +35,17 @@ import com.myandb.singsong.event.OnVolleyWeakError;
 import com.myandb.singsong.event.OnVolleyWeakResponse;
 import com.myandb.singsong.file.FileManager;
 import com.myandb.singsong.fragment.ProfileRootFragment;
+import com.myandb.singsong.image.ImageHelper;
+import com.myandb.singsong.image.ResizeAsyncTask;
 import com.myandb.singsong.model.Profile;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.OAuthJsonObjectRequest;
 import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.secure.Auth;
+import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.secure.Encryption;
-import com.myandb.singsong.util.ImageHelper;
-import com.myandb.singsong.util.ResizeAsyncTask;
 import com.myandb.singsong.util.Utility;
 
-public class ProfileEditActivity extends BaseActivity {
+public class ProfileEditActivity extends OldBaseActivity {
 	
 	public static final int R_CODE_PHOTO_PICKER = 100;
 	
@@ -78,7 +78,7 @@ public class ProfileEditActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		if (Auth.isLoggedIn()) {
+		if (Authenticator.isLoggedIn()) {
 			handler = new Handler();
 			
 			colorPrimary = getResources().getColor(R.color.font_highlight);
@@ -98,7 +98,7 @@ public class ProfileEditActivity extends BaseActivity {
 			etNewPasswordRe = (EditText) findViewById(R.id.et_new_password_re);
 			tvValidNickname = (TextView) findViewById(R.id.tv_valid_nickname);
 
-			currentUser = Auth.getUser();
+			currentUser = Authenticator.getUser();
 			profile = currentUser.getProfile();
 			
 			etNickname.setText(currentUser.getNickname());
@@ -209,8 +209,8 @@ public class ProfileEditActivity extends BaseActivity {
 		
 		@Override
 		public void run() {
-			UrlBuilder urlBuilder = UrlBuilder.getInstance();
-			String url = urlBuilder.l("users").q("nickname", nickname).build();
+			UrlBuilder urlBuilder = new UrlBuilder();
+			String url = urlBuilder.s("users").p("nickname", nickname).toString();
 			lastInputNickname = nickname;
 			
 			JsonObjectRequest request = new JsonObjectRequest(
@@ -348,8 +348,8 @@ public class ProfileEditActivity extends BaseActivity {
 							message.put("old_password", encryption.getSha512Convert(oldPassword));
 							message.put("new_password", newPassword);
 							
-							UrlBuilder urlBuilder = UrlBuilder.getInstance();
-							String url = urlBuilder.l("users").build();
+							UrlBuilder urlBuilder = new UrlBuilder();
+							String url = urlBuilder.s("users").toString();
 							OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
 									Method.PUT, url, message,
 									new OnVolleyWeakResponse<ProfileEditActivity, JSONObject>(ProfileEditActivity.this, "onChangePasswordSuccess"),
@@ -364,27 +364,27 @@ public class ProfileEditActivity extends BaseActivity {
 							// unhandled json exception
 						}
 					} else {
-						Toast.makeText(ProfileEditActivity.this, "새로운 비밀번호는 기존 비밀번호와 같을 수 없습니다.", Toast.LENGTH_SHORT).show();
+						Toast.makeText(ProfileEditActivity.this, getString(R.string.t_new_password_must_changed), Toast.LENGTH_SHORT).show();
 					}
 				} else {
-					Toast.makeText(ProfileEditActivity.this, "새로운 비밀번호를 정확히 재입력 해주세요.", Toast.LENGTH_SHORT).show();
+					Toast.makeText(ProfileEditActivity.this, getString(R.string.t_password_confirm_failed), Toast.LENGTH_SHORT).show();
 				}
 			} else {
-				Toast.makeText(ProfileEditActivity.this, "비밀번호는 4자리 이상이어야 합니다.", Toast.LENGTH_SHORT).show();
+				Toast.makeText(ProfileEditActivity.this, getString(R.string.t_password_length_policy), Toast.LENGTH_SHORT).show();
 			}
 		}
 	};
 	
 	public void onChangePasswordSuccess(JSONObject response) {
 		try {
-			Auth auth = new Auth();
+			Authenticator auth = new Authenticator();
 			auth.update(response.getString("oauth-token"));
 			
 			etOldPassword.setText("");
 			etNewPassword.setText("");
 			etNewPasswordRe.setText("");
 			
-			Toast.makeText(ProfileEditActivity.this, "비밀번호가 성공적으로 변경되었습니다.", Toast.LENGTH_SHORT).show();
+			Toast.makeText(ProfileEditActivity.this, getString(R.string.t_password_has_changed), Toast.LENGTH_SHORT).show();
 		} catch (JSONException e) {
 			e.printStackTrace();
 		} finally {
@@ -393,7 +393,7 @@ public class ProfileEditActivity extends BaseActivity {
 	}
 	
 	public void onChangePasswordError() {
-		Toast.makeText(ProfileEditActivity.this, "잘못된 비밀번호입니다.", Toast.LENGTH_SHORT).show();
+		Toast.makeText(ProfileEditActivity.this, getString(R.string.t_wrong_password), Toast.LENGTH_SHORT).show();
 		
 		dismissProgressDialog();
 	}

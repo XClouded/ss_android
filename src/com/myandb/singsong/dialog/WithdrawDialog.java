@@ -11,7 +11,7 @@ import com.myandb.singsong.event.OnVolleyWeakError;
 import com.myandb.singsong.event.OnVolleyWeakResponse;
 import com.myandb.singsong.net.OAuthJsonObjectRequest;
 import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.secure.Auth;
+import com.myandb.singsong.secure.Authenticator;
 
 import android.content.Context;
 import android.view.View;
@@ -49,8 +49,8 @@ public class WithdrawDialog extends BaseDiaglog {
 			@Override
 			public void onClick(View v) {
 				parent.showProgressDialog();
-				UrlBuilder urlBuilder = UrlBuilder.getInstance();
-				String url = urlBuilder.l("users").build();
+				UrlBuilder urlBuilder = new UrlBuilder();
+				String url = urlBuilder.s("users").toString();
 				
 				OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
 						Method.DELETE, url, null,
@@ -73,7 +73,7 @@ public class WithdrawDialog extends BaseDiaglog {
 	}
 	
 	private void onWithdrawFinish() {
-		Auth auth = new Auth();
+		Authenticator auth = new Authenticator();
 		auth.logout();
 		
 		parent.dismissProgressDialog();

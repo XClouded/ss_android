@@ -7,13 +7,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import android.content.Context;
 import android.content.res.Resources;
 import android.media.MediaMetadataRetriever;
 
 import com.myandb.singsong.R;
 
-public class TimeHelper {
+public class StringFormatter {
 	
 	public static final int INVALID_TIME = -1;
 	public static final int TODAY = 1;
@@ -21,13 +20,19 @@ public class TimeHelper {
 	
 	private static Calendar today = Calendar.getInstance(Locale.KOREA);
 	private static Calendar varDay = Calendar.getInstance(Locale.KOREA);
-	private static Resources resources;
 	private static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+	private static String nowString;
+	private static String minuteString;
+	private static String hourString;
+	private static String dayString;
 	
-	private TimeHelper() { }
+	private StringFormatter() { }
 	
-	public static void initialize(Context context) {
-		resources = context.getResources();
+	public static void initialize(Resources resources) {
+		nowString = resources.getString(R.string.now);
+		minuteString = resources.getString(R.string.minute);
+		hourString = resources.getString(R.string.hour);
+		dayString = resources.getString(R.string.day);
 	}
 	
 	public static int getTodayInNumber() {
@@ -36,7 +41,7 @@ public class TimeHelper {
 	
 	public static int checkToday(String dateInString) {
 		if ("".equals(dateInString)) {
-			return TimeHelper.INVALID_TIME;
+			return StringFormatter.INVALID_TIME;
 		}
 		
 		try {
@@ -44,12 +49,12 @@ public class TimeHelper {
 			
 			if (today.get(Calendar.YEAR) == varDay.get(Calendar.YEAR)) {
 				if (today.get(Calendar.DAY_OF_YEAR) == varDay.get(Calendar.DAY_OF_YEAR)) {
-					return TimeHelper.TODAY;
+					return StringFormatter.TODAY;
 				} else {
-					return TimeHelper.PAST;
+					return StringFormatter.PAST;
 				}
 			} else {
-				return TimeHelper.PAST;
+				return StringFormatter.PAST;
 			}
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -57,7 +62,7 @@ public class TimeHelper {
 			e.printStackTrace();
 		}
 		
-		return TimeHelper.INVALID_TIME;
+		return StringFormatter.INVALID_TIME;
 	}
 	
 	public static String getDateString(int field, int value) {
@@ -125,22 +130,22 @@ public class TimeHelper {
 		int differenceInSecs = (int) (differenceInMils / 1000);
 		
 		if (differenceInSecs < 60) {
-			return resources.getString(R.string.now);
+			return nowString;
 		} else {
 			int differenceInMins = differenceInSecs / 60;
 			
 			if (differenceInMins < 60) {
-				return String.valueOf(differenceInMins) + resources.getString(R.string.minute);
+				return String.valueOf(differenceInMins) + minuteString;
 			} else {
 				int differenceInHours = differenceInMins / 60;
 				
 				if (differenceInHours < 24) {
-					return String.valueOf(differenceInHours) + resources.getString(R.string.hour);
+					return String.valueOf(differenceInHours) + hourString;
 				} else {
 					int differenceInDays = differenceInHours / 24;
 					
 					if (differenceInDays < 30) {
-						return String.valueOf(differenceInDays) + resources.getString(R.string.day);
+						return String.valueOf(differenceInDays) + dayString;
 					} else {
 						return format.format(createdDate.getTime());
 					}

@@ -8,7 +8,7 @@ import com.myandb.singsong.util.Utility;
 
 import android.os.Bundle;
 
-public class ProfileRootActivity extends BaseActivity {
+public class ProfileRootActivity extends OldBaseActivity {
 	
 	public static final String INTENT_USER = "_user_";
 	

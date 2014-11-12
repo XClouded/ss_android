@@ -14,12 +14,12 @@ import android.widget.Toast;
 import com.android.volley.RequestQueue;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
-import com.myandb.singsong.activity.BaseActivity;
+import com.myandb.singsong.activity.OldBaseActivity;
+import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Comment;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.OAuthJustRequest;
 import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.util.ImageHelper;
 
 public class ReportCommentDialog extends BaseDiaglog {
 	
@@ -30,13 +30,13 @@ public class ReportCommentDialog extends BaseDiaglog {
 	private Button btnSubmitReport;
 	private TextView tvTargetCommentContent;
 	private EditText etReportContent;
-	private BaseActivity parent;
+	private OldBaseActivity parent;
 
 	public ReportCommentDialog(Context context, User user) {
 		super(context, android.R.style.Theme_Translucent_NoTitleBar);
 		
 		this.user = user;
-		this.parent = (BaseActivity) context;
+		this.parent = (OldBaseActivity) context;
 	}
 
 	@Override
@@ -84,8 +84,8 @@ public class ReportCommentDialog extends BaseDiaglog {
 							message.put("comment_id", comment.getId());
 							message.put("message", reportContent);
 							
-							UrlBuilder urlBuilder = UrlBuilder.getInstance();
-							String url = urlBuilder.l("reports").build();
+							UrlBuilder urlBuilder = new UrlBuilder();
+							String url = urlBuilder.s("reports").toString();
 							OAuthJustRequest request = new OAuthJustRequest(url, message);
 							RequestQueue queue = ((App) getContext().getApplicationContext()).getQueueInstance();
 							queue.add(request);
@@ -95,9 +95,9 @@ public class ReportCommentDialog extends BaseDiaglog {
 						
 						ReportCommentDialog.this.dismiss();
 						
-						Toast.makeText(getContext(), "신고가 접수되었습니다. :)", Toast.LENGTH_SHORT).show();
+						Toast.makeText(getContext(), getContext().getString(R.string.t_report_has_accepted), Toast.LENGTH_SHORT).show();
 					} else {
-						Toast.makeText(getContext(), "신고사유를 10자 이상 써주세요.", Toast.LENGTH_SHORT).show();
+						Toast.makeText(getContext(), getContext().getString(R.string.t_report_length_policy), Toast.LENGTH_SHORT).show();
 					}
 				}
 			});

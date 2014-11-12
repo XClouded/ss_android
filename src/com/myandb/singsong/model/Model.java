@@ -2,7 +2,7 @@ package com.myandb.singsong.model;
 
 import java.util.Date;
 
-import com.myandb.singsong.util.TimeHelper;
+import com.myandb.singsong.util.StringFormatter;
 
 public abstract class Model {
 	
@@ -29,7 +29,7 @@ public abstract class Model {
 	}
 	
 	public String getWorkedCreatedTime(Date currentDate) {
-		return TimeHelper.getTimeLag(currentDate, created_at);
+		return StringFormatter.getTimeLag(currentDate, created_at);
 	}
 	
 	protected final String toString(String string) {

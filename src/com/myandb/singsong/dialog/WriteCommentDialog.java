@@ -17,12 +17,12 @@ import com.myandb.singsong.R;
 import com.myandb.singsong.activity.PlayerActivity;
 import com.myandb.singsong.event.OnVolleyWeakError;
 import com.myandb.singsong.event.OnVolleyWeakResponse;
+import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Comment;
 import com.myandb.singsong.model.Song;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.OAuthJsonObjectRequest;
 import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.util.ImageHelper;
 
 public class WriteCommentDialog extends BaseDiaglog {
 	
@@ -95,8 +95,8 @@ public class WriteCommentDialog extends BaseDiaglog {
 					e.printStackTrace();
 				}
 				
-				UrlBuilder urlBuilder = UrlBuilder.getInstance();
-				String url = urlBuilder.l("songs").l(song.getId()).l("comments").build();
+				UrlBuilder urlBuilder = new UrlBuilder();
+				String url = urlBuilder.s("songs").s(song.getId()).s("comments").toString();
 				OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
 						Method.POST, url, message,
 						new OnVolleyWeakResponse<WriteCommentDialog, JSONObject>(WriteCommentDialog.this, "onSubmitSuccess", Comment.class),
@@ -108,7 +108,7 @@ public class WriteCommentDialog extends BaseDiaglog {
 				
 				WriteCommentDialog.this.dismiss();
 			} else {
-				Toast.makeText(parent, "댓글을 입력하세요. :)", Toast.LENGTH_SHORT).show();
+				Toast.makeText(parent, parent.getString(R.string.t_comment_length_policy), Toast.LENGTH_SHORT).show();
 			}
 		}
 	};

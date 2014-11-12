@@ -11,7 +11,7 @@ import com.myandb.singsong.audio.AudioConfig.ConfigMode;
 import com.myandb.singsong.event.OnCompleteListener;
 import com.myandb.singsong.event.OnProgressListener;
 import com.myandb.singsong.libogg.VorbisFileInputStream;
-import com.myandb.singsong.util.TimeHelper;
+import com.myandb.singsong.util.StringFormatter;
 
 public class Decoder extends AsyncTask<File, Integer, Exception> {
 	
@@ -32,7 +32,7 @@ public class Decoder extends AsyncTask<File, Integer, Exception> {
 			
 			int read = 0;
 			int totalRead = 0;
-			int durationInMilli = TimeHelper.getDuration(inputFile);
+			int durationInMilli = StringFormatter.getDuration(inputFile);
 			int durationInSec = durationInMilli / 1000;
 			int estimateLength = durationInSec * AudioConfig.SAMPLERATE * audioConfig.getChannels();
 			int estimateLengthInPercent = estimateLength / 100;

@@ -14,7 +14,7 @@ import com.android.volley.Response.ErrorListener;
 import com.android.volley.AuthFailureError;
 import com.android.volley.VolleyError;
 import com.myandb.singsong.adapter.AutoLoadAdapter;
-import com.myandb.singsong.secure.Auth;
+import com.myandb.singsong.secure.Authenticator;
 
 public class OnVolleyWeakError<T> implements ErrorListener {
 	
@@ -49,7 +49,7 @@ public class OnVolleyWeakError<T> implements ErrorListener {
 		error.printStackTrace();
 		
 		if (error instanceof AuthFailureError) {
-			Auth auth = new Auth();
+			Authenticator auth = new Authenticator();
 			auth.logout();
 			
 			Context context = getContext(reference);

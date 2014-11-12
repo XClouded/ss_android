@@ -11,11 +11,11 @@ import com.myandb.singsong.R;
 import com.myandb.singsong.dialog.DeleteCommentDialog;
 import com.myandb.singsong.dialog.ReportCommentDialog;
 import com.myandb.singsong.event.Listeners;
+import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Comment;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.secure.Auth;
-import com.myandb.singsong.util.ImageHelper;
+import com.myandb.singsong.secure.Authenticator;
 
 public class CommentAdapter extends AutoLoadAdapter<Comment> {
 
@@ -26,7 +26,7 @@ public class CommentAdapter extends AutoLoadAdapter<Comment> {
 	public CommentAdapter(Context context) {
 		super(context, Comment.class, false);
 		
-		this.currentUser = Auth.getUser();
+		this.currentUser = Authenticator.getUser();
 		this.reportDialog = new ReportCommentDialog(context, currentUser);
 		this.deleteDialog = new DeleteCommentDialog(context);
 	}

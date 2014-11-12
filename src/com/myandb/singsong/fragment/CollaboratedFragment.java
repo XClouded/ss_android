@@ -3,12 +3,11 @@ package com.myandb.singsong.fragment;
 import java.util.Calendar;
 
 import com.myandb.singsong.R;
-import com.myandb.singsong.activity.ArtistActivity;
 import com.myandb.singsong.activity.SearchActivity;
 import com.myandb.singsong.activity.SearchActivity.SearchType;
 import com.myandb.singsong.adapter.CollaboratedAdapter;
 import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.util.TimeHelper;
+import com.myandb.singsong.util.StringFormatter;
 import com.myandb.singsong.widget.ResizableImageView;
 
 import android.content.Intent;
@@ -57,8 +56,8 @@ public class CollaboratedFragment extends Fragment {
 			
 			@Override
 			public void onClick(View arg0) {
-				Intent intent = new Intent(getActivity(), ArtistActivity.class);
-				startActivity(intent);
+//				Intent intent = new Intent(getActivity(), ArtistActivity.class);
+//				startActivity(intent);
 			}
 		});
 		listView.addHeaderView(ivBanner);
@@ -75,10 +74,10 @@ public class CollaboratedFragment extends Fragment {
 				tvSortRecent.setText(recentString);
 				
 				if (popularAdapter == null) {
-					final String startDate = TimeHelper.getDateString(Calendar.DATE, -1);
+					final String startDate = StringFormatter.getDateString(Calendar.DATE, -1);
 					popularAdapter = new CollaboratedAdapter(
 							getActivity(),
-							UrlBuilder.create().l("songs").l("leaf").q("order", "liking_num").start(startDate)
+							new UrlBuilder().s("songs").s("leaf").p("order", "liking_num").start(startDate)
 					);
 				}
 				
@@ -101,7 +100,7 @@ public class CollaboratedFragment extends Fragment {
 				if (recentAdapter == null) {
 					recentAdapter = new CollaboratedAdapter(
 							getActivity(),
-							UrlBuilder.create().l("songs").l("leaf").q("order", "created_at")
+							new UrlBuilder().s("songs").s("leaf").p("order", "created_at")
 					);
 				}
 

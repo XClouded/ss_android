@@ -15,12 +15,12 @@ import android.widget.Toast;
 import com.myandb.singsong.R;
 import com.myandb.singsong.adapter.AutoLoadAdapter;
 import com.myandb.singsong.adapter.FriendsAdapter;
-import com.myandb.singsong.adapter.MusicBasicAdapter;
+import com.myandb.singsong.adapter.MusicAdapter;
 import com.myandb.singsong.adapter.SimpleSongAdapter;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.widget.AutoLoadListView;
 
-public class SearchActivity extends BaseActivity {
+public class SearchActivity extends OldBaseActivity {
 	
 	public enum SearchType {
 		USER, SONG_ROOT, SONG_LEAF, MUSIC
@@ -81,12 +81,12 @@ public class SearchActivity extends BaseActivity {
 					String keyword = etSearch.getText().toString();
 					
 					if (keyword.isEmpty()) {
-						Toast.makeText(SearchActivity.this, "검색어를 입력해주세요.", Toast.LENGTH_SHORT).show();
+						Toast.makeText(SearchActivity.this, getString(R.string.t_keyword_empty), Toast.LENGTH_SHORT).show();
 					} else {
 						SearchActivity.this.closeEditText(etSearch, false);
 						
 						urlBuilder = getUrlBuilder(type);
-						urlBuilder.keyword(keyword).q("order", "created_at");
+						urlBuilder.keyword(keyword).p("order", "created_at");
 						
 						adapter.resetRequest(urlBuilder);
 						listView.initializeScroll();
@@ -111,7 +111,7 @@ public class SearchActivity extends BaseActivity {
 	private void performInitial(SearchType type, AutoLoadAdapter<?> adapter) {
 		if (type.equals(SearchType.MUSIC)) {
 			urlBuilder = getUrlBuilder(type);
-			urlBuilder.q("order", "title").q("otype", "asc");
+			urlBuilder.p("order", "title").p("otype", "asc");
 			
 			adapter.resetRequest(urlBuilder);
 			listView.initializeScroll();
@@ -128,7 +128,7 @@ public class SearchActivity extends BaseActivity {
 			return new SimpleSongAdapter(this);
 			
 		case MUSIC:
-			return new MusicBasicAdapter(this);
+			return null;/*new MusicBasicAdapter(this);*/
 
 		default:
 			break;
@@ -138,20 +138,20 @@ public class SearchActivity extends BaseActivity {
 	}
 	
 	private UrlBuilder getUrlBuilder(SearchType type) {
-		final UrlBuilder urlBuilder = UrlBuilder.create();
+		final UrlBuilder urlBuilder = new UrlBuilder();
 		
 		switch (type) {
 		case USER:
-			return urlBuilder.l("users").q("req[]", "profile");
+			return urlBuilder.s("users").p("req[]", "profile");
 			
 		case SONG_ROOT:
-			return urlBuilder.l("songs").l("root");
+			return urlBuilder.s("songs").s("root");
 			
 		case SONG_LEAF:
-			return urlBuilder.l("songs").l("leaf");
+			return urlBuilder.s("songs").s("leaf");
 			
 		case MUSIC:
-			return urlBuilder.l("musics");
+			return urlBuilder.s("musics");
 
 		default:
 			return null;

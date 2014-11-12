@@ -15,13 +15,13 @@ import com.myandb.singsong.audio.Encoder;
 import com.myandb.singsong.event.OnCompleteListener;
 import com.myandb.singsong.event.OnProgressListener;
 import com.myandb.singsong.file.FileManager;
+import com.myandb.singsong.image.BitmapBuilder;
 import com.myandb.singsong.model.Model;
 import com.myandb.singsong.model.Music;
 import com.myandb.singsong.net.OAuthJsonObjectRequest;
 import com.myandb.singsong.net.UploadManager;
 import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.util.TimeHelper;
-import com.myandb.singsong.util.ImageHelper.BitmapBuilder;
+import com.myandb.singsong.util.StringFormatter;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -164,7 +164,7 @@ public class SongUploadService extends Service {
 	public void onFileUploadComplete() {
 		updateNotification(95, "노래정보를 갱신하고 있습니다.");
 
-		final int duration = (int) TimeHelper.getDuration(FileManager.getSecure(FileManager.SONG_OGG));
+		final int duration = (int) StringFormatter.getDuration(FileManager.getSecure(FileManager.SONG_OGG));
 		
 		try {
 			JSONObject data = new JSONObject();
@@ -183,8 +183,8 @@ public class SongUploadService extends Service {
 				data.put("image_id", imageId);
 			}
 			
-			UrlBuilder urlBuilder = UrlBuilder.getInstance();
-			String url = urlBuilder.l("songs").build();
+			UrlBuilder urlBuilder = new UrlBuilder();
+			String url = urlBuilder.s("songs").toString();
 			OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
 					Method.POST, url, data,
 					new Response.Listener<JSONObject>() {

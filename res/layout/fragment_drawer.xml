@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.myandb.singsong"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/grey_dark" >
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin_big" >
+        
+        <com.myandb.singsong.widget.RoundedImageView
+	        android:id="@+id/iv_drawer_user_photo"
+	        android:layout_centerHorizontal="true"
+	        android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginBottom="@dimen/margin_small"
+	        app:oval="true"
+	        app:border_width="0.1dp"
+	        app:border_color="@color/divider"
+	        style="@style/UserImageView" />
+        
+        <TextView
+            android:id="@+id/tv_drawer_user_nickname"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/iv_drawer_user_photo"
+            android:textColor="@color/font_white"
+            style="@style/BaseTextView" />
+        
+    </RelativeLayout>
+    
+    <ImageView
+        style="@style/DividerHorizontal" />
+    
+    <ListView
+        android:id="@+id/lv_menu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@color/gnb_divider"
+        android:dividerHeight="0.1dp"
+        android:listSelector="@color/grey_trans" />
+
+</LinearLayout>

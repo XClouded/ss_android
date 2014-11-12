@@ -17,7 +17,7 @@ import com.myandb.singsong.event.Listeners;
 import com.myandb.singsong.event.MemberOnlyClickListener;
 import com.myandb.singsong.event.OnVolleyWeakResponse;
 import com.myandb.singsong.event.WeakRunnable;
-import com.myandb.singsong.file.Storage;
+import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Comment;
 import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Song;
@@ -25,11 +25,10 @@ import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.OAuthJsonObjectRequest;
 import com.myandb.singsong.net.OAuthJustRequest;
 import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.secure.Auth;
+import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.service.PlayerService;
 import com.myandb.singsong.service.PlayerService.IPlayStatusCallback;
-import com.myandb.singsong.util.ImageHelper;
-import com.myandb.singsong.util.TimeHelper;
+import com.myandb.singsong.util.StringFormatter;
 import com.myandb.singsong.util.Utility;
 import com.myandb.singsong.widget.AutoLoadListView;
 
@@ -49,7 +48,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class PlayerActivity extends BaseActivity {
+public class PlayerActivity extends OldBaseActivity {
 	
 	public String bitlyUrl;
 	
@@ -92,15 +91,13 @@ public class PlayerActivity extends BaseActivity {
 	private Animation blink;
 	private WriteCommentDialog commentDialog;
 	private KakaotalkDialog kakaotalkDialog;
-	private Storage preferences;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		
-		currentUser = Auth.getUser();
-		preferences = new Storage();
+		currentUser = Authenticator.getUser();
 		
 		initializeView();
 	}
@@ -187,8 +184,8 @@ public class PlayerActivity extends BaseActivity {
 		final String apiUrl = "https://api-ssl.bitly.com/v3/shorten?"; 
 		final String token = "adaad7e775370d959bdb74ddeafed457a541710c";
 		
-		UrlBuilder urlBuilder = UrlBuilder.getInstance();
-		String longUrl = urlBuilder.l("w").l("listen").l(thisSong.getId()).build();
+		UrlBuilder urlBuilder = new UrlBuilder();
+		String longUrl = urlBuilder.s("w").s("listen").s(thisSong.getId()).toString();
 		String requestUrl = apiUrl;
 		requestUrl += "access_token=" + token;
 		requestUrl += "&longUrl=" + longUrl;
@@ -258,8 +255,8 @@ public class PlayerActivity extends BaseActivity {
 	
 	private void checkUserLikeSong() {
 		if (currentUser != null && thisSong != null) {
-			UrlBuilder urlBuilder = UrlBuilder.getInstance();
-			String url = urlBuilder.l("songs").l(thisSong.getId()).l("likings").q("user_id", currentUser.getId()).build();
+			UrlBuilder urlBuilder = new UrlBuilder();
+			String url = urlBuilder.s("songs").s(thisSong.getId()).s("likings").p("user_id", currentUser.getId()).toString();
 			
 			OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
 					Method.GET, url, null,
@@ -277,8 +274,8 @@ public class PlayerActivity extends BaseActivity {
 	}
 	
 	private void requestCommments() {
-		UrlBuilder urlBuilder = UrlBuilder.create();
-		urlBuilder.l("songs").l(thisSong.getId()).l("comments");
+		UrlBuilder urlBuilder = new UrlBuilder();
+		urlBuilder.s("songs").s(thisSong.getId()).s("comments");
 		
 		if (commentAdapter != null) {
 			commentAdapter.resetRequest(urlBuilder);
@@ -347,9 +344,9 @@ public class PlayerActivity extends BaseActivity {
 		
 		displayLikeNum(thisSong.getWorkedLikeNum());
 		
-		setPlayerLooping(preferences.isPlayerLooping());
+//		setPlayerLooping(preferences.isPlayerLooping());
 		
-		setPlayerAutoplay(preferences.isPlayerAutoplay());
+//		setPlayerAutoplay(preferences.isPlayerAutoplay());
 		
 		ivChildSong.setOnClickListener(Listeners.getChildrenClickListener(this, thisSong));
 		ivLoopControl.setOnClickListener(loopControlClickListener);
@@ -427,7 +424,7 @@ public class PlayerActivity extends BaseActivity {
 	}
 	
 	private void setPlayerLooping(boolean looping) {
-		preferences.setPlayerLooping(looping);
+//		preferences.setPlayerLooping(looping);
 		playerService.setLooping(looping);
 		
 		if (looping) {
@@ -438,7 +435,7 @@ public class PlayerActivity extends BaseActivity {
 	}
 	
 	private void setPlayerAutoplay(boolean autoplay) {
-		preferences.setPlayerAutoplay(autoplay);
+//		preferences.setPlayerAutoplay(autoplay);
 		
 		if (autoplay) {
 			ivAutoplayControl.setImageResource(R.drawable.ic_autoplay_on);
@@ -451,12 +448,13 @@ public class PlayerActivity extends BaseActivity {
 		
 		@Override
 		public void onClick(View v) {
-			boolean isCurrentLooping = preferences.isPlayerLooping();
+//			boolean isCurrentLooping = preferences.isPlayerLooping();
+			boolean isCurrentLooping = true;
 			
 			if (isCurrentLooping) {
-				Toast.makeText(PlayerActivity.this, "반복재생이 해제되었습니다.", Toast.LENGTH_SHORT).show();
+				Toast.makeText(PlayerActivity.this, getString(R.string.t_disable_replay), Toast.LENGTH_LONG).show();
 			} else {
-				Toast.makeText(PlayerActivity.this, "반복재생이 설정되었습니다.", Toast.LENGTH_SHORT).show();
+				Toast.makeText(PlayerActivity.this, getString(R.string.t_enable_replay), Toast.LENGTH_LONG).show();
 			}
 			
 			setPlayerLooping(!isCurrentLooping);
@@ -467,12 +465,13 @@ public class PlayerActivity extends BaseActivity {
 		
 		@Override
 		public void onClick(View v) {
-			boolean isCurrentAutoplay = preferences.isPlayerAutoplay();
+//			boolean isCurrentAutoplay = preferences.isPlayerAutoplay();
+			boolean isCurrentAutoplay = true;
 			
 			if (isCurrentAutoplay) {
-				Toast.makeText(PlayerActivity.this, "자동재생이 해제되었습니다.", Toast.LENGTH_SHORT).show();
+				Toast.makeText(PlayerActivity.this, getString(R.string.t_disable_autoplay), Toast.LENGTH_LONG).show();
 			} else {
-				Toast.makeText(PlayerActivity.this, "자동재생이 설정되었습니다.", Toast.LENGTH_SHORT).show();
+				Toast.makeText(PlayerActivity.this, getString(R.string.t_enable_autoplay), Toast.LENGTH_LONG).show();
 			}
 			
 			setPlayerAutoplay(!isCurrentAutoplay);
@@ -509,8 +508,8 @@ public class PlayerActivity extends BaseActivity {
 		
 		@Override
 		public void onActivated(View v) {
-			UrlBuilder urlBuilder = UrlBuilder.getInstance();
-			String url = urlBuilder.l("songs").l(thisSong.getId()).l("likings").build();
+			UrlBuilder urlBuilder = new UrlBuilder();
+			String url = urlBuilder.s("songs").s(thisSong.getId()).s("likings").toString();
 			int method = 0;
 			
 			if (isLike) {
@@ -545,8 +544,9 @@ public class PlayerActivity extends BaseActivity {
 	private void runService() {
 		playerService.startPlaying(
 				new PlayStatusCallback(this),
-				preferences.isPlayerAutoplay(),
-				preferences.isPlayerLooping()
+//				preferences.isPlayerAutoplay(),
+//				preferences.isPlayerLooping()
+				true, true
 		);
 	}
 	
@@ -627,7 +627,7 @@ public class PlayerActivity extends BaseActivity {
 		int position = playerService.getCurrentPosition();
 		
 		ivPlayControl.setOnClickListener(playControlClickListener);
-		tvStartTime.setText(TimeHelper.getDuration(position));
+		tvStartTime.setText(StringFormatter.getDuration(position));
 		tvEndTime.setText(thisSong.getWorkedDuration());
 		sbPlay.setMax(thisSong.getDuration());
 		sbPlay.setProgress(position);
@@ -652,7 +652,7 @@ public class PlayerActivity extends BaseActivity {
 	
 	public void playProgressUpdater() {
 		if (playerService.isPlaying()) {
-			tvStartTime.setText(TimeHelper.getDuration(playerService.getCurrentPosition()));
+			tvStartTime.setText(StringFormatter.getDuration(playerService.getCurrentPosition()));
 			sbPlay.setProgress(playerService.getCurrentPosition());
 		}
 		

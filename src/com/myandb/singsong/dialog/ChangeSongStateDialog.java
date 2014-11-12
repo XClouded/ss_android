@@ -12,7 +12,7 @@ import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
-import com.myandb.singsong.activity.BaseActivity;
+import com.myandb.singsong.activity.OldBaseActivity;
 import com.myandb.singsong.adapter.MySongAdapter;
 import com.myandb.singsong.event.OnVolleyWeakError;
 import com.myandb.singsong.event.OnVolleyWeakResponse;
@@ -25,15 +25,15 @@ public class ChangeSongStateDialog extends BaseDiaglog {
 	private Song song;
 	private ImageView ivCancel;
 	private Button btnChangeState;
-	private BaseActivity parent;
+	private OldBaseActivity parent;
 	private MySongAdapter adapter;
 	private boolean isDeleted;
 
 	public ChangeSongStateDialog(Context context, MySongAdapter adapter, boolean isDeleted) {
 		super(context, android.R.style.Theme_Translucent_NoTitleBar);
 		
-		if (context instanceof BaseActivity) {
-			parent = (BaseActivity) context;
+		if (context instanceof OldBaseActivity) {
+			parent = (OldBaseActivity) context;
 		}
 		
 		this.isDeleted = isDeleted;
@@ -79,8 +79,8 @@ public class ChangeSongStateDialog extends BaseDiaglog {
 			public void onClick(View v) {
 				if (song != null) {
 					int method = isDeleted ? Method.PUT : Method.DELETE;
-					UrlBuilder urlBuilder = UrlBuilder.getInstance();
-					String url = urlBuilder.l("songs").l(song.getId()).build();
+					UrlBuilder urlBuilder = new UrlBuilder();
+					String url = urlBuilder.s("songs").s(song.getId()).toString();
 					
 					OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
 							method, url, null,
@@ -98,16 +98,11 @@ public class ChangeSongStateDialog extends BaseDiaglog {
 	
 	public void onChangeStateResponse(JSONObject response) {
 		adapter.removeItem(song);
-		
 		dismiss();
 	}
 	
 	public void onChangeStateError() {
-		if (isDeleted) {
-			Toast.makeText(getContext(), "복구하기에 실패하였습니다. 네트워크 상태를 확인해 주세요.", Toast.LENGTH_SHORT).show();
-		} else {
-			Toast.makeText(getContext(), "삭제하기에 실패하였습니다. 네트워크 상태를 확인해 주세요.", Toast.LENGTH_SHORT).show();
-		}
+		Toast.makeText(getContext(), getContext().getString(R.string.t_poor_network_connection), Toast.LENGTH_SHORT).show();
 	}
 
 	@Override

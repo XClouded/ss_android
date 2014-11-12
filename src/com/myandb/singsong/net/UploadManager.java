@@ -71,8 +71,8 @@ public class UploadManager extends AsyncTask<File, Integer, Exception> {
 	}
 	
 	private void requestUploadUrl(Context context, String bucket, String fileName) {
-		UrlBuilder urlBuilder = UrlBuilder.getInstance();
-		String url = urlBuilder.l("uploads").l("url").l(bucket).l(fileName).build();
+		UrlBuilder urlBuilder = new UrlBuilder();
+		String url = urlBuilder.s("uploads").s("url").s(bucket).s(fileName).toString();
 		
 		OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
 				Method.GET, url, null,

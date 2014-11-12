@@ -1,21 +1,14 @@
 package com.myandb.singsong.adapter;
 
-import java.io.File;
-import java.util.ArrayList;
+import java.util.List;
 
 import com.myandb.singsong.R;
-import com.myandb.singsong.file.FileManager;
-import com.myandb.singsong.file.Storage;
-import com.myandb.singsong.model.MenuData;
-import com.myandb.singsong.model.MenuData.PageName;
-import com.myandb.singsong.util.ImageHelper.BitmapBuilder;
+import com.myandb.singsong.activity.BaseActivity;
+import com.myandb.singsong.model.GlobalMenu;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
-import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -23,81 +16,71 @@ import android.widget.TextView;
 
 public class MenuAdapter extends BaseAdapter {
 	
-	private ArrayList<MenuData> menuDatas;
-	private LayoutInflater inflater;
+	private List<GlobalMenu> menuItems;
+	private Context context;
 	
-	public MenuAdapter(Context context, ArrayList<MenuData> menuDatas) {
-		this.menuDatas = menuDatas;
-		this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	public MenuAdapter(Context context, List<GlobalMenu> menuDatas) {
+		this.context = context;
+		this.menuItems = menuDatas;
 	}
 	
 	@Override
 	public int getCount() {
-		return menuDatas.size();
+		return menuItems.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return menuDatas.get(position);
+		return menuItems.get(position);
 	}
 
 	@Override
 	public long getItemId(int position) {
 		return position;
 	}
+	
+	public Context getContext() {
+		return context;
+	}
 
 	@Override
 	public View getView(int position, View view, ViewGroup parent) {
-		MenuData menu = menuDatas.get(position);
+		final MenuHolder menuHolder;
+		final GlobalMenu menu = (GlobalMenu) getItem(position);
 		
-		if (menu.getPageName() == PageName.MY_PAGE) {
-			view = inflater.inflate(R.layout.row_menu_profile, null);
-		} else {
-			view = inflater.inflate(R.layout.row_menu, null);
-		}
-		
-		TextView tvGnbTitle = (TextView) view.findViewById(R.id.tv_gnb_title);
-		ImageView ivGnbIcon = (ImageView)view.findViewById(R.id.iv_gnb_icon);
-		View rlGnbRow = view.findViewById(R.id.rl_gnb_row);
-		
-		tvGnbTitle.setText(menu.getOutText());
-		
-		if (VERSION.SDK_INT > VERSION_CODES.GINGERBREAD_MR1 && menu.getPageType() == MenuData.FRAGMENT) {
-			rlGnbRow.setBackgroundResource(R.drawable.menu_fragment_selector);
-		} else {
-			rlGnbRow.setBackgroundResource(R.drawable.menu_activity_selector);
-		}
-		
-		if (menu.getPageName() == PageName.MY_PAGE) {
-			if (FileManager.isExist(FileManager.USER_PHOTO)) {
-				ivGnbIcon.setImageBitmap(getUserBitmap());
-			}
-		} else {
-			ivGnbIcon.setImageBitmap(menu.getIcon());
-		}
-		
-		if (menu.getPageName() == PageName.NOTIFICATION) {
-			TextView tvPushNum = (TextView) view.findViewById(R.id.tv_push_num);
-			Storage session = new Storage();
+		if (view == null) {
+			view = View.inflate(getContext(), R.layout.row_menu, null);
 			
-			int unreadPushNum = session.getUnreadPushNum();
-			if (unreadPushNum > 0) {
-				tvPushNum.setVisibility(View.VISIBLE);
-				tvPushNum.setText(String.valueOf(unreadPushNum));
-			} else {
-				tvPushNum.setVisibility(View.GONE);
-			}
+			menuHolder = new MenuHolder();
+			menuHolder.ivMenuIcon = (ImageView) view.findViewById(R.id.iv_gnb_icon);
+			menuHolder.tvMenuTitle = (TextView) view.findViewById(R.id.tv_gnb_title);
+			
+			view.setTag(menuHolder);
+		} else {
+			menuHolder = (MenuHolder) view.getTag();
 		}
+		
+		menuHolder.ivMenuIcon.setImageResource(menu.getIconResId());
+		menuHolder.tvMenuTitle.setText(menu.getTitleResId());
+		view.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Context context = v.getContext();
+				if (context instanceof BaseActivity) {
+					((BaseActivity) context).changePage(menu.getIntent());
+				}
+			}
+		});
 		
 		return view;
 	}
 	
-	private Bitmap getUserBitmap() {
-		File userPhotoFile = FileManager.get(FileManager.USER_PHOTO);
-		BitmapBuilder bitmapBuilder = new BitmapBuilder();
-		Bitmap bitmap = bitmapBuilder.setSource(userPhotoFile).enableCrop(false).build();
+	private static class MenuHolder {
 		
-		return bitmap;
+		public ImageView ivMenuIcon;
+		public TextView tvMenuTitle;
+		
 	}
 
 }

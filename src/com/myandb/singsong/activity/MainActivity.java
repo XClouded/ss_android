@@ -11,16 +11,15 @@ import com.myandb.singsong.activity.SearchActivity.SearchType;
 import com.myandb.singsong.activity.SimpleListActivity.SimpleListType;
 import com.myandb.singsong.adapter.MenuAdapter;
 import com.myandb.singsong.dialog.FrontNoticeDialog;
-import com.myandb.singsong.file.Storage;
 import com.myandb.singsong.fragment.CollaboratedFragment;
 import com.myandb.singsong.fragment.LegendFragment;
 import com.myandb.singsong.fragment.MusicFragment;
 import com.myandb.singsong.fragment.ProfileRootFragment;
 import com.myandb.singsong.fragment.WaitingFragment;
-import com.myandb.singsong.model.MenuData;
-import com.myandb.singsong.model.MenuData.PageName;
+import com.myandb.singsong.model.OldMenuData;
+import com.myandb.singsong.model.OldMenuData.PageName;
 import com.myandb.singsong.model.Notice;
-import com.myandb.singsong.secure.Auth;
+import com.myandb.singsong.secure.Authenticator;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
@@ -40,14 +39,14 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends OldBaseActivity {
 	
 	public static final String INTENT_PAGE_REQUEST = "_page_req_my_";
 
 	private static boolean isRunning = false;
 	
 	private DrawerLayout drawer;
-	private ArrayList<MenuData> menuDatas;
+	private ArrayList<OldMenuData> menuDatas;
 	private ListView lvNavigation;
 	private Toast toast;
 	private Thread countThread;
@@ -65,7 +64,7 @@ public class MainActivity extends BaseActivity {
 		isRunning = true;
 		requestCode = getIntent().getIntExtra(INTENT_PAGE_REQUEST, -1);
 		
-		if (Auth.isLoggedIn()) {
+		if (Authenticator.isLoggedIn()) {
 			
 			initializeMenuData();
 			
@@ -84,24 +83,24 @@ public class MainActivity extends BaseActivity {
 	}
 
 	private void initializeMenuData() {
-		menuDatas = new ArrayList<MenuData>();
+		menuDatas = new ArrayList<OldMenuData>();
 		
-		menuDatas.add(new MenuData(Auth.getUser().getNickname(), null, PageName.MY_PAGE));
-		menuDatas.add(new MenuData("새로운 소식", BitmapFactory.decodeResource(getResources(), R.drawable.ic_megaphone_menu), PageName.NOTIFICATION));
-		menuDatas.add(new MenuData("완성된 콜라보 듣기", BitmapFactory.decodeResource(getResources(), R.drawable.ic_collabo_menu), PageName.WORLD_SONG));
-		menuDatas.add(new MenuData("MR(반주) 목록", BitmapFactory.decodeResource(getResources(), R.drawable.ic_mic_menu), PageName.MUSIC_LIST));
-		menuDatas.add(new MenuData("콜라보를 기다려요!", BitmapFactory.decodeResource(getResources(), R.drawable.ic_waiting_menu), PageName.WAITING_COLLABO));
-		menuDatas.add(new MenuData("레전드 콜라보", BitmapFactory.decodeResource(getResources(), R.drawable.ic_crown_menu), PageName.LEGEND));
-		menuDatas.add(new MenuData("친구 찾기", BitmapFactory.decodeResource(getResources(), R.drawable.ic_magnifier_menu), PageName.FIND_USER));
-		menuDatas.add(new MenuData("콜라보 아티스트", BitmapFactory.decodeResource(getResources(), R.drawable.ic_artist_menu), PageName.ARTIST));
-		menuDatas.add(new MenuData("공지사항", BitmapFactory.decodeResource(getResources(), R.drawable.ic_balloon_menu), PageName.NOTICE));
-		menuDatas.add(new MenuData("설정", BitmapFactory.decodeResource(getResources(), R.drawable.ic_wheel_menu), PageName.SETTING));
+		menuDatas.add(new OldMenuData(Authenticator.getUser().getNickname(), null, PageName.MY_PAGE));
+		menuDatas.add(new OldMenuData("새로운 소식", BitmapFactory.decodeResource(getResources(), R.drawable.ic_megaphone_menu), PageName.NOTIFICATION));
+		menuDatas.add(new OldMenuData("완성된 콜라보 듣기", BitmapFactory.decodeResource(getResources(), R.drawable.ic_collabo_menu), PageName.WORLD_SONG));
+		menuDatas.add(new OldMenuData("MR(반주) 목록", BitmapFactory.decodeResource(getResources(), R.drawable.ic_mic_menu), PageName.MUSIC_LIST));
+		menuDatas.add(new OldMenuData("콜라보를 기다려요!", BitmapFactory.decodeResource(getResources(), R.drawable.ic_waiting_menu), PageName.WAITING_COLLABO));
+		menuDatas.add(new OldMenuData("레전드 콜라보", BitmapFactory.decodeResource(getResources(), R.drawable.ic_crown_menu), PageName.LEGEND));
+		menuDatas.add(new OldMenuData("친구 찾기", BitmapFactory.decodeResource(getResources(), R.drawable.ic_magnifier_menu), PageName.FIND_USER));
+		menuDatas.add(new OldMenuData("콜라보 아티스트", BitmapFactory.decodeResource(getResources(), R.drawable.ic_artist_menu), PageName.ARTIST));
+		menuDatas.add(new OldMenuData("공지사항", BitmapFactory.decodeResource(getResources(), R.drawable.ic_balloon_menu), PageName.NOTICE));
+		menuDatas.add(new OldMenuData("설정", BitmapFactory.decodeResource(getResources(), R.drawable.ic_wheel_menu), PageName.SETTING));
 	}
 
 	private void initializeMenu() {
 		lvNavigation = (ListView) findViewById(R.id.lv_home_menu);
 
-		menuAdapter = new MenuAdapter(this, menuDatas);
+//		menuAdapter = new MenuAdapter(this, menuDatas);
 		lvNavigation.setAdapter(menuAdapter);
 		lvNavigation.setOnItemClickListener(menuClickListener);
 	}
@@ -150,19 +149,7 @@ public class MainActivity extends BaseActivity {
 	}
 	
 	private void checkNewNotice() {
-		Storage preferences = new Storage();
-		Notice notice = preferences.getUnreadNotice();
 		
-		if (notice != null) {
-			Date now = new Date();
-			
-			if (now.before(notice.getStartedTime()) && now.after(notice.getFinishTime())) {
-				if (!notice.getFrontImageUrl().isEmpty()) {
-					noticeDialog = new FrontNoticeDialog(this, notice);
-					noticeDialog.show();
-				}
-			}
-		}
 	}
 	
 	private OnItemClickListener menuClickListener = new OnItemClickListener() {
@@ -171,15 +158,15 @@ public class MainActivity extends BaseActivity {
 		public void onItemClick(AdapterView<?> parent, View v, int position, long arg3) {
 			drawer.closeDrawers();
 			
-			MenuData menu = (MenuData) parent.getItemAtPosition(position);
+			OldMenuData menu = (OldMenuData) parent.getItemAtPosition(position);
 			if (menu != null) {
-				if (menu.getPageType() == MenuData.FRAGMENT) {
+				if (menu.getPageType() == OldMenuData.FRAGMENT) {
 					Fragment fragment = null;
 					
 					switch (menu.getPageName()) {
 					case MY_PAGE:
 						fragment = new ProfileRootFragment();
-						((ProfileRootFragment)fragment).setUser(Auth.getUser());
+						((ProfileRootFragment)fragment).setUser(Authenticator.getUser());
 						break;
 						
 					case WORLD_SONG:
@@ -205,28 +192,20 @@ public class MainActivity extends BaseActivity {
 					
 					replaceFragment(fragment);
 					currentPosition = position;
-				} else if (menu.getPageType() == MenuData.ACTIVITY) {
+				} else if (menu.getPageType() == OldMenuData.ACTIVITY) {
 					Intent intent = new Intent();
 					
 					switch (menu.getPageName()) {
 					case NOTIFICATION:
 						intent.setClass(MainActivity.this, SimpleListActivity.class);
 						intent.putExtra(SimpleListActivity.INTENT_LIST_TYPE, SimpleListType.NOTIFICATION);
-						intent.putExtra(SimpleListActivity.INTENT_USER, Auth.getUserInJson());
+						intent.putExtra(SimpleListActivity.INTENT_USER, Authenticator.getUserInJson());
 						
 						break;
 						
 					case FIND_USER:
 						intent.setClass(MainActivity.this, SearchActivity.class);
 						intent.putExtra(SearchActivity.INTENT_SEARCH_TYPE, SearchType.USER);
-						break;
-						
-					case ARTIST:
-						intent.setClass(MainActivity.this, ArtistActivity.class);
-						break;
-						
-					case NOTICE:
-						intent.setClass(MainActivity.this, NoticeActivity.class);
 						break;
 					
 					case SETTING:
@@ -309,18 +288,9 @@ public class MainActivity extends BaseActivity {
 	protected void onResumeFragments() {
 		super.onResumeFragments();
 		
-		if (Auth.isLoggedIn()) {
+		if (Authenticator.isLoggedIn()) {
 			if (!performedMenuClick) {
 				int position = 0;
-				
-				if (App.REQUEST_MY_PROFILE_FRAGMENT == requestCode) {
-					position = 0;
-				} else if (App.REQUEST_NOTIFICATION_ACTIVITY == requestCode) {
-					performClickGNB(2);
-					position = 1;
-				} else {
-					position = 2;
-				}
 				
 				performClickGNB(position);
 				performedMenuClick = true;

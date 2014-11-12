@@ -6,11 +6,11 @@ import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 import com.myandb.singsong.event.Listeners;
 import com.myandb.singsong.event.MemberOnlyClickListener;
+import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Profile;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.OAuthJustRequest;
 import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.util.ImageHelper;
 
 import android.content.Context;
 import android.view.View;
@@ -89,8 +89,8 @@ public class FriendsAdapter extends AutoLoadAdapter<User> {
 		public void onActivated(View v) {
 			User user = (User) v.getTag();
 			
-			UrlBuilder urlBuilder = UrlBuilder.getInstance();
-			String url = urlBuilder.l("friendships").l(user.getId()).build();
+			UrlBuilder urlBuilder = new UrlBuilder();
+			String url = urlBuilder.s("friendships").s(user.getId()).toString();
 			
 			RequestQueue queue = ((App) v.getContext().getApplicationContext()).getQueueInstance();
 			OAuthJustRequest request = new OAuthJustRequest(Method.POST, url, null);
@@ -106,8 +106,8 @@ public class FriendsAdapter extends AutoLoadAdapter<User> {
 		public void onClick(View v) {
 			User user = (User) v.getTag();
 			
-			UrlBuilder urlBuilder = UrlBuilder.getInstance();
-			String url = urlBuilder.l("friendships").l(user.getId()).build();
+			UrlBuilder urlBuilder = new UrlBuilder();
+			String url = urlBuilder.s("friendships").s(user.getId()).toString();
 			
 			RequestQueue queue = ((App) v.getContext().getApplicationContext()).getQueueInstance();
 			OAuthJustRequest request = new OAuthJustRequest(Method.DELETE, url, null);

@@ -60,8 +60,8 @@ public class DeleteCommentDialog extends BaseDiaglog {
 				
 				@Override
 				public void onClick(View v) {
-					UrlBuilder urlBuilder = UrlBuilder.getInstance();
-					String url = urlBuilder.l("comments").l(comment.getId()).build();
+					UrlBuilder urlBuilder = new UrlBuilder();
+					String url = urlBuilder.s("comments").s(comment.getId()).toString();
 					
 					OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
 							Method.DELETE, url, null,
@@ -83,7 +83,7 @@ public class DeleteCommentDialog extends BaseDiaglog {
 	}
 	
 	public void onDeleteError() {
-		Toast.makeText(getContext(), "삭제하기에 실패하였습니다. 네트워크 상태를 확인해 주세요.", Toast.LENGTH_SHORT).show();
+		Toast.makeText(getContext(), getContext().getString(R.string.t_poor_network_connection), Toast.LENGTH_SHORT).show();
 	}
 
 	public void setComment(Comment<?> comment) {

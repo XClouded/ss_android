@@ -5,9 +5,8 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.myandb.singsong.R;
-import com.myandb.singsong.file.Storage;
+import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Notice;
-import com.myandb.singsong.util.ImageHelper;
 
 public class FrontNoticeDialog extends BaseDiaglog {
 	
@@ -36,8 +35,8 @@ public class FrontNoticeDialog extends BaseDiaglog {
 			
 			@Override
 			public void onClick(View v) {
-				Storage storage = new Storage();
-				storage.readNotice();
+//				FileHelper storage = new FileHelper();
+//				storage.readNotice();
 				
 				FrontNoticeDialog.this.dismiss();
 			}

@@ -1,6 +1,7 @@
 package com.myandb.singsong.event;
 
 import org.json.JSONObject;
+
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
@@ -10,14 +11,15 @@ import android.os.Build.VERSION_CODES;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
+
 import com.android.volley.RequestQueue;
 import com.android.volley.Request.Method;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.myandb.singsong.App;
-import com.myandb.singsong.activity.ArtistActivity;
+import com.myandb.singsong.R;
 import com.myandb.singsong.activity.ChildSongActivity;
-import com.myandb.singsong.activity.BaseActivity;
+import com.myandb.singsong.activity.OldBaseActivity;
 import com.myandb.singsong.activity.PlayerActivity;
 import com.myandb.singsong.activity.ProfileRootActivity;
 import com.myandb.singsong.activity.RecordMainActivity;
@@ -28,7 +30,7 @@ import com.myandb.singsong.model.Song;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.OAuthJsonObjectRequest;
 import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.secure.Auth;
+import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.service.PlayerService;
 import com.myandb.singsong.util.Utility;
 
@@ -44,8 +46,8 @@ public class Listeners {
 				Activity activity = notification.getActivity();
 				
 				if (activity.getSourceType() == Activity.TYPE_RECOMMEND_ARTIST) {
-					Intent intent = new Intent(context, ArtistActivity.class);
-					context.startActivity(intent);
+//					Intent intent = new Intent(context, ArtistActivity.class);
+//					context.startActivity(intent);
 				} else {
 					String url = getUrl(activity);
 					
@@ -61,18 +63,18 @@ public class Listeners {
 			}
 			
 			private String getUrl(Activity activity) {
-				UrlBuilder urlBuilder = UrlBuilder.getInstance();
+				UrlBuilder urlBuilder = new UrlBuilder();
 				
 				switch(activity.getSourceType()) {
 				case Activity.TYPE_CREATE_FRIENDSHIP:
-					return urlBuilder.l("users").l(activity.getUserId()).q("req[]", "profile").build();
+					return urlBuilder.s("users").s(activity.getUserId()).p("req[]", "profile").toString();
 					
 				case Activity.TYPE_CREATE_COMMENT:
 				case Activity.TYPE_CREATE_LIKING:
-					return urlBuilder.l("songs").l(activity.getParentId()).q("req[]", "full").build();
+					return urlBuilder.s("songs").s(activity.getParentId()).p("req[]", "full").toString();
 				case Activity.TYPE_CREATE_ROOT_SONG:
 				case Activity.TYPE_CREATE_LEAF_SONG:
-					return urlBuilder.l("songs").l(activity.getSourceId()).q("req[]", "full").build();
+					return urlBuilder.s("songs").s(activity.getSourceId()).p("req[]", "full").toString();
 					
 				default:
 					return "";
@@ -107,7 +109,7 @@ public class Listeners {
 			case Activity.TYPE_CREATE_LEAF_SONG:
 				Gson gson = Utility.getGsonInstance();
 				Song song = gson.fromJson(response.toString(), Song.class);
-				BaseActivity activity = (BaseActivity) context;
+				OldBaseActivity activity = (OldBaseActivity) context;
 				PlayerService service = activity.getService();
 				
 				if (service != null) {
@@ -140,14 +142,14 @@ public class Listeners {
 		public void onFilteredResponse(Context reference, VolleyError error) {
 			switch(sourceType) {
 			case Activity.TYPE_CREATE_FRIENDSHIP:
-				Toast.makeText(reference, "탈퇴한 유저입니다.", Toast.LENGTH_SHORT).show();
+				Toast.makeText(reference, reference.getString(R.string.t_unknown_user), Toast.LENGTH_SHORT).show();
 				break;
 				
 			case Activity.TYPE_CREATE_COMMENT:
 			case Activity.TYPE_CREATE_LIKING:
 			case Activity.TYPE_CREATE_ROOT_SONG:
 			case Activity.TYPE_CREATE_LEAF_SONG:
-				Toast.makeText(reference, "삭제된 노래입니다.", Toast.LENGTH_SHORT).show();
+				Toast.makeText(reference, reference.getString(R.string.t_deleted_song), Toast.LENGTH_SHORT).show();
 				break;
 				
 			default:
@@ -180,7 +182,7 @@ public class Listeners {
 			@Override
 			public void onClick(View v) {
 				if (user != null) {
-					User currentUser = Auth.getUser();
+					User currentUser = Authenticator.getUser();
 					
 					if (user.getId() != currentUser.getId()) {
 						Gson gson = Utility.getGsonInstance();
@@ -200,7 +202,7 @@ public class Listeners {
 			
 			@Override
 			public void onClick(View v) {
-				BaseActivity activity = (BaseActivity) context;
+				OldBaseActivity activity = (OldBaseActivity) context;
 				PlayerService service = activity.getService();
 				
 				if (service != null) {
@@ -240,11 +242,11 @@ public class Listeners {
 			
 			@Override
 			public void onActivated(View v) {
-				UrlBuilder urlBuilder = UrlBuilder.getInstance();
+				UrlBuilder urlBuilder = new UrlBuilder();
 				Song parentSong = song.getParentSong() == null ? song : song.getParentSong();
 				parentSong.setMusic(song.getMusic());
 				
-				String url = urlBuilder.l("songs").l(parentSong.getId()).build();
+				String url = urlBuilder.s("songs").s(parentSong.getId()).toString();
 				OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
 						Method.GET, url, null,
 						new OnCheckResponse(context, parentSong),
@@ -292,7 +294,7 @@ public class Listeners {
 
 		@Override
 		public void onFilteredResponse(Context reference, VolleyError error) {
-			Toast.makeText(reference, "삭제된 노래입니다. :(", Toast.LENGTH_SHORT).show();
+			Toast.makeText(reference, reference.getString(R.string.t_deleted_song), Toast.LENGTH_SHORT).show();
 		}
 		
 	}
