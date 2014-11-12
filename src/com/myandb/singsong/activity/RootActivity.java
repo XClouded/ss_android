@@ -22,6 +22,7 @@ import android.view.MenuItem;
 public class RootActivity extends BaseActivity {
 	
 	public static final String SAVED_STATE_ACTION_BAR_HIDDEN = "saved_state_action_bar_hidden";
+	public static final String EXTRA_NOTICE_ID = "notice_id";
 	
 	private SlidingMenu drawer;
 	private SlidingPlayerLayout slidingPlayerLayout;
@@ -43,6 +44,8 @@ public class RootActivity extends BaseActivity {
 		startPlayerService();
 		
 		registerGcm();
+		
+		showUnreadLatestNotice(getIntent());
 		
 		replaceContentFragmentFromIntent(getIntent());
 	}
@@ -135,6 +138,20 @@ public class RootActivity extends BaseActivity {
 			// Device does not have package com.google.android.gsf
 			// This will not happened
 		}
+	}
+	
+	private void showUnreadLatestNotice(Intent intent) {
+		int latestNoticeId = intent.getIntExtra(EXTRA_NOTICE_ID, 0);
+		if (isExistUnreadLatestNotice(latestNoticeId)) {
+			// Show notice
+		}
+	}
+	
+	private boolean isExistUnreadLatestNotice(int latestNoticeId) {
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		String key = getString(R.string.key_read_notice_id);
+		int readNoticeId = preferences.getInt(key, 0);
+		return latestNoticeId > readNoticeId;
 	}
 	
 	@Override

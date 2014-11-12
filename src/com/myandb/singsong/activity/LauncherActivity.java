@@ -87,6 +87,7 @@ public class LauncherActivity extends Activity {
 		
 		Intent intent = new Intent(this, RootActivity.class);
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, CollaboratedFragment.class.getName());
+		intent.putExtra(RootActivity.EXTRA_NOTICE_ID, noticeId);
 		startActivity(intent);
 		overridePendingTransition(enterAnim, exitAnim);
 		finish();

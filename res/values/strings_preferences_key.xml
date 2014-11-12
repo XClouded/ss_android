@@ -5,5 +5,6 @@
     <string translatable="false" name="key_notification_count">key_notification_count</string>
     <string translatable="false" name="key_player_looping">key_player_looping</string>
     <string translatable="false" name="key_player_autoplay">key_player_autoplay</string>
+    <string translatable="false" name="key_read_notice_id">key_read_notice_id</string>
     
 </resources>
