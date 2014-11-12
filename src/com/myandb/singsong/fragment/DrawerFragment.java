@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -73,7 +72,8 @@ public class DrawerFragment extends BaseFragment {
 	
 	@Override
 	protected void setupViews() {
-		BaseAdapter adapter = new MenuAdapter(getActivity(), menus);
+		MenuAdapter adapter = new MenuAdapter();
+		adapter.addAll(menus);
 		lvMenu.setAdapter(adapter);
 	}
 	

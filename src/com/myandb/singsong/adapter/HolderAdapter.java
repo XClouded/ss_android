@@ -64,6 +64,11 @@ public abstract class HolderAdapter<T, E extends ViewHolder> extends BaseAdapter
 		addItem(0, item);
 	}
 	
+	public void addAll(List<T> items) {
+		this.items.addAll(items);
+		notifyDataSetChanged();
+	}
+	
 	public void addAll(JSONArray jsonItems) {
 		try {
 			Gson gson = Utility.getGsonInstance();
