@@ -1,6 +1,7 @@
 package com.myandb.singsong.fragment;
 
 import com.myandb.singsong.R;
+import com.myandb.singsong.net.GradualLoader;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -8,12 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AbsListView.OnScrollListener;
+import android.widget.AbsListView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
 public abstract class ListFragment extends BaseFragment {
 	
-	private ListAdapter adapter;
 	private ListView listView;
 	private View listHeaderView;
 	private View listViewContainer;
@@ -23,6 +25,7 @@ public abstract class ListFragment extends BaseFragment {
 	private View emptyView;
 	private Animation fadeIn;
 	private Animation fadeOut;
+	private GradualLoader loader;
 
 	@Override
 	protected int getResourceId() {
@@ -45,6 +48,8 @@ public abstract class ListFragment extends BaseFragment {
 	protected void initialize(Activity activity) {
 		fadeIn = AnimationUtils.loadAnimation(activity, android.R.anim.fade_in);
 		fadeOut = AnimationUtils.loadAnimation(activity, android.R.anim.fade_out);
+		
+		loader = new GradualLoader(activity);
 	}
 
 	@Override
@@ -57,6 +62,8 @@ public abstract class ListFragment extends BaseFragment {
 			listView.addHeaderView(listHeaderView);
 		}
 		
+		listView.setOnScrollListener(scrollListener);
+		
 		if (fixedHeaderView != null) {
 			if (fixedHeaderContainer instanceof ViewGroup) {
 				((ViewGroup) fixedHeaderContainer).addView(fixedHeaderView);
@@ -67,21 +74,44 @@ public abstract class ListFragment extends BaseFragment {
 		} else {
 			fixedHeaderContainer.setVisibility(View.GONE);
 		}
-		
-		setListShown(false);
 	}
 	
-	public void onAdapterPrepared(ListAdapter adapter) {
-		this.adapter = adapter;
+	private OnScrollListener scrollListener = new OnScrollListener() {
+		
+		private static final int VISIABLE_THRESHOLD = 10; 
+        private int previousTotal = 0;
+		
+		@Override
+		public void onScrollStateChanged(AbsListView view, int scrollState) {}
+		
+		@Override
+		public void onScroll(AbsListView view, int firstVisibleItem,
+			int visibleItemCount, int totalItemCount) {
+			if (loader.isLoading()) {
+                if (totalItemCount > previousTotal) {
+                	previousTotal = totalItemCount;
+                }
+            } else {
+            	if ((totalItemCount - visibleItemCount) <= (firstVisibleItem + VISIABLE_THRESHOLD)) {
+            		loader.load();
+            	}
+            }
+		}
+	};
+	
+	public void setAdapter(ListAdapter adapter) {
 		listView.setAdapter(adapter);
-		setListShown(true);
 	}
 	
 	public ListAdapter getAdapter() {
-		return adapter;
+		return listView.getAdapter();
 	}
 	
-	protected void setListShown(boolean shown) {
+	public GradualLoader getGradualLoader() {
+		return loader;
+	}
+	
+	public void setListShown(boolean shown) {
         if (listViewContainer.isShown() == shown) {
             return;
         }

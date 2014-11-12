@@ -15,7 +15,7 @@ import android.widget.Toast;
 import com.myandb.singsong.R;
 import com.myandb.singsong.adapter.AutoLoadAdapter;
 import com.myandb.singsong.adapter.FriendsAdapter;
-import com.myandb.singsong.adapter.MusicBasicAdapter;
+import com.myandb.singsong.adapter.MusicAdapter;
 import com.myandb.singsong.adapter.SimpleSongAdapter;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.widget.AutoLoadListView;
@@ -128,7 +128,7 @@ public class SearchActivity extends OldBaseActivity {
 			return new SimpleSongAdapter(this);
 			
 		case MUSIC:
-			return new MusicBasicAdapter(this);
+			return null;/*new MusicBasicAdapter(this);*/
 
 		default:
 			break;

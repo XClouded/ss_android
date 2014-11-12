@@ -13,7 +13,8 @@
         android:id="@+id/fl_listview_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/fl_fixed_header_container" >
+        android:layout_below="@id/fl_fixed_header_container"
+        android:visibility="gone" >
         
         <ListView
             android:id="@+id/listview"
