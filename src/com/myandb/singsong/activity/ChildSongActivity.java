@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -17,7 +18,6 @@ import com.myandb.singsong.model.Song;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.util.Utility;
-import com.myandb.singsong.widget.AutoLoadListView;
 
 public class ChildSongActivity extends OldBaseActivity {
 	
@@ -40,7 +40,7 @@ public class ChildSongActivity extends OldBaseActivity {
 			TextView tvCreatorMessage = (TextView) findViewById(R.id.tv_parent_song_message);
 			ImageView ivCreatorImage = (ImageView) findViewById(R.id.iv_parent_song_image);
 			ImageView ivCreatorPhoto = (ImageView) findViewById(R.id.iv_parent_user_photo);
-			AutoLoadListView listView = (AutoLoadListView) findViewById(R.id.lv_full_width);
+			ListView listView = (ListView) findViewById(R.id.lv_full_width);
 			
 			tvCreatorNickname.setText(user.getNickname());
 			tvCreatorMessage.setText(parentSong.getCroppedMessage());
@@ -61,12 +61,12 @@ public class ChildSongActivity extends OldBaseActivity {
 			parentSong.setMusic(music);
 			ivCreatorImage.setOnClickListener(Listeners.getPlayClickListener(this, parentSong));
 			
-			ChildrenSongAdapter adapter = new ChildrenSongAdapter(this);
+			ChildrenSongAdapter adapter = new ChildrenSongAdapter();
 			listView.setAdapter(adapter);
 			
 			UrlBuilder builder = new UrlBuilder();
 			builder.s("songs").s(parentSong.getId()).s("children");
-			adapter.resetRequest(builder);
+//			adapter.resetRequest(builder);
 		} else {
 			finish();
 		}

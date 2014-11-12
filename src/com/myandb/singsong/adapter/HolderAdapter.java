@@ -15,8 +15,8 @@ import android.widget.BaseAdapter;
 
 public abstract class HolderAdapter<T, E extends ViewHolder> extends BaseAdapter {
 	
+	protected List<T> items;
 	private Class<T> clazz;
-	private List<T> items;
 	private Date currentDate;
 
 	public HolderAdapter(Class<T> clazz) {

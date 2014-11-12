@@ -17,9 +17,8 @@ import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Song;
 import com.myandb.singsong.model.User;
-import com.myandb.singsong.net.UrlBuilder;
 
-public class MySongAdapter extends AutoLoadAdapter<Song> {
+public class MySongAdapter extends HolderAdapter<Song, MySongAdapter.SongHolder> {
 	
 	private static final LinearLayout.LayoutParams LL_FULL_SIZE_PARAMS = new LinearLayout.LayoutParams(
 			LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
@@ -29,156 +28,120 @@ public class MySongAdapter extends AutoLoadAdapter<Song> {
 	private final ChangeSongStateDialog dialog;
 	
 	public MySongAdapter(Context context, boolean isCurrentUser, boolean isDeleted) {
-		super(context, Song.class, false);
+		super(Song.class);
 		
 		this.isCurrentUser = isCurrentUser;
 		this.isDeleted = isDeleted;
 		this.dialog = new ChangeSongStateDialog(context, this, isDeleted);
 	}
-	
-	public MySongAdapter(Context context, UrlBuilder urlBuilder, boolean isCurrentUser, boolean isDeleted) {
-		this(context, isCurrentUser, isDeleted);
-		
-		resetRequest(urlBuilder);
-	}
-	
+
 	@Override
-	public View getView(int position, View view, ViewGroup parent) {
-		final SongHolder songHolder;
+	public SongHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+		View view = View.inflate(parent.getContext(), R.layout.row_my_song, null);
+		return new SongHolder(view);
+	}
+
+	@Override
+	public void onBindViewHolder(SongHolder viewHolder, int position) {
 		final Song song = (Song) getItem(position);
 		final Music music = song.getMusic();
 		final User creator = song.getCreator();
 		final List<Song> children = song.getChildren();
+		final Context context = viewHolder.view.getContext();
+
+		viewHolder.tvLikeNum.setText(song.getWorkedLikeNum());
+		viewHolder.tvCommentNum.setText(song.getWorkedCommentNum());
+		viewHolder.tvCreatedTime.setText(song.getWorkedCreatedTime(getCurrentDate()));
 		
-		if (view == null) {
-			view = View.inflate(getContext(), R.layout.row_my_song, null);
-			
-			songHolder = new SongHolder();
-			songHolder.tvCreatorNickname = (TextView) view.findViewById(R.id.tv_parent_user_nickname);
-			songHolder.tvCreatorMessage = (TextView) view.findViewById(R.id.tv_parent_song_message);
-			songHolder.tvPartnerNickname = (TextView) view.findViewById(R.id.tv_this_user_nickname);
-			songHolder.tvPartnerMessage = (TextView) view.findViewById(R.id.tv_this_song_message);
-			songHolder.tvMusicInfo = (TextView) view.findViewById(R.id.tv_music_info);
-			songHolder.tvLikeNum = (TextView) view.findViewById(R.id.tv_song_like_num);
-			songHolder.tvCommentNum = (TextView) view.findViewById(R.id.tv_song_comment_num);
-			songHolder.tvCollaboNum = (TextView) view.findViewById(R.id.tv_song_collabo_num);
-			songHolder.tvCreatedTime = (TextView) view.findViewById(R.id.tv_song_created_time);
-			
-			songHolder.ivCreatorPhoto = (ImageView) view.findViewById(R.id.iv_parent_user_photo);
-			songHolder.ivCreatorImage = (ImageView) view.findViewById(R.id.iv_parent_song_image);
-			songHolder.ivPartnerPhoto = (ImageView) view.findViewById(R.id.iv_this_user_photo);
-			songHolder.ivPartnerImage = (ImageView) view.findViewById(R.id.iv_this_song_image);
-			songHolder.ivFirstChildrenImage = (ImageView) view.findViewById(R.id.iv_first_children_upload_image);
-			songHolder.ivSecondChildrenImage = (ImageView) view.findViewById(R.id.iv_second_children_upload_image);
-			songHolder.ivChangeStateSong = (ImageView) view.findViewById(R.id.iv_change_state_song);
-			
-			songHolder.vCollaboNumWrapper = view.findViewById(R.id.ll_collabo_num_wrapper);
-			songHolder.vPartnerWrapper = view.findViewById(R.id.ll_partner_wrapper);
-			songHolder.vChildrenWrapper = view.findViewById(R.id.ll_children_wrapper);
-			songHolder.vPartnerPhotoWrapper = view.findViewById(R.id.ll_partner_photo_wrapper);
-			
-			view.setTag(songHolder);
-		} else {
-			songHolder = (SongHolder) view.getTag();
-		}
+		viewHolder.tvMusicInfo.setText(music.getSingerName());
+		viewHolder.tvMusicInfo.append("\n");
+		viewHolder.tvMusicInfo.append(music.getWorkedTitle());
+		viewHolder.tvMusicInfo.append("\t");
+		viewHolder.tvMusicInfo.append("(" + song.getWorkedDuration() + ")");
 		
-		if (music != null && creator != null) {
-			songHolder.tvLikeNum.setText(song.getWorkedLikeNum());
-			songHolder.tvCommentNum.setText(song.getWorkedCommentNum());
-			songHolder.tvCreatedTime.setText(song.getWorkedCreatedTime(getCurrentDate()));
+		if (!song.isRoot()) {
+			final Song parentSong = song.getParentSong();
+			final User parentUser = song.getParentUser();
 			
-			songHolder.tvMusicInfo.setText(music.getSingerName());
-			songHolder.tvMusicInfo.append("\n");
-			songHolder.tvMusicInfo.append(music.getWorkedTitle());
-			songHolder.tvMusicInfo.append("\t");
-			songHolder.tvMusicInfo.append("(" + song.getWorkedDuration() + ")");
-			
-			if (!song.isRoot()) {
-				final Song parentSong = song.getParentSong();
-				final User parentUser = song.getParentUser();
+			if (parentUser != null) {
+				viewHolder.vCollaboNumWrapper.setVisibility(View.GONE);
+				viewHolder.vPartnerPhotoWrapper.setVisibility(View.VISIBLE);
+				viewHolder.vPartnerWrapper.setVisibility(View.VISIBLE);
+				viewHolder.vChildrenWrapper.setVisibility(View.GONE);
+				viewHolder.ivPartnerImage.setLayoutParams(LL_FULL_SIZE_PARAMS);
 				
-				if (parentUser != null) {
-					songHolder.vCollaboNumWrapper.setVisibility(View.GONE);
-					songHolder.vPartnerPhotoWrapper.setVisibility(View.VISIBLE);
-					songHolder.vPartnerWrapper.setVisibility(View.VISIBLE);
-					songHolder.vChildrenWrapper.setVisibility(View.GONE);
-					songHolder.ivPartnerImage.setLayoutParams(LL_FULL_SIZE_PARAMS);
-					
-					songHolder.tvCreatorNickname.setText(parentUser.getNickname());
-					songHolder.tvCreatorMessage.setText(parentSong.getCroppedMessage());
-					songHolder.tvPartnerNickname.setText(creator.getNickname());
-					songHolder.tvPartnerMessage.setText(song.getCroppedMessage());
-					
-					ImageHelper.displayPhoto(parentUser.getPhotoUrl(), songHolder.ivCreatorPhoto);
-					ImageHelper.displayPhoto(parentSong.getPhotoUrl(), songHolder.ivCreatorImage);
-					ImageHelper.displayPhoto(creator, songHolder.ivPartnerPhoto);
-					ImageHelper.displayPhoto(song.getPhotoUrl(), songHolder.ivPartnerImage);
-					
-					view.setOnClickListener(Listeners.getPlayClickListener(getContext(), song));
-				}
-			} else if (children != null) {
-				songHolder.vCollaboNumWrapper.setVisibility(View.VISIBLE);
-				songHolder.vPartnerPhotoWrapper.setVisibility(View.GONE);
+				viewHolder.tvCreatorNickname.setText(parentUser.getNickname());
+				viewHolder.tvCreatorMessage.setText(parentSong.getCroppedMessage());
+				viewHolder.tvPartnerNickname.setText(creator.getNickname());
+				viewHolder.tvPartnerMessage.setText(song.getCroppedMessage());
 				
-				if (children.size() == 0) {
-					songHolder.vPartnerWrapper.setVisibility(View.GONE);
-				} else if (children.size() == 1) {
-					songHolder.vPartnerWrapper.setVisibility(View.VISIBLE);
-					songHolder.vChildrenWrapper.setVisibility(View.GONE);
-					songHolder.ivPartnerImage.setLayoutParams(LL_FULL_SIZE_PARAMS);
-				} else if (children.size() == 2) {
-					songHolder.vPartnerWrapper.setVisibility(View.VISIBLE);
-					songHolder.vChildrenWrapper.setVisibility(View.VISIBLE);
-					songHolder.ivSecondChildrenImage.setVisibility(View.GONE);
-				} else {
-					songHolder.vPartnerWrapper.setVisibility(View.VISIBLE);
-					songHolder.vChildrenWrapper.setVisibility(View.VISIBLE);
-					songHolder.ivSecondChildrenImage.setVisibility(View.VISIBLE);
-				}
+				ImageHelper.displayPhoto(parentUser.getPhotoUrl(), viewHolder.ivCreatorPhoto);
+				ImageHelper.displayPhoto(parentSong.getPhotoUrl(), viewHolder.ivCreatorImage);
+				ImageHelper.displayPhoto(creator, viewHolder.ivPartnerPhoto);
+				ImageHelper.displayPhoto(song.getPhotoUrl(), viewHolder.ivPartnerImage);
 				
-				if (children.size() == 0) {
-					view.setOnClickListener(Listeners.getPlayClickListener(getContext(), song));
-				} else {
-					view.setOnClickListener(Listeners.getChildrenClickListener(getContext(), song));
-				}
-				
-				songHolder.tvCollaboNum.setText(song.getWorkedCollaboNum());
-				songHolder.tvCreatorNickname.setText(creator.getNickname());
-				songHolder.tvCreatorMessage.setText(song.getCroppedMessage());
-				
-				ImageHelper.displayPhoto(creator.getPhotoUrl(), songHolder.ivCreatorPhoto);
-				ImageHelper.displayPhoto(song.getPhotoUrl(), songHolder.ivCreatorImage);
-				
-				setChildrenImage(children, 0, songHolder.ivPartnerImage);
-				setChildrenImage(children, 1, songHolder.ivFirstChildrenImage);
-				setChildrenImage(children, 2, songHolder.ivSecondChildrenImage);
+				viewHolder.view.setOnClickListener(Listeners.getPlayClickListener(context, song));
 			}
+		} else if (children != null) {
+			viewHolder.vCollaboNumWrapper.setVisibility(View.VISIBLE);
+			viewHolder.vPartnerPhotoWrapper.setVisibility(View.GONE);
 			
-			if (isCurrentUser && dialog != null) {
-				songHolder.ivChangeStateSong.setVisibility(View.VISIBLE);
-				
-				if (isDeleted) {
-					songHolder.ivChangeStateSong.setImageResource(R.drawable.ic_restore);
-				} else {
-					songHolder.ivChangeStateSong.setImageResource(R.drawable.ic_trash_inverse);
-				}
-				
-				songHolder.ivChangeStateSong.setOnClickListener(new OnClickListener() {
-					
-					@Override
-					public void onClick(View v) {
-						if (song != null) {
-							dialog.setTargetSong(song);
-							dialog.show();
-						}
-					}
-				});
+			if (children.size() == 0) {
+				viewHolder.vPartnerWrapper.setVisibility(View.GONE);
+			} else if (children.size() == 1) {
+				viewHolder.vPartnerWrapper.setVisibility(View.VISIBLE);
+				viewHolder.vChildrenWrapper.setVisibility(View.GONE);
+				viewHolder.ivPartnerImage.setLayoutParams(LL_FULL_SIZE_PARAMS);
+			} else if (children.size() == 2) {
+				viewHolder.vPartnerWrapper.setVisibility(View.VISIBLE);
+				viewHolder.vChildrenWrapper.setVisibility(View.VISIBLE);
+				viewHolder.ivSecondChildrenImage.setVisibility(View.GONE);
 			} else {
-				songHolder.ivChangeStateSong.setVisibility(View.GONE);
+				viewHolder.vPartnerWrapper.setVisibility(View.VISIBLE);
+				viewHolder.vChildrenWrapper.setVisibility(View.VISIBLE);
+				viewHolder.ivSecondChildrenImage.setVisibility(View.VISIBLE);
 			}
+			
+			if (children.size() == 0) {
+				viewHolder.view.setOnClickListener(Listeners.getPlayClickListener(context, song));
+			} else {
+				viewHolder.view.setOnClickListener(Listeners.getChildrenClickListener(context, song));
+			}
+			
+			viewHolder.tvCollaboNum.setText(song.getWorkedCollaboNum());
+			viewHolder.tvCreatorNickname.setText(creator.getNickname());
+			viewHolder.tvCreatorMessage.setText(song.getCroppedMessage());
+			
+			ImageHelper.displayPhoto(creator.getPhotoUrl(), viewHolder.ivCreatorPhoto);
+			ImageHelper.displayPhoto(song.getPhotoUrl(), viewHolder.ivCreatorImage);
+			
+			setChildrenImage(children, 0, viewHolder.ivPartnerImage);
+			setChildrenImage(children, 1, viewHolder.ivFirstChildrenImage);
+			setChildrenImage(children, 2, viewHolder.ivSecondChildrenImage);
 		}
 		
-		return view;
+		if (isCurrentUser && dialog != null) {
+			viewHolder.ivChangeStateSong.setVisibility(View.VISIBLE);
+			
+			if (isDeleted) {
+				viewHolder.ivChangeStateSong.setImageResource(R.drawable.ic_restore);
+			} else {
+				viewHolder.ivChangeStateSong.setImageResource(R.drawable.ic_trash_inverse);
+			}
+			
+			viewHolder.ivChangeStateSong.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					if (song != null) {
+						dialog.setTargetSong(song);
+						dialog.show();
+					}
+				}
+			});
+		} else {
+			viewHolder.ivChangeStateSong.setVisibility(View.GONE);
+		}
 	}
 	
 	private void setChildrenImage(List<Song> children, int index, ImageView imageView) {
@@ -197,30 +160,53 @@ public class MySongAdapter extends AutoLoadAdapter<Song> {
 		}
 	}
 	
-	private static class SongHolder {
+	public static final class SongHolder extends ViewHolder {
 		
-		public TextView tvCreatorNickname,
-						tvCreatorMessage,
-						tvPartnerNickname,
-						tvPartnerMessage,
-						tvLikeNum,
-						tvCommentNum,
-						tvCollaboNum,
-						tvCreatedTime,
-						tvMusicInfo;
+		public TextView tvCreatorNickname;
+		public TextView tvCreatorMessage;
+		public TextView tvPartnerNickname;
+		public TextView tvPartnerMessage;
+		public TextView tvLikeNum;
+		public TextView tvCommentNum;
+		public TextView tvCollaboNum;
+		public TextView tvCreatedTime;
+		public TextView tvMusicInfo;
+		public ImageView ivCreatorPhoto;
+		public ImageView ivCreatorImage;
+		public ImageView ivPartnerPhoto;
+		public ImageView ivPartnerImage;
+		public ImageView ivFirstChildrenImage;
+		public ImageView ivSecondChildrenImage;
+		public ImageView ivChangeStateSong;
+		public View vCollaboNumWrapper;
+		public View vPartnerWrapper;
+		public View vChildrenWrapper;
+		public View vPartnerPhotoWrapper;
 		
-		public ImageView ivCreatorPhoto,
-						 ivCreatorImage,
-						 ivPartnerPhoto,
-						 ivPartnerImage,
-						 ivFirstChildrenImage,
-						 ivSecondChildrenImage,
-						 ivChangeStateSong;
-		
-		public View vCollaboNumWrapper,
-					vPartnerWrapper,
-					vChildrenWrapper,
-					vPartnerPhotoWrapper;
+		public SongHolder(View view) {
+			super(view);
+			
+			tvCreatorNickname = (TextView) view.findViewById(R.id.tv_parent_user_nickname);
+			tvCreatorMessage = (TextView) view.findViewById(R.id.tv_parent_song_message);
+			tvPartnerNickname = (TextView) view.findViewById(R.id.tv_this_user_nickname);
+			tvPartnerMessage = (TextView) view.findViewById(R.id.tv_this_song_message);
+			tvMusicInfo = (TextView) view.findViewById(R.id.tv_music_info);
+			tvLikeNum = (TextView) view.findViewById(R.id.tv_song_like_num);
+			tvCommentNum = (TextView) view.findViewById(R.id.tv_song_comment_num);
+			tvCollaboNum = (TextView) view.findViewById(R.id.tv_song_collabo_num);
+			tvCreatedTime = (TextView) view.findViewById(R.id.tv_song_created_time);
+			ivCreatorPhoto = (ImageView) view.findViewById(R.id.iv_parent_user_photo);
+			ivCreatorImage = (ImageView) view.findViewById(R.id.iv_parent_song_image);
+			ivPartnerPhoto = (ImageView) view.findViewById(R.id.iv_this_user_photo);
+			ivPartnerImage = (ImageView) view.findViewById(R.id.iv_this_song_image);
+			ivFirstChildrenImage = (ImageView) view.findViewById(R.id.iv_first_children_upload_image);
+			ivSecondChildrenImage = (ImageView) view.findViewById(R.id.iv_second_children_upload_image);
+			ivChangeStateSong = (ImageView) view.findViewById(R.id.iv_change_state_song);
+			vCollaboNumWrapper = view.findViewById(R.id.ll_collabo_num_wrapper);
+			vPartnerWrapper = view.findViewById(R.id.ll_partner_wrapper);
+			vChildrenWrapper = view.findViewById(R.id.ll_children_wrapper);
+			vPartnerPhotoWrapper = view.findViewById(R.id.ll_partner_photo_wrapper);
+		}
 		
 	}
 

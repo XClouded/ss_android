@@ -25,8 +25,8 @@ public class MusicAdapter extends HolderAdapter<Music, MusicAdapter.MusicHolder>
 
 	@Override
 	public void onBindViewHolder(MusicHolder viewHolder, int position) {
-		Music music = getItem(position);
-		Context context = viewHolder.view.getContext(); 
+		final Music music = getItem(position);
+		final Context context = viewHolder.view.getContext(); 
 		
 		viewHolder.tvSingerName.setSelected(true);
 		viewHolder.tvMusicTitle.setSelected(true);

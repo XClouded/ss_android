@@ -10,15 +10,15 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.myandb.singsong.R;
-import com.myandb.singsong.adapter.AutoLoadAdapter;
 import com.myandb.singsong.adapter.FriendsAdapter;
 import com.myandb.singsong.adapter.MusicAdapter;
 import com.myandb.singsong.adapter.SimpleSongAdapter;
 import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.widget.AutoLoadListView;
 
 public class SearchActivity extends OldBaseActivity {
 	
@@ -29,7 +29,7 @@ public class SearchActivity extends OldBaseActivity {
 	public static final String INTENT_SEARCH_TYPE = "_search_type_";
 	
 	private UrlBuilder urlBuilder;
-	private AutoLoadListView listView;
+	private ListView listView;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,10 +42,9 @@ public class SearchActivity extends OldBaseActivity {
 			final ImageView ivSearch = (ImageView) findViewById(R.id.iv_search);
 			final ImageView ivClear = (ImageView) findViewById(R.id.iv_et_clear);
 			final EditText etSearch = (EditText) findViewById(R.id.et_search);
-			listView = (AutoLoadListView) findViewById(R.id.lv_full_width);
+			listView = (ListView) findViewById(R.id.lv_full_width);
 			
-			final AutoLoadAdapter<?> adapter = getAdapter(type);
-			
+			final ListAdapter adapter = null;
 			listView.setAdapter(adapter);
 			if (type.equals(SearchType.USER) || type.equals(SearchType.MUSIC)) {
 				final ColorDrawable divider = new ColorDrawable(getResources().getColor(R.color.divider));
@@ -62,7 +61,7 @@ public class SearchActivity extends OldBaseActivity {
 					} else {
 						ivClear.setVisibility(View.GONE);
 						
-						performInitial(type, adapter);
+//						performInitial(type, adapter);
 					}
 				}
 				
@@ -88,8 +87,8 @@ public class SearchActivity extends OldBaseActivity {
 						urlBuilder = getUrlBuilder(type);
 						urlBuilder.keyword(keyword).p("order", "created_at");
 						
-						adapter.resetRequest(urlBuilder);
-						listView.initializeScroll();
+//						adapter.resetRequest(urlBuilder);
+//						listView.initializeScroll();
 					}
 				}
 			});
@@ -102,12 +101,13 @@ public class SearchActivity extends OldBaseActivity {
 				}
 			});
 			
-			performInitial(type, adapter);
+//			performInitial(type, adapter);
 		} else {
 			finish();
 		}
 	}
 	
+	/*
 	private void performInitial(SearchType type, AutoLoadAdapter<?> adapter) {
 		if (type.equals(SearchType.MUSIC)) {
 			urlBuilder = getUrlBuilder(type);
@@ -121,14 +121,14 @@ public class SearchActivity extends OldBaseActivity {
 	private AutoLoadAdapter<?> getAdapter(SearchType type) {
 		switch (type) {
 		case USER:
-			return new FriendsAdapter(this);
+//			return new FriendsAdapter();
 			
 		case SONG_ROOT:
 		case SONG_LEAF:
-			return new SimpleSongAdapter(this);
+//			return new SimpleSongAdapter(this);
 			
 		case MUSIC:
-			return null;/*new MusicBasicAdapter(this);*/
+			return null;new MusicBasicAdapter(this);
 
 		default:
 			break;
@@ -136,6 +136,7 @@ public class SearchActivity extends OldBaseActivity {
 		
 		return null;
 	}
+	*/
 	
 	private UrlBuilder getUrlBuilder(SearchType type) {
 		final UrlBuilder urlBuilder = new UrlBuilder();

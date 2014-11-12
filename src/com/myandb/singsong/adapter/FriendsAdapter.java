@@ -20,57 +20,33 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class FriendsAdapter extends AutoLoadAdapter<User> {
+public class FriendsAdapter extends HolderAdapter<User, FriendsAdapter.UserHolder> {
 	
-	public FriendsAdapter(Context context) {
-		super(context, User.class, true);
-	}
-	
-	public FriendsAdapter(Context context, UrlBuilder urlBuilder) {
-		this(context);
-		
-		resetRequest(urlBuilder);
+	public FriendsAdapter() {
+		super(User.class);
 	}
 
 	@Override
-	public View getView(int position, View view, ViewGroup parent) {
-		final UserHolder userHolder;
+	public UserHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+		View view = View.inflate(parent.getContext(), R.layout.row_friend, null);
+		return new UserHolder(view);
+	}
+
+	@Override
+	public void onBindViewHolder(UserHolder viewHolder, int position) {
 		final User user = (User) getItem(position);
 		final Profile profile = user.getProfile();
+		final Context context = viewHolder.view.getContext();
 		
-		if (view == null) {
-			view = View.inflate(getContext(), R.layout.row_friend, null);
-			
-			userHolder = new UserHolder();
-			userHolder.tvUserNickname = (TextView) view.findViewById(R.id.tv_user_nickname);
-			userHolder.tvUserStatus = (TextView) view.findViewById(R.id.tv_user_status);
-			userHolder.ivUserPhoto = (ImageView) view.findViewById(R.id.iv_user_photo);
-			userHolder.btnFollow = (Button) view.findViewById(R.id.btn_follow);
-			
-			view.setTag(userHolder);
-		} else {
-			userHolder = (UserHolder) view.getTag();
-		}
+		viewHolder.tvUserStatus.setText(profile.getStatusMessage());
+		viewHolder.tvUserNickname.setText(user.getNickname());
 		
-		if (profile != null) {
-			if (profile.getStatusMessage().length() > 0) {
-				userHolder.tvUserStatus.setVisibility(View.VISIBLE);
-				userHolder.tvUserStatus.setText(profile.getStatusMessage());
-			} else {
-				userHolder.tvUserStatus.setVisibility(View.INVISIBLE);
-			}
-			
-			userHolder.tvUserNickname.setText(user.getNickname());
-			
-			ImageHelper.displayPhoto(user, userHolder.ivUserPhoto);
-			
-			userHolder.btnFollow.setTag(user);
-			toggleFollowing(userHolder.btnFollow, user.isFollowing());
-			
-			view.setOnClickListener(Listeners.getProfileClickListener(getContext(), user));
-		}
+		ImageHelper.displayPhoto(user, viewHolder.ivUserPhoto);
 		
-		return view;
+		viewHolder.btnFollow.setTag(user);
+		toggleFollowing(viewHolder.btnFollow, user.isFollowing());
+		
+		viewHolder.view.setOnClickListener(Listeners.getProfileClickListener(context, user));
 	}
 	
 	private void toggleFollowing(View v, boolean isFollowing) {
@@ -117,12 +93,21 @@ public class FriendsAdapter extends AutoLoadAdapter<User> {
 		}
 	};
 	
-	private static class UserHolder {
+	public static final class UserHolder extends ViewHolder {
 		
 		public TextView tvUserNickname;
 		public TextView tvUserStatus;
 		public ImageView ivUserPhoto;
 		public Button btnFollow;
+		
+		public UserHolder(View view) {
+			super(view);
+			
+			tvUserNickname = (TextView) view.findViewById(R.id.tv_user_nickname);
+			tvUserStatus = (TextView) view.findViewById(R.id.tv_user_status);
+			ivUserPhoto = (ImageView) view.findViewById(R.id.iv_user_photo);
+			btnFollow = (Button) view.findViewById(R.id.btn_follow);
+		}
 		
 	}
 

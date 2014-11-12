@@ -47,7 +47,7 @@ public class LegendFragment extends Fragment {
 		tvCurrentWeek = (TextView) view.findViewById(R.id.tv_current_week);
 		listview = (ListView) view.findViewById(R.id.lv_full_width);
 		
-		adapter = new CollaboratedAdapter(getActivity());
+//		adapter = new CollaboratedAdapter(getActivity());
 		listview.setAdapter(adapter);
 		
 		fetchLegend(currentIndex);
@@ -86,9 +86,9 @@ public class LegendFragment extends Fragment {
 		tvCurrentWeek.append(" ~ ");
 		tvCurrentWeek.append(end);
 		
-		adapter.resetRequest(
-			new UrlBuilder().s("songs").s("leaf").start(start).end(end).p("order", "liking_num").take(10)
-		);
+//		adapter.resetRequest(
+//			new UrlBuilder().s("songs").s("leaf").start(start).end(end).p("order", "liking_num").take(10)
+//		);
 	}
 
 }

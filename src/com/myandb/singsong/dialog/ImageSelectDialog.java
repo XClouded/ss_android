@@ -22,7 +22,7 @@ public class ImageSelectDialog extends BaseDiaglog {
 		super(context, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
 		
 		parent = (RecordSettingActivity) context;
-		adapter = new ImageAdapter(context, this);
+		adapter = new ImageAdapter(this);
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class ImageSelectDialog extends BaseDiaglog {
 		UrlBuilder urlBuilder = new UrlBuilder();
 		urlBuilder.s("images");
 		
-		adapter.resetRequest(urlBuilder);
+//		adapter.resetRequest(urlBuilder);
 	}
 
 }

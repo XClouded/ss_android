@@ -130,7 +130,7 @@ public class MusicFragment extends Fragment {
 		UrlBuilder urlBuilder = new UrlBuilder();
 		urlBuilder.s("musics").start(startDate).p("order", "created_at");
 		
-		MusicSquareAdapter adapter = new MusicSquareAdapter(getActivity(), urlBuilder);
+		MusicSquareAdapter adapter = new MusicSquareAdapter();
 		lvUpdateMusic.setAdapter(adapter);
 	}
 

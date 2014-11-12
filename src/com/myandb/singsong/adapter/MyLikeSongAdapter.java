@@ -13,104 +13,90 @@ import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Song;
 import com.myandb.singsong.model.SongLiking;
 import com.myandb.singsong.model.User;
-import com.myandb.singsong.net.UrlBuilder;
 
-public class MyLikeSongAdapter extends AutoLoadAdapter<SongLiking> {
+public class MyLikeSongAdapter extends HolderAdapter<SongLiking, MyLikeSongAdapter.SongHolder> {
 	
-	public MyLikeSongAdapter(Context context) {
-		super(context, SongLiking.class, true);
-	}
-	
-	public MyLikeSongAdapter(Context context, UrlBuilder urlBuilder) {
-		this(context);
-		
-		resetRequest(urlBuilder);
+	public MyLikeSongAdapter() {
+		super(SongLiking.class);
 	}
 
 	@Override
-	public View getView(int position, View view, ViewGroup parent) {
-		final SongHolder songHolder;
+	public SongHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+		View view = View.inflate(parent.getContext(), R.layout.row_simple_song, null);
+		return new SongHolder(view);
+	}
+
+	@Override
+	public void onBindViewHolder(SongHolder viewHolder, int position) {
 		final SongLiking liking = (SongLiking) getItem(position);
 		final Song thisSong = liking.getLikeable();
 		final User thisUser = thisSong.getCreator();
 		final Music music = thisSong.getMusic();
+		final Context context = viewHolder.view.getContext();
 		
-		if (view == null) {
-			view = View.inflate(getContext(), R.layout.row_simple_song, null);
+		viewHolder.tvParentUserNickname.setText(thisUser.getNickname());
+		viewHolder.tvParentSongMessage.setText(thisSong.getCroppedMessage());
+		viewHolder.tvSongLikeNum.setText(thisSong.getWorkedLikeNum());
+		viewHolder.tvSongCommentNum.setText(thisSong.getWorkedCommentNum());
+		viewHolder.tvSongCreatedTime.setText(thisSong.getWorkedCreatedTime(getCurrentDate()));
+		
+		viewHolder.tvMusicInfo.setText(music.getSingerName());
+		viewHolder.tvMusicInfo.append(" - ");
+		viewHolder.tvMusicInfo.append(music.getTitle());
+		
+		ImageHelper.displayPhoto(music.getAlbumPhotoUrl(), viewHolder.ivAlbumPhoto);
+		ImageHelper.displayPhoto(thisUser, viewHolder.ivParentUserPhoto);
+		viewHolder.ivParentUserPhoto.setOnClickListener(Listeners.getProfileClickListener(context, thisUser));
+		
+		if (!thisSong.isRoot()) {
+			viewHolder.vPartnerWrapper.setVisibility(View.VISIBLE);
 			
-			songHolder = new SongHolder();
-			songHolder.tvParentUserNickname = (TextView) view.findViewById(R.id.tv_parent_user_nickname);
-			songHolder.tvThisUserNickname = (TextView) view.findViewById(R.id.tv_this_user_nickname);
-			songHolder.tvParentSongMessage = (TextView) view.findViewById(R.id.tv_parent_song_message);
-			songHolder.tvThisSongMessage = (TextView) view.findViewById(R.id.tv_this_song_message);
-			songHolder.tvMusicInfo = (TextView) view.findViewById(R.id.tv_music_info);
-			songHolder.tvSongLikeNum = (TextView) view.findViewById(R.id.tv_song_like_num);
-			songHolder.tvSongCommentNum = (TextView) view.findViewById(R.id.tv_song_comment_num);
-			songHolder.tvSongCreatedTime = (TextView) view.findViewById(R.id.tv_song_created_time);
+			final Song parentSong = thisSong.getParentSong();
+			final User parentUser = thisSong.getParentUser();
 			
-			songHolder.ivParentUserPhoto = (ImageView) view.findViewById(R.id.iv_parent_user_photo);
-			songHolder.ivThisUserPhoto = (ImageView) view.findViewById(R.id.iv_this_user_photo);
-			songHolder.ivAlbumPhoto = (ImageView) view.findViewById(R.id.iv_album_photo);
+			viewHolder.tvThisUserNickname.setText(parentUser.getNickname());
+			viewHolder.tvThisSongMessage.setText(parentSong.getCroppedMessage());
 			
-			songHolder.vPartnerWrapper = view.findViewById(R.id.rl_partner_wrapper);
-			
-			view.setTag(songHolder);
+			ImageHelper.displayPhoto(parentUser, viewHolder.ivThisUserPhoto);
+			viewHolder.ivThisUserPhoto.setOnClickListener(Listeners.getProfileClickListener(context, parentUser));
 		} else {
-			songHolder = (SongHolder) view.getTag();
+			viewHolder.vPartnerWrapper.setVisibility(View.GONE);
 		}
 		
-		if (music != null && thisUser != null) {
-			songHolder.tvParentUserNickname.setText(thisUser.getNickname());
-			songHolder.tvParentSongMessage.setText(thisSong.getCroppedMessage());
-			songHolder.tvSongLikeNum.setText(thisSong.getWorkedLikeNum());
-			songHolder.tvSongCommentNum.setText(thisSong.getWorkedCommentNum());
-			songHolder.tvSongCreatedTime.setText(thisSong.getWorkedCreatedTime(getCurrentDate()));
-			
-			songHolder.tvMusicInfo.setText(music.getSingerName());
-			songHolder.tvMusicInfo.append(" - ");
-			songHolder.tvMusicInfo.append(music.getTitle());
-			
-			ImageHelper.displayPhoto(music.getAlbumPhotoUrl(), songHolder.ivAlbumPhoto);
-			ImageHelper.displayPhoto(thisUser, songHolder.ivParentUserPhoto);
-			songHolder.ivParentUserPhoto.setOnClickListener(Listeners.getProfileClickListener(getContext(), thisUser));
-			
-			if (!thisSong.isRoot()) {
-				songHolder.vPartnerWrapper.setVisibility(View.VISIBLE);
-				
-				final Song parentSong = thisSong.getParentSong();
-				final User parentUser = thisSong.getParentUser();
-				
-				songHolder.tvThisUserNickname.setText(parentUser.getNickname());
-				songHolder.tvThisSongMessage.setText(parentSong.getCroppedMessage());
-				
-				ImageHelper.displayPhoto(parentUser, songHolder.ivThisUserPhoto);
-				songHolder.ivThisUserPhoto.setOnClickListener(Listeners.getProfileClickListener(getContext(), parentUser));
-			} else {
-				songHolder.vPartnerWrapper.setVisibility(View.GONE);
-			}
-			
-			view.setOnClickListener(Listeners.getPlayClickListener(getContext(), thisSong));
-		}
-		
-		return view;
+		viewHolder.view.setOnClickListener(Listeners.getPlayClickListener(context, thisSong));
 	}
 	
-	private static class SongHolder {
+	public static final class SongHolder extends ViewHolder {
 		
-		public TextView tvSongLikeNum,
-			tvSongCommentNum,
-			tvSongCreatedTime,
-			tvParentUserNickname,
-			tvParentSongMessage,
-			tvThisUserNickname,
-			tvThisSongMessage,
-			tvMusicInfo;
-
-		public ImageView ivParentUserPhoto,
-			ivThisUserPhoto,
-			ivAlbumPhoto;
-		
+		public TextView tvSongLikeNum;
+		public TextView tvSongCommentNum;
+		public TextView tvSongCreatedTime;
+		public TextView tvParentUserNickname;
+		public TextView tvParentSongMessage;
+		public TextView tvThisUserNickname;
+		public TextView tvThisSongMessage;
+		public TextView tvMusicInfo;
+		public ImageView ivParentUserPhoto;
+		public ImageView ivThisUserPhoto;
+		public ImageView ivAlbumPhoto;
 		public View vPartnerWrapper;
+		
+		public SongHolder(View view) {
+			super(view);
+			
+			tvParentUserNickname = (TextView) view.findViewById(R.id.tv_parent_user_nickname);
+			tvThisUserNickname = (TextView) view.findViewById(R.id.tv_this_user_nickname);
+			tvParentSongMessage = (TextView) view.findViewById(R.id.tv_parent_song_message);
+			tvThisSongMessage = (TextView) view.findViewById(R.id.tv_this_song_message);
+			tvMusicInfo = (TextView) view.findViewById(R.id.tv_music_info);
+			tvSongLikeNum = (TextView) view.findViewById(R.id.tv_song_like_num);
+			tvSongCommentNum = (TextView) view.findViewById(R.id.tv_song_comment_num);
+			tvSongCreatedTime = (TextView) view.findViewById(R.id.tv_song_created_time);
+			ivParentUserPhoto = (ImageView) view.findViewById(R.id.iv_parent_user_photo);
+			ivThisUserPhoto = (ImageView) view.findViewById(R.id.iv_this_user_photo);
+			ivAlbumPhoto = (ImageView) view.findViewById(R.id.iv_album_photo);
+			vPartnerWrapper = view.findViewById(R.id.rl_partner_wrapper);
+		}
 		
 	}
 

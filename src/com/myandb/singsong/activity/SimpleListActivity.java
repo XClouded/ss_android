@@ -3,10 +3,11 @@ package com.myandb.singsong.activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.myandb.singsong.R;
-import com.myandb.singsong.adapter.AutoLoadAdapter;
 import com.myandb.singsong.adapter.FriendsAdapter;
 import com.myandb.singsong.adapter.MyCommentAdapter;
 import com.myandb.singsong.adapter.MyLikeSongAdapter;
@@ -16,7 +17,6 @@ import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.util.Utility;
-import com.myandb.singsong.widget.AutoLoadListView;
 
 public class SimpleListActivity extends OldBaseActivity {
 	
@@ -27,7 +27,7 @@ public class SimpleListActivity extends OldBaseActivity {
 	public static final String INTENT_USER = "_user_";
 	public static final String INTENT_LIST_TYPE = "_list_type_";
 	
-	private AutoLoadListView listView;
+	private ListView listView;
 	private ImageView ivHeaderIcon;
 	private TextView tvHeader;
 	
@@ -41,11 +41,12 @@ public class SimpleListActivity extends OldBaseActivity {
 		
 		tvHeader = (TextView) findViewById(R.id.tv_header);
 		ivHeaderIcon = (ImageView) findViewById(R.id.iv_header_icon);
-		listView = (AutoLoadListView) findViewById(R.id.lv_full_width);
+		listView = (ListView) findViewById(R.id.lv_full_width);
 		
 		decorateHeader(listType, user);
 		
-		AutoLoadAdapter<?> adapter = getAdapter(listType);
+		ListAdapter adapter = null;
+//		AutoLoadAdapter<?> adapter = getAdapter(listType);
 		listView.setAdapter(adapter);
 		
 		if (listType.equals(SimpleListType.LIKINGS) || listType.equals(SimpleListType.COMMENTS)) {
@@ -62,7 +63,7 @@ public class SimpleListActivity extends OldBaseActivity {
 		}
 		
 		UrlBuilder urlBuilder = getUrlBuilder(listType, user);
-		adapter.resetRequest(urlBuilder);
+//		adapter.resetRequest(urlBuilder);
 	}
 	
 	private void decorateHeader(SimpleListType type, User user) {
@@ -99,28 +100,31 @@ public class SimpleListActivity extends OldBaseActivity {
 		}
 	}
 	
+	/*
 	private AutoLoadAdapter<?> getAdapter(SimpleListType type) {
 		switch (type) {
 		case FOLLOWINGS:
 		case FOLLOWERS:
-			return new FriendsAdapter(this);
+			return null;
+//			return new FriendsAdapter(this);
 
 		case LIKINGS:
-			return new MyLikeSongAdapter(this);
+//			return new MyLikeSongAdapter(this);
 			
 		case COMMENTS:
-			return new MyCommentAdapter(this);
+//			return new MyCommentAdapter(this);
 			
 		case TRASHED:
-			return new MySongAdapter(this, true, true);
+//			return new MySongAdapter(this, true, true);
 			
 		case NOTIFICATION:
-			return new NotificationAdapter(this);
+//			return new NotificationAdapter(this);
 			
 		default:
 			return null;
 		}
 	}
+	*/
 	
 	private UrlBuilder getUrlBuilder(SimpleListType type, User user) {
 		UrlBuilder urlBuilder = new UrlBuilder();

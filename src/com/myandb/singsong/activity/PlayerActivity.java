@@ -30,7 +30,6 @@ import com.myandb.singsong.service.PlayerService;
 import com.myandb.singsong.service.PlayerService.IPlayStatusCallback;
 import com.myandb.singsong.util.StringFormatter;
 import com.myandb.singsong.util.Utility;
-import com.myandb.singsong.widget.AutoLoadListView;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -44,6 +43,7 @@ import android.view.View.OnClickListener;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -80,7 +80,7 @@ public class PlayerActivity extends OldBaseActivity {
 					  ivAutoplayControl,
 					  ivNeon,
 					  ivChildSong;
-	private AutoLoadListView lvComments;
+	private ListView lvComments;
 	private SeekBar sbPlay;
 	private Song thisSong;
 	private User currentUser;
@@ -105,7 +105,7 @@ public class PlayerActivity extends OldBaseActivity {
 	private void initializeView() {
 		View header = View.inflate(getApplicationContext(), R.layout.activity_play_song_header, null);
 		
-		lvComments = (AutoLoadListView) findViewById(R.id.lv_full_width);
+		lvComments = (ListView) findViewById(R.id.lv_full_width);
 		lvComments.addHeaderView(header);
 		
 		vLikeSong = findViewById(R.id.rl_like_song);
@@ -244,7 +244,7 @@ public class PlayerActivity extends OldBaseActivity {
 		commentDialog = new WriteCommentDialog(this, currentUser, thisSong);
 		kakaotalkDialog = new KakaotalkDialog(this, currentUser);
 		
-		commentAdapter = new CommentAdapter(this);
+		commentAdapter = new CommentAdapter();
 		lvComments.setAdapter(commentAdapter);
 		
 		blink = new AlphaAnimation(0.0f, 0.5f);
@@ -278,7 +278,7 @@ public class PlayerActivity extends OldBaseActivity {
 		urlBuilder.s("songs").s(thisSong.getId()).s("comments");
 		
 		if (commentAdapter != null) {
-			commentAdapter.resetRequest(urlBuilder);
+//			commentAdapter.resetRequest(urlBuilder);
 		}
 	}
 	
@@ -530,13 +530,13 @@ public class PlayerActivity extends OldBaseActivity {
 	};
 	
 	public void insertComment(Comment<?> comment) {
-		commentAdapter.insertItem(comment);
+//		commentAdapter.insertItem(comment);
 		thisSong.incrementCommentNum();
 		displayCommentNum(thisSong.getCommentNum());
 	}
 	
 	public void removeComment(Comment<?> comment) {
-		commentAdapter.removeItem(comment);
+//		commentAdapter.removeItem(comment);
 		thisSong.decrementCommentNum();
 		displayCommentNum(thisSong.getCommentNum());
 	}
@@ -691,7 +691,7 @@ public class PlayerActivity extends OldBaseActivity {
 		}
 		
 		if (commentAdapter != null) {
-			commentAdapter.onDestroy();
+//			commentAdapter.onDestroy();
 		}
 	}
 

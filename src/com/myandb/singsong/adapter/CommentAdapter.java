@@ -2,117 +2,64 @@ package com.myandb.singsong.adapter;
 
 import android.content.Context;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.myandb.singsong.R;
-import com.myandb.singsong.dialog.DeleteCommentDialog;
-import com.myandb.singsong.dialog.ReportCommentDialog;
 import com.myandb.singsong.event.Listeners;
 import com.myandb.singsong.image.ImageHelper;
-import com.myandb.singsong.model.Comment;
+import com.myandb.singsong.model.SongComment;
 import com.myandb.singsong.model.User;
-import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.secure.Authenticator;
 
-public class CommentAdapter extends AutoLoadAdapter<Comment> {
+public class CommentAdapter extends HolderAdapter<SongComment, CommentAdapter.CommentHolder> {
 
-	private final User currentUser;
-	private final ReportCommentDialog reportDialog;
-	private final DeleteCommentDialog deleteDialog;
-	
-	public CommentAdapter(Context context) {
-		super(context, Comment.class, false);
-		
-		this.currentUser = Authenticator.getUser();
-		this.reportDialog = new ReportCommentDialog(context, currentUser);
-		this.deleteDialog = new DeleteCommentDialog(context);
+	public CommentAdapter() {
+		super(SongComment.class);
 	}
-	
-	public CommentAdapter(Context context, UrlBuilder urlBuilder) {
-		this(context);
-		
-		resetRequest(urlBuilder);
-	}
-	
+
 	@Override
-	public View getView(int position, View view, ViewGroup parent) {
-		final CommentHolder commentHolder;
-		final Comment<?> comment = (Comment<?>) getItem(position);
+	public CommentHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+		View view = View.inflate(parent.getContext(), R.layout.row_comment, null);
+		return new CommentHolder(view);
+	}
+
+	@Override
+	public void onBindViewHolder(CommentHolder viewHolder, int position) {
+		final SongComment comment = (SongComment) getItem(position);
 		final User writer = comment.getWriter();
+		final Context context = viewHolder.view.getContext();
 		
-		if (view == null) {
-			view = View.inflate(getContext(), R.layout.row_comment, null);
-			
-			commentHolder = new CommentHolder();
-			commentHolder.ivUserPhoto = (ImageView) view.findViewById(R.id.iv_comment_user_photo);
-			commentHolder.ivReportComment = (ImageView) view.findViewById(R.id.iv_report_comment);
-			commentHolder.ivDeleteComment = (ImageView) view.findViewById(R.id.iv_delete_comment);
-			commentHolder.tvNickname = (TextView) view.findViewById(R.id.tv_comment_user_nickname);
-			commentHolder.tvCreated = (TextView) view.findViewById(R.id.tv_comment_created);
-			commentHolder.tvCommentContent = (TextView) view.findViewById(R.id.tv_comment_content);
-			
-			view.setTag(commentHolder);
-		} else {
-			commentHolder = (CommentHolder) view.getTag();
-		}
+		viewHolder.tvNickname.setText(writer.getNickname());
+		viewHolder.tvCreated.setText(comment.getWorkedCreatedTime(getCurrentDate()));
+		viewHolder.tvCommentContent.setText(comment.getContent());
 		
-		commentHolder.tvNickname.setText(writer.getNickname());
-		commentHolder.tvCreated.setText(comment.getWorkedCreatedTime(getCurrentDate()));
-		commentHolder.tvCommentContent.setText(comment.getContent());
+		ImageHelper.displayPhoto(writer, viewHolder.ivUserPhoto);
+		viewHolder.ivUserPhoto.setOnClickListener(Listeners.getProfileClickListener(context, writer));
 		
-		ImageHelper.displayPhoto(writer, commentHolder.ivUserPhoto);
-		commentHolder.ivUserPhoto.setOnClickListener(Listeners.getProfileClickListener(getContext(), writer));
-		
-		if (currentUser.getId() == writer.getId()) {
-			commentHolder.ivReportComment.setVisibility(View.GONE);
-			commentHolder.ivDeleteComment.setVisibility(View.VISIBLE);
-			commentHolder.ivDeleteComment.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					deleteDialog.setComment(comment);
-					deleteDialog.show();
-				}
-				
-			});
-		} else {
-			commentHolder.ivDeleteComment.setVisibility(View.GONE);
-			commentHolder.ivReportComment.setVisibility(View.VISIBLE);
-			commentHolder.ivReportComment.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					reportDialog.setComment(comment);
-					reportDialog.show();
-				}
-				
-			});
-		}
-		
-		return view;
+		// report and delete comment
+		// using pop up menu
 	}
 	
-	public void onDestroy() {
-		if (deleteDialog != null) {
-			deleteDialog.dismiss();
-		}
+	public static final class CommentHolder extends ViewHolder {
 		
-		if (reportDialog != null) {
-			reportDialog.dismiss();
-		}
-	}
-	
-	private static class CommentHolder {
+		public ImageView ivUserPhoto;
+		public ImageView ivReportComment;
+		public ImageView ivDeleteComment;
+		public TextView tvNickname;
+		public TextView tvCreated;
+		public TextView tvCommentContent;
 		
-		public ImageView ivUserPhoto,
-						 ivReportComment,
-						 ivDeleteComment;
-		public TextView tvNickname,
-						tvCreated,
-						tvCommentContent;
+		public CommentHolder(View view) {
+			super(view);
+			
+			ivUserPhoto = (ImageView) view.findViewById(R.id.iv_comment_user_photo);
+			ivReportComment = (ImageView) view.findViewById(R.id.iv_report_comment);
+			ivDeleteComment = (ImageView) view.findViewById(R.id.iv_delete_comment);
+			tvNickname = (TextView) view.findViewById(R.id.tv_comment_user_nickname);
+			tvCreated = (TextView) view.findViewById(R.id.tv_comment_created);
+			tvCommentContent = (TextView) view.findViewById(R.id.tv_comment_content);
+		}
 		
 	}
 	

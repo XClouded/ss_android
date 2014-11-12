@@ -297,7 +297,7 @@ public class ProfileRootFragment extends Fragment {
 	private void loadUserSong() {
 		UrlBuilder urlBuilder = new UrlBuilder();
 		urlBuilder.s("users").s(thisUser.getId()).s("songs").s("all").p("order", "created_at");
-		adapter = new MySongAdapter(getActivity(), urlBuilder, isCurrentUser, false);
+		adapter = new MySongAdapter(getActivity(), /*urlBuilder, */isCurrentUser, false);
 		listView.setAdapter(adapter);
 	}
 	

@@ -75,10 +75,10 @@ public class CollaboratedFragment extends Fragment {
 				
 				if (popularAdapter == null) {
 					final String startDate = StringFormatter.getDateString(Calendar.DATE, -1);
-					popularAdapter = new CollaboratedAdapter(
-							getActivity(),
-							new UrlBuilder().s("songs").s("leaf").p("order", "liking_num").start(startDate)
-					);
+//					popularAdapter = new CollaboratedAdapter(
+//							getActivity(),
+//							new UrlBuilder().s("songs").s("leaf").p("order", "liking_num").start(startDate)
+//					);
 				}
 				
 				listView.setAdapter(popularAdapter);
@@ -98,10 +98,10 @@ public class CollaboratedFragment extends Fragment {
 				tvSortPopular.setText(popularString);
 				
 				if (recentAdapter == null) {
-					recentAdapter = new CollaboratedAdapter(
-							getActivity(),
-							new UrlBuilder().s("songs").s("leaf").p("order", "created_at")
-					);
+//					recentAdapter = new CollaboratedAdapter(
+//							getActivity(),
+//							new UrlBuilder().s("songs").s("leaf").p("order", "created_at")
+//					);
 				}
 
 				listView.setAdapter(recentAdapter);

@@ -12,58 +12,54 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ChildrenSongAdapter extends AutoLoadAdapter<Song> {
+public class ChildrenSongAdapter extends HolderAdapter<Song, ChildrenSongAdapter.SongHolder> {
 	
-	public ChildrenSongAdapter(Context context) {
-		super(context, Song.class, true);
+	public ChildrenSongAdapter() {
+		super(Song.class);
 	}
 
 	@Override
-	public View getView(int position, View view, ViewGroup parent) {
-		final SongHolder songHolder;
-		final Song song = (Song) getItem(position);
-		final User creator = song.getCreator();
+	public SongHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+		View view = View.inflate(parent.getContext(), R.layout.row_child_song, null);
+		return new SongHolder(view);
+	}
+
+	@Override
+	public void onBindViewHolder(SongHolder viewHolder, int position) {
+		Song song = (Song) getItem(position);
+		User creator = song.getCreator();
+		Context context = viewHolder.view.getContext();
 		
-		if (view == null) {
-			view = View.inflate(getContext(), R.layout.row_child_song, null);
-			
-			songHolder = new SongHolder();
-			songHolder.ivCreatorPhoto = (ImageView) view.findViewById(R.id.iv_parent_user_photo);
-			songHolder.tvCreatorNickname = (TextView) view.findViewById(R.id.tv_parent_user_nickname);
-			songHolder.tvCreatorMessage = (TextView) view.findViewById(R.id.tv_parent_song_message);
-			songHolder.tvLikeNum = (TextView) view.findViewById(R.id.tv_song_like_num);
-			songHolder.tvCommentNum = (TextView) view.findViewById(R.id.tv_song_comment_num);
-			songHolder.tvCreatedTime = (TextView) view.findViewById(R.id.tv_song_created_time);
-			
-			view.setTag(songHolder);
-		} else {
-			songHolder = (SongHolder) view.getTag();
-		}
+		viewHolder.tvCreatorNickname.setText(creator.getNickname());
+		viewHolder.tvCreatorMessage.setText(song.getCroppedMessage());
+		viewHolder.tvCreatedTime.setText(song.getWorkedCreatedTime(getCurrentDate()));
+		viewHolder.tvLikeNum.setText(song.getWorkedLikeNum());
+		viewHolder.tvCommentNum.setText(song.getWorkedCommentNum());
 		
-		if (creator != null) {
-			songHolder.tvCreatorNickname.setText(creator.getNickname());
-			songHolder.tvCreatorMessage.setText(song.getCroppedMessage());
-			songHolder.tvCreatedTime.setText(song.getWorkedCreatedTime(getCurrentDate()));
-			songHolder.tvLikeNum.setText(song.getWorkedLikeNum());
-			songHolder.tvCommentNum.setText(song.getWorkedCommentNum());
-			
-			ImageHelper.displayPhoto(creator, songHolder.ivCreatorPhoto);
-			
-			view.setOnClickListener(Listeners.getPlayClickListener(getContext(), song));
-		}
+		ImageHelper.displayPhoto(creator, viewHolder.ivCreatorPhoto);
 		
-		return view;
+		viewHolder.view.setOnClickListener(Listeners.getPlayClickListener(context, song));
 	}
 	
-	private static class SongHolder {
+	public static final class SongHolder extends ViewHolder {
 		
-		public TextView tvCreatorNickname,
-						tvCreatorMessage,
-						tvLikeNum,
-						tvCommentNum,
-						tvCreatedTime;
-		
+		public TextView tvCreatorNickname;
+		public TextView tvCreatorMessage;
+		public TextView tvLikeNum;
+		public TextView tvCommentNum;
+		public TextView tvCreatedTime;
 		public ImageView ivCreatorPhoto;
+		
+		public SongHolder(View view) {
+			super(view);
+			
+			ivCreatorPhoto = (ImageView) view.findViewById(R.id.iv_parent_user_photo);
+			tvCreatorNickname = (TextView) view.findViewById(R.id.tv_parent_user_nickname);
+			tvCreatorMessage = (TextView) view.findViewById(R.id.tv_parent_song_message);
+			tvLikeNum = (TextView) view.findViewById(R.id.tv_song_like_num);
+			tvCommentNum = (TextView) view.findViewById(R.id.tv_song_comment_num);
+			tvCreatedTime = (TextView) view.findViewById(R.id.tv_song_created_time);
+		}
 		
 	}
 	

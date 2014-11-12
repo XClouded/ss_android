@@ -61,10 +61,10 @@ public class WaitingFragment extends Fragment {
 				
 				if (popularAdapter == null) {
 					final String startDate = StringFormatter.getDateString(Calendar.DATE, -3);
-					popularAdapter = new WaitingAdapter(
-							getActivity(),
-							new UrlBuilder().s("songs").s("root").p("order", "collabo_num").start(startDate)
-					);
+//					popularAdapter = new WaitingAdapter(
+//							getActivity(),
+//							new UrlBuilder().s("songs").s("root").p("order", "collabo_num").start(startDate)
+//					);
 				}
 				
 				listView.setAdapter(popularAdapter);
@@ -83,10 +83,10 @@ public class WaitingFragment extends Fragment {
 				tvSortPopular.setText(popularString);
 				
 				if (recentAdapter == null) {
-					recentAdapter = new WaitingAdapter(
-							getActivity(),
-							new UrlBuilder().s("songs").s("root").p("order", "created_at")
-					);
+//					recentAdapter = new WaitingAdapter(
+//							getActivity(),
+//							new UrlBuilder().s("songs").s("root").p("order", "created_at")
+//					);
 				}
 				
 				listView.setAdapter(recentAdapter);

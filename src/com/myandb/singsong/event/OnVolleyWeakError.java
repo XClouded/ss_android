@@ -13,7 +13,6 @@ import android.widget.Toast;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.AuthFailureError;
 import com.android.volley.VolleyError;
-import com.myandb.singsong.adapter.AutoLoadAdapter;
 import com.myandb.singsong.secure.Authenticator;
 
 public class OnVolleyWeakError<T> implements ErrorListener {
@@ -53,7 +52,9 @@ public class OnVolleyWeakError<T> implements ErrorListener {
 			auth.logout();
 			
 			Context context = getContext(reference);
-			Toast.makeText(context, "인증 정보가 유효하지 않습니다. 다시 로그인해주세요.", Toast.LENGTH_SHORT).show();
+			if (context != null) {
+				Toast.makeText(context, "인증 정보가 유효하지 않습니다. 다시 로그인해주세요.", Toast.LENGTH_SHORT).show();
+			}
 			
 			if (context instanceof Activity) {
 				((Activity) context).finish();
@@ -83,10 +84,6 @@ public class OnVolleyWeakError<T> implements ErrorListener {
 		
 		if (reference instanceof Dialog) {
 			return ((Dialog) reference).getContext();
-		}
-		
-		if (reference instanceof AutoLoadAdapter<?>) {
-			return ((AutoLoadAdapter<?>) reference).getContext();
 		}
 		
 		return (Context) reference;
