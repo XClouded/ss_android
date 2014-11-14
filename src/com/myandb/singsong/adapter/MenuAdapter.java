@@ -48,6 +48,9 @@ public class MenuAdapter extends HolderAdapter<GlobalMenu, MenuAdapter.MenuHolde
 		
 		public MenuHolder(View view) {
 			super(view);
+			
+			ivMenuIcon = (ImageView) view.findViewById(R.id.iv_gnb_icon);
+			tvMenuTitle = (TextView) view.findViewById(R.id.tv_gnb_title);
 		}
 		
 	}

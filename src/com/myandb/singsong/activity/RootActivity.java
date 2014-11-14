@@ -107,7 +107,7 @@ public class RootActivity extends BaseActivity {
 		drawer.setMode(SlidingMenu.LEFT);
 		drawer.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
 		drawer.setShadowWidthRes(R.dimen.margin_tiny);
-		drawer.setBehindOffsetRes(R.dimen.photo_profile);
+		drawer.setBehindWidthRes(R.dimen.drawer_width);
 		drawer.setFadeDegree(0.35f);
 	}
 	
@@ -182,7 +182,7 @@ public class RootActivity extends BaseActivity {
 	@Override
 	public void onBackPressed() {
 		if (drawer.isMenuShowing()) {
-			drawer.toggle();
+			drawer.showContent();;
 			return;
 		}
 		
@@ -202,7 +202,7 @@ public class RootActivity extends BaseActivity {
 	@Override
 	public void onPageChanged(Intent intent) {
 		if (drawer.isMenuShowing()) {
-			drawer.toggle();
+			drawer.showContent();;
 		}
 		
 		if (slidingPlayerLayout.isPanelExpanded()) {

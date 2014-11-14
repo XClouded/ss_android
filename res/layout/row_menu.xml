@@ -1,34 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.myandb.singsong.widget.SquareLinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
  	android:id="@+id/rl_gnb_row"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="12dp"
-    android:paddingBottom="12dp"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp" >
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/red" >
         
     <ImageView
         android:id="@+id/iv_gnb_icon"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginEnd="15dp"
-        android:layout_marginRight="15dp"
+        android:layout_marginBottom="@dimen/margin"
         style="@style/BaseImageView" />
 	    
 	<TextView 
 	    android:id="@+id/tv_gnb_title"
-	    android:layout_width="match_parent"
-	    android:layout_centerVertical="true"
-	    android:layout_toEndOf="@id/iv_gnb_icon"
-	    android:layout_toRightOf="@id/iv_gnb_icon"
-	    android:gravity="start|center_vertical"
-	    android:textSize="15sp"
+	    android:layout_below="@id/iv_gnb_icon"
 	    android:textColor="@color/font_white"
 	    android:maxLines="1"
 	    style="@style/BaseTextView" />
         
-</RelativeLayout>
-
+</com.myandb.singsong.widget.SquareLinearLayout>

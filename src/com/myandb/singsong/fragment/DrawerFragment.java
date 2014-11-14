@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.myandb.singsong.R;
@@ -20,12 +19,14 @@ import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.GlobalMenu;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.secure.Authenticator;
+import com.myandb.singsong.widget.LinearGridView;
 
 public class DrawerFragment extends BaseFragment {
 	
 	private ImageView ivDrawerUserPhoto;
 	private TextView tvDrawerUserNickname;
-	private ListView lvMenu;
+	private TextView tvDrawerUserUsername;
+	private LinearGridView lgvMenu;
 	private List<GlobalMenu> menus;
 
 	@Override
@@ -42,7 +43,8 @@ public class DrawerFragment extends BaseFragment {
 	protected void onViewInflated(View view, LayoutInflater inflater) {
 		ivDrawerUserPhoto = (ImageView) view.findViewById(R.id.iv_drawer_user_photo);
 		tvDrawerUserNickname = (TextView) view.findViewById(R.id.tv_drawer_user_nickname);
-		lvMenu = (ListView) view.findViewById(R.id.lv_menu);
+		tvDrawerUserUsername = (TextView) view.findViewById(R.id.tv_drawer_user_username);
+		lgvMenu = (LinearGridView) view.findViewById(R.id.lgv_menu);
 	}
 
 	@Override
@@ -53,6 +55,10 @@ public class DrawerFragment extends BaseFragment {
 	private void makeMenus() {
 		menus = new ArrayList<GlobalMenu>();
 		menus.add(makeHomeMenu());
+		menus.add(makeArtistMenu());
+		menus.add(makeArtistMenu());
+		menus.add(makeArtistMenu());
+		menus.add(makeArtistMenu());
 		menus.add(makeArtistMenu());
 	}
 	
@@ -74,7 +80,8 @@ public class DrawerFragment extends BaseFragment {
 	protected void setupViews() {
 		MenuAdapter adapter = new MenuAdapter();
 		adapter.addAll(menus);
-		lvMenu.setAdapter(adapter);
+		lgvMenu.setColumnCount(2);
+		lgvMenu.setAdapter(adapter);
 	}
 	
 	@Override
@@ -83,6 +90,7 @@ public class DrawerFragment extends BaseFragment {
 		if (currentUser != null) {
 			ImageHelper.displayPhoto(currentUser, ivDrawerUserPhoto);
 			tvDrawerUserNickname.setText(currentUser.getNickname());
+			tvDrawerUserUsername.setText(currentUser.getUsername());
 		} else {
 			// Change user section
 		}
