@@ -31,6 +31,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 	public static final String EXTRA_FRAGMENT_ROOT = "fragment_root";
 	
 	private PlayerServiceConnection serviceConnection;
+	private PlayerService service;
 	private Fragment contentFragment;
 
 	public void changePage(Intent intent) {
@@ -183,11 +184,16 @@ public abstract class BaseActivity extends ActionBarActivity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		// dismissProgressDialog
 		// recursiveRecycle
 	}
 	
-	public abstract void onPlayerServiceConnected(PlayerService service);
+	public void onPlayerServiceConnected(PlayerService service) {
+		this.service = service;
+	}
+	
+	public PlayerService getPlayerService() {
+		return service;
+	}
 	
 	public abstract void onPageChanged(Intent intent);
 	

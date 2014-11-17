@@ -747,7 +747,7 @@ public class RecordMainActivity extends OldBaseActivity {
 	@Override
 	public void onPlayerConnected(PlayerService service) {
 		if (service != null) {
-			service.stopPlaying(true);
+//			service.stopPlaying(true);
 		}
 	}
 	

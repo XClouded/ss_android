@@ -196,6 +196,7 @@ public class RootActivity extends BaseActivity {
 
 	@Override
 	public void onPlayerServiceConnected(PlayerService service) {
+		super.onPlayerServiceConnected(service);
 		slidingPlayerLayout.setPlayerService(service);
 	}
 

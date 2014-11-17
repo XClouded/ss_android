@@ -154,7 +154,7 @@ public class SettingActivity extends OldBaseActivity implements OnClickListener 
 			}
 			
 			if (getService() != null) {
-				getService().stopPlaying(false);
+//				getService().stopPlaying(false);
 			}
 			
 			File photo = FileManager.get(FileManager.USER_PHOTO);

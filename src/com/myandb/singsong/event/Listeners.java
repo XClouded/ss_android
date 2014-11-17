@@ -114,7 +114,7 @@ public class Listeners {
 				
 				if (service != null) {
 					intent.setClass(context, PlayerActivity.class);
-					service.setSong(song);
+//					service.setSong(song);
 					intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				}
 				break;
@@ -206,7 +206,7 @@ public class Listeners {
 				PlayerService service = activity.getService();
 				
 				if (service != null) {
-					service.setSong(song);
+//					service.setSong(song);
 					
 					Intent intent = new Intent(context, PlayerActivity.class);
 					intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);

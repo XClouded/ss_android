@@ -11,7 +11,7 @@ import com.myandb.singsong.service.PlayerService;
 public class UpActivity extends BaseActivity {
 	
 	public static final String EXTRA_FULL_SCREEN = "full_screen";
-	public static final String EXTRA_STOP_PLAYER = "stop_player";
+	public static final String EXTRA_SHOULD_STOP = "should_stop";
 	
 	private boolean shouldStop;
 	private boolean isFullScreen;
@@ -20,8 +20,8 @@ public class UpActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		shouldStop = getIntent().getBooleanExtra(EXTRA_STOP_PLAYER, false);
 		isFullScreen = getIntent().getBooleanExtra(EXTRA_FULL_SCREEN, false);
+		shouldStop = getIntent().getBooleanExtra(EXTRA_SHOULD_STOP, false);
 		if (isFullScreen) {
 			requestWindowFeature(Window.FEATURE_NO_TITLE);
 		}
@@ -32,16 +32,17 @@ public class UpActivity extends BaseActivity {
 	}
 
 	@Override
-	public void onPlayerServiceConnected(PlayerService service) {
-		if (shouldStop) {
-			service.stopPlaying(true);
+	public void onBackPressed() {
+		if (getContentFragment() instanceof BaseFragment) {
+			((BaseFragment) getContentFragment()).onBackPressed();
 		}
 	}
 
 	@Override
-	public void onBackPressed() {
-		if (getContentFragment() instanceof BaseFragment) {
-			((BaseFragment) getContentFragment()).onBackPressed();
+	public void onPlayerServiceConnected(PlayerService service) {
+		super.onPlayerServiceConnected(service);
+		if (shouldStop) {
+			service.pause();
 		}
 	}
 

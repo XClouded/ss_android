@@ -1,7 +1,5 @@
 package com.myandb.singsong.activity;
 
-import java.lang.ref.WeakReference;
-
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.ExceptionParser;
 import com.google.analytics.tracking.android.ExceptionReporter;
@@ -11,7 +9,6 @@ import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Song;
 import com.myandb.singsong.service.PlayerService;
 import com.myandb.singsong.service.PlayerServiceConnection;
-import com.myandb.singsong.service.PlayerService.IPlayStatusCallback;
 import com.myandb.singsong.util.Utility;
 import com.myandb.singsong.widget.RotateProgressDialog;
 
@@ -238,7 +235,7 @@ public abstract class OldBaseActivity extends FragmentActivity {
 					
 					@Override
 					public void onClick(View view) {
-						playerService.setSong(currentSong);
+//						playerService.setSong(currentSong);
 						
 						Intent intent = new Intent(OldBaseActivity.this, PlayerActivity.class);
 						intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
@@ -259,6 +256,7 @@ public abstract class OldBaseActivity extends FragmentActivity {
 		}
 	}
 	
+	/*
 	private static class PlayStatusCallback implements IPlayStatusCallback {
 		
 		private WeakReference<OldBaseActivity> weakReference;
@@ -303,6 +301,7 @@ public abstract class OldBaseActivity extends FragmentActivity {
 			
 		});
 	}
+	*/
 
 	@Override
 	protected void onPause() {

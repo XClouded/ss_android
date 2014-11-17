@@ -27,7 +27,6 @@ import com.myandb.singsong.net.OAuthJustRequest;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.service.PlayerService;
-import com.myandb.singsong.service.PlayerService.IPlayStatusCallback;
 import com.myandb.singsong.util.StringFormatter;
 import com.myandb.singsong.util.Utility;
 
@@ -228,8 +227,8 @@ public class PlayerActivity extends OldBaseActivity {
 	public void showKakaotalkDialog(String url) {
 		String message = thisSong.getCreator().getNickname();
 		message += "¥‘¿Ã ∫Œ∏• ";
-		message += playerService.getSingerName() + "¿« ";
-		message += playerService.getAlbumTitle() + " µË±‚!";
+//		message += playerService.getSingerName() + "¿« ";
+//		message += playerService.getAlbumTitle() + " µË±‚!";
 		message += "\n\n";
 		message += url;
 		
@@ -425,7 +424,7 @@ public class PlayerActivity extends OldBaseActivity {
 	
 	private void setPlayerLooping(boolean looping) {
 //		preferences.setPlayerLooping(looping);
-		playerService.setLooping(looping);
+//		playerService.setLooping(looping);
 		
 		if (looping) {
 			ivLoopControl.setImageResource(R.drawable.ic_loop_on);
@@ -488,6 +487,7 @@ public class PlayerActivity extends OldBaseActivity {
 				return;
 			}
 			
+			/*
 			if (playerService.isPlaying()) {
 				playerService.pause();
 				
@@ -501,6 +501,7 @@ public class PlayerActivity extends OldBaseActivity {
 				ivNeon.setVisibility(View.VISIBLE);
 				ivNeon.startAnimation(blink);
 			}
+			*/
 		}
 	};
 
@@ -542,14 +543,17 @@ public class PlayerActivity extends OldBaseActivity {
 	}
 	
 	private void runService() {
+		/*
 		playerService.startPlaying(
 				new PlayStatusCallback(this),
 //				preferences.isPlayerAutoplay(),
 //				preferences.isPlayerLooping()
 				true, true
 		);
+		*/
 	}
 	
+	/*
 	private static class PlayStatusCallback implements IPlayStatusCallback {
 		
 		private WeakReference<PlayerActivity> weakReference;
@@ -622,8 +626,10 @@ public class PlayerActivity extends OldBaseActivity {
 			}
 		});
 	}
+	*/
 	
 	private void setupPlayer() {
+		/*
 		int position = playerService.getCurrentPosition();
 		
 		ivPlayControl.setOnClickListener(playControlClickListener);
@@ -642,15 +648,19 @@ public class PlayerActivity extends OldBaseActivity {
 		});
 		
 		playProgressUpdater();
+		*/
 	}
 	
 	private void seekChange(View v) {
+		/*
 		if (playerService.isPlaying()) {
 			playerService.seekTo(sbPlay.getProgress());
 		}
+		*/
 	}
 	
 	public void playProgressUpdater() {
+		/*
 		if (playerService.isPlaying()) {
 			tvStartTime.setText(StringFormatter.getDuration(playerService.getCurrentPosition()));
 			sbPlay.setProgress(playerService.getCurrentPosition());
@@ -658,16 +668,17 @@ public class PlayerActivity extends OldBaseActivity {
 		
 		Runnable notification = new WeakRunnable<PlayerActivity>(this, "playProgressUpdater");
 		handler.postDelayed(notification, 1000);
+		*/
 	}
 
 	@Override
 	protected void onPause() {
 		if (playerService != null) {
 			if (dismissProgressDialog()) {
-				playerService.setSong(null);
-				playerService.stopPlaying(false);
+//				playerService.setSong(null);
+//				playerService.stopPlaying(false);
 			} else {
-				playerService.setSong(playerService.getSong());
+//				playerService.setSong(playerService.getSong());
 			}
 		}
 		

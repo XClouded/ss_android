@@ -1,5 +1,8 @@
 package com.myandb.singsong.fragment;
 
+import com.myandb.singsong.activity.BaseActivity;
+import com.myandb.singsong.service.PlayerService;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -40,6 +43,15 @@ public abstract class BaseFragment extends Fragment {
 	
 	public void onBackPressed() {
 		getActivity().finish();
+	}
+	
+	public PlayerService getPlayerService() throws Exception {
+		Activity parent = getActivity();
+		if (parent != null && parent instanceof BaseActivity) {
+			return ((BaseActivity) parent).getPlayerService();
+		} else {
+			throw new Exception();
+		}
 	}
 
 	protected abstract int getResourceId();
