@@ -6,8 +6,8 @@ import java.io.IOException;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.RootActivity;
+import com.myandb.singsong.audio.OnPlayEventListener;
 import com.myandb.singsong.audio.PlayEvent;
-import com.myandb.singsong.audio.PlayEventListener;
 import com.myandb.singsong.audio.StreamPlayer;
 import com.myandb.singsong.event.OnCompleteListener;
 import com.myandb.singsong.image.BitmapBuilder;
@@ -86,7 +86,7 @@ public class PlayerService extends Service {
 		super.onDestroy();
 	}
 	
-	public void startPlaying(Song song, PlayEventListener listener) {
+	public void startPlaying(Song song, OnPlayEventListener listener) {
 		if (song == null) {
 			throw new IllegalArgumentException();
 		}

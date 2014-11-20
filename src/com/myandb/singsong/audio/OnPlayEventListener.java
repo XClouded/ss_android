@@ -1,6 +1,6 @@
 package com.myandb.singsong.audio;
 
-public interface PlayEventListener {
+public interface OnPlayEventListener {
 	
 	public void onPlay(PlayEvent event);
 

@@ -17,7 +17,7 @@ public class StreamPlayer extends MediaPlayer {
 	private boolean looping;
 	private boolean initialStart;
 	private String dataSource;
-	private PlayEventListener listener;
+	private OnPlayEventListener listener;
 	private PlayerService service;
 	
 	public StreamPlayer() {
@@ -109,7 +109,7 @@ public class StreamPlayer extends MediaPlayer {
 		this.prepared = false;
 	}
 	
-	public void setOnPlayEventListener(PlayEventListener listener) {
+	public void setOnPlayEventListener(OnPlayEventListener listener) {
 		this.listener = listener;
 	}
 	
@@ -126,7 +126,7 @@ public class StreamPlayer extends MediaPlayer {
 		super.start();
 		
 		if (listener != null) {
-			listener.onPlay(PlayEvent.START);
+			listener.onPlay(PlayEvent.PLAY);
 			if (initialStart) {
 				listener.onPlay(PlayEvent.BUFFERED);
 				initialStart = false;

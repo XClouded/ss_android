@@ -109,6 +109,7 @@ public class SongUploadService extends Service {
 		
 		audioFileName = generateSongName(creatorId, thisMusicId);
 		
+		/*
 		Encoder encoder = new Encoder();
 		encoder.setCallback(new OnCompleteListener() {
 			
@@ -148,6 +149,7 @@ public class SongUploadService extends Service {
 		});
 		
 		encoder.start(syncAmount, headsetPlugged);
+		*/
 	}
 	
 	private String generateSongName(int key, int key2) {

@@ -2,12 +2,13 @@ package com.myandb.singsong.audio;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 import android.os.AsyncTask;
 
-import com.myandb.singsong.audio.AudioConfig.ConfigMode;
 import com.myandb.singsong.event.OnCompleteListener;
 import com.myandb.singsong.event.OnProgressListener;
 import com.myandb.singsong.libogg.VorbisFileInputStream;
@@ -18,6 +19,8 @@ public class Decoder extends AsyncTask<File, Integer, Exception> {
 	private boolean interrupted;
 	private OnCompleteListener completeListener;
 	private OnProgressListener progressListener;
+	private VorbisFileInputStream inputStream;
+	private OutputStream outputStream;
 
 	@Override
 	protected Exception doInBackground(File... params) {
@@ -26,15 +29,14 @@ public class Decoder extends AsyncTask<File, Integer, Exception> {
 		try {
 			File inputFile = params[0];
 			File outputFile = params[1];
-			VorbisFileInputStream inputStream = new VorbisFileInputStream(inputFile.getAbsolutePath());
-			FileOutputStream outputStream = new FileOutputStream(outputFile);
-			AudioConfig audioConfig = new AudioConfig(ConfigMode.PLAY);
+			inputStream = new VorbisFileInputStream(inputFile.getAbsolutePath());
+			outputStream = new FileOutputStream(outputFile);
 			
 			int read = 0;
 			int totalRead = 0;
 			int durationInMilli = StringFormatter.getDuration(inputFile);
 			int durationInSec = durationInMilli / 1000;
-			int estimateLength = durationInSec * AudioConfig.SAMPLERATE * audioConfig.getChannels();
+			int estimateLength = durationInSec * PcmPlayer.SAMPLERATE * PcmPlayer.CHANNELS;
 			int estimateLengthInPercent = estimateLength / 100;
 			int preProgressInPercent = 0;
 			int currentProgressInPercent = 0;
@@ -54,9 +56,6 @@ public class Decoder extends AsyncTask<File, Integer, Exception> {
 				}
 			}
 			
-			inputStream.close();
-			outputStream.close();
-			
 			return null;
 		} catch (Exception e) {
 			return e;
@@ -75,18 +74,39 @@ public class Decoder extends AsyncTask<File, Integer, Exception> {
 	@Override
 	protected void onPostExecute(Exception result) {
 		super.onPostExecute(result);
+		releaseResources();
 		
 		if (!interrupted && completeListener != null) {
 			completeListener.done(result);
 		}
 	}
 	
-	public void setOnCompleteListener(OnCompleteListener completeListener) {
-		this.completeListener = completeListener;
+	@Override
+	protected void onCancelled() {
+		super.onCancelled();
+		releaseResources();
 	}
 	
-	public void setOnProgressListener(OnProgressListener progressListener) {
-		this.progressListener = progressListener;
+	private void releaseResources() {
+		if (inputStream != null) {
+			try {
+				inputStream.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				inputStream = null;
+			}
+		}
+		
+		if (outputStream != null) {
+			try {
+				outputStream.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				outputStream = null;
+			}
+		}
 	}
 	
 	public void start(File inputFile, File outputFile) {
@@ -96,6 +116,14 @@ public class Decoder extends AsyncTask<File, Integer, Exception> {
 	public void stop() {
 		interrupted = true;
 		cancel(true);
+	}
+
+	public void setOnCompleteListener(OnCompleteListener completeListener) {
+		this.completeListener = completeListener;
+	}
+	
+	public void setOnProgressListener(OnProgressListener progressListener) {
+		this.progressListener = progressListener;
 	}
 
 }

@@ -1,14 +1,15 @@
 package com.myandb.singsong.audio;
 
 public enum PlayEvent {
-
+	
 	LOADING,
 	PREPARED,
 	BUFFERED,
-	START,
+	PLAY,
+	STOP,
 	PAUSE,
 	COMPLETED,
 	RESUME,
 	ERROR
-	
+
 }

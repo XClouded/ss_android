@@ -16,9 +16,9 @@ import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.MapBuilder;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
-import com.myandb.singsong.audio.ISimplePlayCallback;
-import com.myandb.singsong.audio.Player;
+import com.myandb.singsong.audio.PcmPlayer;
 import com.myandb.singsong.audio.Recorder;
+import com.myandb.singsong.audio.Track;
 import com.myandb.singsong.dialog.ImageSelectDialog;
 import com.myandb.singsong.event.OnCompleteListener;
 import com.myandb.singsong.event.OnVolleyWeakError;
@@ -72,7 +72,7 @@ public class RecordSettingActivity extends OldBaseActivity {
 	private EditText etSongMessage;
 	private Button btnOtherImages;
 	private Button btnDeletePhoto;
-	private Player player;
+	private PcmPlayer player;
 	private Handler handler;
 	private Image image;
 	private String imageName;
@@ -89,8 +89,15 @@ public class RecordSettingActivity extends OldBaseActivity {
 		
 		handler = new Handler();
 		
-		player = new Player();
-		player.setCallback(new PlayerStatusCallback(this));
+		Track voice = new Track(FileManager.getSecure(FileManager.VOICE_RAW), 1);
+		player = new PcmPlayer();
+		player.addTrack("voice", voice);
+		if (headsetPlugged) {
+			Track playback = new Track(FileManager.getSecure(FileManager.MUSIC_RAW), 2);
+			player.addTrack("playback", playback);
+		}
+		
+//		player.setCallback(new PlayerStatusCallback(this));
 		
 		dialog = new ImageSelectDialog(this);
 		
@@ -128,7 +135,7 @@ public class RecordSettingActivity extends OldBaseActivity {
 		}
 		
 		tvSyncValue.setText("0.0");
-		sbPlay.setMax(player.getDuration());
+		sbPlay.setMax((int) player.getDuration());
 		sbPlay.setOnTouchListener(new OnTouchListener() {
 			
 			@Override
@@ -262,6 +269,7 @@ public class RecordSettingActivity extends OldBaseActivity {
 		finish();
 	}
 	
+	/*
 	private static class PlayerStatusCallback implements ISimplePlayCallback {
 		
 		private WeakReference<RecordSettingActivity> weakRef;
@@ -306,12 +314,13 @@ public class RecordSettingActivity extends OldBaseActivity {
 			});
 		}
 	}
+	*/
 	
 	private OnClickListener playClickListener = new OnClickListener() {
 		
 		@Override
 		public void onClick(View v) {
-			player.start(getCurrentSync(), headsetPlugged);
+			player.start();
 		}
 	};
 	
@@ -360,7 +369,7 @@ public class RecordSettingActivity extends OldBaseActivity {
 	
 	private void releasePlayer() {
 		if (player != null) {
-			player.destroy();
+			player.release();
 			player = null;
 		}
 	}
@@ -412,7 +421,7 @@ public class RecordSettingActivity extends OldBaseActivity {
 					float adjust = (v.getId() == R.id.iv_sync_back) ? -0.05f : 0.05f;
 					
 					currentValue += adjust;
-					player.adjustSync(adjust);
+//					player.adjustSync(adjust);
 					tvSyncValue.setText(new DecimalFormat("##.##").format(currentValue));
 				} catch (NumberFormatException e) {
 					e.printStackTrace();
@@ -502,8 +511,8 @@ public class RecordSettingActivity extends OldBaseActivity {
 	
 	public void onProgressUpdated() {
 		if (player != null && player.isPlaying()) {
-			int position = player.getCurrentPosition();
-			sbPlay.setProgress(position);
+//			int position = player.getCurrentFrame();
+//			sbPlay.setProgress(position);
 			
 			Runnable r = new WeakRunnable<RecordSettingActivity>(this, "onProgressUpdated");
 			handler.postDelayed(r, 1000);

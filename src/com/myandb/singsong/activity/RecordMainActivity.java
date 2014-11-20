@@ -5,8 +5,9 @@ import java.lang.ref.WeakReference;
 import com.google.gson.Gson;
 import com.myandb.singsong.R;
 import com.myandb.singsong.audio.Decoder;
-import com.myandb.singsong.audio.ISimplePlayCallback;
+import com.myandb.singsong.audio.PcmPlayer;
 import com.myandb.singsong.audio.Recorder;
+import com.myandb.singsong.audio.Track;
 import com.myandb.singsong.dialog.HeadsetDialog;
 import com.myandb.singsong.dialog.LoadingDialog;
 import com.myandb.singsong.dialog.SelectorDialog;
@@ -153,12 +154,13 @@ public class RecordMainActivity extends OldBaseActivity {
 	}
 	
 	private void initializeRecorder() throws Exception {
-		recorder = new Recorder(
-				FileManager.getSecure(FileManager.MUSIC_RAW),
-				FileManager.getSecure(FileManager.VOICE_RAW)
-		);
+		PcmPlayer player = new PcmPlayer();
+		Track track = new Track(FileManager.getSecure(FileManager.MUSIC_RAW), 2);
+		player.addTrack("playback", track);
+		recorder = new Recorder(FileManager.getSecure(FileManager.VOICE_RAW));
+		recorder.setBackgroundPlayer(player);
 		
-		recorder.setOnPlaybackStatusChangeListener(new RecorderStatusCallback(this));
+//		recorder.setOnPlaybackStatusChangeListener(new RecorderStatusCallback(this));
 	}
 	
 	private void initializeView() {
@@ -572,6 +574,7 @@ public class RecordMainActivity extends OldBaseActivity {
 		}
 	}
 	
+	/*
 	private static class RecorderStatusCallback implements ISimplePlayCallback {
 		
 		private WeakReference<RecordMainActivity> weakReference;
@@ -630,10 +633,11 @@ public class RecordMainActivity extends OldBaseActivity {
 		});
 		
 	}
+	*/
 	
 	public void updateAudioProgress() {
 		if (recorder != null && recorder.isRecording()) {
-			int position = recorder.getCurrentPosition();
+			int position = 0;/*(int) recorder.getCurrentPosition();*/
 			tvStartTime.setText(StringFormatter.getDuration(position));
 			pbPlayProgress.setProgress(position);
 			
@@ -719,7 +723,7 @@ public class RecordMainActivity extends OldBaseActivity {
 		}
 		
 		if (recorder != null) {
-			recorder.destroy();
+			recorder.release();
 			recorder = null;
 		}
 		

@@ -3,8 +3,6 @@
  */
 package net.beadsproject.beads.core;
 
-import com.myandb.singsong.audio.AudioConfig;
-
 
 /**
  * Encapsulates data bout audio format for IO. Also has number of
@@ -41,10 +39,5 @@ public class IOAudioFormat {
 	public IOAudioFormat(float sampleRate, int bitDepth, int inputs, int outputs) {
 		this(sampleRate, bitDepth, inputs, outputs, true, true);
 	}
-	
-	public IOAudioFormat(AudioConfig config) {
-		this(AudioConfig.SAMPLERATE, AudioConfig.BIT_DEPTH, config.getChannels(), config.getChannels());
-	}
-
 	
 }
