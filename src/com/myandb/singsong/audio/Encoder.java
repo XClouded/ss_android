@@ -12,12 +12,16 @@ import com.myandb.singsong.libogg.VorbisFileOutputStream;
 public class Encoder extends AsyncTask<Track, Integer, Exception> {
 	
 	private static final int BUFFER_SIZE = 1024 * 16;
+	private static final int SAMPLE_LENGTH = PcmPlayer.SAMPLERATE * PcmPlayer.CHANNELS * 15;
+	private static final int FADE_IN_AND_OUT_DISCRETE_DIVIDER = 20;
 	
 	private OnCompleteListener completeListener;
 	private OnProgressListener progressListener;
 	private String outputFileName;
 	private VorbisFileOutputStream outputStream;
 	private Track[] tracks;
+	private int skipFrame;
+	private boolean sampleMode;
 	private boolean interrupted;
 	
 	@Override
@@ -25,8 +29,13 @@ public class Encoder extends AsyncTask<Track, Integer, Exception> {
 		Thread.currentThread().setPriority(Thread.MAX_PRIORITY - 1);
 		
 		try {
+			this.tracks = tracks;
+			
 			for (Track track : tracks) {
 				track.startStream();
+				if (sampleMode) {
+					track.addOffsetFrame(-skipFrame);
+				}
 			}
 			outputStream = new VorbisFileOutputStream(outputFileName);
 			
@@ -40,6 +49,11 @@ public class Encoder extends AsyncTask<Track, Integer, Exception> {
 			int currentProgressInPercent = 0;
 			short[] pcm = new short[BUFFER_SIZE];
 			
+			int fadeInThreshold = pcm.length * FADE_IN_AND_OUT_DISCRETE_DIVIDER;
+			int fadeOutThreshold = SAMPLE_LENGTH - pcm.length * FADE_IN_AND_OUT_DISCRETE_DIVIDER;
+			float volume = 0;
+			float volumeChangeAmount = 1f / FADE_IN_AND_OUT_DISCRETE_DIVIDER;
+			
 			while (!interrupted && read != -1) {
 				Arrays.fill(pcm, (short) 0);
 				
@@ -49,6 +63,27 @@ public class Encoder extends AsyncTask<Track, Integer, Exception> {
 						break;
 					}
 				}
+				
+				if (sampleMode) {
+					if (totalRead > SAMPLE_LENGTH) {
+						break;
+					}
+					
+					if (totalRead < fadeInThreshold && volume < 1) {
+						for (int i = 0; i < read; i++) {
+							pcm[i] *= volume;
+						}
+						volume += volumeChangeAmount;
+					}
+					
+					if (totalRead > fadeOutThreshold && volume > 0) {
+						for (int i = 0; i < read; i++) {
+							pcm[i] *= volume;
+						}
+						volume -= volumeChangeAmount;
+					}
+				}
+				
 				outputStream.write(pcm, 0, read);
 				
 				totalRead += read;
@@ -128,6 +163,16 @@ public class Encoder extends AsyncTask<Track, Integer, Exception> {
     
     public void setOnProgressListener(OnProgressListener progressListener) {
     	this.progressListener = progressListener;
+    }
+    
+    public void enableSampleMode(int skipFrame) {
+    	this.skipFrame = skipFrame;
+    	this.sampleMode = true;
+    }
+    
+    public void disableSampleMode() {
+    	this.skipFrame = 0;
+    	this.sampleMode = false;
     }
 
 }

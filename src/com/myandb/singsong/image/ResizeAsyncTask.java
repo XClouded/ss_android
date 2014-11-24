@@ -16,27 +16,26 @@ import android.media.ExifInterface;
 import android.os.AsyncTask;
 import android.widget.ImageView;
 
-import com.myandb.singsong.file.FileManager;
-
 public class ResizeAsyncTask extends AsyncTask<InputStream, Integer, Bitmap> {
 
 	private ImageView imageView;
+	private File outputFile;
+	private int outputSize = 120;
 	
 	@Override
 	protected Bitmap doInBackground(InputStream... params) {
 		if (params != null && params.length > 0) {
 			InputStream imageStream = params[0];
-			File temp = FileManager.get(FileManager.TEMP);
-			FileOutputStream output = null;
+			FileOutputStream outputStream = null;
 			Bitmap mayRotatedBitmap = null;
 			Bitmap correctedBitmap = null;
 			byte[] datas = null; 
 			
 			try {
-				output = FileUtils.openOutputStream(temp);
-				IOUtils.copy(imageStream, output);
+				outputStream = FileUtils.openOutputStream(outputFile);
+				IOUtils.copy(imageStream, outputStream);
 				
-				ExifInterface exif = new ExifInterface(temp.getAbsolutePath());
+				ExifInterface exif = new ExifInterface(outputFile.getAbsolutePath());
 				int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
 				int rotate = 0;
 				
@@ -58,26 +57,29 @@ public class ResizeAsyncTask extends AsyncTask<InputStream, Integer, Bitmap> {
 				matrix.postRotate(rotate);
 				
 				BitmapBuilder builder = new BitmapBuilder();
-				mayRotatedBitmap = builder.setSource(temp)
+				mayRotatedBitmap = builder.setSource(outputFile)
 										  .enableCrop(false)
-										  .setOutputSize(120)
+										  .setOutputSize(outputSize)
 										  .build();
-				correctedBitmap = Bitmap.createBitmap(mayRotatedBitmap,
-														0,
-														0,
-														mayRotatedBitmap.getWidth(),
-														mayRotatedBitmap.getHeight(),
-														matrix,
-														true );
+				
+				correctedBitmap = Bitmap.createBitmap(
+						mayRotatedBitmap,
+						0,
+						0,
+						mayRotatedBitmap.getWidth(),
+						mayRotatedBitmap.getHeight(),
+						matrix,
+						true 
+				);
 				
 				datas = bitmapToByteArray(correctedBitmap);
 				
 				if (datas != null) {
-					FileUtils.writeByteArrayToFile(temp, datas);
+					FileUtils.writeByteArrayToFile(outputFile, datas);
 				}
 				
 				imageStream.close();
-				output.close();
+				outputStream.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			} finally {
@@ -111,8 +113,16 @@ public class ResizeAsyncTask extends AsyncTask<InputStream, Integer, Bitmap> {
 		}
 	}	
 	
+	public void setOutputFile(File file) {
+		this.outputFile = file;
+	}
+	
 	public void setImageView(ImageView profile) {
 		this.imageView = profile;
+	}
+	
+	public void setOutputSize(int size) {
+		this.outputSize = size;
 	}
 	
 }

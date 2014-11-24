@@ -6,19 +6,32 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.android.volley.Request.Method;
+import com.android.volley.RequestQueue;
+import com.myandb.singsong.App;
 import com.myandb.singsong.R;
-import com.myandb.singsong.activity.RecordMainActivity;
 import com.myandb.singsong.audio.OnPlayEventListener;
 import com.myandb.singsong.audio.PcmPlayer;
 import com.myandb.singsong.audio.PlayEvent;
 import com.myandb.singsong.audio.Recorder;
 import com.myandb.singsong.audio.Track;
 import com.myandb.singsong.dialog.ImageSelectDialog;
+import com.myandb.singsong.event.OnCompleteListener;
+import com.myandb.singsong.event.OnVolleyWeakError;
+import com.myandb.singsong.event.OnVolleyWeakResponse;
 import com.myandb.singsong.event.WeakRunnable;
-import com.myandb.singsong.file.FileManager;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.image.ResizeAsyncTask;
 import com.myandb.singsong.model.Image;
+import com.myandb.singsong.model.Model;
+import com.myandb.singsong.model.User;
+import com.myandb.singsong.net.OAuthJsonObjectRequest;
+import com.myandb.singsong.net.UploadManager;
+import com.myandb.singsong.net.UrlBuilder;
+import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.service.SongUploadService;
 
 import android.app.Activity;
@@ -45,14 +58,20 @@ public class RecordSettingFragment extends BaseFragment {
 	public static final int REQUEST_CODE_PHOTO_PICKER = 100;
 	
 	public static final String EXTRA_HEADSET_PLUGGED = "headset_plugged";
-	public static final String EXTRA_RECORD_PCM_FILE_NAME = "record_pcm_file_name";
-	public static final String EXTRA_MUSIC_PCM_FILE_NAME = "music_pcm_file_name";
+	public static final String EXTRA_RECORD_PCM_FILE_PATH = "record_pcm_file_name";
+	public static final String EXTRA_MUSIC_PCM_FILE_PATH = "music_pcm_file_name";
+	
+	private static final String TRACK_RECORD = "record";
+	private static final String TRACK_MUSIC = "music";
 	
 	private PcmPlayer player;
 	private ImageSelectDialog dialog;
 	private Handler handler;
-	private Uri tempUri;
-	private boolean imageAdded;
+	private Uri imageUri;
+	private File imageFile;
+	private Image image;
+	private String imageName;
+	private boolean localImageExist;
 	private boolean headsetPlugged;
 	
 	private TextView tvSyncValue;
@@ -78,18 +97,22 @@ public class RecordSettingFragment extends BaseFragment {
 	protected void onArgumentsReceived(Bundle bundle) {
 		headsetPlugged = bundle.getBoolean(EXTRA_HEADSET_PLUGGED);
 		
-		player = new PcmPlayer();
-		player.setOnPlayEventListener(onPlayEventListener);
-		
-		String recordPcmFileName = bundle.getString(EXTRA_RECORD_PCM_FILE_NAME);
-		Track recordTrack = new Track(new File(recordPcmFileName), 1);
-		player.addTrack("record", recordTrack);
-		if (headsetPlugged) {
-			String musicPcmFileName = bundle.getString(EXTRA_MUSIC_PCM_FILE_NAME);
-			Track musicTrack = new Track(new File(musicPcmFileName), 2);
-			player.addTrack("music", musicTrack);
+		try {
+			player = new PcmPlayer();
+			player.setOnPlayEventListener(onPlayEventListener);
+			
+			String recordPcmFilePath = bundle.getString(EXTRA_RECORD_PCM_FILE_PATH);
+			Track recordTrack = new Track(new File(recordPcmFilePath), Recorder.CHANNELS);
+			player.addTrack(TRACK_RECORD, recordTrack);
+			if (headsetPlugged) {
+				String musicPcmFilePath = bundle.getString(EXTRA_MUSIC_PCM_FILE_PATH);
+				Track musicTrack = new Track(new File(musicPcmFilePath), PcmPlayer.CHANNELS);
+				player.addTrack(TRACK_MUSIC, musicTrack);
+			}
+			player.setLeadTrack(TRACK_RECORD);
+		} catch (Exception e) {
+			// This cannot be happened
 		}
-		player.setLeadTrack("record");
 	}
 	
 	private OnPlayEventListener onPlayEventListener = new OnPlayEventListener() {
@@ -170,12 +193,8 @@ public class RecordSettingFragment extends BaseFragment {
 		handler = new Handler();
 		
 		try {
-			File tempFile = FileManager.get(FileManager.TEMP_2);
-			if (!tempFile.exists()) {
-				tempFile.createNewFile();
-			}
-			
-			tempUri = Uri.fromFile(tempFile);
+			imageFile = File.createTempFile("scaled_image", null, activity.getCacheDir());
+			imageUri = Uri.fromFile(imageFile);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -252,7 +271,7 @@ public class RecordSettingFragment extends BaseFragment {
 				
 				Track recordTrack = player.getTrack("record");
 				if (Recorder.isValidRecordingTime(recordTrack.getSourceDuration())) {
-					startUploadServiceAndFinish();
+					uploadImageIfExist();
 				} else {
 					Toast.makeText(getActivity(), getString(R.string.t_song_length_policy), Toast.LENGTH_SHORT).show();
 				}
@@ -261,16 +280,76 @@ public class RecordSettingFragment extends BaseFragment {
 		}
 	};
 	
-	private void startUploadServiceAndFinish() {
-		Intent intent = new Intent();
-		intent.putExtra(RecordMainActivity.EXTRA_UPLOAD_SONG, true);
-		intent.putExtra(SongUploadService.EXTRA_SYNC_AMOUNT, getTrackOffset("record"));
-		intent.putExtra(SongUploadService.EXTRA_SYNC_AMOUNT, getTrackOffset("music"));
-		intent.putExtra(SongUploadService.EXTRA_IMAGE_ADDED, imageAdded);
-		intent.putExtra(SongUploadService.INTENT_MESSAGE, getSongMessage());
+	private void uploadImageIfExist() {
+		if (localImageExist) {
+			try {
+				imageName = generateIamgeName();
+				UploadManager manager = new UploadManager();
+				manager.start(getActivity(), imageFile, "image", imageName, "image/jpeg", imageUploadCompleteListener);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+		} else {
+			finishWithUploadInfo();
+		}
+	}
+	
+	private String generateIamgeName() {
+		User user = Authenticator.getUser();
+		return Image.generateName(user);
+	}
+	
+	private OnCompleteListener imageUploadCompleteListener = new OnCompleteListener() {
 		
-		getActivity().setResult(Activity.RESULT_OK, intent);
+		@Override
+		public void done(Exception e) {
+			if (e == null) {
+				try {
+					JSONObject message = new JSONObject();
+					message.put("url", Model.STORAGE_HOST + Model.STORAGE_IMAGE + imageName);
+					
+					UrlBuilder urlBuilder = new UrlBuilder();
+					String url = urlBuilder.s("images").toString();
+					OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
+							Method.POST, url, message,
+							new OnVolleyWeakResponse<RecordSettingFragment, JSONObject>(RecordSettingFragment.this, "onUploadSuccess", Image.class),
+							new OnVolleyWeakError<RecordSettingFragment>(RecordSettingFragment.this, "onUploadError")
+					);
+					
+					RequestQueue queue = ((App) getActivity().getApplicationContext()).getQueueInstance();
+					queue.add(request);
+				} catch (JSONException e1) {
+					onUploadError();
+				}
+			} else {
+				onUploadError();
+			}
+		}
+	};
+	
+	public void onUploadSuccess(Image image) {
+		setImage(image);
+		finishWithUploadInfo();
+	}
+	
+	public void onUploadError() {
+		Toast.makeText(getActivity(), getString(R.string.t_upload_failed), Toast.LENGTH_SHORT).show();
+		vUpload.setEnabled(true);
+	}
+	
+	private void finishWithUploadInfo() {
+		Intent intent = new Intent();
+		intent.putExtra(SongUploadService.EXTRA_RECORD_OFFSET, getTrackOffset(TRACK_RECORD));
+		intent.putExtra(SongUploadService.EXTRA_MUSIC_OFFSET, getTrackOffset(TRACK_MUSIC));
+		intent.putExtra(SongUploadService.EXTRA_IMAGE_ID, getImageId());
+		intent.putExtra(SongUploadService.EXTRA_SONG_MESSAGE, getSongMessage());
+		
+		getActivity().setResult(Activity.RESULT_FIRST_USER, intent);
 		getActivity().finish();
+	}
+	
+	private int getImageId() {
+		return image != null ? image.getId() : 0;
 	}
 	
 	private int getTrackOffset(String key) {
@@ -298,8 +377,8 @@ public class RecordSettingFragment extends BaseFragment {
 				tvSyncValue.setText(new DecimalFormat("##.##").format(currentValue));
 				
 				int offsetFrame = (int) (adjust * PcmPlayer.SAMPLERATE);
-				Track recordTrack = player.getTrack("record");
-				Track musicTrack = player.getTrack("music");
+				Track recordTrack = player.getTrack(TRACK_RECORD);
+				Track musicTrack = player.getTrack(TRACK_MUSIC);
 				if (offsetFrame > 0) {
 					if (musicTrack.getOffsetSize() > 0) {
 						musicTrack.addOffsetFrame(-offsetFrame); 
@@ -330,16 +409,15 @@ public class RecordSettingFragment extends BaseFragment {
 				intent.setAction(Intent.ACTION_GET_CONTENT);
 				
 				Intent takePickerIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-				takePickerIntent.putExtra(MediaStore.EXTRA_OUTPUT, tempUri);
+				takePickerIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
 				Intent chooserIntent = Intent.createChooser(intent, "Select or take a new Picture");
 				chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] { takePickerIntent });
 				
-				getActivity().startActivityForResult(chooserIntent, REQUEST_CODE_PHOTO_PICKER);
+				startActivityForResult(chooserIntent, REQUEST_CODE_PHOTO_PICKER);
 				break;
 				
 			case R.id.btn_delete_image:
 				setImage(null);
-				imageAdded = false;
 				break;
 				
 			case R.id.btn_other_images:
@@ -378,6 +456,9 @@ public class RecordSettingFragment extends BaseFragment {
 	};
 	
 	public void setImage(Image image) {
+		this.image = image;
+		this.localImageExist = false;
+		
 		if (image != null) {
 			ImageHelper.displayPhoto(image.getUrl(), ivSongImage);
 		} else {
@@ -402,14 +483,15 @@ public class RecordSettingFragment extends BaseFragment {
 			if (resultCode == Activity.RESULT_OK) {
 				try {
 					ResizeAsyncTask asyncTask = new ResizeAsyncTask();
+					asyncTask.setOutputFile(imageFile);
 					asyncTask.setImageView(ivSongImage);
 					
-					Uri selectedImage = data != null ? data.getData() : tempUri;
+					Uri selectedImage = data != null ? data.getData() : imageUri;
 					ContentResolver resolver = getActivity().getContentResolver();
 					InputStream imageStream = resolver.openInputStream(selectedImage);
 					asyncTask.execute(imageStream);
 					
-					imageAdded = true;
+					localImageExist = true;
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				} catch (Exception e) {

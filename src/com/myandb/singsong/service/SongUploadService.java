@@ -14,7 +14,6 @@ import com.myandb.singsong.activity.MainActivity;
 import com.myandb.singsong.audio.Encoder;
 import com.myandb.singsong.event.OnCompleteListener;
 import com.myandb.singsong.event.OnProgressListener;
-import com.myandb.singsong.file.FileManager;
 import com.myandb.singsong.image.BitmapBuilder;
 import com.myandb.singsong.model.Model;
 import com.myandb.singsong.model.Music;
@@ -44,10 +43,11 @@ public class SongUploadService extends Service {
 	public static final String INTENT_MUSIC_ID = "_mixed_with_";
 	public static final String INTENT_PARENT_SONG_ID = "_parent_song_";
 	public static final String INTENT_HEADSET_PLUGGED = "_record_mode_";
-	public static final String EXTRA_SYNC_AMOUNT = "_sync_amount_";
+	public static final String EXTRA_MUSIC_OFFSET = "music_offset";
+	public static final String EXTRA_RECORD_OFFSET = "record_offset";
 	public static final String INTENT_LYRIC_PART = "_lyric_part_";
-	public static final String EXTRA_IMAGE_ADDED = "_image_";
-	public static final String INTENT_MESSAGE = "_message_";
+	public static final String EXTRA_IMAGE_ID = "_image_";
+	public static final String EXTRA_SONG_MESSAGE = "_message_";
 	
 	private static boolean isRunning;
 	private int lyricPart;
@@ -89,15 +89,15 @@ public class SongUploadService extends Service {
 		
 		submitNotification();
 		
-		imageId = intent.getIntExtra(EXTRA_IMAGE_ADDED, -1);
-		message = intent.getStringExtra(INTENT_MESSAGE);
+		imageId = intent.getIntExtra(EXTRA_IMAGE_ID, -1);
+		message = intent.getStringExtra(EXTRA_SONG_MESSAGE);
 		lyricPart = intent.getIntExtra(INTENT_LYRIC_PART, Music.PART_MALE);
 		thisMusicId = intent.getIntExtra(INTENT_MUSIC_ID, -1);
 		creatorId = intent.getIntExtra(INTENT_CREATOR_ID, -1);
 		parentSongId = intent.getIntExtra(INTENT_PARENT_SONG_ID, -1);
 		
 		final boolean headsetPlugged = intent.getBooleanExtra(INTENT_HEADSET_PLUGGED, false);
-		final float syncAmount = intent.getFloatExtra(EXTRA_SYNC_AMOUNT, 0.0f);
+		final float syncAmount = intent.getFloatExtra(EXTRA_MUSIC_OFFSET, 0.0f);
 		
 		startEncoding(headsetPlugged, syncAmount);
 		
@@ -166,7 +166,7 @@ public class SongUploadService extends Service {
 	public void onFileUploadComplete() {
 		updateNotification(95, "노래정보를 갱신하고 있습니다.");
 
-		final int duration = (int) StringFormatter.getDuration(FileManager.getSecure(FileManager.SONG_OGG));
+		final int duration = 0;/*(int) StringFormatter.getDuration(FileManager.getSecure(FileManager.SONG_OGG));*/
 		
 		try {
 			JSONObject data = new JSONObject();
@@ -216,6 +216,7 @@ public class SongUploadService extends Service {
 		BitmapBuilder bitmapBuilder = new BitmapBuilder();
 		Bitmap bitmap = null;
 		
+		/*
 		try {
 			if (FileManager.isExist(FileManager.USER_PHOTO)) {
 				bitmap = bitmapBuilder.setSource(FileManager.get(FileManager.USER_PHOTO))
@@ -229,6 +230,7 @@ public class SongUploadService extends Service {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		*/
 		
 		RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.notification_progressbar);
 		contentView.setImageViewBitmap(R.id.iv_icon, bitmap);

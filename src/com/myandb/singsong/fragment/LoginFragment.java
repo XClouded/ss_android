@@ -29,7 +29,6 @@ import com.myandb.singsong.activity.MainActivity;
 import com.myandb.singsong.event.OnVolleyWeakError;
 import com.myandb.singsong.event.OnVolleyWeakResponse;
 import com.myandb.singsong.event.OnCompleteWeakListener;
-import com.myandb.singsong.file.FileManager;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.DownloadManager;
 import com.myandb.singsong.net.UrlBuilder;
@@ -54,6 +53,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class LoginFragment extends Fragment {
+	
+	public static final String FILE_USER_PHOTO = "user_photo";
 	
 	private EditText etUsername;
 	private EditText etPassword;
@@ -341,16 +342,15 @@ public class LoginFragment extends Fragment {
 			Authenticator auth = new Authenticator();
 			auth.login(user, token);
 			
+			File userPhoto = new File(getActivity().getFilesDir(), FILE_USER_PHOTO);
 			if (user.hasPhoto()) {
 				DownloadManager networkFile = new DownloadManager(); 
 				networkFile.start(
-						user.getPhotoUrl(), 
-						FileManager.get(FileManager.USER_PHOTO), 
+						user.getPhotoUrl(), userPhoto, 
 						new OnCompleteWeakListener<LoginFragment>(this, "onLoginComplete")
 				);
 			} else {
-				File userPhoto = FileManager.get(FileManager.USER_PHOTO);
-				if (userPhoto != null && userPhoto.exists()) {
+				if (userPhoto.exists()) {
 					userPhoto.delete();
 				}
 				

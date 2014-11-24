@@ -1,11 +1,12 @@
 package com.myandb.singsong.image;
 
+import java.io.File;
+
 import android.content.Context;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Bitmap.Config;
 
 import com.myandb.singsong.R;
-import com.myandb.singsong.file.FileManager;
 import com.nostra13.universalimageloader.cache.disc.impl.TotalSizeLimitedDiscCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
@@ -37,10 +38,16 @@ public class ImageLoaderConfig {
 			.bitmapConfig(Config.RGB_565)
 			.displayer(new NoBlinkFadeInBitmapDisplayer(fadeInDuration));
 		
+		File dir = context.getFilesDir();
+		File cacheDir = new File(dir, CACHE_DIRECTORY);
+		if (!cacheDir.exists()) {
+			cacheDir.mkdir();
+		}
+		
 		ImageLoaderConfiguration.Builder builder = new ImageLoaderConfiguration.Builder(context);
 		builder.threadPoolSize(threadPoolSize)
 			.memoryCache(new LruMemoryCache(memoryCacheSize))
-			.discCache(new TotalSizeLimitedDiscCache(FileManager.getSubDirectory(CACHE_DIRECTORY), new Md5FileNameGenerator(), discCacheSize))
+			.discCache(new TotalSizeLimitedDiscCache(cacheDir, new Md5FileNameGenerator(), discCacheSize))
 			.discCacheExtraOptions(discCacheImageWidth, discCacheImageHeight, CompressFormat.JPEG, discCacheImageQuality, null)
 			.denyCacheImageMultipleSizesInMemory()
 			.tasksProcessingOrder(QueueProcessingType.LIFO)

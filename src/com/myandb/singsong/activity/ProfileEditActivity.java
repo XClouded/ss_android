@@ -33,7 +33,6 @@ import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 import com.myandb.singsong.event.OnVolleyWeakError;
 import com.myandb.singsong.event.OnVolleyWeakResponse;
-import com.myandb.singsong.file.FileManager;
 import com.myandb.singsong.fragment.ProfileRootFragment;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.image.ResizeAsyncTask;
@@ -122,12 +121,8 @@ public class ProfileEditActivity extends OldBaseActivity {
 			ImageHelper.displayPhoto(currentUser, ivUserPhoto);
 			
 			try {
-				File tempFile = FileManager.get(FileManager.TEMP_2);
-				if (!tempFile.exists()) {
-					tempFile.createNewFile();
-				}
-				
-				tempUri = Uri.fromFile(tempFile);
+				File file = File.createTempFile("scaled_image", null, getCacheDir());
+				tempUri = Uri.fromFile(file);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

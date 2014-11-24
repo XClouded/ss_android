@@ -1,6 +1,7 @@
 package com.myandb.singsong.audio;
 
 import java.io.File;
+import java.io.IOException;
 
 import net.beadsproject.beads.core.AudioContext;
 import net.beadsproject.beads.core.AudioIO;
@@ -18,6 +19,8 @@ import android.media.MediaRecorder;
 import android.media.AudioTrack.OnPlaybackPositionUpdateListener;
 
 public class Recorder extends AudioRecord {
+	
+	public static final int CHANNELS = 1;
 	
 	private static final int BUFFER_SIZE_MULTIPLIER = 16;
 	private static final int BUFFER_SIZE = AudioRecord.getMinBufferSize(
@@ -48,7 +51,7 @@ public class Recorder extends AudioRecord {
 		}
 	}
 	
-	public Recorder(File outputFile) throws IllegalArgumentException, IllegalStateException {
+	public Recorder(File outputFile) throws IllegalArgumentException, IllegalStateException, IOException {
 		this();
 		
 		AudioIO audioIo = new AudioOutput(outputFile);

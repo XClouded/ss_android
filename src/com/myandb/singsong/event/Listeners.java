@@ -22,7 +22,6 @@ import com.myandb.singsong.activity.ChildSongActivity;
 import com.myandb.singsong.activity.OldBaseActivity;
 import com.myandb.singsong.activity.PlayerActivity;
 import com.myandb.singsong.activity.ProfileRootActivity;
-import com.myandb.singsong.activity.RecordMainActivity;
 import com.myandb.singsong.model.Activity;
 import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Notification;
@@ -225,8 +224,8 @@ public class Listeners {
 				Gson gson = Utility.getGsonInstance();
 				String musicInJson = gson.toJson(music, Music.class);
 				
-				Intent intent = new Intent(context, RecordMainActivity.class);
-				intent.putExtra(RecordMainActivity.INTENT_MUSIC, musicInJson);
+				Intent intent = null;/*new Intent(context, RecordMainActivity.class);*/
+//				intent.putExtra(RecordMainActivity.INTENT_MUSIC, musicInJson);
 				
 				if (VERSION.SDK_INT > VERSION_CODES.GINGERBREAD_MR1) {
 					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -274,8 +273,8 @@ public class Listeners {
 		protected void onFilteredResponse(Context context, JSONObject response) {
 			Gson gson = Utility.getGsonInstance();
 			
-			Intent intent = new Intent(context, RecordMainActivity.class);
-			intent.putExtra(RecordMainActivity.INTENT_PARENT_SONG, gson.toJson(parentSong, Song.class));
+			Intent intent = null;/*new Intent(context, RecordMainActivity.class);*/
+//			intent.putExtra(RecordMainActivity.INTENT_PARENT_SONG, gson.toJson(parentSong, Song.class));
 			
 			if (VERSION.SDK_INT > VERSION_CODES.GINGERBREAD_MR1) {
 				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);

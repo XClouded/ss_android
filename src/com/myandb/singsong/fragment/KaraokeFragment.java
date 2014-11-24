@@ -1,5 +1,8 @@
 package com.myandb.singsong.fragment;
 
+import java.io.File;
+import java.io.IOException;
+
 import com.google.gson.Gson;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
@@ -18,7 +21,6 @@ import com.myandb.singsong.event.OnCompleteWeakListener;
 import com.myandb.singsong.event.OnProgressListener;
 import com.myandb.singsong.event.OnProgressWeakListener;
 import com.myandb.singsong.event.WeakRunnable;
-import com.myandb.singsong.file.FileManager;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Song;
@@ -59,6 +61,14 @@ public class KaraokeFragment extends BaseFragment {
 	
 	public static final String EXTRA_MUSIC = "music";
 	public static final String EXTRA_PARENT_SONG = "parent_song";
+	public static final int REQUEST_CODE_SETTING = 200;
+	
+	private static final String FILE_MUSIC_OGG = "music.ogg";
+	private static final String FILE_MUSIC_RAW = "music.raw";
+	private static final String FILE_VOICE_RAW = "voice.raw";
+	private static final String FILE_LYRIC = "lyric.lrc";
+	
+	private static boolean running;
 	
 	private Handler handler;
 	private User currentUser;
@@ -66,11 +76,15 @@ public class KaraokeFragment extends BaseFragment {
 	private Song parentSong;
 	private Recorder recorder;
 	private PcmPlayer player;
-	private DownloadManager audioFile;
+	private DownloadManager musicDownloader;
 	private Decoder decoder;
 	private HeadsetReceiver receiver;
 	private LrcDisplayer lrcDisplayer;
 	private Animation blink;
+	private File musicOggFile;
+	private File musicRawFile;
+	private File voiceRawFile;
+	private File lyricFile;
 	private int lyricPart;
 	
 	private HeadsetDialog headsetDialog;
@@ -164,6 +178,7 @@ public class KaraokeFragment extends BaseFragment {
 		}
 		
 		try {
+			initializeFiles();
 			initializeRecorder();
 		} catch (Exception e) {
 			finish(activity, "레코딩에 이상이 있습니다! myandb@myandb.com 으로 문의해주세요.");
@@ -177,6 +192,8 @@ public class KaraokeFragment extends BaseFragment {
 		blink = AnimationUtils.loadAnimation(activity, R.anim.blink);
 		
 		handler = new Handler();
+		
+		running = true;
 	}
 	
 	private void finish(Activity activity, String message) {
@@ -186,12 +203,20 @@ public class KaraokeFragment extends BaseFragment {
 		activity.finish();
 	}
 	
-	private void initializeRecorder() throws IllegalArgumentException, IllegalStateException {
-		Track track = new Track(FileManager.getSecure(FileManager.MUSIC_RAW), 2);
+	private void initializeFiles() {
+		File dir = getActivity().getFilesDir();
+		musicOggFile = new File(dir, FILE_MUSIC_OGG);
+		musicRawFile = new File(dir, FILE_MUSIC_RAW);
+		voiceRawFile = new File(dir, FILE_VOICE_RAW);
+		lyricFile = new File(dir, FILE_LYRIC);
+	}
+	
+	private void initializeRecorder() throws IOException, IllegalArgumentException, IllegalStateException {
+		Track track = new Track(musicRawFile, PcmPlayer.CHANNELS);
 		player = new PcmPlayer();
 		player.addTrack("music", track);
 		player.setOnPlayEventListener(onPlayEventListener);
-		recorder = new Recorder(FileManager.getSecure(FileManager.VOICE_RAW));
+		recorder = new Recorder(voiceRawFile);
 		recorder.setBackgroundPlayer(player);
 	}
 	
@@ -234,10 +259,10 @@ public class KaraokeFragment extends BaseFragment {
 							intent.putExtra(UpActivity.EXTRA_FULL_SCREEN, true);
 							Bundle bundle = new Bundle();
 							bundle.putBoolean(RecordSettingFragment.EXTRA_HEADSET_PLUGGED, recorder.isHeadsetPlugged());
-							bundle.putString(RecordSettingFragment.EXTRA_MUSIC_PCM_FILE_NAME, FileManager.getSecure("music.raw").getAbsolutePath());
-							bundle.putString(RecordSettingFragment.EXTRA_RECORD_PCM_FILE_NAME, FileManager.getSecure("voice.raw").getAbsolutePath());
+							bundle.putString(RecordSettingFragment.EXTRA_MUSIC_PCM_FILE_PATH, musicRawFile.getAbsolutePath());
+							bundle.putString(RecordSettingFragment.EXTRA_RECORD_PCM_FILE_PATH, voiceRawFile.getAbsolutePath());
 							intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
-							startActivity(intent);
+							startActivityForResult(intent, REQUEST_CODE_SETTING);
 						}
 						
 						break;
@@ -260,17 +285,15 @@ public class KaraokeFragment extends BaseFragment {
 		loadingDialog.show();
 		setupLoadingDialogForDownload();
 		
-		DownloadManager lyricFile = new DownloadManager();
-		lyricFile.start(
-				music.getLrcUrl(),
-				FileManager.getSecure(FileManager.LYRIC),
+		DownloadManager lrcDownloader = new DownloadManager();
+		lrcDownloader.start(
+				music.getLrcUrl(), lyricFile,
 				new OnLyricDownloadCompleteListener(this)
 		);
 		
-		audioFile = new DownloadManager();
-		audioFile.start(
-				getAudioUrl(), 
-				FileManager.getSecure(FileManager.MUSIC_OGG), 
+		musicDownloader = new DownloadManager();
+		musicDownloader.start(
+				getAudioUrl(), musicOggFile, 
 				new OnAudioDownloadCompleteListener(this), 
 				new OnAudioDownloadProgressListener(this)
 		);
@@ -293,7 +316,7 @@ public class KaraokeFragment extends BaseFragment {
 	}
 	
 	public void onLyricDownloadSuccess() {
-		lrcDisplayer = new LrcDisplayer(FileManager.getSecure(FileManager.LYRIC), getActivity());
+		lrcDisplayer = new LrcDisplayer(lyricFile, getActivity());
 		lrcDisplayer.setScrollView(svLyricScroller)
 			.setLyricWrapper((ViewGroup) vLyricWrapper)
 			.setTextSwitcher(tsLyricStarter)
@@ -326,7 +349,7 @@ public class KaraokeFragment extends BaseFragment {
 		setupLoadingDialogForDecode();
 		startDecoding();
 		
-		int duration = (int) StringFormatter.getDuration(FileManager.getSecure(FileManager.MUSIC_OGG));
+		int duration = (int) StringFormatter.getDuration(musicOggFile);
 		tvEndTime.setText(StringFormatter.getDuration(duration));
 		pbPlayProgress.setMax(duration);
 	}
@@ -389,10 +412,7 @@ public class KaraokeFragment extends BaseFragment {
 			
 		});
 		
-		decoder.start(
-				FileManager.getSecure(FileManager.MUSIC_OGG), 
-				FileManager.getSecure(FileManager.MUSIC_RAW)
-		);
+		decoder.start(musicOggFile, musicRawFile);
 	}
 	
 	private void setupLoadingDialogForDownload() {
@@ -402,8 +422,8 @@ public class KaraokeFragment extends BaseFragment {
 			
 			@Override
 			public void onClick(View v) {
-				if (audioFile != null) {
-					audioFile.stop();
+				if (musicDownloader != null) {
+					musicDownloader.stop();
 				}
 				finish(getActivity(), null);
 			}
@@ -447,7 +467,7 @@ public class KaraokeFragment extends BaseFragment {
 			if (receiver.isPlugged()) {
 				startRecordingWithHeadset();
 			} else {
-				headsetDialog.show();
+				headsetDialog.show(); 
 			}
 		}
 	}
@@ -603,11 +623,51 @@ public class KaraokeFragment extends BaseFragment {
 
 	@Override
 	protected void onDataChanged() {
-		receiver = new HeadsetReceiver(this);
+		receiver = new HeadsetReceiver(this); 
 		onLyricDownloadSuccess();
 		prepareRecording();
 	}
 	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		switch (requestCode) {
+		case REQUEST_CODE_SETTING:
+			if (resultCode == Activity.RESULT_FIRST_USER) {
+				int musicOffset = data.getIntExtra(SongUploadService.EXTRA_MUSIC_OFFSET, 0);
+				int recordOffset = data.getIntExtra(SongUploadService.EXTRA_RECORD_OFFSET, 0);
+				int imageId = data.getIntExtra(SongUploadService.EXTRA_IMAGE_ID, 0);
+				String message = data.getStringExtra(SongUploadService.EXTRA_SONG_MESSAGE);
+				
+				Intent intent = new Intent(getActivity(), SongUploadService.class);
+				intent.putExtra(SongUploadService.INTENT_HEADSET_PLUGGED, recorder.isHeadsetPlugged());
+				intent.putExtra(SongUploadService.EXTRA_MUSIC_OFFSET, musicOffset);
+				intent.putExtra(SongUploadService.EXTRA_RECORD_OFFSET, recordOffset);
+				intent.putExtra(SongUploadService.INTENT_CREATOR_ID, currentUser.getId());
+				intent.putExtra(SongUploadService.INTENT_MUSIC_ID, music.getId());
+				intent.putExtra(SongUploadService.INTENT_LYRIC_PART, lyricPart);
+				intent.putExtra(SongUploadService.EXTRA_IMAGE_ID, imageId);
+				intent.putExtra(SongUploadService.EXTRA_SONG_MESSAGE, message);
+				
+				if (!isSolo()) {
+					intent.putExtra(SongUploadService.INTENT_PARENT_SONG_ID, parentSong.getId());
+				}
+				
+				getActivity().startService(intent);
+				finish(getActivity(), null);
+			} else if (resultCode == Activity.RESULT_OK) {
+				prepareRecording();
+			} else if (resultCode == Activity.RESULT_CANCELED) {
+				finish(getActivity(), null);
+			}
+			break;
+
+		default:
+			break;
+		}
+	}
+
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -647,9 +707,9 @@ public class KaraokeFragment extends BaseFragment {
 	public void onDestroy() {
 		super.onDestroy();
 		
-		if (audioFile != null) {
-			audioFile.stop();
-			audioFile = null;
+		if (musicDownloader != null) {
+			musicDownloader.stop();
+			musicDownloader = null;
 		}
 		
 		if (decoder != null) {
@@ -686,6 +746,12 @@ public class KaraokeFragment extends BaseFragment {
 			handler.removeCallbacksAndMessages(null);
 			handler = null;
 		}
+		
+		running = false;
+	}
+	
+	public static boolean isRunning() {
+		return running;
 	}
 
 	private void stopUpdatingProgressBar() {

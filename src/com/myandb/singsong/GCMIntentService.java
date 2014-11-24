@@ -28,9 +28,9 @@ import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.google.android.gcm.GCMBaseIntentService;
 import com.google.gson.Gson;
-import com.myandb.singsong.activity.RecordMainActivity;
 import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.event.OnCompleteListener;
+import com.myandb.singsong.fragment.KaraokeFragment;
 import com.myandb.singsong.image.BitmapBuilder;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Activity;
@@ -114,7 +114,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 		
 		prepareAndSubmitNotification(creator, message);
 		
-		if (!RecordMainActivity.isActivityRunning()) {
+		if (!KaraokeFragment.isRunning()) {
 			showToast(creator, message);
 		}
 	}
@@ -220,7 +220,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 			   .setTicker(message)
 			   .setContentIntent(pendingIntent);
 		
-		if (!RecordMainActivity.isActivityRunning()) {
+		if (!KaraokeFragment.isRunning()) {
 			builder.setVibrate(new long[] { 300, 700 });
 		}
 		

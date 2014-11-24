@@ -19,8 +19,11 @@ public final class Track {
 	private short[] pcm;
 	private float volume;
 	
-	public Track(File source, int channels) {
-		if (source != null && source.exists()) {
+	public Track(File source, int channels) throws IOException, IllegalArgumentException {
+		if (source != null) {
+			if (!source.exists()) {
+				source.createNewFile();
+			}
 			this.source = source;
 			this.channels = channels;
 			this.duration = calculateSourceDuration(source, channels);
@@ -36,7 +39,7 @@ public final class Track {
 	}
 	
 	public void addOffsetFrame(int offset) {
-		totalOffset = Math.max(totalOffset + offset, 0);
+		totalOffset += offset;
 		moveFrameTo(-offset);
 	}
 	
@@ -85,9 +88,9 @@ public final class Track {
 		frameDifference = -totalOffset;
 	}
 	
-	public int read(short[] finalPcm) throws IOException {
+	public int read(short[] stereoPcm) throws IOException {
 		if (data == null) {
-			int pcmSize = finalPcm.length * channels / 2;
+			int pcmSize = stereoPcm.length * channels / 2;
 			pcm = new short[pcmSize];
 			data = new byte[pcmSize * 2];
 		}
@@ -104,16 +107,16 @@ public final class Track {
 			if (channels == 1) {
 				for (int i = 0; i < writableLength; i++) {
 					int j = 2 * (i + skipFrame);
-					finalPcm[j] += pcm[i] * volume;
-					finalPcm[j + 1] += pcm[i] * volume;
+					stereoPcm[j] += pcm[i] * volume;
+					stereoPcm[j + 1] += pcm[i] * volume;
 				}
-				return writableLength * 2;
+				return shortRead * 2;
 			} else if (channels == 2) {
 				for (int i = 0; i < writableLength; i++) {
 					int j = i + skipFrame;
-					finalPcm[j] += pcm[i] * volume;
+					stereoPcm[j] += pcm[i] * volume;
 				}
-				return writableLength;
+				return shortRead;
 			}
 		}
 		

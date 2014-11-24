@@ -17,13 +17,22 @@ public class AudioOutput extends AudioIO {
 	private OutputStream outputStream;
 	private Thread writeThread;
 	
-	public AudioOutput(File file) throws IllegalArgumentException {
-		if (file != null && file.exists()) {
+	public AudioOutput(File file) throws IOException, IllegalArgumentException {
+		if (file != null) {
+			if (!file.exists()) {
+				file.createNewFile();
+			}
 			this.file = file;
-			this.writeThread = instantiateWriteThread();
 		} else {
 			throw new IllegalArgumentException();
 		}
+	}
+
+	@Override
+	protected boolean start() {
+		writeThread = instantiateWriteThread();
+		writeThread.start();
+		return true;
 	}
 	
 	private Thread instantiateWriteThread() {
@@ -47,12 +56,6 @@ public class AudioOutput extends AudioIO {
 			}
 		}
 	};
-
-	@Override
-	protected boolean start() {
-		writeThread.start();
-		return true;
-	}
 
 	private void writeToFile() throws FileNotFoundException, IOException {
 		outputStream = new FileOutputStream(file);
@@ -89,6 +92,8 @@ public class AudioOutput extends AudioIO {
 			}
 			outputStream = null;
 		}
+		
+		writeThread = null;
 	}
 
 	@Override

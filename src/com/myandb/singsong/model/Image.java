@@ -11,5 +11,16 @@ public class Image extends Model {
 	public void setUrl(String url) {
 		this.url = url;
 	}
+	
+	public static String generateName(User user) {
+		String result = "";
+		
+		result += user.getUsername();
+		result += "_";
+		result += String.valueOf(System.currentTimeMillis());
+		result += Model.SUFFIX_JPG;
+		
+		return result;
+	}
 
 }

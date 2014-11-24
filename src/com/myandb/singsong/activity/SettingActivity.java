@@ -1,7 +1,5 @@
 package com.myandb.singsong.activity;
 
-import java.io.File;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,7 +12,6 @@ import com.myandb.singsong.R;
 import com.myandb.singsong.dialog.WithdrawDialog;
 import com.myandb.singsong.event.OnVolleyWeakError;
 import com.myandb.singsong.event.OnVolleyWeakResponse;
-import com.myandb.singsong.file.FileManager;
 import com.myandb.singsong.net.OAuthJsonObjectRequest;
 import com.myandb.singsong.net.OAuthJustRequest;
 import com.myandb.singsong.net.UrlBuilder;
@@ -157,10 +154,10 @@ public class SettingActivity extends OldBaseActivity implements OnClickListener 
 //				getService().stopPlaying(false);
 			}
 			
-			File photo = FileManager.get(FileManager.USER_PHOTO);
-			if (photo.exists()) {
-				photo.delete();
-			}
+//			File photo = FileManager.get(FileManager.USER_PHOTO);
+//			if (photo.exists()) {
+//				photo.delete();
+//			}
 			
 			deleteTokenOnServer();
 			

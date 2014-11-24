@@ -40,7 +40,6 @@ import com.myandb.singsong.event.MemberOnlyClickListener;
 import com.myandb.singsong.event.OnCompleteListener;
 import com.myandb.singsong.event.OnVolleyWeakError;
 import com.myandb.singsong.event.OnVolleyWeakResponse;
-import com.myandb.singsong.file.FileManager;
 import com.myandb.singsong.image.BitmapBuilder;
 import com.myandb.singsong.image.BlurAsyncTask;
 import com.myandb.singsong.model.Friendship;
@@ -432,9 +431,9 @@ public class ProfileRootFragment extends Fragment {
 	
 	private void loadUserPhoto() {
 		if (isCurrentUser) {
-			if (FileManager.isExist(FileManager.USER_PHOTO)) {
-				setImageViewBitmap(FileManager.get(FileManager.USER_PHOTO));
-			}
+//			if (FileManager.isExist(FileManager.USER_PHOTO)) {
+//				setImageViewBitmap(FileManager.get(FileManager.USER_PHOTO));
+//			}
 		} else if (thisUser.hasPhoto()) {
 			ImageLoader imageLoader = ImageLoader.getInstance();
 			File cache = DiscCacheUtil.findInCache(thisUser.getPhotoUrl(), imageLoader.getDiscCache());
@@ -489,11 +488,11 @@ public class ProfileRootFragment extends Fragment {
 					
 					if (hasPhotoChanged) {
 						UploadManager manager = new UploadManager();
-						manager.start(
-								getActivity(), FileManager.get(FileManager.TEMP),
-								"user_photo", currentUser.getUsername() + Model.SUFFIX_JPG, "image/jpeg",
-								photoUploadCompleteListener
-						);
+//						manager.start(
+//								getActivity(), FileManager.get(FileManager.TEMP),
+//								"user_photo", currentUser.getUsername() + Model.SUFFIX_JPG, "image/jpeg",
+//								photoUploadCompleteListener
+//						);
 					}
 					
 					if (nickname != null) {
@@ -561,11 +560,11 @@ public class ProfileRootFragment extends Fragment {
 	};
 	
 	public void onDataUploadSuccess(User user) {
-		try {
-			FileUtils.copyFile(FileManager.get(FileManager.TEMP), FileManager.get(FileManager.USER_PHOTO));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			FileUtils.copyFile(FileManager.get(FileManager.TEMP), FileManager.get(FileManager.USER_PHOTO));
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 		
 		currentUser.setPhotoUrl(user.getPhotoUrl(), user.getPhotoUpdatedAt());
 		Authenticator auth = new Authenticator();
