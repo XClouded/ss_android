@@ -1,6 +1,7 @@
 package com.myandb.singsong.audio;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import android.os.AsyncTask;
 
@@ -10,12 +11,14 @@ import com.myandb.singsong.libogg.VorbisFileOutputStream;
 
 public class Encoder extends AsyncTask<Track, Integer, Exception> {
 	
-	private boolean interrupted;
+	private static final int BUFFER_SIZE = 1024 * 16;
+	
 	private OnCompleteListener completeListener;
 	private OnProgressListener progressListener;
 	private String outputFileName;
 	private VorbisFileOutputStream outputStream;
 	private Track[] tracks;
+	private boolean interrupted;
 	
 	@Override
 	protected Exception doInBackground(Track... tracks) {
@@ -35,12 +38,16 @@ public class Encoder extends AsyncTask<Track, Integer, Exception> {
 			int estimateLengthInPercent = estimateLength / 100;
 			int preProgressInPercent = 0;
 			int currentProgressInPercent = 0;
-			short[] pcm = new short[1024 * 16];
+			short[] pcm = new short[BUFFER_SIZE];
 			
 			while (!interrupted && read != -1) {
+				Arrays.fill(pcm, (short) 0);
+				
 				for (Track track : tracks) {
-					int trackRead = track.read(pcm);
-					read = Math.max(read, trackRead);
+					read = track.read(pcm);
+					if (read == -1) {
+						break;
+					}
 				}
 				outputStream.write(pcm, 0, read);
 				

@@ -24,7 +24,7 @@ import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.OAuthJsonObjectRequest;
 import com.myandb.singsong.net.UrlBuilder;
 
-public class WriteCommentDialog extends BaseDiaglog {
+public class WriteCommentDialog extends BaseDialog {
 	
 	private ImageView ivCancel;
 	private ImageView ivWriterPhoto;

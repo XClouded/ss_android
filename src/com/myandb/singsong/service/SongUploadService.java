@@ -44,9 +44,9 @@ public class SongUploadService extends Service {
 	public static final String INTENT_MUSIC_ID = "_mixed_with_";
 	public static final String INTENT_PARENT_SONG_ID = "_parent_song_";
 	public static final String INTENT_HEADSET_PLUGGED = "_record_mode_";
-	public static final String INTENT_SYNC_AMOUNT = "_sync_amount_";
+	public static final String EXTRA_SYNC_AMOUNT = "_sync_amount_";
 	public static final String INTENT_LYRIC_PART = "_lyric_part_";
-	public static final String INTENT_IMAGE_ID = "_image_";
+	public static final String EXTRA_IMAGE_ADDED = "_image_";
 	public static final String INTENT_MESSAGE = "_message_";
 	
 	private static boolean isRunning;
@@ -89,7 +89,7 @@ public class SongUploadService extends Service {
 		
 		submitNotification();
 		
-		imageId = intent.getIntExtra(INTENT_IMAGE_ID, -1);
+		imageId = intent.getIntExtra(EXTRA_IMAGE_ADDED, -1);
 		message = intent.getStringExtra(INTENT_MESSAGE);
 		lyricPart = intent.getIntExtra(INTENT_LYRIC_PART, Music.PART_MALE);
 		thisMusicId = intent.getIntExtra(INTENT_MUSIC_ID, -1);
@@ -97,7 +97,7 @@ public class SongUploadService extends Service {
 		parentSongId = intent.getIntExtra(INTENT_PARENT_SONG_ID, -1);
 		
 		final boolean headsetPlugged = intent.getBooleanExtra(INTENT_HEADSET_PLUGGED, false);
-		final float syncAmount = intent.getFloatExtra(INTENT_SYNC_AMOUNT, 0.0f);
+		final float syncAmount = intent.getFloatExtra(EXTRA_SYNC_AMOUNT, 0.0f);
 		
 		startEncoding(headsetPlugged, syncAmount);
 		

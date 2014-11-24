@@ -18,7 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-public class WithdrawDialog extends BaseDiaglog {
+public class WithdrawDialog extends BaseDialog {
 	
 	private SettingActivity parent;
 	private ImageView ivCancel;

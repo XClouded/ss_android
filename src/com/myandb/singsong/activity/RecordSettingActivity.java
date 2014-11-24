@@ -77,14 +77,14 @@ public class RecordSettingActivity extends OldBaseActivity {
 	private Image image;
 	private String imageName;
 	private boolean newImageAdded;
-	private ImageSelectDialog dialog;
 	private Uri tempUri;
+	private ImageSelectDialog dialog;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		setContentView(R.layout.activity_record_setting);
+		setContentView(R.layout.fragment_record_setting);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		
 		handler = new Handler();
@@ -99,7 +99,7 @@ public class RecordSettingActivity extends OldBaseActivity {
 		
 //		player.setCallback(new PlayerStatusCallback(this));
 		
-		dialog = new ImageSelectDialog(this);
+//		dialog = new ImageSelectDialog(this);
 		
 		ivPlayControl = (ImageView) findViewById(R.id.iv_play_control);
 		ivSyncBack = (ImageView) findViewById(R.id.iv_sync_back);
@@ -165,7 +165,7 @@ public class RecordSettingActivity extends OldBaseActivity {
 		public void onClick(View v) {
 			vUpload.setEnabled(false);
 			
-			if (Recorder.isValidRecordingTime(FileManager.getSecure(FileManager.VOICE_RAW))) {
+			if (true/*Recorder.isValidRecordingTime(FileManager.getSecure(FileManager.VOICE_RAW))*/) {
 				if (newImageAdded) {
 					UploadManager manager = new UploadManager();
 					try {
@@ -253,11 +253,11 @@ public class RecordSettingActivity extends OldBaseActivity {
 		);
 		
 		Intent intent = new Intent();
-		intent.putExtra(RecordMainActivity.INTENT_RESULT_UPLOAD, true);
-		intent.putExtra(SongUploadService.INTENT_SYNC_AMOUNT, getCurrentSync());
+		intent.putExtra(RecordMainActivity.EXTRA_UPLOAD_SONG, true);
+		intent.putExtra(SongUploadService.EXTRA_SYNC_AMOUNT, getCurrentSync());
 		
 		if (image != null) {
-			intent.putExtra(SongUploadService.INTENT_IMAGE_ID, image.getId());
+			intent.putExtra(SongUploadService.EXTRA_IMAGE_ADDED, image.getId());
 		}
 		
 		String message = etSongMessage.getText().toString();
@@ -391,7 +391,7 @@ public class RecordSettingActivity extends OldBaseActivity {
 				RecordMainActivity.incrementRestartNum();
 				
 				intent = new Intent();
-				intent.putExtra(RecordMainActivity.INTENT_RESULT_UPLOAD, false);
+				intent.putExtra(RecordMainActivity.EXTRA_UPLOAD_SONG, false);
 				setResult(Activity.RESULT_OK, intent);
 				finish();
 				

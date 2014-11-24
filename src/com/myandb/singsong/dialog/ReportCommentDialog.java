@@ -21,7 +21,7 @@ import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.OAuthJustRequest;
 import com.myandb.singsong.net.UrlBuilder;
 
-public class ReportCommentDialog extends BaseDiaglog {
+public class ReportCommentDialog extends BaseDialog {
 	
 	private User user;
 	private Comment<?> comment;

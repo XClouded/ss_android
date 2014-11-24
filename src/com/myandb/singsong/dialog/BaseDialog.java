@@ -5,11 +5,15 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.WindowManager;
 
-public abstract class BaseDiaglog extends Dialog {
+public abstract class BaseDialog extends Dialog {
 
 	private float dimAmount = 0.5f;
 	
-	public BaseDiaglog(Context context, int style) {
+	public BaseDialog(Context context) {
+		super(context);
+	}
+	
+	public BaseDialog(Context context, int style) {
 		super(context, style);
 	}
 
@@ -32,7 +36,7 @@ public abstract class BaseDiaglog extends Dialog {
 		return;
 	}
 	
-	public BaseDiaglog setDimAmount(float amount) {
+	public BaseDialog setDimAmount(float amount) {
 		this.dimAmount = amount;
 		
 		return this;

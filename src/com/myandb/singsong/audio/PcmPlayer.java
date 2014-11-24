@@ -2,6 +2,7 @@ package com.myandb.singsong.audio;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +27,7 @@ public class PcmPlayer extends AudioTrack {
 	private OnPlayEventListener listener;
 	private ExecutorService service;
 	private Map<String, Track> tracks;
+	private String leadTrack;
 	private boolean released;
 
 	public PcmPlayer() throws IllegalArgumentException {
@@ -46,12 +48,16 @@ public class PcmPlayer extends AudioTrack {
 	public void addTrack(String key, Track track) {
 		if (!isPlaying()) {
 			tracks.put(key, track);
+			leadTrack = key;
 		}
 	}
 	
 	public void removeTrack(String key) {
 		if (!isPlaying()) {
 			tracks.remove(key);
+			if (key.equals(leadTrack)) {
+				leadTrack = null;
+			}
 		}
 	}
 	
@@ -71,6 +77,10 @@ public class PcmPlayer extends AudioTrack {
 		return BUFFER_SIZE;
 	}
 	
+	public void setLeadTrack(String key) {
+		this.leadTrack = key;
+	}
+	
 	public void setOnPlayEventListener(OnPlayEventListener listener) {
 		this.listener = listener;
 	}
@@ -79,12 +89,28 @@ public class PcmPlayer extends AudioTrack {
 		setNotificationMarkerPosition(1);
 		service.execute(new PcmWriteRunnable(this));
 	}
-	
+
 	@Override
 	public void play() throws IllegalStateException {
 		super.play();
 		if (listener != null) {
 			listener.onPlay(PlayEvent.PLAY);
+		}
+		
+		prepareTrackStream();
+	}
+	
+	private void prepareTrackStream() {
+		try {
+			for (Track track : getTracks()) {
+				track.startStream();
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			// This cannot be happened
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+			stop();
 		}
 	}
 
@@ -93,6 +119,19 @@ public class PcmPlayer extends AudioTrack {
 		super.stop();
 		if (!released && listener != null) {
 			listener.onPlay(PlayEvent.STOP);
+			listener.onPlay(PlayEvent.COMPLETED);
+		}
+		
+		releaseTrackStream();
+	}
+	
+	private void releaseTrackStream() {
+		for (Track track : getTracks()) {
+			try {
+				track.release();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -109,7 +148,6 @@ public class PcmPlayer extends AudioTrack {
 		released = true;
 		service.shutdown();
 		service = null;
-		tracks = null;
 		super.release();
 	}
 
@@ -118,28 +156,36 @@ public class PcmPlayer extends AudioTrack {
 	}
 	
 	public long getDuration() {
-		long maxDuration = 0;
-		for (Track track : tracks.values()) {
-			maxDuration = Math.max(maxDuration, track.getDuration());
+		if (leadTrack != null) {
+			return getTrack(leadTrack).getDuration();
+		} else {
+			long maxDuration = 0;
+			for (Track track : tracks.values()) {
+				maxDuration = Math.max(maxDuration, track.getDuration());
+			}
+			return maxDuration;
 		}
-		return maxDuration;
 	}
 	
-	public long getCurrentFrame() {
-		long maxFrame = 0;
-		try {
+	public long getCurrentFrame() throws IllegalStateException, IOException {
+		if (leadTrack != null) {
+			return getTrack(leadTrack).getCurrentFrame();
+		} else {
+			long maxFrame = 0;
 			for (Track track : tracks.values()) {
 				maxFrame = Math.max(maxFrame, track.getCurrentFrame());
 			}
+			return maxFrame;
+		}
+	}
+	
+	public long getCurrentPosition() {
+		try {
+			return getCurrentFrame() * 1000 / SAMPLERATE;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return 0;
 		}
-		return 0;
-	}
-	
-	public long getCurrentPosition() {
-		return getCurrentFrame() * 1000 / SAMPLERATE;
 	}
 	
 	public void seekTo(int milliSeconds) {
@@ -161,34 +207,28 @@ public class PcmPlayer extends AudioTrack {
 		@Override
 		public void run() {
 			try {
-				initializeTracks();
 				writePcmToPlayer();
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
-				player.flush();
-				player.stop();
-				
-				releaseResource();
-			}
-		}
-		
-		private void initializeTracks() throws FileNotFoundException, IllegalStateException {
-			for (Track track : player.getTracks()) {
-				track.startStream();
+				stopPlayer();
 			}
 		}
 		
 		private void writePcmToPlayer() throws IOException {
 			int read = 0;
-			short[] buffer = new short[player.getBufferSize() / 2];
+			short[] buffer = new short[player.getBufferSize() / 4];
 			
 			player.play();
 			
 			while (isPlayerStateNormal() && read != -1) {
+				Arrays.fill(buffer, (short) 0);
+				
 				for (Track track : player.getTracks()) {
-					int trackRead = track.read(buffer);
-					read = Math.max(read, trackRead);
+					read = track.read(buffer);
+					if (read == -1) {
+						break;
+					}
 				}
 				
 				player.write(buffer, 0, read);
@@ -199,13 +239,10 @@ public class PcmPlayer extends AudioTrack {
 			return player.isPlaying() && player.getState() == AudioTrack.STATE_INITIALIZED;
 		}
 		
-		private void releaseResource() {
-			for (Track track : player.getTracks()) {
-				try {
-					track.release();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+		private void stopPlayer() {
+			player.flush();
+			if (player.isPlaying()) {
+				player.stop();
 			}
 		}
 		

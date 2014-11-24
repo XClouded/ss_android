@@ -19,7 +19,7 @@ import com.myandb.singsong.model.Comment;
 import com.myandb.singsong.net.OAuthJsonObjectRequest;
 import com.myandb.singsong.net.UrlBuilder;
 
-public class DeleteCommentDialog extends BaseDiaglog {
+public class DeleteCommentDialog extends BaseDialog {
 	
 	private ImageView ivCancel;
 	private Button btnDeleteComment;

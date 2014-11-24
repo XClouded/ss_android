@@ -16,11 +16,13 @@ import com.myandb.singsong.util.StringFormatter;
 
 public class Decoder extends AsyncTask<File, Integer, Exception> {
 	
-	private boolean interrupted;
+	private static final int BUFFER_SIZE = 1024 * 16;
+	
 	private OnCompleteListener completeListener;
 	private OnProgressListener progressListener;
 	private VorbisFileInputStream inputStream;
 	private OutputStream outputStream;
+	private boolean interrupted;
 
 	@Override
 	protected Exception doInBackground(File... params) {
@@ -40,7 +42,7 @@ public class Decoder extends AsyncTask<File, Integer, Exception> {
 			int estimateLengthInPercent = estimateLength / 100;
 			int preProgressInPercent = 0;
 			int currentProgressInPercent = 0;
-			short[] data = new short[1024 * 16];
+			short[] data = new short[BUFFER_SIZE];
 			byte[] buffer = new byte[data.length * 2];
 			
 			while ( !interrupted && (read = inputStream.read(data)) != -1 ) {

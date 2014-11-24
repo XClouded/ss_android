@@ -1,25 +1,25 @@
 package com.myandb.singsong.dialog;
 
-import android.content.Context;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Button;
 
 import com.myandb.singsong.R;
-import com.myandb.singsong.activity.RecordMainActivity;
+import com.myandb.singsong.fragment.KaraokeFragment;
 import com.myandb.singsong.model.Music;
 
-public class SelectorDialog extends BaseDiaglog {
+public class SelectorDialog extends BaseDialog {
 	
 	private Button btnMale;
 	private Button btnFemale;
 	private String maleName;
 	private String femaleName;
-	private RecordMainActivity parent;
+	private Fragment fragment;
 
-	public SelectorDialog(Context context, String maleName, String femaleName) {
-		super(context, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+	public SelectorDialog(Fragment fragment, String maleName, String femaleName) {
+		super(fragment.getActivity(), android.R.style.Theme_NoTitleBar_Fullscreen);
 		
-		parent = (RecordMainActivity) context;
+		this.fragment = fragment;
 		this.maleName = maleName;
 		this.femaleName = femaleName;
 	}
@@ -51,13 +51,17 @@ public class SelectorDialog extends BaseDiaglog {
 		public void onClick(View view) {
 			SelectorDialog.this.dismiss();
 			
-			if (view.getId() == R.id.btn_select_male) {
-				parent.setThisUserPart(Music.PART_MALE);
-			} else {
-				parent.setThisUserPart(Music.PART_FEMALE);
+			if (fragment instanceof KaraokeFragment) {
+				KaraokeFragment karaoke = (KaraokeFragment) fragment;
+				
+				if (view.getId() == R.id.btn_select_male) {
+					karaoke.setThisUserPart(Music.PART_MALE);
+				} else {
+					karaoke.setThisUserPart(Music.PART_FEMALE);
+				}
+				
+				karaoke.prepareRecording();
 			}
-			
-			parent.prepareRecording();
 		}
 	};
 	

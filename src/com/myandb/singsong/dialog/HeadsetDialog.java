@@ -1,21 +1,21 @@
 package com.myandb.singsong.dialog;
 
-import android.content.Context;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Button;
 
 import com.myandb.singsong.R;
-import com.myandb.singsong.activity.RecordMainActivity;
+import com.myandb.singsong.fragment.KaraokeFragment;
 
-public class HeadsetDialog extends BaseDiaglog {
+public class HeadsetDialog extends BaseDialog {
 	
 	private Button btnNoHeadset;
-	private RecordMainActivity parent;
+	private Fragment fragment;
 
-	public HeadsetDialog(Context context) {
-		super(context, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+	public HeadsetDialog(Fragment fragment) {
+		super(fragment.getActivity(), android.R.style.Theme_Light_NoTitleBar_Fullscreen);
 		
-		parent = (RecordMainActivity) context;
+		this.fragment = fragment;
 	}
 
 	@Override
@@ -31,9 +31,10 @@ public class HeadsetDialog extends BaseDiaglog {
 			
 			@Override
 			public void onClick(View v) {
-				HeadsetDialog.this.dismiss();
-				
-				parent.startRecording(false);
+				if (fragment instanceof KaraokeFragment) {
+					HeadsetDialog.this.dismiss();
+					((KaraokeFragment) fragment).startRecordingWithoutHeadset();
+				}
 			}
 		});
 	}

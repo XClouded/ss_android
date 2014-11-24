@@ -2,6 +2,7 @@ package com.myandb.singsong.net;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -17,29 +18,26 @@ public class DownloadManager extends AsyncTask<File, Integer, Exception> {
 	private String url;
 	private OnCompleteListener completeListener;
 	private OnProgressListener progressListener;
-	private boolean isStop = false;
+	private InputStream inputStream;
+	private OutputStream outputStream;
+	private HttpURLConnection connection;
+	private boolean interrupt = false;
 	
 	@Override
 	protected Exception doInBackground(File... params) {
 		final int bufferSize = 16384;
 			
-		HttpURLConnection conn = null;
 		try {
-			conn = (HttpURLConnection) new URL(url).openConnection();
-			InputStream inputStream = null;
-			OutputStream outputStream = null;
+			connection = (HttpURLConnection) new URL(url).openConnection();
 			int dataTotalBytes = 0;
 			
-			conn.connect();
-			inputStream = conn.getInputStream();
+			connection.connect();
+			inputStream = connection.getInputStream();
 			outputStream = new FileOutputStream(params[0]);
 			
-			dataTotalBytes = conn.getContentLength();
+			dataTotalBytes = connection.getContentLength();
 			
 			if (dataTotalBytes < 0) {
-				inputStream.close();
-				outputStream.close();
-				
 				throw new Exception("invalid content length");
 			}
 			
@@ -50,7 +48,7 @@ public class DownloadManager extends AsyncTask<File, Integer, Exception> {
 			int prePercent = 0;
 			int currentPercent = 0;
 			
-			while ((read = inputStream.read(buffer)) > 0 && !isStop) {
+			while ((read = inputStream.read(buffer)) > 0 && !interrupt) {
 				outputStream.write(buffer, 0, read);
 				
 				totalBytesRead += read;
@@ -60,20 +58,13 @@ public class DownloadManager extends AsyncTask<File, Integer, Exception> {
 					publishProgress(Integer.valueOf(currentPercent));
 				}
 			}
+
+			connection.disconnect();
 			
-			inputStream.close();
-			outputStream.flush();
-			outputStream.close();
-			outputStream = null;
+			return null;
 		} catch (Exception e) {
 			return e;
-		} finally {
-			if (conn != null) {
-				conn.disconnect();
-			}
 		}
-		
-		return null;
 	}
 	
 	@Override
@@ -86,11 +77,38 @@ public class DownloadManager extends AsyncTask<File, Integer, Exception> {
 	}
 	
 	@Override
+	protected void onCancelled() {
+		super.onCancelled();
+		releaseResources();
+	}
+
+	@Override
 	protected void onPostExecute(Exception result) {
 		super.onPostExecute(result);
+		releaseResources();
 		
 		if (completeListener != null) {
 			completeListener.done(result);
+		}
+	}
+	
+	private void releaseResources() {
+		if (inputStream != null) {
+			try {
+				inputStream.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			inputStream = null;
+		}
+		
+		if (outputStream != null) {
+			try {
+				outputStream.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			outputStream = null;
 		}
 	}
 	
@@ -107,7 +125,7 @@ public class DownloadManager extends AsyncTask<File, Integer, Exception> {
 	}
 	
 	public void stop() {
-		isStop = true;
+		interrupt = true;
 		this.cancel(true);
 	}
 

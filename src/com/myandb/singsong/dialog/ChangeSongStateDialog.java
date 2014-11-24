@@ -20,7 +20,7 @@ import com.myandb.singsong.model.Song;
 import com.myandb.singsong.net.OAuthJsonObjectRequest;
 import com.myandb.singsong.net.UrlBuilder;
 
-public class ChangeSongStateDialog extends BaseDiaglog {
+public class ChangeSongStateDialog extends BaseDialog {
 	
 	private Song song;
 	private ImageView ivCancel;
@@ -30,7 +30,7 @@ public class ChangeSongStateDialog extends BaseDiaglog {
 	private boolean isDeleted;
 
 	public ChangeSongStateDialog(Context context, MySongAdapter adapter, boolean isDeleted) {
-		super(context, android.R.style.Theme_Translucent_NoTitleBar);
+		super(context, android.R.style.Theme_Light_NoTitleBar_Fullscreen);
 		
 		if (context instanceof OldBaseActivity) {
 			parent = (OldBaseActivity) context;

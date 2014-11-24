@@ -14,7 +14,7 @@ public final class Track {
 	private int duration;
 	private int channels;
 	private int frameDifference;
-	private long totalOffset;
+	private int totalOffset;
 	private byte[] data;
 	private short[] pcm;
 	private float volume;
@@ -37,14 +37,14 @@ public final class Track {
 	
 	public void addOffsetFrame(int offset) {
 		totalOffset = Math.max(totalOffset + offset, 0);
-		moveFrameTo(offset);
+		moveFrameTo(-offset);
 	}
 	
 	public void moveFrameTo(int frame) {
 		frameDifference += frame;
 	}
 	
-	public long getOffsetSize() {
+	public int getOffsetSize() {
 		return totalOffset;
 	}
 	
@@ -82,6 +82,7 @@ public final class Track {
 		}
 		
 		stream = new FileInputStream(source);
+		frameDifference = -totalOffset;
 	}
 	
 	public int read(short[] finalPcm) throws IOException {
@@ -93,35 +94,40 @@ public final class Track {
 		
 		synchronizePosition();
 		
-		int read = stream.read(data);
-		if (read != -1) {
+		int byteRead = stream.read(data);
+		if (byteRead != -1) {
+			int shortRead = byteRead / 2;
 			convertByteToShortArray(data, pcm);
 			
-			int convertedFrame = frameDifference * channels;
-			int writableLength = read / 2 - convertedFrame;
-			for (int i = 0; i < writableLength; i++) {
-				if (channels == 1) {
-					int j = 2 * (i + convertedFrame);
+			int skipFrame = Math.abs(frameDifference * channels);
+			int writableLength = shortRead - skipFrame;
+			if (channels == 1) {
+				for (int i = 0; i < writableLength; i++) {
+					int j = 2 * (i + skipFrame);
 					finalPcm[j] += pcm[i] * volume;
 					finalPcm[j + 1] += pcm[i] * volume;
-				} else if (channels == 2) {
-					int j = i + convertedFrame;
+				}
+				return writableLength * 2;
+			} else if (channels == 2) {
+				for (int i = 0; i < writableLength; i++) {
+					int j = i + skipFrame;
 					finalPcm[j] += pcm[i] * volume;
 				}
+				return writableLength;
 			}
 		}
 		
-		return read;
+		return byteRead;
 	}
 	
 	private synchronized void synchronizePosition() {
-		if (frameDifference != 0) {
+		if (Math.abs(frameDifference) > 0) {
 			try {
 				long position = stream.getChannel().position();
-				position -= (frameDifference * channels * 2);
+				position += frameDifference * channels * 2;
 				
 				if (position < 0) {
-					frameDifference = (int) (-position / (2 * channels));
+					frameDifference = (int) (position / (2 * channels));
 					position = 0;
 				} else {
 					frameDifference = 0;
@@ -138,16 +144,14 @@ public final class Track {
 		ByteBuffer.wrap(data).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer().get(target);
 	}
 	
-	public void release() throws IllegalStateException, IOException {
+	public void release() throws IOException {
 		pcm = null;
 		data = null;
 		
-		if (stream == null) {
-			throw new IllegalStateException();
+		if (stream != null) {
+			stream.close();
+			stream = null;
 		}
-		
-		stream.close();
-		stream = null;
 	}
 	
 }

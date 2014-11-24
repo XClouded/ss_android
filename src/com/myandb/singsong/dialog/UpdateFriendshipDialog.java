@@ -17,7 +17,7 @@ import com.myandb.singsong.model.Friendship;
 import com.myandb.singsong.net.OAuthJustRequest;
 import com.myandb.singsong.net.UrlBuilder;
 
-public class UpdateFriendshipDialog extends BaseDiaglog {
+public class UpdateFriendshipDialog extends BaseDialog {
 	
 	private ProfileRootFragment parent;
 	private ImageView ivCancel;

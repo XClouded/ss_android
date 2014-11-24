@@ -56,7 +56,7 @@ public class RecordMainActivity extends OldBaseActivity {
 	
 	public static final String INTENT_MUSIC = "_music_";
 	public static final String INTENT_PARENT_SONG = "_parent_song_";
-	public static final String INTENT_RESULT_UPLOAD = "_upload_";
+	public static final String EXTRA_UPLOAD_SONG = "_upload_";
 	public static final int R_CODE_SETTING = 200;
 	
 	private static boolean isRunning = false;
@@ -107,7 +107,7 @@ public class RecordMainActivity extends OldBaseActivity {
 		super.onCreate(savedInstanceState);
 		
 		isRunning = true;
-		setContentView(R.layout.activity_record_main);
+		setContentView(R.layout.fragment_karaoke);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		
 		if (!SongUploadService.isServiceRunning()) {
@@ -190,9 +190,9 @@ public class RecordMainActivity extends OldBaseActivity {
 		vInfoWrapper = findViewById(R.id.rl_info_wrapper);
 		vUserWrapper = findViewById(R.id.ll_user_wrapper);
 		
-		headsetDialog = new HeadsetDialog(this);
-		loadingDialog = new LoadingDialog(this);
-		selectorDialog = new SelectorDialog(this, music.getMalePart(), music.getFemalePart());
+//		headsetDialog = new HeadsetDialog(this);
+//		loadingDialog = new LoadingDialog(this);
+//		selectorDialog = new SelectorDialog(this, music.getMalePart(), music.getFemalePart());
 	}
 	
 	private void setupView() {
@@ -538,20 +538,20 @@ public class RecordMainActivity extends OldBaseActivity {
 		switch (requestCode) {
 		case R_CODE_SETTING:
 			if (resultCode == Activity.RESULT_OK) {
-				boolean doUpload = data.getBooleanExtra(INTENT_RESULT_UPLOAD, false);
+				boolean doUpload = data.getBooleanExtra(EXTRA_UPLOAD_SONG, false);
 				
 				if (doUpload) {
-					float syncAmount = data.getFloatExtra(SongUploadService.INTENT_SYNC_AMOUNT, 0);
-					int imageId = data.getIntExtra(SongUploadService.INTENT_IMAGE_ID, -1);
+					float syncAmount = data.getFloatExtra(SongUploadService.EXTRA_SYNC_AMOUNT, 0);
+					int imageId = data.getIntExtra(SongUploadService.EXTRA_IMAGE_ADDED, -1);
 					String message = data.getStringExtra(SongUploadService.INTENT_MESSAGE);
 					
 					Intent intent = new Intent("com.myandb.singsong.service.SongUploadService");
 					intent.putExtra(SongUploadService.INTENT_HEADSET_PLUGGED, recorder.isHeadsetPlugged());
-					intent.putExtra(SongUploadService.INTENT_SYNC_AMOUNT, syncAmount);
+					intent.putExtra(SongUploadService.EXTRA_SYNC_AMOUNT, syncAmount);
 					intent.putExtra(SongUploadService.INTENT_CREATOR_ID, currentUser.getId());
 					intent.putExtra(SongUploadService.INTENT_MUSIC_ID, music.getId());
 					intent.putExtra(SongUploadService.INTENT_LYRIC_PART, lyricPart);
-					intent.putExtra(SongUploadService.INTENT_IMAGE_ID, imageId);
+					intent.putExtra(SongUploadService.EXTRA_IMAGE_ADDED, imageId);
 					intent.putExtra(SongUploadService.INTENT_MESSAGE, message);
 					
 					if (!solo) {
@@ -665,7 +665,7 @@ public class RecordMainActivity extends OldBaseActivity {
 		
 		currentUser = Authenticator.getUser();
 		if (receiver == null) {
-			receiver = new HeadsetReceiver(this);
+//			receiver = new HeadsetReceiver(this);
 		}
 		
 		IntentFilter filter = new IntentFilter(Intent.ACTION_HEADSET_PLUG);

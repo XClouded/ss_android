@@ -14,7 +14,7 @@ import com.myandb.singsong.activity.PlayerActivity;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.User;
 
-public class KakaotalkDialog extends BaseDiaglog {
+public class KakaotalkDialog extends BaseDialog {
 	
 	private String baseMessage;
 	private ImageView ivCancel;

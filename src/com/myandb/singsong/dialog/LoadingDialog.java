@@ -1,8 +1,8 @@
 package com.myandb.singsong.dialog;
 
-import android.content.Context;
 import android.content.res.Resources.NotFoundException;
 import android.graphics.Color;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.myandb.singsong.R;
 
-public class LoadingDialog extends BaseDiaglog {
+public class LoadingDialog extends BaseDialog {
 	
 	private ProgressBar pbLoading;
 	private TextView tvProgressTitle;
@@ -21,12 +21,12 @@ public class LoadingDialog extends BaseDiaglog {
 	private int enabledFontColor;
 	private int disabledFontColor;
 	
-	public LoadingDialog(Context context) {
-		super(context, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+	public LoadingDialog(Fragment fragment) {
+		super(fragment.getActivity(), android.R.style.Theme_Light_NoTitleBar_Fullscreen);
 		
 		try {
-			enabledFontColor = context.getResources().getColor(R.color.font_default);
-			disabledFontColor = context.getResources().getColor(R.color.font_grey);
+			enabledFontColor = getContext().getResources().getColor(R.color.font_default);
+			disabledFontColor = getContext().getResources().getColor(R.color.font_grey);
 		} catch (NotFoundException e) {
 			e.printStackTrace();
 			

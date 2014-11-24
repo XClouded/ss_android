@@ -1,27 +1,26 @@
 package com.myandb.singsong.dialog;
 
 import com.myandb.singsong.R;
-import com.myandb.singsong.activity.RecordSettingActivity;
 import com.myandb.singsong.adapter.ImageAdapter;
+import com.myandb.singsong.fragment.RecordSettingFragment;
 import com.myandb.singsong.model.Image;
 import com.myandb.singsong.net.UrlBuilder;
 
-import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-public class ImageSelectDialog extends BaseDiaglog {
+public class ImageSelectDialog extends BaseDialog {
 	
 	private ImageView ivCancel;
 	private ListView listView;
-	private RecordSettingActivity parent;
+	private RecordSettingFragment fragment;
 	private ImageAdapter adapter;
 
-	public ImageSelectDialog(Context context) {
-		super(context, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+	public ImageSelectDialog(RecordSettingFragment fragment) {
+		super(fragment.getActivity(), android.R.style.Theme_Light_NoTitleBar_Fullscreen);
 		
-		parent = (RecordSettingActivity) context;
+		this.fragment = fragment;
 		adapter = new ImageAdapter(this);
 	}
 
@@ -47,7 +46,7 @@ public class ImageSelectDialog extends BaseDiaglog {
 	}
 	
 	public void selectImage(Image image) {
-		parent.setImage(image);
+		fragment.setImage(image);
 		
 		dismiss();
 	}

@@ -221,16 +221,8 @@ public class Recorder extends AudioRecord {
     	return recording;
     }
 	
-	public static boolean isValidRecordingTime(File file) {
-    	if (file != null && file.exists()) {
-    		return file.length() >= getBytesLengthInSecOnRecord() * 30;
-    	}
-    	
-    	return false;
-	}
-	
-	private static int getBytesLengthInSecOnRecord() {
-		return PcmPlayer.SAMPLERATE * 2;
+	public static boolean isValidRecordingTime(int millis) {
+		return millis > 30 * 1000;
 	}
 	
 }

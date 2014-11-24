@@ -8,7 +8,7 @@ import com.myandb.singsong.R;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Notice;
 
-public class FrontNoticeDialog extends BaseDiaglog {
+public class FrontNoticeDialog extends BaseDialog {
 	
 	private ImageView ivFrontImage;
 	private View btnClose;
