@@ -111,6 +111,7 @@ public class DrawerFragment extends BaseFragment {
 				public void onClick(View v) {
 					Intent intent = new Intent(getActivity(), UpActivity.class);
 					intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, LoginFragment.class.getName());
+					intent.putExtra(UpActivity.EXTRA_FULL_SCREEN, true);
 					if (getActivity() instanceof BaseActivity) {
 						((BaseActivity) getActivity()).changePage(intent);
 					}

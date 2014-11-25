@@ -12,8 +12,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
-import com.myandb.singsong.activity.OldBaseActivity;
-import com.myandb.singsong.activity.MainActivity;
+import com.myandb.singsong.activity.BaseActivity;
+import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.event.OnVolleyWeakError;
 import com.myandb.singsong.event.OnVolleyWeakResponse;
 import com.myandb.singsong.model.User;
@@ -22,20 +22,20 @@ import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.secure.Encryption;
 import com.myandb.singsong.util.Utility;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.Html;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.Patterns;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -43,7 +43,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class JoinFragment extends Fragment {
+public class JoinFragment extends BaseFragment {
 	
 	private EditText etUsername;
 	private EditText etPassword;
@@ -55,42 +55,23 @@ public class JoinFragment extends Fragment {
 	private TextView tvValidRePassword;
 	private TextView tvAgreementPolicy;
 	private Handler handler;
-	private RequestQueue requestQueue;
 	private int colorWhite;
 	private int colorGrey;
 	private int colorPrimary;
 	private String lastInputUsername;
 	
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		
-		if (Authenticator.isLoggedIn()) {
-			getActivity().finish();
-			
-			// Report to server
-			// Logged in user can not access this page
-		} else {
-			requestQueue = ((App) getActivity().getApplicationContext()).getQueueInstance();
-			handler = new Handler();
-			
-			colorWhite = getResources().getColor(R.color.white);
-			colorGrey = getResources().getColor(R.color.font_grey);
-			colorPrimary = getResources().getColor(R.color.primary);
-		}
+	protected int getResourceId() {
+		return R.layout.fragment_join;
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.fragment_join, container, false);
+	protected void onArgumentsReceived(Bundle bundle) {
+		// No argument
 	}
 
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		
-		View view = getView();
-		
+	protected void onViewInflated(View view, LayoutInflater inflater) {
 		etUsername = (EditText) view.findViewById(R.id.et_user_username);
 		etPassword = (EditText) view.findViewById(R.id.et_user_password);
 		etRePassword = (EditText) view.findViewById(R.id.et_user_password_re);
@@ -100,7 +81,26 @@ public class JoinFragment extends Fragment {
 		tvValidPassword = (TextView) view.findViewById(R.id.tv_valid_password);
 		tvValidRePassword = (TextView) view.findViewById(R.id.tv_valid_password_re);
 		tvAgreementPolicy = (TextView) view.findViewById(R.id.tv_agreement_policy);
+	}
+
+	@Override
+	protected void initialize(Activity activity) {
+		if (Authenticator.isLoggedIn()) {
+			// Report to server
+			// Logged in user can not access this page
+			getActivity().finish();
+			return;
+		}
 		
+		handler = new Handler();
+		
+		colorWhite = getResources().getColor(R.color.white);
+		colorGrey = getResources().getColor(R.color.font_grey);
+		colorPrimary = getResources().getColor(R.color.primary);
+	}
+
+	@Override
+	protected void setupViews() {
 		etUsername.setTag(false);
 		etPassword.setTag(false);
 		etRePassword.setTag(false);
@@ -110,20 +110,14 @@ public class JoinFragment extends Fragment {
 		etRePassword.addTextChangedListener(rePasswordChangedListener);
 		
 		btnComplete.setEnabled(false);
-		btnComplete.setOnClickListener(signupClickListener);
-		btnToLogin.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				OldBaseActivity parent = (OldBaseActivity) getActivity();
-				
-				if (parent != null) {
-					parent.replaceFragment(new LoginFragment());				
-				}
-			}
-			
-		});
+		btnComplete.setOnClickListener(joinClickListener);
+		btnToLogin.setOnClickListener(toLoginClickListener);
 		
+		tvAgreementPolicy.setMovementMethod(LinkMovementMethod.getInstance());
+		tvAgreementPolicy.setText(getPolicyHtml());
+	}
+	
+	private Spanned getPolicyHtml() {
 		UrlBuilder urlBuilder = new UrlBuilder();
 		String policyHtml = "가입하신 이메일로 인증 번호가 전송됩니다. 인증을 하셔야 많은 기능들이 이용가능하니 꼭 본인의 이메일을 입력해주세요 :) <br/>";
 		policyHtml += "daum.net 또는 hanmail.net 계정은 이메일이 전송되지 않을 수 있습니다. <br/><br/>";
@@ -132,9 +126,24 @@ public class JoinFragment extends Fragment {
 		policyHtml += "과 ";
 		policyHtml += Utility.getHtmlAnchor(urlBuilder.s("w").s("privacy").toString(), "개인정보 보호정책");
 		policyHtml += "에 동의하는 것으로 간주합니다.";
+		return Html.fromHtml(policyHtml);
+	}
+	
+	private OnClickListener toLoginClickListener = new OnClickListener() {
 		
-		tvAgreementPolicy.setMovementMethod(LinkMovementMethod.getInstance());
-		tvAgreementPolicy.setText(Html.fromHtml(policyHtml));
+		@Override
+		public void onClick(View v) {
+			Intent intent = new Intent();
+			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, LoginFragment.class.getName());
+			if (getActivity() instanceof BaseActivity) {
+				((BaseActivity) getActivity()).onPageChanged(intent);
+			}
+		}
+	};
+
+	@Override
+	protected void onDataChanged() {
+		// Nothing to implement
 	}
 	
 	@Override
@@ -191,15 +200,16 @@ public class JoinFragment extends Fragment {
 					new OnVolleyWeakError<JoinFragment>(JoinFragment.this, "onUsernameNotFound")
 			);
 			
-			if (requestQueue != null) {
-				requestQueue.add(request);
-			}
+			RequestQueue queue = ((App) getActivity().getApplicationContext()).getQueueInstance();
+			queue.add(request);
 		}
 		
 	}
 	
 	public void onUsernameFound(JSONObject response) {
-		Toast toast = Toast.makeText(getActivity(), lastInputUsername + getString(R.string.t_email_already_exist), Toast.LENGTH_SHORT);
+		String message = lastInputUsername;
+		message += getString(R.string.t_email_already_exist);
+		Toast toast = Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT);
 		toast.setGravity(Gravity.TOP, 0, 100);
 		toast.show();
 		
@@ -299,12 +309,10 @@ public class JoinFragment extends Fragment {
 		btnComplete.setEnabled(false);
 	}
 	
-	private OnClickListener signupClickListener = new OnClickListener() {
+	private OnClickListener joinClickListener = new OnClickListener() {
 		
 		@Override
 		public void onClick(View v) {
-			OldBaseActivity parent = (OldBaseActivity) getActivity();
-			
 			try {
 				UrlBuilder urlBuilder = new UrlBuilder();
 				JSONObject message = new JSONObject();
@@ -323,11 +331,10 @@ public class JoinFragment extends Fragment {
 						new OnVolleyWeakError<JoinFragment>(JoinFragment.this, "onJoinError")
 				);
 				
-				if (requestQueue != null) {
-					requestQueue.add(request);
-					
-					parent.showProgressDialog();
-				}
+				RequestQueue queue = ((App) getActivity().getApplicationContext()).getQueueInstance();
+				queue.add(request);
+				
+				// show progress dialog
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -335,6 +342,8 @@ public class JoinFragment extends Fragment {
 	};
 	
 	public void onJoinComplete(JSONObject response) {
+		// dismiss progress dialog
+		
 		try {
 			Gson gson = Utility.getGsonInstance();
 			User user = gson.fromJson(response.getJSONObject("user").toString(), User.class);
@@ -343,9 +352,7 @@ public class JoinFragment extends Fragment {
 			Authenticator auth = new Authenticator();
 			auth.login(user, token);
 			
-			((OldBaseActivity) getActivity()).dismissProgressDialog();
-			
-			Intent intent = new Intent(getActivity(), MainActivity.class);
+			Intent intent = new Intent(getActivity(), RootActivity.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			getActivity().startActivity(intent);
 			getActivity().finish();
@@ -357,7 +364,7 @@ public class JoinFragment extends Fragment {
 	}
 	
 	public void onJoinError() {
-		((OldBaseActivity) getActivity()).dismissProgressDialog();
+		// dismiss progress dialog
 		
 		etUsername.setText("");
 		etPassword.setText("");
