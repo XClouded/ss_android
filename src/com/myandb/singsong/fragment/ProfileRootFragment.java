@@ -29,8 +29,6 @@ import com.android.volley.RequestQueue;
 import com.google.gson.Gson;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
-import com.myandb.singsong.activity.MainActivity;
-import com.myandb.singsong.activity.PhotoSlideActivity;
 import com.myandb.singsong.activity.ProfileEditActivity;
 import com.myandb.singsong.activity.SimpleListActivity;
 import com.myandb.singsong.activity.SimpleListActivity.SimpleListType;
@@ -466,9 +464,9 @@ public class ProfileRootFragment extends Fragment {
 		
 		@Override
 		public void onClick(View v) {
-			Intent intent = new Intent(getActivity(), PhotoSlideActivity.class);
-			intent.putExtra(PhotoSlideActivity.INTENT_PHOTO_URL, thisUser.getPhotoUrl());
-			startActivity(intent);
+//			Intent intent = new Intent(getActivity(), PhotoSlideActivity.class);
+//			intent.putExtra(PhotoSlideActivity.INTENT_PHOTO_URL, thisUser.getPhotoUrl());
+//			startActivity(intent);
 		}
 	};
 	
@@ -483,7 +481,7 @@ public class ProfileRootFragment extends Fragment {
 					boolean hasPhotoChanged = data.getBooleanExtra(INTENT_IS_EDIT_PHOTO, false);
 					String nickname = data.getStringExtra(INTENT_NICKNAME);
 					String profileInJson = data.getStringExtra(INTENT_PROFILE);
-					MainActivity home = (MainActivity) getActivity();
+//					MainActivity home = (MainActivity) getActivity();
 					currentUser = Authenticator.getUser();
 					
 					if (hasPhotoChanged) {
@@ -500,9 +498,9 @@ public class ProfileRootFragment extends Fragment {
 						
 						tvNickname.setText(nickname);
 						
-						if (home != null) {
-							home.updateNickname(nickname);
-						}
+//						if (home != null) {
+//							home.updateNickname(nickname);
+//						}
 						
 						requestUpdateNickname(nickname);
 					}

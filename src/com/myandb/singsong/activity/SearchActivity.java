@@ -2,6 +2,7 @@ package com.myandb.singsong.activity;
 
 import java.io.Serializable;
 
+import android.app.Activity;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
@@ -20,7 +21,7 @@ import com.myandb.singsong.adapter.MusicAdapter;
 import com.myandb.singsong.adapter.SimpleSongAdapter;
 import com.myandb.singsong.net.UrlBuilder;
 
-public class SearchActivity extends OldBaseActivity {
+public class SearchActivity extends Activity {
 	
 	public enum SearchType {
 		USER, SONG_ROOT, SONG_LEAF, MUSIC
@@ -82,7 +83,7 @@ public class SearchActivity extends OldBaseActivity {
 					if (keyword.isEmpty()) {
 						Toast.makeText(SearchActivity.this, getString(R.string.t_keyword_empty), Toast.LENGTH_SHORT).show();
 					} else {
-						SearchActivity.this.closeEditText(etSearch, false);
+//						SearchActivity.this.closeEditText(etSearch, false);
 						
 						urlBuilder = getUrlBuilder(type);
 						urlBuilder.keyword(keyword).p("order", "created_at");
@@ -157,21 +158,6 @@ public class SearchActivity extends OldBaseActivity {
 		default:
 			return null;
 		}
-	}
-
-	@Override
-	protected int getChildLayoutResourceId() {
-		return R.layout.activity_search;
-	}
-
-	@Override
-	protected boolean isRootActivity() {
-		return false;
-	}
-
-	@Override
-	protected boolean enablePlayingThumb() {
-		return false;
 	}
 
 }

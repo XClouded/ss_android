@@ -2,6 +2,7 @@ package com.myandb.singsong.dialog;
 
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 import android.widget.Button;
@@ -12,7 +13,6 @@ import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
-import com.myandb.singsong.activity.OldBaseActivity;
 import com.myandb.singsong.adapter.MySongAdapter;
 import com.myandb.singsong.event.OnVolleyWeakError;
 import com.myandb.singsong.event.OnVolleyWeakResponse;
@@ -25,16 +25,11 @@ public class ChangeSongStateDialog extends BaseDialog {
 	private Song song;
 	private ImageView ivCancel;
 	private Button btnChangeState;
-	private OldBaseActivity parent;
 	private MySongAdapter adapter;
 	private boolean isDeleted;
 
 	public ChangeSongStateDialog(Context context, MySongAdapter adapter, boolean isDeleted) {
 		super(context, android.R.style.Theme_Light_NoTitleBar_Fullscreen);
-		
-		if (context instanceof OldBaseActivity) {
-			parent = (OldBaseActivity) context;
-		}
 		
 		this.isDeleted = isDeleted;
 		this.adapter = adapter;
@@ -88,7 +83,7 @@ public class ChangeSongStateDialog extends BaseDialog {
 							new OnVolleyWeakError<ChangeSongStateDialog>(ChangeSongStateDialog.this, "onChangeStateError")
 					);
 					
-					RequestQueue queue = ((App) parent.getApplicationContext()).getQueueInstance();
+					RequestQueue queue = ((App) getContext().getApplicationContext()).getQueueInstance();
 					queue.add(request);
 				}
 			}

@@ -73,7 +73,7 @@ public class WriteCommentDialog extends BaseDialog {
 	public void dismiss() {
 		super.dismiss();
 		
-		parent.closeEditText(etComment);
+//		parent.closeEditText(etComment);
 	}
 
 	private View.OnClickListener submitClickListener = new View.OnClickListener() {
@@ -85,7 +85,7 @@ public class WriteCommentDialog extends BaseDialog {
 			String content = etComment.getText().toString();
 			
 			if (content.trim().length() > 0) {
-				parent.showProgressDialog();
+//				parent.showProgressDialog();
 				
 				JSONObject message = new JSONObject();
 				try {
@@ -115,13 +115,13 @@ public class WriteCommentDialog extends BaseDialog {
 	
 	public void onSubmitSuccess(Comment<?> comment) {
 		parent.insertComment(comment);
-		parent.dismissProgressDialog();
+//		parent.dismissProgressDialog();
 		
 		btnSubmit.setEnabled(true);
 	}
 	
 	public void onSubmitError() {
-		parent.dismissProgressDialog();
+//		parent.dismissProgressDialog();
 		
 		btnSubmit.setEnabled(true);
 	}

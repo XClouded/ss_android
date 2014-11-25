@@ -30,6 +30,7 @@ import com.myandb.singsong.service.PlayerService;
 import com.myandb.singsong.util.StringFormatter;
 import com.myandb.singsong.util.Utility;
 
+import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -47,7 +48,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class PlayerActivity extends OldBaseActivity {
+public class PlayerActivity extends Activity {
 	
 	public String bitlyUrl;
 	
@@ -141,6 +142,7 @@ public class PlayerActivity extends OldBaseActivity {
 		sbPlay = (SeekBar) findViewById(R.id.sb_play);
 	}
 
+	/*
 	@Override
 	public void onPlayerConnected(PlayerService service) {
 		playerService = service;
@@ -178,6 +180,7 @@ public class PlayerActivity extends OldBaseActivity {
 			finish();
 		}
 	}
+	*/
 	
 	private void getBitlyShortUrl() {
 		final String apiUrl = "https://api-ssl.bitly.com/v3/shorten?"; 
@@ -673,14 +676,16 @@ public class PlayerActivity extends OldBaseActivity {
 
 	@Override
 	protected void onPause() {
+		/*
 		if (playerService != null) {
 			if (dismissProgressDialog()) {
-//				playerService.setSong(null);
-//				playerService.stopPlaying(false);
+				playerService.setSong(null);
+				playerService.stopPlaying(false);
 			} else {
-//				playerService.setSong(playerService.getSong());
+				playerService.setSong(playerService.getSong());
 			}
 		}
+		*/
 		
 		handler.removeCallbacksAndMessages(null);
 		
@@ -704,21 +709,6 @@ public class PlayerActivity extends OldBaseActivity {
 		if (commentAdapter != null) {
 //			commentAdapter.onDestroy();
 		}
-	}
-
-	@Override
-	protected int getChildLayoutResourceId() {
-		return R.layout.activity_play_song_wrapper;
-	}
-
-	@Override
-	protected boolean isRootActivity() {
-		return false;
-	}
-
-	@Override
-	protected boolean enablePlayingThumb() {
-		return false;
 	}
 	
 }

@@ -17,6 +17,7 @@ import com.myandb.singsong.net.OAuthJustRequest;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
@@ -28,7 +29,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
-public class SettingActivity extends OldBaseActivity implements OnClickListener {
+public class SettingActivity extends Activity implements OnClickListener {
 	
 	private WithdrawDialog dialog;
 	
@@ -150,9 +151,11 @@ public class SettingActivity extends OldBaseActivity implements OnClickListener 
 				unregisterGCM();
 			}
 			
+			/*
 			if (getService() != null) {
-//				getService().stopPlaying(false);
+				getService().stopPlaying(false);
 			}
+			*/
 			
 //			File photo = FileManager.get(FileManager.USER_PHOTO);
 //			if (photo.exists()) {
@@ -204,20 +207,5 @@ public class SettingActivity extends OldBaseActivity implements OnClickListener 
 		if (dialog != null) {
 			dialog.dismiss();
 		}
-	}
-
-	@Override
-	protected int getChildLayoutResourceId() {
-		return R.layout.activity_setting;
-	}
-
-	@Override
-	protected boolean isRootActivity() {
-		return false;
-	}
-
-	@Override
-	protected boolean enablePlayingThumb() {
-		return false;
 	}
 }

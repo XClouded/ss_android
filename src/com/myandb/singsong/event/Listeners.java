@@ -19,9 +19,7 @@ import com.google.gson.Gson;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.ChildSongActivity;
-import com.myandb.singsong.activity.OldBaseActivity;
 import com.myandb.singsong.activity.PlayerActivity;
-import com.myandb.singsong.activity.ProfileRootActivity;
 import com.myandb.singsong.model.Activity;
 import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Notification;
@@ -98,8 +96,8 @@ public class Listeners {
 			
 			switch(sourceType) {
 			case Activity.TYPE_CREATE_FRIENDSHIP:
-				intent.setClass(context, ProfileRootActivity.class);
-				intent.putExtra(ProfileRootActivity.INTENT_USER, response.toString());
+//				intent.setClass(context, ProfileRootActivity.class);
+//				intent.putExtra(ProfileRootActivity.INTENT_USER, response.toString());
 				break;
 				
 			case Activity.TYPE_CREATE_COMMENT:
@@ -108,8 +106,8 @@ public class Listeners {
 			case Activity.TYPE_CREATE_LEAF_SONG:
 				Gson gson = Utility.getGsonInstance();
 				Song song = gson.fromJson(response.toString(), Song.class);
-				OldBaseActivity activity = (OldBaseActivity) context;
-				PlayerService service = activity.getService();
+//				OldBaseActivity activity = (OldBaseActivity) context;
+				PlayerService service = null;/*activity.getService();*/
 				
 				if (service != null) {
 					intent.setClass(context, PlayerActivity.class);
@@ -187,9 +185,9 @@ public class Listeners {
 						Gson gson = Utility.getGsonInstance();
 						String userInJson = gson.toJson(user, User.class);
 						
-						Intent intent = new Intent(context, ProfileRootActivity.class);
-						intent.putExtra(ProfileRootActivity.INTENT_USER, userInJson);
-						context.startActivity(intent);
+//						Intent intent = new Intent(context, ProfileRootActivity.class);
+//						intent.putExtra(ProfileRootActivity.INTENT_USER, userInJson);
+//						context.startActivity(intent);
 					}
 				}
 			}
@@ -201,8 +199,8 @@ public class Listeners {
 			
 			@Override
 			public void onClick(View v) {
-				OldBaseActivity activity = (OldBaseActivity) context;
-				PlayerService service = activity.getService();
+//				OldBaseActivity activity = (OldBaseActivity) context;
+				PlayerService service = null;/*activity.getService();*/
 				
 				if (service != null) {
 //					service.setSong(song);

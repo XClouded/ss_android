@@ -1,5 +1,6 @@
 package com.myandb.singsong.activity;
 
+import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Spannable;
@@ -19,7 +20,7 @@ import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.util.Utility;
 
-public class ChildSongActivity extends OldBaseActivity {
+public class ChildSongActivity extends Activity {
 	
 	public static final String INTENT_PARENT_SONG = "_parent_song_";
 	
@@ -70,21 +71,6 @@ public class ChildSongActivity extends OldBaseActivity {
 		} else {
 			finish();
 		}
-	}
-
-	@Override
-	protected int getChildLayoutResourceId() {
-		return R.layout.activity_child_song;
-	}
-
-	@Override
-	protected boolean isRootActivity() {
-		return false;
-	}
-
-	@Override
-	protected boolean enablePlayingThumb() {
-		return true;
 	}
 	
 }

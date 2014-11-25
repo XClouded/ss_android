@@ -44,7 +44,7 @@ import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.secure.Encryption;
 import com.myandb.singsong.util.Utility;
 
-public class ProfileEditActivity extends OldBaseActivity {
+public class ProfileEditActivity extends Activity {
 	
 	public static final int R_CODE_PHOTO_PICKER = 100;
 	
@@ -354,7 +354,7 @@ public class ProfileEditActivity extends OldBaseActivity {
 							RequestQueue queue = ((App) getApplicationContext()).getQueueInstance();
 							queue.add(request);
 							
-							ProfileEditActivity.this.showProgressDialog();
+//							ProfileEditActivity.this.showProgressDialog();
 						} catch (JSONException e) {
 							// unhandled json exception
 						}
@@ -383,14 +383,14 @@ public class ProfileEditActivity extends OldBaseActivity {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		} finally {
-			dismissProgressDialog();
+//			dismissProgressDialog();
 		}
 	}
 	
 	public void onChangePasswordError() {
 		Toast.makeText(ProfileEditActivity.this, getString(R.string.t_wrong_password), Toast.LENGTH_SHORT).show();
 		
-		dismissProgressDialog();
+//		dismissProgressDialog();
 	}
 	
 	@Override
@@ -416,21 +416,6 @@ public class ProfileEditActivity extends OldBaseActivity {
 			
 			break;
 		}
-	}
-
-	@Override
-	protected int getChildLayoutResourceId() {
-		return R.layout.activity_edit_profile;
-	}
-
-	@Override
-	protected boolean isRootActivity() {
-		return false;
-	}
-
-	@Override
-	protected boolean enablePlayingThumb() {
-		return false;
 	}
 
 }
