@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.facebook.Request;
 import com.facebook.Request.GraphUserCallback;
 import com.facebook.Response;
 import com.facebook.Session.Builder;
@@ -100,11 +101,6 @@ public class LoginFragment extends BaseFragment {
 		colorGrey = getResources().getColor(R.color.font_grey);
 		
 		permissions = Arrays.asList("email");
-		Session session = Session.getActiveSession();
-		if (session == null) {
-			session = new Session(getActivity());
-			Session.setActiveSession(session);
-		}
 	}
 
 	@Override
@@ -216,23 +212,11 @@ public class LoginFragment extends BaseFragment {
 			openRequest.setCallback(statusCallback);
 			openRequest.setLoginBehavior(SessionLoginBehavior.SSO_WITH_FALLBACK);
 			
-			Session session = new Builder(getActivity()).build();
+			Session session = new Builder(getActivity().getApplicationContext()).build();
 			Session.setActiveSession(session);
 			session.openForRead(openRequest);
 		}
 		
-	};
-	
-	private OnClickListener toJoinClickListener = new OnClickListener() {
-		
-		@Override
-		public void onClick(View v) {
-			Intent intent = new Intent();
-			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, JoinFragment.class.getName());
-			if (getActivity() instanceof BaseActivity) {
-				((BaseActivity) getActivity()).onPageChanged(intent);
-			}
-		}
 	};
 	
 	private Session.StatusCallback statusCallback = new StatusCallback() {
@@ -240,7 +224,7 @@ public class LoginFragment extends BaseFragment {
 		@Override
 		public void call(Session session, SessionState state, Exception exception) {
 			if (state.isOpened()) {
-				com.facebook.Request.newMeRequest(session, new GetUserCallback(LoginFragment.this)).executeAsync();
+				Request.newMeRequest(session, new GetUserCallback(LoginFragment.this)).executeAsync();
 				facebookToken = session.getAccessToken();
 			}
 		}
@@ -267,6 +251,18 @@ public class LoginFragment extends BaseFragment {
 	public String getFacebookToken() {
 		return facebookToken;
 	}
+	
+	private OnClickListener toJoinClickListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			Intent intent = new Intent();
+			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, JoinFragment.class.getName());
+			if (getActivity() instanceof BaseActivity) {
+				((BaseActivity) getActivity()).onPageChanged(intent);
+			}
+		}
+	};
 
 	private OnClickListener loginClickListener = new OnClickListener() {
 		
