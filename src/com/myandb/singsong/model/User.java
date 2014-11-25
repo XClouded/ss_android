@@ -9,6 +9,7 @@ public class User extends Model {
 	private String main_photo_url;
 	private Date main_photo_updated_at;
 	private Profile profile;
+	private String facebook_id;
 	private int is_activated;
 	private int is_following;
 	
@@ -40,7 +41,7 @@ public class User extends Model {
 	}
 	
 	public boolean hasPhoto() {
-		return main_photo_url != null && !main_photo_url.isEmpty();
+		return !toString(main_photo_url).isEmpty();
 	}
 	
 	public Date getPhotoUpdatedAt() {
@@ -49,6 +50,14 @@ public class User extends Model {
 	
 	public Profile getProfile() {
 		return profile;
+	}
+	
+	public String getFacebookId() {
+		return toString(facebook_id);
+	}
+	
+	public boolean isFacebookActivated() {
+		return getUsername().matches("FB_.*") || !getFacebookId().isEmpty();
 	}
 	
 	public void setProfile(Profile profile) {

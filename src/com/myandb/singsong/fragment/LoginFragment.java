@@ -3,7 +3,6 @@ package com.myandb.singsong.fragment;
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
-import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,11 +13,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.facebook.Request;
 import com.facebook.Request.GraphUserCallback;
 import com.facebook.Response;
-import com.facebook.Session.Builder;
-import com.facebook.Session.OpenRequest;
 import com.facebook.Session.StatusCallback;
 import com.facebook.Session;
-import com.facebook.SessionLoginBehavior;
 import com.facebook.SessionState;
 import com.facebook.model.GraphUser;
 import com.google.gson.Gson;
@@ -63,7 +59,6 @@ public class LoginFragment extends BaseFragment {
 	private Button btnToJoin;
 	private Button btnFacebook;
 	private TextView tvFindPassword;
-	private List<String> permissions;
 	private String facebookToken;
 	private int colorWhite;
 	private int colorGrey;
@@ -99,8 +94,6 @@ public class LoginFragment extends BaseFragment {
 		
 		colorWhite = getResources().getColor(R.color.white);
 		colorGrey = getResources().getColor(R.color.font_grey);
-		
-		permissions = Arrays.asList("email");
 	}
 
 	@Override
@@ -207,14 +200,12 @@ public class LoginFragment extends BaseFragment {
 		
 		@Override
 		public void onClick(View v) {
-			OpenRequest openRequest = new OpenRequest(LoginFragment.this);
-			openRequest.setPermissions(permissions);
-			openRequest.setCallback(statusCallback);
-			openRequest.setLoginBehavior(SessionLoginBehavior.SSO_WITH_FALLBACK);
-			
-			Session session = new Builder(getActivity().getApplicationContext()).build();
-			Session.setActiveSession(session);
-			session.openForRead(openRequest);
+			Session.openActiveSession(
+					getActivity().getApplicationContext(),
+					LoginFragment.this,
+					true,
+					Arrays.asList("email"),
+					statusCallback);
 		}
 		
 	};
