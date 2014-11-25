@@ -8,12 +8,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.RootActivity;
+import com.myandb.singsong.activity.UpActivity;
 import com.myandb.singsong.adapter.MenuAdapter;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.GlobalMenu;
@@ -27,6 +30,9 @@ public class DrawerFragment extends BaseFragment {
 	private TextView tvDrawerUserNickname;
 	private TextView tvDrawerUserUsername;
 	private LinearGridView lgvMenu;
+	private Button btnDrawerLogin;
+	private View llDrawerUserWrapper;
+	private View llDrawerLoginWrapper;
 	private List<GlobalMenu> menus;
 
 	@Override
@@ -45,6 +51,9 @@ public class DrawerFragment extends BaseFragment {
 		tvDrawerUserNickname = (TextView) view.findViewById(R.id.tv_drawer_user_nickname);
 		tvDrawerUserUsername = (TextView) view.findViewById(R.id.tv_drawer_user_username);
 		lgvMenu = (LinearGridView) view.findViewById(R.id.lgv_menu);
+		btnDrawerLogin = (Button) view.findViewById(R.id.btn_drawer_login);
+		llDrawerUserWrapper = view.findViewById(R.id.ll_drawer_user_wrapper);
+		llDrawerLoginWrapper = view.findViewById(R.id.ll_drawer_login_wrapper);
 	}
 
 	@Override
@@ -88,11 +97,25 @@ public class DrawerFragment extends BaseFragment {
 	protected void onDataChanged() {
 		User currentUser = Authenticator.getUser();
 		if (currentUser != null) {
+			llDrawerUserWrapper.setVisibility(View.VISIBLE);
+			llDrawerLoginWrapper.setVisibility(View.GONE);
 			ImageHelper.displayPhoto(currentUser, ivDrawerUserPhoto);
 			tvDrawerUserNickname.setText(currentUser.getNickname());
 			tvDrawerUserUsername.setText(currentUser.getUsername());
 		} else {
-			// Change user section
+			llDrawerUserWrapper.setVisibility(View.GONE);
+			llDrawerLoginWrapper.setVisibility(View.VISIBLE);
+			btnDrawerLogin.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(getActivity(), UpActivity.class);
+					intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, LoginFragment.class.getName());
+					if (getActivity() instanceof BaseActivity) {
+						((BaseActivity) getActivity()).changePage(intent);
+					}
+				}
+			});
 		}
 	}
 

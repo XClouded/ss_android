@@ -11,33 +11,55 @@
         android:layout_alignParentBottom="true"
         android:orientation="vertical" />
     
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/lgv_menu"
-        android:gravity="center"
-        android:orientation="vertical" >
+        android:layout_above="@id/lgv_menu" >
         
-        <com.myandb.singsong.widget.RoundedImageView
-        	xmlns:app="http://schemas.android.com/apk/res/com.myandb.singsong"
-	        android:id="@+id/iv_drawer_user_photo"
-            android:layout_marginBottom="@dimen/margin_small"
-	        app:oval="true"
-	        app:border_width="0.1dp"
-	        app:border_color="@color/divider"
-	        style="@style/UserImageView" />
+	    <LinearLayout
+	        android:id="@+id/ll_drawer_user_wrapper"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:gravity="center"
+	        android:orientation="vertical" >
+	        
+	        <com.myandb.singsong.widget.RoundedImageView
+	        	xmlns:app="http://schemas.android.com/apk/res/com.myandb.singsong"
+		        android:id="@+id/iv_drawer_user_photo"
+	            android:layout_marginBottom="@dimen/margin_small"
+		        app:oval="true"
+		        app:border_width="0.1dp"
+		        app:border_color="@color/divider"
+		        style="@style/UserImageView" />
+	        
+	        <TextView
+	            android:id="@+id/tv_drawer_user_nickname"
+	            android:textColor="@color/font_white"
+	            android:layout_marginBottom="@dimen/margin_small"
+	            style="@style/BaseTextView" />
+	        
+	        <TextView
+	            android:id="@+id/tv_drawer_user_username"
+	            android:textColor="@color/font_white"
+	            style="@style/BaseTextView" />
+	        
+	    </LinearLayout>
+	    
+	    <LinearLayout
+	        android:id="@+id/ll_drawer_login_wrapper"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:gravity="center"
+	        android:orientation="vertical" >
+	        
+	        <Button
+	            android:id="@+id/btn_drawer_login"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/login" />
+	        
+	    </LinearLayout>
         
-        <TextView
-            android:id="@+id/tv_drawer_user_nickname"
-            android:textColor="@color/font_white"
-            android:layout_marginBottom="@dimen/margin_small"
-            style="@style/BaseTextView" />
-        
-        <TextView
-            android:id="@+id/tv_drawer_user_username"
-            android:textColor="@color/font_white"
-            style="@style/BaseTextView" />
-        
-    </LinearLayout>
+    </FrameLayout>
 
 </RelativeLayout>

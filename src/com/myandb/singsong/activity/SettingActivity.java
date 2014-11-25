@@ -164,7 +164,7 @@ public class SettingActivity extends OldBaseActivity implements OnClickListener 
 			break;
 			
 		case R.id.btn_to_tutorial:
-			intent = new Intent(this, GuideActivity.class);
+//			intent = new Intent(this, GuideActivity.class);
 			startActivity(intent); 
 			
 			break;
