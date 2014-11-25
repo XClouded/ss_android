@@ -57,10 +57,6 @@ public class RecordSettingFragment extends BaseFragment {
 	
 	public static final int REQUEST_CODE_PHOTO_PICKER = 100;
 	
-	public static final String EXTRA_HEADSET_PLUGGED = "headset_plugged";
-	public static final String EXTRA_RECORD_PCM_FILE_PATH = "record_pcm_file_name";
-	public static final String EXTRA_MUSIC_PCM_FILE_PATH = "music_pcm_file_name";
-	
 	private static final String TRACK_RECORD = "record";
 	private static final String TRACK_MUSIC = "music";
 	
@@ -95,17 +91,17 @@ public class RecordSettingFragment extends BaseFragment {
 
 	@Override
 	protected void onArgumentsReceived(Bundle bundle) {
-		headsetPlugged = bundle.getBoolean(EXTRA_HEADSET_PLUGGED);
+		headsetPlugged = bundle.getBoolean(SongUploadService.EXTRA_HEADSET_PLUGGED);
 		
 		try {
 			player = new PcmPlayer();
 			player.setOnPlayEventListener(onPlayEventListener);
 			
-			String recordPcmFilePath = bundle.getString(EXTRA_RECORD_PCM_FILE_PATH);
+			String recordPcmFilePath = bundle.getString(SongUploadService.EXTRA_RECORD_PCM_FILE_PATH);
 			Track recordTrack = new Track(new File(recordPcmFilePath), Recorder.CHANNELS);
 			player.addTrack(TRACK_RECORD, recordTrack);
 			if (headsetPlugged) {
-				String musicPcmFilePath = bundle.getString(EXTRA_MUSIC_PCM_FILE_PATH);
+				String musicPcmFilePath = bundle.getString(SongUploadService.EXTRA_MUSIC_PCM_FILE_PATH);
 				Track musicTrack = new Track(new File(musicPcmFilePath), PcmPlayer.CHANNELS);
 				player.addTrack(TRACK_MUSIC, musicTrack);
 			}

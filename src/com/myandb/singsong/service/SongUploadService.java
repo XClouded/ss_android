@@ -1,5 +1,9 @@
 package com.myandb.singsong.service;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -10,8 +14,11 @@ import com.android.volley.Request.Method;
 import com.android.volley.Response.ErrorListener;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
-import com.myandb.singsong.activity.MainActivity;
+import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.audio.Encoder;
+import com.myandb.singsong.audio.PcmPlayer;
+import com.myandb.singsong.audio.Recorder;
+import com.myandb.singsong.audio.Track;
 import com.myandb.singsong.event.OnCompleteListener;
 import com.myandb.singsong.event.OnProgressListener;
 import com.myandb.singsong.image.BitmapBuilder;
@@ -37,30 +44,35 @@ import android.widget.RemoteViews;
 
 public class SongUploadService extends Service {
 	
-	public static final int REQUEST_CODE = 10;
-	
-	public static final String INTENT_CREATOR_ID = "_creator_";
-	public static final String INTENT_MUSIC_ID = "_mixed_with_";
-	public static final String INTENT_PARENT_SONG_ID = "_parent_song_";
-	public static final String INTENT_HEADSET_PLUGGED = "_record_mode_";
-	public static final String EXTRA_MUSIC_OFFSET = "music_offset";
+	public static final String EXTRA_HEADSET_PLUGGED = "headset_plugged";
+	public static final String EXTRA_RECORD_PCM_FILE_PATH = "record_pcm_file_name";
 	public static final String EXTRA_RECORD_OFFSET = "record_offset";
-	public static final String INTENT_LYRIC_PART = "_lyric_part_";
-	public static final String EXTRA_IMAGE_ID = "_image_";
-	public static final String EXTRA_SONG_MESSAGE = "_message_";
+	public static final String EXTRA_MUSIC_PCM_FILE_PATH = "music_pcm_file_name";
+	public static final String EXTRA_MUSIC_OFFSET = "music_offset";
+	public static final String EXTRA_CREATOR_ID = "creator_id";
+	public static final String EXTRA_MUSIC_ID = "music_id";
+	public static final String EXTRA_PARENT_SONG_ID = "parent_song_id";
+	public static final String EXTRA_LYRIC_PART = "lyric_part";
+	public static final String EXTRA_IMAGE_ID = "image_id";
+	public static final String EXTRA_SONG_MESSAGE = "song_message";
+	public static final int REQUEST_CODE = 10;
 	
 	private static boolean isRunning;
 	private int lyricPart;
-	private int thisMusicId;
+	private int musicId;
 	private int parentSongId;
 	private int creatorId;
 	private int imageId;
 	private String message;
-	private String audioFileName;
+	private String songAudioName;
+	private String sampleAudioName;
+	private File songOggFile;
+	private File sampleOggFile;
 	private NotificationManager manager;
 	private PendingIntent pendingIntent;
 	private Notification noti;
 	private RequestQueue requestQueue;
+	private List<Track> tracks;
 
 	@Override
 	public void onCreate() {
@@ -68,9 +80,8 @@ public class SongUploadService extends Service {
 		
 		manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 		
-		Intent intent = new Intent("com.myandb.singsong.activity.MainActivity");
+		Intent intent = new Intent(this, RootActivity.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		intent.putExtra(MainActivity.INTENT_PAGE_REQUEST, REQUEST_CODE);
 		pendingIntent = PendingIntent.getActivity(this, REQUEST_CODE, intent, 0);
 		
 		requestQueue = ((App) getApplicationContext()).getQueueInstance();
@@ -89,90 +100,170 @@ public class SongUploadService extends Service {
 		
 		submitNotification();
 		
-		imageId = intent.getIntExtra(EXTRA_IMAGE_ID, -1);
+		final boolean headsetPlugged = intent.getBooleanExtra(EXTRA_HEADSET_PLUGGED, false);
+		final int recordOffset = intent.getIntExtra(EXTRA_RECORD_OFFSET, 0);
+		final int musicOffset = intent.getIntExtra(EXTRA_MUSIC_OFFSET, 0);
+		final String recordPcmFilePath = intent.getStringExtra(EXTRA_RECORD_PCM_FILE_PATH);
+		final String musicPcmFilePath = intent.getStringExtra(EXTRA_MUSIC_PCM_FILE_PATH);
+		final File recordPcmFile = new File(recordPcmFilePath);
+		final File musicPcmFile = new File(musicPcmFilePath);
+		
+		creatorId = intent.getIntExtra(EXTRA_CREATOR_ID, 0);
+		musicId = intent.getIntExtra(EXTRA_MUSIC_ID, 0);
+		parentSongId = intent.getIntExtra(EXTRA_PARENT_SONG_ID, 0);
+		lyricPart = intent.getIntExtra(EXTRA_LYRIC_PART, Music.PART_MALE);
+		imageId = intent.getIntExtra(EXTRA_IMAGE_ID, 0);
 		message = intent.getStringExtra(EXTRA_SONG_MESSAGE);
-		lyricPart = intent.getIntExtra(INTENT_LYRIC_PART, Music.PART_MALE);
-		thisMusicId = intent.getIntExtra(INTENT_MUSIC_ID, -1);
-		creatorId = intent.getIntExtra(INTENT_CREATOR_ID, -1);
-		parentSongId = intent.getIntExtra(INTENT_PARENT_SONG_ID, -1);
 		
-		final boolean headsetPlugged = intent.getBooleanExtra(INTENT_HEADSET_PLUGGED, false);
-		final float syncAmount = intent.getFloatExtra(EXTRA_MUSIC_OFFSET, 0.0f);
-		
-		startEncoding(headsetPlugged, syncAmount);
+		try {
+			tracks = new ArrayList<Track>();
+			Track recordTrack = new Track(recordPcmFile, Recorder.CHANNELS);
+			recordTrack.addOffsetFrame(recordOffset);
+			tracks.add(recordTrack);
+			if (headsetPlugged) {
+				Track musicTrack = new Track(musicPcmFile, PcmPlayer.CHANNELS);
+				musicTrack.addOffsetFrame(musicOffset);
+				tracks.add(musicTrack);
+			}
+			
+			startNormalEncoding();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		return START_NOT_STICKY;
 	}
 	
-	private void startEncoding(boolean headsetPlugged, float syncAmount) {
-		updateNotification(0, "노래를 압축하고 있습니다.");
+	private void startNormalEncoding() {
+		songOggFile = new File(getFilesDir(), "song.ogg");
 		
-		audioFileName = generateSongName(creatorId, thisMusicId);
-		
-		/*
 		Encoder encoder = new Encoder();
-		encoder.setCallback(new OnCompleteListener() {
-			
-			@Override
-			public void done(Exception e) {
-				try {
-					updateNotification(90, "노래를 서버에 업로드 하고 있습니다.");
-					
-					audioFileName = generateSongName(creatorId, thisMusicId);
-					UploadManager manager = new UploadManager();
-					manager.start(
-							SongUploadService.this, FileManager.getSecure(FileManager.SONG_OGG),
-							"song", audioFileName, "application/ogg",
-							new OnCompleteListener() {
-								
-								@Override
-								public void done(Exception e) {
-									if (e == null) {
-										onFileUploadComplete();
-									} else {
-										errorNotification("파일 업로드에 실패하였습니다.");
-									}
-								}
-							}
-					);
-				} catch (Exception e1) {
-					errorNotification("노래 인코딩에 실패하였습니다.");
-				}		
-				
-			}
-		}, new OnProgressListener() {
+		encoder.setOutputFileName(songOggFile.getAbsolutePath());
+		encoder.disableSampleMode();
+		encoder.setOnProgressListener(new OnProgressListener() {
 			
 			@Override
 			public void done(Integer progress) {
-				updateNotification(progress, "진행중 ...");
+				final int maxProgress = 50;
+				int convertedProgress = maxProgress * progress / 100; 
+				updateNotification(convertedProgress, "진행중 ...");
 			}
 		});
-		
-		encoder.start(syncAmount, headsetPlugged);
-		*/
+		encoder.setOnCompleteListener(new OnCompleteListener() {
+			
+			@Override
+			public void done(Exception e) {
+				if (e == null) {
+					startSampleEncoding();
+				} else {
+					errorNotification("노래 인코딩에 실패하였습니다.");
+				}
+			}
+		});
+		encoder.execute((Track[]) tracks.toArray());
 	}
 	
-	private String generateSongName(int key, int key2) {
-		String keyStr = String.valueOf(key);
+	private void startSampleEncoding() {
+		sampleOggFile = new File(getFilesDir(), "sample.ogg");
+		
+		Encoder encoder = new Encoder();
+		encoder.setOutputFileName(sampleOggFile.getAbsolutePath());
+		encoder.enableSampleMode(44100 * 10);
+		encoder.setOnProgressListener(new OnProgressListener() {
+			
+			@Override
+			public void done(Integer progress) {
+				final int maxProgress = 20;
+				int convertedProgress = 50 + maxProgress * progress / 100; 
+				updateNotification(convertedProgress, "진행중 ...");
+			}
+		});
+		encoder.setOnCompleteListener(new OnCompleteListener() {
+			
+			@Override
+			public void done(Exception e) {
+				if (e == null) {
+					uploadNormalSongFile();
+				} else {
+					errorNotification("노래 인코딩에 실패하였습니다.");
+				}
+			}
+		});
+	}
+	
+	private void uploadNormalSongFile() {
+		updateNotification(70, "업로드 중입니다.");
+		
+		songAudioName = generateSongName(creatorId, musicId);
+		songAudioName += Model.SUFFIX_OGG;
+		UploadManager manager = new UploadManager();
+		try {
+			manager.start(
+					SongUploadService.this, songOggFile,
+					"song", songAudioName, "application/ogg",
+					new OnCompleteListener() {
+						
+						@Override
+						public void done(Exception e) {
+							if (e == null) {
+								uploadSampleSongFile();
+							} else {
+								errorNotification("파일 업로드에 실패하였습니다.");
+							}
+						}
+					}
+			);
+		} catch (Exception e) {
+			errorNotification("파일 업로드에 실패하였습니다.");
+		}
+	}
+	
+	private void uploadSampleSongFile() {
+		updateNotification(80, "업로드 중입니다.");
+		
+		sampleAudioName = songAudioName + ".sample" + Model.SUFFIX_OGG;
+		UploadManager manager = new UploadManager();
+		try {
+			manager.start(
+					SongUploadService.this, sampleOggFile,
+					"song", sampleAudioName, "application/ogg",
+					new OnCompleteListener() {
+						
+						@Override
+						public void done(Exception e) {
+							if (e == null) {
+								onFileUploadComplete();
+							} else {
+								errorNotification("파일 업로드에 실패하였습니다.");
+							}
+						}
+					}
+			);
+		} catch (Exception e) {
+			errorNotification("파일 업로드에 실패하였습니다.");
+		}
+	}
+	
+	private String generateSongName(int userId, int musicId) {
+		String keyStr = String.valueOf(userId);
 		keyStr += "_";
-		keyStr += String.valueOf(key2);
+		keyStr += String.valueOf(musicId);
 		keyStr += "_";
 		keyStr += String.valueOf(System.currentTimeMillis());
-		keyStr += Model.SUFFIX_OGG;
-		
 		return keyStr;
 	}
 	
 	public void onFileUploadComplete() {
-		updateNotification(95, "노래정보를 갱신하고 있습니다.");
+		updateNotification(90, "노래정보를 갱신하고 있습니다.");
 
-		final int duration = 0;/*(int) StringFormatter.getDuration(FileManager.getSecure(FileManager.SONG_OGG));*/
+		final int duration = StringFormatter.getDuration(songOggFile);
 		
 		try {
 			JSONObject data = new JSONObject();
 			data.put("user_id", creatorId);
-			data.put("music_id", thisMusicId);
-			data.put("file", audioFileName);
+			data.put("music_id", musicId);
+			data.put("file", songAudioName);
+			data.put("sample", sampleAudioName);
 			data.put("duration", duration);
 			data.put("lyric_part", lyricPart);
 			data.put("message", message);

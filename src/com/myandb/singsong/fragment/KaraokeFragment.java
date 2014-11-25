@@ -64,8 +64,8 @@ public class KaraokeFragment extends BaseFragment {
 	public static final int REQUEST_CODE_SETTING = 200;
 	
 	private static final String FILE_MUSIC_OGG = "music.ogg";
-	private static final String FILE_MUSIC_RAW = "music.raw";
-	private static final String FILE_VOICE_RAW = "voice.raw";
+	private static final String FILE_MUSIC_RAW = "music.pcm";
+	private static final String FILE_RECORD_RAW = "record.pcm";
 	private static final String FILE_LYRIC = "lyric.lrc";
 	
 	private static boolean running;
@@ -82,8 +82,8 @@ public class KaraokeFragment extends BaseFragment {
 	private LrcDisplayer lrcDisplayer;
 	private Animation blink;
 	private File musicOggFile;
-	private File musicRawFile;
-	private File voiceRawFile;
+	private File musicPcmFile;
+	private File recordPcmFile;
 	private File lyricFile;
 	private int lyricPart;
 	
@@ -206,17 +206,17 @@ public class KaraokeFragment extends BaseFragment {
 	private void initializeFiles() {
 		File dir = getActivity().getFilesDir();
 		musicOggFile = new File(dir, FILE_MUSIC_OGG);
-		musicRawFile = new File(dir, FILE_MUSIC_RAW);
-		voiceRawFile = new File(dir, FILE_VOICE_RAW);
+		musicPcmFile = new File(dir, FILE_MUSIC_RAW);
+		recordPcmFile = new File(dir, FILE_RECORD_RAW);
 		lyricFile = new File(dir, FILE_LYRIC);
 	}
 	
 	private void initializeRecorder() throws IOException, IllegalArgumentException, IllegalStateException {
-		Track track = new Track(musicRawFile, PcmPlayer.CHANNELS);
+		Track track = new Track(musicPcmFile, PcmPlayer.CHANNELS);
 		player = new PcmPlayer();
 		player.addTrack("music", track);
 		player.setOnPlayEventListener(onPlayEventListener);
-		recorder = new Recorder(voiceRawFile);
+		recorder = new Recorder(recordPcmFile);
 		recorder.setBackgroundPlayer(player);
 	}
 	
@@ -258,9 +258,9 @@ public class KaraokeFragment extends BaseFragment {
 							intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, RecordSettingFragment.class.getName());
 							intent.putExtra(UpActivity.EXTRA_FULL_SCREEN, true);
 							Bundle bundle = new Bundle();
-							bundle.putBoolean(RecordSettingFragment.EXTRA_HEADSET_PLUGGED, recorder.isHeadsetPlugged());
-							bundle.putString(RecordSettingFragment.EXTRA_MUSIC_PCM_FILE_PATH, musicRawFile.getAbsolutePath());
-							bundle.putString(RecordSettingFragment.EXTRA_RECORD_PCM_FILE_PATH, voiceRawFile.getAbsolutePath());
+							bundle.putBoolean(SongUploadService.EXTRA_HEADSET_PLUGGED, recorder.isHeadsetPlugged());
+							bundle.putString(SongUploadService.EXTRA_MUSIC_PCM_FILE_PATH, musicPcmFile.getAbsolutePath());
+							bundle.putString(SongUploadService.EXTRA_RECORD_PCM_FILE_PATH, recordPcmFile.getAbsolutePath());
 							intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
 							startActivityForResult(intent, REQUEST_CODE_SETTING);
 						}
@@ -412,7 +412,7 @@ public class KaraokeFragment extends BaseFragment {
 			
 		});
 		
-		decoder.start(musicOggFile, musicRawFile);
+		decoder.start(musicOggFile, musicPcmFile);
 	}
 	
 	private void setupLoadingDialogForDownload() {
@@ -641,17 +641,19 @@ public class KaraokeFragment extends BaseFragment {
 				String message = data.getStringExtra(SongUploadService.EXTRA_SONG_MESSAGE);
 				
 				Intent intent = new Intent(getActivity(), SongUploadService.class);
-				intent.putExtra(SongUploadService.INTENT_HEADSET_PLUGGED, recorder.isHeadsetPlugged());
-				intent.putExtra(SongUploadService.EXTRA_MUSIC_OFFSET, musicOffset);
+				intent.putExtra(SongUploadService.EXTRA_HEADSET_PLUGGED, recorder.isHeadsetPlugged());
+				intent.putExtra(SongUploadService.EXTRA_RECORD_PCM_FILE_PATH, recordPcmFile.getAbsolutePath());
 				intent.putExtra(SongUploadService.EXTRA_RECORD_OFFSET, recordOffset);
-				intent.putExtra(SongUploadService.INTENT_CREATOR_ID, currentUser.getId());
-				intent.putExtra(SongUploadService.INTENT_MUSIC_ID, music.getId());
-				intent.putExtra(SongUploadService.INTENT_LYRIC_PART, lyricPart);
+				intent.putExtra(SongUploadService.EXTRA_MUSIC_PCM_FILE_PATH, musicPcmFile.getAbsolutePath());
+				intent.putExtra(SongUploadService.EXTRA_MUSIC_OFFSET, musicOffset);
+				intent.putExtra(SongUploadService.EXTRA_CREATOR_ID, currentUser.getId());
+				intent.putExtra(SongUploadService.EXTRA_MUSIC_ID, music.getId());
+				intent.putExtra(SongUploadService.EXTRA_LYRIC_PART, lyricPart);
 				intent.putExtra(SongUploadService.EXTRA_IMAGE_ID, imageId);
 				intent.putExtra(SongUploadService.EXTRA_SONG_MESSAGE, message);
 				
 				if (!isSolo()) {
-					intent.putExtra(SongUploadService.INTENT_PARENT_SONG_ID, parentSong.getId());
+					intent.putExtra(SongUploadService.EXTRA_PARENT_SONG_ID, parentSong.getId());
 				}
 				
 				getActivity().startService(intent);
