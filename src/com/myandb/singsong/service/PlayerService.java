@@ -88,17 +88,19 @@ public class PlayerService extends Service {
 		super.onDestroy();
 	}
 	
-	public void startPlaying(Song song, OnPlayEventListener listener) {
+	public void startPlaying(Song song) {
 		if (song == null) {
 			throw new IllegalArgumentException();
 		}
+		
+		OnPlayEventListener listener = streamPlayer.getOnPlayEventListener();
 		
 		try {
 			streamPlayer.setOnPlayEventListener(listener);
 			
 			if (isNewSong(song)) {
-				listener.onPlay(PlayEvent.LOADING);
 				thisSong = song;
+				listener.onPlay(PlayEvent.LOADING);
 				
 				try {
 					clearPreviousNotification();

@@ -113,6 +113,10 @@ public class StreamPlayer extends MediaPlayer {
 		this.listener = listener;
 	}
 	
+	public OnPlayEventListener getOnPlayEventListener() {
+		return listener;
+	}
+	
 	public boolean isPrepared() {
 		return prepared;
 	}

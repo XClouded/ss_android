@@ -1,5 +1,6 @@
 package com.myandb.singsong.widget;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.annotation.TargetApi;
@@ -20,7 +21,6 @@ import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -49,6 +49,7 @@ import com.myandb.singsong.model.Song;
 import com.myandb.singsong.model.SongComment;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.GradualLoader;
+import com.myandb.singsong.net.GradualLoader.OnLoadCompleteListener;
 import com.myandb.singsong.net.OAuthJsonObjectRequest;
 import com.myandb.singsong.net.OAuthJustRequest;
 import com.myandb.singsong.net.UrlBuilder;
@@ -68,7 +69,9 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	private User currentUser;
 	private Handler handler;
 	private GradualLoader loader;
+	private CommentAdapter commentAdapter;
 	private boolean like;
+	private boolean initialized; 
 	private int actionBarHeight;
 	
 	private WriteCommentDialog commentDialog;
@@ -120,31 +123,43 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	public void setPlayerService(PlayerService service) {
 		this.service = service;
 		
-		setSlidingContainer(R.id.fl_sliding_container);
+		if (!initialized) {
+			setSlidingContainer(R.id.fl_sliding_container);
+			
+			setContentView(R.layout.player_wrapper);
+			
+			setDragView(R.id.music_info);
+			
+			setPanelSlideListener(panelSlideListener);
+			
+			initialize();
+			
+			registerSharedPreferenceChangeListener();
+			
+			ivLoopControl.setOnClickListener(loopControlClickListener);
+			ivAutoplayControl.setOnClickListener(autoplayControlClickListener);
+			ivPlayControl.setOnClickListener(playControlClickListener);
+			sbPlay.setOnSeekBarChangeListener(seekBarChangeListener);
+			
+			service.getPlayer().setOnPlayEventListener(onPlayEventListener);
+			
+			initialized = true;
+		}
 		
-		setContentView(R.layout.player_wrapper);
-		
-		setDragView(R.id.music_info);
-		
-		setPanelSlideListener(panelSlideListener);
-		
-		initialize();
-		
-		registerSharedPreferenceChangeListener();
-		
-		ivLoopControl.setOnClickListener(loopControlClickListener);
-		ivAutoplayControl.setOnClickListener(autoplayControlClickListener);
-		ivPlayControl.setOnClickListener(playControlClickListener);
-		sbPlay.setOnSeekBarChangeListener(seekBarChangeListener);
-		
-		service.getPlayer().setOnPlayEventListener(onPlayEventListener);
+		if (service.getSong() != null) {
+			showPanel();
+			setupViews();
+			if (service.getPlayer().isPlaying()) {
+				catchPlayStatusChange(PlayEvent.PLAY);
+			}
+		}
 	}
 	
 	private void initialize() {
 		currentUser = Authenticator.getUser();
 		commentDialog = new WriteCommentDialog(this);
 		
-		ListAdapter commentAdapter = new CommentAdapter();
+		commentAdapter = new CommentAdapter();
 		lvComments.setAdapter(commentAdapter);
 		
 		loader = new GradualLoader(getContext());
@@ -332,7 +347,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 			public void run() {
 				switch (event) {
 				case LOADING:
-					showPanel();
+					expandPanel();
 					setupViews();
 					ivPlayControl.setEnabled(false);
 					break;
@@ -349,7 +364,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 					break;
 					
 				case RESUME:
-					showPanel();
+					expandPanel();
 					break;
 					
 				case PAUSE:
@@ -586,13 +601,19 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	}
 	
 	private void requestNewComments(Song song) {
-		ListAdapter adapter = lvComments.getAdapter();
-		if (adapter != null && adapter instanceof CommentAdapter) {
-			((CommentAdapter) adapter).clear();
+		if (commentAdapter != null) {
+			commentAdapter.clear();
 			
 			UrlBuilder urlBuilder = new UrlBuilder();
 			urlBuilder.s("songs").s(song.getId()).s("comments");
 			loader.setUrlBuilder(urlBuilder);
+			loader.setOnLoadCompleteListener(new OnLoadCompleteListener() {
+				
+				@Override
+				public void onComplete(JSONArray response) {
+					commentAdapter.addAll(response);
+				}
+			});
 		}
 	}
 
@@ -637,15 +658,13 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	};
 	
 	public void addComment(SongComment comment) {
-		CommentAdapter adapter = (CommentAdapter) lvComments.getAdapter();
-		adapter.addItem(comment);
-		displayCommentNum(adapter.getCount());
+		commentAdapter.addItem(comment);
+		displayCommentNum(commentAdapter.getCount());
 	}
 	
 	public void removeComment(SongComment comment) {
-		CommentAdapter adapter = (CommentAdapter) lvComments.getAdapter();
-		adapter.removeItem(comment);
-		displayCommentNum(adapter.getCount());
+		commentAdapter.removeItem(comment);
+		displayCommentNum(commentAdapter.getCount());
 	}
 	
 	/*
