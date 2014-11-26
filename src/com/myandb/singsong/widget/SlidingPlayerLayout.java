@@ -231,7 +231,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	}
 	
 	private void registerSharedPreferenceChangeListener() {
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+		final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 		final String keyLooping = getContext().getString(R.string.key_player_looping);
 		final String keyAutoplay = getContext().getString(R.string.key_player_autoplay);
 		boolean looping = preferences.getBoolean(keyLooping, false);
@@ -240,26 +240,32 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		setPlayerLooping(looping);
 		setPlayerAutoplay(autoplay);
 		
-		preferences.registerOnSharedPreferenceChangeListener(new OnSharedPreferenceChangeListener() {
-			
-			@Override
-			public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-				if (key.equals(keyLooping)) {
-					boolean looping = sharedPreferences.getBoolean(key, false);
-					setPlayerLooping(looping);
-					showLoopingChangeMessage(looping);
-				}
-				
-				if (key.equals(keyAutoplay)) {
-					boolean autoplay = sharedPreferences.getBoolean(key, false);
-					setPlayerAutoplay(autoplay);
-					showAutoplayChangeMessage(autoplay);
-				}
-			}
-		});
+		preferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
 	}
 	
+	private OnSharedPreferenceChangeListener preferenceChangeListener = new OnSharedPreferenceChangeListener() {
+		
+		@Override
+		public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+			final String keyLooping = getContext().getString(R.string.key_player_looping);
+			final String keyAutoplay = getContext().getString(R.string.key_player_autoplay);
+			
+			if (key.equals(keyLooping)) {
+				boolean looping = sharedPreferences.getBoolean(key, false);
+				setPlayerLooping(looping);
+				showLoopingChangeMessage(looping);
+			}
+			
+			if (key.equals(keyAutoplay)) {
+				boolean autoplay = sharedPreferences.getBoolean(key, false);
+				setPlayerAutoplay(autoplay);
+				showAutoplayChangeMessage(autoplay);
+			}
+		}
+	};
+	
 	private void setPlayerLooping(boolean looping) {
+		service.getPlayer().setLooping(looping);
 		if (looping) {
 			ivLoopControl.setImageResource(R.drawable.ic_loop_on);
 		} else {
@@ -276,6 +282,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	}
 	
 	private void setPlayerAutoplay(boolean autoplay) {
+		service.getPlayer().setAutoplay(autoplay);
 		if (autoplay) {
 			ivAutoplayControl.setImageResource(R.drawable.ic_autoplay_on);
 		} else {
@@ -302,7 +309,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 			String key = getContext().getString(R.string.key_player_looping);
 			boolean looping = preferences.getBoolean(key, false);
-			preferences.edit().putBoolean(key, !looping);
+			preferences.edit().putBoolean(key, !looping).commit();
 		}
 	};
 	
@@ -313,7 +320,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 			String key = getContext().getString(R.string.key_player_autoplay);
 			boolean autoplay = preferences.getBoolean(key, false);
-			preferences.edit().putBoolean(key, !autoplay);
+			preferences.edit().putBoolean(key, !autoplay).commit();
 		}
 	};
 

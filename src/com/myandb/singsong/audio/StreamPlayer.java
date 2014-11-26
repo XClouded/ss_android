@@ -2,13 +2,9 @@ package com.myandb.singsong.audio;
 
 import java.io.IOException;
 
-import com.myandb.singsong.R;
 import com.myandb.singsong.service.PlayerService;
 
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.media.MediaPlayer;
-import android.preference.PreferenceManager;
 
 public class StreamPlayer extends MediaPlayer {
 	
@@ -29,31 +25,6 @@ public class StreamPlayer extends MediaPlayer {
 	public StreamPlayer(PlayerService service) {
 		this();
 		this.service = service;
-		
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(service);
-		final String keyLooping = service.getString(R.string.key_player_looping);
-		final String keyAutoplay = service.getString(R.string.key_player_autoplay);
-		boolean looping = preferences.getBoolean(keyLooping, false);
-		boolean autoplay = preferences.getBoolean(keyAutoplay, false);
-		
-		setLooping(looping);
-		setAutoplay(autoplay);
-		
-		preferences.registerOnSharedPreferenceChangeListener(new OnSharedPreferenceChangeListener() {
-			
-			@Override
-			public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-				if (key.equals(keyLooping)) {
-					boolean looping = sharedPreferences.getBoolean(key, false);
-					setLooping(looping);
-				}
-				
-				if (key.equals(keyAutoplay)) {
-					boolean autoplay = sharedPreferences.getBoolean(key, false);
-					setAutoplay(autoplay);
-				}
-			}
-		});
 	}
 	
 	private OnErrorListener errorListener = new OnErrorListener() {
