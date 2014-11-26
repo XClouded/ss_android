@@ -86,7 +86,11 @@ public class OnVolleyWeakError<T> implements ErrorListener {
 			return ((Dialog) reference).getContext();
 		}
 		
-		return (Context) reference;
+		if (reference instanceof Context) {
+			return (Context) reference;
+		}
+		
+		return null;
 	}
 
 }

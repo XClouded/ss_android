@@ -13,8 +13,10 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.facebook.Request;
 import com.facebook.Request.GraphUserCallback;
 import com.facebook.Response;
+import com.facebook.Session.OpenRequest;
 import com.facebook.Session.StatusCallback;
 import com.facebook.Session;
+import com.facebook.SessionLoginBehavior;
 import com.facebook.SessionState;
 import com.facebook.model.GraphUser;
 import com.google.gson.Gson;
@@ -200,12 +202,16 @@ public class LoginFragment extends BaseFragment {
 		
 		@Override
 		public void onClick(View v) {
-			Session.openActiveSession(
-					getActivity().getApplicationContext(),
-					LoginFragment.this,
-					true,
-					Arrays.asList("email"),
-					statusCallback);
+			OpenRequest request = new OpenRequest(LoginFragment.this);
+			request.setPermissions(Arrays.asList("email"));
+			request.setLoginBehavior(SessionLoginBehavior.SSO_WITH_FALLBACK);
+			
+			Session session = Session.getActiveSession();
+			if (session == null) {
+				session = new Session(getActivity().getApplicationContext());
+			}
+			session.addCallback(statusCallback);
+			session.openForRead(request);
 		}
 		
 	};
