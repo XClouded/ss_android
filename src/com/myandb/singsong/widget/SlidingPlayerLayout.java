@@ -347,6 +347,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 			public void run() {
 				switch (event) {
 				case LOADING:
+					showPanel();
 					expandPanel();
 					setupViews();
 					ivPlayControl.setEnabled(false);

@@ -1,7 +1,12 @@
 package com.myandb.singsong.fragment;
 
+import org.json.JSONArray;
+
 import com.myandb.singsong.R;
+import com.myandb.singsong.adapter.HolderAdapter;
 import com.myandb.singsong.net.GradualLoader;
+import com.myandb.singsong.net.GradualLoader.OnLoadCompleteListener;
+import com.myandb.singsong.net.UrlBuilder;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -74,8 +79,18 @@ public abstract class ListFragment extends BaseFragment {
 		}
 	}
 	
-	public void setAdapter(ListAdapter adapter) {
+	public void setAdapter(final ListAdapter adapter) {
 		listView.setAdapter(adapter);
+		getGradualLoader().setOnLoadCompleteListener(new OnLoadCompleteListener() {
+			
+			@Override
+			public void onComplete(JSONArray response) {
+				if (adapter instanceof HolderAdapter) {
+					setListShown(true);
+					((HolderAdapter<?, ?>) adapter).addAll(response);
+				}
+			}
+		});
 	}
 	
 	public ListAdapter getAdapter() {
@@ -84,6 +99,14 @@ public abstract class ListFragment extends BaseFragment {
 	
 	public GradualLoader getGradualLoader() {
 		return loader;
+	}
+	
+	public void setUrlBuilder(UrlBuilder urlBuilder) {
+		getGradualLoader().setUrlBuilder(urlBuilder);
+	}
+	
+	public void load() {
+		getGradualLoader().load();
 	}
 	
 	public void setListShown(boolean shown) {

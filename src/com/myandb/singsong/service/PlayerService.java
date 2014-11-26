@@ -105,6 +105,7 @@ public class PlayerService extends Service {
 				try {
 					clearPreviousNotification();
 					
+					streamPlayer.pause();
 					streamPlayer.reset();
 					streamPlayer.setDataSource(getCompatDataSource(thisSong.getAudioUrl()));
 					streamPlayer.prepareAsync();
