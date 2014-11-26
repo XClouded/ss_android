@@ -31,14 +31,18 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
+import com.myandb.singsong.event.OnCompleteListener;
 import com.myandb.singsong.event.OnVolleyWeakError;
 import com.myandb.singsong.event.OnVolleyWeakResponse;
-import com.myandb.singsong.fragment.ProfileRootFragment;
+import com.myandb.singsong.fragment.UserHomeFragment;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.image.ResizeAsyncTask;
+import com.myandb.singsong.model.Model;
 import com.myandb.singsong.model.Profile;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.OAuthJsonObjectRequest;
+import com.myandb.singsong.net.OAuthJustRequest;
+import com.myandb.singsong.net.UploadManager;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.secure.Encryption;
@@ -284,10 +288,10 @@ public class ProfileEditActivity extends Activity {
 			case R.id.btn_submit_change:
 				Gson gson = Utility.getGsonInstance();
 				
-				intent.putExtra(ProfileRootFragment.INTENT_IS_EDIT_PHOTO, isPhotoChange);
+//				intent.putExtra(UserHomeFragment.INTENT_IS_EDIT_PHOTO, isPhotoChange);
 				
 				if (isValidNickname) {
-					intent.putExtra(ProfileRootFragment.INTENT_NICKNAME, etNickname.getText().toString());
+//					intent.putExtra(UserHomeFragment.INTENT_NICKNAME, etNickname.getText().toString());
 				}
 				
 				String email = etEmail.getText().toString();
@@ -309,7 +313,7 @@ public class ProfileEditActivity extends Activity {
 				}
 				
 				if (changedProfile) {
-					intent.putExtra(ProfileRootFragment.INTENT_PROFILE, gson.toJson(profile, Profile.class));
+//					intent.putExtra(UserHomeFragment.INTENT_PROFILE, gson.toJson(profile, Profile.class));
 				}
 				
 				setResult(RESULT_OK, intent);
@@ -417,5 +421,138 @@ public class ProfileEditActivity extends Activity {
 			break;
 		}
 	}
+	
+	/*
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		switch (requestCode) {
+		case R_CODE_EDIT_PROFILE:
+			if (resultCode == Activity.RESULT_OK) {
+				try {
+					boolean hasPhotoChanged = data.getBooleanExtra(INTENT_IS_EDIT_PHOTO, false);
+					String nickname = data.getStringExtra(INTENT_NICKNAME);
+					String profileInJson = data.getStringExtra(INTENT_PROFILE);
+//					MainActivity home = (MainActivity) getActivity();
+					currentUser = Authenticator.getUser();
+					
+					if (hasPhotoChanged) {
+						UploadManager manager = new UploadManager();
+//						manager.start(
+//								getActivity(), FileManager.get(FileManager.TEMP),
+//								"user_photo", currentUser.getUsername() + Model.SUFFIX_JPG, "image/jpeg",
+//								photoUploadCompleteListener
+//						);
+					}
+					
+					if (nickname != null) {
+						currentUser.setNickname(nickname);
+						
+						tvNickname.setText(nickname);
+						
+//						if (home != null) {
+//							home.updateNickname(nickname);
+//						}
+						
+						requestUpdateNickname(nickname);
+					}
+					
+					if (profileInJson != null) {
+						Gson gson = Utility.getGsonInstance();
+						Profile profile = gson.fromJson(profileInJson, Profile.class);
+						
+						currentUser.setProfile(profile);
+						
+						displayStatusMessage(tvUserStatus, profile.getStatusMessage());
+						requestUpdateProfile(profileInJson);
+					}
+					
+					Authenticator auth = new Authenticator();
+					auth.update(currentUser);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			
+			break;
+		}
+	}
+	
+	private OnCompleteListener photoUploadCompleteListener = new OnCompleteListener() {
+		
+		@Override
+		public void done(Exception e) {
+			if (getActivity() != null) {
+				if (e == null) {
+					try {
+						String photoUrl = Model.STORAGE_HOST + Model.STORAGE_USER + currentUser.getUsername() + Model.SUFFIX_JPG; 
+						JSONObject message = new JSONObject();
+						message.put("main_photo_url", photoUrl);
+						
+						UrlBuilder urlBuilder = new UrlBuilder();
+						String url = urlBuilder.s("users").toString();
+						OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
+								Method.PUT, url, message,
+								new OnVolleyWeakResponse<UserHomeFragment, JSONObject>(UserHomeFragment.this, "onDataUploadSuccess", User.class),
+								new OnVolleyWeakError<UserHomeFragment>(UserHomeFragment.this, "onUploadError")
+								);
+						
+						RequestQueue queue = ((App) getActivity().getApplicationContext()).getQueueInstance();
+						queue.add(request);
+					} catch (JSONException e1) {
+						onUploadError();
+					}
+				} else {
+					onUploadError();
+				}
+			}
+		}
+	};
+	
+	public void onDataUploadSuccess(User user) {
+//		try {
+//			FileUtils.copyFile(FileManager.get(FileManager.TEMP), FileManager.get(FileManager.USER_PHOTO));
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+		
+		currentUser.setPhotoUrl(user.getPhotoUrl(), user.getPhotoUpdatedAt());
+		Authenticator auth = new Authenticator();
+		auth.update(currentUser);
+	}
+	
+	private void onUploadError() {
+		Toast.makeText(getActivity(), getString(R.string.t_upload_failed), Toast.LENGTH_SHORT).show();
+	}
+	
+	private void requestUpdateNickname(String nickname) {
+		try {
+			UrlBuilder urlBuilder = new UrlBuilder();
+			String url = urlBuilder.s("users").toString();
+			
+			JSONObject message = new JSONObject();
+			message.put("nickname", nickname);
+			
+			OAuthJustRequest request = new OAuthJustRequest(Method.PUT, url, message);
+			requestQueue.add(request);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void requestUpdateProfile(String profileInJson) {
+		try {
+			UrlBuilder urlBuilder = new UrlBuilder();
+			String url = urlBuilder.s("profile").toString();
+			JSONObject message = new JSONObject(profileInJson);
+			
+			OAuthJustRequest request = new OAuthJustRequest(Method.PUT, url, message);
+			requestQueue.add(request);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+	*/
 
 }

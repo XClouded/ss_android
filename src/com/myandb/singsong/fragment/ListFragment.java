@@ -45,6 +45,14 @@ public abstract class ListFragment extends BaseFragment {
 		emptyView = inflateEmptyView(inflater);
 		listHeaderView = inflateListHeaderView(inflater);
 		fixedHeaderView = inflateFixedHeaderView(inflater);
+		
+		if (emptyView != null) {
+			listView.setEmptyView(emptyView);
+		}
+		
+		if (listHeaderView != null) {
+			listView.addHeaderView(listHeaderView);
+		}
 	}
 
 	@Override
@@ -57,14 +65,6 @@ public abstract class ListFragment extends BaseFragment {
 
 	@Override
 	protected void setupViews() {
-		if (emptyView != null) {
-			listView.setEmptyView(emptyView);
-		}
-		
-		if (listHeaderView != null) {
-			listView.addHeaderView(listHeaderView);
-		}
-		
 		loader.setListView(listView);
 		
 		if (fixedHeaderView != null) {

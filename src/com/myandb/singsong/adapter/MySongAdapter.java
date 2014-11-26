@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.myandb.singsong.R;
-import com.myandb.singsong.dialog.ChangeSongStateDialog;
 import com.myandb.singsong.event.Listeners;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Music;
@@ -25,14 +24,12 @@ public class MySongAdapter extends HolderAdapter<Song, MySongAdapter.SongHolder>
 
 	private final boolean isCurrentUser;
 	private final boolean isDeleted;
-	private final ChangeSongStateDialog dialog;
 	
 	public MySongAdapter(Context context, boolean isCurrentUser, boolean isDeleted) {
 		super(Song.class);
 		
 		this.isCurrentUser = isCurrentUser;
 		this.isDeleted = isDeleted;
-		this.dialog = new ChangeSongStateDialog(context, this, isDeleted);
 	}
 
 	@Override
@@ -120,7 +117,7 @@ public class MySongAdapter extends HolderAdapter<Song, MySongAdapter.SongHolder>
 			setChildrenImage(children, 2, viewHolder.ivSecondChildrenImage);
 		}
 		
-		if (isCurrentUser && dialog != null) {
+		if (isCurrentUser) {
 			viewHolder.ivChangeStateSong.setVisibility(View.VISIBLE);
 			
 			if (isDeleted) {
@@ -134,8 +131,7 @@ public class MySongAdapter extends HolderAdapter<Song, MySongAdapter.SongHolder>
 				@Override
 				public void onClick(View v) {
 					if (song != null) {
-						dialog.setTargetSong(song);
-						dialog.show();
+						// popup menu
 					}
 				}
 			});
@@ -151,12 +147,6 @@ public class MySongAdapter extends HolderAdapter<Song, MySongAdapter.SongHolder>
 			if (childSong != null) {
 				ImageHelper.displayPhoto(childSong.getPhotoUrl(), imageView);
 			}
-		}
-	}
-	
-	public void onDestroy() {
-		if (dialog != null) {
-			dialog.dismiss();
 		}
 	}
 	

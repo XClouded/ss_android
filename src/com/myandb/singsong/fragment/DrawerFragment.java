@@ -130,6 +130,7 @@ public class DrawerFragment extends BaseFragment {
 			ImageHelper.displayPhoto(currentUser, ivDrawerUserPhoto);
 			tvDrawerUserNickname.setText(currentUser.getNickname());
 			tvDrawerUserUsername.setText(currentUser.getUsername());
+			llDrawerUserWrapper.setOnClickListener(myProfileClickListener);
 		} else {
 			llDrawerUserWrapper.setVisibility(View.GONE);
 			llDrawerLoginWrapper.setVisibility(View.VISIBLE);
@@ -147,5 +148,22 @@ public class DrawerFragment extends BaseFragment {
 			});
 		}
 	}
+	
+	private OnClickListener myProfileClickListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			BaseActivity activity = (BaseActivity) getActivity();
+			String userInJson = Authenticator.getUserInJson();
+			Bundle bundle = new Bundle();
+			bundle.putString(UserHomeFragment.EXTRA_THIS_USER, userInJson);
+			
+			Intent intent = new Intent(getActivity(), RootActivity.class);
+			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, UserHomeFragment.class.getName());
+			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
+			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_ROOT, true);
+			activity.onPageChanged(intent);
+		}
+	};
 
 }

@@ -6,6 +6,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.view.View;
@@ -20,6 +21,8 @@ import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.ChildSongActivity;
+import com.myandb.singsong.activity.RootActivity;
+import com.myandb.singsong.fragment.UserHomeFragment;
 import com.myandb.singsong.model.Activity;
 import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Notification;
@@ -179,15 +182,19 @@ public class Listeners {
 			@Override
 			public void onClick(View v) {
 				if (user != null) {
+					BaseActivity activity = (BaseActivity) context;
 					User currentUser = Authenticator.getUser();
 					
-					if (user.getId() != currentUser.getId()) {
+					if (currentUser.getId() != user.getId()) {
 						Gson gson = Utility.getGsonInstance();
 						String userInJson = gson.toJson(user, User.class);
+						Bundle bundle = new Bundle();
+						bundle.putString(UserHomeFragment.EXTRA_THIS_USER, userInJson);
 						
-//						Intent intent = new Intent(context, ProfileRootActivity.class);
-//						intent.putExtra(ProfileRootActivity.INTENT_USER, userInJson);
-//						context.startActivity(intent);
+						Intent intent = new Intent(context, RootActivity.class);
+						intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, UserHomeFragment.class.getName());
+						intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
+						activity.onPageChanged(intent);
 					}
 				}
 			}
