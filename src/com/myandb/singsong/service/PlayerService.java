@@ -52,6 +52,8 @@ public class PlayerService extends Service {
 			tempFile = null;
 		}
 		
+		streamPlayer = new StreamPlayer(this);
+		
 		TelephonyManager phoneManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
 		phoneManager.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
 	}
@@ -91,16 +93,13 @@ public class PlayerService extends Service {
 			throw new IllegalArgumentException();
 		}
 		
-		listener.onPlay(PlayEvent.LOADING);
-		
 		try {
-			if (streamPlayer == null) {
-				streamPlayer = new StreamPlayer(this);
-			}
 			streamPlayer.setOnPlayEventListener(listener);
 			
 			if (isNewSong(song)) {
+				listener.onPlay(PlayEvent.LOADING);
 				thisSong = song;
+				
 				try {
 					clearPreviousNotification();
 					

@@ -19,7 +19,6 @@ import com.google.gson.Gson;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.ChildSongActivity;
-import com.myandb.singsong.activity.PlayerActivity;
 import com.myandb.singsong.model.Activity;
 import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Notification;
@@ -110,7 +109,7 @@ public class Listeners {
 				PlayerService service = null;/*activity.getService();*/
 				
 				if (service != null) {
-					intent.setClass(context, PlayerActivity.class);
+//					intent.setClass(context, PlayerActivity.class);
 //					service.setSong(song);
 					intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				}
@@ -205,9 +204,9 @@ public class Listeners {
 				if (service != null) {
 //					service.setSong(song);
 					
-					Intent intent = new Intent(context, PlayerActivity.class);
-					intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-					context.startActivity(intent);
+//					Intent intent = new Intent(context, PlayerActivity.class);
+//					intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+//					context.startActivity(intent);
 				}
 			}
 		};

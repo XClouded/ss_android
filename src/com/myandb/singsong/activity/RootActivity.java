@@ -108,6 +108,7 @@ public class RootActivity extends BaseActivity {
 		slidingPlayerLayout = (SlidingPlayerLayout) findViewById(R.id.sliding_layout);
 		slidingPlayerLayout.hideActionBarWhenSliding(true);
 		slidingPlayerLayout.setSlidingContainer(R.id.fl_sliding_container);
+		slidingPlayerLayout.hidePanel();
 	}
 	
 	private void configureDrawer() {
@@ -228,6 +229,7 @@ public class RootActivity extends BaseActivity {
 
 	@Override
 	protected void onDestroy() {
+		slidingPlayerLayout.onDestroy();
 		super.onDestroy();
 		uiHelper.onDestroy();
 	}
