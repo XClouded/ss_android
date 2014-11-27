@@ -1,5 +1,7 @@
 package com.myandb.singsong.dialog;
 
+import com.myandb.singsong.R;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -41,7 +43,8 @@ public abstract class BaseDialog extends Dialog {
 	protected void stylingDialog() {
 		DisplayMetrics metrics = new DisplayMetrics();
 		getWindow().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-		getWindow().getAttributes().width = (int) (metrics.widthPixels * 0.85);
+		getWindow().getAttributes().width = (int) (metrics.widthPixels * getWidthPercentage());
+		getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 		getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 	}
 	
@@ -50,6 +53,10 @@ public abstract class BaseDialog extends Dialog {
 		layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
 		layoutParams.dimAmount = DIM_AMOUNT;
 		return layoutParams;
+	}
+	
+	protected float getWidthPercentage() {
+		return 0.85f;
 	}
 	
 	protected abstract void initialize();
