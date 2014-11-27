@@ -1,6 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
+        
+    <RelativeLayout
+        android:id="@+id/music_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin_small"
+        android:layout_alignParentTop="true"
+        android:background="@color/grey" >
+        
+	     <ImageView
+	         android:id="@+id/iv_child_song"
+	         android:layout_alignParentRight="true"
+	         android:layout_centerVertical="true"
+	         android:layout_marginLeft="@dimen/margin_small"
+	         android:src="@drawable/img_collabo"
+	         style="@style/BaseImageView" />
+	     
+	     <TextView
+	         android:id="@+id/tv_singer_name"
+	         android:layout_width="match_parent"
+	         android:layout_toLeftOf="@id/iv_child_song"
+	         android:layout_marginBottom="@dimen/margin_tiny"
+	         android:textColor="@color/font_grey"
+	         style="@style/EllipsizeTextView" />
+	     
+	     <TextView
+	         android:id="@+id/tv_music_title"
+	         android:layout_width="match_parent"
+	         android:layout_alignLeft="@id/tv_singer_name"
+	         android:layout_below="@id/tv_singer_name"
+	         android:layout_toLeftOf="@id/iv_child_song"
+	         android:textColor="@color/font_white"
+	         style="@style/EllipsizeTextView" />
+        
+    </RelativeLayout>
         
     <LinearLayout
         android:id="@+id/wrapper"
@@ -59,9 +95,10 @@
         
     </LinearLayout>
     
-    <com.myandb.singsong.widget.AutoLoadListView
+    <ListView
         android:id="@+id/lv_full_width"
         android:layout_above="@id/wrapper"
+        android:layout_below="@id/music_info"
         android:background="@color/app_bg"
         android:divider="@color/app_bg"
         android:dividerHeight="@dimen/margin"

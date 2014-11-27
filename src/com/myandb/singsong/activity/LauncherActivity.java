@@ -5,9 +5,6 @@ import org.json.JSONObject;
 
 import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response.ErrorListener;
-import com.android.volley.Response.Listener;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.myandb.singsong.App;
 import com.myandb.singsong.GoogleStore;
@@ -17,9 +14,7 @@ import com.myandb.singsong.Store;
 import com.myandb.singsong.dialog.BaseDialog;
 import com.myandb.singsong.event.OnVolleyWeakError;
 import com.myandb.singsong.event.OnVolleyWeakResponse;
-import com.myandb.singsong.fragment.KaraokeFragment;
-import com.myandb.singsong.model.Music;
-import com.myandb.singsong.net.OAuthJsonObjectRequest;
+import com.myandb.singsong.fragment.HomeFragment;
 import com.myandb.singsong.net.UrlBuilder;
 
 import android.net.Uri;
@@ -90,45 +85,12 @@ public class LauncherActivity extends Activity {
 		final int enterAnim = android.R.anim.fade_in;
 		final int exitAnim = android.R.anim.fade_out;
 		
-		/*
-		Intent intent = new Intent(this, UpActivity.class);
-		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, KaraokeFragment.class.getName());
+		Intent intent = new Intent(this, RootActivity.class);
+		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, HomeFragment.class.getName());
 		intent.putExtra(RootActivity.EXTRA_NOTICE_ID, noticeId);
-		*/
-		
-		// test code
-		UrlBuilder urlBuilder = new UrlBuilder();
-		String url = urlBuilder.s("musics").s(39).toString();
-		OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
-				Method.GET, url, null,
-				new Listener<JSONObject>() {
-
-					@Override
-					public void onResponse(JSONObject response) {
-						Intent intent = new Intent(LauncherActivity.this, UpActivity.class);
-						intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, KaraokeFragment.class.getName());
-						intent.putExtra(UpActivity.EXTRA_FULL_SCREEN, true);
-						Bundle bundle = new Bundle();
-						bundle.putString(KaraokeFragment.EXTRA_MUSIC, response.toString());
-						intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
-						startActivity(intent);
-					}
-				}, new ErrorListener() {
-
-					@Override
-					public void onErrorResponse(VolleyError error) {
-						
-					}
-		});
-		RequestQueue queue = ((App) getApplicationContext()).getQueueInstance();
-		queue.add(request);
-		// end test code
-		
-		/*
 		startActivity(intent);
 		overridePendingTransition(enterAnim, exitAnim);
 		finish();
-		*/
 	}
 
 	private static class VersionDialog extends BaseDialog {

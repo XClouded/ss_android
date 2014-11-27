@@ -12,7 +12,6 @@ import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
-import com.myandb.singsong.activity.PlayerActivity;
 import com.myandb.singsong.event.OnVolleyWeakError;
 import com.myandb.singsong.event.OnVolleyWeakResponse;
 import com.myandb.singsong.model.Comment;
@@ -24,12 +23,9 @@ public class DeleteCommentDialog extends BaseDialog {
 	private ImageView ivCancel;
 	private Button btnDeleteComment;
 	private Comment<?> comment;
-	private PlayerActivity parent;
 
 	public DeleteCommentDialog(Context context) {
 		super(context, android.R.style.Theme_Translucent_NoTitleBar);
-		
-		parent = (PlayerActivity) context;
 	}
 
 	@Override
@@ -77,7 +73,7 @@ public class DeleteCommentDialog extends BaseDialog {
 	}
 	
 	public void onDeleteSuccess(JSONObject response) {
-		parent.removeComment(comment);
+//		parent.removeComment(comment);
 		
 		dismiss();
 	}

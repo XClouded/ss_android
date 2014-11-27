@@ -3,7 +3,6 @@ package com.myandb.singsong.dialog;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.Context;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,15 +13,16 @@ import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
-import com.myandb.singsong.activity.PlayerActivity;
 import com.myandb.singsong.event.OnVolleyWeakError;
 import com.myandb.singsong.event.OnVolleyWeakResponse;
 import com.myandb.singsong.image.ImageHelper;
-import com.myandb.singsong.model.Comment;
 import com.myandb.singsong.model.Song;
+import com.myandb.singsong.model.SongComment;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.OAuthJsonObjectRequest;
 import com.myandb.singsong.net.UrlBuilder;
+import com.myandb.singsong.secure.Authenticator;
+import com.myandb.singsong.widget.SlidingPlayerLayout;
 
 public class WriteCommentDialog extends BaseDialog {
 	
@@ -30,16 +30,15 @@ public class WriteCommentDialog extends BaseDialog {
 	private ImageView ivWriterPhoto;
 	private EditText etComment;
 	private Button btnSubmit;
-	private PlayerActivity parent;
 	private User user;
 	private Song song;
+	private SlidingPlayerLayout layout;
 
-	public WriteCommentDialog(Context context, User user, Song song) {
-		super(context, android.R.style.Theme_Translucent_NoTitleBar);
+	public WriteCommentDialog(SlidingPlayerLayout layout) {
+		super(layout.getContext(), android.R.style.Theme_Translucent_NoTitleBar);
 		
-		parent = (PlayerActivity) context;
-		this.user = user;
-		this.song = song;
+		this.layout = layout;
+		this.user = Authenticator.getUser();
 	}
 
 	@Override
@@ -51,13 +50,15 @@ public class WriteCommentDialog extends BaseDialog {
 		etComment = (EditText)findViewById(R.id.et_comment);
 		btnSubmit = (Button)findViewById(R.id.btn_submit);
 	}
+	
+	public void setSong(Song song) {
+		this.song = song;
+	}
 
 	@Override
 	protected void setupView() {
-		if (user != null && song != null) {
-			ImageHelper.displayPhoto(user, ivWriterPhoto);
-			btnSubmit.setOnClickListener(submitClickListener);
-		}
+		ImageHelper.displayPhoto(user, ivWriterPhoto);
+		btnSubmit.setOnClickListener(submitClickListener);
 		
 		ivCancel.setOnClickListener(new View.OnClickListener() {
 			
@@ -65,7 +66,6 @@ public class WriteCommentDialog extends BaseDialog {
 			public void onClick(View v) {
 				WriteCommentDialog.this.dismiss();
 			}
-			
 		});
 	}
 
@@ -73,7 +73,7 @@ public class WriteCommentDialog extends BaseDialog {
 	public void dismiss() {
 		super.dismiss();
 		
-		parent.closeEditText(etComment);
+//		parent.closeEditText(etComment);
 	}
 
 	private View.OnClickListener submitClickListener = new View.OnClickListener() {
@@ -85,7 +85,7 @@ public class WriteCommentDialog extends BaseDialog {
 			String content = etComment.getText().toString();
 			
 			if (content.trim().length() > 0) {
-				parent.showProgressDialog();
+//				parent.showProgressDialog();
 				
 				JSONObject message = new JSONObject();
 				try {
@@ -99,29 +99,29 @@ public class WriteCommentDialog extends BaseDialog {
 				String url = urlBuilder.s("songs").s(song.getId()).s("comments").toString();
 				OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
 						Method.POST, url, message,
-						new OnVolleyWeakResponse<WriteCommentDialog, JSONObject>(WriteCommentDialog.this, "onSubmitSuccess", Comment.class),
+						new OnVolleyWeakResponse<WriteCommentDialog, JSONObject>(WriteCommentDialog.this, "onSubmitSuccess", SongComment.class),
 						new OnVolleyWeakError<WriteCommentDialog>(WriteCommentDialog.this, "onSubmitError")
 				);
 				
-				RequestQueue queue = ((App) parent.getApplicationContext()).getQueueInstance();
+				RequestQueue queue = ((App) getContext().getApplicationContext()).getQueueInstance();
 				queue.add(request);
 				
 				WriteCommentDialog.this.dismiss();
 			} else {
-				Toast.makeText(parent, parent.getString(R.string.t_comment_length_policy), Toast.LENGTH_SHORT).show();
+				Toast.makeText(getContext().getApplicationContext(), getContext().getString(R.string.t_comment_length_policy), Toast.LENGTH_SHORT).show();
 			}
 		}
 	};
 	
-	public void onSubmitSuccess(Comment<?> comment) {
-		parent.insertComment(comment);
-		parent.dismissProgressDialog();
+	public void onSubmitSuccess(SongComment comment) {
+		layout.addComment(comment);
+//		parent.dismissProgressDialog();
 		
 		btnSubmit.setEnabled(true);
 	}
 	
 	public void onSubmitError() {
-		parent.dismissProgressDialog();
+//		parent.dismissProgressDialog();
 		
 		btnSubmit.setEnabled(true);
 	}

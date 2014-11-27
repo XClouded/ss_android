@@ -1,10 +1,7 @@
 package com.myandb.singsong.activity;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -27,28 +24,20 @@ public class UpActivity extends BaseActivity {
 		isFullScreen = getIntent().getBooleanExtra(EXTRA_FULL_SCREEN, false);
 		shouldStop = getIntent().getBooleanExtra(EXTRA_SHOULD_STOP, false);
 		if (isFullScreen) {
-			setWindowFullScreenCompat();
+			setWindowFullScreen();
 		}
 		
-		setContentView(R.layout.activity_up);
+		setContentView(R.layout.content);
 		
 		replaceContentFragmentFromIntent(getIntent());
 	}
 	
-	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-	private void setWindowFullScreenCompat() {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-			View decorView = getWindow().getDecorView();
-			int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-			decorView.setSystemUiVisibility(uiOptions);
-			getSupportActionBar().hide();
-		} else {
-			requestWindowFeature(Window.FEATURE_NO_TITLE);
-			getWindow().setFlags(
-					WindowManager.LayoutParams.FLAG_FULLSCREEN, 
-					WindowManager.LayoutParams.FLAG_FULLSCREEN
-			);
-		}
+	private void setWindowFullScreen() {
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getWindow().setFlags(
+				WindowManager.LayoutParams.FLAG_FULLSCREEN, 
+				WindowManager.LayoutParams.FLAG_FULLSCREEN
+		);
 	}
 
 	@Override
@@ -74,6 +63,8 @@ public class UpActivity extends BaseActivity {
 			startActivity(intent);
 		} else if (isComponentOf(intent, UpActivity.class)) {
 			startActivity(intent);
+		} else {
+			replaceContentFragmentFromIntent(intent);
 		}
 	}
 

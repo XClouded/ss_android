@@ -48,7 +48,7 @@ public class WithdrawDialog extends BaseDialog {
 			
 			@Override
 			public void onClick(View v) {
-				parent.showProgressDialog();
+//				parent.showProgressDialog();
 				UrlBuilder urlBuilder = new UrlBuilder();
 				String url = urlBuilder.s("users").toString();
 				
@@ -76,7 +76,7 @@ public class WithdrawDialog extends BaseDialog {
 		Authenticator auth = new Authenticator();
 		auth.logout();
 		
-		parent.dismissProgressDialog();
+//		parent.dismissProgressDialog();
 		parent.finish();
 	}
 	

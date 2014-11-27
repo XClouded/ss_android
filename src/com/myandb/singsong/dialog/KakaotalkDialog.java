@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.myandb.singsong.R;
-import com.myandb.singsong.activity.PlayerActivity;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.User;
 
@@ -23,12 +22,10 @@ public class KakaotalkDialog extends BaseDialog {
 	private EditText etOptionalMessage;
 	private Button btnSubmit;
 	private User user;
-	private PlayerActivity parent;
 
 	public KakaotalkDialog(Context context, User user) {
 		super(context, android.R.style.Theme_Translucent_NoTitleBar);
 		
-		parent = (PlayerActivity) context;
 		this.user = user;
 	}
 	
@@ -79,8 +76,8 @@ public class KakaotalkDialog extends BaseDialog {
 		
 		if (etOptionalMessage != null) {
 			etOptionalMessage.setText("");
-			InputMethodManager imm = (InputMethodManager) parent.getSystemService(Context.INPUT_METHOD_SERVICE);
-			imm.hideSoftInputFromWindow(etOptionalMessage.getWindowToken(), 0);
+//			InputMethodManager imm = (InputMethodManager) parent.getSystemService(Context.INPUT_METHOD_SERVICE);
+//			imm.hideSoftInputFromWindow(etOptionalMessage.getWindowToken(), 0);
 		}
 	}
 	
@@ -101,7 +98,7 @@ public class KakaotalkDialog extends BaseDialog {
 			intent.putExtra(Intent.EXTRA_TEXT, message);
 			intent.setPackage("com.kakao.talk");
 			
-			parent.startActivity(intent);
+//			parent.startActivity(intent);
 			
 			KakaotalkDialog.this.dismiss();
 		}

@@ -3,6 +3,9 @@ package com.myandb.singsong.net;
 import org.json.JSONArray;
 
 import android.content.Context;
+import android.widget.AbsListView;
+import android.widget.ListView;
+import android.widget.AbsListView.OnScrollListener;
 
 import com.android.volley.RequestQueue;
 import com.myandb.singsong.App;
@@ -94,6 +97,33 @@ public class GradualLoader {
 	public boolean isLoadable() {
 		return urlBuilder != null;
 	}
+	
+	public void setListView(ListView listView) {
+		listView.setOnScrollListener(scrollListener);
+	}
+	
+	private OnScrollListener scrollListener = new OnScrollListener() {
+		
+		private static final int VISIABLE_THRESHOLD = 10; 
+        private int previousTotal = 0;
+		
+		@Override
+		public void onScrollStateChanged(AbsListView view, int scrollState) {}
+		
+		@Override
+		public void onScroll(AbsListView view, int firstVisibleItem,
+			int visibleItemCount, int totalItemCount) {
+			if (isLoading()) {
+                if (totalItemCount > previousTotal) {
+                	previousTotal = totalItemCount;
+                }
+            } else {
+            	if ((totalItemCount - visibleItemCount) <= (firstVisibleItem + VISIABLE_THRESHOLD)) {
+            		load();
+            	}
+            }
+		}
+	};
 	
 	public interface OnLoadCompleteListener {
 		

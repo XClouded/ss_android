@@ -12,44 +12,10 @@
         android:paddingBottom="@dimen/margin_small"
         android:background="@drawable/bg_play_song" >
         
-        <RelativeLayout
-            android:id="@+id/music_info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_small" >
-            
-	        <ImageView
-	            android:id="@+id/iv_child_song"
-	            android:layout_alignParentRight="true"
-	            android:layout_centerVertical="true"
-	            android:layout_marginLeft="@dimen/margin_small"
-	            android:src="@drawable/img_collabo"
-	            style="@style/BaseImageView" />
-	        
-	        <TextView
-	            android:id="@+id/tv_singer_name"
-	            android:layout_width="match_parent"
-	            android:layout_toLeftOf="@id/iv_child_song"
-	            android:layout_marginBottom="@dimen/margin_tiny"
-	            android:textColor="@color/font_grey"
-	            style="@style/EllipsizeTextView" />
-	        
-	        <TextView
-	            android:id="@+id/tv_music_title"
-	            android:layout_width="match_parent"
-	            android:layout_alignLeft="@id/tv_singer_name"
-	            android:layout_below="@id/tv_singer_name"
-	            android:layout_toLeftOf="@id/iv_child_song"
-	            android:textColor="@color/font_white"
-	            style="@style/EllipsizeTextView" />
-            
-        </RelativeLayout>
-        
         <LinearLayout
             android:id="@+id/image_wrapper"
             android:layout_width="match_parent"
             android:layout_height="@dimen/compat_song_image_height"
-            android:layout_below="@id/music_info"
             android:baselineAligned="false"
             android:orientation="horizontal" >
             

@@ -1,7 +1,12 @@
 package com.myandb.singsong.fragment;
 
+import org.json.JSONArray;
+
 import com.myandb.singsong.R;
+import com.myandb.singsong.adapter.HolderAdapter;
 import com.myandb.singsong.net.GradualLoader;
+import com.myandb.singsong.net.GradualLoader.OnLoadCompleteListener;
+import com.myandb.singsong.net.UrlBuilder;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -9,8 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AbsListView.OnScrollListener;
-import android.widget.AbsListView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
@@ -42,6 +45,14 @@ public abstract class ListFragment extends BaseFragment {
 		emptyView = inflateEmptyView(inflater);
 		listHeaderView = inflateListHeaderView(inflater);
 		fixedHeaderView = inflateFixedHeaderView(inflater);
+		
+		if (emptyView != null) {
+			listView.setEmptyView(emptyView);
+		}
+		
+		if (listHeaderView != null) {
+			listView.addHeaderView(listHeaderView);
+		}
 	}
 
 	@Override
@@ -54,15 +65,7 @@ public abstract class ListFragment extends BaseFragment {
 
 	@Override
 	protected void setupViews() {
-		if (emptyView != null) {
-			listView.setEmptyView(emptyView);
-		}
-		
-		if (listHeaderView != null) {
-			listView.addHeaderView(listHeaderView);
-		}
-		
-		listView.setOnScrollListener(scrollListener);
+		loader.setListView(listView);
 		
 		if (fixedHeaderView != null) {
 			if (fixedHeaderContainer instanceof ViewGroup) {
@@ -76,31 +79,18 @@ public abstract class ListFragment extends BaseFragment {
 		}
 	}
 	
-	private OnScrollListener scrollListener = new OnScrollListener() {
-		
-		private static final int VISIABLE_THRESHOLD = 10; 
-        private int previousTotal = 0;
-		
-		@Override
-		public void onScrollStateChanged(AbsListView view, int scrollState) {}
-		
-		@Override
-		public void onScroll(AbsListView view, int firstVisibleItem,
-			int visibleItemCount, int totalItemCount) {
-			if (loader.isLoading()) {
-                if (totalItemCount > previousTotal) {
-                	previousTotal = totalItemCount;
-                }
-            } else {
-            	if ((totalItemCount - visibleItemCount) <= (firstVisibleItem + VISIABLE_THRESHOLD)) {
-            		loader.load();
-            	}
-            }
-		}
-	};
-	
-	public void setAdapter(ListAdapter adapter) {
+	public void setAdapter(final ListAdapter adapter) {
 		listView.setAdapter(adapter);
+		getGradualLoader().setOnLoadCompleteListener(new OnLoadCompleteListener() {
+			
+			@Override
+			public void onComplete(JSONArray response) {
+				if (adapter instanceof HolderAdapter) {
+					setListShown(true);
+					((HolderAdapter<?, ?>) adapter).addAll(response);
+				}
+			}
+		});
 	}
 	
 	public ListAdapter getAdapter() {
@@ -109,6 +99,14 @@ public abstract class ListFragment extends BaseFragment {
 	
 	public GradualLoader getGradualLoader() {
 		return loader;
+	}
+	
+	public void setUrlBuilder(UrlBuilder urlBuilder) {
+		getGradualLoader().setUrlBuilder(urlBuilder);
+	}
+	
+	public void load() {
+		getGradualLoader().load();
 	}
 	
 	public void setListShown(boolean shown) {

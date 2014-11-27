@@ -52,6 +52,8 @@ public class PlayerService extends Service {
 			tempFile = null;
 		}
 		
+		streamPlayer = new StreamPlayer(this);
+		
 		TelephonyManager phoneManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
 		phoneManager.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
 	}
@@ -86,24 +88,24 @@ public class PlayerService extends Service {
 		super.onDestroy();
 	}
 	
-	public void startPlaying(Song song, OnPlayEventListener listener) {
+	public void startPlaying(Song song) {
 		if (song == null) {
 			throw new IllegalArgumentException();
 		}
 		
-		listener.onPlay(PlayEvent.LOADING);
+		OnPlayEventListener listener = streamPlayer.getOnPlayEventListener();
 		
 		try {
-			if (streamPlayer == null) {
-				streamPlayer = new StreamPlayer(this);
-			}
 			streamPlayer.setOnPlayEventListener(listener);
 			
 			if (isNewSong(song)) {
 				thisSong = song;
+				listener.onPlay(PlayEvent.LOADING);
+				
 				try {
 					clearPreviousNotification();
 					
+					streamPlayer.pause();
 					streamPlayer.reset();
 					streamPlayer.setDataSource(getCompatDataSource(thisSong.getAudioUrl()));
 					streamPlayer.prepareAsync();

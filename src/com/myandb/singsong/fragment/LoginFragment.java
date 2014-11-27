@@ -3,7 +3,6 @@ package com.myandb.singsong.fragment;
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
-import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,9 +10,9 @@ import org.json.JSONObject;
 import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.facebook.Request;
 import com.facebook.Request.GraphUserCallback;
 import com.facebook.Response;
-import com.facebook.Session.Builder;
 import com.facebook.Session.OpenRequest;
 import com.facebook.Session.StatusCallback;
 import com.facebook.Session;
@@ -24,8 +23,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
-import com.myandb.singsong.activity.OldBaseActivity;
-import com.myandb.singsong.activity.MainActivity;
+import com.myandb.singsong.activity.BaseActivity;
+import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.event.OnVolleyWeakError;
 import com.myandb.singsong.event.OnVolleyWeakResponse;
 import com.myandb.singsong.event.OnCompleteWeakListener;
@@ -36,23 +35,23 @@ import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.secure.Encryption;
 import com.myandb.singsong.util.Utility;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.Html;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class LoginFragment extends Fragment {
+public class LoginFragment extends BaseFragment {
 	
 	public static final String FILE_USER_PHOTO = "user_photo";
 	
@@ -62,83 +61,72 @@ public class LoginFragment extends Fragment {
 	private Button btnToJoin;
 	private Button btnFacebook;
 	private TextView tvFindPassword;
-	private List<String> permissions;
-	private RequestQueue requestQueue;
+	private String facebookToken;
 	private int colorWhite;
 	private int colorGrey;
-	private String facebookToken;
 	
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		
-		if (Authenticator.isLoggedIn()) {
-			getActivity().finish();
-			
-			// Report to server
-			// Logged in user can not access this page
-		} else {
-			requestQueue = ((App) getActivity().getApplicationContext()).getQueueInstance();
-			
-			colorWhite = getResources().getColor(R.color.white);
-			colorGrey = getResources().getColor(R.color.font_grey);
-			
-			permissions = Arrays.asList("email");
-			Session session = Session.getActiveSession();
-			if (session == null) {
-				session = new Session(getActivity());
-				Session.setActiveSession(session);
-			}
-		}
-	}
-	
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.fragment_login, container, false);
+	protected int getResourceId() {
+		return R.layout.fragment_login;
 	}
 
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		
-		View view = getView();
-		
+	protected void onArgumentsReceived(Bundle bundle) {
+		// No argument
+	}
+
+	@Override
+	protected void onViewInflated(View view, LayoutInflater inflater) {
 		btnLogin = (Button) view.findViewById(R.id.btn_login);
 		btnToJoin = (Button) view.findViewById(R.id.btn_signup);
 		btnFacebook = (Button) view.findViewById(R.id.btn_facebook);
 		etUsername = (EditText) view.findViewById(R.id.et_user_username);
 		etPassword = (EditText) view.findViewById(R.id.et_user_password);
 		tvFindPassword = (TextView) view.findViewById(R.id.tv_find_password);
+	}
+
+	@Override
+	protected void initialize(Activity activity) {
+		if (Authenticator.isLoggedIn()) {
+			// Report to server
+			// Logged in user can not access this page
+			getActivity().finish();
+			return;
+		}
 		
+		colorWhite = getResources().getColor(R.color.white);
+		colorGrey = getResources().getColor(R.color.font_grey);
+	}
+
+	@Override
+	protected void setupViews() {
 		etUsername.setTag(false);
 		etPassword.setTag(false);
-		etUsername.addTextChangedListener(idChangeListener);
+		etUsername.addTextChangedListener(usernameChangeListener);
 		etPassword.addTextChangedListener(passwordChangeListener);
 		
 		btnLogin.setEnabled(false);
 		btnLogin.setOnClickListener(loginClickListener);
 		btnFacebook.setOnClickListener(facebookLoginClickListener);
-		btnToJoin.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				OldBaseActivity parent = (OldBaseActivity) getActivity();
-				
-				if (parent != null) {
-					parent.replaceFragment(new JoinFragment());				
-				}
-			}
-		});
+		btnToJoin.setOnClickListener(toJoinClickListener);
 		
+		tvFindPassword.setMovementMethod(LinkMovementMethod.getInstance());
+		tvFindPassword.setText(getFindPasswordHtml());
+	}
+	
+	private Spanned getFindPasswordHtml() {
 		UrlBuilder urlBuilder = new UrlBuilder();
 		String findHtml = "비밀번호가 기억이 안나시나요? ";
 		findHtml += Utility.getHtmlAnchor(urlBuilder.s("w").s("find_password").toString(), "비밀번호 찾기");
-		
-		tvFindPassword.setMovementMethod(LinkMovementMethod.getInstance());
-		tvFindPassword.setText(Html.fromHtml(findHtml));
+		return Html.fromHtml(findHtml);
+	}
+
+	@Override
+	protected void onDataChanged() {
+		// Nothing to implement
 	}
 	
-	private TextWatcher idChangeListener = new TextWatcher() {
+	private TextWatcher usernameChangeListener = new TextWatcher() {
 		
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -146,8 +134,6 @@ public class LoginFragment extends Fragment {
 			
 			if (username.contains(" ") || username.contains("\n") || username.length() < 4) {
 				etUsername.setTag(false);
-				
-				// Notify to user why it is invalid
 			} else {
 				etUsername.setTag(true);
 			}
@@ -171,8 +157,6 @@ public class LoginFragment extends Fragment {
 			
 			if (password.contains(" ") || password.contains("\n") || password.length() < 4) {
 				etPassword.setTag(false);
-				
-				// Notify to user why it is invalid
 			} else {
 				etPassword.setTag(true);
 			}
@@ -211,7 +195,6 @@ public class LoginFragment extends Fragment {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		
 		Session.getActiveSession().onActivityResult(getActivity(), requestCode, resultCode, data);
 	}
 	
@@ -219,14 +202,16 @@ public class LoginFragment extends Fragment {
 		
 		@Override
 		public void onClick(View v) {
-			OpenRequest openRequest = new OpenRequest(LoginFragment.this);
-			openRequest.setPermissions(permissions);
-			openRequest.setCallback(statusCallback);
-			openRequest.setLoginBehavior(SessionLoginBehavior.SSO_WITH_FALLBACK);
+			OpenRequest request = new OpenRequest(LoginFragment.this);
+			request.setPermissions(Arrays.asList("email"));
+			request.setLoginBehavior(SessionLoginBehavior.SSO_WITH_FALLBACK);
 			
-			Session session = new Builder(getActivity()).build();
-			Session.setActiveSession(session);
-			session.openForRead(openRequest);
+			Session session = Session.getActiveSession();
+			if (session == null) {
+				session = new Session(getActivity().getApplicationContext());
+			}
+			session.addCallback(statusCallback);
+			session.openForRead(request);
 		}
 		
 	};
@@ -236,11 +221,10 @@ public class LoginFragment extends Fragment {
 		@Override
 		public void call(Session session, SessionState state, Exception exception) {
 			if (state.isOpened()) {
-				com.facebook.Request.newMeRequest(session, new GetUserCallback(LoginFragment.this)).executeAsync();
+				Request.newMeRequest(session, new GetUserCallback(LoginFragment.this)).executeAsync();
 				facebookToken = session.getAccessToken();
 			}
 		}
-		
 	};
 	
 	private static class GetUserCallback implements GraphUserCallback {
@@ -259,23 +243,34 @@ public class LoginFragment extends Fragment {
 				reference.loginByFacebook(user, reference.getFacebookToken());
 			}
 		}
-		
 	}
 	
 	public String getFacebookToken() {
 		return facebookToken;
 	}
+	
+	private OnClickListener toJoinClickListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			Intent intent = new Intent();
+			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, JoinFragment.class.getName());
+			if (getActivity() instanceof BaseActivity) {
+				((BaseActivity) getActivity()).onPageChanged(intent);
+			}
+		}
+	};
 
 	private OnClickListener loginClickListener = new OnClickListener() {
 		
 		@Override
 		public void onClick(View v) {
-			loginDirect();
+			loginByEmail();
 		}
 		
 	};
 	
-	private void loginDirect() {
+	private void loginByEmail() {
 		try {
 			JSONObject message = new JSONObject();
 			Encryption encryption = new Encryption();
@@ -318,8 +313,7 @@ public class LoginFragment extends Fragment {
 	}
 	
 	private void requestLogin(JSONObject message) {
-		OldBaseActivity parent = (OldBaseActivity) getActivity();
-		parent.showProgressDialog();
+		// show progress bar
 		
 		UrlBuilder urlBuilder = new UrlBuilder();
 		JsonObjectRequest request = new JsonObjectRequest(
@@ -328,9 +322,8 @@ public class LoginFragment extends Fragment {
 				new OnVolleyWeakError<LoginFragment>(this, "onLoginError")
 		);
 		
-		if (requestQueue != null) {
-			requestQueue.add(request);
-		}
+		RequestQueue queue = ((App) getActivity().getApplicationContext()).getQueueInstance();
+		queue.add(request);
 	}
 	
 	public void onLoginSuccess(JSONObject response) {
@@ -364,17 +357,17 @@ public class LoginFragment extends Fragment {
 	}
 	
 	public void onLoginComplete() {
-		((OldBaseActivity) getActivity()).dismissProgressDialog();
+		// dismiss progress bar
 		
-		Intent intent = new Intent(getActivity(), MainActivity.class);
+		Intent intent = new Intent(getActivity(), RootActivity.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		getActivity().startActivity(intent);
 		getActivity().finish();
 	}
 	
 	public void onLoginError() {
-		((OldBaseActivity) getActivity()).dismissProgressDialog();
-
+		// dismiss progress bar
+		
 		Toast.makeText(getActivity(), getString(R.string.t_login_failed), Toast.LENGTH_SHORT).show();
 	}
 

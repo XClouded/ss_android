@@ -6,6 +6,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.view.View;
@@ -18,10 +19,10 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
+import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.ChildSongActivity;
-import com.myandb.singsong.activity.OldBaseActivity;
-import com.myandb.singsong.activity.PlayerActivity;
-import com.myandb.singsong.activity.ProfileRootActivity;
+import com.myandb.singsong.activity.RootActivity;
+import com.myandb.singsong.fragment.UserHomeFragment;
 import com.myandb.singsong.model.Activity;
 import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Notification;
@@ -98,8 +99,8 @@ public class Listeners {
 			
 			switch(sourceType) {
 			case Activity.TYPE_CREATE_FRIENDSHIP:
-				intent.setClass(context, ProfileRootActivity.class);
-				intent.putExtra(ProfileRootActivity.INTENT_USER, response.toString());
+//				intent.setClass(context, ProfileRootActivity.class);
+//				intent.putExtra(ProfileRootActivity.INTENT_USER, response.toString());
 				break;
 				
 			case Activity.TYPE_CREATE_COMMENT:
@@ -108,11 +109,11 @@ public class Listeners {
 			case Activity.TYPE_CREATE_LEAF_SONG:
 				Gson gson = Utility.getGsonInstance();
 				Song song = gson.fromJson(response.toString(), Song.class);
-				OldBaseActivity activity = (OldBaseActivity) context;
-				PlayerService service = activity.getService();
+//				OldBaseActivity activity = (OldBaseActivity) context;
+				PlayerService service = null;/*activity.getService();*/
 				
 				if (service != null) {
-					intent.setClass(context, PlayerActivity.class);
+//					intent.setClass(context, PlayerActivity.class);
 //					service.setSong(song);
 					intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				}
@@ -181,15 +182,19 @@ public class Listeners {
 			@Override
 			public void onClick(View v) {
 				if (user != null) {
+					BaseActivity activity = (BaseActivity) context;
 					User currentUser = Authenticator.getUser();
 					
-					if (user.getId() != currentUser.getId()) {
+					if (currentUser.getId() != user.getId()) {
 						Gson gson = Utility.getGsonInstance();
 						String userInJson = gson.toJson(user, User.class);
+						Bundle bundle = new Bundle();
+						bundle.putString(UserHomeFragment.EXTRA_THIS_USER, userInJson);
 						
-						Intent intent = new Intent(context, ProfileRootActivity.class);
-						intent.putExtra(ProfileRootActivity.INTENT_USER, userInJson);
-						context.startActivity(intent);
+						Intent intent = new Intent(context, RootActivity.class);
+						intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, UserHomeFragment.class.getName());
+						intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
+						activity.changePage(intent);
 					}
 				}
 			}
@@ -201,16 +206,9 @@ public class Listeners {
 			
 			@Override
 			public void onClick(View v) {
-				OldBaseActivity activity = (OldBaseActivity) context;
-				PlayerService service = activity.getService();
-				
-				if (service != null) {
-//					service.setSong(song);
-					
-					Intent intent = new Intent(context, PlayerActivity.class);
-					intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-					context.startActivity(intent);
-				}
+				BaseActivity activity = (BaseActivity) context;
+				PlayerService service = activity.getPlayerService();
+				service.startPlaying(song);
 			}
 		};
 	}

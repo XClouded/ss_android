@@ -12,21 +12,21 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Request.Method;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
-import com.myandb.singsong.fragment.ProfileRootFragment;
+import com.myandb.singsong.fragment.UserHomeFragment;
 import com.myandb.singsong.model.Friendship;
 import com.myandb.singsong.net.OAuthJustRequest;
 import com.myandb.singsong.net.UrlBuilder;
 
 public class UpdateFriendshipDialog extends BaseDialog {
 	
-	private ProfileRootFragment parent;
+	private UserHomeFragment parent;
 	private ImageView ivCancel;
 	private Button btnAllowPush;
 	private Button btnUnfollow;
 	private Button btnRecommendArtist;
 	private Friendship friendship;
 
-	public UpdateFriendshipDialog(ProfileRootFragment fragment) {
+	public UpdateFriendshipDialog(UserHomeFragment fragment) {
 		super(fragment.getActivity(), android.R.style.Theme_Translucent_NoTitleBar);
 		
 		this.parent = fragment;

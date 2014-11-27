@@ -10,12 +10,7 @@
     sothree:shadowHeight="4dp"
     sothree:paralaxOffset="100dp" >
     
-    <FrameLayout
-        android:id="@+id/fl_content_fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="@dimen/abc_action_bar_default_height"
-        android:background="@color/app_bg" />
+    <include layout="@layout/content" />
 
     <FrameLayout
         android:id="@+id/fl_sliding_container"

@@ -1,5 +1,6 @@
 package com.myandb.singsong.activity;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -18,7 +19,7 @@ import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.util.Utility;
 
-public class SimpleListActivity extends OldBaseActivity {
+public class SimpleListActivity extends Activity {
 	
 	public enum SimpleListType {
 		FOLLOWINGS, FOLLOWERS, LIKINGS, COMMENTS, TRASHED, NOTIFICATION
@@ -152,21 +153,6 @@ public class SimpleListActivity extends OldBaseActivity {
 		default:
 			return null;
 		}
-	}
-
-	@Override
-	protected int getChildLayoutResourceId() {
-		return R.layout.activity_simple_list;
-	}
-
-	@Override
-	protected boolean isRootActivity() {
-		return false;
-	}
-
-	@Override
-	protected boolean enablePlayingThumb() {
-		return true;
 	}
 
 }
