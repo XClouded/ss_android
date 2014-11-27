@@ -14,22 +14,28 @@ public class FrontNoticeDialog extends BaseDialog {
 	private View btnClose;
 	private Notice notice;
 
-	public FrontNoticeDialog(Context context, Notice notice) {
+	public FrontNoticeDialog(Context context) {
 		super(context, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
-		
-		this.notice = notice;
 	}
 
 	@Override
-	protected void initializeView() {
-		setContentView(R.layout.dialog_front_notice);
-		
+	protected void initialize() {
+		// Nothing to run
+	}
+
+	@Override
+	protected int getResourceId() {
+		return R.layout.dialog_front_notice;
+	}
+
+	@Override
+	protected void onViewInflated() {
 		btnClose = findViewById(R.id.btn_close);
 		ivFrontImage = (ImageView) findViewById(R.id.iv_front_image);
 	}
 
 	@Override
-	protected void setupView() {
+	protected void setupViews() {
 		ImageHelper.displayPhoto(notice.getFrontImageUrl(), ivFrontImage);
 		btnClose.setOnClickListener(new View.OnClickListener() {
 			
@@ -37,10 +43,18 @@ public class FrontNoticeDialog extends BaseDialog {
 			public void onClick(View v) {
 //				FileHelper storage = new FileHelper();
 //				storage.readNotice();
-				
-				FrontNoticeDialog.this.dismiss();
+				dismiss();
 			}
 		});
+	}
+	
+	public void setNotice(Notice notice) {
+		this.notice = notice;
+	}
+
+	@Override
+	public void onBackPressed() {
+		return;
 	}
 
 }

@@ -16,53 +16,57 @@ import com.myandb.singsong.secure.Authenticator;
 import android.content.Context;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 
 public class WithdrawDialog extends BaseDialog {
 	
 	private SettingActivity parent;
-	private ImageView ivCancel;
 	private Button btnYes;
 	private Button btnNo;
 
 	public WithdrawDialog(Context context) {
-		super(context, android.R.style.Theme_Translucent_NoTitleBar);
-		
+		super(context);
 		parent = (SettingActivity) context;
 	}
 
 	@Override
-	protected void initializeView() {
-		setContentView(R.layout.dialog_withdraw);
-		
-		ivCancel = (ImageView) findViewById(R.id.iv_cancel);
+	protected void initialize() {
+		// Nothing to run
+	}
+
+	@Override
+	protected int getResourceId() {
+		return R.layout.dialog_withdraw;
+	}
+
+	@Override
+	protected void onViewInflated() {
 		btnYes = (Button) findViewById(R.id.btn_yes);
 		btnNo = (Button) findViewById(R.id.btn_no);
 	}
 
 	@Override
-	protected void setupView() {
-		ivCancel.setOnClickListener(cancelClickListener);
+	protected void setupViews() {
+		btnYes.setOnClickListener(withdrawClickListener);
 		btnNo.setOnClickListener(cancelClickListener);
-		btnYes.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-//				parent.showProgressDialog();
-				UrlBuilder urlBuilder = new UrlBuilder();
-				String url = urlBuilder.s("users").toString();
-				
-				OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
-						Method.DELETE, url, null,
-						new OnVolleyWeakResponse<WithdrawDialog, JSONObject>(WithdrawDialog.this, "onWithdrawSuccess"),
-						new OnVolleyWeakError<WithdrawDialog>(WithdrawDialog.this, "onWithdrawError")
-				);
-				
-				RequestQueue queue = ((App) getContext().getApplicationContext()).getQueueInstance();
-				queue.add(request);
-			}
-		});
 	}
+	
+	private View.OnClickListener withdrawClickListener = new View.OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			UrlBuilder urlBuilder = new UrlBuilder();
+			String url = urlBuilder.s("users").toString();
+			
+			OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
+					Method.DELETE, url, null,
+					new OnVolleyWeakResponse<WithdrawDialog, JSONObject>(WithdrawDialog.this, "onWithdrawSuccess"),
+					new OnVolleyWeakError<WithdrawDialog>(WithdrawDialog.this, "onWithdrawError")
+			);
+			
+			RequestQueue queue = ((App) getContext().getApplicationContext()).getQueueInstance();
+			queue.add(request);
+		}
+	};
 	
 	public void onWithdrawSuccess(JSONObject response) {
 		onWithdrawFinish();
@@ -84,7 +88,7 @@ public class WithdrawDialog extends BaseDialog {
 		
 		@Override
 		public void onClick(View v) {
-			WithdrawDialog.this.dismiss();
+			dismiss();
 		}
 	};
 

@@ -26,7 +26,6 @@ import com.myandb.singsong.widget.SlidingPlayerLayout;
 
 public class WriteCommentDialog extends BaseDialog {
 	
-	private ImageView ivCancel;
 	private ImageView ivWriterPhoto;
 	private EditText etComment;
 	private Button btnSubmit;
@@ -36,19 +35,30 @@ public class WriteCommentDialog extends BaseDialog {
 
 	public WriteCommentDialog(SlidingPlayerLayout layout) {
 		super(layout.getContext(), android.R.style.Theme_Translucent_NoTitleBar);
-		
 		this.layout = layout;
-		this.user = Authenticator.getUser();
 	}
 
 	@Override
-	protected void initializeView() {
-		setContentView(R.layout.dialog_write_comment);
-		
-		ivCancel = (ImageView)findViewById(R.id.iv_cancel);
+	protected void initialize() {
+		user = Authenticator.getUser();
+	}
+
+	@Override
+	protected int getResourceId() {
+		return R.layout.dialog_write_comment;
+	}
+
+	@Override
+	protected void onViewInflated() {
 		ivWriterPhoto = (ImageView)findViewById(R.id.iv_writer_photo);
 		etComment = (EditText)findViewById(R.id.et_comment);
 		btnSubmit = (Button)findViewById(R.id.btn_submit);
+	}
+
+	@Override
+	protected void setupViews() {
+		ImageHelper.displayPhoto(user, ivWriterPhoto);
+		btnSubmit.setOnClickListener(submitClickListener);
 	}
 	
 	public void setSong(Song song) {
@@ -56,23 +66,8 @@ public class WriteCommentDialog extends BaseDialog {
 	}
 
 	@Override
-	protected void setupView() {
-		ImageHelper.displayPhoto(user, ivWriterPhoto);
-		btnSubmit.setOnClickListener(submitClickListener);
-		
-		ivCancel.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				WriteCommentDialog.this.dismiss();
-			}
-		});
-	}
-
-	@Override
 	public void dismiss() {
 		super.dismiss();
-		
 //		parent.closeEditText(etComment);
 	}
 

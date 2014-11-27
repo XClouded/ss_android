@@ -1,8 +1,10 @@
 package com.myandb.singsong.event;
 
+import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.secure.Authenticator;
 
+import android.content.Context;
 import android.view.View;
 import android.view.View.OnClickListener;
 
@@ -18,7 +20,10 @@ public abstract class MemberOnlyClickListener implements OnClickListener {
 	}
 	
 	public void onLoggedOut(View v) {
-		// show login dialog
+		Context context = v.getContext();
+		if (context instanceof BaseActivity) {
+			((BaseActivity) context).showLoginDialog();
+		}
 	}
 	
 	public abstract void onLoggedIn(View v, User user);

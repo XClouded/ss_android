@@ -1,20 +1,10 @@
 package com.myandb.singsong.activity;
 
-import com.facebook.Request;
-import com.facebook.Request.GraphUserCallback;
-import com.facebook.Response;
-import com.facebook.Session;
-import com.facebook.UiLifecycleHelper;
-import com.facebook.Session.StatusCallback;
-import com.facebook.SessionState;
-import com.facebook.model.GraphUser;
 import com.google.android.gcm.GCMRegistrar;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.myandb.singsong.GCMIntentService;
 import com.myandb.singsong.R;
 import com.myandb.singsong.fragment.DrawerFragment;
-import com.myandb.singsong.model.User;
-import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.service.PlayerService;
 import com.myandb.singsong.widget.SlidingPlayerLayout;
 
@@ -29,7 +19,6 @@ import android.support.v4.app.FragmentManager.OnBackStackChangedListener;
 import android.support.v7.app.ActionBar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 public class RootActivity extends BaseActivity {
 	
@@ -38,7 +27,6 @@ public class RootActivity extends BaseActivity {
 	
 	private SlidingMenu drawer;
 	private SlidingPlayerLayout slidingPlayerLayout;
-	private UiLifecycleHelper uiHelper;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +45,6 @@ public class RootActivity extends BaseActivity {
 		startPlayerService();
 		
 		registerGcm();
-		
-		initializeUiHelper(savedInstanceState);
 		
 		showUnreadLatestNotice(getIntent());
 		
@@ -167,82 +153,11 @@ public class RootActivity extends BaseActivity {
 		int readNoticeId = preferences.getInt(key, 0);
 		return latestNoticeId > readNoticeId;
 	}
-	
-	private void initializeUiHelper(Bundle savedInstanceState) {
-		uiHelper = new UiLifecycleHelper(this, sessionStatusCallback);
-		uiHelper.onCreate(savedInstanceState);
-	}
-	
-	private StatusCallback sessionStatusCallback = new StatusCallback() {
-		
-		@Override
-		public void call(Session session, SessionState state, Exception exception) {
-			onSessionStateChanged(session, state, exception);
-		}
-	};
-	
-	private void onSessionStateChanged(Session session, SessionState state, Exception exception) {
-		if (isLoginUserFacebookActivated() && isFacebookSessionOpened(session)) {
-			requestFacebookMe(session);
-		}
-	}
-	
-	private boolean isLoginUserFacebookActivated() {
-		User user = Authenticator.getUser();
-		return user != null && user.isFacebookActivated();
-	}
-	
-	private boolean isFacebookSessionOpened(Session session) {
-		return session != null && session.isOpened();
-	}
-	
-	private void requestFacebookMe(Session session) {
-		Request.newMeRequest(session, new GraphUserCallback() {
-			
-			@Override
-			public void onCompleted(GraphUser user, Response response) {
-				if (user == null) {
-					Toast.makeText(getApplicationContext(), "페이스북 세션이 만료되었습니다. 다시 로그인해주세요.", Toast.LENGTH_SHORT).show();
-					new Authenticator().logout();
-					finish();
-				}
-			}
-		}).executeAsync();
-	}
-	
-	@Override
-	protected void onResumeFragments() {
-		super.onResumeFragments();
-		Session session = Session.getActiveSession();
-		if (session != null && (session.isOpened() || session.isClosed())) {
-			onSessionStateChanged(session, session.getState(), null);
-		}
-		uiHelper.onResume();
-	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-		uiHelper.onPause();
-	}
 
 	@Override
 	protected void onDestroy() {
 		slidingPlayerLayout.onDestroy();
 		super.onDestroy();
-		uiHelper.onDestroy();
-	}
-
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		uiHelper.onActivityResult(requestCode, resultCode, data);
-	}
-
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		uiHelper.onSaveInstanceState(outState);
 	}
 	
 	@Override

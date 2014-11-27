@@ -7,42 +7,44 @@ import android.view.WindowManager;
 
 public abstract class BaseDialog extends Dialog {
 
-	private float dimAmount = 0.5f;
+	private static final float DIM_AMOUNT = 0.5f;
 	
 	public BaseDialog(Context context) {
 		super(context);
+		initialize();
 	}
 	
 	public BaseDialog(Context context, int style) {
 		super(context, style);
+		initialize();
 	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		setDialogDimAmount(DIM_AMOUNT);
+		
+		setContentView(getResourceId());
+		
+		onViewInflated();
+		
+		setupViews();
+	}
+	
+	private void setDialogDimAmount(float dimAmount) {
 		WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
 		layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
-		layoutParams.dimAmount = this.dimAmount;
+		layoutParams.dimAmount = dimAmount;
 		getWindow().setAttributes(layoutParams);
-		this.setCancelable(false);
-		
-		initializeView();
-		setupView();
 	}
 	
-	@Override
-	public void onBackPressed() {
-		return;
-	}
+	protected abstract void initialize();
 	
-	public BaseDialog setDimAmount(float amount) {
-		this.dimAmount = amount;
-		
-		return this;
-	}
+	protected abstract int getResourceId();
 	
-	protected abstract void initializeView();
-	protected abstract void setupView();
+	protected abstract void onViewInflated();
+	
+	protected abstract void setupViews();
 
 }

@@ -23,22 +23,26 @@ public class LoadingDialog extends BaseDialog {
 	
 	public LoadingDialog(Fragment fragment) {
 		super(fragment.getActivity(), android.R.style.Theme_Light_NoTitleBar_Fullscreen);
-		
+	}
+
+	@Override
+	protected void initialize() {
 		try {
 			enabledFontColor = getContext().getResources().getColor(R.color.font_default);
 			disabledFontColor = getContext().getResources().getColor(R.color.font_grey);
 		} catch (NotFoundException e) {
-			e.printStackTrace();
-			
 			enabledFontColor = Color.parseColor("#444444");
 			disabledFontColor = Color.parseColor("#a7a9a6");
 		}
 	}
 
 	@Override
-	protected void initializeView() {
-		setContentView(R.layout.dialog_progress);
-		
+	protected int getResourceId() {
+		return R.layout.dialog_progress;
+	}
+
+	@Override
+	protected void onViewInflated() {
 		pbLoading = (ProgressBar) findViewById(R.id.pb_loading);
 		tvProgressTitle = (TextView) findViewById(R.id.tv_progress_title);
 		btnProgressControl = (Button) findViewById(R.id.btn_progress_control);
@@ -47,13 +51,12 @@ public class LoadingDialog extends BaseDialog {
 	}
 
 	@Override
-	protected void setupView() {
+	protected void setupViews() {
 		titlePrefix = tvProgressTitle.getText().toString();
 	}
 
 	public void setTitlePrefix(String text) {
 		titlePrefix = text;
-		
 		updateProgressBar(0);
 	}
 	
@@ -107,6 +110,11 @@ public class LoadingDialog extends BaseDialog {
 			tvProgressTitle.append(String.valueOf(progress));
 			tvProgressTitle.append("%");
 		}
+	}
+
+	@Override
+	public void onBackPressed() {
+		return;
 	}
 	
 }

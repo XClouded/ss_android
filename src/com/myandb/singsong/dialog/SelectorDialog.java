@@ -25,15 +25,23 @@ public class SelectorDialog extends BaseDialog {
 	}
 
 	@Override
-	protected void initializeView() {
-		setContentView(R.layout.dialog_selector);
-		
+	protected void initialize() {
+		// Nothing to run
+	}
+
+	@Override
+	protected int getResourceId() {
+		return R.layout.dialog_selector;
+	}
+
+	@Override
+	protected void onViewInflated() {
 		btnMale = (Button) findViewById(R.id.btn_select_male);
 		btnFemale = (Button) findViewById(R.id.btn_select_female);
 	}
 
 	@Override
-	protected void setupView() {
+	protected void setupViews() {
 		if (maleName != null) {
 			btnMale.setText(maleName);
 		}
@@ -49,7 +57,7 @@ public class SelectorDialog extends BaseDialog {
 		
 		@Override
 		public void onClick(View view) {
-			SelectorDialog.this.dismiss();
+			dismiss();
 			
 			if (fragment instanceof KaraokeFragment) {
 				KaraokeFragment karaoke = (KaraokeFragment) fragment;
@@ -64,5 +72,10 @@ public class SelectorDialog extends BaseDialog {
 			}
 		}
 	};
+
+	@Override
+	public void onBackPressed() {
+		return;
+	}
 	
 }

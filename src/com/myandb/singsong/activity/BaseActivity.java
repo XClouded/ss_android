@@ -5,11 +5,22 @@ import java.net.URLDecoder;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
+import com.facebook.Request;
+import com.facebook.Response;
+import com.facebook.Session;
+import com.facebook.SessionState;
+import com.facebook.UiLifecycleHelper;
+import com.facebook.Request.GraphUserCallback;
+import com.facebook.Session.StatusCallback;
+import com.facebook.model.GraphUser;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.ExceptionParser;
 import com.google.analytics.tracking.android.ExceptionReporter;
 import com.myandb.singsong.R;
+import com.myandb.singsong.dialog.LoginDialog;
 import com.myandb.singsong.event.WeakRunnable;
+import com.myandb.singsong.model.User;
+import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.service.PlayerService;
 import com.myandb.singsong.service.PlayerServiceConnection;
 
@@ -32,6 +43,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnTouchListener;
+import android.widget.Toast;
 
 public abstract class BaseActivity extends ActionBarActivity {
 	
@@ -43,6 +55,58 @@ public abstract class BaseActivity extends ActionBarActivity {
 	private PlayerServiceConnection serviceConnection;
 	private PlayerService service;
 	private Fragment contentFragment;
+	private LoginDialog loginDialog;
+	private Handler handler;
+	private UiLifecycleHelper uiHelper;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		handler = new Handler(Looper.getMainLooper());
+		uiHelper = new UiLifecycleHelper(this, sessionStatusCallback);
+		uiHelper.onCreate(savedInstanceState);
+	}
+
+	private StatusCallback sessionStatusCallback = new StatusCallback() {
+		
+		@Override
+		public void call(Session session, SessionState state, Exception exception) {
+			onSessionStateChanged(session, state, exception);
+		}
+	};
+	
+	private void onSessionStateChanged(Session session, SessionState state, Exception exception) {
+		if (isLoginUserFacebookActivated() && isFacebookSessionOpened(session)) {
+			if (loginDialog != null && loginDialog.isShowing()) {
+				loginDialog.proceedLoginProcess(session);
+			} else {
+				requestFacebookMe(session);
+			}
+		}
+	}
+	
+	private boolean isLoginUserFacebookActivated() {
+		User user = Authenticator.getUser();
+		return user != null && user.isFacebookActivated();
+	}
+	
+	private boolean isFacebookSessionOpened(Session session) {
+		return session != null && session.isOpened();
+	}
+	
+	private void requestFacebookMe(Session session) {
+		Request.newMeRequest(session, new GraphUserCallback() {
+			
+			@Override
+			public void onCompleted(GraphUser user, Response response) {
+				if (user == null) {
+					Toast.makeText(getApplicationContext(), "페이스북 세션이 만료되었습니다. 다시 로그인해주세요.", Toast.LENGTH_SHORT).show();
+					new Authenticator().logout();
+					finish();
+				}
+			}
+		}).executeAsync();
+	}
 
 	public void changePage(Intent intent) {
 		onPageChanged(intent);
@@ -57,7 +121,6 @@ public abstract class BaseActivity extends ActionBarActivity {
 			e.printStackTrace();
 		}
 		
-		Handler handler = new Handler(Looper.getMainLooper());
 		handler.postDelayed(new WeakRunnable<BaseActivity>(this, "setActionBarIconNoDelay"), 500);
 	}
 	
@@ -208,6 +271,12 @@ public abstract class BaseActivity extends ActionBarActivity {
 	protected void onResumeFragments() {
 		super.onResumeFragments();
 		bindPlayerService();
+		
+		Session session = Session.getActiveSession();
+		if (session != null && (session.isOpened() || session.isClosed())) {
+			onSessionStateChanged(session, session.getState(), null);
+		}
+		uiHelper.onResume();
 	}
 	
 	private void bindPlayerService() {
@@ -217,11 +286,24 @@ public abstract class BaseActivity extends ActionBarActivity {
 			getApplicationContext().bindService(playerIntent, serviceConnection, Context.BIND_AUTO_CREATE);
 		}
 	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		uiHelper.onActivityResult(requestCode, resultCode, data);
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		uiHelper.onSaveInstanceState(outState);
+	}
 	
 	@Override
 	protected void onPause() {
 		super.onPause();
 		unbindPlayerService();
+		uiHelper.onPause();
 	}
 	
 	private void unbindPlayerService() {
@@ -240,11 +322,27 @@ public abstract class BaseActivity extends ActionBarActivity {
 	private void stopEasyTracking() {
 		EasyTracker.getInstance(this).activityStop(this);
 	}
+	
+	public void showLoginDialog() {
+		if (loginDialog == null) {
+			// instantiate
+		}
+		loginDialog.show();
+	}
 
 	@Override
 	protected void onDestroy() {
+		if (loginDialog != null) {
+			loginDialog.dismiss();
+			loginDialog = null;
+		}
+		
+		if (handler != null) {
+			handler.removeCallbacksAndMessages(null);
+			handler = null;
+		}
 		super.onDestroy();
-		// recursiveRecycle
+		uiHelper.onDestroy();
 	}
 	
 	public void onPlayerServiceConnected(PlayerService service) {

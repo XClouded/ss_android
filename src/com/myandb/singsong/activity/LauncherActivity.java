@@ -102,7 +102,10 @@ public class LauncherActivity extends Activity {
 
 		public VersionDialog(Context context) {
 			super(context, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
-			
+		}
+
+		@Override
+		protected void initialize() {
 			store = new GoogleStore();
 			if (isStoreUnavailable(store)) {
 				store = new GoogleStore();
@@ -110,15 +113,18 @@ public class LauncherActivity extends Activity {
 		}
 
 		@Override
-		protected void initializeView() {
-			setContentView(R.layout.dialog_update);
-			
+		protected int getResourceId() {
+			return R.layout.dialog_update;
+		}
+
+		@Override
+		protected void onViewInflated() {
 			btnUpdate = (Button)findViewById(R.id.btn_update);
 			btnExit = (Button)findViewById(R.id.btn_exit);
 		}
 
 		@Override
-		protected void setupView() {
+		protected void setupViews() {
 			btnUpdate.setOnClickListener(toStoreClickListener);
 			btnExit.setOnClickListener(exitClickListener);
 		}
