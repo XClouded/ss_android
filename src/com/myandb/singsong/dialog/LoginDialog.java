@@ -1,13 +1,24 @@
 package com.myandb.singsong.dialog;
 
 import com.facebook.Session;
+import com.myandb.singsong.R;
 
 import android.content.Context;
+import android.view.Gravity;
+import android.view.WindowManager.LayoutParams;
 
 public class LoginDialog extends BaseDialog {
 
 	public LoginDialog(Context context) {
 		super(context);
+	}
+
+	@Override
+	protected LayoutParams getWindowLayoutParams() {
+		LayoutParams layoutParams = super.getWindowLayoutParams();
+		layoutParams.gravity = Gravity.TOP;
+		layoutParams.y = 150;
+		return layoutParams;
 	}
 
 	@Override
@@ -17,7 +28,7 @@ public class LoginDialog extends BaseDialog {
 
 	@Override
 	protected int getResourceId() {
-		return 0;
+		return R.layout.dialog_login;
 	}
 
 	@Override

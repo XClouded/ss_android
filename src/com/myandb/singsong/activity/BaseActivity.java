@@ -325,7 +325,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 	
 	public void showLoginDialog() {
 		if (loginDialog == null) {
-			// instantiate
+			loginDialog = new LoginDialog(this);
 		}
 		loginDialog.show();
 	}
