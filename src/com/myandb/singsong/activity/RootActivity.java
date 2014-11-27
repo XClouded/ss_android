@@ -96,10 +96,8 @@ public class RootActivity extends BaseActivity {
 			FragmentManager manager = getSupportFragmentManager();
 			if (manager.getBackStackEntryCount() > 1) {
 				actionBar.setHomeAsUpIndicator(null);
-				actionBar.setTitle(getContentFragment().getClass().getName());
 			} else {
 				actionBar.setHomeAsUpIndicator(null);
-				actionBar.setTitle(RootActivity.this.getTitle());
 			}
 		}
 	};

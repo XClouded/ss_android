@@ -194,7 +194,7 @@ public class Listeners {
 						Intent intent = new Intent(context, RootActivity.class);
 						intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, UserHomeFragment.class.getName());
 						intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
-						activity.onPageChanged(intent);
+						activity.changePage(intent);
 					}
 				}
 			}

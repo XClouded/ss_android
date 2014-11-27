@@ -27,7 +27,7 @@ public class UpActivity extends BaseActivity {
 			setWindowFullScreen();
 		}
 		
-		setContentView(R.layout.activity_up);
+		setContentView(R.layout.content);
 		
 		replaceContentFragmentFromIntent(getIntent());
 	}
