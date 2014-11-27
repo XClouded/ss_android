@@ -12,6 +12,7 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBar;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.util.AttributeSet;
@@ -418,12 +419,14 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	
 	public void onProgressUpdate() {
 		StreamPlayer player = service.getPlayer();
-		if (player.isPlaying()) {
+		if (player != null && player.isPlaying()) {
 			tvStartTime.setText(StringFormatter.getDuration(player.getCurrentPosition()));
 			sbPlay.setProgress(player.getCurrentPosition());
 			
-			Runnable r = new WeakRunnable<SlidingPlayerLayout>(this, "onProgressUpdate");
-			handler.postDelayed(r, 1000);
+			if (handler != null) {
+				Runnable r = new WeakRunnable<SlidingPlayerLayout>(this, "onProgressUpdate");
+				handler.postDelayed(r, 1000);
+			}
 		}
 	}
 	
@@ -750,12 +753,23 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
     }
 
     private PanelSlideListener panelSlideListener = new PanelSlideListener() {
-		
+    	
+    	private ActionBar actionBar;
+    	
 		@Override
 		public void onPanelSlide(View panel, float slideOffset) {
-			if (actionBarHeight > 0) {
-				int offset = getCurrentParalaxOffset();
-				setActionBarTranslation(offset);
+			if (actionBar == null) {
+				actionBar = ((RootActivity) getContext()).getSupportActionBar();
+			}
+			
+			if (slideOffset > 0.8) {
+				if (actionBar.isShowing()) {
+					actionBar.hide();
+				}
+			} else {
+				if (!actionBar.isShowing()) {
+					actionBar.show();
+				}
 			}
 		}
 		
@@ -779,6 +793,12 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		@Override
 		public void onPanelAnchored(View panel) {}
 	};
+
+	@Override
+	public int getCurrentParalaxOffset() {
+		// Content will not move when sliding
+		return 0;
+	}
 
 	public void setActionBarTranslation(float y) {
 		final int actionBarContentId = android.R.id.content;
