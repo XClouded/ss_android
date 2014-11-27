@@ -4,8 +4,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Request.Method;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
+import com.myandb.singsong.event.ActivateOnlyClickListener;
 import com.myandb.singsong.event.Listeners;
-import com.myandb.singsong.event.MemberOnlyClickListener;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Profile;
 import com.myandb.singsong.model.User;
@@ -59,14 +59,14 @@ public class FriendsAdapter extends HolderAdapter<User, FriendsAdapter.UserHolde
 		} 
 	}
 	
-	private OnClickListener followClickListener = new MemberOnlyClickListener() {
+	private OnClickListener followClickListener = new ActivateOnlyClickListener() {
 		
 		@Override
-		public void onActivated(View v) {
-			User user = (User) v.getTag();
+		public void onActivated(View v, User user) {
+			User friend = (User) v.getTag();
 			
 			UrlBuilder urlBuilder = new UrlBuilder();
-			String url = urlBuilder.s("friendships").s(user.getId()).toString();
+			String url = urlBuilder.s("friendships").s(friend.getId()).toString();
 			
 			RequestQueue queue = ((App) v.getContext().getApplicationContext()).getQueueInstance();
 			OAuthJustRequest request = new OAuthJustRequest(Method.POST, url, null);
@@ -76,14 +76,14 @@ public class FriendsAdapter extends HolderAdapter<User, FriendsAdapter.UserHolde
 		}
 	};
 	
-	private OnClickListener unfollowClickListener = new OnClickListener() {
+	private OnClickListener unfollowClickListener = new ActivateOnlyClickListener() {
 		
 		@Override
-		public void onClick(View v) {
-			User user = (User) v.getTag();
+		public void onActivated(View v, User user) {
+			User friend = (User) v.getTag();
 			
 			UrlBuilder urlBuilder = new UrlBuilder();
-			String url = urlBuilder.s("friendships").s(user.getId()).toString();
+			String url = urlBuilder.s("friendships").s(friend.getId()).toString();
 			
 			RequestQueue queue = ((App) v.getContext().getApplicationContext()).getQueueInstance();
 			OAuthJustRequest request = new OAuthJustRequest(Method.DELETE, url, null);
