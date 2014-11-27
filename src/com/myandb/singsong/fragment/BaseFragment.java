@@ -2,7 +2,6 @@ package com.myandb.singsong.fragment;
 
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.service.PlayerService;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -36,7 +35,7 @@ public abstract class BaseFragment extends Fragment {
 		
 		notifyDataChanged();
 	}
-	
+
 	public void notifyDataChanged() {
 		onDataChanged();
 	}

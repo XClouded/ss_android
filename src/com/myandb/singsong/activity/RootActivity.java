@@ -27,6 +27,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentManager.OnBackStackChangedListener;
 import android.support.v7.app.ActionBar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -63,7 +64,7 @@ public class RootActivity extends BaseActivity {
 		
 		replaceContentFragmentFromIntent(getIntent());
 	}
-	
+
 	private void initializePreference() {
 		final String newPreferenceKey = getNewPreferenceKey();
 		boolean readAgain = mustReadPreferenceXmlAgain(newPreferenceKey);
@@ -242,6 +243,12 @@ public class RootActivity extends BaseActivity {
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		uiHelper.onSaveInstanceState(outState);
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.home, menu);
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override

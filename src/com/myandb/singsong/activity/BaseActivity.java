@@ -9,19 +9,29 @@ import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.ExceptionParser;
 import com.google.analytics.tracking.android.ExceptionReporter;
 import com.myandb.singsong.R;
+import com.myandb.singsong.event.WeakRunnable;
 import com.myandb.singsong.service.PlayerService;
 import com.myandb.singsong.service.PlayerServiceConnection;
 
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.Fragment.InstantiationException;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.View.OnTouchListener;
 
 public abstract class BaseActivity extends ActionBarActivity {
 	
@@ -46,6 +56,14 @@ public abstract class BaseActivity extends ActionBarActivity {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		Handler handler = new Handler(Looper.getMainLooper());
+		handler.postDelayed(new WeakRunnable<BaseActivity>(this, "setActionBarIconNoDelay"), 500);
+	}
+	
+	public void setActionBarIconNoDelay() {
+		View actionBarView = getActionBarView();
+		recursiveSetOnTouchListener(actionBarView);				
 	}
 	
 	protected Fragment instantiateFragmentFromIntent(Intent intent) 
@@ -98,6 +116,48 @@ public abstract class BaseActivity extends ActionBarActivity {
 	
 	protected Fragment getContentFragment() {
 		return contentFragment;
+	}
+	
+	@SuppressLint("ClickableViewAccessibility")
+	private OnTouchListener noDelayOnTouchListener = new OnTouchListener() {
+		
+		@Override
+		public boolean onTouch(View v, MotionEvent event) {
+			if (event.getAction() == MotionEvent.ACTION_DOWN) {
+				v.setPressed(true);
+			}
+			return false;
+		}
+	};
+	
+	private void recursiveSetOnTouchListener(View v) {
+		if (v != null) {
+			v.setOnTouchListener(noDelayOnTouchListener);
+			
+			if (v instanceof ViewGroup) {
+				ViewGroup vg = (ViewGroup) v;
+				for (int i = 0, l = vg.getChildCount(); i < l; i++) {
+					View c = vg.getChildAt(i);
+					recursiveSetOnTouchListener(c);
+				}
+			}
+		}
+	}
+	
+	
+	private View getActionBarView() {
+	    int actionViewResId = 0;
+	    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+	        actionViewResId = getResources().getIdentifier(
+	                "abs__action_bar_container", "id", getPackageName());
+	    } else {
+	        actionViewResId = Resources.getSystem().getIdentifier(
+	                "action_bar_container", "id", "android");
+	    }
+	    if (actionViewResId > 0) {
+	        return findViewById(actionViewResId);
+	    }
+	    return null;
 	}
 
 	@Override
