@@ -77,11 +77,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 	
 	private void onSessionStateChanged(Session session, SessionState state, Exception exception) {
 		if (isLoginUserFacebookActivated() && isFacebookSessionOpened(session)) {
-			if (loginDialog != null && loginDialog.isShowing()) {
-				loginDialog.proceedLoginProcess(session);
-			} else {
-				requestFacebookMe(session);
-			}
+			requestFacebookMe(session);
 		}
 	}
 	

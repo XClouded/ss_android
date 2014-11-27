@@ -4,5 +4,11 @@
    	
    	<padding
 		android:top="@dimen/margin"
-		android:bottom="@dimen/margin" />
+		android:bottom="@dimen/margin"
+		android:left="@dimen/margin_small"
+		android:right="@dimen/margin_small" />
+   	
+   	<corners
+   	    android:radius="@dimen/corner_radius" />
+   	
 </shape>
