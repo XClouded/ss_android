@@ -20,7 +20,9 @@ public abstract class BaseFragment extends Fragment {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		
-		onArgumentsReceived(getArguments());
+		if (getArguments() != null) {
+			onArgumentsReceived(getArguments());
+		}
 		
 		onViewInflated(view, getLayoutInflater(savedInstanceState));
 	}
