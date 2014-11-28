@@ -16,7 +16,6 @@ import android.widget.TextView;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.RootActivity;
-import com.myandb.singsong.activity.UpActivity;
 import com.myandb.singsong.adapter.MenuAdapter;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.GlobalMenu;
@@ -138,11 +137,8 @@ public class DrawerFragment extends BaseFragment {
 				
 				@Override
 				public void onClick(View v) {
-					Intent intent = new Intent(getActivity(), UpActivity.class);
-					intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, LoginFragment.class.getName());
-					intent.putExtra(UpActivity.EXTRA_FULL_SCREEN, true);
-					if (getActivity() instanceof BaseActivity) {
-						((BaseActivity) getActivity()).changePage(intent);
+					if (getActivity() instanceof RootActivity) {
+						((RootActivity) getActivity()).showLoginDialog();
 					}
 				}
 			});

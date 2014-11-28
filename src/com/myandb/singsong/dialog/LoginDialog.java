@@ -127,6 +127,7 @@ public class LoginDialog extends BaseDialog {
 			session = new Session(getContext().getApplicationContext());
 			session.addCallback(statusCallback);
 			session.openForRead(request);
+			Session.setActiveSession(session);
 		}
 		
 	};
