@@ -32,7 +32,7 @@ public abstract class ViewPagerFragment extends BaseFragment {
 	@Override
 	protected void onViewInflated(View view, LayoutInflater inflater) {
 		vgPagerContainer = (ViewGroup) view.findViewById(R.id.viewpager_container);
-		viewPager = (ViewPager) view.findViewById(R.id.view_pager);
+		viewPager = (ViewPager) view.findViewById(R.id.viewpager);
 		tabStrip = (PagerSlidingTabStrip) view.findViewById(R.id.tab_strip);
 	}
 	
