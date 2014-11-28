@@ -2,11 +2,15 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     
     <style name="BaseButton">
-        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">@dimen/text</item>
-        <item name="android:textColor">@color/font_default</item>
-        <item name="android:padding">@dimen/margin</item>
+        <item name="android:textSize">@dimen/text_big</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/font_white</item>
+        <item name="android:paddingTop">@dimen/margin</item>
+        <item name="android:paddingBottom">@dimen/margin</item>
+        <item name="android:paddingLeft">@dimen/margin_small</item>
+        <item name="android:paddingRight">@dimen/margin_small</item>
         <item name="android:gravity">center</item>
     </style>
     

@@ -11,8 +11,8 @@
     <string name="search">검색</string>
     <string name="login">로그인</string>
     <string name="logout">로그아웃</string>
-    <string name="signup">가입하기</string>
-    <string name="to_signup">회원가입</string>
+    <string name="join">가입완료</string>
+    <string name="to_join">회원가입</string>
     <string name="setting">설정하기</string>
     <string name="submit">입력하기</string>
     <string name="delete">삭제하기</string>

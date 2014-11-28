@@ -4,7 +4,9 @@ import com.google.android.gcm.GCMRegistrar;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.myandb.singsong.GCMIntentService;
 import com.myandb.singsong.R;
+import com.myandb.singsong.dialog.LoginDialog;
 import com.myandb.singsong.fragment.DrawerFragment;
+import com.myandb.singsong.fragment.HomeFragment;
 import com.myandb.singsong.service.PlayerService;
 import com.myandb.singsong.widget.SlidingPlayerLayout;
 
@@ -27,6 +29,7 @@ public class RootActivity extends BaseActivity {
 	
 	private SlidingMenu drawer;
 	private SlidingPlayerLayout slidingPlayerLayout;
+	private LoginDialog loginDialog;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -156,6 +159,10 @@ public class RootActivity extends BaseActivity {
 
 	@Override
 	protected void onDestroy() {
+		if (loginDialog != null) {
+			loginDialog.dismiss();
+			loginDialog = null;
+		}
 		slidingPlayerLayout.onDestroy();
 		super.onDestroy();
 	}
@@ -227,6 +234,20 @@ public class RootActivity extends BaseActivity {
 		} else if (isComponentOf(intent, RootActivity.class)) {
 			replaceContentFragmentFromIntent(intent);
 		}
+	}
+	
+	public void showLoginDialog() {
+		if (loginDialog == null) {
+			loginDialog = new LoginDialog(this);
+		}
+		loginDialog.show();
+	}
+	
+	public void restartActivity() {
+		Intent intent = new Intent(this, getClass());
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, HomeFragment.class.getName());
+		startActivity(intent);
 	}
 
 }

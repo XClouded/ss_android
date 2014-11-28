@@ -17,7 +17,6 @@ import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.ExceptionParser;
 import com.google.analytics.tracking.android.ExceptionReporter;
 import com.myandb.singsong.R;
-import com.myandb.singsong.dialog.LoginDialog;
 import com.myandb.singsong.event.WeakRunnable;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.secure.Authenticator;
@@ -55,7 +54,6 @@ public abstract class BaseActivity extends ActionBarActivity {
 	private PlayerServiceConnection serviceConnection;
 	private PlayerService service;
 	private Fragment contentFragment;
-	private LoginDialog loginDialog;
 	private Handler handler;
 	private UiLifecycleHelper uiHelper;
 
@@ -318,21 +316,9 @@ public abstract class BaseActivity extends ActionBarActivity {
 	private void stopEasyTracking() {
 		EasyTracker.getInstance(this).activityStop(this);
 	}
-	
-	public void showLoginDialog() {
-		if (loginDialog == null) {
-			loginDialog = new LoginDialog(this);
-		}
-		loginDialog.show();
-	}
 
 	@Override
 	protected void onDestroy() {
-		if (loginDialog != null) {
-			loginDialog.dismiss();
-			loginDialog = null;
-		}
-		
 		if (handler != null) {
 			handler.removeCallbacksAndMessages(null);
 			handler = null;

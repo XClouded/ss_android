@@ -162,7 +162,7 @@
 	    android:id="@+id/btn_signup_complete"
 	    android:layout_below="@id/re_wrapper"
 	    android:layout_marginBottom="@dimen/margin"
-	    android:text="@string/signup"
+	    android:text="@string/join"
 	    style="@style/DisabledButton" />
     
     <TextView

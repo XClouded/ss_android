@@ -113,7 +113,7 @@
     <Button
 	    android:id="@+id/btn_signup"
 	    android:layout_alignParentBottom="true"
-	    android:text="@string/to_signup"
+	    android:text="@string/to_join"
 	    style="@style/DarkButton" />
     
 </RelativeLayout>
