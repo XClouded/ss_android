@@ -19,6 +19,8 @@ import com.myandb.singsong.net.UrlBuilder;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -29,6 +31,7 @@ import android.content.Intent;
 public class LauncherActivity extends Activity {
 
 	private VersionDialog versionDialog;
+	private Handler handler;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +39,14 @@ public class LauncherActivity extends Activity {
 		
 		setContentView(R.layout.activity_logo);
 		
-		requestAppMetadata();
+		handler = new Handler(Looper.getMainLooper());
+		handler.postDelayed(new Runnable() {
+			
+			@Override
+			public void run() {
+				requestAppMetadata();
+			}
+		}, 500);
 	}
 	
 	private void requestAppMetadata() {
@@ -91,6 +101,15 @@ public class LauncherActivity extends Activity {
 		startActivity(intent);
 		overridePendingTransition(enterAnim, exitAnim);
 		finish();
+	}
+
+	@Override
+	protected void onDestroy() {
+		if (handler != null) {
+			handler.removeCallbacksAndMessages(null);
+			handler = null;
+		}
+		super.onDestroy();
 	}
 
 	private static class VersionDialog extends BaseDialog {
