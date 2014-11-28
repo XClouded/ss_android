@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     
-    <style name="BaseButton">
+    <style name="ButtonBase">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">@dimen/text_big</item>
@@ -14,28 +14,37 @@
         <item name="android:gravity">center</item>
     </style>
     
-    <style name="DialogButton" parent="@style/BaseButton">
+    <style name="ButtonLikeEditText" parent="@style/ButtonBase">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/font_hint</item>
+        <item name="android:gravity">left|center_vertical</item>
+        <item name="android:drawableLeft">@drawable/ic_magnifier</item>
+        <item name="android:background">@drawable/box_selector</item>
+    </style>
+    
+    <style name="ButtonDialog" parent="@style/ButtonBase">
         <item name="android:background">@drawable/btn_dialog_selector</item>
     </style>
     
-    <style name="DisabledButton" parent="@style/BaseButton">
+    <style name="ButtonDisabled" parent="@style/ButtonBase">
         <item name="android:textColor">@color/font_grey</item>
         <item name="android:background">@drawable/btn_tranparent</item>
     </style>
     
-    <style name="DarkButton" parent="@style/BaseButton">
+    <style name="ButtonDark" parent="@style/ButtonBase">
         <item name="android:textColor">@color/font_white</item>
         <item name="android:textStyle">bold</item>
         <item name="android:background">@drawable/btn_grey_selector</item>
     </style>
     
-    <style name="SettingButton" parent="@style/BaseButton">
+    <style name="ButtonSetting" parent="@style/ButtonBase">
         <item name="android:layout_marginBottom">@dimen/margin</item>
         <item name="android:gravity">left</item>
         <item name="android:background">@drawable/btn_white_selector</item>
     </style>
 
-    <style name="TabButton" parent="@style/BaseButton">
+    <style name="ButtonTab" parent="@style/ButtonBase">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_weight">1</item>

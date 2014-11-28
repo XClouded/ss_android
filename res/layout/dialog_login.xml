@@ -19,7 +19,7 @@
             android:textColor="@color/font_hint"
             android:textSize="@dimen/text_tiny"
             android:layout_marginBottom="@dimen/margin_small"
-            style="@style/BaseTextView" />
+            style="@style/TextViewBase" />
         
         <Button
             android:id="@+id/btn_facebook"
@@ -27,18 +27,14 @@
             android:layout_marginBottom="@dimen/margin"
             android:text="@string/login_with_facebook"
             android:background="@drawable/btn_facebook_selector"
-            style="@style/BaseButton" />
+            style="@style/ButtonBase" />
         
         <ImageView
         	style="@style/DividerHorizontal" />
         
         <TextView
-            android:paddingTop="@dimen/margin_big"
-            android:paddingBottom="@dimen/margin_big"
             android:text="이메일로 로그인"
-            android:textStyle="bold"
-            android:textSize="@dimen/text_big"
-            style="@style/BaseTextView" />
+            style="@style/TextViewTitle" />
         
         <ImageView
         	style="@style/DividerHorizontal" />
@@ -75,7 +71,7 @@
 		    android:layout_marginLeft="@dimen/margin"
 		    android:text="@string/to_join"
 		    android:background="@drawable/btn_primary_selector"
-		    style="@style/BaseButton" />
+		    style="@style/ButtonBase" />
         
         <Button
 		    android:id="@+id/btn_login"
@@ -83,7 +79,7 @@
 		    android:layout_marginLeft="@dimen/margin"
 		    android:text="@string/login"
 		    android:background="@drawable/btn_primary_selector"
-		    style="@style/BaseButton" />
+		    style="@style/ButtonBase" />
         
         <TextView
             android:id="@+id/tv_find_password"

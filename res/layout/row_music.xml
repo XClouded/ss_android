@@ -15,7 +15,7 @@
         android:textSize="@dimen/text_big"
         android:textColor="@color/font_highlight"
         android:visibility="gone"
-        style="@style/BaseTextView" />
+        style="@style/TextViewBase" />
     
     <com.myandb.singsong.widget.RoundedImageView
         android:id="@+id/iv_album_photo"
@@ -47,7 +47,7 @@
 	        android:id="@+id/tv_sing_num"
 	        android:layout_centerVertical="true"
 	        android:layout_toRightOf="@id/icon_mixed"
-	        style="@style/IconLabelTextView" />
+	        style="@style/TextViewIconLabel" />
         
     </RelativeLayout>
     
@@ -60,7 +60,7 @@
         android:layout_marginLeft="@dimen/margin"
         android:textSize="@dimen/text_small"
         android:textColor="@color/font_grey"
-        style="@style/EllipsizeTextView" />
+        style="@style/TextViewEllipsize" />
     
     <TextView
         android:id="@+id/tv_music_title"
@@ -72,7 +72,7 @@
         android:layout_marginTop="@dimen/margin_small"
         android:textSize="@dimen/text_big"
         android:textStyle="bold"
-        style="@style/EllipsizeTextView" />
+        style="@style/TextViewEllipsize" />
     
 </RelativeLayout>
 

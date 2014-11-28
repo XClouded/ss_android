@@ -57,6 +57,7 @@
     <string name="hint_password">비밀번호 입력 (4자 이상)</string>
     <string name="hint_re_password">비밀번호 확인</string>
     <string name="hint_keyword">검색어를 입력해주세요.</string>
+    <string name="hint_search_user">이메일 또는 닉네임을 입력해주세요.</string>
     
     <string name="ask_app_finish">2초 안에 뒤로가기 버튼을 다시 누르면 어플리케이션이 종료됩니다.</string>
     <string name="lyric_help">내 파트에 맞는 색을 불러주세요! 흰색 가사는 같이 불러요!</string>

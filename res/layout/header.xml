@@ -17,6 +17,6 @@
     <TextView
         android:id="@+id/tv_header"
         android:textColor="@color/font_white"
-        style="@style/BaseTextView" />
+        style="@style/TextViewBase" />
 
 </LinearLayout>

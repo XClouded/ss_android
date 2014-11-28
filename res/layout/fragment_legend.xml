@@ -15,7 +15,7 @@
 	        android:layout_centerInParent="true"
 	        android:layout_marginLeft="@dimen/margin_small"
 	        android:layout_marginRight="@dimen/margin_small"
-	        style="@style/BaseTextView" />
+	        style="@style/TextViewBase" />
 	    
 	    <ImageView
 	        android:id="@+id/iv_previous_week"

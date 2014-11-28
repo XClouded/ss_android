@@ -4,12 +4,12 @@
     
     <TextView
         android:text="@string/dialog_part_select_title"
-        style="@style/DialogTextViewTitle" />
+        style="@style/TextViewDialogTitle" />
     
     <TextView
         android:text="@string/dialog_part_select_content"
         android:padding="@dimen/margin_small"
-        style="@style/SmallTextView" />
+        style="@style/TextViewHint" />
     
     <ImageView
         style="@style/DividerHorizontal" />
@@ -17,7 +17,7 @@
     <Button
         android:id="@+id/btn_select_male"
         android:textColor="@color/primary"
-        style="@style/DialogButton" />
+        style="@style/ButtonDialog" />
     
    <ImageView
         style="@style/DividerHorizontal" />
@@ -25,6 +25,6 @@
     <Button
         android:id="@+id/btn_select_female"
         android:textColor="@color/red"
-        style="@style/DialogButton" />
+        style="@style/ButtonDialog" />
 
 </LinearLayout>

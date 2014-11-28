@@ -9,7 +9,7 @@
         android:layout_alignParentBottom="true"
         android:layout_margin="@dimen/margin"
         android:text="@string/close"
-        style="@style/DarkButton" />
+        style="@style/ButtonDark" />
     
     <ScrollView
         android:layout_width="match_parent"

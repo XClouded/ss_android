@@ -36,12 +36,12 @@
 	            android:id="@+id/tv_drawer_user_nickname"
 	            android:textColor="@color/font_white"
 	            android:layout_marginBottom="@dimen/margin_small"
-	            style="@style/BaseTextView" />
+	            style="@style/TextViewBase" />
 	        
 	        <TextView
 	            android:id="@+id/tv_drawer_user_username"
 	            android:textColor="@color/font_white"
-	            style="@style/BaseTextView" />
+	            style="@style/TextViewBase" />
 	        
 	    </LinearLayout>
 	    

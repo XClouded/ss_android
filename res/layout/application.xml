@@ -38,7 +38,7 @@
             android:visibility="gone"
             android:textColor="@color/font_grey"
             android:textSize="@dimen/text_tiny"
-            style="@style/MarqueeTextView" />
+            style="@style/TextViewMarquee" />
         
         <ImageView
             android:id="@+id/iv_actionbar_play_control"

@@ -45,7 +45,7 @@
                     android:gravity="center"
                     android:text="다시하기"
                     android:textColor="@color/font_white"
-                    style="@style/BaseTextView" />
+                    style="@style/TextViewBase" />
                 
             </LinearLayout>
             
@@ -80,7 +80,7 @@
                     android:gravity="center"
                     android:text="@string/upload"
                     android:textColor="@color/white"
-                    style="@style/BaseTextView" />
+                    style="@style/TextViewBase" />
                 
             </LinearLayout>
             
@@ -114,7 +114,7 @@
                     android:gravity="center"
                     android:text="@string/exit"
                     android:textColor="@color/font_white"
-                    style="@style/BaseTextView" />
+                    style="@style/TextViewBase" />
                 
             </LinearLayout>
             
@@ -146,7 +146,7 @@
 		            android:paddingTop="@dimen/margin_tiny"
 		            android:paddingBottom="@dimen/margin_tiny"
 		            android:textColor="@color/font_default"
-		            style="@style/SmallTextView" />
+		            style="@style/TextViewHint" />
 		        
 		        <ImageView
 		            style="@style/DividerHorizontal" />
@@ -196,7 +196,7 @@
 		            android:layout_marginLeft="@dimen/margin_small"
 		            android:paddingTop="@dimen/margin_tiny"
 		            android:paddingBottom="@dimen/margin_tiny"
-		            style="@style/SmallTextView" />
+		            style="@style/TextViewHint" />
 		        
 		        <ImageView
 		            style="@style/DividerHorizontal" />
@@ -217,13 +217,13 @@
 				        android:id="@+id/tv_sync_value"
 				        android:text="0.0"
 				        android:layout_centerInParent="true"
-				        style="@style/BaseTextView" />
+				        style="@style/TextViewBase" />
 				    
 				    <TextView
 				        android:text="s"
 				        android:layout_toRightOf="@id/tv_sync_value"
 				        android:layout_centerVertical="true"
-				        style="@style/BaseTextView" />
+				        style="@style/TextViewBase" />
 				    
 				    <ImageView
 				        android:id="@+id/iv_sync_forward"
@@ -250,7 +250,7 @@
 		            android:layout_marginLeft="@dimen/margin_small"
 		            android:paddingTop="@dimen/margin_tiny"
 		            android:paddingBottom="@dimen/margin_tiny"
-		            style="@style/SmallTextView" />
+		            style="@style/TextViewHint" />
 		        
 		        <ImageView
 		            style="@style/DividerHorizontal" />
@@ -298,7 +298,7 @@
 		                android:textSize="@dimen/text_tiny"
 		                android:textStyle="bold"
 		                android:text="@string/delete"
-		                style="@style/BaseButton" />
+		                style="@style/ButtonBase" />
 		            
 		            <EditText
 		                android:id="@+id/et_song_message"
@@ -319,7 +319,7 @@
 	                android:layout_margin="@dimen/margin_small"
 	                android:textSize="@dimen/text_small"
 	                android:text="업로드 했던 사진 보기"
-	                style="@style/DarkButton" />
+	                style="@style/ButtonDark" />
 		        
 		    </LinearLayout>
 	        

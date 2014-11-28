@@ -10,7 +10,7 @@
 	    <TextView
 	        android:layout_width="wrap_content"
 	        android:text="@string/withdraw"
-	        style="@style/DialogTextViewTitle" />
+	        style="@style/TextViewDialogTitle" />
 	    
 	    <ImageView
 	        android:id="@+id/iv_cancel"
@@ -23,7 +23,7 @@
     
     <TextView
         android:text="@string/dialog_withdraw_ask"
-        style="@style/DialogTextView" />
+        style="@style/TextViewDialog" />
     
     <ImageView
         style="@style/DividerHorizontal" />
@@ -31,7 +31,7 @@
     <Button
         android:id="@+id/btn_yes"
         android:text="@string/yes"
-        style="@style/DialogButton" />
+        style="@style/ButtonDialog" />
     
     <ImageView
         style="@style/DividerHorizontal" />
@@ -39,6 +39,6 @@
     <Button
         android:id="@+id/btn_no"
         android:text="@string/no"
-        style="@style/DialogButton" />
+        style="@style/ButtonDialog" />
 
 </LinearLayout>

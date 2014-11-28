@@ -93,7 +93,7 @@
                 android:id="@+id/tv_song_collabo_num"
                 android:layout_marginTop="-6sp"
                 android:textColor="@color/white"
-                style="@style/SmallTextView" />
+                style="@style/TextViewHint" />
             
         </LinearLayout>
         
@@ -104,7 +104,7 @@
             android:layout_marginRight="@dimen/margin"
             android:layout_marginBottom="@dimen/margin_big"
             android:textColor="@color/font_white"
-            style="@style/BaseTextView" />
+            style="@style/TextViewBase" />
             
         <ImageView
             android:id="@+id/iv_change_state_song"
@@ -149,7 +149,7 @@
 		            android:id="@+id/tv_parent_user_nickname"
 		            android:layout_gravity="center"
 		            android:textStyle="bold"
-		            style="@style/BaseTextView" />
+		            style="@style/TextViewBase" />
 		         
 		        <TextView
 		            android:id="@+id/tv_parent_song_message"
@@ -159,7 +159,7 @@
 		            android:layout_gravity="center"
 		            android:gravity="center"
 		            android:textColor="@color/font_hint"
-		            style="@style/BaseTextView" />
+		            style="@style/TextViewBase" />
                 
             </LinearLayout>
             
@@ -191,7 +191,7 @@
 		            android:id="@+id/tv_this_user_nickname"
 		            android:layout_gravity="center"
 		            android:textStyle="bold"
-		            style="@style/BaseTextView" />
+		            style="@style/TextViewBase" />
 		         
 		        <TextView
 		            android:id="@+id/tv_this_song_message"
@@ -201,7 +201,7 @@
 		            android:layout_gravity="center"
 		            android:gravity="center"
 		            android:textColor="@color/font_hint"
-		            style="@style/BaseTextView" />
+		            style="@style/TextViewBase" />
                 
             </LinearLayout>
             
@@ -233,7 +233,7 @@
 	            <TextView
 	                android:id="@+id/tv_song_like_num"
 	                android:layout_marginRight="@dimen/margin_big"
-	                style="@style/IconLabelTextView" />
+	                style="@style/TextViewIconLabel" />
 	            
 	            <ImageView
 	                android:src="@drawable/ic_comment_blue"
@@ -242,7 +242,7 @@
 	            <TextView
 	                android:id="@+id/tv_song_comment_num"
 	                android:layout_marginRight="@dimen/margin_big"
-	                style="@style/IconLabelTextView" />
+	                style="@style/TextViewIconLabel" />
                 
             </LinearLayout>
             
@@ -250,7 +250,7 @@
                 android:id="@+id/tv_song_created_time"
                 android:layout_alignParentRight="true"
                 android:layout_marginLeft="@dimen/margin"
-                style="@style/IconLabelTextView" />
+                style="@style/TextViewIconLabel" />
             
         </RelativeLayout>
         

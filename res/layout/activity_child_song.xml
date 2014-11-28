@@ -17,7 +17,7 @@
 
     <TextView
         android:id="@+id/tv_music_info"
-        style="@style/BaseTextView"
+        style="@style/TextViewBase"
         android:layout_alignBottom="@id/iv_parent_song_image"
         android:layout_marginBottom="@dimen/margin"
         android:layout_marginLeft="@dimen/margin"
@@ -44,14 +44,14 @@
 
     <TextView
         android:id="@+id/tv_parent_user_nickname"
-        style="@style/BaseTextView"
+        style="@style/TextViewBase"
         android:layout_below="@id/parent_user_photo"
         android:layout_centerHorizontal="true"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tv_parent_song_message"
-        style="@style/BaseTextView"
+        style="@style/TextViewBase"
         android:layout_below="@id/tv_parent_user_nickname"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/margin_small"

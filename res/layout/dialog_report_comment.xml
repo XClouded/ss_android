@@ -14,7 +14,7 @@
 	        android:layout_width="wrap_content"
 	        android:text="@string/report_comment"
 	        android:gravity="left"
-	        style="@style/DialogTextViewTitle" />
+	        style="@style/TextViewDialogTitle" />
 	    
 	    <ImageView
 	        android:id="@+id/iv_cancel"
@@ -50,7 +50,7 @@
             android:layout_marginTop="@dimen/margin_small"
             android:layout_marginLeft="@dimen/margin"
             android:layout_toRightOf="@id/iv_reporter_photo"
-            style="@style/SmallTextView" />
+            style="@style/TextViewHint" />
         
     </RelativeLayout>
     
@@ -60,6 +60,6 @@
     <Button
         android:id="@+id/btn_submit"
         android:text="@string/report"
-        style="@style/DialogButton" />
+        style="@style/ButtonDialog" />
 
 </LinearLayout>
