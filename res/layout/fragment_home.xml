@@ -4,10 +4,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <Button
+        android:id="@+id/btn_logout"
+        android:layout_marginTop="@dimen/margin_bigger"
         android:layout_gravity="center"
-        android:text="home" />    
+        android:text="@string/logout"
+        android:textColor="@color/font_default"
+        android:background="@drawable/box_selector"
+        style="@style/ButtonBase" />
 
 </LinearLayout>

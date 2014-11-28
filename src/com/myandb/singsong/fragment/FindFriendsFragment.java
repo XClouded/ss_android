@@ -7,6 +7,9 @@ import com.myandb.singsong.secure.Authenticator;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -16,6 +19,12 @@ public class FindFriendsFragment extends ListFragment {
 	private Button btnSearchUser;
 	private Button btnConnectFacebook;
 	private View vFacebookHeaderContainer;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
+	}
 
 	@Override
 	protected View inflateEmptyView(LayoutInflater inflater) {
@@ -72,6 +81,23 @@ public class FindFriendsFragment extends ListFragment {
 			vFacebookHeaderContainer.setVisibility(View.GONE);
 			setListShown(true);
 			// set onclick listener
+		}
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.find_friends, menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.invite_friends:
+			// start invite friend fragment
+			return true;
+			
+		default:
+			return super.onOptionsItemSelected(item);
 		}
 	}
 

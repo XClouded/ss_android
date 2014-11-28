@@ -176,17 +176,17 @@ public class RootActivity extends BaseActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case android.R.id.home:
-				FragmentManager manager = getSupportFragmentManager();
-				if (manager.getBackStackEntryCount() > 1) {
-					onBackPressed();
-				} else {
-					drawer.toggle();
-				}
-				return true;
-			
-			default:
-				return super.onOptionsItemSelected(item);
+		case android.R.id.home:
+			FragmentManager manager = getSupportFragmentManager();
+			if (manager.getBackStackEntryCount() > 1) {
+				onBackPressed();
+			} else {
+				drawer.toggle();
+			}
+			return true;
+		
+		default:
+			return super.onOptionsItemSelected(item);
 		}
 	}
 	
