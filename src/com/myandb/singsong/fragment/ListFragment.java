@@ -53,6 +53,17 @@ public abstract class ListFragment extends BaseFragment {
 		if (listHeaderView != null) {
 			listView.addHeaderView(listHeaderView);
 		}
+		
+		if (fixedHeaderView != null) {
+			if (fixedHeaderContainer instanceof ViewGroup) {
+				((ViewGroup) fixedHeaderContainer).addView(fixedHeaderView);
+				fixedHeaderContainer.setVisibility(View.VISIBLE);
+			} else {
+				throw new IllegalStateException("Fixed Header Container must be instance of ViewGroup");
+			}
+		} else {
+			fixedHeaderContainer.setVisibility(View.GONE);
+		}
 	}
 
 	@Override
@@ -66,17 +77,6 @@ public abstract class ListFragment extends BaseFragment {
 	@Override
 	protected void setupViews() {
 		loader.setListView(listView);
-		
-		if (fixedHeaderView != null) {
-			if (fixedHeaderContainer instanceof ViewGroup) {
-				((ViewGroup) fixedHeaderContainer).addView(fixedHeaderView);
-				fixedHeaderContainer.setVisibility(View.VISIBLE);
-			} else {
-				throw new IllegalStateException("Fixed Header Container must be instance of ViewGroup");
-			}
-		} else {
-			fixedHeaderContainer.setVisibility(View.GONE);
-		}
 	}
 	
 	public void setAdapter(final ListAdapter adapter) {
