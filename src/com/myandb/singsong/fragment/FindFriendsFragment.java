@@ -1,10 +1,13 @@
 package com.myandb.singsong.fragment;
 
 import com.myandb.singsong.R;
+import com.myandb.singsong.activity.BaseActivity;
+import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.secure.Authenticator;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -93,7 +96,14 @@ public class FindFriendsFragment extends ListFragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.invite_friends:
-			// start invite friend fragment
+			Bundle bundle = new Bundle();
+			bundle.putInt(ViewPagerFragment.EXTRA_ITEM_NUM, 0);
+			Intent intent = new Intent(getActivity(), RootActivity.class);
+			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, InviteFreindsFragment.class.getName());
+			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
+			if (getActivity() instanceof BaseActivity) {
+				((BaseActivity) getActivity()).changePage(intent);
+			}
 			return true;
 			
 		default:
