@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/abc_action_bar_default_height"
+    android:paddingTop="@dimen/margin_small"
+    android:paddingBottom="@dimen/margin_small"
+    android:paddingLeft="@dimen/margin"
+    android:paddingRight="@dimen/margin"
+    android:background="@drawable/menu_item_selector" >
+    
+    <ImageView
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_action_notification"
+        style="@style/BaseImageView" />
+    
+    <TextView
+        android:id="@+id/tv_action_notification_count"
+        android:textSize="10sp"
+        android:textColor="@color/font_white"
+        android:background="@drawable/circle_red"
+        android:layout_gravity="right"
+        android:visibility="gone"
+        android:padding="3dp"
+        style="@style/TextViewBase" />
+
+</FrameLayout>

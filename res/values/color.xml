@@ -22,6 +22,7 @@
     <color name="grey">#636363</color>
     <color name="grey_dark">#232323</color>
     <color name="grey_trans">#E0323232</color>
+    <color name="grey_light_trans">#E0dcdcdc</color>
     
     <color name="divider">#dcdcdc</color>
     <color name="gnb_divider">#636363</color>
