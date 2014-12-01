@@ -46,7 +46,7 @@ public class MusicFragment extends Fragment {
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.common_listview, container, false);
+		return null;/*inflater.inflate(R.layout.common_listview, container, false);*/
 	}
 
 	@Override

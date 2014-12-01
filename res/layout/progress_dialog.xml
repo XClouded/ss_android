@@ -8,7 +8,7 @@
         android:layout_width="66dp"
         android:layout_height="66dp"
         android:layout_gravity="center"
-        android:src="@drawable/ic_collabo_rotate"
+        android:src="@drawable/ic_alarm"
         android:contentDescription="@string/app_name" />
 
 </FrameLayout>

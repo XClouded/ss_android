@@ -20,7 +20,6 @@ import com.google.gson.Gson;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
-import com.myandb.singsong.activity.ChildSongActivity;
 import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.fragment.UserHomeFragment;
 import com.myandb.singsong.model.Activity;
@@ -168,10 +167,10 @@ public class Listeners {
 				Song parentSong = song.getParentSong() == null ? song : song.getParentSong();
 				parentSong.setMusic(song.getMusic());
 				
-				Intent intent = new Intent(context, ChildSongActivity.class);
-				intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-				intent.putExtra(ChildSongActivity.INTENT_PARENT_SONG, gson.toJson(parentSong, Song.class));
-				context.startActivity(intent);
+//				Intent intent = new Intent(context, ChildSongActivity.class);
+//				intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+//				intent.putExtra(ChildSongActivity.INTENT_PARENT_SONG, gson.toJson(parentSong, Song.class));
+//				context.startActivity(intent);
 			}
 		};
 	}
