@@ -490,6 +490,12 @@ public class UserHomeFragment extends ListFragment {
 	}
 
 	@Override
+	public void onResume() {
+		super.onResume();
+		setActionBarTitle(thisUser.getNickname());
+	}
+
+	@Override
 	public void onDestroy() {
 		super.onDestroy();
 		

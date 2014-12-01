@@ -2,6 +2,7 @@ package com.myandb.singsong.fragment;
 
 import java.util.Calendar;
 
+import com.myandb.singsong.R;
 import com.myandb.singsong.adapter.CollaboratedAdapter;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.util.StringFormatter;
@@ -40,6 +41,12 @@ public class ArtistListFragment extends ListFragment {
 		setUrlBuilder(urlBuilder);
 		setAdapter(new CollaboratedAdapter());
 		load();
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		setActionBarTitle(R.string.fragment_artist_list_title);
 	}
 
 }

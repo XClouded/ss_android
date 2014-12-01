@@ -99,7 +99,7 @@ public class FindFriendsFragment extends ListFragment {
 			Bundle bundle = new Bundle();
 			bundle.putInt(ViewPagerFragment.EXTRA_ITEM_NUM, 0);
 			Intent intent = new Intent(getActivity(), RootActivity.class);
-			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, InviteFreindsFragment.class.getName());
+			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, InviteFriendsFragment.class.getName());
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
 			if (getActivity() instanceof BaseActivity) {
 				((BaseActivity) getActivity()).changePage(intent);
@@ -109,6 +109,12 @@ public class FindFriendsFragment extends ListFragment {
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		setActionBarTitle(R.string.fragment_find_friends_title);
 	}
 
 }

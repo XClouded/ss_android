@@ -110,6 +110,7 @@ public class RootActivity extends BaseActivity {
 		drawer.setMode(SlidingMenu.LEFT);
 		drawer.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
 		drawer.setShadowWidthRes(R.dimen.margin_tiny);
+		drawer.setShadowDrawable(R.drawable.drawer_shadow);
 		drawer.setBehindWidthRes(R.dimen.drawer_width);
 		drawer.setFadeDegree(0.35f);
 	}

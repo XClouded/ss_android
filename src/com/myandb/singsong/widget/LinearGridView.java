@@ -1,5 +1,7 @@
 package com.myandb.singsong.widget;
 
+import com.myandb.singsong.R;
+
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.util.AttributeSet;
@@ -76,6 +78,14 @@ public class LinearGridView extends LinearLayout {
 		return position % columnCount == 0;
 	}
 	
+	private boolean isRowEven(int position) {
+		return (position / columnCount) % 2 == 0;
+	}
+	
+	private boolean isPositionEven(int position) {
+		return position % 2 == 0;
+	}
+	
 	private LinearLayout makeRow() {
 		LinearLayout row = new LinearLayout(getContext());
 		LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
@@ -88,7 +98,28 @@ public class LinearGridView extends LinearLayout {
 		View child = adapter.getView(position, null, this);
 		LayoutParams params = new LayoutParams(0, LayoutParams.WRAP_CONTENT, 1);
 		child.setLayoutParams(params);
+		setChildBackground(child, position);
 		return child;
+	}
+	
+	private void setChildBackground(View child, int position) {
+		int oddSelector = R.drawable.btn_menu_odd_selector;
+		int evenSelector = R.drawable.btn_menu_even_selector;
+		
+		if (isRowEven(position)) {
+			if (isPositionEven(position)) {
+				child.setBackgroundResource(oddSelector);
+			} else {
+				child.setBackgroundResource(evenSelector);
+			}
+		} else {
+			if (isPositionEven(position)) {
+				child.setBackgroundResource(evenSelector);
+			} else {
+				child.setBackgroundResource(oddSelector);
+			}
+		}
+		
 	}
 	
 	private class AdapterDataSetObserver extends DataSetObserver {

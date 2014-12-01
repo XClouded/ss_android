@@ -74,42 +74,42 @@ public class DrawerFragment extends BaseFragment {
 		Intent intent = new Intent(getActivity(), RootActivity.class);
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, HomeFragment.class.getName());
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_ROOT, true);
-		return new GlobalMenu(R.string.follower, intent, R.drawable.ic_artist_menu);
+		return new GlobalMenu(R.string.fragment_home_title, intent, R.drawable.ic_menu_home);
 	}
 	
 	private GlobalMenu makeArtistMenu() {
 		Intent intent = new Intent(getActivity(), RootActivity.class);
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, ArtistListFragment.class.getName());
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_ROOT, true);
-		return new GlobalMenu(R.string.following, intent, R.drawable.ic_collabo_menu);
+		return new GlobalMenu(R.string.fragment_artist_list_title, intent, R.drawable.ic_menu_artist);
 	}
 	
 	private GlobalMenu makeSingMenu() {
 		Intent intent = new Intent(getActivity(), RootActivity.class);
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, MusicFragment.class.getName());
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_ROOT, true);
-		return new GlobalMenu(R.string.follower, intent, R.drawable.ic_artist_menu, true);
+		return new GlobalMenu(R.string.fragment_sing_title, intent, R.drawable.ic_menu_sing, true);
 	}
 	
 	private GlobalMenu makeListenMenu() {
 		Intent intent = new Intent(getActivity(), RootActivity.class);
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, CollaboratedFragment.class.getName());
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_ROOT, true);
-		return new GlobalMenu(R.string.follower, intent, R.drawable.ic_artist_menu);
+		return new GlobalMenu(R.string.fragment_listen_title, intent, R.drawable.ic_menu_listen);
 	}
 	
 	private GlobalMenu makeFindFriendMenu() {
 		Intent intent = new Intent(getActivity(), RootActivity.class);
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, FindFriendsFragment.class.getName());
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_ROOT, true);
-		return new GlobalMenu(R.string.follower, intent, R.drawable.ic_artist_menu, true);
+		return new GlobalMenu(R.string.fragment_find_friends_title, intent, R.drawable.ic_menu_friend, true);
 	}
 	
 	private GlobalMenu makeSettingMenu() {
 		Intent intent = new Intent(getActivity(), RootActivity.class);
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, SettingFragment.class.getName());
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_ROOT, true);
-		return new GlobalMenu(R.string.follower, intent, R.drawable.ic_artist_menu);
+		return new GlobalMenu(R.string.fragment_setting_title, intent, R.drawable.ic_menu_setting);
 	}
 	
 	@Override

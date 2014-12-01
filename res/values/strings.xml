@@ -77,6 +77,14 @@
     <string name="change_password">비밀번호 변경</string>
     <string name="invite_friends">친구초대</string>
     
+    <string name="fragment_home_title">홈</string>
+    <string name="fragment_artist_list_title">콜라보 아티스트</string>
+    <string name="fragment_sing_title">부르기</string>
+    <string name="fragment_listen_title">듣기</string>
+    <string name="fragment_find_friends_title">친구 찾기</string>
+    <string name="fragment_setting_title">설정</string>
+    <string name="fragment_invite_friends_title">친구 초대</string>
+    
     <string name="_check">✓</string>
 
 </resources>

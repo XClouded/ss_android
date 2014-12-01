@@ -2,7 +2,7 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android" >
     <item 
         android:state_pressed="true"
-        android:drawable="@color/mask_middle" />
+        android:drawable="@drawable/btn_menu_pressed" />
     <item
-        android:drawable="@android:color/transparent" />
+        android:drawable="@drawable/btn_menu_even_idle" />
 </selector>

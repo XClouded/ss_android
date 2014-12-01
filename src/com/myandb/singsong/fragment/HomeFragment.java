@@ -48,4 +48,10 @@ public class HomeFragment extends BaseFragment {
 		
 	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		setActionBarTitle(R.string.fragment_home_title);
+	}
+
 }
