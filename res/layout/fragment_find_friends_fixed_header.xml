@@ -14,6 +14,15 @@
         style="@style/ButtonLikeEditText" />
     
     <Button
+        android:id="@+id/btn_invite_friends"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="@dimen/margin_big"
+        android:text="@string/invite_friends"
+        android:textColor="@color/font_default"
+        android:background="@drawable/box_selector"
+        style="@style/ButtonBase" />
+    
+    <Button
         android:id="@+id/btn_connect_facebook"
         android:layout_width="match_parent"
         android:text="페이스북 연동하기"
