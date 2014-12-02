@@ -53,6 +53,17 @@ public abstract class ListFragment extends BaseFragment {
 		if (listHeaderView != null) {
 			listView.addHeaderView(listHeaderView);
 		}
+		
+		if (fixedHeaderView != null) {
+			if (fixedHeaderContainer instanceof ViewGroup) {
+				((ViewGroup) fixedHeaderContainer).addView(fixedHeaderView);
+				fixedHeaderContainer.setVisibility(View.VISIBLE);
+			} else {
+				throw new IllegalStateException("Fixed Header Container must be instance of ViewGroup");
+			}
+		} else {
+			fixedHeaderContainer.setVisibility(View.GONE);
+		}
 	}
 
 	@Override
@@ -66,17 +77,6 @@ public abstract class ListFragment extends BaseFragment {
 	@Override
 	protected void setupViews() {
 		loader.setListView(listView);
-		
-		if (fixedHeaderView != null) {
-			if (fixedHeaderContainer instanceof ViewGroup) {
-				((ViewGroup) fixedHeaderContainer).addView(fixedHeaderView);
-				fixedHeaderContainer.setVisibility(View.VISIBLE);
-			} else {
-				throw new IllegalStateException("Fixed Header Container must be instance of ViewGroup");
-			}
-		} else {
-			fixedHeaderContainer.setVisibility(View.GONE);
-		}
 	}
 	
 	public void setAdapter(final ListAdapter adapter) {
@@ -91,6 +91,22 @@ public abstract class ListFragment extends BaseFragment {
 				}
 			}
 		});
+	}
+	
+	public void setFixedHeaderShown(boolean shown) {
+		if (fixedHeaderContainer.isShown() == shown) {
+			return;
+		}
+		
+		if (shown) {
+			fixedHeaderContainer.setVisibility(View.VISIBLE);
+		} else {
+			fixedHeaderContainer.setVisibility(View.GONE);
+		}
+	}
+	
+	public ListView getListView() {
+		return listView;
 	}
 	
 	public ListAdapter getAdapter() {
@@ -127,10 +143,16 @@ public abstract class ListFragment extends BaseFragment {
         }
     }
 	
-	protected abstract View inflateEmptyView(LayoutInflater inflater);
+	protected View inflateEmptyView(LayoutInflater inflater) {
+		return null;
+	}
 	
-	protected abstract View inflateListHeaderView(LayoutInflater inflater);
+	protected View inflateListHeaderView(LayoutInflater inflater) {
+		return null;
+	}
 	
-	protected abstract View inflateFixedHeaderView(LayoutInflater inflater);
+	protected View inflateFixedHeaderView(LayoutInflater inflater) {
+		return null;
+	}
 
 }

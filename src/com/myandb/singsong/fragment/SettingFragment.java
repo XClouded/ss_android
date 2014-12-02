@@ -1,7 +1,6 @@
 package com.myandb.singsong.fragment;
 
 import android.app.Activity;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -10,11 +9,6 @@ public class SettingFragment extends BaseFragment {
 	@Override
 	protected int getResourceId() {
 		return 0;
-	}
-
-	@Override
-	protected void onArgumentsReceived(Bundle bundle) {
-		
 	}
 
 	@Override

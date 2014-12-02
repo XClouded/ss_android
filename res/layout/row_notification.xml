@@ -17,7 +17,7 @@
 	    android:id="@+id/tv_created_time"
 	    android:layout_alignParentRight="true"
 	    android:textColor="@color/font_hint"
-	    style="@style/BaseTextView" />
+	    style="@style/TextViewBase" />
     
     <TextView
         android:id="@+id/tv_notification_content"
@@ -25,7 +25,7 @@
         android:layout_toRightOf="@id/iv_user_photo"
         android:layout_toLeftOf="@id/tv_created_time"
         android:lineSpacingExtra="@dimen/margin_tiny"
-        style="@style/BaseTextView" />
+        style="@style/TextViewBase" />
     
 </RelativeLayout>
 

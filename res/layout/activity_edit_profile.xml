@@ -79,13 +79,13 @@
 		        <TextView
 		            android:id="@+id/nickname"
 		            android:text="@string/nickname"
-		            style="@style/BaseTextView" />
+		            style="@style/TextViewBase" />
 		        
 		        <TextView
 		            android:id="@+id/tv_valid_nickname"
 		            android:layout_marginLeft="@dimen/margin_small"
 		            android:layout_toRightOf="@id/nickname"
-		            style="@style/BaseTextView" />
+		            style="@style/TextViewBase" />
 		        
 		        <EditText
 		            android:id="@+id/et_nickname"
@@ -106,7 +106,7 @@
 		        
 		        <TextView
 		            android:text="@string/email"
-		            style="@style/BaseTextView" />
+		            style="@style/TextViewBase" />
 		        
 		        <EditText
 		            android:id="@+id/et_email"
@@ -126,7 +126,7 @@
 		        
 		        <TextView
 		            android:text="@string/kakaotalk"
-		            style="@style/BaseTextView" />
+		            style="@style/TextViewBase" />
 		        
 		        <EditText
 		            android:id="@+id/et_kakaotalk"
@@ -146,7 +146,7 @@
 		        
 		        <TextView
 		            android:text="@string/status_message"
-		            style="@style/BaseTextView" />
+		            style="@style/TextViewBase" />
 		        
 		        <EditText
 		            android:id="@+id/et_status"
@@ -165,7 +165,7 @@
 		        
 		        <TextView
 		            android:text="@string/change_password"
-		            style="@style/BaseTextView" />
+		            style="@style/TextViewBase" />
 		        
 		        <EditText
 		            android:id="@+id/et_old_password"
@@ -197,7 +197,7 @@
 		        <Button
 		            android:id="@+id/btn_change_password"
 		            android:text="비밀번호를 변경합니다."
-		            style="@style/DarkButton" />
+		            style="@style/ButtonDark" />
 		        
 		    </LinearLayout>
 	        

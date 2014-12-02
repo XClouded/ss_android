@@ -19,7 +19,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_small"
             android:text="인증 메일 재전송"
-            style="@style/DarkButton" />
+            style="@style/ButtonDark" />
         
         <TextView
             android:layout_alignParentLeft="true"
@@ -27,7 +27,7 @@
             android:layout_centerVertical="true"
             android:text="이메일 인증을 해주세요!\n기능 제한없이 사용하실 수 있습니다."
             android:textColor="@color/red"
-            style="@style/SmallTextView" />
+            style="@style/TextViewHint" />
         
     </RelativeLayout>
     
@@ -86,7 +86,7 @@
 		    android:text="@string/my_like_song"
 		    android:textColor="@color/font_white"
 		    android:background="@drawable/circle_dark"
-		    style="@style/SmallTextView" />
+		    style="@style/TextViewHint" />
 		
 		<TextView
 		    android:id="@+id/tv_user_comments"
@@ -98,7 +98,7 @@
 		    android:textColor="@color/font_white"
 		    android:background="@drawable/circle_dark"
 		    android:visibility="invisible"
-		    style="@style/SmallTextView" />
+		    style="@style/TextViewHint" />
 		
 		<RelativeLayout
 		    android:layout_width="wrap_content"
@@ -128,7 +128,7 @@
 			    android:layout_marginTop="@dimen/margin_tiny"
 			    android:layout_centerHorizontal="true"
 			    android:textColor="@color/font_white"
-			    style="@style/BaseTextView" />
+			    style="@style/TextViewBase" />
 			
 			<TextView
 			    android:id="@+id/tv_user_nickname"
@@ -138,7 +138,7 @@
 			    android:layout_below="@id/tv_user_username"
 			    android:layout_marginTop="@dimen/margin_tiny"
 			    android:layout_centerHorizontal="true"
-			    style="@style/BaseTextView" />
+			    style="@style/TextViewBase" />
 			
 			<TextView
 			    android:id="@+id/tv_user_status"
@@ -148,7 +148,7 @@
 			    android:gravity="center"
 			    android:layout_centerHorizontal="true"
 			    android:maxLines="2"
-			    style="@style/SmallTextView" />
+			    style="@style/TextViewHint" />
 		    
 		</RelativeLayout>
           
@@ -172,7 +172,7 @@
             android:lineSpacingExtra="3sp"
             android:gravity="center"
             android:background="@drawable/btn_tab_selected"
-            style="@style/BaseTextView" />
+            style="@style/TextViewBase" />
         
         <TextView
             android:id="@+id/tv_user_followings"
@@ -185,7 +185,7 @@
             android:lineSpacingExtra="3sp"
             android:gravity="center"
             android:background="@drawable/btn_tab_selector"
-            style="@style/BaseTextView" />
+            style="@style/TextViewBase" />
         
         <TextView
             android:id="@+id/tv_user_followers"
@@ -198,7 +198,7 @@
             android:lineSpacingExtra="3sp"
             android:gravity="center"
             android:background="@drawable/btn_tab_selector"
-            style="@style/BaseTextView" />
+            style="@style/TextViewBase" />
         
     </LinearLayout>
 

@@ -27,7 +27,7 @@ public class SimpleSongAdapter extends HolderAdapter<Song, SimpleSongAdapter.Son
 
 	@Override
 	public void onBindViewHolder(SongHolder viewHolder, int position) {
-		final Song thisSong = (Song) getItem(position);
+		final Song thisSong = getItem(position);
 		final User thisUser = thisSong.getCreator();
 		final Music music = thisSong.getMusic();
 		final Context context = viewHolder.view.getContext();

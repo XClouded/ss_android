@@ -11,7 +11,7 @@
 	        android:layout_width="wrap_content"
 	        android:text="@string/setting"
 	        android:gravity="left"
-	        style="@style/DialogTextViewTitle" />
+	        style="@style/TextViewDialogTitle" />
 	    
 	    <ImageView
 	        android:id="@+id/iv_cancel"
@@ -25,14 +25,14 @@
     <Button
         android:id="@+id/btn_recommend_artist"
         android:text="콜라보 아티스트로 추천하기"
-        style="@style/DialogButton" />
+        style="@style/ButtonDialog" />
     
     <ImageView
         style="@style/DividerHorizontal" />
     
     <Button
         android:id="@+id/btn_allow_push"
-        style="@style/DialogButton" />
+        style="@style/ButtonDialog" />
     
     <ImageView
         style="@style/DividerHorizontal" />
@@ -40,6 +40,6 @@
     <Button
         android:id="@+id/btn_unfollow"
         android:text="@string/cancel_follow"
-        style="@style/DialogButton" />
+        style="@style/ButtonDialog" />
 
 </LinearLayout>

@@ -16,7 +16,6 @@ import android.widget.TextView;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.RootActivity;
-import com.myandb.singsong.activity.UpActivity;
 import com.myandb.singsong.adapter.MenuAdapter;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.GlobalMenu;
@@ -38,11 +37,6 @@ public class DrawerFragment extends BaseFragment {
 	@Override
 	protected int getResourceId() {
 		return R.layout.fragment_drawer;
-	}
-	
-	@Override
-	protected void onArgumentsReceived(Bundle bundle) {
-		// Nothing to run
 	}
 
 	@Override
@@ -73,44 +67,53 @@ public class DrawerFragment extends BaseFragment {
 	
 	private GlobalMenu makeHomeMenu() {
 		Intent intent = new Intent(getActivity(), RootActivity.class);
+		Bundle bundle = new Bundle();
+		bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_home_title));
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, HomeFragment.class.getName());
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_ROOT, true);
-		return new GlobalMenu(R.string.follower, intent, R.drawable.ic_artist_menu);
+		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
+		return new GlobalMenu(R.string.fragment_home_title, intent, R.drawable.ic_menu_home);
 	}
 	
 	private GlobalMenu makeArtistMenu() {
+		Bundle bundle = new Bundle();
+		bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_artist_list_title));
 		Intent intent = new Intent(getActivity(), RootActivity.class);
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, ArtistListFragment.class.getName());
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_ROOT, true);
-		return new GlobalMenu(R.string.following, intent, R.drawable.ic_collabo_menu);
+		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
+		return new GlobalMenu(R.string.fragment_artist_list_title, intent, R.drawable.ic_menu_artist);
 	}
 	
 	private GlobalMenu makeSingMenu() {
 		Intent intent = new Intent(getActivity(), RootActivity.class);
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, MusicFragment.class.getName());
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_ROOT, true);
-		return new GlobalMenu(R.string.follower, intent, R.drawable.ic_artist_menu);
+		return new GlobalMenu(R.string.fragment_sing_title, intent, R.drawable.ic_menu_sing, true);
 	}
 	
 	private GlobalMenu makeListenMenu() {
 		Intent intent = new Intent(getActivity(), RootActivity.class);
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, CollaboratedFragment.class.getName());
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_ROOT, true);
-		return new GlobalMenu(R.string.follower, intent, R.drawable.ic_artist_menu);
+		return new GlobalMenu(R.string.fragment_listen_title, intent, R.drawable.ic_menu_listen);
 	}
 	
 	private GlobalMenu makeFindFriendMenu() {
+		Bundle bundle = new Bundle();
+		bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_find_friends_title));
 		Intent intent = new Intent(getActivity(), RootActivity.class);
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, FindFriendsFragment.class.getName());
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_ROOT, true);
-		return new GlobalMenu(R.string.follower, intent, R.drawable.ic_artist_menu);
+		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
+		return new GlobalMenu(R.string.fragment_find_friends_title, intent, R.drawable.ic_menu_friend, true);
 	}
 	
 	private GlobalMenu makeSettingMenu() {
 		Intent intent = new Intent(getActivity(), RootActivity.class);
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, SettingFragment.class.getName());
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_ROOT, true);
-		return new GlobalMenu(R.string.follower, intent, R.drawable.ic_artist_menu);
+		return new GlobalMenu(R.string.fragment_setting_title, intent, R.drawable.ic_menu_setting);
 	}
 	
 	@Override
@@ -138,11 +141,8 @@ public class DrawerFragment extends BaseFragment {
 				
 				@Override
 				public void onClick(View v) {
-					Intent intent = new Intent(getActivity(), UpActivity.class);
-					intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, LoginFragment.class.getName());
-					intent.putExtra(UpActivity.EXTRA_FULL_SCREEN, true);
-					if (getActivity() instanceof BaseActivity) {
-						((BaseActivity) getActivity()).changePage(intent);
+					if (getActivity() instanceof RootActivity) {
+						((RootActivity) getActivity()).showLoginDialog();
 					}
 				}
 			});

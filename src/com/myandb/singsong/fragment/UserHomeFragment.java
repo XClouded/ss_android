@@ -28,7 +28,9 @@ import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.activity.UpActivity;
 import com.myandb.singsong.adapter.MySongAdapter;
+import com.myandb.singsong.dialog.LoginDialog;
 import com.myandb.singsong.dialog.UpdateFriendshipDialog;
+import com.myandb.singsong.event.ActivateOnlyClickListener;
 import com.myandb.singsong.event.MemberOnlyClickListener;
 import com.myandb.singsong.event.OnVolleyWeakError;
 import com.myandb.singsong.event.OnVolleyWeakResponse;
@@ -72,11 +74,6 @@ public class UserHomeFragment extends ListFragment {
 	private View vResendEmail;
 	private Button btnResendEmail;
 
-	@Override
-	protected View inflateEmptyView(LayoutInflater inflater) {
-		return null;
-	}
-
 	@SuppressLint("InflateParams")
 	@Override
 	protected View inflateListHeaderView(LayoutInflater inflater) {
@@ -84,12 +81,8 @@ public class UserHomeFragment extends ListFragment {
 	}
 
 	@Override
-	protected View inflateFixedHeaderView(LayoutInflater inflater) {
-		return null;
-	}
-
-	@Override
 	protected void onArgumentsReceived(Bundle bundle) {
+		super.onArgumentsReceived(bundle);
 		Gson gson = Utility.getGsonInstance();
 		String userInJson = bundle.getString(EXTRA_THIS_USER);
 		thisUser = gson.fromJson(userInJson, User.class);
@@ -215,7 +208,7 @@ public class UserHomeFragment extends ListFragment {
 	private void setUserPhoto() {
 		File photo = null;
 		if (isCurrentUser()) {
-			photo = new File(getActivity().getFilesDir(), LoginFragment.FILE_USER_PHOTO);
+			photo = new File(getActivity().getFilesDir(), LoginDialog.FILE_USER_PHOTO);
 		} else if (thisUser.hasPhoto()) {
 			ImageLoader imageLoader = ImageLoader.getInstance();
 			photo = DiscCacheUtil.findInCache(thisUser.getPhotoUrl(), imageLoader.getDiscCache());
@@ -380,10 +373,10 @@ public class UserHomeFragment extends ListFragment {
 		}
 	}
 	
-	private OnClickListener followClickListener = new MemberOnlyClickListener() {
+	private OnClickListener followClickListener = new ActivateOnlyClickListener() {
 		
 		@Override
-		public void onActivated(View v) {
+		public void onActivated(View v, User user) {
 			UrlBuilder urlBuilder = new UrlBuilder();
 			String url = urlBuilder.s("friendships").s(thisUser.getId()).toString();
 			OAuthJustRequest request = new OAuthJustRequest(Method.POST, url, null);
@@ -392,10 +385,10 @@ public class UserHomeFragment extends ListFragment {
 		}
 	};
 	
-	private OnClickListener updateFriendshipClickListener = new MemberOnlyClickListener() {
+	private OnClickListener updateFriendshipClickListener = new ActivateOnlyClickListener() {
 		
 		@Override
-		public void onActivated(View v) {
+		public void onActivated(View v, User user) {
 			if (dialog == null) {
 				dialog = new UpdateFriendshipDialog(UserHomeFragment.this);
 			}
@@ -404,10 +397,10 @@ public class UserHomeFragment extends ListFragment {
 		}
 	};
 	
-	private OnClickListener editProfileClickListener = new OnClickListener() {
+	private OnClickListener editProfileClickListener = new MemberOnlyClickListener() {
 		
 		@Override
-		public void onClick(View v) {
+		public void onLoggedIn(View v, User user) {
 			Intent intent = new Intent(getActivity(), UpActivity.class);
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, "");
 			startActivity(intent);
@@ -452,10 +445,10 @@ public class UserHomeFragment extends ListFragment {
 		currentUser = user;
 	}
 	
-	private OnClickListener sendEmailClickListener = new OnClickListener() {
+	private OnClickListener sendEmailClickListener = new MemberOnlyClickListener() {
 		
 		@Override
-		public void onClick(View v) {
+		public void onLoggedIn(View v, User user) {
 			UrlBuilder urlBuilder = new UrlBuilder();
 			String url = urlBuilder.s("activations").toString();
 			OAuthJustRequest request = new OAuthJustRequest(Method.POST, url, null);
@@ -485,6 +478,12 @@ public class UserHomeFragment extends ListFragment {
 			
 			break;
 		}
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		setActionBarTitle(thisUser.getNickname());
 	}
 
 	@Override

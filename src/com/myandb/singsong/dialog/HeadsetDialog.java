@@ -14,19 +14,26 @@ public class HeadsetDialog extends BaseDialog {
 
 	public HeadsetDialog(Fragment fragment) {
 		super(fragment.getActivity(), android.R.style.Theme_Light_NoTitleBar_Fullscreen);
-		
 		this.fragment = fragment;
 	}
 
 	@Override
-	protected void initializeView() {
-		setContentView(R.layout.dialog_headset);
-		
+	protected void initialize() {
+		// Nothing to run
+	}
+
+	@Override
+	protected int getResourceId() {
+		return R.layout.dialog_headset;
+	}
+
+	@Override
+	protected void onViewInflated() {
 		btnNoHeadset = (Button) findViewById(R.id.btn_no_headset);
 	}
 
 	@Override
-	protected void setupView() {
+	protected void setupViews() {
 		btnNoHeadset.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -37,6 +44,11 @@ public class HeadsetDialog extends BaseDialog {
 				}
 			}
 		});
+	}
+
+	@Override
+	public void onBackPressed() {
+		return;
 	}
 	
 }

@@ -2,14 +2,22 @@ package com.myandb.singsong.fragment;
 
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.service.PlayerService;
+
 import android.app.Activity;
+import android.content.res.Resources.NotFoundException;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 public abstract class BaseFragment extends Fragment {
+	
+	public static final String EXTRA_FRAGMENT_TITLE = "fragment_title";
+	
+	private String title;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -20,9 +28,15 @@ public abstract class BaseFragment extends Fragment {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		
-		onArgumentsReceived(getArguments());
+		if (getArguments() != null) {
+			onArgumentsReceived(getArguments());
+		}
 		
 		onViewInflated(view, getLayoutInflater(savedInstanceState));
+	}
+	
+	protected void onArgumentsReceived(Bundle bundle) {
+		title = bundle.getString(EXTRA_FRAGMENT_TITLE);
 	}
 
 	@Override
@@ -40,6 +54,12 @@ public abstract class BaseFragment extends Fragment {
 		onDataChanged();
 	}
 	
+	@Override
+	public void onResume() {
+		super.onResume();
+		setActionBarTitle(title);
+	}
+
 	public void onBackPressed() {
 		getActivity().finish();
 	}
@@ -53,9 +73,32 @@ public abstract class BaseFragment extends Fragment {
 		}
 	}
 
-	protected abstract int getResourceId();
+	protected void setActionBarTitle(String title) {
+		if (title != null && title.length() > 0) {
+			try {
+				getSupportActionBar(getActivity()).setTitle(title);
+			} catch (NotFoundException e) {
+				// It's all right
+			}
+		}
+	}
 	
-	protected abstract void onArgumentsReceived(Bundle bundle);
+	protected void setActionBarTitle(int resId) {
+		try {
+			getSupportActionBar(getActivity()).setTitle(resId);
+		} catch (NotFoundException e) {
+			// It's all right
+		}
+	}
+	
+	public ActionBar getSupportActionBar(Activity activity) {
+		if (activity != null && activity instanceof ActionBarActivity) {
+			return ((ActionBarActivity) activity).getSupportActionBar();
+		}
+		return null;
+	}
+
+	protected abstract int getResourceId();
 	
 	protected abstract void onViewInflated(View view, LayoutInflater inflater);
 	

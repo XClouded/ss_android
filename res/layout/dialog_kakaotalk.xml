@@ -14,7 +14,7 @@
 	        android:layout_width="wrap_content"
 	        android:text="@string/dialog_kakaotalk_title"
 	        android:gravity="left"
-	        style="@style/DialogTextViewTitle" />
+	        style="@style/TextViewDialogTitle" />
 	    
 	    <ImageView
 	        android:id="@+id/iv_cancel"
@@ -51,7 +51,7 @@
             android:layout_marginLeft="@dimen/margin"
             android:layout_toRightOf="@id/iv_writer_photo"
             android:textColor="@color/font_grey"
-            style="@style/BaseTextView" />
+            style="@style/TextViewBase" />
         
     </RelativeLayout>
     

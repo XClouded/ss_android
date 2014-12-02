@@ -5,7 +5,7 @@
     <TextView
         android:id="@+id/tv_progress_title"
         android:text="@string/loading"
-        style="@style/DialogTextViewTitle" />
+        style="@style/TextViewDialogTitle" />
 
     <ProgressBar
         android:id="@+id/pb_loading"
@@ -30,7 +30,7 @@
 	    
 	    <Button
 	        android:id="@+id/btn_progress_control"
-	        style="@style/DialogButton" />
+	        style="@style/ButtonDialog" />
         
     </LinearLayout>
     
@@ -40,6 +40,6 @@
     <Button
         android:id="@+id/btn_cancel"
         android:text="@string/cancel"
-        style="@style/DialogButton" />
+        style="@style/ButtonDialog" />
     
 </LinearLayout>

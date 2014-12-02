@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="@dimen/margin_bigger"
+    android:paddingLeft="@dimen/margin"
+    android:paddingRight="@dimen/margin"
+    android:orientation="vertical" >
+    
+    <Button
+        android:id="@+id/btn_search_user"
+        android:layout_marginBottom="@dimen/margin_big"
+        android:text="@string/hint_search_user"
+        style="@style/ButtonLikeEditText" />
+    
+    <Button
+        android:id="@+id/btn_invite_friends"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="@dimen/margin_big"
+        android:text="@string/invite_friends"
+        android:textColor="@color/font_default"
+        android:background="@drawable/box_selector"
+        style="@style/ButtonBase" />
+    
+    <Button
+        android:id="@+id/btn_connect_facebook"
+        android:layout_width="match_parent"
+        android:text="페이스북 연동하기"
+        android:background="@drawable/btn_facebook_selector"
+        style="@style/ButtonBase" />
+    
+    <LinearLayout
+        android:id="@+id/v_facebook_header_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+        
+	    <TextView
+	        android:text="페이스북 친구 추가"
+	        style="@style/TextViewTitle" />
+        
+	    <ImageView
+	        style="@style/DividerHorizontal" />
+        
+    </LinearLayout>
+
+</LinearLayout>

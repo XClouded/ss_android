@@ -6,48 +6,41 @@ import com.myandb.singsong.fragment.RecordSettingFragment;
 import com.myandb.singsong.model.Image;
 import com.myandb.singsong.net.UrlBuilder;
 
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 public class ImageSelectDialog extends BaseDialog {
 	
-	private ImageView ivCancel;
 	private ListView listView;
 	private RecordSettingFragment fragment;
 	private ImageAdapter adapter;
 
 	public ImageSelectDialog(RecordSettingFragment fragment) {
 		super(fragment.getActivity(), android.R.style.Theme_Light_NoTitleBar_Fullscreen);
-		
 		this.fragment = fragment;
+	}
+
+	@Override
+	protected void initialize() {
 		adapter = new ImageAdapter(this);
 	}
 
 	@Override
-	protected void initializeView() {
-		setContentView(R.layout.dialog_image_select);
-		
-		ivCancel = (ImageView) findViewById(R.id.iv_cancel);
+	protected int getResourceId() {
+		return R.layout.dialog_image_select;
+	}
+
+	@Override
+	protected void onViewInflated() {
 		listView = (ListView) findViewById(R.id.lv_full_width);
 	}
 
 	@Override
-	protected void setupView() {
-		ivCancel.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				ImageSelectDialog.this.dismiss();
-			}
-		});
-		
+	protected void setupViews() {
 		listView.setAdapter(adapter);
 	}
 	
 	public void selectImage(Image image) {
 		fragment.setImage(image);
-		
 		dismiss();
 	}
 

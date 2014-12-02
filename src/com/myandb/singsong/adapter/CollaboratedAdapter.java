@@ -27,7 +27,7 @@ public class CollaboratedAdapter extends HolderAdapter<Song, CollaboratedAdapter
 
 	@Override
 	public void onBindViewHolder(SongHolder viewHolder, int position) {
-		final Song thisSong = (Song) getItem(position);
+		final Song thisSong = getItem(position);
 		final Song parentSong = thisSong.getParentSong();
 		final User thisUser = thisSong.getCreator();
 		final User parentUser = thisSong.getParentUser();

@@ -11,8 +11,8 @@
     <string name="search">검색</string>
     <string name="login">로그인</string>
     <string name="logout">로그아웃</string>
-    <string name="signup">가입하기</string>
-    <string name="to_signup">회원가입</string>
+    <string name="join">가입완료</string>
+    <string name="to_join">회원가입</string>
     <string name="setting">설정하기</string>
     <string name="submit">입력하기</string>
     <string name="delete">삭제하기</string>
@@ -39,6 +39,7 @@
     <string name="recent">최신순</string>
     <string name="like">좋아요</string>
     <string name="withdraw">탈퇴하기</string>
+    <string name="notification">알림</string>
     
     <string name="dialog_headset_title">이어폰이나 헤드셋을 끼우세요!</string>
     <string name="dialog_headset_content">콜라보 노래방은 반주와 목소리를 따로 녹음하여 목소리에 보정이 가능합니다. 이어폰이나 헤드셋을 끼워 더 좋은 품질로 녹음하세요!</string>
@@ -54,9 +55,10 @@
     <string name="hint_send_kakaotalk">친구에게 메세지를 보내세요!</string>
     <string name="hint_username">이메일 입력</string>
     <string name="hint_username_compat">이메일 또는 아이디 입력</string>
-    <string name="hint_password">비밀번호 입력</string>
+    <string name="hint_password">비밀번호 입력 (4자 이상)</string>
     <string name="hint_re_password">비밀번호 확인</string>
     <string name="hint_keyword">검색어를 입력해주세요.</string>
+    <string name="hint_search_user">이메일 또는 닉네임을 입력해주세요.</string>
     
     <string name="ask_app_finish">2초 안에 뒤로가기 버튼을 다시 누르면 어플리케이션이 종료됩니다.</string>
     <string name="lyric_help">내 파트에 맞는 색을 불러주세요! 흰색 가사는 같이 불러요!</string>
@@ -74,6 +76,15 @@
     <string name="collabo_facebook">콜라보노래방 facebook</string>
     <string name="time_default">88:88</string>
     <string name="change_password">비밀번호 변경</string>
+    <string name="invite_friends">친구 초대</string>
+    
+    <string name="fragment_home_title">콜라보 홈</string>
+    <string name="fragment_artist_list_title">콜라보 아티스트</string>
+    <string name="fragment_sing_title">부르기</string>
+    <string name="fragment_listen_title">듣기</string>
+    <string name="fragment_find_friends_title">친구 찾기</string>
+    <string name="fragment_setting_title">설정</string>
+    <string name="fragment_invite_friends_title">친구 초대</string>
     
     <string name="_check">✓</string>
 

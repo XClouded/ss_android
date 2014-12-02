@@ -91,6 +91,7 @@ public class RecordSettingFragment extends BaseFragment {
 
 	@Override
 	protected void onArgumentsReceived(Bundle bundle) {
+		super.onArgumentsReceived(bundle);
 		headsetPlugged = bundle.getBoolean(SongUploadService.EXTRA_HEADSET_PLUGGED);
 		
 		try {

@@ -28,13 +28,13 @@
 	        android:id="@+id/tv_comment_created"
 	        android:layout_alignParentTop="true"
 	        android:layout_alignParentRight="true"
-	        style="@style/SmallTextView" />
+	        style="@style/TextViewHint" />
 	    
 	    <TextView
 	        android:id="@+id/tv_comment_content"
 	        android:layout_below="@id/tv_comment_user_nickname"
 	        android:layout_alignLeft="@id/tv_comment_user_nickname"
-	        style="@style/BaseTextView" />
+	        style="@style/TextViewBase" />
 	    
 	    <ImageView
 	        android:id="@+id/iv_report_comment"

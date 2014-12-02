@@ -15,7 +15,7 @@
         android:id="@+id/btn_logout"
         android:text="@string/logout"
         android:gravity="center"
-        style="@style/SettingButton" />
+        style="@style/ButtonSetting" />
     
     <TextView
         android:text="@string/program_info"
@@ -26,13 +26,13 @@
     <Button
         android:id="@+id/btn_version"
         android:layout_marginBottom="@dimen/margin_tiny"
-        style="@style/SettingButton" />
+        style="@style/ButtonSetting" />
     
     <Button
         android:id="@+id/btn_to_tutorial"
         android:layout_marginBottom="@dimen/margin_tiny"
         android:text="@string/tutorial"
-        style="@style/SettingButton" />
+        style="@style/ButtonSetting" />
     
     <RelativeLayout
         android:layout_width="match_parent"
@@ -53,7 +53,7 @@
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:paddingLeft="@dimen/margin"
-            style="@style/BaseTextView" />
+            style="@style/TextViewBase" />
         
     </RelativeLayout>
     
@@ -65,18 +65,18 @@
         android:id="@+id/btn_request"
         android:layout_marginBottom="@dimen/margin_tiny"
         android:text="@string/service_suggestion"
-        style="@style/SettingButton" />
+        style="@style/ButtonSetting" />
     
     <Button
         android:id="@+id/btn_to_facebook"
         android:text="@string/collabo_facebook"
         android:layout_marginBottom="@dimen/margin_bigger"
-        style="@style/SettingButton" />
+        style="@style/ButtonSetting" />
     
     <Button
         android:id="@+id/btn_withdraw"
         android:text="@string/withdraw"
         android:gravity="center"
-        style="@style/SettingButton" />
+        style="@style/ButtonSetting" />
 
 </LinearLayout>

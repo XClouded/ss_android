@@ -39,8 +39,8 @@ import com.myandb.singsong.audio.PlayEvent;
 import com.myandb.singsong.audio.StreamPlayer;
 import com.myandb.singsong.dialog.KakaotalkDialog;
 import com.myandb.singsong.dialog.WriteCommentDialog;
+import com.myandb.singsong.event.ActivateOnlyClickListener;
 import com.myandb.singsong.event.Listeners;
-import com.myandb.singsong.event.MemberOnlyClickListener;
 import com.myandb.singsong.event.OnVolleyWeakError;
 import com.myandb.singsong.event.OnVolleyWeakResponse;
 import com.myandb.singsong.event.WeakRunnable;
@@ -628,10 +628,10 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		}
 	}
 
-	private OnClickListener likeClickListener = new MemberOnlyClickListener() {
+	private OnClickListener likeClickListener = new ActivateOnlyClickListener() {
 		
 		@Override
-		public void onActivated(View v) {
+		public void onActivated(View v, User user) {
 			final Song song = service.getSong();
 			UrlBuilder urlBuilder = new UrlBuilder();
 			String url = urlBuilder.s("songs").s(song.getId()).s("likings").toString();
@@ -654,10 +654,10 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		}
 	};
 	
-	private OnClickListener writeCommentClickListener = new MemberOnlyClickListener() {
+	private OnClickListener writeCommentClickListener = new ActivateOnlyClickListener() {
 		
 		@Override
-		public void onActivated(View v) {
+		public void onActivated(View v, User user) {
 			if (commentDialog != null) {
 				final int inputMode = WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE;
 				final Song song = service.getSong();

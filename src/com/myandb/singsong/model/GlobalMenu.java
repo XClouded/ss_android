@@ -4,18 +4,20 @@ import android.content.Intent;
 
 public class GlobalMenu {
 	
-	private int titleResId;
 	private Intent intent;
+	private int titleResId;
 	private int iconResId;
-	
-	public GlobalMenu(int titleResId, Intent intent) {
-		this.titleResId = titleResId;
-		this.intent = intent;
-	}
+	private boolean loginRequired;
 	
 	public GlobalMenu(int titleResId, Intent intent, int iconResId) {
-		this(titleResId, intent);
+		this(titleResId, intent, iconResId, false);
+	}
+	
+	public GlobalMenu(int titleResId, Intent intent, int iconResId, boolean loginRequired) {
+		this.titleResId = titleResId;
+		this.intent = intent;
 		this.iconResId = iconResId;
+		this.loginRequired = loginRequired;
 	}
 	
 	public int getTitleResId() {
@@ -28,6 +30,10 @@ public class GlobalMenu {
 	
 	public int getIconResId() {
 		return iconResId;
+	}
+	
+	public boolean isLoginRequired() {
+		return loginRequired;
 	}
 
 }

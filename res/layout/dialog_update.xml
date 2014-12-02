@@ -4,12 +4,12 @@
     
     <TextView
         android:text="@string/dialog_update_title"
-        style="@style/DialogTextViewTitle" />
+        style="@style/TextViewDialogTitle" />
     
     <Button
         android:id="@+id/btn_update"
         android:text="@string/update"
-        style="@style/DialogButton" />
+        style="@style/ButtonDialog" />
     
     <ImageView
         style="@style/DividerHorizontal" />
@@ -17,6 +17,6 @@
     <Button
         android:id="@+id/btn_exit"
         android:text="@string/exit"
-        style="@style/DialogButton" />
+        style="@style/ButtonDialog" />
 
 </LinearLayout>

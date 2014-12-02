@@ -64,7 +64,7 @@
                         android:layout_gravity="center"
                         android:textColor="@color/font_white"
                         android:lineSpacingExtra="@dimen/margin_tiny"
-                        style="@style/BaseTextView" />
+                        style="@style/TextViewBase" />
                     
                 </FrameLayout>
                 
@@ -120,13 +120,13 @@
 	            android:id="@+id/tv_play_start_time"
 	            android:layout_alignParentLeft="true"
 	            android:text="@string/time_default"
-	            style="@style/PlayTimeTextView" />
+	            style="@style/TextViewPlayTime" />
 	        
 	        <TextView
 	            android:id="@+id/tv_play_end_time"
 	            android:layout_alignParentRight="true"
 	            android:text="@string/time_default"
-	            style="@style/PlayTimeTextView" />
+	            style="@style/TextViewPlayTime" />
 	        
 	        <SeekBar
 	            android:id="@+id/sb_play"
@@ -154,7 +154,7 @@
             android:id="@+id/tv_root_info"
             android:layout_width="match_parent"
             android:layout_marginBottom="@dimen/margin_small"
-            style="@style/EllipsizeTextView" />
+            style="@style/TextViewEllipsize" />
         
         <RelativeLayout
             android:id="@+id/rl_start_collabo"
@@ -178,7 +178,7 @@
         android:layout_marginTop="@dimen/margin"
         android:layout_marginBottom="@dimen/margin_tiny"
         android:text="아티스트의 한마디"
-        style="@style/BaseTextView" />
+        style="@style/TextViewBase" />
     
     <ImageView
         style="@style/DividerHorizontal" />
@@ -204,21 +204,21 @@
             android:layout_marginRight="@dimen/margin_tiny"
             android:layout_marginBottom="@dimen/margin_tiny"
             android:textStyle="bold"
-            style="@style/BaseTextView" />
+            style="@style/TextViewBase" />
         
         
         <TextView
             android:id="@+id/tv_parent_user_part"
             android:layout_toRightOf="@id/tv_parent_user_nickname"
             android:textColor="@color/font_grey"
-            style="@style/BaseTextView" />
+            style="@style/TextViewBase" />
         
         <TextView
             android:id="@+id/tv_parent_song_message"
             android:layout_width="match_parent"
             android:layout_toRightOf="@id/iv_parent_user_photo"
             android:layout_below="@id/tv_parent_user_nickname"
-            style="@style/BaseTextView" />
+            style="@style/TextViewBase" />
         
     </RelativeLayout>
     
@@ -244,21 +244,21 @@
             android:layout_marginRight="@dimen/margin_tiny"
             android:layout_marginBottom="@dimen/margin_tiny"
             android:textStyle="bold"
-            style="@style/BaseTextView" />
+            style="@style/TextViewBase" />
         
         
         <TextView
             android:id="@+id/tv_this_user_part"
             android:layout_toRightOf="@id/tv_this_user_nickname"
             android:textColor="@color/font_grey"
-            style="@style/BaseTextView" />
+            style="@style/TextViewBase" />
         
         <TextView
             android:id="@+id/tv_this_song_message"
             android:layout_width="match_parent"
             android:layout_toRightOf="@id/iv_this_user_photo"
             android:layout_below="@id/tv_this_user_nickname"
-            style="@style/BaseTextView" />
+            style="@style/TextViewBase" />
         
     </RelativeLayout>
     
@@ -270,7 +270,7 @@
         android:paddingLeft="@dimen/margin_small"
         android:layout_marginTop="@dimen/margin"
         android:layout_marginBottom="@dimen/margin_tiny"
-        style="@style/BaseTextView" />
+        style="@style/TextViewBase" />
     
     <ImageView
         style="@style/DividerHorizontal" />

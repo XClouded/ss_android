@@ -2,9 +2,12 @@ package com.myandb.singsong.adapter;
 
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
+import com.myandb.singsong.event.MemberOnlyClickListener;
 import com.myandb.singsong.model.GlobalMenu;
+import com.myandb.singsong.model.User;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -25,20 +28,34 @@ public class MenuAdapter extends HolderAdapter<GlobalMenu, MenuAdapter.MenuHolde
 
 	@Override
 	public void onBindViewHolder(MenuHolder viewHolder, int position) {
-		final GlobalMenu menu = (GlobalMenu) getItem(position);
+		final GlobalMenu menu = getItem(position);
 		
 		viewHolder.ivMenuIcon.setImageResource(menu.getIconResId());
 		viewHolder.tvMenuTitle.setText(menu.getTitleResId());
-		viewHolder.view.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				Context context = v.getContext();
-				if (context instanceof BaseActivity) {
-					((BaseActivity) context).changePage(menu.getIntent());
+		
+		if (menu.isLoginRequired()) {
+			viewHolder.view.setOnClickListener(new MemberOnlyClickListener() {
+				
+				@Override
+				public void onLoggedIn(View v, User user) {
+					changePage(v.getContext(), menu.getIntent());
 				}
-			}
-		});
+			});
+		} else {
+			viewHolder.view.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					changePage(v.getContext(), menu.getIntent());
+				}
+			});
+		}
+	}
+	
+	private void changePage(Context context, Intent intent) {
+		if (context instanceof BaseActivity) {
+			((BaseActivity) context).changePage(intent);
+		}
 	}
 	
 	public static final class MenuHolder extends ViewHolder {

@@ -19,28 +19,33 @@ import com.myandb.singsong.model.Comment;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.OAuthJustRequest;
 import com.myandb.singsong.net.UrlBuilder;
+import com.myandb.singsong.secure.Authenticator;
 
 public class ReportCommentDialog extends BaseDialog {
 	
-	private User user;
 	private Comment<?> comment;
-	private ImageView ivCancel;
 	private ImageView ivReporterPhoto;
 	private Button btnSubmitReport;
 	private TextView tvTargetCommentContent;
 	private EditText etReportContent;
+	private User user;
 
-	public ReportCommentDialog(Context context, User user) {
-		super(context, android.R.style.Theme_Translucent_NoTitleBar);
-		
-		this.user = user;
+	public ReportCommentDialog(Context context) {
+		super(context);
 	}
 
 	@Override
-	protected void initializeView() {
-		setContentView(R.layout.dialog_report_comment);
-		
-		ivCancel = (ImageView) findViewById(R.id.iv_cancel);
+	protected void initialize() {
+		this.user = Authenticator.getUser();
+	}
+
+	@Override
+	protected int getResourceId() {
+		return R.layout.dialog_report_comment;
+	}
+
+	@Override
+	protected void onViewInflated() {
 		ivReporterPhoto = (ImageView) findViewById(R.id.iv_reporter_photo);
 		btnSubmitReport = (Button) findViewById(R.id.btn_submit);
 		tvTargetCommentContent = (TextView) findViewById(R.id.tv_target_comment_content);
@@ -48,19 +53,42 @@ public class ReportCommentDialog extends BaseDialog {
 	}
 
 	@Override
-	protected void setupView() {
+	protected void setupViews() {
 		if (user != null) {
 			ImageHelper.displayPhoto(user, ivReporterPhoto);
 		}
-		
-		ivCancel.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				ReportCommentDialog.this.dismiss();
-			}
-		});
+		btnSubmitReport.setOnClickListener(reportClickListener);
 	}
+	
+	private View.OnClickListener reportClickListener = new View.OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			String reportContent = etReportContent.getText().toString();
+			
+			if (reportContent != null && reportContent.length() > 10) {
+				try {
+					JSONObject message = new JSONObject();
+					message.put("user_id", user.getId());
+					message.put("comment_id", comment.getId());
+					message.put("message", reportContent);
+					
+					UrlBuilder urlBuilder = new UrlBuilder();
+					String url = urlBuilder.s("reports").toString();
+					OAuthJustRequest request = new OAuthJustRequest(url, message);
+					RequestQueue queue = ((App) getContext().getApplicationContext()).getQueueInstance();
+					queue.add(request);
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				
+				dismiss();
+				Toast.makeText(getContext(), getContext().getString(R.string.t_report_has_accepted), Toast.LENGTH_SHORT).show();
+			} else {
+				Toast.makeText(getContext(), getContext().getString(R.string.t_report_length_policy), Toast.LENGTH_SHORT).show();
+			}
+		}
+	};
 	
 	@Override
 	public void show() {
@@ -68,43 +96,12 @@ public class ReportCommentDialog extends BaseDialog {
 		
 		if (comment != null) {
 			tvTargetCommentContent.setText(comment.getContent());
-			btnSubmitReport.setOnClickListener(new View.OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					String reportContent = etReportContent.getText().toString();
-					
-					if (reportContent != null && reportContent.length() > 10) {
-						try {
-							JSONObject message = new JSONObject();
-							message.put("user_id", user.getId());
-							message.put("comment_id", comment.getId());
-							message.put("message", reportContent);
-							
-							UrlBuilder urlBuilder = new UrlBuilder();
-							String url = urlBuilder.s("reports").toString();
-							OAuthJustRequest request = new OAuthJustRequest(url, message);
-							RequestQueue queue = ((App) getContext().getApplicationContext()).getQueueInstance();
-							queue.add(request);
-						} catch (JSONException e) {
-							e.printStackTrace();
-						}
-						
-						ReportCommentDialog.this.dismiss();
-						
-						Toast.makeText(getContext(), getContext().getString(R.string.t_report_has_accepted), Toast.LENGTH_SHORT).show();
-					} else {
-						Toast.makeText(getContext(), getContext().getString(R.string.t_report_length_policy), Toast.LENGTH_SHORT).show();
-					}
-				}
-			});
 		}
 	}
 	
 	@Override
 	public void dismiss() {
 		super.dismiss();
-		
 //		parent.closeEditText(etReportContent);
 	}
 

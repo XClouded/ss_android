@@ -20,7 +20,6 @@ import com.google.gson.Gson;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
-import com.myandb.singsong.activity.ChildSongActivity;
 import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.fragment.UserHomeFragment;
 import com.myandb.singsong.model.Activity;
@@ -168,10 +167,10 @@ public class Listeners {
 				Song parentSong = song.getParentSong() == null ? song : song.getParentSong();
 				parentSong.setMusic(song.getMusic());
 				
-				Intent intent = new Intent(context, ChildSongActivity.class);
-				intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-				intent.putExtra(ChildSongActivity.INTENT_PARENT_SONG, gson.toJson(parentSong, Song.class));
-				context.startActivity(intent);
+//				Intent intent = new Intent(context, ChildSongActivity.class);
+//				intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+//				intent.putExtra(ChildSongActivity.INTENT_PARENT_SONG, gson.toJson(parentSong, Song.class));
+//				context.startActivity(intent);
 			}
 		};
 	}
@@ -214,11 +213,11 @@ public class Listeners {
 	}
 	
 	public static OnClickListener getRecordClickListener(final Context context, final Music music) {
-		return new MemberOnlyClickListener() {
+		return new ActivateOnlyClickListener() {
 			
 			@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 			@Override
-			public void onActivated(View v) {
+			public void onActivated(View v, User user) {
 				Gson gson = Utility.getGsonInstance();
 				String musicInJson = gson.toJson(music, Music.class);
 				
@@ -230,15 +229,16 @@ public class Listeners {
 				}
 				
 				context.startActivity(intent);
+				
 			}
 		};
 	}
 	
 	public static OnClickListener getCollaboClickListener(final Context context, final Song song) {
-		return new MemberOnlyClickListener() {
+		return new ActivateOnlyClickListener() {
 			
 			@Override
-			public void onActivated(View v) {
+			public void onActivated(View v, User user) {
 				UrlBuilder urlBuilder = new UrlBuilder();
 				Song parentSong = song.getParentSong() == null ? song : song.getParentSong();
 				parentSong.setMusic(song.getMusic());
@@ -248,7 +248,7 @@ public class Listeners {
 						Method.GET, url, null,
 						new OnCheckResponse(context, parentSong),
 						new OnCheckError(context)
-				);
+						);
 				
 				RequestQueue queue = ((App) context.getApplicationContext()).getQueueInstance();
 				queue.add(request);

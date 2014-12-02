@@ -5,7 +5,6 @@ import org.json.JSONObject;
 
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -19,8 +18,7 @@ import com.myandb.singsong.net.UrlBuilder;
 
 public class UpdateFriendshipDialog extends BaseDialog {
 	
-	private UserHomeFragment parent;
-	private ImageView ivCancel;
+	private UserHomeFragment fragment;
 	private Button btnAllowPush;
 	private Button btnUnfollow;
 	private Button btnRecommendArtist;
@@ -28,32 +26,31 @@ public class UpdateFriendshipDialog extends BaseDialog {
 
 	public UpdateFriendshipDialog(UserHomeFragment fragment) {
 		super(fragment.getActivity(), android.R.style.Theme_Translucent_NoTitleBar);
-		
-		this.parent = fragment;
+		this.fragment = fragment;
 	}
 
 	@Override
-	protected void initializeView() {
-		setContentView(R.layout.dialog_update_friendship);
-		
-		ivCancel = (ImageView) findViewById(R.id.iv_cancel);
+	protected void initialize() {
+		// Nothing to run
+	}
+
+	@Override
+	protected int getResourceId() {
+		return R.layout.dialog_update_friendship;
+	}
+
+	@Override
+	protected void onViewInflated() {
 		btnAllowPush = (Button) findViewById(R.id.btn_allow_push);
 		btnUnfollow = (Button) findViewById(R.id.btn_unfollow);
 		btnRecommendArtist = (Button) findViewById(R.id.btn_recommend_artist);
 	}
 
 	@Override
-	protected void setupView() {
+	protected void setupViews() {
 		btnAllowPush.setOnClickListener(updateAllowPushClickListener);
 		btnUnfollow.setOnClickListener(unfollowClickListener);
 		btnRecommendArtist.setOnClickListener(recommendClickListener);
-		ivCancel.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				UpdateFriendshipDialog.this.dismiss();
-			}
-		});
 	}
 
 	@Override
@@ -85,7 +82,7 @@ public class UpdateFriendshipDialog extends BaseDialog {
 				message.put("allow_notify", isAllowNotify);
 				
 				OAuthJustRequest request = new OAuthJustRequest(Method.PUT, url, message);
-				RequestQueue queue = ((App) parent.getActivity().getApplicationContext()).getQueueInstance();
+				RequestQueue queue = ((App) fragment.getActivity().getApplicationContext()).getQueueInstance();
 				queue.add(request);
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -105,10 +102,10 @@ public class UpdateFriendshipDialog extends BaseDialog {
 			String url = urlBuilder.s("friendships").s(friendship.getFollowingUserId()).toString();
 			
 			OAuthJustRequest request = new OAuthJustRequest(Method.DELETE, url, null);
-			RequestQueue queue = ((App) parent.getActivity().getApplicationContext()).getQueueInstance();
+			RequestQueue queue = ((App) fragment.getActivity().getApplicationContext()).getQueueInstance();
 			queue.add(request);
 			
-			parent.toggleFollowing(false);
+			fragment.toggleFollowing(false);
 			
 			UpdateFriendshipDialog.this.dismiss();
 		}
@@ -122,7 +119,7 @@ public class UpdateFriendshipDialog extends BaseDialog {
 			String url = urlBuilder.s("candidates").s(friendship.getFollowingUserId()).toString();
 			
 			OAuthJustRequest request = new OAuthJustRequest(Method.POST, url, null);
-			RequestQueue queue = ((App) parent.getActivity().getApplicationContext()).getQueueInstance();
+			RequestQueue queue = ((App) fragment.getActivity().getApplicationContext()).getQueueInstance();
 			queue.add(request);
 			
 			Toast.makeText(getContext(), getContext().getString(R.string.t_recommend_has_accepted), Toast.LENGTH_SHORT).show();
@@ -133,6 +130,12 @@ public class UpdateFriendshipDialog extends BaseDialog {
 	
 	public void setFriendship(Friendship friendship) {
 		this.friendship = friendship;
+	}
+
+	@Override
+	public void dismiss() {
+		super.dismiss();
+		this.friendship = null;
 	}
 
 }

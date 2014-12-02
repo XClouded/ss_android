@@ -14,11 +14,14 @@ import com.myandb.singsong.Store;
 import com.myandb.singsong.dialog.BaseDialog;
 import com.myandb.singsong.event.OnVolleyWeakError;
 import com.myandb.singsong.event.OnVolleyWeakResponse;
+import com.myandb.singsong.fragment.BaseFragment;
 import com.myandb.singsong.fragment.HomeFragment;
 import com.myandb.singsong.net.UrlBuilder;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -29,6 +32,7 @@ import android.content.Intent;
 public class LauncherActivity extends Activity {
 
 	private VersionDialog versionDialog;
+	private Handler handler;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +40,14 @@ public class LauncherActivity extends Activity {
 		
 		setContentView(R.layout.activity_logo);
 		
-		requestAppMetadata();
+		handler = new Handler(Looper.getMainLooper());
+		handler.postDelayed(new Runnable() {
+			
+			@Override
+			public void run() {
+				requestAppMetadata();
+			}
+		}, 500);
 	}
 	
 	private void requestAppMetadata() {
@@ -85,12 +96,24 @@ public class LauncherActivity extends Activity {
 		final int enterAnim = android.R.anim.fade_in;
 		final int exitAnim = android.R.anim.fade_out;
 		
+		Bundle bundle = new Bundle();
+		bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_home_title));
 		Intent intent = new Intent(this, RootActivity.class);
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, HomeFragment.class.getName());
+		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
 		intent.putExtra(RootActivity.EXTRA_NOTICE_ID, noticeId);
 		startActivity(intent);
 		overridePendingTransition(enterAnim, exitAnim);
 		finish();
+	}
+
+	@Override
+	protected void onDestroy() {
+		if (handler != null) {
+			handler.removeCallbacksAndMessages(null);
+			handler = null;
+		}
+		super.onDestroy();
 	}
 
 	private static class VersionDialog extends BaseDialog {
@@ -102,7 +125,10 @@ public class LauncherActivity extends Activity {
 
 		public VersionDialog(Context context) {
 			super(context, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
-			
+		}
+
+		@Override
+		protected void initialize() {
 			store = new GoogleStore();
 			if (isStoreUnavailable(store)) {
 				store = new GoogleStore();
@@ -110,15 +136,18 @@ public class LauncherActivity extends Activity {
 		}
 
 		@Override
-		protected void initializeView() {
-			setContentView(R.layout.dialog_update);
-			
+		protected int getResourceId() {
+			return R.layout.dialog_update;
+		}
+
+		@Override
+		protected void onViewInflated() {
 			btnUpdate = (Button)findViewById(R.id.btn_update);
 			btnExit = (Button)findViewById(R.id.btn_exit);
 		}
 
 		@Override
-		protected void setupView() {
+		protected void setupViews() {
 			btnUpdate.setOnClickListener(toStoreClickListener);
 			btnExit.setOnClickListener(exitClickListener);
 		}
