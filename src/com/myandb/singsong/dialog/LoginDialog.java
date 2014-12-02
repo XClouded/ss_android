@@ -117,7 +117,7 @@ public class LoginDialog extends BaseDialog {
 		@Override
 		public void onClick(View v) {
 			OpenRequest request = new OpenRequest(activity);
-			request.setPermissions(Arrays.asList("email"));
+			request.setPermissions(Arrays.asList("email", "user_friends"));
 			request.setLoginBehavior(SessionLoginBehavior.SSO_WITH_FALLBACK);
 			
 			Session session = Session.getActiveSession();

@@ -1,5 +1,6 @@
 package com.myandb.singsong.fragment;
 
+import com.facebook.Session;
 import com.myandb.singsong.R;
 import com.myandb.singsong.secure.Authenticator;
 
@@ -22,6 +23,10 @@ public class HomeFragment extends BaseFragment {
 			@Override
 			public void onClick(View v) {
 				new Authenticator().logout();
+				Session session = Session.getActiveSession();
+				if (session != null) {
+					session.closeAndClearTokenInformation();
+				}
 				getActivity().finish();
 			}
 		});
