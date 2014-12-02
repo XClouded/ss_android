@@ -8,7 +8,6 @@ import com.myandb.singsong.dialog.LoginDialog;
 import com.myandb.singsong.fragment.DrawerFragment;
 import com.myandb.singsong.fragment.HomeFragment;
 import com.myandb.singsong.service.PlayerService;
-import com.myandb.singsong.util.Logger;
 import com.myandb.singsong.widget.SlidingPlayerLayout;
 
 import android.annotation.SuppressLint;
@@ -30,7 +29,6 @@ import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-@SuppressLint("InlinedApi")
 public class RootActivity extends BaseActivity {
 	
 	public static final String SAVED_STATE_ACTION_BAR_HIDDEN = "saved_state_action_bar_hidden";
@@ -89,6 +87,7 @@ public class RootActivity extends BaseActivity {
 		manager.addOnBackStackChangedListener(onBackStackChangedListener);
 	}
 	
+	@SuppressLint("InlinedApi")
 	private void setHomeButtonRightMargin(int pixel) {
 		View home = findViewById(android.R.id.home);
 		if (home != null) {
@@ -195,28 +194,23 @@ public class RootActivity extends BaseActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.home, menu);
 		
-		initializeNotificationCountView(menu);
-		updateNotificationCount();
-		registerNotificationCountListener();
+		View notificationView = getActionViewCompat(menu, R.id.action_notification);
+		if (notificationView != null) {
+			notificationView.setOnClickListener(notificationClickListener);
+			tvNotificationCount = (TextView) notificationView.findViewById(R.id.tv_action_notification_count);
+			updateNotificationCount();
+			registerNotificationCountListener();
+		}
 		
 		return super.onCreateOptionsMenu(menu);
 	}
 	
-	private void initializeNotificationCountView(final Menu menu) {
-		if (tvNotificationCount == null) {
-			View notificationView = getActionViewCompat(menu, R.id.action_notification);
-			if (notificationView != null) {
-				notificationView.setOnClickListener(new OnClickListener() {
-					
-					@Override
-					public void onClick(View v) {
-						Logger.log("click");
-					}
-				});
-				tvNotificationCount = (TextView) notificationView.findViewById(R.id.tv_action_notification_count);
-			}
+	private OnClickListener notificationClickListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
 		}
-	}
+	};
 	
 	private View getActionViewCompat(Menu menu, int id) {
 		return MenuItemCompat.getActionView(menu.findItem(id));
@@ -274,7 +268,6 @@ public class RootActivity extends BaseActivity {
 			return true;
 			
 		case R.id.action_sing:
-			Logger.log("sing");
 			return true;
 		
 		default:
