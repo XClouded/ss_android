@@ -34,7 +34,7 @@ public class FriendsAdapter extends HolderAdapter<User, FriendsAdapter.UserHolde
 
 	@Override
 	public void onBindViewHolder(UserHolder viewHolder, int position) {
-		final User user = (User) getItem(position);
+		final User user = getItem(position);
 		final Profile profile = user.getProfile();
 		final Context context = viewHolder.view.getContext();
 		

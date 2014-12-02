@@ -28,7 +28,7 @@ public class MenuAdapter extends HolderAdapter<GlobalMenu, MenuAdapter.MenuHolde
 
 	@Override
 	public void onBindViewHolder(MenuHolder viewHolder, int position) {
-		final GlobalMenu menu = (GlobalMenu) getItem(position);
+		final GlobalMenu menu = getItem(position);
 		
 		viewHolder.ivMenuIcon.setImageResource(menu.getIconResId());
 		viewHolder.tvMenuTitle.setText(menu.getTitleResId());

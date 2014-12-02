@@ -28,7 +28,7 @@ public class MyCommentAdapter extends HolderAdapter<SongComment, MyCommentAdapte
 
 	@Override
 	public void onBindViewHolder(CommentHolder viewHolder, int position) {
-		final SongComment comment = (SongComment) getItem(position);
+		final SongComment comment = getItem(position);
 		final Song song = comment.getCommentable();
 		final User user = comment.getWriter();
 		final Music music = song.getMusic();

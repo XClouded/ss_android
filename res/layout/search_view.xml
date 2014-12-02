@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.myandb.singsong.widget.SearchView 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/margin_small"
+    android:paddingRight="@dimen/margin_small"
+    android:background="@drawable/search_view_background" >
+    
+    <ImageView
+        android:id="@+id/magnifier"
+        android:src="@drawable/ic_magnifier"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        style="@style/BaseImageView" />
+    
+    <ImageView
+        android:id="@+id/iv_clear"
+        android:src="@drawable/ic_x"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        style="@style/BaseImageView" />
+    
+    <EditText
+        android:id="@+id/et_search"
+        android:layout_toRightOf="@id/magnifier"
+        android:layout_toLeftOf="@id/iv_clear"
+        android:background="@null"
+        style="@style/BaseEditText" />
+    
+</com.myandb.singsong.widget.SearchView>

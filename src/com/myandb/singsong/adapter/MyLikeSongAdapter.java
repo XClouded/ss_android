@@ -28,7 +28,7 @@ public class MyLikeSongAdapter extends HolderAdapter<SongLiking, MyLikeSongAdapt
 
 	@Override
 	public void onBindViewHolder(SongHolder viewHolder, int position) {
-		final SongLiking liking = (SongLiking) getItem(position);
+		final SongLiking liking = getItem(position);
 		final Song thisSong = liking.getLikeable();
 		final User thisUser = thisSong.getCreator();
 		final Music music = thisSong.getMusic();

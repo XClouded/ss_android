@@ -36,7 +36,7 @@ public class NotificationAdapter extends HolderAdapter<Notification, Notificatio
 
 	@Override
 	public void onBindViewHolder(NotificationHolder viewHolder, int position) {
-		final Notification notification = (Notification) getItem(position);
+		final Notification notification = getItem(position);
 		final Activity activity = notification.getActivity();
 		final User activityCreator = activity.getCreator();
 		final Context context = viewHolder.view.getContext();
