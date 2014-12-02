@@ -14,6 +14,7 @@ import com.myandb.singsong.Store;
 import com.myandb.singsong.dialog.BaseDialog;
 import com.myandb.singsong.event.OnVolleyWeakError;
 import com.myandb.singsong.event.OnVolleyWeakResponse;
+import com.myandb.singsong.fragment.BaseFragment;
 import com.myandb.singsong.fragment.HomeFragment;
 import com.myandb.singsong.net.UrlBuilder;
 
@@ -95,8 +96,11 @@ public class LauncherActivity extends Activity {
 		final int enterAnim = android.R.anim.fade_in;
 		final int exitAnim = android.R.anim.fade_out;
 		
+		Bundle bundle = new Bundle();
+		bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_home_title));
 		Intent intent = new Intent(this, RootActivity.class);
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, HomeFragment.class.getName());
+		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
 		intent.putExtra(RootActivity.EXTRA_NOTICE_ID, noticeId);
 		startActivity(intent);
 		overridePendingTransition(enterAnim, exitAnim);

@@ -31,6 +31,7 @@ public class WebViewFragment extends BaseFragment {
 
 	@Override
 	protected void onArgumentsReceived(Bundle bundle) {
+		super.onArgumentsReceived(bundle);
 		url = bundle.getString(EXTRA_WEBVIEW_URL);
 	}
 	

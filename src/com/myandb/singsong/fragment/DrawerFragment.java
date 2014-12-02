@@ -38,11 +38,6 @@ public class DrawerFragment extends BaseFragment {
 	protected int getResourceId() {
 		return R.layout.fragment_drawer;
 	}
-	
-	@Override
-	protected void onArgumentsReceived(Bundle bundle) {
-		// Nothing to run
-	}
 
 	@Override
 	protected void onViewInflated(View view, LayoutInflater inflater) {
@@ -72,15 +67,21 @@ public class DrawerFragment extends BaseFragment {
 	
 	private GlobalMenu makeHomeMenu() {
 		Intent intent = new Intent(getActivity(), RootActivity.class);
+		Bundle bundle = new Bundle();
+		bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_home_title));
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, HomeFragment.class.getName());
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_ROOT, true);
+		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
 		return new GlobalMenu(R.string.fragment_home_title, intent, R.drawable.ic_menu_home);
 	}
 	
 	private GlobalMenu makeArtistMenu() {
+		Bundle bundle = new Bundle();
+		bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_artist_list_title));
 		Intent intent = new Intent(getActivity(), RootActivity.class);
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, ArtistListFragment.class.getName());
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_ROOT, true);
+		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
 		return new GlobalMenu(R.string.fragment_artist_list_title, intent, R.drawable.ic_menu_artist);
 	}
 	
@@ -99,9 +100,12 @@ public class DrawerFragment extends BaseFragment {
 	}
 	
 	private GlobalMenu makeFindFriendMenu() {
+		Bundle bundle = new Bundle();
+		bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_find_friends_title));
 		Intent intent = new Intent(getActivity(), RootActivity.class);
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, FindFriendsFragment.class.getName());
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_ROOT, true);
+		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
 		return new GlobalMenu(R.string.fragment_find_friends_title, intent, R.drawable.ic_menu_friend, true);
 	}
 	

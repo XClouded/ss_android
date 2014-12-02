@@ -93,6 +93,22 @@ public abstract class ListFragment extends BaseFragment {
 		});
 	}
 	
+	public void setFixedHeaderShown(boolean shown) {
+		if (fixedHeaderContainer.isShown() == shown) {
+			return;
+		}
+		
+		if (shown) {
+			fixedHeaderContainer.setVisibility(View.VISIBLE);
+		} else {
+			fixedHeaderContainer.setVisibility(View.GONE);
+		}
+	}
+	
+	public ListView getListView() {
+		return listView;
+	}
+	
 	public ListAdapter getAdapter() {
 		return listView.getAdapter();
 	}
@@ -127,10 +143,16 @@ public abstract class ListFragment extends BaseFragment {
         }
     }
 	
-	protected abstract View inflateEmptyView(LayoutInflater inflater);
+	protected View inflateEmptyView(LayoutInflater inflater) {
+		return null;
+	}
 	
-	protected abstract View inflateListHeaderView(LayoutInflater inflater);
+	protected View inflateListHeaderView(LayoutInflater inflater) {
+		return null;
+	}
 	
-	protected abstract View inflateFixedHeaderView(LayoutInflater inflater);
+	protected View inflateFixedHeaderView(LayoutInflater inflater) {
+		return null;
+	}
 
 }

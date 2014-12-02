@@ -121,6 +121,7 @@ public class KaraokeFragment extends BaseFragment {
 
 	@Override
 	protected void onArgumentsReceived(Bundle bundle) {
+		super.onArgumentsReceived(bundle);
 		Gson gson = Utility.getGsonInstance();
 		
 		String musicInJson = bundle.getString(EXTRA_MUSIC);

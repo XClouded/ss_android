@@ -4,6 +4,7 @@ import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.model.User;
+import com.myandb.singsong.pager.InviteFriendsPagerAdapter;
 import com.myandb.singsong.secure.Authenticator;
 
 import android.annotation.SuppressLint;
@@ -27,25 +28,10 @@ public class FindFriendsFragment extends ListFragment {
 		setHasOptionsMenu(true);
 	}
 
-	@Override
-	protected View inflateEmptyView(LayoutInflater inflater) {
-		return null;
-	}
-
-	@Override
-	protected View inflateListHeaderView(LayoutInflater inflater) {
-		return null;
-	}
-
 	@SuppressLint("InflateParams")
 	@Override
 	protected View inflateFixedHeaderView(LayoutInflater inflater) {
 		return inflater.inflate(R.layout.fragment_find_friends_fixed_header, null);
-	}
-
-	@Override
-	protected void onArgumentsReceived(Bundle bundle) {
-		// Nothing to run
 	}
 
 	@Override
@@ -78,9 +64,11 @@ public class FindFriendsFragment extends ListFragment {
 		@Override
 		public void onClick(View v) {
 			Bundle bundle = new Bundle();
-			bundle.putInt(ViewPagerFragment.EXTRA_ITEM_NUM, 0);
+			bundle.putInt(FragmentPagerFragment.EXTRA_ITEM_NUM, 0);
+			bundle.putString(FragmentPagerFragment.EXTRA_PAGER_ADAPTER, InviteFriendsPagerAdapter.class.getName());
+			bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_invite_friends_title));
 			Intent intent = new Intent(getActivity(), RootActivity.class);
-			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, InviteFriendsFragment.class.getName());
+			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, FragmentPagerFragment.class.getName());
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
 			if (getActivity() instanceof BaseActivity) {
 				((BaseActivity) getActivity()).changePage(intent);
@@ -109,12 +97,6 @@ public class FindFriendsFragment extends ListFragment {
 			setListShown(true);
 			// set onclick listener
 		}
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		setActionBarTitle(R.string.fragment_find_friends_title);
 	}
 
 }

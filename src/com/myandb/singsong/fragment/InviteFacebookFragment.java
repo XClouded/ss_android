@@ -1,29 +1,18 @@
 package com.myandb.singsong.fragment;
 
-import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 
-public class SettingFragment extends BaseFragment {
-
-	@Override
-	protected int getResourceId() {
-		return 0;
-	}
+public class InviteFacebookFragment extends ListFragment {
 
 	@Override
 	protected void onViewInflated(View view, LayoutInflater inflater) {
-		
-	}
-
-	@Override
-	protected void initialize(Activity activity) {
-		
+		super.onViewInflated(view, inflater);
 	}
 
 	@Override
 	protected void setupViews() {
-		
+		super.setupViews();
 	}
 
 	@Override

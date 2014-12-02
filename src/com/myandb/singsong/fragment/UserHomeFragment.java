@@ -74,11 +74,6 @@ public class UserHomeFragment extends ListFragment {
 	private View vResendEmail;
 	private Button btnResendEmail;
 
-	@Override
-	protected View inflateEmptyView(LayoutInflater inflater) {
-		return null;
-	}
-
 	@SuppressLint("InflateParams")
 	@Override
 	protected View inflateListHeaderView(LayoutInflater inflater) {
@@ -86,12 +81,8 @@ public class UserHomeFragment extends ListFragment {
 	}
 
 	@Override
-	protected View inflateFixedHeaderView(LayoutInflater inflater) {
-		return null;
-	}
-
-	@Override
 	protected void onArgumentsReceived(Bundle bundle) {
+		super.onArgumentsReceived(bundle);
 		Gson gson = Utility.getGsonInstance();
 		String userInJson = bundle.getString(EXTRA_THIS_USER);
 		thisUser = gson.fromJson(userInJson, User.class);

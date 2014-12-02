@@ -15,6 +15,10 @@ import android.view.ViewGroup;
 
 public abstract class BaseFragment extends Fragment {
 	
+	public static final String EXTRA_FRAGMENT_TITLE = "fragment_title";
+	
+	private String title;
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(getResourceId(), container, false);
@@ -29,6 +33,10 @@ public abstract class BaseFragment extends Fragment {
 		}
 		
 		onViewInflated(view, getLayoutInflater(savedInstanceState));
+	}
+	
+	protected void onArgumentsReceived(Bundle bundle) {
+		title = bundle.getString(EXTRA_FRAGMENT_TITLE);
 	}
 
 	@Override
@@ -46,6 +54,12 @@ public abstract class BaseFragment extends Fragment {
 		onDataChanged();
 	}
 	
+	@Override
+	public void onResume() {
+		super.onResume();
+		setActionBarTitle(title);
+	}
+
 	public void onBackPressed() {
 		getActivity().finish();
 	}
@@ -60,10 +74,12 @@ public abstract class BaseFragment extends Fragment {
 	}
 
 	protected void setActionBarTitle(String title) {
-		try {
-			getSupportActionBar(getActivity()).setTitle(title);
-		} catch (NotFoundException e) {
-			// It's all right
+		if (title != null && title.length() > 0) {
+			try {
+				getSupportActionBar(getActivity()).setTitle(title);
+			} catch (NotFoundException e) {
+				// It's all right
+			}
 		}
 	}
 	
@@ -83,8 +99,6 @@ public abstract class BaseFragment extends Fragment {
 	}
 
 	protected abstract int getResourceId();
-	
-	protected abstract void onArgumentsReceived(Bundle bundle);
 	
 	protected abstract void onViewInflated(View view, LayoutInflater inflater);
 	
