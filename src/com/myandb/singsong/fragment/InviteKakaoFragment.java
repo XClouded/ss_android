@@ -31,9 +31,7 @@ public class InviteKakaoFragment extends BaseFragment {
 	}
 
 	@Override
-	protected void initialize(Activity activity) {
-		// Nothing to run
-	}
+	protected void initialize(Activity activity) {}
 
 	@Override
 	protected void setupViews() {
@@ -64,8 +62,6 @@ public class InviteKakaoFragment extends BaseFragment {
 	};
 
 	@Override
-	protected void onDataChanged() {
-		// Nothing to run
-	}
+	protected void onDataChanged() {}
 
 }

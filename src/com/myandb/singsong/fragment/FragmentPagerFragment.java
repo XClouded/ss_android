@@ -62,9 +62,7 @@ public class FragmentPagerFragment extends BaseFragment {
 	}
 
 	@Override
-	protected void initialize(Activity activity) {
-		// Nothing to run
-	}
+	protected void initialize(Activity activity) {}
 	
 	@Override
 	protected void onViewInflated(View view, LayoutInflater inflater) {

@@ -2,9 +2,7 @@ package com.myandb.singsong.dialog;
 
 import org.json.JSONObject;
 
-import com.android.volley.RequestQueue;
 import com.android.volley.Request.Method;
-import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.SettingActivity;
 import com.myandb.singsong.event.OnVolleyWeakError;
@@ -56,9 +54,7 @@ public class WithdrawDialog extends BaseDialog {
 					new OnVolleyWeakResponse<WithdrawDialog, JSONObject>(WithdrawDialog.this, "onWithdrawSuccess"),
 					new OnVolleyWeakError<WithdrawDialog>(WithdrawDialog.this, "onWithdrawError")
 			);
-			
-			RequestQueue queue = ((App) getActivity().getApplicationContext()).getQueueInstance();
-			queue.add(request);
+			addRequest(request);
 		}
 	};
 	

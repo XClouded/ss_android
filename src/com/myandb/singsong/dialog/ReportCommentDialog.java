@@ -10,10 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
-import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Comment;
@@ -73,16 +70,15 @@ public class ReportCommentDialog extends BaseDialog {
 					UrlBuilder urlBuilder = new UrlBuilder();
 					String url = urlBuilder.s("reports").toString();
 					OAuthJustRequest request = new OAuthJustRequest(url, message);
-					RequestQueue queue = ((App) getActivity().getApplicationContext()).getQueueInstance();
-					queue.add(request);
+					addRequest(request);
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
 				
 				dismiss();
-				Toast.makeText(getActivity(), getString(R.string.t_report_has_accepted), Toast.LENGTH_SHORT).show();
+				makeToast(R.string.t_report_has_accepted);
 			} else {
-				Toast.makeText(getActivity(), getString(R.string.t_report_length_policy), Toast.LENGTH_SHORT).show();
+				makeToast(R.string.t_report_length_policy);
 			}
 		}
 	};

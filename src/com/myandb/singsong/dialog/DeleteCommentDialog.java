@@ -9,8 +9,6 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.android.volley.Request.Method;
-import com.android.volley.RequestQueue;
-import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 import com.myandb.singsong.event.OnVolleyWeakError;
 import com.myandb.singsong.event.OnVolleyWeakResponse;
@@ -56,8 +54,7 @@ public class DeleteCommentDialog extends BaseDialog {
 					new OnVolleyWeakError<DeleteCommentDialog>(DeleteCommentDialog.this, "onDeleteError")
 					);
 			
-			RequestQueue queue = ((App) getActivity().getApplicationContext()).getQueueInstance();
-			queue.add(request);
+			addRequest(request);
 		}
 	};
 	

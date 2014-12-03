@@ -5,12 +5,10 @@ import java.util.regex.Matcher;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.android.volley.RequestQueue;
 import com.android.volley.Request.Method;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.event.OnVolleyWeakError;
@@ -38,7 +36,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class JoinDialog extends BaseDialog {
 	
@@ -257,16 +254,14 @@ public class JoinDialog extends BaseDialog {
 				new OnVolleyWeakResponse<JoinDialog, JSONObject>(JoinDialog.this, "onUsernameFound"),
 				new OnVolleyWeakError<JoinDialog>(JoinDialog.this, "onUsernameNotFound")
 		);
-		
-		RequestQueue queue = ((App) getActivity().getApplicationContext()).getQueueInstance();
-		queue.add(request);
+		addRequest(request);
 	}
 	
 	public void onUsernameFound(JSONObject response) {
 		dismissProgressDialog();
 		String message = lastInputUsername;
 		message += getString(R.string.t_email_already_exist);
-		Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+		makeToast(message);
 	}
 	
 	public void onUsernameNotFound() {
@@ -291,9 +286,7 @@ public class JoinDialog extends BaseDialog {
 					new OnVolleyWeakResponse<JoinDialog, JSONObject>(JoinDialog.this, "onJoinComplete"),
 					new OnVolleyWeakError<JoinDialog>(JoinDialog.this, "onJoinError")
 			);
-			
-			RequestQueue queue = ((App) getActivity().getApplicationContext()).getQueueInstance();
-			queue.add(request);
+			addRequest(request);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -335,7 +328,7 @@ public class JoinDialog extends BaseDialog {
 	}
 	
 	public void onJoinError() {
-		Toast.makeText(getActivity(), getString(R.string.t_join_failed), Toast.LENGTH_SHORT).show();
+		makeToast(R.string.t_join_failed);
 		clearTextFromAllEditText();
 		removeUserOnLocal();
 		dismissProgressDialog();

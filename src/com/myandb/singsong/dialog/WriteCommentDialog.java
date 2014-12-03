@@ -9,11 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.android.volley.Request.Method;
-import com.android.volley.RequestQueue;
-import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 import com.myandb.singsong.event.OnVolleyWeakError;
 import com.myandb.singsong.event.OnVolleyWeakResponse;
@@ -85,12 +82,10 @@ public class WriteCommentDialog extends BaseDialog {
 						new OnVolleyWeakError<WriteCommentDialog>(WriteCommentDialog.this, "onSubmitError")
 				);
 				
-				RequestQueue queue = ((App) getActivity().getApplicationContext()).getQueueInstance();
-				queue.add(request);
-				
-				WriteCommentDialog.this.dismiss();
+				addRequest(request);
+				dismiss();
 			} else {
-				Toast.makeText(getActivity().getApplicationContext(), getString(R.string.t_comment_length_policy), Toast.LENGTH_SHORT).show();
+				makeToast(R.string.t_comment_length_policy);
 			}
 		}
 	};

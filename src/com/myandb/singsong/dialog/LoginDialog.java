@@ -7,7 +7,6 @@ import java.util.Arrays;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.android.volley.RequestQueue;
 import com.android.volley.Request.Method;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.facebook.Request;
@@ -21,7 +20,6 @@ import com.facebook.Session.StatusCallback;
 import com.facebook.model.GraphUser;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.event.OnCompleteWeakListener;
@@ -46,7 +44,6 @@ import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class LoginDialog extends BaseDialog {
 	
@@ -240,9 +237,7 @@ public class LoginDialog extends BaseDialog {
 				new OnVolleyWeakResponse<LoginDialog, JSONObject>(this, "onLoginSuccess"),
 				new OnVolleyWeakError<LoginDialog>(this, "onLoginError")
 		);
-		
-		RequestQueue queue = ((App) getActivity().getApplicationContext()).getQueueInstance();
-		queue.add(request);
+		addRequest(request);
 	}
 	
 	private void showProgressDialog() {
@@ -327,7 +322,7 @@ public class LoginDialog extends BaseDialog {
 	}
 	
 	public void onLoginError() {
-		Toast.makeText(getActivity(), getString(R.string.t_login_failed), Toast.LENGTH_SHORT).show();
+		makeToast(R.string.t_join_failed);
 		removeUserOnLocal();
 		dismissProgressDialog();
 	}

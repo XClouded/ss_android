@@ -7,11 +7,8 @@ import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
 import com.android.volley.Request.Method;
-import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 import com.myandb.singsong.fragment.UserHomeFragment;
 import com.myandb.singsong.model.Friendship;
@@ -70,8 +67,7 @@ public class UpdateFriendshipDialog extends BaseDialog {
 				message.put("allow_notify", isAllowNotify);
 				
 				OAuthJustRequest request = new OAuthJustRequest(Method.PUT, url, message);
-				RequestQueue queue = ((App) fragment.getActivity().getApplicationContext()).getQueueInstance();
-				queue.add(request);
+				addRequest(request);
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -88,14 +84,12 @@ public class UpdateFriendshipDialog extends BaseDialog {
 		public void onClick(View v) {
 			UrlBuilder urlBuilder = new UrlBuilder();
 			String url = urlBuilder.s("friendships").s(friendship.getFollowingUserId()).toString();
-			
 			OAuthJustRequest request = new OAuthJustRequest(Method.DELETE, url, null);
-			RequestQueue queue = ((App) fragment.getActivity().getApplicationContext()).getQueueInstance();
-			queue.add(request);
+			addRequest(request);
 			
 			fragment.toggleFollowing(false);
 			
-			UpdateFriendshipDialog.this.dismiss();
+			dismiss();
 		}
 	};
 	
@@ -105,14 +99,12 @@ public class UpdateFriendshipDialog extends BaseDialog {
 		public void onClick(View v) {
 			UrlBuilder urlBuilder = new UrlBuilder();
 			String url = urlBuilder.s("candidates").s(friendship.getFollowingUserId()).toString();
-			
 			OAuthJustRequest request = new OAuthJustRequest(Method.POST, url, null);
-			RequestQueue queue = ((App) fragment.getActivity().getApplicationContext()).getQueueInstance();
-			queue.add(request);
+			addRequest(request);
 			
-			Toast.makeText(getActivity(), getString(R.string.t_recommend_has_accepted), Toast.LENGTH_SHORT).show();
+			makeToast(R.string.t_recommend_has_accepted);
 			
-			UpdateFriendshipDialog.this.dismiss();
+			dismiss();
 		}
 	};
 

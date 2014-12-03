@@ -37,7 +37,6 @@ public class InviteContactFragment extends ListFragment {
 	protected void initialize(Activity activity) {
 		super.initialize(activity);
 		adapter = new ContactAdapter();
-		setAdapter(adapter);
 	}
 
 	@Override
@@ -46,6 +45,7 @@ public class InviteContactFragment extends ListFragment {
 		searchView.setSearchHint(getString(R.string.hint_search_user));
 		searchView.setOnTextChangedListener(textChangedListener);
 		searchView.setOnTextEmptyListener(textEmptyListner);
+		setAdapter(adapter);
 	}
 	
 	private OnTextChangedListener textChangedListener = new OnTextChangedListener() {
