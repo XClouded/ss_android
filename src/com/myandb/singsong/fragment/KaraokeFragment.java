@@ -277,13 +277,13 @@ public class KaraokeFragment extends BaseFragment {
 	};
 	
 	private void initializeDialogs() {
-		headsetDialog = new HeadsetDialog(this);
-		loadingDialog = new LoadingDialog(this);
-		selectorDialog = new SelectorDialog(this, music.getMalePart(), music.getFemalePart());
+		headsetDialog = new HeadsetDialog();
+		loadingDialog = new LoadingDialog();
+		selectorDialog = new SelectorDialog();
 	}
 	
 	private void downloadDatas() {
-		loadingDialog.show();
+		loadingDialog.show(getChildFragmentManager(), "");
 		setupLoadingDialogForDownload();
 		
 		DownloadManager lrcDownloader = new DownloadManager();
@@ -373,7 +373,7 @@ public class KaraokeFragment extends BaseFragment {
 	}
 	
 	public void updateLoadingDialog(Integer progress) {
-		if (loadingDialog != null && loadingDialog.isShowing()) {
+		if (loadingDialog != null && loadingDialog.getDialog().isShowing()) {
 			loadingDialog.updateProgressBar(progress);
 		}
 	}
@@ -399,7 +399,7 @@ public class KaraokeFragment extends BaseFragment {
 			
 			@Override
 			public void done(final Integer progress) {
-				if (loadingDialog.isShowing()) {
+				if (loadingDialog.getDialog().isShowing()) {
 					loadingDialog.updateProgressBar(progress);
 					
 					if (progress >= 30) {
@@ -454,7 +454,7 @@ public class KaraokeFragment extends BaseFragment {
 				loadingDialog.dismiss();
 				
 				if (isSolo()) {
-					selectorDialog.show();
+					selectorDialog.show(getChildFragmentManager(), "");
 				} else {
 					prepareRecording();
 				}
@@ -468,13 +468,13 @@ public class KaraokeFragment extends BaseFragment {
 			if (receiver.isPlugged()) {
 				startRecordingWithHeadset();
 			} else {
-				headsetDialog.show(); 
+				headsetDialog.show(getChildFragmentManager(), ""); 
 			}
 		}
 	}
 
 	public void onHeadsetPlugged() {
-		if (headsetDialog != null && headsetDialog.isShowing()) {
+		if (headsetDialog != null && headsetDialog.getDialog().isShowing()) {
 			headsetDialog.dismiss();
 			prepareRecording();
 		}

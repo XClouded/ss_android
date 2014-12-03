@@ -34,12 +34,13 @@ import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.secure.Encryption;
 import com.myandb.singsong.util.Utility;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
@@ -62,9 +63,21 @@ public class LoginDialog extends BaseDialog {
 	private ProgressDialog progressDialog;
 	private JoinDialog joinDialog;
 
-	public LoginDialog(Context context) {
-		super(context);
-		this.activity = (RootActivity) context;
+	@Override
+	protected void initialize(Activity activity) {
+		if (activity instanceof RootActivity) {
+			this.activity = (RootActivity) activity;
+		}
+	}
+
+	@Override
+	protected void onViewInflated(View view, LayoutInflater inflater) {
+		btnLogin = (Button) view.findViewById(R.id.btn_login);
+		btnToJoin = (Button) view.findViewById(R.id.btn_to_join);
+		btnFacebook = (Button) view.findViewById(R.id.btn_facebook);
+		etUsername = (EditText) view.findViewById(R.id.et_user_username);
+		etPassword = (EditText) view.findViewById(R.id.et_user_password);
+		tvFindPassword = (TextView) view.findViewById(R.id.tv_find_password);
 	}
 
 	@Override
@@ -76,23 +89,8 @@ public class LoginDialog extends BaseDialog {
 	}
 
 	@Override
-	protected void initialize() {
-		// Nothing to run
-	}
-
-	@Override
 	protected int getResourceId() {
 		return R.layout.dialog_login;
-	}
-
-	@Override
-	protected void onViewInflated() {
-		btnLogin = (Button) findViewById(R.id.btn_login);
-		btnToJoin = (Button) findViewById(R.id.btn_to_join);
-		btnFacebook = (Button) findViewById(R.id.btn_facebook);
-		etUsername = (EditText) findViewById(R.id.et_user_username);
-		etPassword = (EditText) findViewById(R.id.et_user_password);
-		tvFindPassword = (TextView) findViewById(R.id.tv_find_password);
 	}
 
 	@Override
@@ -116,21 +114,25 @@ public class LoginDialog extends BaseDialog {
 		
 		@Override
 		public void onClick(View v) {
-			OpenRequest request = new OpenRequest(activity);
-			request.setPermissions(Arrays.asList("email", "user_friends"));
-			request.setLoginBehavior(SessionLoginBehavior.SSO_WITH_FALLBACK);
-			
-			Session session = Session.getActiveSession();
-			if (session != null) {
-				session.close();
-			}
-			session = new Session(getContext().getApplicationContext());
-			session.addCallback(statusCallback);
-			session.openForRead(request);
-			Session.setActiveSession(session);
+			openFacebookSession();
 		}
 		
 	};
+	
+	private void openFacebookSession() {
+		OpenRequest request = new OpenRequest(this);
+		request.setPermissions(Arrays.asList("email", "user_friends"));
+		request.setLoginBehavior(SessionLoginBehavior.SSO_WITH_FALLBACK);
+		
+		Session session = Session.getActiveSession();
+		if (session != null) {
+			session.close();
+		}
+		session = new Session(getActivity().getApplicationContext());
+		session.addCallback(statusCallback);
+		session.openForRead(request);
+		Session.setActiveSession(session);
+	}
 	
 	private Session.StatusCallback statusCallback = new StatusCallback() {
 		
@@ -174,9 +176,9 @@ public class LoginDialog extends BaseDialog {
 	
 	private void showJoinDialog() {
 		if (joinDialog == null) {
-			joinDialog = new JoinDialog(activity);
+			joinDialog = new JoinDialog();
 		}
-		joinDialog.show();
+		joinDialog.show(getChildFragmentManager(), "");
 	}
 
 	private View.OnClickListener loginClickListener = new View.OnClickListener() {
@@ -216,7 +218,7 @@ public class LoginDialog extends BaseDialog {
 			message.put("facebook_id", user.getId());
 			message.put("facebook_name", user.getName());
 			message.put("facebook_photo", "https://graph.facebook.com/" + user.getId() + "/picture?type=large");
-			message.put("device_id", encryption.getDeviceId(getContext()));
+			message.put("device_id", encryption.getDeviceId(getActivity()));
 			
 			Object email = user.asMap().get("email");
 			if (email != null) {
@@ -239,13 +241,13 @@ public class LoginDialog extends BaseDialog {
 				new OnVolleyWeakError<LoginDialog>(this, "onLoginError")
 		);
 		
-		RequestQueue queue = ((App) getContext().getApplicationContext()).getQueueInstance();
+		RequestQueue queue = ((App) getActivity().getApplicationContext()).getQueueInstance();
 		queue.add(request);
 	}
 	
 	private void showProgressDialog() {
 		if (progressDialog == null) {
-			progressDialog = new ProgressDialog(getContext());
+			progressDialog = new ProgressDialog(getActivity());
 			progressDialog.setIndeterminate(true);
 			progressDialog.setCanceledOnTouchOutside(false);
 			progressDialog.setCancelable(false);
@@ -316,7 +318,7 @@ public class LoginDialog extends BaseDialog {
 	}
 	
 	private File getUserPhotoFile() {
-		return new File(getContext().getFilesDir(), FILE_USER_PHOTO);
+		return new File(getActivity().getFilesDir(), FILE_USER_PHOTO);
 	}
 
 	public void onLoginComplete() {
@@ -325,7 +327,7 @@ public class LoginDialog extends BaseDialog {
 	}
 	
 	public void onLoginError() {
-		Toast.makeText(getContext(), getContext().getString(R.string.t_login_failed), Toast.LENGTH_SHORT).show();
+		Toast.makeText(getActivity(), getString(R.string.t_login_failed), Toast.LENGTH_SHORT).show();
 		removeUserOnLocal();
 		dismissProgressDialog();
 	}

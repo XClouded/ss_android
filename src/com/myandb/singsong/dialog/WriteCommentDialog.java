@@ -3,6 +3,8 @@ package com.myandb.singsong.dialog;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,14 +35,16 @@ public class WriteCommentDialog extends BaseDialog {
 	private Song song;
 	private SlidingPlayerLayout layout;
 
-	public WriteCommentDialog(SlidingPlayerLayout layout) {
-		super(layout.getContext(), android.R.style.Theme_Translucent_NoTitleBar);
-		this.layout = layout;
+	@Override
+	protected void initialize(Activity activity) {
+		user = Authenticator.getUser();
 	}
 
 	@Override
-	protected void initialize() {
-		user = Authenticator.getUser();
+	protected void onViewInflated(View view, LayoutInflater inflater) {
+		ivWriterPhoto = (ImageView) view.findViewById(R.id.iv_writer_photo);
+		etComment = (EditText) view.findViewById(R.id.et_comment);
+		btnSubmit = (Button) view.findViewById(R.id.btn_submit);
 	}
 
 	@Override
@@ -49,26 +53,9 @@ public class WriteCommentDialog extends BaseDialog {
 	}
 
 	@Override
-	protected void onViewInflated() {
-		ivWriterPhoto = (ImageView)findViewById(R.id.iv_writer_photo);
-		etComment = (EditText)findViewById(R.id.et_comment);
-		btnSubmit = (Button)findViewById(R.id.btn_submit);
-	}
-
-	@Override
 	protected void setupViews() {
 		ImageHelper.displayPhoto(user, ivWriterPhoto);
 		btnSubmit.setOnClickListener(submitClickListener);
-	}
-	
-	public void setSong(Song song) {
-		this.song = song;
-	}
-
-	@Override
-	public void dismiss() {
-		super.dismiss();
-//		parent.closeEditText(etComment);
 	}
 
 	private View.OnClickListener submitClickListener = new View.OnClickListener() {
@@ -98,12 +85,12 @@ public class WriteCommentDialog extends BaseDialog {
 						new OnVolleyWeakError<WriteCommentDialog>(WriteCommentDialog.this, "onSubmitError")
 				);
 				
-				RequestQueue queue = ((App) getContext().getApplicationContext()).getQueueInstance();
+				RequestQueue queue = ((App) getActivity().getApplicationContext()).getQueueInstance();
 				queue.add(request);
 				
 				WriteCommentDialog.this.dismiss();
 			} else {
-				Toast.makeText(getContext().getApplicationContext(), getContext().getString(R.string.t_comment_length_policy), Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity().getApplicationContext(), getString(R.string.t_comment_length_policy), Toast.LENGTH_SHORT).show();
 			}
 		}
 	};

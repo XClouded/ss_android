@@ -185,7 +185,7 @@ public class RecordSettingFragment extends BaseFragment {
 	protected void initialize(Activity activity) {
 		activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		
-		dialog = new ImageSelectDialog(this);
+		dialog = new ImageSelectDialog();
 		
 		handler = new Handler();
 		
@@ -419,7 +419,7 @@ public class RecordSettingFragment extends BaseFragment {
 				
 			case R.id.btn_other_images:
 				if (dialog != null) {
-					dialog.show();
+					dialog.show(getChildFragmentManager(), "");
 				}
 				break;
 				

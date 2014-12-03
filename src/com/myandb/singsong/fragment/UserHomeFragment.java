@@ -390,10 +390,10 @@ public class UserHomeFragment extends ListFragment {
 		@Override
 		public void onActivated(View v, User user) {
 			if (dialog == null) {
-				dialog = new UpdateFriendshipDialog(UserHomeFragment.this);
+				dialog = new UpdateFriendshipDialog();
 			}
-			dialog.setFriendship(friendship);
-			dialog.show();
+//			dialog.setFriendship(friendship);
+			dialog.show(getChildFragmentManager(), "");
 		}
 	};
 	

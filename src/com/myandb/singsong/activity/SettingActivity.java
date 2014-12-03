@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -30,8 +31,6 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
 public class SettingActivity extends Activity implements OnClickListener {
-	
-	private WithdrawDialog dialog;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -73,8 +72,6 @@ public class SettingActivity extends Activity implements OnClickListener {
 		} else {
 			cbAllowPush.setChecked(false);
 		}
-		
-		dialog = new WithdrawDialog(this);
 	}
 	
 	private void unregisterGCM() {
@@ -191,21 +188,11 @@ public class SettingActivity extends Activity implements OnClickListener {
 			break;
 			
 		case R.id.btn_withdraw:
-			if (dialog != null) {
-				dialog.show();
-			}
+			DialogFragment dialog = new WithdrawDialog();
+//			dialog.show(null, "");
 			
 			break;
 
-		}
-	}
-
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		
-		if (dialog != null) {
-			dialog.dismiss();
 		}
 	}
 }

@@ -37,7 +37,6 @@ import com.myandb.singsong.adapter.CommentAdapter;
 import com.myandb.singsong.audio.OnPlayEventListener;
 import com.myandb.singsong.audio.PlayEvent;
 import com.myandb.singsong.audio.StreamPlayer;
-import com.myandb.singsong.dialog.KakaotalkDialog;
 import com.myandb.singsong.dialog.WriteCommentDialog;
 import com.myandb.singsong.event.ActivateOnlyClickListener;
 import com.myandb.singsong.event.Listeners;
@@ -76,7 +75,6 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	private int actionBarHeight;
 	
 	private WriteCommentDialog commentDialog;
-	private KakaotalkDialog kakaotalkDialog;
 	
 	private View vStartCollabo;
 	private View vLikeSong;
@@ -161,7 +159,6 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	
 	private void initialize() {
 		currentUser = Authenticator.getUser();
-		commentDialog = new WriteCommentDialog(this);
 		
 		commentAdapter = new CommentAdapter();
 		lvComments.setAdapter(commentAdapter);
@@ -680,9 +677,9 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 			if (commentDialog != null) {
 				final int inputMode = WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE;
 				final Song song = service.getSong();
-				commentDialog.setSong(song);
-				commentDialog.show();
-				commentDialog.getWindow().setSoftInputMode(inputMode);
+//				commentDialog.setSong(song);
+//				commentDialog.show();
+				commentDialog.getDialog().getWindow().setSoftInputMode(inputMode);
 			}
 		}
 	};
@@ -860,11 +857,6 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
     	if (commentDialog != null) {
     		commentDialog.dismiss();
     		commentDialog = null;
-    	}
-    	
-    	if (kakaotalkDialog != null) {
-    		kakaotalkDialog.dismiss();
-    		kakaotalkDialog = null;
     	}
     	
     	if (handler != null) {

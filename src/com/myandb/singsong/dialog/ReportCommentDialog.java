@@ -3,7 +3,8 @@ package com.myandb.singsong.dialog;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.Context;
+import android.app.Activity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,26 +31,22 @@ public class ReportCommentDialog extends BaseDialog {
 	private EditText etReportContent;
 	private User user;
 
-	public ReportCommentDialog(Context context) {
-		super(context);
+	@Override
+	protected void initialize(Activity activity) {
+		this.user = Authenticator.getUser();
 	}
 
 	@Override
-	protected void initialize() {
-		this.user = Authenticator.getUser();
+	protected void onViewInflated(View view, LayoutInflater inflater) {
+		ivReporterPhoto = (ImageView) view.findViewById(R.id.iv_reporter_photo);
+		btnSubmitReport = (Button) view.findViewById(R.id.btn_submit);
+		tvTargetCommentContent = (TextView) view.findViewById(R.id.tv_target_comment_content);
+		etReportContent = (EditText) view.findViewById(R.id.et_report_content);
 	}
 
 	@Override
 	protected int getResourceId() {
 		return R.layout.dialog_report_comment;
-	}
-
-	@Override
-	protected void onViewInflated() {
-		ivReporterPhoto = (ImageView) findViewById(R.id.iv_reporter_photo);
-		btnSubmitReport = (Button) findViewById(R.id.btn_submit);
-		tvTargetCommentContent = (TextView) findViewById(R.id.tv_target_comment_content);
-		etReportContent = (EditText) findViewById(R.id.et_report_content);
 	}
 
 	@Override
@@ -76,37 +73,18 @@ public class ReportCommentDialog extends BaseDialog {
 					UrlBuilder urlBuilder = new UrlBuilder();
 					String url = urlBuilder.s("reports").toString();
 					OAuthJustRequest request = new OAuthJustRequest(url, message);
-					RequestQueue queue = ((App) getContext().getApplicationContext()).getQueueInstance();
+					RequestQueue queue = ((App) getActivity().getApplicationContext()).getQueueInstance();
 					queue.add(request);
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
 				
 				dismiss();
-				Toast.makeText(getContext(), getContext().getString(R.string.t_report_has_accepted), Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity(), getString(R.string.t_report_has_accepted), Toast.LENGTH_SHORT).show();
 			} else {
-				Toast.makeText(getContext(), getContext().getString(R.string.t_report_length_policy), Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity(), getString(R.string.t_report_length_policy), Toast.LENGTH_SHORT).show();
 			}
 		}
 	};
-	
-	@Override
-	public void show() {
-		super.show();
-		
-		if (comment != null) {
-			tvTargetCommentContent.setText(comment.getContent());
-		}
-	}
-	
-	@Override
-	public void dismiss() {
-		super.dismiss();
-//		parent.closeEditText(etReportContent);
-	}
-
-	public void setComment(Comment<?> comment) {
-		this.comment = comment;
-	}
 
 }

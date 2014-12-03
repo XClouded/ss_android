@@ -17,6 +17,7 @@ import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.adapter.MenuAdapter;
+import com.myandb.singsong.event.MemberOnlyClickListener;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.GlobalMenu;
 import com.myandb.singsong.model.User;
@@ -137,22 +138,14 @@ public class DrawerFragment extends BaseFragment {
 		} else {
 			llDrawerUserWrapper.setVisibility(View.GONE);
 			llDrawerLoginWrapper.setVisibility(View.VISIBLE);
-			btnDrawerLogin.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					if (getActivity() instanceof RootActivity) {
-						((RootActivity) getActivity()).showLoginDialog();
-					}
-				}
-			});
+			btnDrawerLogin.setOnClickListener(myProfileClickListener);
 		}
 	}
 	
-	private OnClickListener myProfileClickListener = new OnClickListener() {
+	private OnClickListener myProfileClickListener = new MemberOnlyClickListener() {
 		
 		@Override
-		public void onClick(View v) {
+		public void onLoggedIn(View v, User user) {
 			BaseActivity activity = (BaseActivity) getActivity();
 			String userInJson = Authenticator.getUserInJson();
 			Bundle bundle = new Bundle();

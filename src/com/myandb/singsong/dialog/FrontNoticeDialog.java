@@ -1,6 +1,7 @@
 package com.myandb.singsong.dialog;
 
-import android.content.Context;
+import android.app.Activity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -14,24 +15,21 @@ public class FrontNoticeDialog extends BaseDialog {
 	private View btnClose;
 	private Notice notice;
 
-	public FrontNoticeDialog(Context context) {
-		super(context, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+	@Override
+	protected void initialize(Activity activity) {
+		getDialog().setCanceledOnTouchOutside(false);
+		getDialog().setCancelable(false);
 	}
 
 	@Override
-	protected void initialize() {
-		// Nothing to run
+	protected void onViewInflated(View view, LayoutInflater inflater) {
+		btnClose = view.findViewById(R.id.btn_close);
+		ivFrontImage = (ImageView) view.findViewById(R.id.iv_front_image);
 	}
 
 	@Override
 	protected int getResourceId() {
 		return R.layout.dialog_front_notice;
-	}
-
-	@Override
-	protected void onViewInflated() {
-		btnClose = findViewById(R.id.btn_close);
-		ivFrontImage = (ImageView) findViewById(R.id.iv_front_image);
 	}
 
 	@Override
@@ -46,15 +44,6 @@ public class FrontNoticeDialog extends BaseDialog {
 				dismiss();
 			}
 		});
-	}
-	
-	public void setNotice(Notice notice) {
-		this.notice = notice;
-	}
-
-	@Override
-	public void onBackPressed() {
-		return;
 	}
 
 }

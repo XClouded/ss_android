@@ -3,6 +3,8 @@ package com.myandb.singsong.dialog;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -24,14 +26,14 @@ public class UpdateFriendshipDialog extends BaseDialog {
 	private Button btnRecommendArtist;
 	private Friendship friendship;
 
-	public UpdateFriendshipDialog(UserHomeFragment fragment) {
-		super(fragment.getActivity(), android.R.style.Theme_Translucent_NoTitleBar);
-		this.fragment = fragment;
-	}
+	@Override
+	protected void initialize(Activity activity) {}
 
 	@Override
-	protected void initialize() {
-		// Nothing to run
+	protected void onViewInflated(View view, LayoutInflater inflater) {
+		btnAllowPush = (Button) view.findViewById(R.id.btn_allow_push);
+		btnUnfollow = (Button) view.findViewById(R.id.btn_unfollow);
+		btnRecommendArtist = (Button) view.findViewById(R.id.btn_recommend_artist);
 	}
 
 	@Override
@@ -40,24 +42,10 @@ public class UpdateFriendshipDialog extends BaseDialog {
 	}
 
 	@Override
-	protected void onViewInflated() {
-		btnAllowPush = (Button) findViewById(R.id.btn_allow_push);
-		btnUnfollow = (Button) findViewById(R.id.btn_unfollow);
-		btnRecommendArtist = (Button) findViewById(R.id.btn_recommend_artist);
-	}
-
-	@Override
 	protected void setupViews() {
 		btnAllowPush.setOnClickListener(updateAllowPushClickListener);
 		btnUnfollow.setOnClickListener(unfollowClickListener);
 		btnRecommendArtist.setOnClickListener(recommendClickListener);
-	}
-
-	@Override
-	public void show() {
-		super.show();
-		
-		updateTextOnAllowPush();
 	}
 	
 	private void updateTextOnAllowPush() {
@@ -122,20 +110,10 @@ public class UpdateFriendshipDialog extends BaseDialog {
 			RequestQueue queue = ((App) fragment.getActivity().getApplicationContext()).getQueueInstance();
 			queue.add(request);
 			
-			Toast.makeText(getContext(), getContext().getString(R.string.t_recommend_has_accepted), Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity(), getString(R.string.t_recommend_has_accepted), Toast.LENGTH_SHORT).show();
 			
 			UpdateFriendshipDialog.this.dismiss();
 		}
 	};
-	
-	public void setFriendship(Friendship friendship) {
-		this.friendship = friendship;
-	}
-
-	@Override
-	public void dismiss() {
-		super.dismiss();
-		this.friendship = null;
-	}
 
 }

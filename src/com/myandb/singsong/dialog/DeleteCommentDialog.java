@@ -2,7 +2,8 @@ package com.myandb.singsong.dialog;
 
 import org.json.JSONObject;
 
-import android.content.Context;
+import android.app.Activity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -22,23 +23,17 @@ public class DeleteCommentDialog extends BaseDialog {
 	private Button btnDeleteComment;
 	private Comment<?> comment;
 
-	public DeleteCommentDialog(Context context) {
-		super(context);
-	}
+	@Override
+	protected void initialize(Activity activity) {}
 
 	@Override
-	protected void initialize() {
-		// Nothing to run
+	protected void onViewInflated(View view, LayoutInflater inflater) {
+		btnDeleteComment = (Button) view.findViewById(R.id.btn_delete_comment);
 	}
 
 	@Override
 	protected int getResourceId() {
 		return R.layout.dialog_delete_comment;
-	}
-
-	@Override
-	protected void onViewInflated() {
-		btnDeleteComment = (Button)findViewById(R.id.btn_delete_comment);
 	}
 
 	@Override
@@ -61,7 +56,7 @@ public class DeleteCommentDialog extends BaseDialog {
 					new OnVolleyWeakError<DeleteCommentDialog>(DeleteCommentDialog.this, "onDeleteError")
 					);
 			
-			RequestQueue queue = ((App) getContext().getApplicationContext()).getQueueInstance();
+			RequestQueue queue = ((App) getActivity().getApplicationContext()).getQueueInstance();
 			queue.add(request);
 		}
 	};
@@ -73,17 +68,7 @@ public class DeleteCommentDialog extends BaseDialog {
 	}
 	
 	public void onDeleteError() {
-		Toast.makeText(getContext(), getContext().getString(R.string.t_poor_network_connection), Toast.LENGTH_SHORT).show();
-	}
-
-	public void setComment(Comment<?> comment) {
-		this.comment = comment;
-	}
-
-	@Override
-	public void dismiss() {
-		super.dismiss();
-		this.comment = null;
+		Toast.makeText(getActivity(), getString(R.string.t_poor_network_connection), Toast.LENGTH_SHORT).show();
 	}
 
 }

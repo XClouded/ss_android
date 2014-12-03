@@ -22,14 +22,16 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 
-public class LauncherActivity extends Activity {
+public class LauncherActivity extends FragmentActivity {
 
 	private VersionDialog versionDialog;
 	private Handler handler;
@@ -73,11 +75,11 @@ public class LauncherActivity extends Activity {
 			PackageHelper packageHelper = new PackageHelper(getPackageManager());
 			int versionCode = packageHelper.getVersionCode(getPackageName());
 			if (latestVersion > versionCode) {
-				versionDialog = new VersionDialog(this);
+				versionDialog = new VersionDialog();
 				if (forceUpdateVersion > versionCode) {
 					versionDialog.setForceUpdate(true);
 				}
-				versionDialog.show();
+				versionDialog.show(getSupportFragmentManager(), "");
 			} else {
 				startRootActivity(latestNoticeId);
 			}
@@ -123,12 +125,8 @@ public class LauncherActivity extends Activity {
 		private Store store;
 		private boolean forceUpdate = false;
 
-		public VersionDialog(Context context) {
-			super(context, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
-		}
-
 		@Override
-		protected void initialize() {
+		protected void initialize(Activity activity) {
 			store = new GoogleStore();
 			if (isStoreUnavailable(store)) {
 				store = new GoogleStore();
@@ -141,9 +139,9 @@ public class LauncherActivity extends Activity {
 		}
 
 		@Override
-		protected void onViewInflated() {
-			btnUpdate = (Button)findViewById(R.id.btn_update);
-			btnExit = (Button)findViewById(R.id.btn_exit);
+		protected void onViewInflated(View view, LayoutInflater inflater) {
+			btnUpdate = (Button) view.findViewById(R.id.btn_update);
+			btnExit = (Button) view.findViewById(R.id.btn_exit);
 		}
 
 		@Override
@@ -153,8 +151,8 @@ public class LauncherActivity extends Activity {
 		}
 		
 		@Override
-		public void show() {
-			super.show();
+		public void show(FragmentManager manager, String tag) {
+			super.show(manager, tag);
 			if (forceUpdate) {
 				// Hide 'skip update'
 			}
@@ -178,21 +176,20 @@ public class LauncherActivity extends Activity {
 		};
 		
 		private void moveToStore() {
-			Activity activity = ((Activity) getContext());
-			String packageName = activity.getPackageName();
+			String packageName = getActivity().getPackageName();
 			Uri uri = store.getDetailViewUri(packageName);
 			Intent intent = new Intent(Intent.ACTION_VIEW);
 			intent.setData(uri);
-			activity.startActivity(intent);
+			getActivity().startActivity(intent);
 		}
 		
 		private void finishActivity() {
 			dismiss();
-			((Activity) getContext()).finish();
+			getActivity().finish();
 		}
 		
 		private boolean isStoreUnavailable(Store store) {
-			PackageHelper helper = new PackageHelper(getContext().getPackageManager());
+			PackageHelper helper = new PackageHelper(getActivity().getPackageManager());
 			return helper.isAppInstalled(store.getPackageName());
 		}
 		

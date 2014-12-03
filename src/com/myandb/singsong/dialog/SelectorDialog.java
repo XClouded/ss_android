@@ -1,6 +1,8 @@
 package com.myandb.singsong.dialog;
 
+import android.app.Activity;
 import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 
@@ -16,28 +18,21 @@ public class SelectorDialog extends BaseDialog {
 	private String femaleName;
 	private Fragment fragment;
 
-	public SelectorDialog(Fragment fragment, String maleName, String femaleName) {
-		super(fragment.getActivity(), android.R.style.Theme_NoTitleBar_Fullscreen);
-		
-		this.fragment = fragment;
-		this.maleName = maleName;
-		this.femaleName = femaleName;
+	@Override
+	protected void initialize(Activity activity) {
+		getDialog().setCanceledOnTouchOutside(false);
+		getDialog().setCancelable(false);
 	}
 
 	@Override
-	protected void initialize() {
-		// Nothing to run
+	protected void onViewInflated(View view, LayoutInflater inflater) {
+		btnMale = (Button) view.findViewById(R.id.btn_select_male);
+		btnFemale = (Button) view.findViewById(R.id.btn_select_female);
 	}
 
 	@Override
 	protected int getResourceId() {
 		return R.layout.dialog_selector;
-	}
-
-	@Override
-	protected void onViewInflated() {
-		btnMale = (Button) findViewById(R.id.btn_select_male);
-		btnFemale = (Button) findViewById(R.id.btn_select_female);
 	}
 
 	@Override
@@ -72,10 +67,5 @@ public class SelectorDialog extends BaseDialog {
 			}
 		}
 	};
-
-	@Override
-	public void onBackPressed() {
-		return;
-	}
 	
 }

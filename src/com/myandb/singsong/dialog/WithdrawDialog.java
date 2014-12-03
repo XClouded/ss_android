@@ -13,7 +13,8 @@ import com.myandb.singsong.net.OAuthJsonObjectRequest;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
 
-import android.content.Context;
+import android.app.Activity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 
@@ -23,25 +24,18 @@ public class WithdrawDialog extends BaseDialog {
 	private Button btnYes;
 	private Button btnNo;
 
-	public WithdrawDialog(Context context) {
-		super(context);
-		parent = (SettingActivity) context;
-	}
+	@Override
+	protected void initialize(Activity activity) {}
 
 	@Override
-	protected void initialize() {
-		// Nothing to run
+	protected void onViewInflated(View view, LayoutInflater inflater) {
+		btnYes = (Button) view.findViewById(R.id.btn_yes);
+		btnNo = (Button) view.findViewById(R.id.btn_no);
 	}
 
 	@Override
 	protected int getResourceId() {
 		return R.layout.dialog_withdraw;
-	}
-
-	@Override
-	protected void onViewInflated() {
-		btnYes = (Button) findViewById(R.id.btn_yes);
-		btnNo = (Button) findViewById(R.id.btn_no);
 	}
 
 	@Override
@@ -63,7 +57,7 @@ public class WithdrawDialog extends BaseDialog {
 					new OnVolleyWeakError<WithdrawDialog>(WithdrawDialog.this, "onWithdrawError")
 			);
 			
-			RequestQueue queue = ((App) getContext().getApplicationContext()).getQueueInstance();
+			RequestQueue queue = ((App) getActivity().getApplicationContext()).getQueueInstance();
 			queue.add(request);
 		}
 	};

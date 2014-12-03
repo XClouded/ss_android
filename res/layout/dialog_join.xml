@@ -64,6 +64,7 @@
 		        android:hint="@string/hint_password"
 		        android:maxLength="32"
 		        android:inputType="textPassword"
+		        android:layout_toLeftOf="@id/tv_valid_password"
 		        style="@style/BaseEditText" />
             
         </RelativeLayout>
@@ -90,6 +91,7 @@
 		        android:hint="@string/hint_re_password"
 		        android:maxLength="32"
 		        android:inputType="textPassword"
+		        android:layout_toLeftOf="@id/tv_valid_password_re"
 		        style="@style/BaseEditText" />
 	        
         </RelativeLayout>
