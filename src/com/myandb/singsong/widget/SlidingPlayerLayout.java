@@ -94,8 +94,8 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	private TextView tvStartTime;
 	private TextView tvEndTime;
 	private TextView tvTargetContent;
-	private TextView tvSingerName;
 	private TextView tvMusicTitle;
+	private TextView tvSingerName;
 	private ImageView ivParentUserPhoto;
 	private ImageView ivThisUserPhoto;
 	private ImageView ivParentSongImage;
@@ -106,6 +106,8 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	private ImageView ivAutoplayControl;
 	private ImageView ivNeon;
 	private ImageView ivChildSong;
+	private ImageView ivAlbumPhoto;
+	private ImageView ivDragPlayControl;
 	private ListView lvComments;
 	private SeekBar sbPlay;
 
@@ -140,6 +142,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 			ivLoopControl.setOnClickListener(loopControlClickListener);
 			ivAutoplayControl.setOnClickListener(autoplayControlClickListener);
 			ivPlayControl.setOnClickListener(playControlClickListener);
+			ivDragPlayControl.setOnClickListener(playControlClickListener);
 			sbPlay.setOnSeekBarChangeListener(seekBarChangeListener);
 			
 			service.getPlayer().setOnPlayEventListener(onPlayEventListener);
@@ -208,8 +211,8 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		tvStartTime = (TextView) findViewById(R.id.tv_play_start_time);
 		tvEndTime = (TextView) findViewById(R.id.tv_play_end_time);
 		tvTargetContent = (TextView) findViewById(R.id.tv_root_info);
-		tvSingerName = (TextView) findViewById(R.id.tv_singer_name);
 		tvMusicTitle = (TextView) findViewById(R.id.tv_music_title);
+		tvSingerName = (TextView) findViewById(R.id.tv_singer_name);
 		
 		ivParentUserPhoto = (ImageView) findViewById(R.id.iv_parent_user_photo);
 		ivThisUserPhoto = (ImageView) findViewById(R.id.iv_this_user_photo);
@@ -221,6 +224,8 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		ivAutoplayControl = (ImageView) findViewById(R.id.iv_autoplay_control);
 		ivNeon = (ImageView) findViewById(R.id.iv_neon);
 		ivChildSong = (ImageView) findViewById(R.id.iv_child_song);
+		ivAlbumPhoto = (ImageView) findViewById(R.id.iv_album_photo);
+		ivDragPlayControl = (ImageView) findViewById(R.id.iv_drag_play_control);
 		
 		sbPlay = (SeekBar) findViewById(R.id.sb_play);
 	}
@@ -228,7 +233,6 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	private void setDragView(int dragViewId) {
 		View dragView = findViewById(dragViewId);
 		setDragView(dragView);
-		setPanelHeight(getActionBarHeight());
 	}
 	
 	private void registerSharedPreferenceChangeListener() {
@@ -359,15 +363,18 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 					expandPanel();
 					setupViews();
 					ivPlayControl.setEnabled(false);
+					ivDragPlayControl.setEnabled(false);
 					break;
 					
 				case PREPARED:
+					ivDragPlayControl.setEnabled(true);
 					ivPlayControl.setEnabled(true);
 					break;
 					
 				case PLAY:
 					onProgressUpdate();
 					ivPlayControl.setImageResource(R.drawable.ic_pause_neon);
+					ivDragPlayControl.setImageResource(R.drawable.ic_pause_basic);
 					ivNeon.startAnimation(blink);
 					ivNeon.setVisibility(View.VISIBLE);
 					break;
@@ -379,6 +386,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 				case PAUSE:
 				case COMPLETED:
 					ivPlayControl.setImageResource(R.drawable.ic_play_neon);
+					ivDragPlayControl.setImageResource(R.drawable.ic_play_basic);
 					ivNeon.clearAnimation();
 					ivNeon.setVisibility(View.INVISIBLE);
 					break;
@@ -470,12 +478,23 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		vStartCollabo.setOnClickListener(Listeners.getCollaboClickListener(getContext(), song));
 		vLikeSong.setOnClickListener(likeClickListener);
 		vWriteComment.setOnClickListener(writeCommentClickListener);
+		
+		if (isPanelExpanded()) {
+			ivDragPlayControl.setVisibility(View.GONE);
+			ivChildSong.setVisibility(View.VISIBLE);
+		} else {
+			ivDragPlayControl.setVisibility(View.VISIBLE);
+			ivChildSong.setVisibility(View.GONE);
+		}
 	}
 	
 	private void displayMusicInfo(Music music) {
 		if (music != null) {
-			tvSingerName.setText(music.getSingerName());
 			tvMusicTitle.setText(music.getTitle());
+			tvSingerName.setText(music.getSingerName());
+			tvMusicTitle.setSelected(true);
+			tvSingerName.setSelected(true);
+			ImageHelper.displayPhoto(music.getAlbumPhotoUrl(), ivAlbumPhoto);
 		}
 	}
 	
@@ -766,9 +785,19 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 				if (actionBar.isShowing()) {
 					actionBar.hide();
 				}
+				
+				if (ivDragPlayControl.isShown()) {
+					ivDragPlayControl.setVisibility(View.GONE);
+					ivChildSong.setVisibility(View.VISIBLE);
+				}
 			} else {
 				if (!actionBar.isShowing()) {
 					actionBar.show();
+				}
+				
+				if (ivChildSong.isShown()) {
+					ivDragPlayControl.setVisibility(View.VISIBLE);
+					ivChildSong.setVisibility(View.GONE);
 				}
 			}
 		}

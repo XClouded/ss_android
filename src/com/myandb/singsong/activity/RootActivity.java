@@ -115,9 +115,11 @@ public class RootActivity extends BaseActivity {
 	};
 	
 	private void configureSlidingPlayer() {
+		final int panelHeight = getResources().getDimensionPixelSize(R.dimen.player_drag_panel_height);
 		slidingPlayerLayout = (SlidingPlayerLayout) findViewById(R.id.sliding_layout);
 		slidingPlayerLayout.hideActionBarWhenSliding(true);
 		slidingPlayerLayout.setSlidingContainer(R.id.fl_sliding_container);
+		slidingPlayerLayout.setPanelHeight(panelHeight);
 		slidingPlayerLayout.hidePanel();
 	}
 	
