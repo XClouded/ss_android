@@ -21,6 +21,7 @@ public abstract class BaseDialog extends DialogFragment {
 		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 		dialog.getWindow().setAttributes(getWindowLayoutParams());
+		dialog.getWindow().setWindowAnimations(R.style.DialogAnimation);
 		dialog.setCanceledOnTouchOutside(true);
 		
 		return dialog;
@@ -52,7 +53,6 @@ public abstract class BaseDialog extends DialogFragment {
 		DisplayMetrics metrics = new DisplayMetrics();
 		dialog.getWindow().getWindowManager().getDefaultDisplay().getMetrics(metrics);
 		dialog.getWindow().getAttributes().width = (int) (metrics.widthPixels * getWidthPercentage());
-		dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 	}
 
 	protected WindowManager.LayoutParams getWindowLayoutParams() {
