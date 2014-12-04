@@ -14,7 +14,6 @@ import com.myandb.singsong.event.OnVolleyWeakError;
 import com.myandb.singsong.event.OnVolleyWeakResponse;
 import com.myandb.singsong.net.JSONObjectRequest;
 import com.myandb.singsong.net.JustRequest;
-import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
 
 import android.app.Activity;
@@ -75,14 +74,11 @@ public class SettingActivity extends Activity implements OnClickListener {
 	}
 	
 	private void unregisterGCM() {
-		UrlBuilder builder = new UrlBuilder();
-		String url = builder.s("users").toString();
-		
 		try {
 			JSONObject message = new JSONObject();
 			message.put("push_id", "");
 			
-			JustRequest request = new JustRequest(Method.PUT, url, message);
+			JustRequest request = new JustRequest(Method.PUT, "users", message);
 			RequestQueue queue = ((App) getApplicationContext()).getQueueInstance();
 			queue.add(request);
 		} catch (JSONException e) {
@@ -91,11 +87,8 @@ public class SettingActivity extends Activity implements OnClickListener {
 	}
 	
 	private void deleteTokenOnServer() {
-		UrlBuilder builder = new UrlBuilder();
-		String url = builder.s("token").toString();
-		
 		JSONObjectRequest request = new JSONObjectRequest(
-				Method.DELETE, url, null,
+				Method.DELETE, "token", null,
 				new OnDeleteTokenListener(this),
 				new OnDeleteTokenErrorListener(this));
 		

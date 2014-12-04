@@ -62,7 +62,7 @@ public class GradualLoader {
 			requiredTake = take;
 			
 			JSONArrayRequest request = new JSONArrayRequest(
-				urlBuilder.toString(),
+				urlBuilder.build(),
 				new OnVolleyWeakResponse<GradualLoader, JSONArray>(this, "onLoadResponse"),
 				new OnVolleyWeakError<GradualLoader>(this, "onLoadError")
 			);

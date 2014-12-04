@@ -13,7 +13,6 @@ import com.myandb.singsong.R;
 import com.myandb.singsong.fragment.UserHomeFragment;
 import com.myandb.singsong.model.Friendship;
 import com.myandb.singsong.net.JustRequest;
-import com.myandb.singsong.net.UrlBuilder;
 
 public class UpdateFriendshipDialog extends BaseDialog {
 	
@@ -61,19 +60,17 @@ public class UpdateFriendshipDialog extends BaseDialog {
 			boolean isAllowNotify = !friendship.isAllowNotify();
 			
 			try {
-				UrlBuilder urlBuilder = new UrlBuilder();
-				String url = urlBuilder.s("friendships").s(friendship.getFollowingUserId()).toString();
 				JSONObject message = new JSONObject();
 				message.put("allow_notify", isAllowNotify);
 				
-				JustRequest request = new JustRequest(Method.PUT, url, message);
+				int followingId = friendship.getFollowingUserId();
+				JustRequest request = new JustRequest(Method.PUT, "friendships/" + followingId, message);
 				addRequest(request);
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
 			
 			friendship.setAllowNotify(isAllowNotify);
-			
 			updateTextOnAllowPush();
 		}
 	};
@@ -82,13 +79,10 @@ public class UpdateFriendshipDialog extends BaseDialog {
 		
 		@Override
 		public void onClick(View v) {
-			UrlBuilder urlBuilder = new UrlBuilder();
-			String url = urlBuilder.s("friendships").s(friendship.getFollowingUserId()).toString();
-			JustRequest request = new JustRequest(Method.DELETE, url, null);
+			int followingId = friendship.getFollowingUserId();
+			JustRequest request = new JustRequest(Method.DELETE, "friendships/" + followingId, null);
 			addRequest(request);
-			
 			fragment.toggleFollowing(false);
-			
 			dismiss();
 		}
 	};
@@ -97,13 +91,10 @@ public class UpdateFriendshipDialog extends BaseDialog {
 		
 		@Override
 		public void onClick(View v) {
-			UrlBuilder urlBuilder = new UrlBuilder();
-			String url = urlBuilder.s("candidates").s(friendship.getFollowingUserId()).toString();
-			JustRequest request = new JustRequest(Method.POST, url, null);
+			int followingId = friendship.getFollowingUserId();
+			JustRequest request = new JustRequest(Method.POST, "candidates/" + followingId, null);
 			addRequest(request);
-			
 			makeToast(R.string.t_recommend_has_accepted);
-			
 			dismiss();
 		}
 	};

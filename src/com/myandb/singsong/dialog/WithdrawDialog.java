@@ -8,7 +8,6 @@ import com.myandb.singsong.activity.SettingActivity;
 import com.myandb.singsong.event.OnVolleyWeakError;
 import com.myandb.singsong.event.OnVolleyWeakResponse;
 import com.myandb.singsong.net.JSONObjectRequest;
-import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
 
 import android.app.Activity;
@@ -46,11 +45,8 @@ public class WithdrawDialog extends BaseDialog {
 		
 		@Override
 		public void onClick(View v) {
-			UrlBuilder urlBuilder = new UrlBuilder();
-			String url = urlBuilder.s("users").toString();
-			
 			JSONObjectRequest request = new JSONObjectRequest(
-					Method.DELETE, url, null,
+					Method.DELETE, "users", null,
 					new OnVolleyWeakResponse<WithdrawDialog, JSONObject>(WithdrawDialog.this, "onWithdrawSuccess"),
 					new OnVolleyWeakError<WithdrawDialog>(WithdrawDialog.this, "onWithdrawError")
 			);

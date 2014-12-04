@@ -16,7 +16,6 @@ import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Comment;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.JustRequest;
-import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
 
 public class ReportCommentDialog extends BaseDialog {
@@ -67,9 +66,7 @@ public class ReportCommentDialog extends BaseDialog {
 					message.put("comment_id", comment.getId());
 					message.put("message", reportContent);
 					
-					UrlBuilder urlBuilder = new UrlBuilder();
-					String url = urlBuilder.s("reports").toString();
-					JustRequest request = new JustRequest(url, message);
+					JustRequest request = new JustRequest("reports", message);
 					addRequest(request);
 				} catch (JSONException e) {
 					e.printStackTrace();

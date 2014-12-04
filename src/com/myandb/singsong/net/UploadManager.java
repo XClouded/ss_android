@@ -14,7 +14,6 @@ import android.net.http.AndroidHttpClient;
 import android.os.AsyncTask;
 
 import com.android.volley.RequestQueue;
-import com.android.volley.Request.Method;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
@@ -71,11 +70,9 @@ public class UploadManager extends AsyncTask<File, Integer, Exception> {
 	}
 	
 	private void requestUploadUrl(Context context, String bucket, String fileName) {
-		UrlBuilder urlBuilder = new UrlBuilder();
-		String url = urlBuilder.s("uploads").s("url").s(bucket).s(fileName).toString();
-		
+		String segment = "uploads/url/" + bucket + "/" + fileName;
 		JSONObjectRequest request = new JSONObjectRequest(
-				Method.GET, url, null,
+				segment, null,
 				
 				new Listener<JSONObject>() {
 

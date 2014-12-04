@@ -4,7 +4,6 @@ import com.myandb.singsong.R;
 import com.myandb.singsong.adapter.ImageAdapter;
 import com.myandb.singsong.fragment.RecordSettingFragment;
 import com.myandb.singsong.model.Image;
-import com.myandb.singsong.net.UrlBuilder;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -35,11 +34,6 @@ public class ImageSelectDialog extends BaseDialog {
 	@Override
 	protected void setupViews() {
 		listView.setAdapter(adapter);
-		
-		UrlBuilder urlBuilder = new UrlBuilder();
-		urlBuilder.s("images");
-		
-//		adapter.resetRequest(urlBuilder);
 	}
 	
 	public void selectImage(Image image) {

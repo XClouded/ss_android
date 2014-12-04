@@ -16,7 +16,6 @@ import com.myandb.singsong.adapter.MySongAdapter;
 import com.myandb.singsong.adapter.NotificationAdapter;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.User;
-import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.util.Utility;
 
 public class SimpleListActivity extends Activity {
@@ -63,7 +62,7 @@ public class SimpleListActivity extends Activity {
 //			storage.readAllNoti();
 		}
 		
-		UrlBuilder urlBuilder = getUrlBuilder(listType, user);
+//		UrlBuilder urlBuilder = getUrlBuilder(listType, user);
 //		adapter.resetRequest(urlBuilder);
 	}
 	
@@ -127,6 +126,7 @@ public class SimpleListActivity extends Activity {
 	}
 	*/
 	
+	/*
 	private UrlBuilder getUrlBuilder(SimpleListType type, User user) {
 		UrlBuilder urlBuilder = new UrlBuilder();
 		urlBuilder.s("users").s(user.getId());
@@ -154,5 +154,6 @@ public class SimpleListActivity extends Activity {
 			return null;
 		}
 	}
+	*/
 
 }

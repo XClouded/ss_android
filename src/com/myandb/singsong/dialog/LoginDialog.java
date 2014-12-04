@@ -231,9 +231,8 @@ public class LoginDialog extends BaseDialog {
 	}
 	
 	private void requestLogin(JSONObject message) {
-		UrlBuilder urlBuilder = new UrlBuilder();
 		JsonObjectRequest request = new JsonObjectRequest(
-				Method.POST, urlBuilder.s("token").toString(), message,
+				Method.POST, "token", message,
 				new OnVolleyWeakResponse<LoginDialog, JSONObject>(this, "onLoginSuccess"),
 				new OnVolleyWeakError<LoginDialog>(this, "onLoginError")
 		);

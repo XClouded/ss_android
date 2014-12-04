@@ -28,7 +28,6 @@ import com.myandb.singsong.model.Notification;
 import com.myandb.singsong.model.Song;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.JSONObjectRequest;
-import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.service.PlayerService;
 import com.myandb.singsong.util.Utility;
@@ -48,13 +47,11 @@ public class Listeners {
 //					Intent intent = new Intent(context, ArtistActivity.class);
 //					context.startActivity(intent);
 				} else {
-					String url = getUrl(activity);
-					
 					JSONObjectRequest request = new JSONObjectRequest(
-							Method.GET, url, null,
+							getUrl(activity), null,
 							new OnFetchResponse(context, activity.getSourceType()),
 							new OnFetchError(context, activity.getSourceType())
-							);
+					);
 					
 					RequestQueue queue = ((App) context.getApplicationContext()).getQueueInstance();
 					queue.add(request); 
@@ -62,18 +59,16 @@ public class Listeners {
 			}
 			
 			private String getUrl(Activity activity) {
-				UrlBuilder urlBuilder = new UrlBuilder();
-				
 				switch(activity.getSourceType()) {
 				case Activity.TYPE_CREATE_FRIENDSHIP:
-					return urlBuilder.s("users").s(activity.getUserId()).p("req[]", "profile").toString();
+					return "users/" + activity.getUserId() + "?req[]=profile";
 					
 				case Activity.TYPE_CREATE_COMMENT:
 				case Activity.TYPE_CREATE_LIKING:
-					return urlBuilder.s("songs").s(activity.getParentId()).p("req[]", "full").toString();
+					return "songs" + activity.getParentId() + "?req[]=full";
 				case Activity.TYPE_CREATE_ROOT_SONG:
 				case Activity.TYPE_CREATE_LEAF_SONG:
-					return urlBuilder.s("songs").s(activity.getSourceId()).p("req[]", "full").toString();
+					return "songs" + activity.getSourceId() + "?req[]=full";
 					
 				default:
 					return "";
@@ -239,16 +234,14 @@ public class Listeners {
 			
 			@Override
 			public void onActivated(View v, User user) {
-				UrlBuilder urlBuilder = new UrlBuilder();
 				Song parentSong = song.getParentSong() == null ? song : song.getParentSong();
 				parentSong.setMusic(song.getMusic());
 				
-				String url = urlBuilder.s("songs").s(parentSong.getId()).toString();
 				JSONObjectRequest request = new JSONObjectRequest(
-						Method.GET, url, null,
+						"songs/" + parentSong.getId(), null,
 						new OnCheckResponse(context, parentSong),
 						new OnCheckError(context)
-						);
+				);
 				
 				RequestQueue queue = ((App) context.getApplicationContext()).getQueueInstance();
 				queue.add(request);

@@ -586,11 +586,14 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	
 	private void checkUserLikeSong(User user, Song song) {
 		if (user != null && song != null) {
-			UrlBuilder urlBuilder = new UrlBuilder();
-			String url = urlBuilder.s("songs").s(song.getId()).s("likings").p("user_id", user.getId()).toString();
+			String segment = new StringBuilder()
+				.append("songs/")
+				.append(song.getId())
+				.append("/likings?user_id=")
+				.append(user.getId()).toString();
 			
 			JSONObjectRequest request = new JSONObjectRequest(
-					Method.GET, url, null,
+					segment, null,
 					new OnVolleyWeakResponse<SlidingPlayerLayout, JSONObject>(this, "onGetUserLikeResponse"), 
 					new OnVolleyWeakError<SlidingPlayerLayout>(this, "onGetUserLikeError")
 			);
@@ -649,8 +652,10 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		@Override
 		public void onActivated(View v, User user) {
 			final Song song = service.getSong();
-			UrlBuilder urlBuilder = new UrlBuilder();
-			String url = urlBuilder.s("songs").s(song.getId()).s("likings").toString();
+			final String segment = new StringBuilder()
+				.append("songs/")
+				.append(song.getId())
+				.append("/likings").toString();
 			int method = 0;
 			
 			if (like) {
@@ -664,7 +669,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 			setUserLikeSong(!like);
 			displayLikeNum(song.getWorkedLikeNum());
 			
-			JustRequest request = new JustRequest(method, url, null);
+			JustRequest request = new JustRequest(method, segment, null);
 			RequestQueue queue = ((App) getContext().getApplicationContext()).getQueueInstance();
 			queue.add(request);
 		}

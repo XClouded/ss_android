@@ -10,7 +10,6 @@ import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Profile;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.JustRequest;
-import com.myandb.singsong.net.UrlBuilder;
 
 import android.content.Context;
 import android.view.View;
@@ -64,12 +63,8 @@ public class FriendsAdapter extends HolderAdapter<User, FriendsAdapter.UserHolde
 		@Override
 		public void onActivated(View v, User user) {
 			User friend = (User) v.getTag();
-			
-			UrlBuilder urlBuilder = new UrlBuilder();
-			String url = urlBuilder.s("friendships").s(friend.getId()).toString();
-			
 			RequestQueue queue = ((App) v.getContext().getApplicationContext()).getQueueInstance();
-			JustRequest request = new JustRequest(Method.POST, url, null);
+			JustRequest request = new JustRequest(Method.POST, "friendships/" + friend.getId(), null);
 			queue.add(request);
 			
 			toggleFollowing(v, true);
@@ -81,12 +76,8 @@ public class FriendsAdapter extends HolderAdapter<User, FriendsAdapter.UserHolde
 		@Override
 		public void onActivated(View v, User user) {
 			User friend = (User) v.getTag();
-			
-			UrlBuilder urlBuilder = new UrlBuilder();
-			String url = urlBuilder.s("friendships").s(friend.getId()).toString();
-			
 			RequestQueue queue = ((App) v.getContext().getApplicationContext()).getQueueInstance();
-			JustRequest request = new JustRequest(Method.DELETE, url, null);
+			JustRequest request = new JustRequest(Method.DELETE, "friendships/" + friend.getId(), null);
 			queue.add(request);
 			
 			toggleFollowing(v, false);

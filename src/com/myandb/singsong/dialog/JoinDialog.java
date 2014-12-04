@@ -246,11 +246,8 @@ public class JoinDialog extends BaseDialog {
 	
 	private void checkUsernameDuplication(String username) {
 		lastInputUsername = username;
-		UrlBuilder urlBuilder = new UrlBuilder();
-		String url = urlBuilder.s("users").p("username", username).toString();
-		
 		JsonObjectRequest request = new JsonObjectRequest(
-				url, null,
+				"users?username=" + username, null,
 				new OnVolleyWeakResponse<JoinDialog, JSONObject>(JoinDialog.this, "onUsernameFound"),
 				new OnVolleyWeakError<JoinDialog>(JoinDialog.this, "onUsernameNotFound")
 		);
@@ -274,15 +271,12 @@ public class JoinDialog extends BaseDialog {
 		try {
 			JSONObject message = new JSONObject();
 			Encryption encryption = new Encryption();
-			
 			message.put("username", username);
 			message.put("password", password);
 			message.put("device_id", encryption.getDeviceId(getActivity()));
 			
-			UrlBuilder urlBuilder = new UrlBuilder();
-			String url = urlBuilder.s("users").toString();
 			JsonObjectRequest request = new JsonObjectRequest(
-					Method.POST, url, message,
+					Method.POST, "users", message,
 					new OnVolleyWeakResponse<JoinDialog, JSONObject>(JoinDialog.this, "onJoinComplete"),
 					new OnVolleyWeakError<JoinDialog>(JoinDialog.this, "onJoinError")
 			);

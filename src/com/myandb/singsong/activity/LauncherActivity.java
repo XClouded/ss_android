@@ -3,9 +3,7 @@ package com.myandb.singsong.activity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.myandb.singsong.App;
 import com.myandb.singsong.GoogleStore;
 import com.myandb.singsong.PackageHelper;
@@ -16,7 +14,7 @@ import com.myandb.singsong.event.OnVolleyWeakError;
 import com.myandb.singsong.event.OnVolleyWeakResponse;
 import com.myandb.singsong.fragment.BaseFragment;
 import com.myandb.singsong.fragment.HomeFragment;
-import com.myandb.singsong.net.UrlBuilder;
+import com.myandb.singsong.net.JSONObjectRequest;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -53,14 +51,12 @@ public class LauncherActivity extends FragmentActivity {
 	}
 	
 	private void requestAppMetadata() {
-		UrlBuilder urlBuilder = new UrlBuilder();
-		String url = urlBuilder.s("android").toString();
-		
-		JsonObjectRequest request = new JsonObjectRequest(
-				Method.GET, url, null,
+		JSONObjectRequest request = new JSONObjectRequest(
+				"android", null,
 				new OnVolleyWeakResponse<LauncherActivity, JSONObject>(this, "onGetDataSuccess"),
 				new OnVolleyWeakError<LauncherActivity>(this, "onGetDataError")
 		);
+		request.setRequireAccessToken(false);
 		
 		RequestQueue queue = ((App) getApplicationContext()).getQueueInstance();
 		queue.add(request);

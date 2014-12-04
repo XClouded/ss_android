@@ -10,7 +10,6 @@ import org.json.JSONObject;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.Request.Method;
 import com.android.volley.Response.ErrorListener;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
@@ -26,7 +25,6 @@ import com.myandb.singsong.model.Model;
 import com.myandb.singsong.model.Music;
 import com.myandb.singsong.net.JSONObjectRequest;
 import com.myandb.singsong.net.UploadManager;
-import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.util.StringFormatter;
 
 import android.app.Notification;
@@ -276,10 +274,8 @@ public class SongUploadService extends Service {
 				data.put("image_id", imageId);
 			}
 			
-			UrlBuilder urlBuilder = new UrlBuilder();
-			String url = urlBuilder.s("songs").toString();
 			JSONObjectRequest request = new JSONObjectRequest(
-					Method.POST, url, data,
+					"songs", data,
 					new Response.Listener<JSONObject>() {
 						
 						@Override

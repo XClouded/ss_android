@@ -38,7 +38,6 @@ import com.myandb.singsong.model.Notification;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.JustRequest;
 import com.myandb.singsong.net.DownloadManager;
-import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.util.Utility;
 
@@ -266,13 +265,10 @@ public class GCMIntentService extends GCMBaseIntentService {
 	private void updateRegistrationId(String registrationId) {
 		if (Authenticator.isLoggedIn()) {
 			try {
-				UrlBuilder urlBuilder = new UrlBuilder();
-				String url = urlBuilder.s("users").toString();
-				
 				JSONObject message = new JSONObject();
 				message.put("push_id", registrationId);
 				
-				JustRequest request = new JustRequest(Method.PUT, url, message);
+				JustRequest request = new JustRequest(Method.PUT, "users", message);
 				RequestQueue queue = ((App) getApplicationContext()).getQueueInstance();
 				queue.add(request);
 			} catch (JSONException e) {

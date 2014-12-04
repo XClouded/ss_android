@@ -30,7 +30,6 @@ import com.myandb.singsong.model.Model;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.JSONObjectRequest;
 import com.myandb.singsong.net.UploadManager;
-import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.service.SongUploadService;
 
@@ -306,10 +305,8 @@ public class RecordSettingFragment extends BaseFragment {
 					JSONObject message = new JSONObject();
 					message.put("url", Model.STORAGE_HOST + Model.STORAGE_IMAGE + imageName);
 					
-					UrlBuilder urlBuilder = new UrlBuilder();
-					String url = urlBuilder.s("images").toString();
 					JSONObjectRequest request = new JSONObjectRequest(
-							Method.POST, url, message,
+							Method.POST, "images", message,
 							new OnVolleyWeakResponse<RecordSettingFragment, JSONObject>(RecordSettingFragment.this, "onUploadSuccess", Image.class),
 							new OnVolleyWeakError<RecordSettingFragment>(RecordSettingFragment.this, "onUploadError")
 					);

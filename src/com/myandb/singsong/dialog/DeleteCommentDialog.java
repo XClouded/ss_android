@@ -14,7 +14,6 @@ import com.myandb.singsong.event.OnVolleyWeakError;
 import com.myandb.singsong.event.OnVolleyWeakResponse;
 import com.myandb.singsong.model.Comment;
 import com.myandb.singsong.net.JSONObjectRequest;
-import com.myandb.singsong.net.UrlBuilder;
 
 public class DeleteCommentDialog extends BaseDialog {
 	
@@ -45,14 +44,11 @@ public class DeleteCommentDialog extends BaseDialog {
 		
 		@Override
 		public void onClick(View v) {
-			UrlBuilder urlBuilder = new UrlBuilder();
-			String url = urlBuilder.s("comments").s(comment.getId()).toString();
-			
 			JSONObjectRequest request = new JSONObjectRequest(
-					Method.DELETE, url, null,
+					Method.DELETE, "comments/" + comment.getId(), null,
 					new OnVolleyWeakResponse<DeleteCommentDialog, JSONObject>(DeleteCommentDialog.this, "onDeleteSuccess"),
 					new OnVolleyWeakError<DeleteCommentDialog>(DeleteCommentDialog.this, "onDeleteError")
-					);
+			);
 			
 			addRequest(request);
 		}

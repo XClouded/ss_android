@@ -19,7 +19,6 @@ import com.myandb.singsong.R;
 import com.myandb.singsong.adapter.FriendsAdapter;
 import com.myandb.singsong.adapter.MusicAdapter;
 import com.myandb.singsong.adapter.SimpleSongAdapter;
-import com.myandb.singsong.net.UrlBuilder;
 
 public class SearchActivity extends Activity {
 	
@@ -29,7 +28,6 @@ public class SearchActivity extends Activity {
 	
 	public static final String INTENT_SEARCH_TYPE = "_search_type_";
 	
-	private UrlBuilder urlBuilder;
 	private ListView listView;
 	
 	@Override
@@ -85,8 +83,8 @@ public class SearchActivity extends Activity {
 					} else {
 //						SearchActivity.this.closeEditText(etSearch, false);
 						
-						urlBuilder = getUrlBuilder(type);
-						urlBuilder.keyword(keyword).p("order", "created_at");
+//						urlBuilder = getUrlBuilder(type);
+//						urlBuilder.keyword(keyword).p("order", "created_at");
 						
 //						adapter.resetRequest(urlBuilder);
 //						listView.initializeScroll();
@@ -139,6 +137,7 @@ public class SearchActivity extends Activity {
 	}
 	*/
 	
+	/*
 	private UrlBuilder getUrlBuilder(SearchType type) {
 		final UrlBuilder urlBuilder = new UrlBuilder();
 		
@@ -159,5 +158,6 @@ public class SearchActivity extends Activity {
 			return null;
 		}
 	}
+	*/
 
 }

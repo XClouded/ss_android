@@ -242,11 +242,9 @@ public class UserHomeFragment extends ListFragment {
 	}
 	
 	private void loadProfileData() {
-		UrlBuilder urlBuilder = new UrlBuilder();
-		String url = urlBuilder.s("users").s(thisUser.getId()).s("profile").toString();
-		
+		String segment = "users/" + thisUser.getId() + "/profile";
 		JSONObjectRequest request = new JSONObjectRequest(
-				Method.GET, url, null,
+				segment, null,
 				new OnVolleyWeakResponse<UserHomeFragment, JSONObject>(this, "onGetProfileResponse", Profile.class),
 				new OnVolleyWeakError<UserHomeFragment>(this, "onGetProfileError")
 		);
@@ -321,11 +319,8 @@ public class UserHomeFragment extends ListFragment {
 	}
 	
 	private void checkIsThisUserFriend() {
-		UrlBuilder urlBuilder = new UrlBuilder();
-		String url = urlBuilder.s("friendships").s(thisUser.getId()).toString();
-		
 		JSONObjectRequest request = new JSONObjectRequest(
-				Method.GET, url, null,
+				"friendships/" + thisUser.getId(), null,
 				new OnVolleyWeakResponse<UserHomeFragment, JSONObject>(this, "onFriendshipFound", Friendship.class),
 				new OnVolleyWeakError<UserHomeFragment>(this, "onFriendshipNotFound")
 		);
@@ -364,9 +359,7 @@ public class UserHomeFragment extends ListFragment {
 		
 		@Override
 		public void onActivated(View v, User user) {
-			UrlBuilder urlBuilder = new UrlBuilder();
-			String url = urlBuilder.s("friendships").s(thisUser.getId()).toString();
-			JustRequest request = new JustRequest(Method.POST, url, null);
+			JustRequest request = new JustRequest(Method.POST, "friendships/" + thisUser.getId(), null);
 			addRequest(request);
 			toggleFollowing(true);
 		}
@@ -405,11 +398,8 @@ public class UserHomeFragment extends ListFragment {
 	}
 	
 	private void checkUserActivation() {
-		UrlBuilder urlBuilder = new UrlBuilder();
-		String url = urlBuilder.s("users").s(currentUser.getId()).toString();
-		
 		JSONObjectRequest request = new JSONObjectRequest(
-				Method.GET, url, null,
+				"users/" + currentUser.getId(), null,
 				new OnVolleyWeakResponse<UserHomeFragment, JSONObject>(this, "onCheckActivationResponse", User.class),
 				null
 		);
@@ -436,9 +426,7 @@ public class UserHomeFragment extends ListFragment {
 		
 		@Override
 		public void onLoggedIn(View v, User user) {
-			UrlBuilder urlBuilder = new UrlBuilder();
-			String url = urlBuilder.s("activations").toString();
-			JustRequest request = new JustRequest(Method.POST, url, null);
+			JustRequest request = new JustRequest(Method.POST, "activations", null);
 			addRequest(request);
 			makeToast(R.string.t_activation_email_send);
 			vResendEmail.setVisibility(View.GONE);

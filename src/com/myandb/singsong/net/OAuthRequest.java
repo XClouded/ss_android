@@ -11,6 +11,7 @@ import com.android.volley.Request;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.VolleyError;
 import com.myandb.singsong.secure.Authenticator;
+import com.myandb.singsong.util.Logger;
 
 public abstract class OAuthRequest<T> extends Request<T> {
 	
@@ -18,6 +19,7 @@ public abstract class OAuthRequest<T> extends Request<T> {
 	
 	public OAuthRequest(int method, String url, ErrorListener listener) {
 		super(method, url, listener);
+		Logger.log(url);
 		requireAccessToken = true;
 	}
 	
