@@ -7,7 +7,7 @@ import com.android.volley.Request.Method;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 import com.myandb.singsong.model.User;
-import com.myandb.singsong.net.OAuthJsonObjectRequest;
+import com.myandb.singsong.net.JSONObjectRequest;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
 
@@ -34,7 +34,7 @@ public abstract class ActivateOnlyClickListener extends MemberOnlyClickListener 
 		UrlBuilder urlBuilder = new UrlBuilder();
 		String url = urlBuilder.s("users").s(user.getId()).toString();
 		
-		OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
+		JSONObjectRequest request = new JSONObjectRequest(
 				Method.GET, url, null,
 				new OnVolleyWeakResponse<ActivateOnlyClickListener, JSONObject>(this, "onCheckActivationResponse", User.class),
 				new OnVolleyWeakError<ActivateOnlyClickListener>(this, "onCheckActivationError")

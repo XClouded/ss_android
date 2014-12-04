@@ -24,7 +24,7 @@ import com.myandb.singsong.event.OnProgressListener;
 import com.myandb.singsong.image.BitmapBuilder;
 import com.myandb.singsong.model.Model;
 import com.myandb.singsong.model.Music;
-import com.myandb.singsong.net.OAuthJsonObjectRequest;
+import com.myandb.singsong.net.JSONObjectRequest;
 import com.myandb.singsong.net.UploadManager;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.util.StringFormatter;
@@ -278,7 +278,7 @@ public class SongUploadService extends Service {
 			
 			UrlBuilder urlBuilder = new UrlBuilder();
 			String url = urlBuilder.s("songs").toString();
-			OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
+			JSONObjectRequest request = new JSONObjectRequest(
 					Method.POST, url, data,
 					new Response.Listener<JSONObject>() {
 						

@@ -9,7 +9,7 @@ import com.myandb.singsong.event.Listeners;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Profile;
 import com.myandb.singsong.model.User;
-import com.myandb.singsong.net.OAuthJustRequest;
+import com.myandb.singsong.net.JustRequest;
 import com.myandb.singsong.net.UrlBuilder;
 
 import android.content.Context;
@@ -69,7 +69,7 @@ public class FriendsAdapter extends HolderAdapter<User, FriendsAdapter.UserHolde
 			String url = urlBuilder.s("friendships").s(friend.getId()).toString();
 			
 			RequestQueue queue = ((App) v.getContext().getApplicationContext()).getQueueInstance();
-			OAuthJustRequest request = new OAuthJustRequest(Method.POST, url, null);
+			JustRequest request = new JustRequest(Method.POST, url, null);
 			queue.add(request);
 			
 			toggleFollowing(v, true);
@@ -86,7 +86,7 @@ public class FriendsAdapter extends HolderAdapter<User, FriendsAdapter.UserHolde
 			String url = urlBuilder.s("friendships").s(friend.getId()).toString();
 			
 			RequestQueue queue = ((App) v.getContext().getApplicationContext()).getQueueInstance();
-			OAuthJustRequest request = new OAuthJustRequest(Method.DELETE, url, null);
+			JustRequest request = new JustRequest(Method.DELETE, url, null);
 			queue.add(request);
 			
 			toggleFollowing(v, false);

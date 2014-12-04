@@ -5,6 +5,8 @@ import java.io.UnsupportedEncodingException;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import android.net.Uri;
+
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Response;
@@ -12,17 +14,33 @@ import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.toolbox.HttpHeaderParser;
 
-public class OAuthJsonArrayRequest extends OAuthJsonRequest<JSONArray> {
+public class JSONArrayRequest extends OAuthJSONRequest<JSONArray> {
 
     /**
      * Creates a new request.
-     * @param url URL to fetch the JSON from
+     * @param segment URL to fetch the JSON from
      * @param listener Listener to receive the JSON response
      * @param errorListener Error listener, or null to ignore errors.
      */
-    public OAuthJsonArrayRequest(String url, Listener<JSONArray> listener, ErrorListener errorListener) {
-        super(Method.GET, url, null, listener, errorListener);
+    public JSONArrayRequest(String segment, Listener<JSONArray> listener, ErrorListener errorListener) {
+        super(
+        	Method.GET,
+        	new UrlBuilder().s(segment).toString(),
+        	null,
+        	listener,
+        	errorListener
+    	);
     }
+    
+    public JSONArrayRequest(Uri uri, Listener<JSONArray> listener, ErrorListener errorListener) {
+    	super(
+    		Method.GET,
+    		uri.toString(),
+    		null,
+    		listener,
+    		errorListener
+    	);
+	}
 
     @Override
     protected Response<JSONArray> parseNetworkResponse(NetworkResponse response) {

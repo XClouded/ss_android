@@ -36,8 +36,8 @@ import com.myandb.singsong.image.BlurAsyncTask;
 import com.myandb.singsong.model.Friendship;
 import com.myandb.singsong.model.Profile;
 import com.myandb.singsong.model.User;
-import com.myandb.singsong.net.OAuthJsonObjectRequest;
-import com.myandb.singsong.net.OAuthJustRequest;
+import com.myandb.singsong.net.JSONObjectRequest;
+import com.myandb.singsong.net.JustRequest;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.util.Utility;
@@ -245,7 +245,7 @@ public class UserHomeFragment extends ListFragment {
 		UrlBuilder urlBuilder = new UrlBuilder();
 		String url = urlBuilder.s("users").s(thisUser.getId()).s("profile").toString();
 		
-		OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
+		JSONObjectRequest request = new JSONObjectRequest(
 				Method.GET, url, null,
 				new OnVolleyWeakResponse<UserHomeFragment, JSONObject>(this, "onGetProfileResponse", Profile.class),
 				new OnVolleyWeakError<UserHomeFragment>(this, "onGetProfileError")
@@ -324,7 +324,7 @@ public class UserHomeFragment extends ListFragment {
 		UrlBuilder urlBuilder = new UrlBuilder();
 		String url = urlBuilder.s("friendships").s(thisUser.getId()).toString();
 		
-		OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
+		JSONObjectRequest request = new JSONObjectRequest(
 				Method.GET, url, null,
 				new OnVolleyWeakResponse<UserHomeFragment, JSONObject>(this, "onFriendshipFound", Friendship.class),
 				new OnVolleyWeakError<UserHomeFragment>(this, "onFriendshipNotFound")
@@ -366,7 +366,7 @@ public class UserHomeFragment extends ListFragment {
 		public void onActivated(View v, User user) {
 			UrlBuilder urlBuilder = new UrlBuilder();
 			String url = urlBuilder.s("friendships").s(thisUser.getId()).toString();
-			OAuthJustRequest request = new OAuthJustRequest(Method.POST, url, null);
+			JustRequest request = new JustRequest(Method.POST, url, null);
 			addRequest(request);
 			toggleFollowing(true);
 		}
@@ -408,7 +408,7 @@ public class UserHomeFragment extends ListFragment {
 		UrlBuilder urlBuilder = new UrlBuilder();
 		String url = urlBuilder.s("users").s(currentUser.getId()).toString();
 		
-		OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
+		JSONObjectRequest request = new JSONObjectRequest(
 				Method.GET, url, null,
 				new OnVolleyWeakResponse<UserHomeFragment, JSONObject>(this, "onCheckActivationResponse", User.class),
 				null
@@ -438,7 +438,7 @@ public class UserHomeFragment extends ListFragment {
 		public void onLoggedIn(View v, User user) {
 			UrlBuilder urlBuilder = new UrlBuilder();
 			String url = urlBuilder.s("activations").toString();
-			OAuthJustRequest request = new OAuthJustRequest(Method.POST, url, null);
+			JustRequest request = new JustRequest(Method.POST, url, null);
 			addRequest(request);
 			makeToast(R.string.t_activation_email_send);
 			vResendEmail.setVisibility(View.GONE);

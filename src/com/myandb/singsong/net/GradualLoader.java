@@ -61,7 +61,7 @@ public class GradualLoader {
 			urlBuilder.take(take);
 			requiredTake = take;
 			
-			OAuthJsonArrayRequest request = new OAuthJsonArrayRequest(
+			JSONArrayRequest request = new JSONArrayRequest(
 				urlBuilder.toString(),
 				new OnVolleyWeakResponse<GradualLoader, JSONArray>(this, "onLoadResponse"),
 				new OnVolleyWeakError<GradualLoader>(this, "onLoadError")

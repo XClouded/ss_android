@@ -50,8 +50,8 @@ import com.myandb.singsong.model.SongComment;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.GradualLoader;
 import com.myandb.singsong.net.GradualLoader.OnLoadCompleteListener;
-import com.myandb.singsong.net.OAuthJsonObjectRequest;
-import com.myandb.singsong.net.OAuthJustRequest;
+import com.myandb.singsong.net.JSONObjectRequest;
+import com.myandb.singsong.net.JustRequest;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.service.PlayerService;
@@ -589,7 +589,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 			UrlBuilder urlBuilder = new UrlBuilder();
 			String url = urlBuilder.s("songs").s(song.getId()).s("likings").p("user_id", user.getId()).toString();
 			
-			OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
+			JSONObjectRequest request = new JSONObjectRequest(
 					Method.GET, url, null,
 					new OnVolleyWeakResponse<SlidingPlayerLayout, JSONObject>(this, "onGetUserLikeResponse"), 
 					new OnVolleyWeakError<SlidingPlayerLayout>(this, "onGetUserLikeError")
@@ -664,7 +664,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 			setUserLikeSong(!like);
 			displayLikeNum(song.getWorkedLikeNum());
 			
-			OAuthJustRequest request = new OAuthJustRequest(method, url, null);
+			JustRequest request = new JustRequest(method, url, null);
 			RequestQueue queue = ((App) getContext().getApplicationContext()).getQueueInstance();
 			queue.add(request);
 		}

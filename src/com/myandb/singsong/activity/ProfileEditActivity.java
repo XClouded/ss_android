@@ -40,8 +40,8 @@ import com.myandb.singsong.image.ResizeAsyncTask;
 import com.myandb.singsong.model.Model;
 import com.myandb.singsong.model.Profile;
 import com.myandb.singsong.model.User;
-import com.myandb.singsong.net.OAuthJsonObjectRequest;
-import com.myandb.singsong.net.OAuthJustRequest;
+import com.myandb.singsong.net.JSONObjectRequest;
+import com.myandb.singsong.net.JustRequest;
 import com.myandb.singsong.net.UploadManager;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
@@ -349,7 +349,7 @@ public class ProfileEditActivity extends Activity {
 							
 							UrlBuilder urlBuilder = new UrlBuilder();
 							String url = urlBuilder.s("users").toString();
-							OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
+							JSONObjectRequest request = new JSONObjectRequest(
 									Method.PUT, url, message,
 									new OnVolleyWeakResponse<ProfileEditActivity, JSONObject>(ProfileEditActivity.this, "onChangePasswordSuccess"),
 									new OnVolleyWeakError<ProfileEditActivity>(ProfileEditActivity.this, "onChangePasswordError")

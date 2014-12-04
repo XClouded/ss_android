@@ -18,7 +18,7 @@ import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Song;
 import com.myandb.singsong.model.SongComment;
 import com.myandb.singsong.model.User;
-import com.myandb.singsong.net.OAuthJsonObjectRequest;
+import com.myandb.singsong.net.JSONObjectRequest;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.widget.SlidingPlayerLayout;
@@ -76,7 +76,7 @@ public class WriteCommentDialog extends BaseDialog {
 				
 				UrlBuilder urlBuilder = new UrlBuilder();
 				String url = urlBuilder.s("songs").s(song.getId()).s("comments").toString();
-				OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
+				JSONObjectRequest request = new JSONObjectRequest(
 						Method.POST, url, message,
 						new OnVolleyWeakResponse<WriteCommentDialog, JSONObject>(WriteCommentDialog.this, "onSubmitSuccess", SongComment.class),
 						new OnVolleyWeakError<WriteCommentDialog>(WriteCommentDialog.this, "onSubmitError")

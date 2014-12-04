@@ -12,7 +12,7 @@ import com.android.volley.Request.Method;
 import com.myandb.singsong.R;
 import com.myandb.singsong.fragment.UserHomeFragment;
 import com.myandb.singsong.model.Friendship;
-import com.myandb.singsong.net.OAuthJustRequest;
+import com.myandb.singsong.net.JustRequest;
 import com.myandb.singsong.net.UrlBuilder;
 
 public class UpdateFriendshipDialog extends BaseDialog {
@@ -66,7 +66,7 @@ public class UpdateFriendshipDialog extends BaseDialog {
 				JSONObject message = new JSONObject();
 				message.put("allow_notify", isAllowNotify);
 				
-				OAuthJustRequest request = new OAuthJustRequest(Method.PUT, url, message);
+				JustRequest request = new JustRequest(Method.PUT, url, message);
 				addRequest(request);
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -84,7 +84,7 @@ public class UpdateFriendshipDialog extends BaseDialog {
 		public void onClick(View v) {
 			UrlBuilder urlBuilder = new UrlBuilder();
 			String url = urlBuilder.s("friendships").s(friendship.getFollowingUserId()).toString();
-			OAuthJustRequest request = new OAuthJustRequest(Method.DELETE, url, null);
+			JustRequest request = new JustRequest(Method.DELETE, url, null);
 			addRequest(request);
 			
 			fragment.toggleFollowing(false);
@@ -99,7 +99,7 @@ public class UpdateFriendshipDialog extends BaseDialog {
 		public void onClick(View v) {
 			UrlBuilder urlBuilder = new UrlBuilder();
 			String url = urlBuilder.s("candidates").s(friendship.getFollowingUserId()).toString();
-			OAuthJustRequest request = new OAuthJustRequest(Method.POST, url, null);
+			JustRequest request = new JustRequest(Method.POST, url, null);
 			addRequest(request);
 			
 			makeToast(R.string.t_recommend_has_accepted);

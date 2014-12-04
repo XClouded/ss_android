@@ -21,12 +21,12 @@ public class UrlBuilder {
 	}
 	
 	public UrlBuilder s(String segment) {
-		builder.appendPath(segment);
+		builder.appendEncodedPath(segment);
 		return this;
 	}
 	
 	public UrlBuilder s(int segment) {
-		builder.appendPath(String.valueOf(segment));
+		s(String.valueOf(segment));
 		return this;
 	}
 	

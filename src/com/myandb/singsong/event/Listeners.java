@@ -27,7 +27,7 @@ import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Notification;
 import com.myandb.singsong.model.Song;
 import com.myandb.singsong.model.User;
-import com.myandb.singsong.net.OAuthJsonObjectRequest;
+import com.myandb.singsong.net.JSONObjectRequest;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.service.PlayerService;
@@ -50,7 +50,7 @@ public class Listeners {
 				} else {
 					String url = getUrl(activity);
 					
-					OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
+					JSONObjectRequest request = new JSONObjectRequest(
 							Method.GET, url, null,
 							new OnFetchResponse(context, activity.getSourceType()),
 							new OnFetchError(context, activity.getSourceType())
@@ -244,7 +244,7 @@ public class Listeners {
 				parentSong.setMusic(song.getMusic());
 				
 				String url = urlBuilder.s("songs").s(parentSong.getId()).toString();
-				OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
+				JSONObjectRequest request = new JSONObjectRequest(
 						Method.GET, url, null,
 						new OnCheckResponse(context, parentSong),
 						new OnCheckError(context)
