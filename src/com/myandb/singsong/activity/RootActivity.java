@@ -321,6 +321,7 @@ public class RootActivity extends BaseActivity {
 		Intent intent = new Intent(this, getClass());
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, HomeFragment.class.getName());
+		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_ROOT, true);
 		startActivity(intent);
 	}
 

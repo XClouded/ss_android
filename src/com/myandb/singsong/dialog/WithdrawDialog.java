@@ -4,7 +4,6 @@ import org.json.JSONObject;
 
 import com.android.volley.Request.Method;
 import com.myandb.singsong.R;
-import com.myandb.singsong.activity.SettingActivity;
 import com.myandb.singsong.net.JSONObjectRequest;
 import com.myandb.singsong.net.OnFailListener;
 import com.myandb.singsong.net.JSONObjectSuccessListener;
@@ -17,7 +16,6 @@ import android.widget.Button;
 
 public class WithdrawDialog extends BaseDialog {
 	
-	private SettingActivity parent;
 	private Button btnYes;
 	private Button btnNo;
 
@@ -67,7 +65,6 @@ public class WithdrawDialog extends BaseDialog {
 		auth.logout();
 		
 //		parent.dismissProgressDialog();
-		parent.finish();
 	}
 	
 	private View.OnClickListener cancelClickListener = new View.OnClickListener() {
