@@ -58,8 +58,7 @@ public class UpActivity extends BaseActivity {
 	@Override
 	public void onPageChanged(Intent intent) {
 		if (isComponentOf(intent, RootActivity.class)) {
-			// finish all UpActivity
-			finish();
+			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 		} else if (isComponentOf(intent, UpActivity.class)) {
 			startActivity(intent);
