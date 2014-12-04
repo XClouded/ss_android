@@ -100,7 +100,7 @@ public class UploadManager extends AsyncTask<File, Integer, Exception> {
 				}
 		);
 		
-		((App) context.getApplicationContext()).addRequest(request);
+		((App) context.getApplicationContext()).addLongLivedRequest(request);
 	}
 	
 }

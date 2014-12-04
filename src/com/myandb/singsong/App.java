@@ -43,22 +43,22 @@ public class App extends Application {
 		return requestQueue;
 	}
 	
-	public <T> void addRequest(Request<T> request) {
+	public <T> void addLongLivedRequest(Request<T> request) {
 		if (request != null) {
 			getQueueInstance().add(request);
 		}
 	}
 	
-	public <T> void addRequest(Object context, Request<T> request) {
-		if (context != null) {
-			request.setTag(context.hashCode());
-			addRequest(request);
+	public <T> void addShortLivedRequest(Object cancelable, Request<T> request) {
+		if (cancelable != null && request != null) {
+			request.setTag(cancelable.hashCode());
+			getQueueInstance().add(request);
 		}
 	}
 	
-	public void cancelRequests(Object context) {
-		if (context != null) {
-			getQueueInstance().cancelAll(context.hashCode());
+	public void cancelRequests(Object cancelable) {
+		if (cancelable != null) {
+			getQueueInstance().cancelAll(cancelable.hashCode());
 		}
 	}
 	

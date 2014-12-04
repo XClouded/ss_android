@@ -129,7 +129,7 @@ public abstract class BaseFragment extends Fragment {
 	}
 	
 	public <T> void addRequest(Request<T> request) {
-		getApplicationContext().addRequest(this, request);
+		getApplicationContext().addShortLivedRequest(this, request);
 	}
 	
 	public void makeToast(String message) {

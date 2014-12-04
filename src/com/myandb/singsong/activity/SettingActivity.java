@@ -75,7 +75,7 @@ public class SettingActivity extends Activity implements OnClickListener {
 			message.put("push_id", "");
 			
 			JustRequest request = new JustRequest(Method.PUT, "users", message);
-			((App) getApplicationContext()).addRequest(request);
+			((App) getApplicationContext()).addLongLivedRequest(request);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -86,7 +86,7 @@ public class SettingActivity extends Activity implements OnClickListener {
 				Method.DELETE, "token", null,
 				null, null);
 		
-		((App) getApplicationContext()).addRequest(request);
+		((App) getApplicationContext()).addLongLivedRequest(request);
 	}
 	
 	public void logout() {

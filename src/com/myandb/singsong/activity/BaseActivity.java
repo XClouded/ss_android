@@ -330,7 +330,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 	}
 	
 	public <T> void addRequest(com.android.volley.Request<T> request) {
-		((App) getApplicationContext()).addRequest(this, request);
+		((App) getApplicationContext()).addShortLivedRequest(this, request);
 	}
 	
 	private void cancelRequests() {

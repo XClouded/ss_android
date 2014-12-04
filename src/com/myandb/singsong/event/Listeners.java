@@ -54,7 +54,7 @@ public class Listeners {
 							new OnFailListener(this, "onFail")
 					);
 					
-					((App) context.getApplicationContext()).addRequest(context, request);
+					((App) context.getApplicationContext()).addShortLivedRequest(context, request);
 				}
 			}
 			
@@ -218,7 +218,7 @@ public class Listeners {
 						new JSONObjectSuccessListener(this, "onSuccess"),
 						new OnFailListener(this, "onFail")
 				);
-				((App) context.getApplicationContext()).addRequest(context, request);
+				((App) context.getApplicationContext()).addShortLivedRequest(context, request);
 			}
 			
 			@TargetApi(Build.VERSION_CODES.HONEYCOMB)

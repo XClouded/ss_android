@@ -209,7 +209,7 @@ public class ProfileEditActivity extends Activity {
 					new OnFailListener(ProfileEditActivity.this, "onNicknameNotFound")
 			);
 			
-			((App) getApplicationContext()).addRequest(request);
+			((App) getApplicationContext()).addLongLivedRequest(request);
 		}
 	}
 	
@@ -342,7 +342,7 @@ public class ProfileEditActivity extends Activity {
 									new OnFailListener(ProfileEditActivity.this, "onChangePasswordError")
 							);
 							
-							((App) getApplicationContext()).addRequest(request);
+							((App) getApplicationContext()).addLongLivedRequest(request);
 							
 //							ProfileEditActivity.this.showProgressDialog();
 						} catch (JSONException e) {

@@ -35,7 +35,7 @@ public abstract class ActivateOnlyClickListener extends MemberOnlyClickListener 
 				new OnFailListener(this, "onCheckActivationError")
 		);
 		App app = ((App) view.getContext().getApplicationContext());
-		app.addRequest(view.getContext(), request);
+		app.addShortLivedRequest(view.getContext(), request);
 	}
 	
 	public void onCheckActivationResponse(User user) {

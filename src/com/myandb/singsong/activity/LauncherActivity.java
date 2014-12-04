@@ -56,7 +56,7 @@ public class LauncherActivity extends FragmentActivity {
 				new OnFailListener(this, "onGetDataError")
 		);
 		request.setRequireAccessToken(false);
-		((App) getApplicationContext()).addRequest(request);
+		((App) getApplicationContext()).addShortLivedRequest(this, request);
 	}
 	
 	public void onGetDataSuccess(JSONObject response) {
@@ -108,7 +108,7 @@ public class LauncherActivity extends FragmentActivity {
 			handler.removeCallbacksAndMessages(null);
 			handler = null;
 		}
-		((App) getApplicationContext()).cancelAllRequests();
+		((App) getApplicationContext()).cancelRequests(this);
 		super.onDestroy();
 	}
 

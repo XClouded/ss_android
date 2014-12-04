@@ -597,7 +597,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 					new OnFailListener(this, "onGetUserLikeError")
 			);
 			
-			((App) getContext().getApplicationContext()).addRequest(getContext(), request);
+			((App) getContext().getApplicationContext()).addShortLivedRequest(getContext(), request);
 		}
 	}
 	
@@ -668,7 +668,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 			displayLikeNum(song.getWorkedLikeNum());
 			
 			JustRequest request = new JustRequest(method, segment, null);
-			((App) getContext().getApplicationContext()).addRequest(request);
+			((App) getContext().getApplicationContext()).addLongLivedRequest(request);
 		}
 	};
 	

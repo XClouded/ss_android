@@ -288,7 +288,7 @@ public class SongUploadService extends Service {
 					}
 			);
 			
-			((App) getApplicationContext()).addRequest(request);
+			((App) getApplicationContext()).addLongLivedRequest(request);
 		} catch (JSONException e) {
 			e.printStackTrace();
 			errorNotification("업로드에 실패하였습니다.");

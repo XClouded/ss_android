@@ -83,7 +83,7 @@ public abstract class BaseDialog extends DialogFragment {
 	}
 	
 	public <T> void addRequest(Request<T> request) {
-		getApplicationContext().addRequest(this, request);
+		getApplicationContext().addShortLivedRequest(this, request);
 	}
 	
 	public void cancelRequests() {
