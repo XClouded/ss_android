@@ -1,8 +1,10 @@
 package com.myandb.singsong;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.myandb.singsong.image.ImageLoaderConfig;
+import com.myandb.singsong.net.SelectAllRequestFilter;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.util.StringFormatter;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -34,11 +36,34 @@ public class App extends Application {
 		StringFormatter.initialize(getResources());
 	}
 	
-	public RequestQueue getQueueInstance() {
+	private RequestQueue getQueueInstance() {
 		if (requestQueue == null) {
 			requestQueue = Volley.newRequestQueue(this);
 		}
 		return requestQueue;
+	}
+	
+	public <T> void addRequest(Request<T> request) {
+		if (request != null) {
+			getQueueInstance().add(request);
+		}
+	}
+	
+	public <T> void addRequest(Object context, Request<T> request) {
+		if (context != null) {
+			request.setTag(context.hashCode());
+			addRequest(request);
+		}
+	}
+	
+	public void cancelRequests(Object context) {
+		if (context != null) {
+			getQueueInstance().cancelAll(context.hashCode());
+		}
+	}
+	
+	public void cancelAllRequests() {
+		getQueueInstance().cancelAll(new SelectAllRequestFilter());
 	}
 
 }

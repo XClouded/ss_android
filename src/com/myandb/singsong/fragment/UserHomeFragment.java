@@ -2,8 +2,6 @@ package com.myandb.singsong.fragment;
 
 import java.io.File;
 
-import org.json.JSONObject;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
@@ -29,8 +27,6 @@ import com.myandb.singsong.dialog.LoginDialog;
 import com.myandb.singsong.dialog.UpdateFriendshipDialog;
 import com.myandb.singsong.event.ActivateOnlyClickListener;
 import com.myandb.singsong.event.MemberOnlyClickListener;
-import com.myandb.singsong.event.OnVolleyWeakError;
-import com.myandb.singsong.event.OnVolleyWeakResponse;
 import com.myandb.singsong.image.BitmapBuilder;
 import com.myandb.singsong.image.BlurAsyncTask;
 import com.myandb.singsong.model.Friendship;
@@ -38,6 +34,8 @@ import com.myandb.singsong.model.Profile;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.JSONObjectRequest;
 import com.myandb.singsong.net.JustRequest;
+import com.myandb.singsong.net.OnFailListener;
+import com.myandb.singsong.net.JSONObjectSuccessListener;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.util.Utility;
@@ -245,8 +243,8 @@ public class UserHomeFragment extends ListFragment {
 		String segment = "users/" + thisUser.getId() + "/profile";
 		JSONObjectRequest request = new JSONObjectRequest(
 				segment, null,
-				new OnVolleyWeakResponse<UserHomeFragment, JSONObject>(this, "onGetProfileResponse", Profile.class),
-				new OnVolleyWeakError<UserHomeFragment>(this, "onGetProfileError")
+				new JSONObjectSuccessListener(this, "onGetProfileResponse", Profile.class),
+				new OnFailListener(this, "onGetProfileError")
 		);
 		addRequest(request);
 	}
@@ -321,8 +319,8 @@ public class UserHomeFragment extends ListFragment {
 	private void checkIsThisUserFriend() {
 		JSONObjectRequest request = new JSONObjectRequest(
 				"friendships/" + thisUser.getId(), null,
-				new OnVolleyWeakResponse<UserHomeFragment, JSONObject>(this, "onFriendshipFound", Friendship.class),
-				new OnVolleyWeakError<UserHomeFragment>(this, "onFriendshipNotFound")
+				new JSONObjectSuccessListener(this, "onFriendshipFound", Friendship.class),
+				new OnFailListener(this, "onFriendshipNotFound")
 		);
 		addRequest(request);
 	}
@@ -400,8 +398,8 @@ public class UserHomeFragment extends ListFragment {
 	private void checkUserActivation() {
 		JSONObjectRequest request = new JSONObjectRequest(
 				"users/" + currentUser.getId(), null,
-				new OnVolleyWeakResponse<UserHomeFragment, JSONObject>(this, "onCheckActivationResponse", User.class),
-				null
+				new JSONObjectSuccessListener(this, "onCheckActivationResponse", User.class),
+				new OnFailListener()
 		);
 		addRequest(request);
 	}

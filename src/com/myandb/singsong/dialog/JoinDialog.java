@@ -11,9 +11,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.RootActivity;
-import com.myandb.singsong.event.OnVolleyWeakError;
-import com.myandb.singsong.event.OnVolleyWeakResponse;
 import com.myandb.singsong.model.User;
+import com.myandb.singsong.net.OnFailListener;
+import com.myandb.singsong.net.JSONObjectSuccessListener;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.secure.Encryption;
@@ -248,8 +248,8 @@ public class JoinDialog extends BaseDialog {
 		lastInputUsername = username;
 		JsonObjectRequest request = new JsonObjectRequest(
 				"users?username=" + username, null,
-				new OnVolleyWeakResponse<JoinDialog, JSONObject>(JoinDialog.this, "onUsernameFound"),
-				new OnVolleyWeakError<JoinDialog>(JoinDialog.this, "onUsernameNotFound")
+				new JSONObjectSuccessListener(this, "onUsernameFound"),
+				new OnFailListener(this, "onUsernameNotFound")
 		);
 		addRequest(request);
 	}
@@ -277,8 +277,8 @@ public class JoinDialog extends BaseDialog {
 			
 			JsonObjectRequest request = new JsonObjectRequest(
 					Method.POST, "users", message,
-					new OnVolleyWeakResponse<JoinDialog, JSONObject>(JoinDialog.this, "onJoinComplete"),
-					new OnVolleyWeakError<JoinDialog>(JoinDialog.this, "onJoinError")
+					new JSONObjectSuccessListener(this, "onJoinComplete"),
+					new OnFailListener(this, "onJoinError")
 			);
 			addRequest(request);
 		} catch (JSONException e) {

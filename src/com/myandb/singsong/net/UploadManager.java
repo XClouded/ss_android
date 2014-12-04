@@ -13,7 +13,6 @@ import android.content.Context;
 import android.net.http.AndroidHttpClient;
 import android.os.AsyncTask;
 
-import com.android.volley.RequestQueue;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
@@ -101,8 +100,7 @@ public class UploadManager extends AsyncTask<File, Integer, Exception> {
 				}
 		);
 		
-		RequestQueue queue = ((App) context.getApplicationContext()).getQueueInstance();
-		queue.add(request);
+		((App) context.getApplicationContext()).addRequest(request);
 	}
 	
 }

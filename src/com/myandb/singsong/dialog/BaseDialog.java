@@ -1,14 +1,11 @@
 package com.myandb.singsong.dialog;
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
-import com.myandb.singsong.util.Logger;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.res.Resources.NotFoundException;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -77,29 +74,30 @@ public abstract class BaseDialog extends DialogFragment {
 		return 0.85f;
 	}
 	
-	public Context getApplicationContext() {
+	public App getApplicationContext() {
 		Activity activity = getActivity();
 		if (activity != null) {
-			return activity.getApplicationContext();
+			return (App) activity.getApplicationContext();
 		}
 		return null;
 	}
 	
-	public RequestQueue getRequestQueue() {
-		Context context = getApplicationContext();
-		if (context != null && context instanceof App) {
-			return ((App) context).getQueueInstance();
-		} else {
-			Logger.log("Request queue is null. Please check out the reason");
-			return null;
+	public <T> void addRequest(Request<T> request) {
+		getApplicationContext().addRequest(this, request);
+	}
+	
+	public void cancelRequests() {
+		try {
+			getApplicationContext().cancelRequests(this);
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
 		}
 	}
 	
-	public <T> void addRequest(Request<T> request) {
-		RequestQueue queue = getRequestQueue();
-		if (queue != null) {
-			queue.add(request);
-		}
+	@Override
+	public void onDestroy() {
+		cancelRequests();
+		super.onDestroy();
 	}
 	
 	public void makeToast(String message) {

@@ -1,7 +1,6 @@
 package com.myandb.singsong.fragment;
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.myandb.singsong.App;
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.service.PlayerService;
@@ -129,15 +128,8 @@ public abstract class BaseFragment extends Fragment {
 		}
 	}
 	
-	public RequestQueue getRequestQueue() throws IllegalStateException {
-		return getApplicationContext().getQueueInstance();
-	}
-	
 	public <T> void addRequest(Request<T> request) {
-		RequestQueue queue = getRequestQueue();
-		if (queue != null) {
-			queue.add(request);
-		}
+		getApplicationContext().addRequest(this, request);
 	}
 	
 	public void makeToast(String message) {
@@ -159,6 +151,20 @@ public abstract class BaseFragment extends Fragment {
 	public void startFragment(Intent intent) {
 		try {
 			getBaseActivity().changePage(intent);
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void onDestroy() {
+		cancelRequests();
+		super.onDestroy();
+	}
+	
+	public void cancelRequests() {
+		try {
+			getApplicationContext().cancelRequests(this);
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
 		}

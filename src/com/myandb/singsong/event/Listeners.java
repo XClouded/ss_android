@@ -13,9 +13,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Request.Method;
-import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
@@ -28,6 +25,8 @@ import com.myandb.singsong.model.Notification;
 import com.myandb.singsong.model.Song;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.JSONObjectRequest;
+import com.myandb.singsong.net.OnFailListener;
+import com.myandb.singsong.net.JSONObjectSuccessListener;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.service.PlayerService;
 import com.myandb.singsong.util.Utility;
@@ -39,9 +38,11 @@ public class Listeners {
 	public static OnClickListener getSourceClickListener(final Context context, final Notification notification) {
 		return new OnClickListener() {
 			
+			private Activity activity;
+			
 			@Override
 			public void onClick(View v) {
-				Activity activity = notification.getActivity();
+				activity = notification.getActivity();
 				
 				if (activity.getSourceType() == Activity.TYPE_RECOMMEND_ARTIST) {
 //					Intent intent = new Intent(context, ArtistActivity.class);
@@ -49,12 +50,61 @@ public class Listeners {
 				} else {
 					JSONObjectRequest request = new JSONObjectRequest(
 							getUrl(activity), null,
-							new OnFetchResponse(context, activity.getSourceType()),
-							new OnFetchError(context, activity.getSourceType())
+							new JSONObjectSuccessListener(this, "onSuccess"),
+							new OnFailListener(this, "onFail")
 					);
 					
-					RequestQueue queue = ((App) context.getApplicationContext()).getQueueInstance();
-					queue.add(request); 
+					((App) context.getApplicationContext()).addRequest(context, request);
+				}
+			}
+			
+			public void onSuccess(JSONObject response) {
+				Intent intent = new Intent();
+				
+				switch(activity.getSourceType()) {
+				case Activity.TYPE_CREATE_FRIENDSHIP:
+//				intent.setClass(context, ProfileRootActivity.class);
+//				intent.putExtra(ProfileRootActivity.INTENT_USER, response.toString());
+					break;
+					
+				case Activity.TYPE_CREATE_COMMENT:
+				case Activity.TYPE_CREATE_LIKING:
+				case Activity.TYPE_CREATE_ROOT_SONG:
+				case Activity.TYPE_CREATE_LEAF_SONG:
+					Gson gson = Utility.getGsonInstance();
+					Song song = gson.fromJson(response.toString(), Song.class);
+//				OldBaseActivity activity = (OldBaseActivity) context;
+					PlayerService service = null;/*activity.getService();*/
+					
+					if (service != null) {
+//					intent.setClass(context, PlayerActivity.class);
+//					service.setSong(song);
+						intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+					}
+					break;
+					
+				default:
+					return;
+				}
+				
+				context.startActivity(intent);
+			}
+			
+			public void onFail() {
+				switch(activity.getSourceType()) {
+				case Activity.TYPE_CREATE_FRIENDSHIP:
+					Toast.makeText(context, context.getString(R.string.t_unknown_user), Toast.LENGTH_SHORT).show();
+					break;
+					
+				case Activity.TYPE_CREATE_COMMENT:
+				case Activity.TYPE_CREATE_LIKING:
+				case Activity.TYPE_CREATE_ROOT_SONG:
+				case Activity.TYPE_CREATE_LEAF_SONG:
+					Toast.makeText(context, context.getString(R.string.t_deleted_song), Toast.LENGTH_SHORT).show();
+					break;
+					
+				default:
+					break;
 				}
 			}
 			
@@ -75,82 +125,6 @@ public class Listeners {
 				}
 			}
 		};
-	}
-	
-	private static class OnFetchResponse extends OnVolleyWeakResponse<Context, JSONObject> {
-		
-		private int sourceType;
-		
-		public OnFetchResponse(Context context, int sourceType) {
-			super(context);
-			
-			this.sourceType = sourceType;
-		}
-
-		@Override
-		protected void onFilteredResponse(Context context, JSONObject response) {
-			Intent intent = new Intent();
-			
-			switch(sourceType) {
-			case Activity.TYPE_CREATE_FRIENDSHIP:
-//				intent.setClass(context, ProfileRootActivity.class);
-//				intent.putExtra(ProfileRootActivity.INTENT_USER, response.toString());
-				break;
-				
-			case Activity.TYPE_CREATE_COMMENT:
-			case Activity.TYPE_CREATE_LIKING:
-			case Activity.TYPE_CREATE_ROOT_SONG:
-			case Activity.TYPE_CREATE_LEAF_SONG:
-				Gson gson = Utility.getGsonInstance();
-				Song song = gson.fromJson(response.toString(), Song.class);
-//				OldBaseActivity activity = (OldBaseActivity) context;
-				PlayerService service = null;/*activity.getService();*/
-				
-				if (service != null) {
-//					intent.setClass(context, PlayerActivity.class);
-//					service.setSong(song);
-					intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-				}
-				break;
-				
-			default:
-				return;
-			}
-			
-			context.startActivity(intent);
-		}
-		
-	}
-	
-	private static class OnFetchError extends OnVolleyWeakError<Context> {
-		
-		private int sourceType;
-
-		public OnFetchError(Context context, int sourceType) {
-			super(context);
-			
-			this.sourceType = sourceType;
-		}
-
-		@Override
-		public void onFilteredResponse(Context reference, VolleyError error) {
-			switch(sourceType) {
-			case Activity.TYPE_CREATE_FRIENDSHIP:
-				Toast.makeText(reference, reference.getString(R.string.t_unknown_user), Toast.LENGTH_SHORT).show();
-				break;
-				
-			case Activity.TYPE_CREATE_COMMENT:
-			case Activity.TYPE_CREATE_LIKING:
-			case Activity.TYPE_CREATE_ROOT_SONG:
-			case Activity.TYPE_CREATE_LEAF_SONG:
-				Toast.makeText(reference, reference.getString(R.string.t_deleted_song), Toast.LENGTH_SHORT).show();
-				break;
-				
-			default:
-				break;
-			}
-		}
-		
 	}
 	
 	public static OnClickListener getChildrenClickListener(final Context context, final Song song) {
@@ -232,61 +206,40 @@ public class Listeners {
 	public static OnClickListener getCollaboClickListener(final Context context, final Song song) {
 		return new ActivateOnlyClickListener() {
 			
+			private Song parentSong;
+			
 			@Override
 			public void onActivated(View v, User user) {
-				Song parentSong = song.getParentSong() == null ? song : song.getParentSong();
+				parentSong = song.getParentSong() == null ? song : song.getParentSong();
 				parentSong.setMusic(song.getMusic());
 				
 				JSONObjectRequest request = new JSONObjectRequest(
 						"songs/" + parentSong.getId(), null,
-						new OnCheckResponse(context, parentSong),
-						new OnCheckError(context)
+						new JSONObjectSuccessListener(this, "onSuccess"),
+						new OnFailListener(this, "onFail")
 				);
+				((App) context.getApplicationContext()).addRequest(context, request);
+			}
+			
+			@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+			public void onSuccess(JSONObject response) {
+				Gson gson = Utility.getGsonInstance();
 				
-				RequestQueue queue = ((App) context.getApplicationContext()).getQueueInstance();
-				queue.add(request);
+				Intent intent = null;/*new Intent(context, RecordMainActivity.class);*/
+//				intent.putExtra(RecordMainActivity.INTENT_PARENT_SONG, gson.toJson(parentSong, Song.class));
+				
+				if (VERSION.SDK_INT > VERSION_CODES.GINGERBREAD_MR1) {
+					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+				}
+				
+				context.startActivity(intent);
 			}
+			
+			public void onFail() {
+				Toast.makeText(context, context.getString(R.string.t_deleted_song), Toast.LENGTH_SHORT).show();
+			}
+			
 		};
-	}
-	
-	private static class OnCheckResponse extends OnVolleyWeakResponse<Context, JSONObject> {
-		
-		private Song parentSong;
-
-		public OnCheckResponse(Context context, Song parentSong) {
-			super(context);
-			
-			this.parentSong = parentSong;
-		}
-
-		@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-		@Override
-		protected void onFilteredResponse(Context context, JSONObject response) {
-			Gson gson = Utility.getGsonInstance();
-			
-			Intent intent = null;/*new Intent(context, RecordMainActivity.class);*/
-//			intent.putExtra(RecordMainActivity.INTENT_PARENT_SONG, gson.toJson(parentSong, Song.class));
-			
-			if (VERSION.SDK_INT > VERSION_CODES.GINGERBREAD_MR1) {
-				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-			}
-			
-			context.startActivity(intent);
-		}
-		
-	}
-	
-	private static class OnCheckError extends OnVolleyWeakError<Context> {
-
-		public OnCheckError(Context reference) {
-			super(reference);
-		}
-
-		@Override
-		public void onFilteredResponse(Context reference, VolleyError error) {
-			Toast.makeText(reference, reference.getString(R.string.t_deleted_song), Toast.LENGTH_SHORT).show();
-		}
-		
 	}
 	
 }

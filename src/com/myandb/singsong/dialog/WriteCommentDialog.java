@@ -12,13 +12,13 @@ import android.widget.ImageView;
 
 import com.android.volley.Request.Method;
 import com.myandb.singsong.R;
-import com.myandb.singsong.event.OnVolleyWeakError;
-import com.myandb.singsong.event.OnVolleyWeakResponse;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Song;
 import com.myandb.singsong.model.SongComment;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.JSONObjectRequest;
+import com.myandb.singsong.net.OnFailListener;
+import com.myandb.singsong.net.JSONObjectSuccessListener;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.widget.SlidingPlayerLayout;
 
@@ -77,8 +77,8 @@ public class WriteCommentDialog extends BaseDialog {
 						Method.POST,
 						"songs/" + song.getId() + "/comments",
 						message,
-						new OnVolleyWeakResponse<WriteCommentDialog, JSONObject>(WriteCommentDialog.this, "onSubmitSuccess", SongComment.class),
-						new OnVolleyWeakError<WriteCommentDialog>(WriteCommentDialog.this, "onSubmitError")
+						new JSONObjectSuccessListener(WriteCommentDialog.this, "onSubmitSuccess", SongComment.class),
+						new OnFailListener(WriteCommentDialog.this, "onSubmitError")
 				);
 				
 				addRequest(request);

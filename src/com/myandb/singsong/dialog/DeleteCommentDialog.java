@@ -10,10 +10,10 @@ import android.widget.Toast;
 
 import com.android.volley.Request.Method;
 import com.myandb.singsong.R;
-import com.myandb.singsong.event.OnVolleyWeakError;
-import com.myandb.singsong.event.OnVolleyWeakResponse;
 import com.myandb.singsong.model.Comment;
 import com.myandb.singsong.net.JSONObjectRequest;
+import com.myandb.singsong.net.OnFailListener;
+import com.myandb.singsong.net.JSONObjectSuccessListener;
 
 public class DeleteCommentDialog extends BaseDialog {
 	
@@ -46,10 +46,9 @@ public class DeleteCommentDialog extends BaseDialog {
 		public void onClick(View v) {
 			JSONObjectRequest request = new JSONObjectRequest(
 					Method.DELETE, "comments/" + comment.getId(), null,
-					new OnVolleyWeakResponse<DeleteCommentDialog, JSONObject>(DeleteCommentDialog.this, "onDeleteSuccess"),
-					new OnVolleyWeakError<DeleteCommentDialog>(DeleteCommentDialog.this, "onDeleteError")
+					new JSONObjectSuccessListener(DeleteCommentDialog.this, "onDeleteSuccess"),
+					new OnFailListener(DeleteCommentDialog.this, "onDeleteError")
 			);
-			
 			addRequest(request);
 		}
 	};

@@ -7,19 +7,16 @@ import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.AbsListView.OnScrollListener;
 
-import com.android.volley.RequestQueue;
 import com.myandb.singsong.App;
-import com.myandb.singsong.event.OnVolleyWeakError;
-import com.myandb.singsong.event.OnVolleyWeakResponse;
 
 public class GradualLoader {
 	
 	private static final int INITIAL_LOAD_NUM = 25;
 	private static final int ADDITIONAL_LOAD_NUM = 15;
 
+	private Context context;
 	private OnLoadCompleteListener completeListener;
 	private OnLoadErrorListener errorListener;
-	private RequestQueue queue;
 	private UrlBuilder urlBuilder;
 	private int count;
 	private int requiredTake;
@@ -27,7 +24,7 @@ public class GradualLoader {
 	private boolean loading;
 
 	public GradualLoader(Context context) {
-		this.queue = ((App) context.getApplicationContext()).getQueueInstance();
+		this.context = context;
 	}
 	
 	public void setUrlBuilder(UrlBuilder urlBuilder) {
@@ -63,11 +60,10 @@ public class GradualLoader {
 			
 			JSONArrayRequest request = new JSONArrayRequest(
 				urlBuilder.build(),
-				new OnVolleyWeakResponse<GradualLoader, JSONArray>(this, "onLoadResponse"),
-				new OnVolleyWeakError<GradualLoader>(this, "onLoadError")
+				new JSONArraySuccessListener(this, "onLoadResponse"),
+				new OnFailListener(this, "onLoadError")
 			);
-			
-			queue.add(request);
+			((App) context.getApplicationContext()).addRequest(context, request);
 		}
 	}
 	

@@ -23,10 +23,10 @@ import com.google.gson.JsonSyntaxException;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.event.OnCompleteWeakListener;
-import com.myandb.singsong.event.OnVolleyWeakError;
-import com.myandb.singsong.event.OnVolleyWeakResponse;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.DownloadManager;
+import com.myandb.singsong.net.OnFailListener;
+import com.myandb.singsong.net.JSONObjectSuccessListener;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.secure.Encryption;
@@ -233,8 +233,8 @@ public class LoginDialog extends BaseDialog {
 	private void requestLogin(JSONObject message) {
 		JsonObjectRequest request = new JsonObjectRequest(
 				Method.POST, "token", message,
-				new OnVolleyWeakResponse<LoginDialog, JSONObject>(this, "onLoginSuccess"),
-				new OnVolleyWeakError<LoginDialog>(this, "onLoginError")
+				new JSONObjectSuccessListener(this, "onLoginSuccess"),
+				new OnFailListener(this, "onLoginError")
 		);
 		addRequest(request);
 	}

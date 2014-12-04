@@ -3,18 +3,17 @@ package com.myandb.singsong.activity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.android.volley.RequestQueue;
 import com.myandb.singsong.App;
 import com.myandb.singsong.GoogleStore;
 import com.myandb.singsong.PackageHelper;
 import com.myandb.singsong.R;
 import com.myandb.singsong.Store;
 import com.myandb.singsong.dialog.BaseDialog;
-import com.myandb.singsong.event.OnVolleyWeakError;
-import com.myandb.singsong.event.OnVolleyWeakResponse;
 import com.myandb.singsong.fragment.BaseFragment;
 import com.myandb.singsong.fragment.HomeFragment;
 import com.myandb.singsong.net.JSONObjectRequest;
+import com.myandb.singsong.net.OnFailListener;
+import com.myandb.singsong.net.JSONObjectSuccessListener;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -53,13 +52,11 @@ public class LauncherActivity extends FragmentActivity {
 	private void requestAppMetadata() {
 		JSONObjectRequest request = new JSONObjectRequest(
 				"android", null,
-				new OnVolleyWeakResponse<LauncherActivity, JSONObject>(this, "onGetDataSuccess"),
-				new OnVolleyWeakError<LauncherActivity>(this, "onGetDataError")
+				new JSONObjectSuccessListener(this, "onGetDataSuccess"),
+				new OnFailListener(this, "onGetDataError")
 		);
 		request.setRequireAccessToken(false);
-		
-		RequestQueue queue = ((App) getApplicationContext()).getQueueInstance();
-		queue.add(request);
+		((App) getApplicationContext()).addRequest(request);
 	}
 	
 	public void onGetDataSuccess(JSONObject response) {
@@ -86,7 +83,7 @@ public class LauncherActivity extends FragmentActivity {
 	}
 	
 	public void onGetDataError() {
-		Toast.makeText(this, getString(R.string.t_poor_network_connection), Toast.LENGTH_LONG).show();
+		Toast.makeText(LauncherActivity.this, getString(R.string.t_poor_network_connection), Toast.LENGTH_LONG).show();
 		finish();
 	}
 	
@@ -111,6 +108,7 @@ public class LauncherActivity extends FragmentActivity {
 			handler.removeCallbacksAndMessages(null);
 			handler = null;
 		}
+		((App) getApplicationContext()).cancelAllRequests();
 		super.onDestroy();
 	}
 

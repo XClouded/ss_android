@@ -7,7 +7,6 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.Response.ErrorListener;
@@ -69,7 +68,6 @@ public class SongUploadService extends Service {
 	private NotificationManager manager;
 	private PendingIntent pendingIntent;
 	private Notification noti;
-	private RequestQueue requestQueue;
 	private List<Track> tracks;
 
 	@Override
@@ -81,8 +79,6 @@ public class SongUploadService extends Service {
 		Intent intent = new Intent(this, RootActivity.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		pendingIntent = PendingIntent.getActivity(this, REQUEST_CODE, intent, 0);
-		
-		requestQueue = ((App) getApplicationContext()).getQueueInstance();
 		
 		isRunning = false;
 	}
@@ -292,7 +288,7 @@ public class SongUploadService extends Service {
 					}
 			);
 			
-			requestQueue.add(request);
+			((App) getApplicationContext()).addRequest(request);
 		} catch (JSONException e) {
 			e.printStackTrace();
 			errorNotification("업로드에 실패하였습니다.");

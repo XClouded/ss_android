@@ -16,6 +16,7 @@ import com.facebook.model.GraphUser;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.ExceptionParser;
 import com.google.analytics.tracking.android.ExceptionReporter;
+import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 import com.myandb.singsong.event.WeakRunnable;
 import com.myandb.singsong.model.User;
@@ -323,8 +324,17 @@ public abstract class BaseActivity extends ActionBarActivity {
 			handler.removeCallbacksAndMessages(null);
 			handler = null;
 		}
+		cancelRequests();
 		super.onDestroy();
 		uiHelper.onDestroy();
+	}
+	
+	public <T> void addRequest(com.android.volley.Request<T> request) {
+		((App) getApplicationContext()).addRequest(this, request);
+	}
+	
+	private void cancelRequests() {
+		((App) getApplicationContext()).cancelRequests(this);
 	}
 	
 	public void onPlayerServiceConnected(PlayerService service) {

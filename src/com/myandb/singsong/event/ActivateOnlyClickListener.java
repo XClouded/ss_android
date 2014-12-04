@@ -1,13 +1,12 @@
 package com.myandb.singsong.event;
 
-import org.json.JSONObject;
-
-import com.android.volley.RequestQueue;
 import com.android.volley.Request.Method;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.JSONObjectRequest;
+import com.myandb.singsong.net.OnFailListener;
+import com.myandb.singsong.net.JSONObjectSuccessListener;
 import com.myandb.singsong.secure.Authenticator;
 
 import android.view.View;
@@ -24,19 +23,19 @@ public abstract class ActivateOnlyClickListener extends MemberOnlyClickListener 
 		if (user.isActivated()) {
 			onActivated(v, user);
 		} else {
-			App app = ((App) v.getContext().getApplicationContext());
-			checkUserActivation(app.getQueueInstance(), user);
+			checkUserActivation(v, user);
 		}
 	}
 	
-	private void checkUserActivation(RequestQueue queue, User user) {
+	private void checkUserActivation(View view, User user) {
 		int userId = user.getId();
 		JSONObjectRequest request = new JSONObjectRequest(
 				Method.GET, "users/" + userId, null,
-				new OnVolleyWeakResponse<ActivateOnlyClickListener, JSONObject>(this, "onCheckActivationResponse", User.class),
-				new OnVolleyWeakError<ActivateOnlyClickListener>(this, "onCheckActivationError")
+				new JSONObjectSuccessListener(this, "onCheckActivationResponse", User.class),
+				new OnFailListener(this, "onCheckActivationError")
 		);
-		queue.add(request);
+		App app = ((App) view.getContext().getApplicationContext());
+		app.addRequest(view.getContext(), request);
 	}
 	
 	public void onCheckActivationResponse(User user) {

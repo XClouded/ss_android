@@ -5,9 +5,9 @@ import org.json.JSONObject;
 import com.android.volley.Request.Method;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.SettingActivity;
-import com.myandb.singsong.event.OnVolleyWeakError;
-import com.myandb.singsong.event.OnVolleyWeakResponse;
 import com.myandb.singsong.net.JSONObjectRequest;
+import com.myandb.singsong.net.OnFailListener;
+import com.myandb.singsong.net.JSONObjectSuccessListener;
 import com.myandb.singsong.secure.Authenticator;
 
 import android.app.Activity;
@@ -47,8 +47,8 @@ public class WithdrawDialog extends BaseDialog {
 		public void onClick(View v) {
 			JSONObjectRequest request = new JSONObjectRequest(
 					Method.DELETE, "users", null,
-					new OnVolleyWeakResponse<WithdrawDialog, JSONObject>(WithdrawDialog.this, "onWithdrawSuccess"),
-					new OnVolleyWeakError<WithdrawDialog>(WithdrawDialog.this, "onWithdrawError")
+					new JSONObjectSuccessListener(WithdrawDialog.this, "onWithdrawSuccess"),
+					new OnFailListener(WithdrawDialog.this, "onWithdrawError")
 			);
 			addRequest(request);
 		}

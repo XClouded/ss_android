@@ -2,7 +2,6 @@ package com.myandb.singsong.util;
 
 import org.json.JSONObject;
 
-import com.android.volley.RequestQueue;
 import com.myandb.singsong.App;
 import com.myandb.singsong.net.JustRequest;
 
@@ -17,8 +16,7 @@ public class PlayCounter {
 				.append(entityId)
 				.append("/logs").toString();
 		JustRequest request = new JustRequest(segment, new JSONObject());
-		RequestQueue queue = ((App) context.getApplicationContext()).getQueueInstance();
-		queue.add(request);
+		((App) context.getApplicationContext()).addRequest(context, request);
 	}
 	
 }

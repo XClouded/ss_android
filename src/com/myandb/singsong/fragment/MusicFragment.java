@@ -20,18 +20,13 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.android.volley.RequestQueue;
 import com.google.gson.Gson;
-import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.SearchActivity;
 import com.myandb.singsong.activity.SearchActivity.SearchType;
 import com.myandb.singsong.adapter.MusicSquareAdapter;
-import com.myandb.singsong.event.OnVolleyWeakError;
-import com.myandb.singsong.event.OnVolleyWeakResponse;
 import com.myandb.singsong.event.WeakRunnable;
 import com.myandb.singsong.model.Music;
-import com.myandb.singsong.net.JSONArrayRequest;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.pager.InfinitePagerAdapter;
 import com.myandb.singsong.pager.PopularMusicAdapter;
@@ -80,16 +75,17 @@ public class MusicFragment extends Fragment {
 	};
 	
 	private void loadPopularMusic() {
+		/*
 		final String url = new UrlBuilder().s("musics").p("order", "sing_num_this_week").take(5).toString();
 		
 		final JSONArrayRequest request = new JSONArrayRequest(
 				url,
-				new OnVolleyWeakResponse<MusicFragment, JSONArray>(this, "onLoadPopularMusic"),
-				new OnVolleyWeakError<MusicFragment>(this, "onLoadPopularMusicError")
+				new OnSuccessListener(this, "onLoadPopularMusic"),
+				new OnFailListener(this, "onLoadPopularMusicError")
 		);
 		
-		RequestQueue queue = ((App) getActivity().getApplicationContext()).getQueueInstance();
-		queue.add(request);
+		((App) getActivity().getApplicationContext()).addRequest(request);
+		*/
 	}
 	
 	public void onLoadPopularMusic(JSONArray response) {

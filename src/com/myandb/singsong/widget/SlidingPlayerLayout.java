@@ -28,7 +28,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
-import com.android.volley.RequestQueue;
 import com.android.volley.Request.Method;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
@@ -40,8 +39,6 @@ import com.myandb.singsong.audio.StreamPlayer;
 import com.myandb.singsong.dialog.WriteCommentDialog;
 import com.myandb.singsong.event.ActivateOnlyClickListener;
 import com.myandb.singsong.event.Listeners;
-import com.myandb.singsong.event.OnVolleyWeakError;
-import com.myandb.singsong.event.OnVolleyWeakResponse;
 import com.myandb.singsong.event.WeakRunnable;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Music;
@@ -52,6 +49,8 @@ import com.myandb.singsong.net.GradualLoader;
 import com.myandb.singsong.net.GradualLoader.OnLoadCompleteListener;
 import com.myandb.singsong.net.JSONObjectRequest;
 import com.myandb.singsong.net.JustRequest;
+import com.myandb.singsong.net.OnFailListener;
+import com.myandb.singsong.net.JSONObjectSuccessListener;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.service.PlayerService;
@@ -594,12 +593,11 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 			
 			JSONObjectRequest request = new JSONObjectRequest(
 					segment, null,
-					new OnVolleyWeakResponse<SlidingPlayerLayout, JSONObject>(this, "onGetUserLikeResponse"), 
-					new OnVolleyWeakError<SlidingPlayerLayout>(this, "onGetUserLikeError")
+					new JSONObjectSuccessListener(this, "onGetUserLikeResponse"), 
+					new OnFailListener(this, "onGetUserLikeError")
 			);
 			
-			RequestQueue queue = ((App) getContext().getApplicationContext()).getQueueInstance();
-			queue.add(request);
+			((App) getContext().getApplicationContext()).addRequest(getContext(), request);
 		}
 	}
 	
@@ -670,8 +668,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 			displayLikeNum(song.getWorkedLikeNum());
 			
 			JustRequest request = new JustRequest(method, segment, null);
-			RequestQueue queue = ((App) getContext().getApplicationContext()).getQueueInstance();
-			queue.add(request);
+			((App) getContext().getApplicationContext()).addRequest(request);
 		}
 	};
 	

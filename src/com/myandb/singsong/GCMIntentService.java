@@ -25,7 +25,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request.Method;
-import com.android.volley.RequestQueue;
 import com.google.android.gcm.GCMBaseIntentService;
 import com.google.gson.Gson;
 import com.myandb.singsong.activity.RootActivity;
@@ -269,8 +268,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 				message.put("push_id", registrationId);
 				
 				JustRequest request = new JustRequest(Method.PUT, "users", message);
-				RequestQueue queue = ((App) getApplicationContext()).getQueueInstance();
-				queue.add(request);
+				((App) getApplicationContext()).addRequest(this, request);
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}

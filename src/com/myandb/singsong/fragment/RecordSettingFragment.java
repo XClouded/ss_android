@@ -9,9 +9,6 @@ import java.text.DecimalFormat;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.android.volley.Request.Method;
-import com.android.volley.RequestQueue;
-import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 import com.myandb.singsong.audio.OnPlayEventListener;
 import com.myandb.singsong.audio.PcmPlayer;
@@ -20,8 +17,6 @@ import com.myandb.singsong.audio.Recorder;
 import com.myandb.singsong.audio.Track;
 import com.myandb.singsong.dialog.ImageSelectDialog;
 import com.myandb.singsong.event.OnCompleteListener;
-import com.myandb.singsong.event.OnVolleyWeakError;
-import com.myandb.singsong.event.OnVolleyWeakResponse;
 import com.myandb.singsong.event.WeakRunnable;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.image.ResizeAsyncTask;
@@ -29,6 +24,8 @@ import com.myandb.singsong.model.Image;
 import com.myandb.singsong.model.Model;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.JSONObjectRequest;
+import com.myandb.singsong.net.OnFailListener;
+import com.myandb.singsong.net.JSONObjectSuccessListener;
 import com.myandb.singsong.net.UploadManager;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.service.SongUploadService;
@@ -306,13 +303,11 @@ public class RecordSettingFragment extends BaseFragment {
 					message.put("url", Model.STORAGE_HOST + Model.STORAGE_IMAGE + imageName);
 					
 					JSONObjectRequest request = new JSONObjectRequest(
-							Method.POST, "images", message,
-							new OnVolleyWeakResponse<RecordSettingFragment, JSONObject>(RecordSettingFragment.this, "onUploadSuccess", Image.class),
-							new OnVolleyWeakError<RecordSettingFragment>(RecordSettingFragment.this, "onUploadError")
+							"images", message,
+							new JSONObjectSuccessListener(RecordSettingFragment.this, "onUploadSuccess", Image.class),
+							new OnFailListener(RecordSettingFragment.this, "onUploadError")
 					);
-					
-					RequestQueue queue = ((App) getActivity().getApplicationContext()).getQueueInstance();
-					queue.add(request);
+					addRequest(request);
 				} catch (JSONException e1) {
 					onUploadError();
 				}

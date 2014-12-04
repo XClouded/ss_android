@@ -25,19 +25,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
 import com.android.volley.Request.Method;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
-import com.myandb.singsong.event.OnVolleyWeakError;
-import com.myandb.singsong.event.OnVolleyWeakResponse;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.image.ResizeAsyncTask;
 import com.myandb.singsong.model.Profile;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.JSONObjectRequest;
+import com.myandb.singsong.net.OnFailListener;
+import com.myandb.singsong.net.JSONObjectSuccessListener;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.secure.Encryption;
 import com.myandb.singsong.util.Utility;
@@ -206,17 +205,15 @@ public class ProfileEditActivity extends Activity {
 			
 			JsonObjectRequest request = new JsonObjectRequest(
 					"users?nickname=" + nickname, null,
-					new OnVolleyWeakResponse<ProfileEditActivity, JSONObject>(ProfileEditActivity.this, "onNicknameFound"),
-					new OnVolleyWeakError<ProfileEditActivity>(ProfileEditActivity.this, "onNicknameNotFound")
+					new JSONObjectSuccessListener(ProfileEditActivity.this, "onNicknameFound"),
+					new OnFailListener(ProfileEditActivity.this, "onNicknameNotFound")
 			);
 			
-			RequestQueue queue = ((App) getApplicationContext()).getQueueInstance();
-			queue.add(request);
+			((App) getApplicationContext()).addRequest(request);
 		}
-		
 	}
 	
-	public void onNicknameFound(JSONObject response) {
+	public void onNicknameFound() {
 		turnOffValidView();
 	}
 	
@@ -341,12 +338,11 @@ public class ProfileEditActivity extends Activity {
 							
 							JSONObjectRequest request = new JSONObjectRequest(
 									Method.PUT, "users", message,
-									new OnVolleyWeakResponse<ProfileEditActivity, JSONObject>(ProfileEditActivity.this, "onChangePasswordSuccess"),
-									new OnVolleyWeakError<ProfileEditActivity>(ProfileEditActivity.this, "onChangePasswordError")
+									new JSONObjectSuccessListener(ProfileEditActivity.this, "onChangePasswordSuccess"),
+									new OnFailListener(ProfileEditActivity.this, "onChangePasswordError")
 							);
 							
-							RequestQueue queue = ((App) getApplicationContext()).getQueueInstance();
-							queue.add(request);
+							((App) getApplicationContext()).addRequest(request);
 							
 //							ProfileEditActivity.this.showProgressDialog();
 						} catch (JSONException e) {

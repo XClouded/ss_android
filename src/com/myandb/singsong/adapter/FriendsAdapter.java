@@ -1,6 +1,5 @@
 package com.myandb.singsong.adapter;
 
-import com.android.volley.RequestQueue;
 import com.android.volley.Request.Method;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
@@ -63,10 +62,8 @@ public class FriendsAdapter extends HolderAdapter<User, FriendsAdapter.UserHolde
 		@Override
 		public void onActivated(View v, User user) {
 			User friend = (User) v.getTag();
-			RequestQueue queue = ((App) v.getContext().getApplicationContext()).getQueueInstance();
 			JustRequest request = new JustRequest(Method.POST, "friendships/" + friend.getId(), null);
-			queue.add(request);
-			
+			((App) v.getContext().getApplicationContext()).addRequest(request);
 			toggleFollowing(v, true);
 		}
 	};
@@ -76,10 +73,8 @@ public class FriendsAdapter extends HolderAdapter<User, FriendsAdapter.UserHolde
 		@Override
 		public void onActivated(View v, User user) {
 			User friend = (User) v.getTag();
-			RequestQueue queue = ((App) v.getContext().getApplicationContext()).getQueueInstance();
 			JustRequest request = new JustRequest(Method.DELETE, "friendships/" + friend.getId(), null);
-			queue.add(request);
-			
+			((App) v.getContext().getApplicationContext()).addRequest(request);
 			toggleFollowing(v, false);
 		}
 	};

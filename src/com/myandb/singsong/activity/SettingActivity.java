@@ -4,14 +4,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.android.volley.Request.Method;
-import com.android.volley.RequestQueue;
-import com.android.volley.VolleyError;
 import com.google.android.gcm.GCMRegistrar;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 import com.myandb.singsong.dialog.WithdrawDialog;
-import com.myandb.singsong.event.OnVolleyWeakError;
-import com.myandb.singsong.event.OnVolleyWeakResponse;
 import com.myandb.singsong.net.JSONObjectRequest;
 import com.myandb.singsong.net.JustRequest;
 import com.myandb.singsong.secure.Authenticator;
@@ -79,8 +75,7 @@ public class SettingActivity extends Activity implements OnClickListener {
 			message.put("push_id", "");
 			
 			JustRequest request = new JustRequest(Method.PUT, "users", message);
-			RequestQueue queue = ((App) getApplicationContext()).getQueueInstance();
-			queue.add(request);
+			((App) getApplicationContext()).addRequest(request);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -89,37 +84,9 @@ public class SettingActivity extends Activity implements OnClickListener {
 	private void deleteTokenOnServer() {
 		JSONObjectRequest request = new JSONObjectRequest(
 				Method.DELETE, "token", null,
-				new OnDeleteTokenListener(this),
-				new OnDeleteTokenErrorListener(this));
+				null, null);
 		
-		RequestQueue queue = ((App) getApplicationContext()).getQueueInstance();
-		queue.add(request);
-	}
-	
-	private static class OnDeleteTokenListener extends OnVolleyWeakResponse<SettingActivity, JSONObject> {
-
-		public OnDeleteTokenListener(SettingActivity reference) {
-			super(reference);
-		}
-
-		@Override
-		public void onFilteredResponse(SettingActivity reference, JSONObject response) {
-			reference.logout();
-		}
-		
-	}
-	
-	private static class OnDeleteTokenErrorListener extends OnVolleyWeakError<SettingActivity> {
-
-		public OnDeleteTokenErrorListener(SettingActivity reference) {
-			super(reference);
-		}
-
-		@Override
-		public void onFilteredResponse(SettingActivity reference, VolleyError error) {
-			reference.logout();
-		}
-		
+		((App) getApplicationContext()).addRequest(request);
 	}
 	
 	public void logout() {
