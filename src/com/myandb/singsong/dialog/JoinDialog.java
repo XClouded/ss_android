@@ -1,17 +1,17 @@
 package com.myandb.singsong.dialog;
 
+import java.io.File;
 import java.util.regex.Matcher;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.android.volley.Request.Method;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.model.User;
+import com.myandb.singsong.net.JSONObjectRequest;
 import com.myandb.singsong.net.OnFailListener;
 import com.myandb.singsong.net.JSONObjectSuccessListener;
 import com.myandb.singsong.net.UrlBuilder;
@@ -246,7 +246,7 @@ public class JoinDialog extends BaseDialog {
 	
 	private void checkUsernameDuplication(String username) {
 		lastInputUsername = username;
-		JsonObjectRequest request = new JsonObjectRequest(
+		JSONObjectRequest request = new JSONObjectRequest(
 				"users?username=" + username, null,
 				new JSONObjectSuccessListener(this, "onUsernameFound"),
 				new OnFailListener(this, "onUsernameNotFound")
@@ -275,8 +275,8 @@ public class JoinDialog extends BaseDialog {
 			message.put("password", password);
 			message.put("device_id", encryption.getDeviceId(getActivity()));
 			
-			JsonObjectRequest request = new JsonObjectRequest(
-					Method.POST, "users", message,
+			JSONObjectRequest request = new JSONObjectRequest(
+					"users", message,
 					new JSONObjectSuccessListener(this, "onJoinComplete"),
 					new OnFailListener(this, "onJoinError")
 			);
@@ -291,6 +291,7 @@ public class JoinDialog extends BaseDialog {
 			User user = extractUserFromResponse(response);
 			String token = extractTokenFromResponse(response);
 			saveUserOnLocal(user, token);
+			deleteLocalUserPhoto();
 			onLoginComplete();
 		} catch (JSONException e) {
 			onJoinError();
@@ -310,6 +311,17 @@ public class JoinDialog extends BaseDialog {
 	
 	private void saveUserOnLocal(User user, String token) {
 		new Authenticator().login(user, token);
+	}
+	
+	private void deleteLocalUserPhoto() {
+		File file = getUserPhotoFile();
+		if (file.exists()) {
+			file.delete();
+		}
+	}
+	
+	private File getUserPhotoFile() {
+		return new File(getActivity().getFilesDir(), LoginDialog.FILE_USER_PHOTO);
 	}
 	
 	private void removeUserOnLocal() {

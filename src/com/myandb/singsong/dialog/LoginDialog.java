@@ -7,8 +7,6 @@ import java.util.Arrays;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.android.volley.Request.Method;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
@@ -25,6 +23,7 @@ import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.event.OnCompleteWeakListener;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.DownloadManager;
+import com.myandb.singsong.net.JSONObjectRequest;
 import com.myandb.singsong.net.OnFailListener;
 import com.myandb.singsong.net.JSONObjectSuccessListener;
 import com.myandb.singsong.net.UrlBuilder;
@@ -231,8 +230,8 @@ public class LoginDialog extends BaseDialog {
 	}
 	
 	private void requestLogin(JSONObject message) {
-		JsonObjectRequest request = new JsonObjectRequest(
-				Method.POST, "token", message,
+		JSONObjectRequest request = new JSONObjectRequest(
+				"token", message,
 				new JSONObjectSuccessListener(this, "onLoginSuccess"),
 				new OnFailListener(this, "onLoginError")
 		);
@@ -321,7 +320,7 @@ public class LoginDialog extends BaseDialog {
 	}
 	
 	public void onLoginError() {
-		makeToast(R.string.t_join_failed);
+		makeToast(R.string.t_login_failed);
 		removeUserOnLocal();
 		dismissProgressDialog();
 	}
