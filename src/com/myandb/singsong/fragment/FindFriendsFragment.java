@@ -70,9 +70,7 @@ public class FindFriendsFragment extends ListFragment {
 			Intent intent = new Intent(getActivity(), RootActivity.class);
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, FragmentPagerFragment.class.getName());
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
-			if (getActivity() instanceof BaseActivity) {
-				((BaseActivity) getActivity()).changePage(intent);
-			}
+			startFragment(intent);
 		}
 	};
 	

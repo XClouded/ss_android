@@ -5,15 +5,14 @@ import com.android.volley.RequestQueue;
 import com.myandb.singsong.App;
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.service.PlayerService;
-import com.myandb.singsong.util.Logger;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources.NotFoundException;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,20 +73,35 @@ public abstract class BaseFragment extends Fragment {
 		getActivity().finish();
 	}
 	
-	public PlayerService getPlayerService() throws Exception {
-		Activity parent = getActivity();
-		if (parent != null && parent instanceof BaseActivity) {
-			return ((BaseActivity) parent).getPlayerService();
+	public BaseActivity getBaseActivity() throws IllegalStateException {
+		Activity activity = getActivity();
+		if (activity != null && activity instanceof BaseActivity) {
+			return ((BaseActivity) activity);
 		} else {
-			throw new Exception();
+			throw new IllegalStateException("Parent Activity is null or not instance of BaseActivity");
 		}
 	}
+	
+	public App getApplicationContext() throws IllegalStateException {
+		Context context = getBaseActivity().getApplicationContext();
+		if (context != null && context instanceof App) {
+			return ((App) context);
+		} else {
+			throw new IllegalStateException("Application is null or not instance of App");
+		}
+	}
+	
+	public PlayerService getPlayerService() throws IllegalStateException {
+		return getBaseActivity().getPlayerService();
+	}
+	
+	public ActionBar getSupportActionBar() throws IllegalStateException {
+		return getBaseActivity().getSupportActionBar();
+	}
 
-	public void setActionBarTitle(String title) {
+	public void setActionBarTitle(String title) throws IllegalStateException {
 		if (title != null && title.length() > 0) {
-			if (getSupportActionBar() != null) {
-				getSupportActionBar().setTitle(title);
-			}
+			getSupportActionBar().setTitle(title);
 		}
 	}
 	
@@ -100,11 +114,9 @@ public abstract class BaseFragment extends Fragment {
 		}
 	}
 	
-	public void setActionBarSubtitle(String subtitle) {
+	public void setActionBarSubtitle(String subtitle) throws IllegalStateException {
 		if (subtitle != null && subtitle.length() > 0) {
-			if (getSupportActionBar() != null) {
-				getSupportActionBar().setSubtitle(subtitle);
-			}
+			getSupportActionBar().setSubtitle(subtitle);
 		}
 	}
 	
@@ -117,30 +129,8 @@ public abstract class BaseFragment extends Fragment {
 		}
 	}
 	
-	public ActionBar getSupportActionBar() {
-		Activity activity = getActivity();
-		if (activity != null && activity instanceof ActionBarActivity) {
-			return ((ActionBarActivity) activity).getSupportActionBar();
-		}
-		return null;
-	}
-	
-	public Context getApplicationContext() {
-		Activity activity = getActivity();
-		if (activity != null) {
-			return activity.getApplicationContext();
-		}
-		return null;
-	}
-	
-	public RequestQueue getRequestQueue() {
-		Context context = getApplicationContext();
-		if (context != null && context instanceof App) {
-			return ((App) context).getQueueInstance();
-		} else {
-			Logger.log("Request queue is null. Please check out the reason");
-			return null;
-		}
+	public RequestQueue getRequestQueue() throws IllegalStateException {
+		return getApplicationContext().getQueueInstance();
 	}
 	
 	public <T> void addRequest(Request<T> request) {
@@ -165,7 +155,15 @@ public abstract class BaseFragment extends Fragment {
 			e.printStackTrace();
 		}
 	}
-
+	
+	public void startFragment(Intent intent) {
+		try {
+			getBaseActivity().changePage(intent);
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	protected abstract int getResourceId();
 	
 	protected abstract void onViewInflated(View view, LayoutInflater inflater);

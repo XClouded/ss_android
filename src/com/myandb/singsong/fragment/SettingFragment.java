@@ -1,5 +1,7 @@
 package com.myandb.singsong.fragment;
 
+import com.myandb.singsong.R;
+
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +10,7 @@ public class SettingFragment extends BaseFragment {
 
 	@Override
 	protected int getResourceId() {
-		return 0;
+		return R.layout.fragment_home;
 	}
 
 	@Override

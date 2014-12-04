@@ -17,12 +17,9 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request.Method;
-import com.android.volley.RequestQueue;
 import com.google.gson.Gson;
-import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.RootActivity;
@@ -55,7 +52,6 @@ public class UserHomeFragment extends ListFragment {
 	private User thisUser;
 	private User currentUser;
 	private Friendship friendship;
-	private RequestQueue requestQueue;
 	private UpdateFriendshipDialog dialog;
 	
 	private ImageView ivUserPhoto;
@@ -108,13 +104,6 @@ public class UserHomeFragment extends ListFragment {
 		btnEditProfile = (Button) view.findViewById(R.id.btn_edit_profile);
 		vResendEmail = view.findViewById(R.id.rl_resend_email);
 		btnResendEmail = (Button) view.findViewById(R.id.btn_resend_email);
-	}
-
-	@Override
-	protected void initialize(Activity activity) {
-		super.initialize(activity);
-		
-		requestQueue = ((App) getActivity().getApplicationContext()).getQueueInstance();
 	}
 
 	@Override
@@ -201,7 +190,7 @@ public class UserHomeFragment extends ListFragment {
 				
 			}
 			
-			startActivity(intent);
+			startFragment(intent);
 		}
 	};
 	
@@ -261,8 +250,7 @@ public class UserHomeFragment extends ListFragment {
 				new OnVolleyWeakResponse<UserHomeFragment, JSONObject>(this, "onGetProfileResponse", Profile.class),
 				new OnVolleyWeakError<UserHomeFragment>(this, "onGetProfileError")
 		);
-		
-		requestQueue.add(request);
+		addRequest(request);
 	}
 	
 	public void onGetProfileResponse(Profile profile) {
@@ -277,7 +265,7 @@ public class UserHomeFragment extends ListFragment {
 	}
 	
 	public void onGetProfileError() {
-		Toast.makeText(getActivity(), getString(R.string.t_poor_network_connection), Toast.LENGTH_SHORT).show();
+		makeToast(R.string.t_poor_network_connection);
 		getActivity().finish();
 	}
 	
@@ -341,8 +329,7 @@ public class UserHomeFragment extends ListFragment {
 				new OnVolleyWeakResponse<UserHomeFragment, JSONObject>(this, "onFriendshipFound", Friendship.class),
 				new OnVolleyWeakError<UserHomeFragment>(this, "onFriendshipNotFound")
 		);
-		
-		requestQueue.add(request);
+		addRequest(request);
 	}
 	
 	public void onFriendshipFound(Friendship friendship) {
@@ -380,7 +367,7 @@ public class UserHomeFragment extends ListFragment {
 			UrlBuilder urlBuilder = new UrlBuilder();
 			String url = urlBuilder.s("friendships").s(thisUser.getId()).toString();
 			OAuthJustRequest request = new OAuthJustRequest(Method.POST, url, null);
-			requestQueue.add(request);
+			addRequest(request);
 			toggleFollowing(true);
 		}
 	};
@@ -402,7 +389,7 @@ public class UserHomeFragment extends ListFragment {
 		@Override
 		public void onLoggedIn(View v, User user) {
 			Intent intent = new Intent(getActivity(), UpActivity.class);
-			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, "");
+			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, SettingFragment.class.getName());
 			startActivity(intent);
 		}
 	};
@@ -426,7 +413,7 @@ public class UserHomeFragment extends ListFragment {
 				new OnVolleyWeakResponse<UserHomeFragment, JSONObject>(this, "onCheckActivationResponse", User.class),
 				null
 		);
-		requestQueue.add(request);
+		addRequest(request);
 	}
 	
 	public void onCheckActivationResponse(User user) {
@@ -452,16 +439,14 @@ public class UserHomeFragment extends ListFragment {
 			UrlBuilder urlBuilder = new UrlBuilder();
 			String url = urlBuilder.s("activations").toString();
 			OAuthJustRequest request = new OAuthJustRequest(Method.POST, url, null);
-			requestQueue.add(request);
-			
-			Toast.makeText(getActivity(), getString(R.string.t_activation_email_send), Toast.LENGTH_SHORT).show();
+			addRequest(request);
+			makeToast(R.string.t_activation_email_send);
 			vResendEmail.setVisibility(View.GONE);
 		}
 	};
 
 	@Override
-	protected void onDataChanged() {
-	}
+	protected void onDataChanged() {}
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -484,16 +469,6 @@ public class UserHomeFragment extends ListFragment {
 	public void onResume() {
 		super.onResume();
 		setActionBarTitle(thisUser.getNickname());
-	}
-
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		
-		if (dialog != null) {
-			dialog.dismiss();
-			dialog = null;
-		}
 	}
 	
 }

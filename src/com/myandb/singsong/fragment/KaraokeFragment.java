@@ -55,7 +55,6 @@ import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class KaraokeFragment extends BaseFragment {
 	
@@ -198,9 +197,7 @@ public class KaraokeFragment extends BaseFragment {
 	}
 	
 	private void finish(Activity activity, String message) {
-		if (message != null) {
-			Toast.makeText(activity, message, Toast.LENGTH_LONG).show();
-		}
+		makeToast(message);
 		activity.finish();
 	}
 	
@@ -785,7 +782,7 @@ public class KaraokeFragment extends BaseFragment {
 
 	@Override
 	public void onBackPressed() {
-		super.onBackPressed();
+		return;
 	}
 
 }

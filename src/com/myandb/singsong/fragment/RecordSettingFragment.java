@@ -108,6 +108,7 @@ public class RecordSettingFragment extends BaseFragment {
 			}
 			player.setLeadTrack(TRACK_RECORD);
 		} catch (Exception e) {
+			e.printStackTrace();
 			// This cannot be happened
 		}
 	}

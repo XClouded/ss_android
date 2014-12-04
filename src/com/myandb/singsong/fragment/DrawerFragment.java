@@ -146,7 +146,6 @@ public class DrawerFragment extends BaseFragment {
 		
 		@Override
 		public void onLoggedIn(View v, User user) {
-			BaseActivity activity = (BaseActivity) getActivity();
 			String userInJson = Authenticator.getUserInJson();
 			Bundle bundle = new Bundle();
 			bundle.putString(UserHomeFragment.EXTRA_THIS_USER, userInJson);
@@ -155,7 +154,7 @@ public class DrawerFragment extends BaseFragment {
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, UserHomeFragment.class.getName());
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_ROOT, true);
-			activity.changePage(intent);
+			startFragment(intent);
 		}
 	};
 
