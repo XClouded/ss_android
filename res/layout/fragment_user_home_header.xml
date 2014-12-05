@@ -64,7 +64,7 @@
 		    android:layout_height="wrap_content"
 		    android:layout_alignParentTop="true"
 		    android:layout_alignParentRight="true"
-		    android:background="@drawable/ic_wheel_selector"
+		    android:background="@drawable/button_wheel_selector"
 		    android:visibility="invisible"
 		    android:layout_marginTop="@dimen/margin_bigger"
 		    android:layout_marginRight="@dimen/margin" />
@@ -75,7 +75,7 @@
 		    android:layout_alignTop="@id/btn_edit_profile"
 		    android:layout_marginRight="@dimen/margin"
 		    android:visibility="invisible"
-		    android:src="@drawable/ic_trash_selector"
+		    android:src="@drawable/button_trash_selector"
 		    style="@style/BaseImageView" />
 		
 		<TextView
@@ -110,7 +110,7 @@
 	            android:layout_width="@dimen/photo_profile"
 	            android:layout_height="@dimen/photo_profile"
 	            android:layout_marginTop="@dimen/margin"
-	            android:background="@drawable/box_profile_photo"
+	            android:background="@drawable/container_profile_photo"
 	            android:layout_centerHorizontal="true" >
 	            
 				<ImageView
@@ -171,7 +171,7 @@
             android:textColor="@color/font_highlight"
             android:lineSpacingExtra="3sp"
             android:gravity="center"
-            android:background="@drawable/btn_tab_selected"
+            android:background="@drawable/tab_selected"
             style="@style/TextViewBase" />
         
         <TextView
@@ -184,7 +184,7 @@
             android:textSize="16sp"
             android:lineSpacingExtra="3sp"
             android:gravity="center"
-            android:background="@drawable/btn_tab_selector"
+            android:background="@drawable/tab_selector"
             style="@style/TextViewBase" />
         
         <TextView
@@ -197,7 +197,7 @@
             android:textSize="16sp"
             android:lineSpacingExtra="3sp"
             android:gravity="center"
-            android:background="@drawable/btn_tab_selector"
+            android:background="@drawable/tab_selector"
             style="@style/TextViewBase" />
         
     </LinearLayout>

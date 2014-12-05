@@ -10,7 +10,7 @@
         android:layout_gravity="center"
         android:text="@string/logout"
         android:textColor="@color/font_default"
-        android:background="@drawable/box_selector"
+        android:background="@drawable/card_selector"
         style="@style/ButtonBase" />
 
 </LinearLayout>

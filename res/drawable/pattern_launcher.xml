@@ -13,7 +13,7 @@
 	<item>
 	    
 		<bitmap  
-	        android:src="@drawable/pattern_tutorial_src"
+	        android:src="@drawable/pattern_launcher_src"
 	        android:tileMode="repeat"
 	        android:dither="true">
 		</bitmap>

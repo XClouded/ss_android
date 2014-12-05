@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@drawable/dialog_container" >
+    android:background="@drawable/container_dialog" >
     
     <LinearLayout
         android:layout_width="match_parent"
@@ -46,7 +46,7 @@
 		    android:id="@+id/btn_withdraw"
 		    android:layout_width="match_parent"
 		    android:text="@string/withdraw"
-		    android:background="@drawable/btn_alert_selector"
+		    android:background="@drawable/button_alert_selector"
 		    style="@style/ButtonBase" />
         
     </FrameLayout>

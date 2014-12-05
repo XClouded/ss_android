@@ -17,7 +17,7 @@
     <Button
         android:id="@+id/btn_select_male"
         android:textColor="@color/primary"
-        style="@style/ButtonDialog" />
+        style="@style/ButtonBase" />
     
    <ImageView
         style="@style/DividerHorizontal" />
@@ -25,6 +25,6 @@
     <Button
         android:id="@+id/btn_select_female"
         android:textColor="@color/red"
-        style="@style/ButtonDialog" />
+        style="@style/ButtonBase" />
 
 </LinearLayout>

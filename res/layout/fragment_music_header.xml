@@ -18,37 +18,37 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/form_height"
         android:layout_margin="@dimen/margin_small"
-        android:background="@drawable/box_basic" >
+        android:background="@drawable/card_selector" >
 		        
-    <ImageView
-        android:id="@+id/search"
-        android:layout_width="@dimen/form_height"
-        android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:padding="@dimen/margin_tiny"
-        android:src="@drawable/ic_magnifier"
-        android:background="@color/white"
-        style="@style/BaseImageView" />
-		        
-    <ImageView
-        android:id="@+id/divider"
-        android:layout_width="0.1dp"
-        android:layout_height="match_parent"
-        android:layout_toLeftOf="@id/search"
-        android:layout_alignTop="@id/search"
-        android:layout_alignBottom="@id/search"
-        android:src="@color/divider" />
-		        
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_toLeftOf="@id/divider"
-        android:gravity="center_vertical"
-        android:padding="@dimen/margin"
-        android:text="@string/hint_keyword"
-        android:textColor="@color/font_hint"
-        android:background="@color/white"
-        style="@style/TextViewBase" />
+	    <ImageView
+	        android:id="@+id/search"
+	        android:layout_width="@dimen/form_height"
+	        android:layout_height="match_parent"
+	        android:layout_alignParentRight="true"
+	        android:padding="@dimen/margin_tiny"
+	        android:src="@drawable/ic_magnifier"
+	        android:background="@color/white"
+	        style="@style/BaseImageView" />
+			        
+	    <ImageView
+	        android:id="@+id/divider"
+	        android:layout_width="0.1dp"
+	        android:layout_height="match_parent"
+	        android:layout_toLeftOf="@id/search"
+	        android:layout_alignTop="@id/search"
+	        android:layout_alignBottom="@id/search"
+	        android:src="@color/divider" />
+			        
+	    <TextView
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:layout_toLeftOf="@id/divider"
+	        android:gravity="center_vertical"
+	        android:padding="@dimen/margin"
+	        android:text="@string/hint_keyword"
+	        android:textColor="@color/font_hint"
+	        android:background="@color/white"
+	        style="@style/TextViewBase" />
 		        
     </RelativeLayout>
             

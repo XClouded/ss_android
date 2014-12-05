@@ -55,11 +55,6 @@
         <item name="android:ellipsize">end</item>
     </style>
     
-    <style name="TextViewNotification" parent="@style/TextViewBase">
-        <item name="android:textColor">@color/font_noti_num</item>
-        <item name="android:background">@drawable/box_notification_num</item>
-    </style>
-    
     <style name="TextViewIconLabel" parent="@style/TextViewHint">
         <item name="android:layout_marginTop">@dimen/icon_text_inverse_margin</item>
     </style>

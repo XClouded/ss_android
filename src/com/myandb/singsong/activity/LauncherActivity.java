@@ -37,7 +37,7 @@ public class LauncherActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		setContentView(R.layout.activity_logo);
+		setContentView(R.layout.activity_launcher);
 		
 		handler = new Handler(Looper.getMainLooper());
 		handler.postDelayed(new Runnable() {

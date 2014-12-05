@@ -63,6 +63,6 @@
         android:layout_marginLeft="@dimen/margin_tiny"
         android:layout_marginRight="@dimen/margin_tiny"
         android:layout_marginBottom="@dimen/margin_small"
-        android:background="@drawable/btn_kakao_selector" />
+        android:background="@drawable/button_kakao_selector" />
 
 </LinearLayout>

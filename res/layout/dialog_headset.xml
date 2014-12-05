@@ -35,6 +35,6 @@
     <Button
         android:id="@+id/btn_no_headset"
         android:text="@string/dialog_headset_no"
-        style="@style/ButtonDialog" />
+        style="@style/ButtonBase" />
 
 </LinearLayout>

@@ -34,7 +34,7 @@
             android:id="@+id/pb_playbar"
             android:layout_width="match_parent"
             android:layout_height="5dp"
-            android:progressDrawable="@drawable/progressbar"
+            android:progressDrawable="@drawable/seekbar"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/tv_play_start_time"
             android:layout_toLeftOf="@id/tv_play_end_time"

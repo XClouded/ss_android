@@ -29,7 +29,7 @@
         android:layout_below="@id/tv_title"
         android:paddingRight="10dp"
         android:max="100"
-        android:progressDrawable="@drawable/progressbar"
+        android:progressDrawable="@drawable/seekbar"
         style="?android:attr/progressBarStyleHorizontal" />
 
 </RelativeLayout>

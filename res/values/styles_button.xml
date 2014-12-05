@@ -29,28 +29,23 @@
         <item name="android:paddingTop">@dimen/margin_small</item>
         <item name="android:paddingBottom">@dimen/margin_small</item>
         <item name="android:drawableLeft">@drawable/ic_magnifier</item>
-        <item name="android:background">@drawable/box_selector</item>
-    </style>
-    
-    <style name="ButtonDialog" parent="@style/ButtonBase">
-        <item name="android:background">@drawable/btn_dialog_selector</item>
+        <item name="android:background">@drawable/card_selector</item>
     </style>
     
     <style name="ButtonDisabled" parent="@style/ButtonBase">
         <item name="android:textColor">@color/font_grey</item>
-        <item name="android:background">@drawable/btn_tranparent</item>
     </style>
     
     <style name="ButtonDark" parent="@style/ButtonBase">
         <item name="android:textColor">@color/font_white</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:background">@drawable/btn_grey_selector</item>
+        <item name="android:background">@drawable/button_grey_selector</item>
     </style>
     
     <style name="ButtonSetting" parent="@style/ButtonBase">
         <item name="android:layout_marginBottom">@dimen/margin</item>
         <item name="android:gravity">left</item>
-        <item name="android:background">@drawable/btn_white_selector</item>
+        <item name="android:background">@drawable/button_white_selector</item>
     </style>
 
     <style name="ButtonTab" parent="@style/ButtonBase">
@@ -59,7 +54,7 @@
         <item name="android:layout_weight">1</item>
         <item name="android:textStyle">bold</item>
         <item name="android:clickable">true</item>
-        <item name="android:background">@drawable/btn_tab_selector</item>
+        <item name="android:background">@drawable/tab_selector</item>
     </style>
     
 </resources>

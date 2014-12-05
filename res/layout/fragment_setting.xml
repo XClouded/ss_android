@@ -18,7 +18,7 @@
 		        android:layout_width="@dimen/photo_profile"
 		        android:layout_height="@dimen/photo_profile"
 		        android:layout_centerInParent="true"
-		        android:background="@drawable/box_profile_photo" >
+		        android:background="@drawable/container_profile_photo" >
 		         
 				<ImageView
 				    android:id="@+id/iv_user_photo"
@@ -36,7 +36,7 @@
 		        android:id="@+id/btn_change_photo"
 		        android:text="변경"
 		        android:layout_alignParentRight="true"
-		        android:background="@drawable/btn_primary_selector"
+		        android:background="@drawable/button_primary_selector"
 		        android:visibility="gone"
 		        style="@style/ButtonMini" />
             
@@ -44,7 +44,7 @@
         
         <LinearLayout
 	        android:orientation="vertical"
-	        android:background="@drawable/form_selector"
+	        android:background="@drawable/row_naked_selector"
 	        style="@style/FormBaseTwoLine" >
 	        
 	        <TextView
@@ -66,7 +66,7 @@
 	    <LinearLayout
 	        android:id="@+id/ll_change_nickname"
 	        android:orientation="vertical"
-	        android:background="@drawable/form_selector"
+	        android:background="@drawable/row_naked_selector"
 	        style="@style/FormBaseTwoLine" >
 	        
 	        <TextView
@@ -88,7 +88,7 @@
 	    <LinearLayout
 	        android:id="@+id/ll_change_email"
 	        android:orientation="vertical"
-	        android:background="@drawable/form_selector"
+	        android:background="@drawable/row_naked_selector"
 	        style="@style/FormBaseTwoLine" >
 	        
 	        <TextView
@@ -110,7 +110,7 @@
 	    <LinearLayout
 	        android:id="@+id/ll_change_kakao"
 	        android:orientation="vertical"
-	        android:background="@drawable/form_selector"
+	        android:background="@drawable/row_naked_selector"
 	        style="@style/FormBaseTwoLine" >
 	        
 	        <TextView
@@ -132,7 +132,7 @@
 	    <LinearLayout
 	        android:id="@+id/ll_change_status"
 	        android:orientation="vertical"
-	        android:background="@drawable/form_selector"
+	        android:background="@drawable/row_naked_selector"
 	        style="@style/FormBaseTwoLine" >
 	        
 	        <TextView
@@ -154,7 +154,7 @@
 	    <LinearLayout
 	        android:id="@+id/ll_change_password"
 	        android:orientation="vertical"
-	        android:background="@drawable/form_selector"
+	        android:background="@drawable/row_naked_selector"
 	        android:layout_marginBottom="@dimen/margin_bigger"
 	        style="@style/FormBase" >
 	        
@@ -169,7 +169,7 @@
 	    <RelativeLayout
 	        android:id="@+id/rl_connect_facebook"
 	        android:layout_marginBottom="@dimen/margin_bigger"
-	        android:background="@drawable/form_selector"
+	        android:background="@drawable/row_naked_selector"
 	        style="@style/FormBase" >
 	        
 	        <TextView
@@ -191,7 +191,7 @@
 	    <RelativeLayout
 	        android:id="@+id/rl_enable_notification"
 	        android:layout_marginBottom="40dp"
-	        android:background="@drawable/form_selector"
+	        android:background="@drawable/row_naked_selector"
 	        style="@style/FormBase" >
 	        
 	        <TextView
@@ -218,7 +218,7 @@
 	        android:layout_marginBottom="30dp"
 	        android:text="@string/logout"
 	        android:textColor="@color/white"
-	        android:background="@drawable/btn_transparent_selector"
+	        android:background="@drawable/button_transparent_selector"
 	        style="@style/ButtonBase" />
 	    
 	    <Button
@@ -229,7 +229,7 @@
 	        android:layout_marginBottom="@dimen/margin_big"
 	        android:text="@string/withdraw"
 	        android:textColor="@color/white"
-	        android:background="@drawable/btn_transparent_selector"
+	        android:background="@drawable/button_transparent_selector"
 	        style="@style/ButtonBase" />
 	     
     </LinearLayout>

@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:paddingLeft="@dimen/margin_small"
     android:paddingRight="@dimen/margin_small"
-    android:background="@drawable/search_view_background" >
+    android:background="@drawable/container_search_view" >
     
     <ImageView
         android:id="@+id/magnifier"
