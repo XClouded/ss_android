@@ -789,7 +789,9 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 					ivDragPlayControl.setVisibility(View.GONE);
 					ivChildSong.setVisibility(View.VISIBLE);
 				}
-			} else {
+			}
+			
+			if (slideOffset < 0.2){
 				if (!actionBar.isShowing()) {
 					actionBar.show();
 				}
