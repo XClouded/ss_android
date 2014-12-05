@@ -129,7 +129,7 @@ public class LauncherActivity extends FragmentActivity {
 
 		@Override
 		protected int getResourceId() {
-			return R.layout.dialog_update;
+			return R.layout.dialog_version;
 		}
 
 		@Override

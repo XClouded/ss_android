@@ -45,11 +45,9 @@
     <string name="dialog_headset_title">이어폰이나 헤드셋을 끼우세요!</string>
     <string name="dialog_headset_content">콜라보 노래방은 반주와 목소리를 따로 녹음하여 목소리에 보정이 가능합니다. 이어폰이나 헤드셋을 끼워 더 좋은 품질로 녹음하세요!</string>
     <string name="dialog_headset_no">그냥할래요</string>
-    <string name="dialog_kakaotalk_title">카톡으로 공유하기</string>
     <string name="dialog_part_select_title">파트를 선택하세요</string>
     <string name="dialog_part_select_content">파트를 선택하고 각 파트에 해당하는 색깔의 가사를 부르세요. 흰색 가사는 같이 부르세요</string>
     <string name="dialog_update_title">새로운 버전이 나왔습니다!</string>
-    <string name="dialog_withdraw_ask">탈퇴하시면 더이상 콜라보 노래방 서비스를 이용할 수 없습니다!\n\n정말로 탈퇴하시겠어요? ㅠ_ㅠ</string>
     
     <string name="hint_write_comment">노래에 대한 감상평을 남겨주세요! (200자 제한)</string>
     <string name="hint_report_comment">신고사유를 적어주세요 (20자 이상)</string>

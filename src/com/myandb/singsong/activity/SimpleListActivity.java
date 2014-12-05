@@ -39,8 +39,8 @@ public class SimpleListActivity extends Activity {
 		User user = Utility.getGsonInstance().fromJson(userJson, User.class);
 		SimpleListType listType = (SimpleListType) getIntent().getSerializableExtra(INTENT_LIST_TYPE);
 		
-		tvHeader = (TextView) findViewById(R.id.tv_header);
-		ivHeaderIcon = (ImageView) findViewById(R.id.iv_header_icon);
+//		tvHeader = (TextView) findViewById(R.id.tv_header);
+//		ivHeaderIcon = (ImageView) findViewById(R.id.iv_header_icon);
 		listView = (ListView) findViewById(R.id.lv_full_width);
 		
 		decorateHeader(listType, user);

@@ -37,7 +37,7 @@
         
         <ImageView
             android:id="@+id/iv_profile_bg"
-            android:src="@drawable/bg_play_song"
+            android:src="@color/grey_dark"
             android:scaleType="centerCrop"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
@@ -85,7 +85,6 @@
 		    android:gravity="center"
 		    android:text="@string/my_like_song"
 		    android:textColor="@color/font_white"
-		    android:background="@drawable/circle_dark"
 		    style="@style/TextViewHint" />
 		
 		<TextView
@@ -96,7 +95,6 @@
 		    android:gravity="center"
 		   	android:text="@string/my_comments"
 		    android:textColor="@color/font_white"
-		    android:background="@drawable/circle_dark"
 		    android:visibility="invisible"
 		    style="@style/TextViewHint" />
 		

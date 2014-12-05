@@ -39,7 +39,7 @@ public class SearchActivity extends Activity {
 		if (serializable != null) {
 			final SearchType type = (SearchType) serializable;
 			final ImageView ivSearch = (ImageView) findViewById(R.id.iv_search);
-			final ImageView ivClear = (ImageView) findViewById(R.id.iv_et_clear);
+//			final ImageView ivClear = (ImageView) findViewById(R.id.iv_et_clear);
 			final EditText etSearch = (EditText) findViewById(R.id.et_search);
 			listView = (ListView) findViewById(R.id.lv_full_width);
 			
@@ -56,9 +56,9 @@ public class SearchActivity extends Activity {
 				@Override
 				public void onTextChanged(CharSequence s, int start, int before, int count) {
 					if (s.toString().length() > 0) {
-						ivClear.setVisibility(View.VISIBLE);
+//						ivClear.setVisibility(View.VISIBLE);
 					} else {
-						ivClear.setVisibility(View.GONE);
+//						ivClear.setVisibility(View.GONE);
 						
 //						performInitial(type, adapter);
 					}
@@ -92,13 +92,13 @@ public class SearchActivity extends Activity {
 				}
 			});
 			
-			ivClear.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					etSearch.setText("");
-				}
-			});
+//			ivClear.setOnClickListener(new OnClickListener() {
+//				
+//				@Override
+//				public void onClick(View v) {
+//					etSearch.setText("");
+//				}
+//			});
 			
 //			performInitial(type, adapter);
 		} else {

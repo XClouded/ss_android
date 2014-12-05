@@ -82,7 +82,6 @@ public class CollaboratedFragment extends Fragment {
 				}
 				
 				listView.setAdapter(popularAdapter);
-				ivBanner.setImageResource(R.drawable.banner_collabo_artist);
 			}
 		});
 		

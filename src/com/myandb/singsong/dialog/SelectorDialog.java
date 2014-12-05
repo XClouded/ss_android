@@ -32,7 +32,7 @@ public class SelectorDialog extends BaseDialog {
 
 	@Override
 	protected int getResourceId() {
-		return R.layout.dialog_selector;
+		return R.layout.dialog_select_part;
 	}
 
 	@Override

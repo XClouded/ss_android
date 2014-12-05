@@ -44,7 +44,7 @@
 	        android:paddingLeft="10sp"
 	        android:layout_marginRight="@dimen/margin_small"
 	        android:layout_toLeftOf="@id/tv_comment_created"
-	        android:src="@drawable/ic_alarm"
+	        android:src="@drawable/ic_launcher"
 	        android:visibility="gone"
 	        style="@style/BaseImageView" />
 	    
