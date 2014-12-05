@@ -157,7 +157,6 @@ public abstract class BaseActivity extends ActionBarActivity {
 	
 	protected void replaceContentFragment(Fragment fragment, boolean isRootFragment) {
 		final int containerId = R.id.fl_content_fragment_container;
-		final int transition = FragmentTransaction.TRANSIT_FRAGMENT_FADE;
 		
 		FragmentManager manager = getSupportFragmentManager();
 		if (isRootFragment) {
@@ -165,7 +164,6 @@ public abstract class BaseActivity extends ActionBarActivity {
 		}
 		FragmentTransaction transaction = manager.beginTransaction();
 		transaction.replace(containerId, fragment);
-		transaction.setTransition(transition);
 		transaction.addToBackStack(null);
 		transaction.commit();
 		

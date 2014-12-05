@@ -131,12 +131,10 @@ public abstract class ListFragment extends BaseFragment {
         }
         
         if (shown) {
-        	progressContainer.startAnimation(fadeOut);
         	listViewContainer.startAnimation(fadeIn);
         	progressContainer.setVisibility(View.GONE);
             listViewContainer.setVisibility(View.VISIBLE);
         } else {
-        	progressContainer.startAnimation(fadeIn);
         	listViewContainer.startAnimation(fadeOut);
         	progressContainer.setVisibility(View.VISIBLE);
         	listViewContainer.setVisibility(View.GONE);
