@@ -312,6 +312,7 @@ public class RootActivity extends BaseActivity {
 		
 		if (isComponentOf(intent, UpActivity.class)) {
 			startActivity(intent);
+			overridePendingTransition(R.anim.slide_right_in, R.anim.hold);
 		} else if (isComponentOf(intent, RootActivity.class)) {
 			replaceContentFragmentFromIntent(intent);
 		}

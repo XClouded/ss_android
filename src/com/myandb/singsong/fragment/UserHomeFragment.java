@@ -381,6 +381,7 @@ public class UserHomeFragment extends ListFragment {
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, SettingFragment.class.getName());
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
 			startActivityForResult(intent, REQUEST_CODE_EDIT_PROFILE);
+			getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.hold);
 		}
 	};
 	

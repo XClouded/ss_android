@@ -62,9 +62,16 @@ public class UpActivity extends BaseActivity {
 			startActivity(intent);
 		} else if (isComponentOf(intent, UpActivity.class)) {
 			startActivity(intent);
+			overridePendingTransition(R.anim.slide_right_in, R.anim.hold);
 		} else {
 			replaceContentFragmentFromIntent(intent);
 		}
+	}
+
+	@Override
+	public void finish() {
+		super.finish();
+		overridePendingTransition(R.anim.hold, R.anim.slide_right_out);
 	}
 
 }
