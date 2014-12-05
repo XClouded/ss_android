@@ -6,6 +6,7 @@ import com.myandb.singsong.R;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.res.Resources.NotFoundException;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -18,6 +19,9 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 public abstract class BaseDialog extends DialogFragment {
+	
+	private ProgressDialog progressDialog;
+	private CharSequence progressMessage;
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -115,12 +119,50 @@ public abstract class BaseDialog extends DialogFragment {
 			e.printStackTrace();
 		}
 	}
-
-	protected abstract void initialize(Activity activity);
 	
+	public void showProgressDialog() {
+		ProgressDialog dialog = getProgressDialog();
+		if (!dialog.isShowing()) {
+			dialog.show();
+		}
+	}
+	
+	public ProgressDialog getProgressDialog() {
+		if (progressDialog == null) {
+			progressDialog = new ProgressDialog(getActivity());
+			progressDialog.setIndeterminate(true);
+			progressDialog.setCanceledOnTouchOutside(false);
+			progressDialog.setCancelable(false);
+		}
+		
+		if (!"".equals(progressMessage)) {
+			progressDialog.setMessage(progressMessage);
+		}
+		
+		return progressDialog;
+	}
+	
+	public void setProgressDialogMessage(CharSequence message) {
+		progressMessage = message;
+	}
+	
+	public void dismissProgressDialog() {
+		if (progressDialog != null && progressDialog.isShowing()) {
+			progressDialog.dismiss();
+		}
+	}
+	
+	@Override
+	public void dismiss() {
+		super.dismiss();
+		dismissProgressDialog();
+	}
+
 	protected abstract int getResourceId();
 	
 	protected abstract void onViewInflated(View view, LayoutInflater inflater);
+	
+	protected abstract void initialize(Activity activity);
 	
 	protected abstract void setupViews();
 

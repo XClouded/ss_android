@@ -12,7 +12,7 @@ import com.myandb.singsong.dialog.BaseDialog;
 import com.myandb.singsong.fragment.BaseFragment;
 import com.myandb.singsong.fragment.HomeFragment;
 import com.myandb.singsong.net.JSONObjectRequest;
-import com.myandb.singsong.net.OnFailListener;
+import com.myandb.singsong.net.JSONErrorListener;
 import com.myandb.singsong.net.JSONObjectSuccessListener;
 
 import android.net.Uri;
@@ -53,7 +53,7 @@ public class LauncherActivity extends FragmentActivity {
 		JSONObjectRequest request = new JSONObjectRequest(
 				"android", null,
 				new JSONObjectSuccessListener(this, "onGetDataSuccess"),
-				new OnFailListener(this, "onGetDataError")
+				new JSONErrorListener(this, "onGetDataError")
 		);
 		request.setRequireAccessToken(false);
 		((App) getApplicationContext()).addShortLivedRequest(this, request);

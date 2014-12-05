@@ -13,13 +13,20 @@ import com.google.android.gcm.GCMRegistrar;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.RootActivity;
+import com.myandb.singsong.dialog.BaseDialog;
+import com.myandb.singsong.dialog.ChangeEmailDialog;
+import com.myandb.singsong.dialog.ChangeKakaoDialog;
+import com.myandb.singsong.dialog.ChangeNicknameDialog;
+import com.myandb.singsong.dialog.ChangePasswordDialog;
+import com.myandb.singsong.dialog.ChangeStatusDialog;
+import com.myandb.singsong.dialog.WithdrawDialog;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.image.ResizeAsyncTask;
 import com.myandb.singsong.model.Profile;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.JSONObjectRequest;
 import com.myandb.singsong.net.JSONObjectSuccessListener;
-import com.myandb.singsong.net.OnFailListener;
+import com.myandb.singsong.net.JSONErrorListener;
 import com.myandb.singsong.secure.Authenticator;
 
 import android.app.Activity;
@@ -27,6 +34,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.net.Uri;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
@@ -46,6 +54,7 @@ public class SettingFragment extends BaseFragment {
 	private int colorPrimary;
 	
 	private ImageView ivUserPhoto;
+	private TextView tvUserUsername;
 	private TextView tvUserNickname;
 	private TextView tvUserEmail;
 	private TextView tvUserKakao;
@@ -54,7 +63,7 @@ public class SettingFragment extends BaseFragment {
 	private TextView tvIsNotificationEnabled;
 	private Button btnLogout;
 	private Button btnWithdraw;
-	private Button btnUpdatePhoto;
+	private Button btnChangePhoto;
 	private View vChangeNickname;
 	private View vChangeEmail;
 	private View vChangeKakao;
@@ -71,6 +80,7 @@ public class SettingFragment extends BaseFragment {
 	@Override
 	protected void onViewInflated(View view, LayoutInflater inflater) {
 		ivUserPhoto = (ImageView) view.findViewById(R.id.iv_user_photo);
+		tvUserUsername = (TextView) view.findViewById(R.id.tv_user_username);
 		tvUserNickname = (TextView) view.findViewById(R.id.tv_user_nickname);
 		tvUserEmail = (TextView) view.findViewById(R.id.tv_user_email);
 		tvUserKakao = (TextView) view.findViewById(R.id.tv_user_kakao);
@@ -79,7 +89,7 @@ public class SettingFragment extends BaseFragment {
 		tvIsNotificationEnabled = (TextView) view.findViewById(R.id.tv_is_notification_enabled);
 		btnLogout = (Button) view.findViewById(R.id.btn_logout);
 		btnWithdraw = (Button) view.findViewById(R.id.btn_withdraw);
-		btnUpdatePhoto = (Button) view.findViewById(R.id.btn_update_photo);
+		btnChangePhoto = (Button) view.findViewById(R.id.btn_change_photo);
 		vChangeNickname = view.findViewById(R.id.ll_change_nickname);
 		vChangeEmail = view.findViewById(R.id.ll_change_email);
 		vChangeKakao = view.findViewById(R.id.ll_change_kakao);
@@ -196,7 +206,48 @@ public class SettingFragment extends BaseFragment {
 		
 		@Override
 		public void onClick(View v) {
+			User user = Authenticator.getUser();
+			Profile profile = user.getProfile();
+			BaseDialog dialog = null;
+			Bundle bundle = new Bundle();
 			
+			switch (v.getId()) {
+			case R.id.ll_change_nickname:
+				bundle.putString(ChangeNicknameDialog.EXTRA_USER_NICKNAME, user.getNickname());
+				dialog = new ChangeNicknameDialog();
+				break;
+				
+			case R.id.ll_change_email:
+				bundle.putString(ChangeEmailDialog.EXTRA_USER_EMAIL, profile.getEmail());
+				dialog = new ChangeEmailDialog();
+				break;
+				
+			case R.id.ll_change_kakao:
+				bundle.putString(ChangeKakaoDialog.EXTRA_USER_KAKAO, profile.getKakaotalk());
+				dialog = new ChangeKakaoDialog();
+				break;
+				
+			case R.id.ll_change_status:
+				bundle.putString(ChangeStatusDialog.EXTRA_USER_STATUS, profile.getStatusMessage());
+				dialog = new ChangeStatusDialog();
+				break;
+				
+			case R.id.ll_change_password:
+				dialog = new ChangePasswordDialog();
+				break;
+				
+			case R.id.btn_withdraw:
+				dialog = new WithdrawDialog();
+				break;
+
+			default:
+				return;
+			}
+			
+			if (dialog != null) {
+				dialog.setArguments(bundle);
+				dialog.show(getChildFragmentManager(), "");
+			}
 		}
 	};
 	
@@ -239,7 +290,7 @@ public class SettingFragment extends BaseFragment {
 			JSONObjectRequest request = new JSONObjectRequest(
 					Method.PUT, "users", message,
 					new JSONObjectSuccessListener(this, "onRemovePushIdSuccess"),
-					new OnFailListener(this, "onRemovePushIdError"));
+					new JSONErrorListener(this, "onRemovePushIdError"));
 			addRequest(request);
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -258,21 +309,21 @@ public class SettingFragment extends BaseFragment {
 		JSONObjectRequest request = new JSONObjectRequest(
 				Method.DELETE, "token", null,
 				new JSONObjectSuccessListener(this, "onRemoveAccessTokenSuccess"),
-				new OnFailListener(this, "onRemoveAccessTokenError"));
+				new JSONErrorListener(this, "onRemoveAccessTokenError"));
 		addRequest(request);
 	}
 	
 	public void onRemoveAccessTokenSuccess(JSONObject response) {
+		new Authenticator().logout();
 		restartApplication();
 	}
 	
 	public void onRemoveAccessTokenError() {
+		new Authenticator().logout();
 		restartApplication();
 	}
 	
 	public void restartApplication() {
-		new Authenticator().logout();
-		
 		Intent intent = new Intent(getActivity(), RootActivity.class);
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, HomeFragment.class.getName());
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_ROOT, true);
@@ -294,24 +345,25 @@ public class SettingFragment extends BaseFragment {
 		
 		updateFacebookActivatedView(user.isFacebookActivated());
 		
+		tvUserUsername.setText(user.getUsername());
 		tvUserNickname.setText(user.getNickname());
 		
 		if (profile.getEmail().length() > 0) {
 			tvUserEmail.setText(profile.getEmail());
 		} else {
-			tvUserEmail.setText("이메일을 입력해주세요.");
+			tvUserEmail.setText(getString(R.string.hint_email));
 		}
 		
 		if (profile.getKakaotalk().length() > 0) {
 			tvUserKakao.setText(profile.getKakaotalk());
 		} else {
-			tvUserKakao.setText("이벤트 응모 또는 인터뷰 참여에 필요합니다.");
+			tvUserKakao.setText(getString(R.string.hint_kakao));
 		}
 		
 		if (profile.getStatusMessage().length() > 0) {
 			tvUserStatus.setText(profile.getStatusMessage());
 		} else {
-			tvUserStatus.setText("지금 기분을 친구들에게 알리세요. :)");
+			tvUserStatus.setText(getString(R.string.hint_status));
 		}
 	}
 
@@ -331,8 +383,8 @@ public class SettingFragment extends BaseFragment {
 					InputStream imageStream = getActivity().getContentResolver().openInputStream(selectedImage);
 					asyncTask.execute(imageStream);
 					
-					btnUpdatePhoto.setOnClickListener(updatePhotoClickListener);
-					btnUpdatePhoto.setVisibility(View.VISIBLE);
+					btnChangePhoto.setOnClickListener(updatePhotoClickListener);
+					btnChangePhoto.setVisibility(View.VISIBLE);
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				}

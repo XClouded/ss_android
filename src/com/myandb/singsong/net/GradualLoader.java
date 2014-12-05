@@ -61,7 +61,7 @@ public class GradualLoader {
 			JSONArrayRequest request = new JSONArrayRequest(
 				urlBuilder.build(),
 				new JSONArraySuccessListener(this, "onLoadResponse"),
-				new OnFailListener(this, "onLoadError")
+				new JSONErrorListener(this, "onLoadError")
 			);
 			((App) context.getApplicationContext()).addShortLivedRequest(context, request);
 		}

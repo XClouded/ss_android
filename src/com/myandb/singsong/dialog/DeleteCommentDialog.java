@@ -12,7 +12,7 @@ import com.android.volley.Request.Method;
 import com.myandb.singsong.R;
 import com.myandb.singsong.model.Comment;
 import com.myandb.singsong.net.JSONObjectRequest;
-import com.myandb.singsong.net.OnFailListener;
+import com.myandb.singsong.net.JSONErrorListener;
 import com.myandb.singsong.net.JSONObjectSuccessListener;
 
 public class DeleteCommentDialog extends BaseDialog {
@@ -47,7 +47,7 @@ public class DeleteCommentDialog extends BaseDialog {
 			JSONObjectRequest request = new JSONObjectRequest(
 					Method.DELETE, "comments/" + comment.getId(), null,
 					new JSONObjectSuccessListener(DeleteCommentDialog.this, "onDeleteSuccess"),
-					new OnFailListener(DeleteCommentDialog.this, "onDeleteError")
+					new JSONErrorListener(DeleteCommentDialog.this, "onDeleteError")
 			);
 			addRequest(request);
 		}

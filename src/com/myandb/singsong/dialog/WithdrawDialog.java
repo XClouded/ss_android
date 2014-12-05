@@ -3,9 +3,12 @@ package com.myandb.singsong.dialog;
 import org.json.JSONObject;
 
 import com.android.volley.Request.Method;
+import com.google.android.gcm.GCMRegistrar;
 import com.myandb.singsong.R;
+import com.myandb.singsong.fragment.SettingFragment;
+import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.JSONObjectRequest;
-import com.myandb.singsong.net.OnFailListener;
+import com.myandb.singsong.net.JSONErrorListener;
 import com.myandb.singsong.net.JSONObjectSuccessListener;
 import com.myandb.singsong.secure.Authenticator;
 
@@ -13,44 +16,57 @@ import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 public class WithdrawDialog extends BaseDialog {
 	
-	private Button btnYes;
-	private Button btnNo;
-
-	@Override
-	protected void initialize(Activity activity) {}
-
-	@Override
-	protected void onViewInflated(View view, LayoutInflater inflater) {
-		btnYes = (Button) view.findViewById(R.id.btn_yes);
-		btnNo = (Button) view.findViewById(R.id.btn_no);
-	}
-
+	private EditText etUserUsername;
+	private Button btnWithdraw;
+	private User currentUser;
+	
 	@Override
 	protected int getResourceId() {
 		return R.layout.dialog_withdraw;
 	}
+	
+	@Override
+	protected void onViewInflated(View view, LayoutInflater inflater) {
+		etUserUsername = (EditText) view.findViewById(R.id.et_user_username);
+		btnWithdraw = (Button) view.findViewById(R.id.btn_withdraw);
+	}
+
+	@Override
+	protected void initialize(Activity activity) {
+		currentUser = Authenticator.getUser();
+	}
 
 	@Override
 	protected void setupViews() {
-		btnYes.setOnClickListener(withdrawClickListener);
-		btnNo.setOnClickListener(cancelClickListener);
+		btnWithdraw.setOnClickListener(withdrawClickListener);
 	}
 	
 	private View.OnClickListener withdrawClickListener = new View.OnClickListener() {
 		
 		@Override
 		public void onClick(View v) {
-			JSONObjectRequest request = new JSONObjectRequest(
-					Method.DELETE, "users", null,
-					new JSONObjectSuccessListener(WithdrawDialog.this, "onWithdrawSuccess"),
-					new OnFailListener(WithdrawDialog.this, "onWithdrawError")
-			);
-			addRequest(request);
+			String username = etUserUsername.getText().toString();
+			if (!username.equals(currentUser.getUsername())) {
+				makeToast("본인의 아이디를 정확히 입력해주세요.");
+				return;
+			}
+			
+			showProgressDialog();
+			withdraw();
 		}
 	};
+	
+	private void withdraw() {
+		JSONObjectRequest request = new JSONObjectRequest(
+				Method.DELETE, "users", null,
+				new JSONObjectSuccessListener(WithdrawDialog.this, "onWithdrawSuccess"),
+				new JSONErrorListener(WithdrawDialog.this, "onWithdrawError"));
+		addRequest(request);
+	}
 	
 	public void onWithdrawSuccess(JSONObject response) {
 		onWithdrawFinish();
@@ -61,18 +77,18 @@ public class WithdrawDialog extends BaseDialog {
 	}
 	
 	private void onWithdrawFinish() {
-		Authenticator auth = new Authenticator();
-		auth.logout();
-		
-//		parent.dismissProgressDialog();
+		new Authenticator().logout();
+		unregisterGcm();
+		dismissProgressDialog();
+		if (getParentFragment() instanceof SettingFragment) {
+			((SettingFragment) getParentFragment()).restartApplication();
+		}
 	}
 	
-	private View.OnClickListener cancelClickListener = new View.OnClickListener() {
-		
-		@Override
-		public void onClick(View v) {
-			dismiss();
+	private void unregisterGcm() {
+		if (GCMRegistrar.isRegistered(getActivity())) {
+			GCMRegistrar.unregister(getActivity());
 		}
-	};
+	}
 
 }

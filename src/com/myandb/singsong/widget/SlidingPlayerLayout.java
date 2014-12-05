@@ -49,7 +49,7 @@ import com.myandb.singsong.net.GradualLoader;
 import com.myandb.singsong.net.GradualLoader.OnLoadCompleteListener;
 import com.myandb.singsong.net.JSONObjectRequest;
 import com.myandb.singsong.net.JustRequest;
-import com.myandb.singsong.net.OnFailListener;
+import com.myandb.singsong.net.JSONErrorListener;
 import com.myandb.singsong.net.JSONObjectSuccessListener;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
@@ -594,7 +594,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 			JSONObjectRequest request = new JSONObjectRequest(
 					segment, null,
 					new JSONObjectSuccessListener(this, "onGetUserLikeResponse"), 
-					new OnFailListener(this, "onGetUserLikeError")
+					new JSONErrorListener(this, "onGetUserLikeError")
 			);
 			
 			((App) getContext().getApplicationContext()).addShortLivedRequest(getContext(), request);

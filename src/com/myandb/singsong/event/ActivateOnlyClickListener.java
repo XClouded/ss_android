@@ -5,7 +5,7 @@ import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.JSONObjectRequest;
-import com.myandb.singsong.net.OnFailListener;
+import com.myandb.singsong.net.JSONErrorListener;
 import com.myandb.singsong.net.JSONObjectSuccessListener;
 import com.myandb.singsong.secure.Authenticator;
 
@@ -32,7 +32,7 @@ public abstract class ActivateOnlyClickListener extends MemberOnlyClickListener 
 		JSONObjectRequest request = new JSONObjectRequest(
 				Method.GET, "users/" + userId, null,
 				new JSONObjectSuccessListener(this, "onCheckActivationResponse", User.class),
-				new OnFailListener(this, "onCheckActivationError")
+				new JSONErrorListener(this, "onCheckActivationError")
 		);
 		App app = ((App) view.getContext().getApplicationContext());
 		app.addShortLivedRequest(view.getContext(), request);

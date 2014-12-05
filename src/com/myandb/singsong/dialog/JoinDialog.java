@@ -12,7 +12,7 @@ import com.myandb.singsong.R;
 import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.JSONObjectRequest;
-import com.myandb.singsong.net.OnFailListener;
+import com.myandb.singsong.net.JSONErrorListener;
 import com.myandb.singsong.net.JSONObjectSuccessListener;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
@@ -20,7 +20,6 @@ import com.myandb.singsong.secure.Encryption;
 import com.myandb.singsong.util.Utility;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.text.Editable;
 import android.text.Html;
@@ -48,13 +47,14 @@ public class JoinDialog extends BaseDialog {
 	private TextView tvValidRePassword;
 	private TextView tvAgreementPolicy;
 	private String lastInputUsername;
-	private ProgressDialog progressDialog;
 	private RootActivity activity;
 	private int colorGrey;
 	private int colorPrimary;
 
 	@Override
 	protected void initialize(Activity activity) {
+		setProgressDialogMessage("회원가입 중입니다.");
+		
 		if (activity instanceof RootActivity) {
 			this.activity = (RootActivity) activity;
 		}
@@ -224,32 +224,12 @@ public class JoinDialog extends BaseDialog {
 		}
 	};
 	
-	private void showProgressDialog() {
-		if (progressDialog == null) {
-			progressDialog = new ProgressDialog(getActivity());
-			progressDialog.setIndeterminate(true);
-			progressDialog.setCanceledOnTouchOutside(false);
-			progressDialog.setCancelable(false);
-			progressDialog.setMessage("회원가입 중입니다.");
-		}
-		
-		if (!progressDialog.isShowing()) {
-			progressDialog.show();
-		}
-	}
-	
-	private void dismissProgressDialog() {
-		if (progressDialog != null && progressDialog.isShowing()) {
-			progressDialog.dismiss();
-		}
-	}
-	
 	private void checkUsernameDuplication(String username) {
 		lastInputUsername = username;
 		JSONObjectRequest request = new JSONObjectRequest(
 				"users?username=" + username, null,
 				new JSONObjectSuccessListener(this, "onUsernameFound"),
-				new OnFailListener(this, "onUsernameNotFound")
+				new JSONErrorListener(this, "onUsernameNotFound")
 		);
 		addRequest(request);
 	}
@@ -278,7 +258,7 @@ public class JoinDialog extends BaseDialog {
 			JSONObjectRequest request = new JSONObjectRequest(
 					"users", message,
 					new JSONObjectSuccessListener(this, "onJoinComplete"),
-					new OnFailListener(this, "onJoinError")
+					new JSONErrorListener(this, "onJoinError")
 			);
 			addRequest(request);
 		} catch (JSONException e) {
@@ -350,7 +330,6 @@ public class JoinDialog extends BaseDialog {
 	public void dismiss() {
 		super.dismiss();
 		clearTextFromAllEditText();
-		dismissProgressDialog();
 	}
 
 }

@@ -24,7 +24,7 @@ import com.myandb.singsong.model.Image;
 import com.myandb.singsong.model.Model;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.JSONObjectRequest;
-import com.myandb.singsong.net.OnFailListener;
+import com.myandb.singsong.net.JSONErrorListener;
 import com.myandb.singsong.net.JSONObjectSuccessListener;
 import com.myandb.singsong.net.UploadManager;
 import com.myandb.singsong.secure.Authenticator;
@@ -305,7 +305,7 @@ public class RecordSettingFragment extends BaseFragment {
 					JSONObjectRequest request = new JSONObjectRequest(
 							"images", message,
 							new JSONObjectSuccessListener(RecordSettingFragment.this, "onUploadSuccess", Image.class),
-							new OnFailListener(RecordSettingFragment.this, "onUploadError")
+							new JSONErrorListener(RecordSettingFragment.this, "onUploadError")
 					);
 					addRequest(request);
 				} catch (JSONException e1) {

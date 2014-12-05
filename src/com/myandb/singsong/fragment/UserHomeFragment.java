@@ -34,7 +34,7 @@ import com.myandb.singsong.model.Profile;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.JSONObjectRequest;
 import com.myandb.singsong.net.JustRequest;
-import com.myandb.singsong.net.OnFailListener;
+import com.myandb.singsong.net.JSONErrorListener;
 import com.myandb.singsong.net.JSONObjectSuccessListener;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
@@ -244,7 +244,7 @@ public class UserHomeFragment extends ListFragment {
 		JSONObjectRequest request = new JSONObjectRequest(
 				segment, null,
 				new JSONObjectSuccessListener(this, "onGetProfileResponse", Profile.class),
-				new OnFailListener(this, "onGetProfileError")
+				new JSONErrorListener(this, "onGetProfileError")
 		);
 		addRequest(request);
 	}
@@ -320,7 +320,7 @@ public class UserHomeFragment extends ListFragment {
 		JSONObjectRequest request = new JSONObjectRequest(
 				"friendships/" + thisUser.getId(), null,
 				new JSONObjectSuccessListener(this, "onFriendshipFound", Friendship.class),
-				new OnFailListener(this, "onFriendshipNotFound")
+				new JSONErrorListener(this, "onFriendshipNotFound")
 		);
 		addRequest(request);
 	}
@@ -402,7 +402,7 @@ public class UserHomeFragment extends ListFragment {
 		JSONObjectRequest request = new JSONObjectRequest(
 				"users/" + currentUser.getId(), null,
 				new JSONObjectSuccessListener(this, "onCheckActivationResponse", User.class),
-				new OnFailListener()
+				new JSONErrorListener()
 		);
 		addRequest(request);
 	}

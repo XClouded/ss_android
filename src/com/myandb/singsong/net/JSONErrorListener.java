@@ -13,16 +13,16 @@ import com.android.volley.VolleyError;
 import com.facebook.Session;
 import com.myandb.singsong.secure.Authenticator;
 
-public class OnFailListener implements ErrorListener {
+public class JSONErrorListener implements ErrorListener {
 	
 	private Object receiver;
 	private Method method;
 	
-	public OnFailListener() {
+	public JSONErrorListener() {
 		this(null, null);
 	}
 	
-	public OnFailListener(Object receiver, String methodName) {
+	public JSONErrorListener(Object receiver, String methodName) {
 		try {
 			this.receiver = receiver;
 			

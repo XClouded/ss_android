@@ -40,6 +40,7 @@
     <string name="like">좋아요</string>
     <string name="withdraw">탈퇴하기</string>
     <string name="notification">알림</string>
+    <string name="change">변경</string>
     
     <string name="dialog_headset_title">이어폰이나 헤드셋을 끼우세요!</string>
     <string name="dialog_headset_content">콜라보 노래방은 반주와 목소리를 따로 녹음하여 목소리에 보정이 가능합니다. 이어폰이나 헤드셋을 끼워 더 좋은 품질로 녹음하세요!</string>
@@ -55,6 +56,13 @@
     <string name="hint_send_kakaotalk">친구에게 메세지를 보내세요!</string>
     <string name="hint_username">이메일 입력</string>
     <string name="hint_username_compat">이메일 또는 아이디 입력</string>
+    <string name="hint_id">아이디 입력</string>
+    <string name="hint_nickname">닉네임을 입력해주세요.</string>
+    <string name="hint_email">이메일을 입력해주세요.</string>
+    <string name="hint_kakao">이벤트 응모 또는 인터뷰 참여에 필요합니다.</string>
+    <string name="hint_status">지금 기분을 친구들에게 알리세요. :)</string>
+    <string name="hint_old_password">기존 비밀번호를 입력해주세요.</string>
+    <string name="hint_new_password">새로운 비밀번호 입력</string>
     <string name="hint_password">비밀번호 입력 (4자 이상)</string>
     <string name="hint_re_password">비밀번호 확인</string>
     <string name="hint_keyword">검색어를 입력해주세요.</string>

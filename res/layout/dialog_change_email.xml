@@ -13,23 +13,16 @@
         android:orientation="vertical" >
         
         <TextView
-            android:layout_width="match_parent"
-            android:layout_marginTop="@dimen/margin_big"
-            android:layout_marginBottom="@dimen/margin"
-            android:gravity="center"
-            android:textColor="@color/red_dark"
-            android:textStyle="bold"
-            android:text="탈퇴를 하시면 복구가 불가능할 수도 있습니다!\n확인을 위해 아이디를 입력해주세요."
-            style="@style/TextViewHint" />
+            android:text="이메일 변경"
+            style="@style/TextViewTitle" />
         
         <ImageView
         	style="@style/DividerHorizontal" />
         
         <EditText
-	        android:id="@+id/et_user_username"
-	        android:hint="@string/hint_id"
+	        android:id="@+id/et_user_email"
+	        android:hint="@string/hint_email"
 	        android:inputType="textPersonName"
-	        android:maxLength="32"
 	        style="@style/BaseEditText" />
         
     </LinearLayout>
@@ -37,18 +30,18 @@
     <ImageView
         style="@style/DividerHorizontal" />
     
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/margin" >
         
         <Button
-		    android:id="@+id/btn_withdraw"
-		    android:layout_width="match_parent"
-		    android:text="@string/withdraw"
-		    android:background="@drawable/btn_alert_selector"
+		    android:id="@+id/btn_change_email"
+		    android:layout_alignParentRight="true"
+		    android:text="@string/change"
+		    android:background="@drawable/btn_primary_selector"
 		    style="@style/ButtonBase" />
         
-    </FrameLayout>
+    </RelativeLayout>
 
 </LinearLayout>

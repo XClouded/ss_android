@@ -17,7 +17,7 @@ import com.myandb.singsong.model.Song;
 import com.myandb.singsong.model.SongComment;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.JSONObjectRequest;
-import com.myandb.singsong.net.OnFailListener;
+import com.myandb.singsong.net.JSONErrorListener;
 import com.myandb.singsong.net.JSONObjectSuccessListener;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.widget.SlidingPlayerLayout;
@@ -78,7 +78,7 @@ public class WriteCommentDialog extends BaseDialog {
 						"songs/" + song.getId() + "/comments",
 						message,
 						new JSONObjectSuccessListener(WriteCommentDialog.this, "onSubmitSuccess", SongComment.class),
-						new OnFailListener(WriteCommentDialog.this, "onSubmitError")
+						new JSONErrorListener(WriteCommentDialog.this, "onSubmitError")
 				);
 				
 				addRequest(request);

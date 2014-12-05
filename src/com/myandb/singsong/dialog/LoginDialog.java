@@ -24,7 +24,7 @@ import com.myandb.singsong.event.OnCompleteWeakListener;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.DownloadManager;
 import com.myandb.singsong.net.JSONObjectRequest;
-import com.myandb.singsong.net.OnFailListener;
+import com.myandb.singsong.net.JSONErrorListener;
 import com.myandb.singsong.net.JSONObjectSuccessListener;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
@@ -32,7 +32,6 @@ import com.myandb.singsong.secure.Encryption;
 import com.myandb.singsong.util.Utility;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
@@ -56,11 +55,12 @@ public class LoginDialog extends BaseDialog {
 	private TextView tvFindPassword;
 	private String facebookToken;
 	private RootActivity activity;
-	private ProgressDialog progressDialog;
 	private JoinDialog joinDialog;
 
 	@Override
 	protected void initialize(Activity activity) {
+		setProgressDialogMessage("로그인 중입니다.");
+		
 		if (activity instanceof RootActivity) {
 			this.activity = (RootActivity) activity;
 		}
@@ -233,29 +233,9 @@ public class LoginDialog extends BaseDialog {
 		JSONObjectRequest request = new JSONObjectRequest(
 				"token", message,
 				new JSONObjectSuccessListener(this, "onLoginSuccess"),
-				new OnFailListener(this, "onLoginError")
+				new JSONErrorListener(this, "onLoginError")
 		);
 		addRequest(request);
-	}
-	
-	private void showProgressDialog() {
-		if (progressDialog == null) {
-			progressDialog = new ProgressDialog(getActivity());
-			progressDialog.setIndeterminate(true);
-			progressDialog.setCanceledOnTouchOutside(false);
-			progressDialog.setCancelable(false);
-			progressDialog.setMessage("로그인 중입니다.");
-		}
-		
-		if (!progressDialog.isShowing()) {
-			progressDialog.show();
-		}
-	}
-	
-	private void dismissProgressDialog() {
-		if (progressDialog != null && progressDialog.isShowing()) {
-			progressDialog.dismiss();
-		}
 	}
 	
 	public void onLoginSuccess(JSONObject response) {
@@ -320,9 +300,9 @@ public class LoginDialog extends BaseDialog {
 	}
 	
 	public void onLoginError() {
+		dismissProgressDialog();
 		makeToast(R.string.t_login_failed);
 		removeUserOnLocal();
-		dismissProgressDialog();
 	}
 	
 	private void clearTextFromAllEditText() {
@@ -340,7 +320,6 @@ public class LoginDialog extends BaseDialog {
 	public void dismiss() {
 		super.dismiss();
 		clearTextFromAllEditText();
-		dismissProgressDialog();
 		dismissJoinDialog();
 	}
 
