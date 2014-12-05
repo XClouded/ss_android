@@ -301,14 +301,14 @@ public class SettingFragment extends BaseFragment {
 	}
 	
 	public void onRemovePushIdSuccess(JSONObject response) {
-		deleteAccessTokenOnServer();
+		removeAccessTokenOnServer();
 	}
 	
 	public void onRemovePushIdError() {
-		deleteAccessTokenOnServer();
+		removeAccessTokenOnServer();
 	}
 	
-	public void deleteAccessTokenOnServer() {
+	public void removeAccessTokenOnServer() {
 		JSONObjectRequest request = new JSONObjectRequest(
 				Method.DELETE, "token", null,
 				new JSONObjectSuccessListener(this, "onRemoveAccessTokenSuccess"),
