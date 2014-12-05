@@ -6,6 +6,7 @@ import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.service.PlayerService;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources.NotFoundException;
@@ -24,6 +25,8 @@ public abstract class BaseFragment extends Fragment {
 	
 	private String title;
 	private String subtitle;
+	private ProgressDialog progressDialog;
+	private CharSequence progressMessage; 
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -148,6 +151,38 @@ public abstract class BaseFragment extends Fragment {
 		}
 	}
 	
+	public void showProgressDialog() {
+		ProgressDialog dialog = getProgressDialog();
+		if (!dialog.isShowing()) {
+			dialog.show();
+		}
+	}
+	
+	public ProgressDialog getProgressDialog() {
+		if (progressDialog == null) {
+			progressDialog = new ProgressDialog(getActivity());
+			progressDialog.setIndeterminate(true);
+			progressDialog.setCanceledOnTouchOutside(false);
+			progressDialog.setCancelable(false);
+		}
+		
+		if (!"".equals(progressMessage)) {
+			progressDialog.setMessage(progressMessage);
+		}
+		
+		return progressDialog;
+	}
+	
+	public void setProgressDialogMessage(CharSequence message) {
+		progressMessage = message;
+	}
+	
+	public void dismissProgressDialog() {
+		if (progressDialog != null && progressDialog.isShowing()) {
+			progressDialog.dismiss();
+		}
+	}
+	
 	public void startFragment(Intent intent) {
 		try {
 			getBaseActivity().changePage(intent);
@@ -159,6 +194,7 @@ public abstract class BaseFragment extends Fragment {
 	@Override
 	public void onDestroy() {
 		cancelRequests();
+		dismissProgressDialog();
 		super.onDestroy();
 	}
 	

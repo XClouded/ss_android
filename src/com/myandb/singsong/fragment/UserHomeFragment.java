@@ -1,7 +1,5 @@
 package com.myandb.singsong.fragment;
 
-import java.io.File;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
@@ -23,12 +21,11 @@ import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.activity.UpActivity;
 import com.myandb.singsong.adapter.MySongAdapter;
-import com.myandb.singsong.dialog.LoginDialog;
 import com.myandb.singsong.dialog.UpdateFriendshipDialog;
 import com.myandb.singsong.event.ActivateOnlyClickListener;
 import com.myandb.singsong.event.MemberOnlyClickListener;
-import com.myandb.singsong.image.BitmapBuilder;
 import com.myandb.singsong.image.BlurAsyncTask;
+import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Friendship;
 import com.myandb.singsong.model.Profile;
 import com.myandb.singsong.model.User;
@@ -39,8 +36,8 @@ import com.myandb.singsong.net.JSONObjectSuccessListener;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.util.Utility;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.DiscCacheUtil;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 
 public class UserHomeFragment extends ListFragment {
 	
@@ -193,33 +190,34 @@ public class UserHomeFragment extends ListFragment {
 	};
 	
 	private void setUserPhoto() {
-		File photo = null;
-		if (isCurrentUser()) {
-			photo = new File(getActivity().getFilesDir(), LoginDialog.FILE_USER_PHOTO);
-		} else if (thisUser.hasPhoto()) {
-			ImageLoader imageLoader = ImageLoader.getInstance();
-			photo = DiscCacheUtil.findInCache(thisUser.getPhotoUrl(), imageLoader.getDiscCache());
+		if (thisUser.hasPhoto()) {
+			ImageHelper.displayPhoto(thisUser, ivUserPhoto, imageLoadingListener);
 		}
-		setImageFileOnImageView(photo);
 	}
 	
-	private void setImageFileOnImageView(File file) {
-		if (file != null && file.exists()) {
-			BitmapBuilder bitmapBuilder = new BitmapBuilder();
-			if (ivUserPhoto != null) {
-				Bitmap bitmap = bitmapBuilder
-						.setSource(file)
-						.setOutputSize(100)
-						.enableCrop(false)
-						.build();
-				ivUserPhoto.setImageBitmap(bitmap);
-				ivUserPhoto.setOnClickListener(photoZoomClickListener);
-			}
-			
-			BlurAsyncTask blurTask = new BlurAsyncTask();
-			blurTask.setImageView(ivProfileBg);
-			blurTask.execute(file);
+	private ImageLoadingListener imageLoadingListener = new ImageLoadingListener() {
+
+		@Override
+		public void onLoadingCancelled(String arg0, View arg1) {}
+
+		@Override
+		public void onLoadingComplete(String url, View imageView, Bitmap bitmap) {
+			ivUserPhoto.setOnClickListener(photoZoomClickListener);
+			setBackgroundBlurImage(bitmap);
 		}
+
+		@Override
+		public void onLoadingFailed(String arg0, View arg1, FailReason arg2) {}
+
+		@Override
+		public void onLoadingStarted(String arg0, View arg1) {}
+		
+	};
+	
+	private void setBackgroundBlurImage(Bitmap bitmap) {
+		BlurAsyncTask blurTask = new BlurAsyncTask();
+		blurTask.setImageView(ivProfileBg);
+		blurTask.execute(bitmap);
 	}
 	
 	private OnClickListener photoZoomClickListener = new OnClickListener() {
@@ -267,9 +265,7 @@ public class UserHomeFragment extends ListFragment {
 	
 	private void updateProfile(Profile profile) {
 		if (isCurrentUser()) {
-			currentUser.setProfile(profile);
-			Authenticator auth = new Authenticator();
-			auth.update(currentUser);
+			new Authenticator().update(profile);
 		}
 	}
 	
@@ -384,7 +380,7 @@ public class UserHomeFragment extends ListFragment {
 			Intent intent = new Intent(getActivity(), UpActivity.class);
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, SettingFragment.class.getName());
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
-			startFragment(intent);
+			startActivityForResult(intent, REQUEST_CODE_EDIT_PROFILE);
 		}
 	};
 	
@@ -444,10 +440,15 @@ public class UserHomeFragment extends ListFragment {
 		switch (requestCode) {
 		case REQUEST_CODE_EDIT_PROFILE:
 			if (resultCode == Activity.RESULT_OK) {
-				currentUser = Authenticator.getUser();
+				currentUser = thisUser = Authenticator.getUser();
 				tvNickname.setText(currentUser.getNickname());
+				setActionBarTitle(currentUser.getNickname());
 				displayStatusMessage(tvUserStatus, currentUser.getProfile().getStatusMessage());
 				setUserPhoto();
+				
+				if (getActivity() instanceof RootActivity) {
+					((RootActivity) getActivity()).updateDrawer();
+				}
 			}
 			
 			break;

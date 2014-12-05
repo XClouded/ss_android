@@ -20,13 +20,16 @@ import com.myandb.singsong.dialog.ChangeNicknameDialog;
 import com.myandb.singsong.dialog.ChangePasswordDialog;
 import com.myandb.singsong.dialog.ChangeStatusDialog;
 import com.myandb.singsong.dialog.WithdrawDialog;
+import com.myandb.singsong.event.OnCompleteListener;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.image.ResizeAsyncTask;
+import com.myandb.singsong.model.Model;
 import com.myandb.singsong.model.Profile;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.JSONObjectRequest;
 import com.myandb.singsong.net.JSONObjectSuccessListener;
 import com.myandb.singsong.net.JSONErrorListener;
+import com.myandb.singsong.net.UploadManager;
 import com.myandb.singsong.secure.Authenticator;
 
 import android.app.Activity;
@@ -330,13 +333,72 @@ public class SettingFragment extends BaseFragment {
 		startFragment(intent);
 	}
 	
-	private OnClickListener updatePhotoClickListener = new OnClickListener() {
+	private OnClickListener uploadPhotoClickListener = new OnClickListener() {
 		
 		@Override
 		public void onClick(View v) {
-			
+			try {
+				setProgressDialogMessage("사진을 업로드 중입니다.");
+				showProgressDialog();
+				uploadPhotoFile();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+				onUploadError();
+			}
 		}
 	};
+	
+	private void uploadPhotoFile() throws FileNotFoundException {
+		UploadManager manager = new UploadManager();
+		User user = Authenticator.getUser();
+		manager.start(
+				getActivity(), scaledImageFile,
+				"user_photo", user.getUsername() + Model.SUFFIX_JPG, "image/jpeg",
+				photoUploadCompleteListener
+		);
+	}
+	
+	private OnCompleteListener photoUploadCompleteListener = new OnCompleteListener() {
+		
+		@Override
+		public void done(Exception e) {
+			if (e == null) {
+				updatePhotoMetaData();
+			} else {
+				onUploadError();
+			}
+		}
+	};
+	
+	private void updatePhotoMetaData() {
+		try {
+			String username = Authenticator.getUser().getUsername();
+			String photoUrl = Model.STORAGE_HOST + Model.STORAGE_USER + username + Model.SUFFIX_JPG;
+			JSONObject message = new JSONObject();
+			message.put("main_photo_url", photoUrl);
+			
+			JSONObjectRequest request = new JSONObjectRequest(
+					Method.PUT, "users", message,
+					new JSONObjectSuccessListener(this, "onUpdateSuccess", User.class),
+					new JSONErrorListener(this, "onUploadError"));
+			addRequest(request);
+		} catch (JSONException e) {
+			e.printStackTrace();
+			onUploadError();
+		}
+	}
+	
+	public void onUpdateSuccess(User user) {
+		new Authenticator().update(user);
+		btnChangePhoto.setVisibility(View.GONE);
+		makeToast("사진이 변경 되었습니다.");
+		dismissProgressDialog();
+	}
+	
+	public void onUploadError() {
+		dismissProgressDialog();
+		makeToast("사진 업로드에 실패하였습니다.");
+	}
 
 	@Override
 	protected void onDataChanged() {
@@ -383,7 +445,7 @@ public class SettingFragment extends BaseFragment {
 					InputStream imageStream = getActivity().getContentResolver().openInputStream(selectedImage);
 					asyncTask.execute(imageStream);
 					
-					btnChangePhoto.setOnClickListener(updatePhotoClickListener);
+					btnChangePhoto.setOnClickListener(uploadPhotoClickListener);
 					btnChangePhoto.setVisibility(View.VISIBLE);
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
@@ -391,6 +453,12 @@ public class SettingFragment extends BaseFragment {
 			}
 			break;
 		}
+	}
+
+	@Override
+	public void onBackPressed() {
+		getActivity().setResult(Activity.RESULT_OK);
+		super.onBackPressed();
 	}
 
 }

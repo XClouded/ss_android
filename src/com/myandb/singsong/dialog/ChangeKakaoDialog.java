@@ -7,7 +7,6 @@ import com.android.volley.Request.Method;
 import com.myandb.singsong.R;
 import com.myandb.singsong.fragment.BaseFragment;
 import com.myandb.singsong.model.Profile;
-import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.JSONErrorListener;
 import com.myandb.singsong.net.JSONObjectRequest;
 import com.myandb.singsong.net.JSONObjectSuccessListener;
@@ -91,9 +90,7 @@ public class ChangeKakaoDialog extends BaseDialog {
 	}
 	
 	public void onChangedSuccess(Profile profile) {
-		User user = Authenticator.getUser();
-		user.setProfile(profile);
-		new Authenticator().update(user);
+		new Authenticator().update(profile);
 		if (getParentFragment() instanceof BaseFragment) {
 			((BaseFragment) getParentFragment()).notifyDataChanged();
 		}

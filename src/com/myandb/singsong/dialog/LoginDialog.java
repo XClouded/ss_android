@@ -1,6 +1,5 @@
 package com.myandb.singsong.dialog;
 
-import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
 
@@ -20,9 +19,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.RootActivity;
-import com.myandb.singsong.event.OnCompleteWeakListener;
 import com.myandb.singsong.model.User;
-import com.myandb.singsong.net.DownloadManager;
 import com.myandb.singsong.net.JSONObjectRequest;
 import com.myandb.singsong.net.JSONErrorListener;
 import com.myandb.singsong.net.JSONObjectSuccessListener;
@@ -44,8 +41,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 public class LoginDialog extends BaseDialog {
-	
-	public static final String FILE_USER_PHOTO = "user_photo";
 	
 	private EditText etUsername;
 	private EditText etPassword;
@@ -243,13 +238,7 @@ public class LoginDialog extends BaseDialog {
 			User user = extractUserFromResponse(response);
 			String token = extractTokenFromResponse(response);
 			saveUserOnLocal(user, token);
-			
-			if (user.hasPhoto()) {
-				downloadUserPhoto(user.getPhotoUrl());
-			} else {
-				deleteLocalUserPhoto();
-				onLoginComplete();
-			}
+			onLoginComplete();
 		} catch (JSONException e) {
 			onLoginError();
 		} catch (JsonSyntaxException e) {
@@ -272,26 +261,6 @@ public class LoginDialog extends BaseDialog {
 	
 	private void removeUserOnLocal() {
 		new Authenticator().logout();
-	}
-	
-	private void downloadUserPhoto(String photoUrl) {
-		File file = getUserPhotoFile();
-		DownloadManager networkFile = new DownloadManager(); 
-		networkFile.start(
-				photoUrl, file, 
-				new OnCompleteWeakListener<LoginDialog>(this, "onLoginComplete")
-		);
-	}
-	
-	private void deleteLocalUserPhoto() {
-		File file = getUserPhotoFile();
-		if (file.exists()) {
-			file.delete();
-		}
-	}
-	
-	private File getUserPhotoFile() {
-		return new File(getActivity().getFilesDir(), FILE_USER_PHOTO);
 	}
 
 	public void onLoginComplete() {

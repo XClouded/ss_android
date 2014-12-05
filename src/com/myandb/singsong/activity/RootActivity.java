@@ -15,7 +15,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentManager.OnBackStackChangedListener;
@@ -36,6 +35,7 @@ public class RootActivity extends BaseActivity {
 	private SlidingMenu drawer;
 	private SlidingPlayerLayout slidingPlayerLayout;
 	private TextView tvNotificationCount;
+	private DrawerFragment drawerFragment;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -138,10 +138,10 @@ public class RootActivity extends BaseActivity {
 	}
 	
 	private void replaceDrawerFragment() {
-		Fragment fragment = new DrawerFragment();
+		drawerFragment = new DrawerFragment();
 		FragmentManager manager = getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
-		transaction.replace(R.id.fl_drawer_fragment_container, fragment);
+		transaction.replace(R.id.fl_drawer_fragment_container, drawerFragment);
 		transaction.commit();
 	}
 	
@@ -323,6 +323,12 @@ public class RootActivity extends BaseActivity {
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, HomeFragment.class.getName());
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_ROOT, true);
 		startActivity(intent);
+	}
+	
+	public void updateDrawer() {
+		if (drawerFragment != null && drawerFragment.isAdded()) {
+			drawerFragment.notifyDataChanged();
+		}
 	}
 
 }

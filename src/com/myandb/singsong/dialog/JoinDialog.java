@@ -1,6 +1,5 @@
 package com.myandb.singsong.dialog;
 
-import java.io.File;
 import java.util.regex.Matcher;
 
 import org.json.JSONException;
@@ -271,7 +270,6 @@ public class JoinDialog extends BaseDialog {
 			User user = extractUserFromResponse(response);
 			String token = extractTokenFromResponse(response);
 			saveUserOnLocal(user, token);
-			deleteLocalUserPhoto();
 			onLoginComplete();
 		} catch (JSONException e) {
 			onJoinError();
@@ -291,17 +289,6 @@ public class JoinDialog extends BaseDialog {
 	
 	private void saveUserOnLocal(User user, String token) {
 		new Authenticator().login(user, token);
-	}
-	
-	private void deleteLocalUserPhoto() {
-		File file = getUserPhotoFile();
-		if (file.exists()) {
-			file.delete();
-		}
-	}
-	
-	private File getUserPhotoFile() {
-		return new File(getActivity().getFilesDir(), LoginDialog.FILE_USER_PHOTO);
 	}
 	
 	private void removeUserOnLocal() {

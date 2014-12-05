@@ -6,7 +6,6 @@ import org.json.JSONObject;
 import com.android.volley.Request.Method;
 import com.myandb.singsong.R;
 import com.myandb.singsong.fragment.BaseFragment;
-import com.myandb.singsong.model.Profile;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.JSONObjectRequest;
 import com.myandb.singsong.net.JSONObjectSuccessListener;
@@ -119,8 +118,6 @@ public class ChangeNicknameDialog extends BaseDialog {
 	}
 	
 	public void onChangedSuccess(User user) {
-		Profile profile = Authenticator.getUser().getProfile();
-		user.setProfile(profile);
 		new Authenticator().update(user);
 		if (getParentFragment() instanceof BaseFragment) {
 			((BaseFragment) getParentFragment()).notifyDataChanged();
