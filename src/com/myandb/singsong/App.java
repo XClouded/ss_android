@@ -49,16 +49,16 @@ public class App extends Application {
 		}
 	}
 	
-	public <T> void addShortLivedRequest(Object cancelable, Request<T> request) {
-		if (cancelable != null && request != null) {
-			request.setTag(cancelable.hashCode());
+	public <T> void addShortLivedRequest(Object taggableContext, Request<T> request) {
+		if (taggableContext != null && request != null) {
+			request.setTag(taggableContext.hashCode());
 			getQueueInstance().add(request);
 		}
 	}
 	
-	public void cancelRequests(Object cancelable) {
-		if (cancelable != null) {
-			getQueueInstance().cancelAll(cancelable.hashCode());
+	public void cancelRequests(Object taggableContext) {
+		if (taggableContext != null) {
+			getQueueInstance().cancelAll(taggableContext.hashCode());
 		}
 	}
 	
