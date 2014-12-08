@@ -22,8 +22,6 @@ import android.widget.ListView;
 
 import com.google.gson.Gson;
 import com.myandb.singsong.R;
-import com.myandb.singsong.activity.SearchActivity;
-import com.myandb.singsong.activity.SearchActivity.SearchType;
 import com.myandb.singsong.adapter.MusicSquareAdapter;
 import com.myandb.singsong.event.WeakRunnable;
 import com.myandb.singsong.model.Music;
@@ -68,9 +66,9 @@ public class MusicFragment extends Fragment {
 		
 		@Override
 		public void onClick(View v) {
-			Intent intent = new Intent(getActivity(), SearchActivity.class);
-			intent.putExtra(SearchActivity.INTENT_SEARCH_TYPE, SearchType.MUSIC);
-			startActivity(intent);
+//			Intent intent = new Intent(getActivity(), SearchActivity.class);
+//			intent.putExtra(SearchActivity.INTENT_SEARCH_TYPE, SearchType.MUSIC);
+//			startActivity(intent);
 		}
 	};
 	

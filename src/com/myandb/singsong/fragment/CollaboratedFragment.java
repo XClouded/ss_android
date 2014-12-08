@@ -3,8 +3,6 @@ package com.myandb.singsong.fragment;
 import java.util.Calendar;
 
 import com.myandb.singsong.R;
-import com.myandb.singsong.activity.SearchActivity;
-import com.myandb.singsong.activity.SearchActivity.SearchType;
 import com.myandb.singsong.adapter.CollaboratedAdapter;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.util.StringFormatter;
@@ -112,9 +110,9 @@ public class CollaboratedFragment extends Fragment {
 			
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(getActivity(), SearchActivity.class);
-				intent.putExtra(SearchActivity.INTENT_SEARCH_TYPE, SearchType.SONG_LEAF);
-				startActivity(intent);
+//				Intent intent = new Intent(getActivity(), SearchActivity.class);
+//				intent.putExtra(SearchActivity.INTENT_SEARCH_TYPE, SearchType.SONG_LEAF);
+//				startActivity(intent);
 			}
 		});
 		
