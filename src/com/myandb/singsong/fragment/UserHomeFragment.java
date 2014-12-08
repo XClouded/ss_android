@@ -21,6 +21,7 @@ import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.activity.UpActivity;
 import com.myandb.singsong.adapter.MySongAdapter;
+import com.myandb.singsong.dialog.GalleryDialog;
 import com.myandb.singsong.dialog.UpdateFriendshipDialog;
 import com.myandb.singsong.event.ActivateOnlyClickListener;
 import com.myandb.singsong.event.MemberOnlyClickListener;
@@ -225,11 +226,10 @@ public class UserHomeFragment extends ListFragment {
 		@Override
 		public void onClick(View v) {
 			Bundle bundle = new Bundle();
-			bundle.putString("", thisUser.getPhotoUrl());
-			Intent intent = new Intent(getActivity(), UpActivity.class);
-			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, "");
-			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
-			startActivity(intent);
+			bundle.putString(GalleryDialog.EXTRA_PHOTO_URL, thisUser.getPhotoUrl());
+			GalleryDialog dialog = new GalleryDialog();
+			dialog.setArguments(bundle);
+			dialog.show(getChildFragmentManager(), "");
 		}
 	};
 	
