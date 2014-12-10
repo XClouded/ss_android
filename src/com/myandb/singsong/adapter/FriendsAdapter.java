@@ -4,7 +4,6 @@ import com.android.volley.Request.Method;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 import com.myandb.singsong.event.ActivateOnlyClickListener;
-import com.myandb.singsong.event.Listeners;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Profile;
 import com.myandb.singsong.model.User;
@@ -31,20 +30,17 @@ public class FriendsAdapter extends HolderAdapter<User, FriendsAdapter.UserHolde
 	}
 
 	@Override
-	public void onBindViewHolder(UserHolder viewHolder, int position) {
+	public void onBindViewHolder(Context context, UserHolder viewHolder, int position) {
 		final User user = getItem(position);
 		final Profile profile = user.getProfile();
-		final Context context = viewHolder.view.getContext();
 		
 		viewHolder.tvUserStatus.setText(profile.getStatusMessage());
 		viewHolder.tvUserNickname.setText(user.getNickname());
-		
-		ImageHelper.displayPhoto(user, viewHolder.ivUserPhoto);
-		
+		viewHolder.view.setOnClickListener(user.getProfileClickListener(context));
 		viewHolder.btnFollow.setTag(user);
 		toggleFollowing(viewHolder.btnFollow, user.isFollowing());
 		
-		viewHolder.view.setOnClickListener(Listeners.getProfileClickListener(context, user));
+		ImageHelper.displayPhoto(user, viewHolder.ivUserPhoto);
 	}
 	
 	private void toggleFollowing(View v, boolean isFollowing) {

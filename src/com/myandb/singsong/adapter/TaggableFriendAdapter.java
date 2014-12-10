@@ -5,6 +5,7 @@ import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.TaggableFriend;
 import com.myandb.singsong.util.Logger;
 
+import android.content.Context;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -25,7 +26,7 @@ public class TaggableFriendAdapter extends HolderAdapter<TaggableFriend, Taggabl
 	}
 	
 	@Override
-	public void onBindViewHolder(TaggableFriendHolder viewHolder, int position) {
+	public void onBindViewHolder(Context context, TaggableFriendHolder viewHolder, int position) {
 		final TaggableFriend taggable = getItem(position);
 		final String photoUrl = taggable.getPicture().getData().getUrl();
 		

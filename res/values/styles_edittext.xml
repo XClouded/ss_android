@@ -18,7 +18,6 @@
         <item name="android:paddingLeft">@dimen/margin_big</item>
         <item name="android:paddingTop">@dimen/margin_tiny</item>
         <item name="android:minHeight">@dimen/photo</item>
-        <item name="android:background">@drawable/bg_comment</item>
     </style>
     
 </resources>

@@ -2,7 +2,6 @@ package com.myandb.singsong.net;
 
 import java.lang.reflect.Method;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.widget.Toast;
@@ -63,10 +62,6 @@ public class JSONErrorListener implements ErrorListener {
 	private Context getContext() {
 		if (receiver instanceof Fragment) {
 			return ((Fragment) receiver).getActivity();
-		}
-		
-		if (receiver instanceof Dialog) {
-			return ((Dialog) receiver).getContext();
 		}
 		
 		if (receiver instanceof Context) {

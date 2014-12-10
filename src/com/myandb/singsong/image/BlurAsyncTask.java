@@ -17,7 +17,7 @@ public class BlurAsyncTask extends AsyncTask<Bitmap, Integer, Bitmap> {
 			return null;
 		}
 		
-		Bitmap bitmap = Bitmap.createScaledBitmap(source, 120, 120, true);
+		Bitmap bitmap = Bitmap.createScaledBitmap(source, 300, 300, true);
 		
 		if (bitmap != null) {
 			Config config = bitmap.getConfig();

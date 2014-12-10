@@ -7,7 +7,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.myandb.singsong.R;
-import com.myandb.singsong.event.Listeners;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Song;
@@ -26,11 +25,10 @@ public class SimpleSongAdapter extends HolderAdapter<Song, SimpleSongAdapter.Son
 	}
 
 	@Override
-	public void onBindViewHolder(SongHolder viewHolder, int position) {
+	public void onBindViewHolder(Context context, SongHolder viewHolder, int position) {
 		final Song thisSong = getItem(position);
 		final User thisUser = thisSong.getCreator();
 		final Music music = thisSong.getMusic();
-		final Context context = viewHolder.view.getContext();
 
 		viewHolder.tvParentUserNickname.setText(thisUser.getNickname());
 		viewHolder.tvParentSongMessage.setText(thisSong.getCroppedMessage());
@@ -42,26 +40,25 @@ public class SimpleSongAdapter extends HolderAdapter<Song, SimpleSongAdapter.Son
 		viewHolder.tvMusicInfo.append(" - ");
 		viewHolder.tvMusicInfo.append(music.getTitle());
 		
+		viewHolder.ivParentUserPhoto.setOnClickListener(thisUser.getProfileClickListener(context));
+		viewHolder.view.setOnClickListener(thisSong.getPlayClickListener(context));
+		
 		ImageHelper.displayPhoto(music.getAlbumPhotoUrl(), viewHolder.ivAlbumPhoto);
 		ImageHelper.displayPhoto(thisUser, viewHolder.ivParentUserPhoto);
-		viewHolder.ivParentUserPhoto.setOnClickListener(Listeners.getProfileClickListener(context, thisUser));
 		
 		if (!thisSong.isRoot()) {
-			viewHolder.vPartnerWrapper.setVisibility(View.VISIBLE);
-			
 			final Song parentSong = thisSong.getParentSong();
 			final User parentUser = thisSong.getParentUser();
 			
+			viewHolder.vPartnerWrapper.setVisibility(View.VISIBLE);
 			viewHolder.tvThisUserNickname.setText(parentUser.getNickname());
 			viewHolder.tvThisSongMessage.setText(parentSong.getCroppedMessage());
+			viewHolder.ivThisUserPhoto.setOnClickListener(parentUser.getProfileClickListener(context));
 			
 			ImageHelper.displayPhoto(parentUser, viewHolder.ivThisUserPhoto);
-			viewHolder.ivThisUserPhoto.setOnClickListener(Listeners.getProfileClickListener(context, parentUser));
 		} else {
 			viewHolder.vPartnerWrapper.setVisibility(View.GONE);
 		}
-		
-		viewHolder.view.setOnClickListener(Listeners.getPlayClickListener(context, thisSong));
 	}
 	
 	public static final class SongHolder extends ViewHolder {

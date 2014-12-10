@@ -2,6 +2,17 @@ package com.myandb.singsong.model;
 
 import java.util.Date;
 
+import com.myandb.singsong.activity.BaseActivity;
+import com.myandb.singsong.activity.RootActivity;
+import com.myandb.singsong.fragment.UserHomeFragment;
+import com.myandb.singsong.secure.Authenticator;
+
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+
 public class User extends Model {
 	
 	private String username;
@@ -14,7 +25,7 @@ public class User extends Model {
 	private int is_following;
 	
 	public String getUsername() {
-		return toString(username);
+		return safeString(username);
 	}
 	
 	public String getCroppedUsername() {
@@ -28,11 +39,11 @@ public class User extends Model {
 	}
 	
 	public String getNickname() {
-		return toString(nickname);
+		return safeString(nickname);
 	}
 	
 	public String getPhotoUrl() {
-		return toString(main_photo_url);
+		return safeString(main_photo_url);
 	}
 	
 	public void setPhotoUrl(String url, Date updatedAt) {
@@ -41,7 +52,7 @@ public class User extends Model {
 	}
 	
 	public boolean hasPhoto() {
-		return !toString(main_photo_url).isEmpty();
+		return !safeString(main_photo_url).isEmpty();
 	}
 	
 	public Date getPhotoUpdatedAt() {
@@ -53,7 +64,7 @@ public class User extends Model {
 	}
 	
 	public String getFacebookId() {
-		return toString(facebook_id);
+		return safeString(facebook_id);
 	}
 	
 	public boolean isFacebookActivated() {
@@ -74,6 +85,30 @@ public class User extends Model {
 	
 	public boolean isFollowing() {
 		return is_following == 1;
+	}
+	
+	public boolean isLoggedInUser() {
+		return Authenticator.getUser().equals(getId());
+	}
+	
+	public OnClickListener getProfileClickListener(final Context context) {
+		return new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				if (isLoggedInUser()) {
+					return;
+				}
+				
+				BaseActivity activity = (BaseActivity) context;
+				Bundle bundle = new Bundle();
+				bundle.putString(UserHomeFragment.EXTRA_THIS_USER, User.this.toString());
+				Intent intent = new Intent(context, RootActivity.class);
+				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, UserHomeFragment.class.getName());
+				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
+				activity.changePage(intent);
+			}
+		};
 	}
 	
 }

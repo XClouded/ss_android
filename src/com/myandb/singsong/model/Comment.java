@@ -15,7 +15,7 @@ public class Comment<T> extends Model {
 	}
 	
 	public String getContent() {
-		return toString(content);
+		return safeString(content);
 	}
 	
 	public User getWriter() {

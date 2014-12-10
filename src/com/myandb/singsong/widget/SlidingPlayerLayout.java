@@ -1,6 +1,7 @@
 package com.myandb.singsong.widget;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.TargetApi;
@@ -8,19 +9,16 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import android.graphics.Typeface;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
-import android.text.Spannable;
-import android.text.SpannableString;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SeekBar;
@@ -36,10 +34,9 @@ import com.myandb.singsong.adapter.CommentAdapter;
 import com.myandb.singsong.audio.OnPlayEventListener;
 import com.myandb.singsong.audio.PlayEvent;
 import com.myandb.singsong.audio.StreamPlayer;
-import com.myandb.singsong.dialog.WriteCommentDialog;
 import com.myandb.singsong.event.ActivateOnlyClickListener;
-import com.myandb.singsong.event.Listeners;
 import com.myandb.singsong.event.WeakRunnable;
+import com.myandb.singsong.image.BlurAsyncTask;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Song;
@@ -55,8 +52,11 @@ import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.service.PlayerService;
 import com.myandb.singsong.util.StringFormatter;
-import com.myandb.singsong.util.Utility;
+import com.nineoldandroids.view.ViewHelper;
 import com.nineoldandroids.view.animation.AnimatorProxy;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 public class SlidingPlayerLayout extends SlidingUpPanelLayout {
@@ -64,7 +64,6 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	private PlayerService service;
 	private ViewGroup slidingContainer; 
 	private String bitlyUrl;
-	private Animation blink;
 	private User currentUser;
 	private Handler handler;
 	private GradualLoader loader;
@@ -72,39 +71,40 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	private boolean like;
 	private boolean initialized; 
 	private int actionBarHeight;
-	
-	private WriteCommentDialog commentDialog;
-	
-	private View vStartCollabo;
-	private View vLikeSong;
-	private View vWriteComment;
-	private View vPartnerMask;
-	private View vPartnerWrapper;
+
 	private TextView tvParentUserNickname;
 	private TextView tvThisUserNickname;
 	private TextView tvParentUserPart;
 	private TextView tvThisUserPart;
 	private TextView tvParentSongMessage;
 	private TextView tvThisSongMessage;
-	private TextView tvLikeNum;
-	private TextView tvCommentNum;
-	private TextView tvStartTime;
-	private TextView tvEndTime;
+	private TextView tvPlayStartTime;
+	private TextView tvPlayEndTime;
+	private TextView tvMusicTitleOnCollapsed;
+	private TextView tvMusicTitleOnExpanded;
+	private TextView tvSingerNameOnCollapsed;
+	private TextView tvSingerNameOnExpanded;
 	private TextView tvTargetContent;
-	private TextView tvMusicTitle;
-	private TextView tvSingerName;
 	private ImageView ivParentUserPhoto;
 	private ImageView ivThisUserPhoto;
-	private ImageView ivParentSongImage;
-	private ImageView ivThisSongImage;
-	private ImageView ivLikeIcon;
+	private ImageView ivLikeSong;
+	private ImageView ivShowComment;
+	private ImageView ivCloseComment;
 	private ImageView ivPlayControl;
+	private ImageView ivDragPlayControl;
 	private ImageView ivLoopControl;
 	private ImageView ivAutoplayControl;
-	private ImageView ivNeon;
-	private ImageView ivChildSong;
-	private ImageView ivAlbumPhoto;
-	private ImageView ivDragPlayControl;
+	private ImageView ivMenu;
+	private ImageView ivMovingBackground;
+	private ImageView ivBackgroundMask;
+	private Button btnSubmitComment;
+	private EditText etComment;
+	private View vDragPanelOnExpanded;
+	private View vDragPanelOnCollapsed;
+	private View vDefaultWindow;
+	private View vCommentWindow;
+	private View vPartnerWrapper;
+	private View vStartCollabo;
 	private ListView lvComments;
 	private SeekBar sbPlay;
 
@@ -126,9 +126,9 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		if (!initialized) {
 			setSlidingContainer(R.id.fl_sliding_container);
 			
-			setContentView(R.layout.player_wrapper);
+			setContentView(R.layout.player);
 			
-			setDragView(R.id.music_info);
+			setDragView(R.id.layout_drag_panel);
 			
 			setPanelSlideListener(panelSlideListener);
 			
@@ -166,11 +166,6 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		loader.setListView(lvComments);
 		
 		handler = new Handler();
-		
-		blink = new AlphaAnimation(0.0f, 0.5f);
-		blink.setDuration(500);
-		blink.setRepeatMode(Animation.REVERSE);
-		blink.setRepeatCount(Animation.INFINITE);
 	}
 	
 	public void setSlidingContainer(int containerId) {
@@ -181,20 +176,16 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	
 	public void setContentView(int layoutId) {
 		View.inflate(getContext(), layoutId, slidingContainer);
-		View header = View.inflate(getContext(), R.layout.player_header, null);
-		
-		lvComments = (ListView) findViewById(R.id.lv_full_width);
-		lvComments.addHeaderView(header);
-		
 		onViewInflated();
 	}
 	
 	private void onViewInflated() {
-		vLikeSong = findViewById(R.id.rl_like_song);
-		vStartCollabo = findViewById(R.id.rl_start_collabo);
-		vWriteComment = findViewById(R.id.rl_write_comment);
-		vPartnerMask = findViewById(R.id.fl_partner_mask);
-		vPartnerWrapper = findViewById(R.id.rl_partner_wrapper);
+		vDragPanelOnExpanded = findViewById(R.id.layout_player_drag_panel_on_expanded);
+		vDragPanelOnCollapsed = findViewById(R.id.layout_player_drag_panel_on_collapsed);
+		vDefaultWindow = findViewById(R.id.layout_player_default);
+		vCommentWindow = findViewById(R.id.layout_player_comment);
+		vPartnerWrapper = findViewById(R.id.layout_partner_wrapper);
+		vStartCollabo = findViewById(R.id.layout_collabo);
 		
 		tvParentUserNickname = (TextView) findViewById(R.id.tv_parent_user_nickname);
 		tvThisUserNickname = (TextView) findViewById(R.id.tv_this_user_nickname);
@@ -202,27 +193,30 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		tvThisUserPart = (TextView) findViewById(R.id.tv_this_user_part);
 		tvParentSongMessage = (TextView) findViewById(R.id.tv_parent_song_message);
 		tvThisSongMessage = (TextView) findViewById(R.id.tv_this_song_message);
-		tvLikeNum = (TextView) findViewById(R.id.tv_like_num);
-		tvCommentNum = (TextView) findViewById(R.id.tv_comment_num);
-		tvStartTime = (TextView) findViewById(R.id.tv_play_start_time);
-		tvEndTime = (TextView) findViewById(R.id.tv_play_end_time);
-		tvTargetContent = (TextView) findViewById(R.id.tv_root_info);
-		tvMusicTitle = (TextView) findViewById(R.id.tv_music_title);
-		tvSingerName = (TextView) findViewById(R.id.tv_singer_name);
+		tvPlayStartTime = (TextView) findViewById(R.id.tv_play_start_time);
+		tvPlayEndTime = (TextView) findViewById(R.id.tv_play_end_time);
+		tvMusicTitleOnCollapsed = (TextView) findViewById(R.id.tv_music_title_on_collapsed);
+		tvMusicTitleOnExpanded = (TextView) findViewById(R.id.tv_music_title_on_expanded);
+		tvSingerNameOnCollapsed = (TextView) findViewById(R.id.tv_singer_name_on_collapsed);
+		tvSingerNameOnExpanded = (TextView) findViewById(R.id.tv_singer_name_on_expanded);
+		tvTargetContent = (TextView) findViewById(R.id.tv_target_nickname);
 		
 		ivParentUserPhoto = (ImageView) findViewById(R.id.iv_parent_user_photo);
 		ivThisUserPhoto = (ImageView) findViewById(R.id.iv_this_user_photo);
-		ivParentSongImage = (ImageView) findViewById(R.id.iv_parent_song_image);
-		ivThisSongImage = (ImageView) findViewById(R.id.iv_this_song_image);
-		ivLikeIcon = (ImageView) findViewById(R.id.iv_like_icon);
+		ivLikeSong = (ImageView) findViewById(R.id.iv_like_song);
 		ivPlayControl = (ImageView) findViewById(R.id.iv_play_control);
+		ivDragPlayControl = (ImageView) findViewById(R.id.iv_drag_play_control);
 		ivLoopControl = (ImageView) findViewById(R.id.iv_loop_control);
 		ivAutoplayControl = (ImageView) findViewById(R.id.iv_autoplay_control);
-		ivNeon = (ImageView) findViewById(R.id.iv_neon);
-		ivChildSong = (ImageView) findViewById(R.id.iv_child_song);
-		ivAlbumPhoto = (ImageView) findViewById(R.id.iv_album_photo);
-		ivDragPlayControl = (ImageView) findViewById(R.id.iv_drag_play_control);
+		ivShowComment = (ImageView) findViewById(R.id.iv_show_comment);
+		ivCloseComment = (ImageView) findViewById(R.id.iv_close_comment);
+		ivMenu = (ImageView) findViewById(R.id.iv_menu);
+		ivMovingBackground = (ImageView) findViewById(R.id.iv_background);
+		ivBackgroundMask = (ImageView) findViewById(R.id.iv_background_mask);
 		
+		lvComments = (ListView) findViewById(R.id.listview);
+		btnSubmitComment = (Button) findViewById(R.id.btn_submit_comment);
+		etComment = (EditText) findViewById(R.id.et_comment);
 		sbPlay = (SeekBar) findViewById(R.id.sb_play);
 	}
 	
@@ -334,7 +328,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 			if (player.isPlaying()) {
 				player.pause();
 			} else {
-				player.start();
+				player.startIfPrepared();
 			}
 		}
 	};
@@ -358,6 +352,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 					showPanel();
 					expandPanel();
 					setupViews();
+					showDefaultWindow();
 					ivPlayControl.setEnabled(false);
 					ivDragPlayControl.setEnabled(false);
 					break;
@@ -369,22 +364,19 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 					
 				case PLAY:
 					onProgressUpdate();
-					ivPlayControl.setImageResource(R.drawable.ic_pause_neon);
-					ivDragPlayControl.setImageResource(R.drawable.ic_pause_basic);
-					ivNeon.startAnimation(blink);
-					ivNeon.setVisibility(View.VISIBLE);
+					ivPlayControl.setImageResource(R.drawable.ic_pause);
+					ivDragPlayControl.setImageResource(R.drawable.ic_pause);
 					break;
 					
 				case RESUME:
+					showDefaultWindow();
 					expandPanel();
 					break;
 					
 				case PAUSE:
 				case COMPLETED:
-					ivPlayControl.setImageResource(R.drawable.ic_play_neon);
-					ivDragPlayControl.setImageResource(R.drawable.ic_play_basic);
-					ivNeon.clearAnimation();
-					ivNeon.setVisibility(View.INVISIBLE);
+					ivPlayControl.setImageResource(R.drawable.ic_play);
+					ivDragPlayControl.setImageResource(R.drawable.ic_play);
 					break;
 					
 				case ERROR:
@@ -395,6 +387,26 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 				}
 			}
 		});
+	}
+	
+	public void showDefaultWindow() {
+		ViewHelper.setAlpha(ivBackgroundMask, 0.5f);
+		vDefaultWindow.setVisibility(View.VISIBLE);
+		vCommentWindow.setVisibility(View.GONE);
+	}
+	
+	public void setCommentWindowShown(boolean shown) {
+		if (vCommentWindow.isShown() == shown) {
+			return;
+		}
+		
+		if (shown) {
+			ViewHelper.setAlpha(ivBackgroundMask, 0.8f);
+			vDefaultWindow.setVisibility(View.GONE);
+			vCommentWindow.setVisibility(View.VISIBLE);
+		} else {
+			showDefaultWindow();
+		}
 	}
 	
 	private OnSeekBarChangeListener seekBarChangeListener = new OnSeekBarChangeListener() {
@@ -424,7 +436,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	public void onProgressUpdate() {
 		StreamPlayer player = service.getPlayer();
 		if (player != null && player.isPlaying()) {
-			tvStartTime.setText(StringFormatter.getDuration(player.getCurrentPosition()));
+			tvPlayStartTime.setText(StringFormatter.getDuration(player.getCurrentPosition()));
 			sbPlay.setProgress(player.getCurrentPosition());
 			
 			if (handler != null) {
@@ -435,6 +447,10 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	}
 	
 	private void setupViews() {
+		if (service.getSong() == null) {
+			return;
+		}
+		
 		final Song song = service.getSong();
 		final User parentUser = song.getParentUser();
 		final User thisUser = song.isRoot() ? currentUser : song.getCreator();
@@ -442,7 +458,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		
 		displayMusicInfo(music);
 		
-		displaySongImage(song);
+		displayBackgroundImage(song);
 		
 		displaySongMessage(song);
 		
@@ -452,15 +468,11 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		
 		displaySongPart(song);
 		
-		displayPartnerMask(song);
+		displayTargetContent(parentUser.getNickname());
 		
-		displayChildSongIcon(song);
+//		displayCommentNum(song.getCommentNum());
 		
-		displayTargetContent(parentUser.getNickname(), song.getParentPartName());
-		
-		displayCommentNum(song.getCommentNum());
-		
-		displayLikeNum(song.getWorkedLikeNum());
+//		displayLikeNum(song.getWorkedLikeNum());
 		
 		requestNewComments(song);
 		
@@ -468,53 +480,78 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		
 		initializeSeekBar(song);
 		
-		ivParentUserPhoto.setOnClickListener(Listeners.getProfileClickListener(getContext(), parentUser));
-		ivThisUserPhoto.setOnClickListener(Listeners.getProfileClickListener(getContext(), thisUser));
-		ivChildSong.setOnClickListener(Listeners.getChildrenClickListener(getContext(), song));
-		vStartCollabo.setOnClickListener(Listeners.getCollaboClickListener(getContext(), song));
-		vLikeSong.setOnClickListener(likeClickListener);
-		vWriteComment.setOnClickListener(writeCommentClickListener);
+		ivParentUserPhoto.setOnClickListener(parentUser.getProfileClickListener(getContext()));
+		ivThisUserPhoto.setOnClickListener(thisUser.getProfileClickListener(getContext()));
+		vStartCollabo.setOnClickListener(song.getCollaboClickListner(getContext()));
+		ivLikeSong.setOnClickListener(likeClickListener);
+		ivShowComment.setOnClickListener(showCommentClickListener);
+		ivCloseComment.setOnClickListener(closeCommentClickListener);
+		btnSubmitComment.setOnClickListener(submitCommentClickListner);
+		
+		if (song.isRoot()) {
+			vPartnerWrapper.setVisibility(View.GONE);
+		} else {
+			vPartnerWrapper.setVisibility(View.VISIBLE);
+		}
 		
 		if (isPanelExpanded()) {
-			ivDragPlayControl.setVisibility(View.GONE);
-			ivChildSong.setVisibility(View.VISIBLE);
+			vDragPanelOnExpanded.setVisibility(View.VISIBLE);
+			vDragPanelOnCollapsed.setVisibility(View.GONE);
 		} else {
-			ivDragPlayControl.setVisibility(View.VISIBLE);
-			ivChildSong.setVisibility(View.GONE);
+			vDragPanelOnExpanded.setVisibility(View.GONE);
+			vDragPanelOnCollapsed.setVisibility(View.VISIBLE);
 		}
+		
+		showDefaultWindow();
 	}
 	
 	private void displayMusicInfo(Music music) {
-		if (music != null) {
-			tvMusicTitle.setText(music.getTitle());
-			tvSingerName.setText(music.getSingerName());
-			tvMusicTitle.setSelected(true);
-			tvSingerName.setSelected(true);
-			ImageHelper.displayPhoto(music.getAlbumPhotoUrl(), ivAlbumPhoto);
-		}
+		tvMusicTitleOnCollapsed.setText(music.getTitle());
+		tvMusicTitleOnExpanded.setText(music.getTitle());
+		tvSingerNameOnCollapsed.setText(music.getSingerName());
+		tvSingerNameOnExpanded.setText(music.getSingerName());
+		tvMusicTitleOnCollapsed.setSelected(true);
+		tvMusicTitleOnExpanded.setSelected(true);
+		tvSingerNameOnCollapsed.setSelected(true);
+		tvSingerNameOnExpanded.setSelected(true);
 	}
 	
-	private void displaySongImage(Song song) {
-		if (song != null) {
-			if (song.isRoot()) {
-				ImageHelper.displayPhoto(song.getPhotoUrl(), ivParentSongImage);
-			} else {
-				Song parentSong = song.getParentSong();
-				ImageHelper.displayPhoto(parentSong.getPhotoUrl(), ivParentSongImage);
-				ImageHelper.displayPhoto(song.getPhotoUrl(), ivThisSongImage);
-			}
+	private void displayBackgroundImage(Song song) {
+		String url = song.getMusic().getAlbumPhotoUrl();
+		ImageLoader.getInstance().displayImage(url, ivMovingBackground, imageLoadingListener);
+	}
+	
+	private ImageLoadingListener imageLoadingListener = new ImageLoadingListener() {
+
+		@Override
+		public void onLoadingCancelled(String arg0, View arg1) {}
+
+		@Override
+		public void onLoadingComplete(String url, View imageView, Bitmap bitmap) {
+			setBackgroundBlurImage(bitmap, (ImageView) imageView);
 		}
+
+		@Override
+		public void onLoadingFailed(String arg0, View arg1, FailReason arg2) {}
+
+		@Override
+		public void onLoadingStarted(String arg0, View imageView) {}
+		
+	};
+	
+	private void setBackgroundBlurImage(Bitmap bitmap, ImageView imageView) {
+		BlurAsyncTask blurTask = new BlurAsyncTask();
+		blurTask.setImageView(imageView);
+		blurTask.execute(bitmap);
 	}
 	
 	private void displaySongMessage(Song song) {
-		if (song != null) {
-			if (song.isRoot()) {
-				tvParentSongMessage.setText(song.getCroppedMessage());
-			} else {
-				Song parentSong = song.getParentSong();
-				tvParentSongMessage.setText(parentSong.getMessage());
-				tvThisSongMessage.setText(song.getMessage());
-			}
+		if (song.isRoot()) {
+			tvParentSongMessage.setText(song.getMessage());
+		} else {
+			Song parentSong = song.getParentSong();
+			tvParentSongMessage.setText(parentSong.getMessage());
+			tvThisSongMessage.setText(song.getMessage());
 		}
 	}
 	
@@ -526,51 +563,22 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	}
 	
 	private void displaySongPart(Song song) {
-		if (song != null) {
-			tvParentUserPart.setText(song.getParentPartName());
-			tvThisUserPart.setText(song.getPartName());
+		tvParentUserPart.setText(song.getParentPartName());
+		tvThisUserPart.setText(song.getPartName());
+	}
+	
+	private void displayTargetContent(String nickname) {
+		final int maxDisplayNicknameLength = 8;
+		if (nickname.length() > maxDisplayNicknameLength) {
+			tvTargetContent.setText(nickname.substring(0, maxDisplayNicknameLength));
+			tvTargetContent.append("..");
+		} else {
+			tvTargetContent.setText(nickname);
 		}
+		tvTargetContent.append(" ´Ô°ú");
 	}
 	
-	private void displayPartnerMask(Song song) {
-		if (song != null) {
-			if (song.isRoot()) {
-				vPartnerMask.setVisibility(View.VISIBLE);
-				vPartnerWrapper.setVisibility(View.GONE);
-			} else {
-				vPartnerMask.setVisibility(View.GONE);
-				vPartnerWrapper.setVisibility(View.VISIBLE);
-			}
-		}
-	}
-	
-	private void displayChildSongIcon(Song song) {
-		if (song != null) {
-			if (song.isRoot()) {
-				ivChildSong.setImageResource(R.drawable.img_collabo);
-			} else {
-				ivChildSong.setImageResource(R.drawable.img_collabo_other);
-			}
-		}
-	}
-	
-	private void displayTargetContent(String nickname, String part) {
-		final Spannable nicknameSpan = new SpannableString(nickname);
-		Utility.getStyleSpan(nicknameSpan, Typeface.BOLD);
-		
-		final Spannable partSpan = new SpannableString(part);
-		Utility.getColorSpan(partSpan, "#6ab8d3");
-		
-		final Spannable collaboSpan = new SpannableString("ÄÝ¶óº¸ÇÏ±â!");
-		Utility.getStyleSpan(collaboSpan, Typeface.BOLD);
-		
-		tvTargetContent.setText(nicknameSpan);
-		tvTargetContent.append("´ÔÀÌ ºÎ¸¥ ");
-		tvTargetContent.append(partSpan);
-		tvTargetContent.append("¿Í ");
-		tvTargetContent.append(collaboSpan);
-	}
-	
+	/*
 	private void displayCommentNum(int num) {
 		tvCommentNum.setText("´ñ±Û (");
 		tvCommentNum.append(String.valueOf(num));
@@ -582,6 +590,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		tvLikeNum.append(num);
 		tvLikeNum.append(")");
 	}
+	*/
 	
 	private void checkUserLikeSong(User user, Song song) {
 		if (user != null && song != null) {
@@ -613,17 +622,17 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		this.like = like;
 		
 		if (like) {
-			ivLikeIcon.setImageResource(R.drawable.ic_like_pink);
+			ivLikeSong.setImageResource(R.drawable.ic_like_activated);
 		} else {
-			ivLikeIcon.setImageResource(R.drawable.ic_like_inverse);
+			ivLikeSong.setImageResource(R.drawable.ic_like);
 		}
 	}
 	
 	private void initializeSeekBar(Song song) {
 		int duration = song.getDuration();
 		
-		tvStartTime.setText(StringFormatter.getDuration(0));
-		tvEndTime.setText(StringFormatter.getDuration(duration));
+		tvPlayStartTime.setText(StringFormatter.getDuration(0));
+		tvPlayEndTime.setText(StringFormatter.getDuration(duration));
 		sbPlay.setMax(duration);
 		sbPlay.setProgress(0);
 	}
@@ -665,35 +674,74 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 			}
 			
 			setUserLikeSong(!like);
-			displayLikeNum(song.getWorkedLikeNum());
+//			displayLikeNum(song.getWorkedLikeNum());
 			
 			JustRequest request = new JustRequest(method, segment, null);
 			((App) getContext().getApplicationContext()).addLongLivedRequest(request);
 		}
 	};
 	
-	private OnClickListener writeCommentClickListener = new ActivateOnlyClickListener() {
+	private OnClickListener showCommentClickListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			setCommentWindowShown(true);
+		}
+	};
+	
+	private OnClickListener closeCommentClickListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			setCommentWindowShown(false);
+		}
+	};
+	
+	private OnClickListener submitCommentClickListner = new ActivateOnlyClickListener() {
 		
 		@Override
 		public void onActivated(View v, User user) {
-			if (commentDialog != null) {
-				final int inputMode = WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE;
-				final Song song = service.getSong();
-//				commentDialog.setSong(song);
-//				commentDialog.show();
-				commentDialog.getDialog().getWindow().setSoftInputMode(inputMode);
+			String comment = etComment.getText().toString();
+			if (comment.trim().length() > 0) {
+				JSONObject message = new JSONObject();
+				try {
+					message.put("user_id", user.getId());
+					message.put("content", comment);
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				
+				Song song = service.getSong();
+				JSONObjectRequest request = new JSONObjectRequest(
+						"songs/" + song.getId() + "/comments", message,
+						new JSONObjectSuccessListener(SlidingPlayerLayout.this, "onSubmitSuccess", SongComment.class),
+						new JSONErrorListener(SlidingPlayerLayout.this, "onSubmitError")
+				);
+				((App) getContext().getApplicationContext()).addShortLivedRequest(getContext(), request);
+				
+				etComment.setText("");
+			} else {
+				makeToast(R.string.t_comment_length_policy);
 			}
 		}
 	};
 	
+	public void onSubmitSuccess(SongComment response) {
+		addComment(response);
+	}
+	
+	public void onSubmitError() {
+		
+	}
+	
 	public void addComment(SongComment comment) {
 		commentAdapter.addItem(comment);
-		displayCommentNum(commentAdapter.getCount());
+//		displayCommentNum(commentAdapter.getCount());
 	}
 	
 	public void removeComment(SongComment comment) {
 		commentAdapter.removeItem(comment);
-		displayCommentNum(commentAdapter.getCount());
+//		displayCommentNum(commentAdapter.getCount());
 	}
 	
 	/*
@@ -742,20 +790,6 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		
 	}
 	
-	public void showKakaotalkDialog(String url) {
-		String message = thisSong.getCreator().getNickname();
-		message += "´ÔÀÌ ºÎ¸¥ ";
-//		message += playerService.getSingerName() + "ÀÇ ";
-//		message += playerService.getAlbumTitle() + " µè±â!";
-		message += "\n\n";
-		message += url;
-		
-		if (kakaotalkDialog != null && !kakaotalkDialog.isShowing()) {
-			kakaotalkDialog.setBaseMessage(message);
-			kakaotalkDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-			kakaotalkDialog.show();
-		}
-	}
 	 */
 
 	public void hideActionBarWhenSliding(boolean enable) {
@@ -772,34 +806,62 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 
     private PanelSlideListener panelSlideListener = new PanelSlideListener() {
     	
+    	private static final float OFFSET_MULTIPLIER = 1.5f;
     	private ActionBar actionBar;
     	
 		@Override
 		public void onPanelSlide(View panel, float slideOffset) {
+			initializeActionBar();
+			showOrHideActionBar(slideOffset);
+			showDragPanelIfNotVisible();
+			setAlphaOnDragPanel(slideOffset);
+			setAlphaOnMask(slideOffset);
+		}
+		
+		private void initializeActionBar() {
 			if (actionBar == null) {
 				actionBar = ((RootActivity) getContext()).getSupportActionBar();
 			}
-			
+		}
+		
+		private void showOrHideActionBar(float slideOffset) {
 			if (slideOffset > 0.8) {
 				if (actionBar.isShowing()) {
 					actionBar.hide();
 				}
-				
-				if (ivDragPlayControl.isShown()) {
-					ivDragPlayControl.setVisibility(View.GONE);
-					ivChildSong.setVisibility(View.VISIBLE);
-				}
-			}
-			
-			if (slideOffset < 0.2){
+			} else if (slideOffset < 0.2){
 				if (!actionBar.isShowing()) {
 					actionBar.show();
 				}
-				
-				if (ivChildSong.isShown()) {
-					ivDragPlayControl.setVisibility(View.VISIBLE);
-					ivChildSong.setVisibility(View.GONE);
-				}
+			}
+		}
+		
+		private void showDragPanelIfNotVisible() {
+			if (!vDragPanelOnCollapsed.isShown()) {
+				vDragPanelOnCollapsed.setVisibility(View.VISIBLE);
+			}
+			
+			if (!vDragPanelOnExpanded.isShown()) {
+				vDragPanelOnExpanded.setVisibility(View.VISIBLE);
+			}
+		}
+		
+		private void setAlphaOnDragPanel(float slideOffset) {
+			ViewHelper.setAlpha(vDragPanelOnCollapsed, getCollapsedAlpha(slideOffset));
+			ViewHelper.setAlpha(vDragPanelOnExpanded, getExpandedAlpha(slideOffset));
+		}
+		
+		private float getCollapsedAlpha(float slideOffset) {
+			return Math.max((float) (1 - slideOffset * OFFSET_MULTIPLIER), 0f);
+		}
+		
+		private float getExpandedAlpha(float slideOffset) {
+			return Math.min((float) (slideOffset * OFFSET_MULTIPLIER), 1f);
+		}
+		
+		private void setAlphaOnMask(float slideOffset) {
+			if (vDefaultWindow.isShown()) {
+				ViewHelper.setAlpha(ivBackgroundMask, Math.min(Math.max((float) (1 - slideOffset), 0.5f), 0.8f));
 			}
 		}
 		
@@ -811,6 +873,9 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 			if (getContext() instanceof RootActivity) {
 				((RootActivity) getContext()).onContentInvisible();
 			}
+			
+			vDragPanelOnExpanded.setVisibility(View.VISIBLE);
+			vDragPanelOnCollapsed.setVisibility(View.GONE);
 		}
 		
 		@Override
@@ -818,6 +883,9 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 			if (getContext() instanceof RootActivity) {
 				((RootActivity) getContext()).onContentVisible();
 			}
+			
+			vDragPanelOnCollapsed.setVisibility(View.VISIBLE);
+			vDragPanelOnExpanded.setVisibility(View.GONE);
 		}
 		
 		@Override
@@ -858,11 +926,6 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
     }
 	
     public void onDestroy() {
-    	if (commentDialog != null) {
-    		commentDialog.dismiss();
-    		commentDialog = null;
-    	}
-    	
     	if (handler != null) {
     		handler.removeCallbacksAndMessages(null);
     		handler = null;

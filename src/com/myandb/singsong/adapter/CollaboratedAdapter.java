@@ -7,7 +7,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.myandb.singsong.R;
-import com.myandb.singsong.event.Listeners;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Song;
@@ -26,13 +25,12 @@ public class CollaboratedAdapter extends HolderAdapter<Song, CollaboratedAdapter
 	}
 
 	@Override
-	public void onBindViewHolder(SongHolder viewHolder, int position) {
+	public void onBindViewHolder(Context context, SongHolder viewHolder, int position) {
 		final Song thisSong = getItem(position);
 		final Song parentSong = thisSong.getParentSong();
 		final User thisUser = thisSong.getCreator();
 		final User parentUser = thisSong.getParentUser();
 		final Music music = thisSong.getMusic();
-		final Context context = viewHolder.view.getContext();
 		
 		viewHolder.tvParentUserNickname.setText(parentUser.getNickname());
 		viewHolder.tvThisUserNickname.setText(thisUser.getNickname());
@@ -53,9 +51,9 @@ public class CollaboratedAdapter extends HolderAdapter<Song, CollaboratedAdapter
 		ImageHelper.displayPhoto(parentSong.getPhotoUrl(), viewHolder.ivParentSongImage);
 		ImageHelper.displayPhoto(thisSong.getPhotoUrl(), viewHolder.ivThisSongImage);
 		
-		viewHolder.ivParentUserPhoto.setOnClickListener(Listeners.getProfileClickListener(context, parentUser));
-		viewHolder.ivThisUserPhoto.setOnClickListener(Listeners.getProfileClickListener(context, thisUser));
-		viewHolder.view.setOnClickListener(Listeners.getPlayClickListener(context, thisSong));
+		viewHolder.ivParentUserPhoto.setOnClickListener(parentUser.getProfileClickListener(context));
+		viewHolder.ivThisUserPhoto.setOnClickListener(thisUser.getProfileClickListener(context));
+		viewHolder.view.setOnClickListener(thisSong.getPlayClickListener(context));
 	}
 	
 	public static final class SongHolder extends ViewHolder {

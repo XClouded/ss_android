@@ -38,14 +38,13 @@ public class WriteCommentDialog extends BaseDialog {
 
 	@Override
 	protected void onViewInflated(View view, LayoutInflater inflater) {
-		ivWriterPhoto = (ImageView) view.findViewById(R.id.iv_writer_photo);
 		etComment = (EditText) view.findViewById(R.id.et_comment);
 		btnSubmit = (Button) view.findViewById(R.id.btn_submit);
 	}
 
 	@Override
 	protected int getResourceId() {
-		return R.layout.dialog_write_comment;
+		return 0;
 	}
 
 	@Override

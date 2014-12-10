@@ -20,7 +20,7 @@ public class Music extends Model {
 	private int sing_num;
 	
 	public String getSingerName() {
-		return toString(singer);
+		return safeString(singer);
 	}
 	
 	public Spannable getWorkedTitle() {
@@ -32,7 +32,7 @@ public class Music extends Model {
 	}
 	
 	public String getTitle() {
-		return toString(title);
+		return safeString(title);
 	}
 	
 	public String getAlbumPhotoUrl() {
@@ -48,15 +48,15 @@ public class Music extends Model {
 	}
 	
 	public String getMalePart() {
-		return toString(part_male);
+		return safeString(part_male);
 	}
 	
 	public String getFemalePart() {
-		return toString(part_female);
+		return safeString(part_female);
 	}
 	
 	public String getWorkedSingNum() {
-		return toString(sing_num);
+		return safeString(sing_num);
 	}
 	
 	public int getSingNum() {

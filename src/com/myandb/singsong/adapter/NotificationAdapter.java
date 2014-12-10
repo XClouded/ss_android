@@ -35,11 +35,10 @@ public class NotificationAdapter extends HolderAdapter<Notification, Notificatio
 	}
 
 	@Override
-	public void onBindViewHolder(NotificationHolder viewHolder, int position) {
+	public void onBindViewHolder(Context context, NotificationHolder viewHolder, int position) {
 		final Notification notification = getItem(position);
 		final Activity activity = notification.getActivity();
 		final User activityCreator = activity.getCreator();
-		final Context context = viewHolder.view.getContext();
 		
 		Spannable nicknameSpan = new SpannableString(activityCreator.getNickname());
 		Utility.getStyleSpan(nicknameSpan, Typeface.BOLD);

@@ -24,9 +24,8 @@ public class MusicSquareAdapter extends HolderAdapter<Music, MusicSquareAdapter.
 	}
 
 	@Override
-	public void onBindViewHolder(MusicHolder viewHolder, int position) {
+	public void onBindViewHolder(Context context, MusicHolder viewHolder, int position) {
 		final Music music = getItem(position);
-		final Context context = viewHolder.view.getContext();
 		
 		viewHolder.tvSingerLeft.setText(music.getSingerName());
 		viewHolder.tvTitleLeft.setText(music.getTitle());

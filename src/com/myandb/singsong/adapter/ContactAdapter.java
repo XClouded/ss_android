@@ -1,5 +1,6 @@
 package com.myandb.singsong.adapter;
 
+import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,7 +24,7 @@ public class ContactAdapter extends HolderAdapter<Contact, ContactAdapter.Contac
 	}
 
 	@Override
-	public void onBindViewHolder(ContactHolder viewHolder, int position) {
+	public void onBindViewHolder(Context context, ContactHolder viewHolder, int position) {
 		final Contact contact = getItem(position);
 		
 		viewHolder.tvContactName.setText(contact.getName());

@@ -127,60 +127,6 @@ public class Listeners {
 		};
 	}
 	
-	public static OnClickListener getChildrenClickListener(final Context context, final Song song) {
-		return new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				Gson gson = Utility.getGsonInstance();
-				Song parentSong = song.getParentSong() == null ? song : song.getParentSong();
-				parentSong.setMusic(song.getMusic());
-				
-//				Intent intent = new Intent(context, ChildSongActivity.class);
-//				intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-//				intent.putExtra(ChildSongActivity.INTENT_PARENT_SONG, gson.toJson(parentSong, Song.class));
-//				context.startActivity(intent);
-			}
-		};
-	}
-	
-	public static OnClickListener getProfileClickListener(final Context context, final User user) {
-		return new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				if (user != null) {
-					BaseActivity activity = (BaseActivity) context;
-					User currentUser = Authenticator.getUser();
-					
-					if (currentUser.getId() != user.getId()) {
-						Gson gson = Utility.getGsonInstance();
-						String userInJson = gson.toJson(user, User.class);
-						Bundle bundle = new Bundle();
-						bundle.putString(UserHomeFragment.EXTRA_THIS_USER, userInJson);
-						
-						Intent intent = new Intent(context, RootActivity.class);
-						intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, UserHomeFragment.class.getName());
-						intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
-						activity.changePage(intent);
-					}
-				}
-			}
-		};
-	}
-	
-	public static OnClickListener getPlayClickListener(final Context context, final Song song) {
-		return new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				BaseActivity activity = (BaseActivity) context;
-				PlayerService service = activity.getPlayerService();
-				service.startPlaying(song);
-			}
-		};
-	}
-	
 	public static OnClickListener getRecordClickListener(final Context context, final Music music) {
 		return new ActivateOnlyClickListener() {
 			
@@ -200,45 +146,6 @@ public class Listeners {
 				context.startActivity(intent);
 				
 			}
-		};
-	}
-	
-	public static OnClickListener getCollaboClickListener(final Context context, final Song song) {
-		return new ActivateOnlyClickListener() {
-			
-			private Song parentSong;
-			
-			@Override
-			public void onActivated(View v, User user) {
-				parentSong = song.getParentSong() == null ? song : song.getParentSong();
-				parentSong.setMusic(song.getMusic());
-				
-				JSONObjectRequest request = new JSONObjectRequest(
-						"songs/" + parentSong.getId(), null,
-						new JSONObjectSuccessListener(this, "onSuccess"),
-						new JSONErrorListener(this, "onFail")
-				);
-				((App) context.getApplicationContext()).addShortLivedRequest(context, request);
-			}
-			
-			@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-			public void onSuccess(JSONObject response) {
-				Gson gson = Utility.getGsonInstance();
-				
-				Intent intent = null;/*new Intent(context, RecordMainActivity.class);*/
-//				intent.putExtra(RecordMainActivity.INTENT_PARENT_SONG, gson.toJson(parentSong, Song.class));
-				
-				if (VERSION.SDK_INT > VERSION_CODES.GINGERBREAD_MR1) {
-					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-				}
-				
-				context.startActivity(intent);
-			}
-			
-			public void onFail() {
-				Toast.makeText(context, context.getString(R.string.t_deleted_song), Toast.LENGTH_SHORT).show();
-			}
-			
 		};
 	}
 	

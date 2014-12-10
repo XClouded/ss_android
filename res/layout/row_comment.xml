@@ -3,63 +3,65 @@
     xmlns:app="http://schemas.android.com/apk/res/com.myandb.singsong"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="@dimen/margin"
-    android:paddingRight="@dimen/margin" >
+    android:paddingTop="@dimen/margin_small"
+    android:paddingLeft="@dimen/margin_big"
+    android:paddingRight="@dimen/margin_big" >
     
     <com.myandb.singsong.widget.RoundedImageView
         android:id="@+id/iv_comment_user_photo"
-        android:layout_marginRight="@dimen/margin_tiny"
+        android:layout_marginTop="@dimen/margin_tiny"
+        android:layout_marginRight="@dimen/margin"
         app:oval="true"
         app:border_width="0.1dp"
         app:border_color="@color/divider"
         style="@style/UserImageView" />
     
     <RelativeLayout
+        android:id="@+id/layout_comment_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/iv_comment_user_photo"
-        android:background="@drawable/bg_comment" >
+        android:layout_toRightOf="@id/iv_comment_user_photo" >
         
-	    <TextView
-	        android:id="@+id/tv_comment_user_nickname"
-	        style="@style/SmallTextViewTitle" />
+        <ImageView
+            android:id="@+id/iv_menu"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_overflow"
+            style="@style/BaseImageView" />
 	    
 	    <TextView
 	        android:id="@+id/tv_comment_created"
-	        android:layout_alignParentTop="true"
-	        android:layout_alignParentRight="true"
+	        android:layout_toLeftOf="@id/iv_menu"
+	        android:layout_marginTop="@dimen/margin_small"
+	        android:layout_marginLeft="@dimen/margin"
 	        style="@style/TextViewHint" />
+        
+	    <TextView
+	        android:id="@+id/tv_comment_user_nickname"
+	        android:layout_width="match_parent"
+	        android:textStyle="bold"
+	        android:textColor="@color/font_white"
+	        android:layout_toLeftOf="@id/tv_comment_created"
+	        android:layout_alignTop="@id/tv_comment_created"
+	        android:layout_marginBottom="@dimen/margin_small"
+	        android:ellipsize="end"
+	        android:maxLines="1"
+	        style="@style/TextViewBase" />
 	    
 	    <TextView
 	        android:id="@+id/tv_comment_content"
 	        android:layout_below="@id/tv_comment_user_nickname"
 	        android:layout_alignLeft="@id/tv_comment_user_nickname"
+	        android:textColor="@color/font_white"
 	        style="@style/TextViewBase" />
-	    
-	    <ImageView
-	        android:id="@+id/iv_report_comment"
-	        android:layout_width="25sp"
-	        android:layout_height="25sp"
-	        android:paddingBottom="10sp"
-	        android:paddingLeft="10sp"
-	        android:layout_marginRight="@dimen/margin_small"
-	        android:layout_toLeftOf="@id/tv_comment_created"
-	        android:src="@drawable/ic_launcher"
-	        android:visibility="gone"
-	        style="@style/BaseImageView" />
-	    
-	    <ImageView
-	        android:id="@+id/iv_delete_comment"
-	        android:layout_width="25sp"
-	        android:layout_height="25sp"
-	        android:paddingBottom="10sp"
-	        android:paddingLeft="10sp"
-	        android:layout_marginRight="@dimen/margin_small"
-	        android:layout_toLeftOf="@id/tv_comment_created"
-	        android:src="@drawable/ic_trash"
-	        android:visibility="gone"
-	        style="@style/BaseImageView" />
         
     </RelativeLayout>
+    
+    <ImageView
+        android:src="#eaeaea"
+        android:layout_below="@id/layout_comment_content"
+        android:layout_marginTop="@dimen/margin"
+        style="@style/DividerHorizontal" />
     
 </RelativeLayout>

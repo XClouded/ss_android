@@ -1,5 +1,6 @@
 package com.myandb.singsong.adapter;
 
+import android.content.Context;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -27,7 +28,7 @@ public class ImageAdapter extends HolderAdapter<Image, ImageAdapter.ImageHolder>
 	}
 
 	@Override
-	public void onBindViewHolder(ImageHolder viewHolder, int position) {
+	public void onBindViewHolder(Context context, ImageHolder viewHolder, int position) {
 		final Image image = getItem(position);
 		
 		viewHolder.tvCreatedTime.setText(image.getWorkedCreatedTime(getCurrentDate()));

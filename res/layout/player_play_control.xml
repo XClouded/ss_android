@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:orientation="vertical" >
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_bigger" >
+        
+        <TextView
+            android:id="@+id/tv_play_start_time"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="@string/time_default"
+            android:textColor="@color/white"
+            style="@style/TextViewHint" />
+        
+        <TextView
+            android:id="@+id/tv_play_end_time"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="@string/time_default"
+            android:textColor="@color/white"
+            style="@style/TextViewHint" />
+        
+        <SeekBar
+            android:id="@+id/sb_play"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/tv_play_start_time"
+            android:layout_toLeftOf="@id/tv_play_end_time"
+            android:layout_centerVertical="true"
+            android:paddingLeft="@dimen/margin_small"
+            android:paddingRight="@dimen/margin_small"
+            android:minHeight="1dp"
+            android:maxHeight="1dp"
+            android:progressDrawable="@drawable/seekbar"
+            android:thumb="@drawable/seekbar_thumb"
+            android:thumbOffset="0dp" />
+        
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+        
+        <ImageView
+            android:id="@+id/iv_like_song"
+         	android:layout_width="25dp"
+         	android:layout_height="25dp"
+         	android:layout_marginLeft="@dimen/margin"
+         	android:layout_centerVertical="true"
+         	android:src="@drawable/ic_like"
+         	style="@style/BaseImageView" />
+        
+        <ImageView
+            android:id="@+id/iv_show_comment"
+            android:layout_width="25dp"
+         	android:layout_height="25dp"
+         	android:layout_marginRight="@dimen/margin"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_comment"
+            style="@style/BaseImageView" />
+        
+        <ImageView
+            android:id="@+id/iv_play_control"
+            android:layout_width="30dp"
+            android:layout_height="44dp"
+            android:src="@drawable/ic_play"
+            android:layout_centerHorizontal="true"
+            style="@style/BaseImageView" />
+        
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/iv_like_song"
+            android:layout_toLeftOf="@id/iv_play_control"
+            android:layout_centerVertical="true" >
+            
+            <ImageView
+                android:id="@+id/iv_loop_control"
+                android:layout_width="25dp"
+         		android:layout_height="25dp"
+		        android:layout_gravity="center"
+		        android:src="@drawable/ic_loop_on"
+		        style="@style/BaseImageView" />
+            
+        </FrameLayout>
+        
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/iv_play_control"
+            android:layout_toLeftOf="@id/iv_show_comment"
+            android:layout_centerVertical="true" >
+            
+            <ImageView
+                android:id="@+id/iv_autoplay_control"
+                android:layout_width="35dp"
+         		android:layout_height="25dp"
+		        android:layout_gravity="center"
+		        android:src="@drawable/ic_autoplay_on"
+		        style="@style/BaseImageView" />
+            
+        </FrameLayout>
+        
+    </RelativeLayout>
+
+</LinearLayout>

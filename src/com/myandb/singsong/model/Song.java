@@ -3,6 +3,26 @@ package com.myandb.singsong.model;
 import java.util.List;
 import java.util.Random;
 
+import org.json.JSONObject;
+
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Toast;
+
+import com.android.volley.Response.ErrorListener;
+import com.android.volley.Response.Listener;
+import com.android.volley.VolleyError;
+import com.myandb.singsong.App;
+import com.myandb.singsong.R;
+import com.myandb.singsong.activity.BaseActivity;
+import com.myandb.singsong.activity.UpActivity;
+import com.myandb.singsong.event.ActivateOnlyClickListener;
+import com.myandb.singsong.fragment.KaraokeFragment;
+import com.myandb.singsong.net.JSONObjectRequest;
+import com.myandb.singsong.service.PlayerService;
 import com.myandb.singsong.util.StringFormatter;
 
 public class Song extends Model {
@@ -104,7 +124,12 @@ public class Song extends Model {
 	}
 	
 	public Song getParentSong() {
-		return isRoot() ? this : song;
+		if (isRoot()) {
+			return this;
+		} else {
+			song.setMusic(getMusic());
+			return song;
+		}
 	}
 	
 	public List<Song> getChildren() {
@@ -116,7 +141,7 @@ public class Song extends Model {
 	}
 	
 	public String getWorkedCollaboNum() {
-		return toString(collabo_num);
+		return safeString(collabo_num);
 	}
 	
 	public int getCommentNum() {
@@ -124,7 +149,7 @@ public class Song extends Model {
 	}
 	
 	public String getWorkedCommentNum() {
-		return toString(comment_num);
+		return safeString(comment_num);
 	}
 	
 	public int getLikeNum() {
@@ -132,7 +157,7 @@ public class Song extends Model {
 	}
 	
 	public String getWorkedLikeNum() {
-		return toString(liking_num);
+		return safeString(liking_num);
 	}
 	
 	public int getLyricPart() {
@@ -176,10 +201,30 @@ public class Song extends Model {
 	}
 	
 	public String getPhotoUrl() {
-		if (photos != null && photos.size() > 0) {
+		if (hasPhoto()) {
 			return photos.get(0).getUrl();
 		} else {
 			return randomPhotos[random.nextInt(randomPhotos.length)];
+		}
+	}
+	
+	public boolean hasPhoto() {
+		return photos != null && photos.size() > 0;
+	}
+	
+	public int getPhotoSize() {
+		if (hasPhoto()) {
+			return photos.size();
+		} else {
+			return 0;
+		}
+	}
+	
+	public int getTotalPhotoSize() {
+		if (isRoot()) {
+			return getPhotoSize();
+		} else {
+			return getPhotoSize() + song.getPhotoSize();
 		}
 	}
 	
@@ -198,4 +243,67 @@ public class Song extends Model {
 	public void decrementLikeNum() {
 		liking_num--;
 	}
+
+	public OnClickListener getPlayClickListener(final Context context) {
+		return new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				BaseActivity activity = (BaseActivity) context;
+				PlayerService service = activity.getPlayerService();
+				service.startPlaying(Song.this);
+			}
+		};
+	}
+	
+	public OnClickListener getCollaboClickListner(final Context context) {
+		return new ActivateOnlyClickListener() {
+			
+			@Override
+			public void onActivated(View v, User user) {
+				JSONObjectRequest request = new JSONObjectRequest(
+						"songs/" + getParentSong().getId(), null,
+						successListener, errorListener);
+				((App) context.getApplicationContext()).addShortLivedRequest(context, request);
+			}
+			
+			private Listener<JSONObject> successListener = new Listener<JSONObject>() {
+
+				@Override
+				public void onResponse(JSONObject response) {
+					Bundle bundle = new Bundle();
+					bundle.putString(KaraokeFragment.EXTRA_PARENT_SONG, getParentSong().toString());
+					Intent intent = new Intent(context, UpActivity.class);
+					intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, KaraokeFragment.class.getName());
+					intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
+					context.startActivity(intent);
+				}
+			};
+			
+			private ErrorListener errorListener = new ErrorListener() {
+
+				@Override
+				public void onErrorResponse(VolleyError error) {
+					Toast.makeText(context, context.getString(R.string.t_deleted_song), Toast.LENGTH_SHORT).show();
+				}
+			};
+			
+		};
+	}
+	
+	public OnClickListener getChildrenClickListener(final Context context) {
+		return new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Bundle bundle = new Bundle();
+				bundle.putString("", getParentSong().toString());
+				Intent intent = new Intent(context, UpActivity.class);
+				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, "");
+				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
+				((BaseActivity) context).changePage(intent);
+			}
+		};
+	}
+	
 }

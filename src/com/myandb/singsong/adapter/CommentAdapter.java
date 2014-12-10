@@ -7,7 +7,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.myandb.singsong.R;
-import com.myandb.singsong.event.Listeners;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.SongComment;
 import com.myandb.singsong.model.User;
@@ -25,17 +24,16 @@ public class CommentAdapter extends HolderAdapter<SongComment, CommentAdapter.Co
 	}
 
 	@Override
-	public void onBindViewHolder(CommentHolder viewHolder, int position) {
+	public void onBindViewHolder(Context context, CommentHolder viewHolder, int position) {
 		final SongComment comment = getItem(position);
 		final User writer = comment.getWriter();
-		final Context context = viewHolder.view.getContext();
 		
 		viewHolder.tvNickname.setText(writer.getNickname());
 		viewHolder.tvCreated.setText(comment.getWorkedCreatedTime(getCurrentDate()));
 		viewHolder.tvCommentContent.setText(comment.getContent());
 		
 		ImageHelper.displayPhoto(writer, viewHolder.ivUserPhoto);
-		viewHolder.ivUserPhoto.setOnClickListener(Listeners.getProfileClickListener(context, writer));
+		viewHolder.ivUserPhoto.setOnClickListener(writer.getProfileClickListener(context));
 		
 		// report and delete comment
 		// using pop up menu
@@ -44,8 +42,7 @@ public class CommentAdapter extends HolderAdapter<SongComment, CommentAdapter.Co
 	public static final class CommentHolder extends ViewHolder {
 		
 		public ImageView ivUserPhoto;
-		public ImageView ivReportComment;
-		public ImageView ivDeleteComment;
+		public ImageView ivMenu;
 		public TextView tvNickname;
 		public TextView tvCreated;
 		public TextView tvCommentContent;
@@ -54,8 +51,7 @@ public class CommentAdapter extends HolderAdapter<SongComment, CommentAdapter.Co
 			super(view);
 			
 			ivUserPhoto = (ImageView) view.findViewById(R.id.iv_comment_user_photo);
-			ivReportComment = (ImageView) view.findViewById(R.id.iv_report_comment);
-			ivDeleteComment = (ImageView) view.findViewById(R.id.iv_delete_comment);
+			ivMenu = (ImageView) view.findViewById(R.id.iv_menu);
 			tvNickname = (TextView) view.findViewById(R.id.tv_comment_user_nickname);
 			tvCreated = (TextView) view.findViewById(R.id.tv_comment_created);
 			tvCommentContent = (TextView) view.findViewById(R.id.tv_comment_content);

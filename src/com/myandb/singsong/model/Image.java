@@ -5,7 +5,7 @@ public class Image extends Model {
 	private String url;
 	
 	public String getUrl() {
-		return toString(url);
+		return safeString(url);
 	}
 	
 	public void setUrl(String url) {

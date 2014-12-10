@@ -14,7 +14,7 @@
     <string name="join">가입완료</string>
     <string name="to_join">회원가입</string>
     <string name="setting">설정하기</string>
-    <string name="submit">입력하기</string>
+    <string name="submit">입력</string>
     <string name="delete">삭제하기</string>
     <string name="close">닫기</string>
     <string name="loading">로딩중입니다..</string>
@@ -49,7 +49,7 @@
     <string name="dialog_part_select_content">파트를 선택하고 각 파트에 해당하는 색깔의 가사를 부르세요. 흰색 가사는 같이 부르세요</string>
     <string name="dialog_update_title">새로운 버전이 나왔습니다!</string>
     
-    <string name="hint_write_comment">노래에 대한 감상평을 남겨주세요! (200자 제한)</string>
+    <string name="hint_write_comment">한마디를 남겨주세요!</string>
     <string name="hint_report_comment">신고사유를 적어주세요 (20자 이상)</string>
     <string name="hint_send_kakaotalk">친구에게 메세지를 보내세요!</string>
     <string name="hint_username">이메일 입력</string>

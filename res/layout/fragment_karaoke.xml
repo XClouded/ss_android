@@ -55,7 +55,7 @@
 		    android:layout_height="45dp"
 		    android:layout_marginRight="5dp"
 		    android:layout_alignParentRight="true"
-		    android:background="@drawable/ic_pause_neon" />
+		    android:background="@drawable/ic_pause" />
 		
 		<TextView
 		    android:id="@+id/tv_decode_progress"

@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import com.google.gson.Gson;
 import com.myandb.singsong.util.Utility;
 
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -109,13 +110,13 @@ public abstract class HolderAdapter<T, E extends ViewHolder> extends BaseAdapter
 			viewHolder = (E) view.getTag();
 		}
 		
-		onBindViewHolder(viewHolder, position);
+		onBindViewHolder(view.getContext(), viewHolder, position);
 		
 		return view;
 	}
 	
 	public abstract E onCreateViewHolder(ViewGroup parent, int viewType);
 	
-	public abstract void onBindViewHolder(E viewHolder, int position);
+	public abstract void onBindViewHolder(Context context, E viewHolder, int position);
 	
 }

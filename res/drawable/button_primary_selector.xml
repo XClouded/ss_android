@@ -4,11 +4,6 @@
     <item android:state_pressed="true">
         <shape>
 		   	<solid android:color="@color/primary_dark" />
-		   	<padding
-				android:top="@dimen/margin"
-				android:bottom="@dimen/margin"
-				android:left="@dimen/margin_small"
-				android:right="@dimen/margin_small" />
 		   	<corners
 		   	    android:radius="@dimen/corner_radius" />
 		</shape>
@@ -17,11 +12,6 @@
     <item>
         <shape>
 		   	<solid android:color="@color/primary" />
-		   	<padding
-				android:top="@dimen/margin"
-				android:bottom="@dimen/margin"
-				android:left="@dimen/margin_small"
-				android:right="@dimen/margin_small" />
 		   	<corners
 		   	    android:radius="@dimen/corner_radius" />
 		</shape>

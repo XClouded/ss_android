@@ -10,7 +10,6 @@ public class StreamPlayer extends MediaPlayer {
 	
 	private boolean prepared;
 	private boolean autoplay;
-	private boolean looping;
 	private boolean initialStart;
 	private String dataSource;
 	private OnPlayEventListener listener;
@@ -58,16 +57,9 @@ public class StreamPlayer extends MediaPlayer {
 		
 		@Override
 		public void onCompletion(MediaPlayer mp) {
-			mp.seekTo(0);
-			
-			if (looping) {
-				mp.start();
-			} else {
-				if (listener != null) {
-					listener.onPlay(PlayEvent.COMPLETED);
-				}
-				
-				mp.pause();
+			prepared = false;
+			if (listener != null) {
+				listener.onPlay(PlayEvent.COMPLETED);
 			}
 		}
 	};
@@ -94,6 +86,20 @@ public class StreamPlayer extends MediaPlayer {
 	
 	public boolean isSourceAvailable() {
 		return dataSource != null;
+	}
+	
+	public void startIfPrepared() {
+		if (isPrepared()) {
+			start();
+		} else {
+			try {
+				reset();
+				setDataSource(dataSource);
+				prepareAsync();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@Override
@@ -128,11 +134,6 @@ public class StreamPlayer extends MediaPlayer {
 	
 	public void setAutoplay(boolean autoplay) {
 		this.autoplay = autoplay;
-	}
-	
-	@Override
-	public void setLooping(boolean looping) {
-		this.looping = looping;
 	}
 	
 }
