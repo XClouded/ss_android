@@ -82,7 +82,7 @@
     <string name="collabo_facebook">콜라보노래방 facebook</string>
     <string name="time_default">88:88</string>
     <string name="change_password">비밀번호 변경</string>
-    <string name="invite_friends">친구 초대</string>
+    <string name="invite_friends">친구초대</string>
     
     <string name="fragment_home_title">콜라보 홈</string>
     <string name="fragment_artist_list_title">콜라보 아티스트</string>
