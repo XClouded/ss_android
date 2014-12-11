@@ -85,6 +85,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	private TextView tvSingerNameOnCollapsed;
 	private TextView tvSingerNameOnExpanded;
 	private TextView tvTargetContent;
+	private TextView tvCommentNum;
 	private ImageView ivParentUserPhoto;
 	private ImageView ivThisUserPhoto;
 	private ImageView ivLikeSong;
@@ -159,7 +160,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	private void initialize() {
 		currentUser = Authenticator.getUser();
 		
-		commentAdapter = new CommentAdapter();
+		commentAdapter = new CommentAdapter(getContext());
 		lvComments.setAdapter(commentAdapter);
 		
 		loader = new GradualLoader(getContext());
@@ -200,6 +201,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		tvSingerNameOnCollapsed = (TextView) findViewById(R.id.tv_singer_name_on_collapsed);
 		tvSingerNameOnExpanded = (TextView) findViewById(R.id.tv_singer_name_on_expanded);
 		tvTargetContent = (TextView) findViewById(R.id.tv_target_nickname);
+		tvCommentNum = (TextView) findViewById(R.id.tv_comment_num);
 		
 		ivParentUserPhoto = (ImageView) findViewById(R.id.iv_parent_user_photo);
 		ivThisUserPhoto = (ImageView) findViewById(R.id.iv_this_user_photo);
@@ -470,7 +472,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		
 		displayTargetContent(parentUser.getNickname());
 		
-//		displayCommentNum(song.getCommentNum());
+		displayCommentNum(song.getCommentNum());
 		
 //		displayLikeNum(song.getWorkedLikeNum());
 		
@@ -578,13 +580,13 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		tvTargetContent.append(" ´Ô°ú");
 	}
 	
-	/*
 	private void displayCommentNum(int num) {
 		tvCommentNum.setText("´ñ±Û (");
 		tvCommentNum.append(String.valueOf(num));
 		tvCommentNum.append(")");
 	}
 	
+	/*
 	private void displayLikeNum(String num) {
 		tvLikeNum.setText("ÁÁ¾Æ¿ä (");
 		tvLikeNum.append(num);
@@ -736,12 +738,12 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	
 	public void addComment(SongComment comment) {
 		commentAdapter.addItem(comment);
-//		displayCommentNum(commentAdapter.getCount());
+		displayCommentNum(commentAdapter.getCount());
 	}
 	
 	public void removeComment(SongComment comment) {
 		commentAdapter.removeItem(comment);
-//		displayCommentNum(commentAdapter.getCount());
+		displayCommentNum(commentAdapter.getCount());
 	}
 	
 	/*

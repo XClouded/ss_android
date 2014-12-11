@@ -59,10 +59,19 @@
         
     </RelativeLayout>
     
+    <TextView
+        android:id="@+id/tv_comment_num"
+        android:textColor="@color/font_white"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:layout_marginLeft="@dimen/margin"
+        android:text="댓글"
+        style="@style/TextViewBase" />
+    
     <ImageView
         android:id="@+id/upper_divider"
         android:paddingLeft="@dimen/margin"
         android:paddingRight="@dimen/margin"
+        android:layout_below="@id/tv_comment_num"
         style="@style/DividerHorizontal" />
     
     <ImageView
