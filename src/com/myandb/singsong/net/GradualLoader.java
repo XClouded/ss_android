@@ -4,15 +4,15 @@ import org.json.JSONArray;
 
 import android.content.Context;
 import android.widget.AbsListView;
-import android.widget.ListView;
 import android.widget.AbsListView.OnScrollListener;
 
 import com.myandb.singsong.App;
 
-public class GradualLoader {
+public class GradualLoader implements OnScrollListener {
 	
 	private static final int INITIAL_LOAD_NUM = 25;
 	private static final int ADDITIONAL_LOAD_NUM = 15;
+	private static final int VISIBLE_THRESHOLD = 10; 
 
 	private Context context;
 	private OnLoadCompleteListener completeListener;
@@ -22,6 +22,7 @@ public class GradualLoader {
 	private int requiredTake;
 	private boolean nothingToLoad;
 	private boolean loading;
+    private int previousVisibleTotal = 0;
 
 	public GradualLoader(Context context) {
 		this.context = context;
@@ -94,32 +95,22 @@ public class GradualLoader {
 		return urlBuilder != null;
 	}
 	
-	public void setListView(ListView listView) {
-		listView.setOnScrollListener(scrollListener);
-	}
+	@Override
+	public void onScrollStateChanged(AbsListView view, int scrollState) {}
 	
-	private OnScrollListener scrollListener = new OnScrollListener() {
-		
-		private static final int VISIABLE_THRESHOLD = 10; 
-        private int previousTotal = 0;
-		
-		@Override
-		public void onScrollStateChanged(AbsListView view, int scrollState) {}
-		
-		@Override
-		public void onScroll(AbsListView view, int firstVisibleItem,
+	@Override
+	public void onScroll(AbsListView view, int firstVisibleItem,
 			int visibleItemCount, int totalItemCount) {
-			if (isLoading()) {
-                if (totalItemCount > previousTotal) {
-                	previousTotal = totalItemCount;
-                }
-            } else {
-            	if ((totalItemCount - visibleItemCount) <= (firstVisibleItem + VISIABLE_THRESHOLD)) {
-            		load();
-            	}
-            }
+		if (isLoading()) {
+			if (totalItemCount > previousVisibleTotal) {
+				previousVisibleTotal = totalItemCount;
+			}
+		} else {
+			if ((totalItemCount - visibleItemCount) <= (firstVisibleItem + VISIBLE_THRESHOLD)) {
+				load();
+			}
 		}
-	};
+	}
 	
 	public interface OnLoadCompleteListener {
 		
@@ -132,4 +123,5 @@ public class GradualLoader {
 		public void onError();
 		
 	}
+	
 }

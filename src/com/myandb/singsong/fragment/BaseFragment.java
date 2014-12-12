@@ -2,6 +2,7 @@ package com.myandb.singsong.fragment;
 
 import com.android.volley.Request;
 import com.myandb.singsong.App;
+import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.service.PlayerService;
 
@@ -10,6 +11,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources.NotFoundException;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -65,6 +67,8 @@ public abstract class BaseFragment extends Fragment {
 		super.onResume();
 		setActionBarTitle(title);
 		setActionBarSubtitle(subtitle);
+		setActionBarBackground(R.drawable.actionbar_background);
+		setActionBarOverlay(false);
 	}
 
 	public void notifyDataChanged() {
@@ -73,6 +77,19 @@ public abstract class BaseFragment extends Fragment {
 
 	public void onBackPressed() {
 		getActivity().finish();
+	}
+	
+	public void setActionBarOverlay(boolean overlay) {
+		View container = getActivity().findViewById(R.id.fl_content_fragment_container);
+		
+		if (container != null) {
+			if (overlay) {
+				container.setPadding(0, 0, 0, 0);
+			} else {
+				int actionBarHeight = getResources().getDimensionPixelSize(R.dimen.abc_action_bar_default_height);
+				container.setPadding(0, actionBarHeight, 0, 0);
+			}
+		}
 	}
 	
 	public BaseActivity getBaseActivity() throws IllegalStateException {
@@ -99,6 +116,15 @@ public abstract class BaseFragment extends Fragment {
 	
 	public ActionBar getSupportActionBar() throws IllegalStateException {
 		return getBaseActivity().getSupportActionBar();
+	}
+	
+	public void setActionBarBackground(int resId) throws IllegalStateException {
+		try {
+			Drawable background = getResources().getDrawable(resId);
+			getSupportActionBar().setBackgroundDrawable(background);
+		} catch (NotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void setActionBarTitle(String title) throws IllegalStateException {

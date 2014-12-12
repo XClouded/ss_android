@@ -459,7 +459,7 @@ public class UserHomeFragment extends ListFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		setActionBarTitle(thisUser.getNickname());
+		setFadingActionBarTitle(thisUser.getNickname());
 	}
 	
 }

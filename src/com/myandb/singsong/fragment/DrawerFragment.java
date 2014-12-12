@@ -153,7 +153,6 @@ public class DrawerFragment extends BaseFragment {
 			Intent intent = new Intent(getActivity(), RootActivity.class);
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, UserHomeFragment.class.getName());
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
-			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_ROOT, true);
 			startFragment(intent);
 		}
 	};

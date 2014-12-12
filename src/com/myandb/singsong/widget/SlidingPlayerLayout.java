@@ -164,7 +164,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		lvComments.setAdapter(commentAdapter);
 		
 		loader = new GradualLoader(getContext());
-		loader.setListView(lvComments);
+		lvComments.setOnScrollListener(loader);
 		
 		handler = new Handler();
 	}
