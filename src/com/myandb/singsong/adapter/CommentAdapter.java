@@ -15,20 +15,23 @@ import android.widget.TextView;
 
 import com.myandb.singsong.R;
 import com.myandb.singsong.dialog.BaseDialog;
-import com.myandb.singsong.dialog.DeleteCommentDialog;
 import com.myandb.singsong.dialog.ReportCommentDialog;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.SongComment;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.secure.Authenticator;
+import com.myandb.singsong.widget.SlidingPlayerLayout;
 
 public class CommentAdapter extends HolderAdapter<SongComment, CommentAdapter.CommentHolder> {
 	
 	private SongComment selectedComment;
+	private SlidingPlayerLayout layout;
 	private FragmentManager fragmentManager;
 
-	public CommentAdapter(Context context) {
+	public CommentAdapter(SlidingPlayerLayout layout) {
 		super(SongComment.class);
+		this.layout = layout;
+		Context context = layout.getContext();
 		this.fragmentManager = ((ActionBarActivity) context).getSupportFragmentManager();
 	}
 
@@ -77,26 +80,24 @@ public class CommentAdapter extends HolderAdapter<SongComment, CommentAdapter.Co
 		
 		@Override
 		public boolean onMenuItemClick(MenuItem item) {
-			BaseDialog dialog = null;
-			Bundle bundle = new Bundle();
-			
 			switch (item.getItemId()) {
 			case R.id.action_report_comment:
-				dialog = new ReportCommentDialog();
-				bundle.putString("", selectedComment.getContent());
-				break;
+				BaseDialog dialog = new ReportCommentDialog();
+				Bundle bundle = new Bundle();
+				bundle.putInt(ReportCommentDialog.EXTRA_COMMENT_ID, selectedComment.getId());
+				bundle.putString(ReportCommentDialog.EXTRA_COMMENT_CONTENT, selectedComment.getContent());
+				dialog.setArguments(bundle);
+				dialog.show(fragmentManager, "");
+				return true;
 				
 			case R.id.action_delete_comment:
-				dialog = new DeleteCommentDialog();
+				layout.deleteComment(selectedComment);
 				break;
 
 			default:
 				return false;
 			}
 			
-			bundle.putInt("", selectedComment.getId());
-			dialog.setArguments(bundle);
-			dialog.show(fragmentManager, "");
 			return true;
 		}
 	};

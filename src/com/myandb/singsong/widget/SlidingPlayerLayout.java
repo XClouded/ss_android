@@ -175,7 +175,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	private void initialize() {
 		currentUser = Authenticator.getUser();
 		
-		commentAdapter = new CommentAdapter(getContext());
+		commentAdapter = new CommentAdapter(this);
 		commentLoader = new GradualLoader(getContext());
 		lvComments.setAdapter(commentAdapter);
 		lvComments.setOnScrollListener(commentLoader);
@@ -846,7 +846,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		displayCommentNum(commentAdapter.getCount());
 	}
 	
-	public void removeComment(SongComment comment) {
+	public void deleteComment(SongComment comment) {
 		commentAdapter.removeItem(comment);
 		displayCommentNum(commentAdapter.getCount());
 	}

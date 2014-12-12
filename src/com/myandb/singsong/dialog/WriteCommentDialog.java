@@ -39,7 +39,6 @@ public class WriteCommentDialog extends BaseDialog {
 	@Override
 	protected void onViewInflated(View view, LayoutInflater inflater) {
 		etComment = (EditText) view.findViewById(R.id.et_comment);
-		btnSubmit = (Button) view.findViewById(R.id.btn_submit);
 	}
 
 	@Override
