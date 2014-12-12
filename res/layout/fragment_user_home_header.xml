@@ -1,203 +1,161 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
-    <RelativeLayout
-        android:id="@+id/rl_resend_email"
+    <TextView
+        android:id="@+id/tv_resend_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/margin"
-        android:visibility="gone" >
-		
-        <Button
-            android:id="@+id/btn_resend_email"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/margin_small"
-            android:text="인증 메일 재전송"
-            style="@style/ButtonDark" />
-        
-        <TextView
-            android:layout_alignParentLeft="true"
-            android:layout_toLeftOf="@id/btn_resend_email"
-            android:layout_centerVertical="true"
-            android:text="이메일 인증을 해주세요!\n기능 제한없이 사용하실 수 있습니다."
-            android:textColor="@color/red"
-            style="@style/TextViewHint" />
-        
-    </RelativeLayout>
+        android:gravity="center"
+        android:background="@color/app_bg"
+        android:text="이메일 인증을 해주세요!\n프로필 페이지에서 인증 메일을 다시 보내세요."
+        android:textColor="@color/red"
+        android:textStyle="bold"
+        android:textSize="10sp"
+        android:visibility="gone" />
     
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="220dp" >
+        android:layout_height="280dp" >
         
         <ImageView
-            android:id="@+id/iv_profile_bg"
-            android:src="@color/grey_dark"
-            android:scaleType="centerCrop"
+            android:id="@+id/iv_user_photo_background"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:src="@color/grey_dark"
+            style="@style/BaseImageView" />
         
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@color/mask_low" />
-		
-		<Button
-		    android:id="@+id/btn_follow"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_alignParentTop="true"
-		    android:layout_alignParentRight="true"
-		    android:background="@drawable/img_follow"
-		    android:visibility="invisible"
-		    android:layout_marginTop="@dimen/margin_bigger"
-		    android:layout_marginRight="@dimen/margin" />
-		
-		<Button
-		    android:id="@+id/btn_edit_profile"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_alignParentTop="true"
-		    android:layout_alignParentRight="true"
-		    android:background="@drawable/button_wheel_selector"
-		    android:visibility="invisible"
-		    android:layout_marginTop="@dimen/margin_bigger"
-		    android:layout_marginRight="@dimen/margin" />
-		
-		<ImageView
-		    android:id="@+id/iv_user_trashes"
-		    android:layout_toLeftOf="@id/btn_edit_profile"
-		    android:layout_alignTop="@id/btn_edit_profile"
-		    android:layout_marginRight="@dimen/margin"
-		    android:visibility="invisible"
-		    android:src="@drawable/button_trash_selector"
-		    style="@style/BaseImageView" />
-		
-		<TextView
-		    android:id="@+id/tv_user_likings"
-		    android:layout_marginTop="@dimen/margin"
-		    android:layout_marginLeft="@dimen/margin"
-		    android:gravity="center"
-		    android:text="@string/my_like_song"
-		    android:textColor="@color/font_white"
-		    style="@style/TextViewHint" />
-		
-		<TextView
-		    android:id="@+id/tv_user_comments"
-		    android:layout_below="@id/tv_user_likings"
-		    android:layout_alignLeft="@id/tv_user_likings"
-		    android:layout_marginTop="@dimen/margin_small"
-		    android:gravity="center"
-		   	android:text="@string/my_comments"
-		    android:textColor="@color/font_white"
-		    android:visibility="invisible"
-		    style="@style/TextViewHint" />
-		
-		<RelativeLayout
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_centerInParent="true" >
-		    
-	        <FrameLayout
-	            android:id="@+id/fl_photo_wrapper"
-	            android:layout_width="@dimen/photo_profile"
-	            android:layout_height="@dimen/photo_profile"
-	            android:layout_marginTop="@dimen/margin"
-	            android:background="@drawable/container_profile_photo"
-	            android:layout_centerHorizontal="true" >
-	            
-				<ImageView
-				    android:id="@+id/iv_user_photo"
-				    android:layout_width="match_parent"
-				    android:layout_height="match_parent"
-				    android:src="@drawable/user_default"
-				    style="@style/BaseImageView" />
-	            
-	        </FrameLayout>
+            android:src="@drawable/mask_profile" />
+        
+        <LinearLayout
+            android:id="@+id/layout_tab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal" >
+            
+            <TextView
+	            android:id="@+id/tv_user_songs"
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	            android:paddingTop="@dimen/margin_small"
+	            android:paddingBottom="@dimen/margin_small"
+	            android:textSize="16sp"
+	            android:textColor="@color/font_highlight"
+	            android:textStyle="bold"
+	            android:lineSpacingExtra="3sp"
+	            android:gravity="center"
+	            android:background="@drawable/tab_selector"
+	            style="@style/TextViewBase" />
 	        
-			<TextView
-			    android:id="@+id/tv_user_username"
-			    android:layout_below="@id/fl_photo_wrapper"
-			    android:layout_marginTop="@dimen/margin_tiny"
-			    android:layout_centerHorizontal="true"
-			    android:textColor="@color/font_white"
-			    style="@style/TextViewBase" />
+	        <TextView
+	            android:id="@+id/tv_user_followings"
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	            android:paddingTop="@dimen/margin_small"
+	            android:paddingBottom="@dimen/margin_small"
+	            android:textSize="16sp"
+	            android:textColor="@color/white"
+	            android:textStyle="bold"
+	            android:lineSpacingExtra="3sp"
+	            android:gravity="center"
+	            android:background="@drawable/tab_selector"
+	            style="@style/TextViewBase" />
+	        
+	        <TextView
+	            android:id="@+id/tv_user_followers"
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	            android:paddingTop="@dimen/margin_small"
+	            android:paddingBottom="@dimen/margin_small"
+	            android:textSize="16sp"
+	            android:textColor="@color/white"
+	            android:textStyle="bold"
+	            android:lineSpacingExtra="3sp"
+	            android:gravity="center"
+	            android:background="@drawable/tab_selector"
+	            style="@style/TextViewBase" />
+            
+        </LinearLayout>
+        
+        <FrameLayout
+            android:id="@+id/layout_user_photo"
+            android:layout_width="@dimen/photo_big"
+            android:layout_height="@dimen/photo_big"
+            android:padding="@dimen/border_width"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="60dp"
+            android:background="@drawable/circle_white" >
+            
+            <com.myandb.singsong.widget.RoundedImageView
+	            android:id="@+id/iv_user_photo"
+	            android:layout_width="match_parent"
+	            android:layout_height="match_parent"
+	            app:oval="true"
+	            style="@style/UserImageView" />
+            
+        </FrameLayout>
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_below="@id/layout_user_photo"
+            android:layout_marginLeft="@dimen/margin"
+            android:layout_marginRight="@dimen/margin" >
 			
 			<TextView
 			    android:id="@+id/tv_user_nickname"
+			    android:layout_width="match_parent"
 			    android:textColor="@color/font_white"
 			    android:textStyle="bold"
-			    android:textSize="15sp"
-			    android:layout_below="@id/tv_user_username"
-			    android:layout_marginTop="@dimen/margin_tiny"
-			    android:layout_centerHorizontal="true"
+			    android:textSize="@dimen/text_biggest"
+			    android:layout_marginBottom="@dimen/margin_small"
+			    android:gravity="center"
 			    style="@style/TextViewBase" />
 			
 			<TextView
 			    android:id="@+id/tv_user_status"
-			    android:layout_marginTop="@dimen/margin_tiny"
-			    android:layout_below="@id/tv_user_nickname"
-			    android:textColor="@color/font_white"
+			    android:layout_width="match_parent"
 			    android:gravity="center"
-			    android:layout_centerHorizontal="true"
-			    android:maxLines="2"
+			    android:text="상태글이 없습니다."
+			    android:textColor="@color/font_white"
 			    style="@style/TextViewHint" />
-		    
-		</RelativeLayout>
-          
+            
+        </LinearLayout>
+        
+        <FrameLayout
+            android:id="@+id/layout_button_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@id/layout_user_photo"
+            android:layout_marginRight="@dimen/margin" >
+            
+	        <Button
+	            android:id="@+id/btn_follow"
+	            android:background="@drawable/button_transparent_selector"
+	            android:text="+팔로우"
+	            style="@style/ButtonMini" />
+	        
+	        <Button
+	            android:id="@+id/btn_edit_profile"
+	            android:background="@drawable/button_transparent_selector"
+	            android:text="프로필 수정"
+	            style="@style/ButtonMini" />
+            
+        </FrameLayout>
+        
     </RelativeLayout>
-    
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:baselineAligned="false"
-        android:orientation="horizontal" >
-		
-        <TextView
-            android:id="@+id/tv_user_songs"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingTop="@dimen/margin_small"
-            android:paddingBottom="@dimen/margin_small"
-            android:textSize="16sp"
-            android:textColor="@color/font_highlight"
-            android:lineSpacingExtra="3sp"
-            android:gravity="center"
-            android:background="@drawable/tab_selected"
-            style="@style/TextViewBase" />
-        
-        <TextView
-            android:id="@+id/tv_user_followings"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingTop="@dimen/margin_small"
-            android:paddingBottom="@dimen/margin_small"
-            android:textSize="16sp"
-            android:lineSpacingExtra="3sp"
-            android:gravity="center"
-            android:background="@drawable/tab_selector"
-            style="@style/TextViewBase" />
-        
-        <TextView
-            android:id="@+id/tv_user_followers"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingTop="@dimen/margin_small"
-            android:paddingBottom="@dimen/margin_small"
-            android:textSize="16sp"
-            android:lineSpacingExtra="3sp"
-            android:gravity="center"
-            android:background="@drawable/tab_selector"
-            style="@style/TextViewBase" />
-        
-    </LinearLayout>
 
 </LinearLayout>

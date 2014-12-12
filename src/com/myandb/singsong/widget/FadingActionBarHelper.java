@@ -17,11 +17,9 @@ public class FadingActionBarHelper implements OnScrollListener {
 	private static final int DEFAULT_VISIBLE_POSITION = 4000;
 	
 	private Drawable backgroundDrawable;
-	private Drawable homeDrawable;
 	private ActionBar actionBar;
 	private CharSequence title;
 	private int backgroundResId;
-	private int homeResId;
 	private int fullyVisiblePosition;
 	private float maxAlpha;
 	private float visibleThreshold;
@@ -46,16 +44,6 @@ public class FadingActionBarHelper implements OnScrollListener {
 		return this;
 	}
 	
-	public FadingActionBarHelper setHome(Drawable drawable) {
-		this.homeDrawable = drawable;
-		return this;
-	}
-	
-	public FadingActionBarHelper setHome(int resId) {
-		this.homeResId = resId;
-		return this;
-	}
-	
 	public FadingActionBarHelper setTitle(CharSequence title) {
 		this.title = title;
 		return this;
@@ -75,12 +63,8 @@ public class FadingActionBarHelper implements OnScrollListener {
 			if (backgroundDrawable == null) {
 				backgroundDrawable = activity.getResources().getDrawable(backgroundResId);
 			}
-			if (homeDrawable == null) {
-				homeDrawable = activity.getResources().getDrawable(homeResId);
-			}
 			actionBar = ((ActionBarActivity) activity).getSupportActionBar();
 			actionBar.setBackgroundDrawable(backgroundDrawable);
-			actionBar.setHomeAsUpIndicator(homeDrawable);
 			
 			fullyVisiblePosition = fullyVisiblePosition > 0 ? fullyVisiblePosition : DEFAULT_VISIBLE_POSITION;
 			visibleThreshold = (float) (fullyVisiblePosition * maxAlpha);
@@ -109,19 +93,12 @@ public class FadingActionBarHelper implements OnScrollListener {
 		int alphaInInt = (int) (alphaInFloat * 255);
 		
 		fadeBackground(alphaInInt);
-		fadeHome(alphaInInt);
 		fadeTitle(alphaInInt);
 	}
 	
 	private void fadeBackground(int alpha) {
 		if (backgroundDrawable != null) {
 			backgroundDrawable.setAlpha(alpha);
-		}
-	}
-	
-	private void fadeHome(int alpha) {
-		if (homeDrawable != null) {
-			homeDrawable.setAlpha(alpha);
 		}
 	}
 	

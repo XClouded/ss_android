@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -51,20 +54,15 @@ public class UserHomeFragment extends ListFragment {
 	private UpdateFriendshipDialog dialog;
 	
 	private ImageView ivUserPhoto;
-	private ImageView ivProfileBg;
-	private TextView tvUsername;
+	private ImageView ivUserPhotoBackground;
 	private TextView tvNickname;
 	private TextView tvUserStatus;
 	private TextView tvUserSongs;
 	private TextView tvUserFollowings;
 	private TextView tvUserFollowers;
-	private TextView tvUserLikings;
-	private TextView tvUserComments;
-	private ImageView ivUserTrashes;
+	private View tvResendEmail;
 	private Button btnFollow;
 	private Button btnEditProfile;
-	private View vResendEmail;
-	private Button btnResendEmail;
 
 	@SuppressLint("InflateParams")
 	@Override
@@ -86,25 +84,22 @@ public class UserHomeFragment extends ListFragment {
 		super.onViewInflated(view, inflater);
 		
 		ivUserPhoto = (ImageView) view.findViewById(R.id.iv_user_photo);
-		ivProfileBg = (ImageView) view.findViewById(R.id.iv_profile_bg);
-		tvUsername = (TextView) view.findViewById(R.id.tv_user_username);
+		ivUserPhotoBackground = (ImageView) view.findViewById(R.id.iv_user_photo_background);
 		tvNickname = (TextView) view.findViewById(R.id.tv_user_nickname);
 		tvUserStatus = (TextView) view.findViewById(R.id.tv_user_status);
 		tvUserSongs = (TextView) view.findViewById(R.id.tv_user_songs);
 		tvUserFollowings = (TextView) view.findViewById(R.id.tv_user_followings);
 		tvUserFollowers = (TextView) view.findViewById(R.id.tv_user_followers);
-		tvUserLikings = (TextView) view.findViewById(R.id.tv_user_likings);
-		tvUserComments = (TextView) view.findViewById(R.id.tv_user_comments);
-		ivUserTrashes = (ImageView) view.findViewById(R.id.iv_user_trashes);
+		tvResendEmail = (TextView) view.findViewById(R.id.tv_resend_email);
 		btnFollow = (Button) view.findViewById(R.id.btn_follow);
 		btnEditProfile = (Button) view.findViewById(R.id.btn_edit_profile);
-		vResendEmail = view.findViewById(R.id.rl_resend_email);
-		btnResendEmail = (Button) view.findViewById(R.id.btn_resend_email);
 	}
 
 	@Override
 	protected void setupViews() {
 		super.setupViews();
+		
+		setHasOptionsMenu(true);
 		
 		displayUserSpecificViews();
 
@@ -125,29 +120,17 @@ public class UserHomeFragment extends ListFragment {
 		tvNickname.setText(thisUser.getNickname());
 		
 		if (isCurrentUser()) {
-			tvUserComments.setVisibility(View.VISIBLE);
-			ivUserTrashes.setVisibility(View.VISIBLE);
 			btnEditProfile.setVisibility(View.VISIBLE);
 			btnFollow.setVisibility(View.GONE);
-			tvUsername.setText(thisUser.getUsername());
 		} else {
-			tvUserComments.setVisibility(View.GONE);
-			ivUserTrashes.setVisibility(View.GONE);
 			btnEditProfile.setVisibility(View.GONE);
 			btnFollow.setVisibility(View.VISIBLE);
-			tvUsername.setText(thisUser.getCroppedUsername());
 		}
 	}
 	
 	private void setOnToListClickListener() {
-		if (isCurrentUser()) {
-			tvUserComments.setOnClickListener(toListClickListener);
-			ivUserTrashes.setOnClickListener(toListClickListener);
-		}
-		
 		tvUserFollowings.setOnClickListener(toListClickListener);
 		tvUserFollowers.setOnClickListener(toListClickListener);
-		tvUserLikings.setOnClickListener(toListClickListener);
 	}
 	
 	private OnClickListener toListClickListener = new OnClickListener() {
@@ -166,18 +149,6 @@ public class UserHomeFragment extends ListFragment {
 				break;
 
 			case R.id.tv_user_followers:
-				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, "");
-				break;
-				
-			case R.id.tv_user_likings:
-				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, "");
-				break;
-				
-			case R.id.tv_user_comments:
-				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, "");
-				break;
-			
-			case R.id.iv_user_trashes:
 				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, "");
 				break;
 				
@@ -217,7 +188,7 @@ public class UserHomeFragment extends ListFragment {
 	
 	private void setBackgroundBlurImage(Bitmap bitmap) {
 		BlurAsyncTask blurTask = new BlurAsyncTask();
-		blurTask.setImageView(ivProfileBg);
+		blurTask.setImageView(ivUserPhotoBackground);
 		blurTask.execute(bitmap);
 	}
 	
@@ -294,18 +265,8 @@ public class UserHomeFragment extends ListFragment {
 				textView.setText("\"");
 				textView.append("»óÅÂ±ÛÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä. :)");
 				textView.append("\"");
-			} else {
-				textView.setVisibility(View.GONE);
 			}
 		} else {
-			if (statusMessage.length() > 20) {
-				try {
-					statusMessage = new StringBuilder(statusMessage).insert(20, "\n").toString();
-				} catch (StringIndexOutOfBoundsException e) {
-					e.printStackTrace();
-				}
-			}
-			
 			textView.setText("\"");
 			textView.append(statusMessage);
 			textView.append("\"");
@@ -337,14 +298,16 @@ public class UserHomeFragment extends ListFragment {
 				friendship.setAllowNotify(true);
 			}
 			
-			btnFollow.setBackgroundResource(R.drawable.img_following_arrow);
+			btnFollow.setBackgroundResource(R.drawable.button_primary_selector);
+			btnFollow.setText("ÆÈ·ÎÀ×");
 			btnFollow.setOnClickListener(updateFriendshipClickListener);
 		} else {
 			if (friendship != null) {
 				friendship = null;
 			}
 			
-			btnFollow.setBackgroundResource(R.drawable.img_follow);
+			btnFollow.setBackgroundResource(R.drawable.button_transparent_selector);
+			btnFollow.setText("+ÆÈ·Î¿ì");
 			btnFollow.setOnClickListener(followClickListener);
 		}
 	}
@@ -406,11 +369,10 @@ public class UserHomeFragment extends ListFragment {
 	
 	public void onCheckActivationResponse(User user) {
 		if (user.isActivated()) {
-			vResendEmail.setVisibility(View.GONE);
+			tvResendEmail.setVisibility(View.GONE);
 			updateUser(user);
 		} else {
-			vResendEmail.setVisibility(View.VISIBLE);
-			btnResendEmail.setOnClickListener(sendEmailClickListener);
+			tvResendEmail.setVisibility(View.VISIBLE);
 		}
 	}
 	
@@ -419,17 +381,6 @@ public class UserHomeFragment extends ListFragment {
 		auth.update(user);
 		currentUser = user;
 	}
-	
-	private OnClickListener sendEmailClickListener = new MemberOnlyClickListener() {
-		
-		@Override
-		public void onLoggedIn(View v, User user) {
-			JustRequest request = new JustRequest(Method.POST, "activations", null);
-			addRequest(request);
-			makeToast(R.string.t_activation_email_send);
-			vResendEmail.setVisibility(View.GONE);
-		}
-	};
 
 	@Override
 	protected void onDataChanged() {}
@@ -460,6 +411,32 @@ public class UserHomeFragment extends ListFragment {
 	public void onResume() {
 		super.onResume();
 		setFadingActionBarTitle(thisUser.getNickname());
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		if (isCurrentUser()) {
+			inflater.inflate(R.menu.this_user_home, menu);
+		} else {
+			inflater.inflate(R.menu.user_home, menu);
+		}
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.action_user_likings:
+			return true;
+			
+		case R.id.action_user_comments:
+			return true;
+			
+		case R.id.action_user_trash:
+			return true;
+
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 	
 }

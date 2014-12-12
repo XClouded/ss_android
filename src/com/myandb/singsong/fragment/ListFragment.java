@@ -108,7 +108,6 @@ public abstract class ListFragment extends BaseFragment {
 			fadingActionBarHelper = new FadingActionBarHelper();
 			fadingActionBarHelper.setBackground(R.drawable.actionbar_background)
 			.setFullyVisiblePosition(2000)
-			.setHome(R.drawable.ic_action_back)
 			.initialize(getActivity());
 		}
 	}

@@ -19,8 +19,8 @@
     <style name="ButtonMini" parent="@style/ButtonBase">
         <item name="android:paddingTop">@dimen/margin_small</item>
         <item name="android:paddingBottom">@dimen/margin_small</item>
-        <item name="android:paddingLeft">@dimen/margin_tiny</item>
-        <item name="android:paddingRight">@dimen/margin_tiny</item>
+        <item name="android:paddingLeft">@dimen/margin_small</item>
+        <item name="android:paddingRight">@dimen/margin_small</item>
     </style>
     
     <style name="ButtonLikeEditText" parent="@style/ButtonBase">
