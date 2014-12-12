@@ -4,26 +4,46 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 
 import com.android.volley.Request.Method;
+import com.google.gson.Gson;
 import com.myandb.singsong.R;
 import com.myandb.singsong.fragment.UserHomeFragment;
 import com.myandb.singsong.model.Friendship;
 import com.myandb.singsong.net.JustRequest;
+import com.myandb.singsong.util.Utility;
 
 public class UpdateFriendshipDialog extends BaseDialog {
+	
+	public static final String EXTRA_FRIENDSHIP = "friendship";
 	
 	private UserHomeFragment fragment;
 	private Button btnAllowPush;
 	private Button btnUnfollow;
 	private Button btnRecommendArtist;
 	private Friendship friendship;
+	
+	@Override
+	protected int getResourceId() {
+		return R.layout.dialog_update_friendship;
+	}
 
 	@Override
-	protected void initialize(Activity activity) {}
+	protected void onArgumentsReceived(Bundle bundle) {
+		super.onArgumentsReceived(bundle);
+		Gson gson = Utility.getGsonInstance();
+		String friendshipInJson = bundle.getString(EXTRA_FRIENDSHIP);
+		friendship = gson.fromJson(friendshipInJson, Friendship.class);
+	}
+
+	@Override
+	protected void initialize(Activity activity) {
+		fragment = (UserHomeFragment) getParentFragment();
+	}
 
 	@Override
 	protected void onViewInflated(View view, LayoutInflater inflater) {
@@ -33,15 +53,11 @@ public class UpdateFriendshipDialog extends BaseDialog {
 	}
 
 	@Override
-	protected int getResourceId() {
-		return R.layout.dialog_update_friendship;
-	}
-
-	@Override
 	protected void setupViews() {
 		btnAllowPush.setOnClickListener(updateAllowPushClickListener);
 		btnUnfollow.setOnClickListener(unfollowClickListener);
 		btnRecommendArtist.setOnClickListener(recommendClickListener);
+		updateTextOnAllowPush();
 	}
 	
 	private void updateTextOnAllowPush() {
@@ -70,6 +86,7 @@ public class UpdateFriendshipDialog extends BaseDialog {
 				e.printStackTrace();
 			}
 			
+			fragment.toggleAllowNotify();
 			friendship.setAllowNotify(isAllowNotify);
 			updateTextOnAllowPush();
 		}

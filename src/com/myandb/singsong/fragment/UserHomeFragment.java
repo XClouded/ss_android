@@ -29,6 +29,7 @@ import com.myandb.singsong.adapter.FriendsAdapter;
 import com.myandb.singsong.adapter.MyCommentAdapter;
 import com.myandb.singsong.adapter.MyLikeSongAdapter;
 import com.myandb.singsong.adapter.MySongAdapter;
+import com.myandb.singsong.dialog.BaseDialog;
 import com.myandb.singsong.dialog.GalleryDialog;
 import com.myandb.singsong.dialog.UpdateFriendshipDialog;
 import com.myandb.singsong.event.ActivateOnlyClickListener;
@@ -56,7 +57,6 @@ public class UserHomeFragment extends ListFragment {
 	private User thisUser;
 	private User currentUser;
 	private Friendship friendship;
-	private UpdateFriendshipDialog dialog;
 	
 	private ImageView ivUserPhoto;
 	private ImageView ivUserPhotoBackground;
@@ -371,6 +371,13 @@ public class UserHomeFragment extends ListFragment {
 		}
 	}
 	
+	public void toggleAllowNotify() {
+		if (friendship != null) {
+			boolean current = friendship.isAllowNotify();
+			friendship.setAllowNotify(!current);
+		}
+	}
+	
 	private OnClickListener followClickListener = new ActivateOnlyClickListener() {
 		
 		@Override
@@ -385,11 +392,14 @@ public class UserHomeFragment extends ListFragment {
 		
 		@Override
 		public void onActivated(View v, User user) {
-			if (dialog == null) {
-				dialog = new UpdateFriendshipDialog();
+			if (friendship != null) {
+				Gson gson = Utility.getGsonInstance();
+				Bundle bundle = new Bundle();
+				bundle.putString(UpdateFriendshipDialog.EXTRA_FRIENDSHIP, gson.toJson(friendship));
+				BaseDialog dialog = new UpdateFriendshipDialog();
+				dialog.setArguments(bundle);
+				dialog.show(getChildFragmentManager(), "");
 			}
-//			dialog.setFriendship(friendship);
-			dialog.show(getChildFragmentManager(), "");
 		}
 	};
 	
