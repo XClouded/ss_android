@@ -18,8 +18,10 @@ import com.android.volley.VolleyError;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
+import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.activity.UpActivity;
 import com.myandb.singsong.event.ActivateOnlyClickListener;
+import com.myandb.singsong.fragment.ChildrenSongFragment;
 import com.myandb.singsong.fragment.KaraokeFragment;
 import com.myandb.singsong.net.JSONObjectRequest;
 import com.myandb.singsong.service.PlayerService;
@@ -297,9 +299,9 @@ public class Song extends Model {
 			@Override
 			public void onClick(View v) {
 				Bundle bundle = new Bundle();
-				bundle.putString("", getParentSong().toString());
-				Intent intent = new Intent(context, UpActivity.class);
-				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, "");
+				bundle.putString(ChildrenSongFragment.EXTRA_ROOT_SONG, getParentSong().toString());
+				Intent intent = new Intent(context, RootActivity.class);
+				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, ChildrenSongFragment.class.getName());
 				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
 				((BaseActivity) context).changePage(intent);
 			}

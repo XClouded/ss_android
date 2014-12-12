@@ -524,6 +524,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		public boolean onMenuItemClick(MenuItem item) {
 			switch (item.getItemId()) {
 			case R.id.action_other_collabo:
+				service.getSong().getChildrenClickListener(getContext()).onClick(null);
 				return true;
 				
 			case R.id.action_song_likings:

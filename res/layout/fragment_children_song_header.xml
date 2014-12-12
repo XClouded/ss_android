@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_bg" >
+    
+    <ImageView
+        android:id="@+id/iv_song_image"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        style="@style/BaseImageView" />
+    
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:background="@drawable/mask_profile" />
+    
+    <TextView
+        android:id="@+id/tv_music_info"
+        android:layout_marginLeft="@dimen/margin"
+        android:layout_marginRight="@dimen/margin"
+        android:layout_marginBottom="30dp"
+        android:layout_alignBottom="@id/iv_song_image"
+        android:textColor="@color/font_white"
+        style="@style/TextViewBase" />
+    
+    <LinearLayout
+        android:id="@+id/layout_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="160dp"
+        android:layout_marginBottom="@dimen/margin"
+        android:gravity="center"
+        android:orientation="vertical" >
+        
+        <FrameLayout
+	        android:layout_width="@dimen/photo_big"
+	        android:layout_height="@dimen/photo_big"
+	        android:layout_marginBottom="@dimen/margin_small"
+	        android:padding="@dimen/border_width"
+	        android:background="@drawable/circle_white" >
+	     
+			<com.myandb.singsong.widget.RoundedImageView
+				android:id="@+id/iv_user_photo"
+			 	android:layout_width="match_parent"
+			 	android:layout_height="match_parent"
+			 	app:oval="true"
+			 	style="@style/UserImageView" />
+	        
+		</FrameLayout>		
+	 
+		<TextView
+		    android:id="@+id/tv_user_nickname"
+		    android:layout_marginBottom="@dimen/margin_tiny"
+		    android:textStyle="bold"
+		    android:textSize="@dimen/text_big"
+	        style="@style/TextViewBase" />
+	 
+		<TextView
+		    android:id="@+id/tv_user_part"
+		    android:layout_marginBottom="@dimen/margin"
+		    android:textColor="@color/font_male_active"
+		    style="@style/TextViewHint" />
+	 
+		<TextView
+		    android:id="@+id/tv_song_message"
+		    android:ellipsize="end"
+		    android:gravity="center_horizontal"
+		    style="@style/TextViewBase" />
+        
+	</LinearLayout>
+
+</RelativeLayout>
