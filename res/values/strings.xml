@@ -41,7 +41,7 @@
     <string name="withdraw">탈퇴하기</string>
     <string name="notification">알림</string>
     <string name="change">변경</string>
-    <string name="comment">댓글</string>
+    <string name="comment">쓴 댓글</string>
     <string name="trash">휴지통</string>
     
     <string name="dialog_headset_title">이어폰이나 헤드셋을 끼우세요!</string>

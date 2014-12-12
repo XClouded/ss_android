@@ -211,7 +211,7 @@ public class UserHomeFragment extends ListFragment {
 	
 	private String getCroppedNickname(String nickname) {
 		String cropped = "";
-		if (nickname.length() > 6) {
+		if (nickname.length() > 12) {
 			cropped = nickname.substring(0, 6);
 			cropped += "..";
 			return cropped;

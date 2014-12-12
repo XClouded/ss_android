@@ -21,6 +21,6 @@
         android:orderInCategory="300"
         android:showAsAction="never"
         app:showAsAction="never"
-        android:title="관심 노래" />
+        android:title="@string/like" />
 
 </menu>
