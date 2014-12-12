@@ -115,7 +115,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center_horizontal"
-            android:padding="@dimen/margin_small" >
+            android:paddingTop="@dimen/margin"
+            android:paddingBottom="@dimen/margin" >
             
             <FrameLayout
                 android:layout_width="@dimen/photo_big"
