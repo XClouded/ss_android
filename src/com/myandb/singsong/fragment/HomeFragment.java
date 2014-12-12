@@ -1,12 +1,19 @@
 package com.myandb.singsong.fragment;
 
+import java.util.HashMap;
+
 import com.facebook.Session;
 import com.myandb.singsong.R;
+import com.myandb.singsong.activity.BaseActivity;
+import com.myandb.singsong.activity.UpActivity;
+import com.myandb.singsong.adapter.NotificationAdapter;
 import com.myandb.singsong.secure.Authenticator;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.view.MenuItemCompat;
 import android.view.LayoutInflater;
@@ -85,6 +92,18 @@ public class HomeFragment extends BaseFragment {
 		
 		@Override
 		public void onClick(View v) {
+			HashMap<String, String> params = new HashMap<String, String>();
+			params.put("order", "updated_at");
+			String userId = String.valueOf(Authenticator.getUser().getId());
+			Bundle bundle = new Bundle();
+			bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, "새로운 소식");
+			bundle.putString(ListFragment.EXTRA_URL_SEGMENT, "users/" + userId + "/notifications");
+			bundle.putSerializable(ListFragment.EXTRA_QUERY_PARAMS, params);
+			bundle.putString(ListFragment.EXTRA_ADAPTER_NAME, NotificationAdapter.class.getName());
+			Intent intent = new Intent(getActivity(), UpActivity.class);
+			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, ListFragment.class.getName());
+			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
+			startFragment(intent);
 		}
 	};
 	
