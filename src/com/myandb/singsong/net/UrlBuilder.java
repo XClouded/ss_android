@@ -1,5 +1,7 @@
 package com.myandb.singsong.net;
 
+import java.util.Map;
+
 import com.myandb.singsong.App;
 
 import android.net.Uri;
@@ -37,6 +39,13 @@ public class UrlBuilder {
 	
 	public UrlBuilder p(String key, int value) {
 		p(key, String.valueOf(value));
+		return this;
+	}
+	
+	public UrlBuilder p(Map<String, String> map) {
+		for (String key : map.keySet()) {
+			p(key, map.get(key));
+		}
 		return this;
 	}
 	

@@ -1,5 +1,7 @@
 package com.myandb.singsong.fragment;
 
+import java.util.HashMap;
+
 import org.json.JSONArray;
 
 import com.myandb.singsong.R;
@@ -10,6 +12,7 @@ import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.widget.FadingActionBarHelper;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +23,11 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-public abstract class ListFragment extends BaseFragment {
+public class ListFragment extends BaseFragment {
+	
+	public static final String EXTRA_URL_SEGMENT = "url_segment";
+	public static final String EXTRA_QUERY_PARAMS = "query_params";
+	public static final String EXTRA_ADAPTER_NAME = "adapter_name";
 	
 	private ListView listView;
 	private View listHeaderView;
@@ -33,10 +40,49 @@ public abstract class ListFragment extends BaseFragment {
 	private Animation fadeOut;
 	private GradualLoader loader;
 	private FadingActionBarHelper fadingActionBarHelper;
+	private UrlBuilder urlBuilder;
+	private ListAdapter adapter;
 
 	@Override
-	protected int getResourceId() {
+	protected final int getResourceId() {
 		return R.layout.fragment_list;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	protected void onArgumentsReceived(Bundle bundle) {
+		super.onArgumentsReceived(bundle);
+		
+		final String segment = bundle.getString(EXTRA_URL_SEGMENT);
+		final HashMap<String, String> params = (HashMap<String, String>) bundle.getSerializable(EXTRA_QUERY_PARAMS);
+		final String adapterName = bundle.getString(EXTRA_ADAPTER_NAME);
+		
+		if (segment != null) {
+			urlBuilder = new UrlBuilder();
+			urlBuilder.s(segment);
+			urlBuilder.p(params);
+			
+			adapter = instantiateAdapter(adapterName);
+			if (adapter == null) {
+				urlBuilder = null;
+			}
+		}
+	}
+	
+	private ListAdapter instantiateAdapter(String adapterName) {
+		if (adapterName != null) {
+			try {
+				Class<?> classForAdapter = Class.forName(adapterName);
+				return (ListAdapter) classForAdapter.newInstance();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			} catch (java.lang.InstantiationException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
 	}
 
 	@Override
@@ -97,6 +143,15 @@ public abstract class ListFragment extends BaseFragment {
 				}
 			}
 		});
+	}
+
+	@Override
+	protected void onDataChanged() {
+		if (urlBuilder != null) {
+			setUrlBuilder(urlBuilder);
+			setAdapter(adapter);
+			load();
+		}
 	}
 	
 	@Override

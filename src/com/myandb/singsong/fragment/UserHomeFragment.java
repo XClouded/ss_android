@@ -1,5 +1,7 @@
 package com.myandb.singsong.fragment;
 
+import java.util.HashMap;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
@@ -23,6 +25,9 @@ import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.activity.UpActivity;
+import com.myandb.singsong.adapter.FriendsAdapter;
+import com.myandb.singsong.adapter.MyCommentAdapter;
+import com.myandb.singsong.adapter.MyLikeSongAdapter;
 import com.myandb.singsong.adapter.MySongAdapter;
 import com.myandb.singsong.dialog.GalleryDialog;
 import com.myandb.singsong.dialog.UpdateFriendshipDialog;
@@ -129,37 +134,91 @@ public class UserHomeFragment extends ListFragment {
 	}
 	
 	private void setOnToListClickListener() {
-		tvUserFollowings.setOnClickListener(toListClickListener);
-		tvUserFollowers.setOnClickListener(toListClickListener);
+		tvUserFollowings.setOnClickListener(toUserItemListClickListener);
+		tvUserFollowers.setOnClickListener(toUserItemListClickListener);
 	}
 	
-	private OnClickListener toListClickListener = new OnClickListener() {
+	private OnClickListener toUserItemListClickListener = new OnClickListener() {
 		
 		@Override
 		public void onClick(View view) {
-			Gson gson = Utility.getGsonInstance();
-			Bundle bundle = new Bundle();
-			bundle.putString(EXTRA_THIS_USER, gson.toJson(thisUser, User.class));
-			Intent intent = new Intent(getActivity(), RootActivity.class);
-			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
-			
-			switch (view.getId()) {
-			case R.id.tv_user_followings:
-				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, "");
-				break;
-
-			case R.id.tv_user_followers:
-				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, "");
-				break;
-				
-			default:
-				break;
-				
-			}
-			
-			startFragment(intent);
+			onToUserItemListClick(view.getId());
 		}
 	};
+	
+	private void onToUserItemListClick(int id) {
+		String userId = String.valueOf(thisUser.getId());
+		String segment = "users/" + userId + "/";
+		String adapterName = "";
+		String title = getCroppedNickname(thisUser.getNickname());
+		title += "¥‘¿« ";
+		HashMap<String, String> params = new HashMap<String, String>();
+		
+		switch (id) {
+		case R.id.action_user_followings:
+		case R.id.tv_user_followings:
+			title += getString(R.string.following);
+			segment += "followings";
+			params.put("req[]", "profile");
+			params.put("order", "friendships.created_at");
+			adapterName = FriendsAdapter.class.getName();
+			break;
+			
+		case R.id.action_user_followers:	
+		case R.id.tv_user_followers:
+			title += getString(R.string.follower);
+			segment += "followers";
+			params.put("req[]", "profile");
+			params.put("order", "friendships.created_at");
+			adapterName = FriendsAdapter.class.getName();
+			break;
+			
+		case R.id.action_user_likings:
+			title += getString(R.string.like);
+			segment += "songs/likings";
+			params.put("order", "created_at");
+			adapterName = MyLikeSongAdapter.class.getName();
+			break;
+			
+		case R.id.action_user_comments:
+			title += getString(R.string.comment);
+			segment += "songs/comments";
+			params.put("order", "created_at");
+			adapterName = MyCommentAdapter.class.getName();
+			break;
+			
+		case R.id.action_user_trash:
+			title += getString(R.string.trash);
+			segment += "songs/trash";
+			params.put("order", "deleted_at");
+			adapterName = MySongAdapter.class.getName();
+			break;
+			
+		default:
+			return;
+		}
+		
+		Bundle bundle = new Bundle();
+		bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, title);
+		bundle.putString(ListFragment.EXTRA_URL_SEGMENT, segment);
+		bundle.putString(ListFragment.EXTRA_ADAPTER_NAME, adapterName);
+		bundle.putSerializable(ListFragment.EXTRA_QUERY_PARAMS, params);
+		Intent intent = new Intent(getActivity(), RootActivity.class);
+		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
+		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, ListFragment.class.getName());
+		startFragment(intent);
+	}
+	
+	private String getCroppedNickname(String nickname) {
+		String cropped = "";
+		if (nickname.length() > 6) {
+			cropped = nickname.substring(0, 6);
+			cropped += "..";
+			return cropped;
+		} else {
+			return nickname;
+		}
+	}
 	
 	private void setUserPhoto() {
 		if (thisUser.hasPhoto()) {
@@ -424,19 +483,8 @@ public class UserHomeFragment extends ListFragment {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.action_user_likings:
-			return true;
-			
-		case R.id.action_user_comments:
-			return true;
-			
-		case R.id.action_user_trash:
-			return true;
-
-		default:
-			return super.onOptionsItemSelected(item);
-		}
+		onToUserItemListClick(item.getItemId());
+		return super.onOptionsItemSelected(item);
 	}
 	
 }

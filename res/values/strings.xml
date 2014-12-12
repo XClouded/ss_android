@@ -37,10 +37,12 @@
     <string name="link">링크</string>
     <string name="popular">인기순</string>
     <string name="recent">최신순</string>
-    <string name="like">좋아요</string>
+    <string name="like">관심노래</string>
     <string name="withdraw">탈퇴하기</string>
     <string name="notification">알림</string>
     <string name="change">변경</string>
+    <string name="comment">댓글</string>
+    <string name="trash">휴지통</string>
     
     <string name="dialog_headset_title">이어폰이나 헤드셋을 끼우세요!</string>
     <string name="dialog_headset_content">콜라보 노래방은 반주와 목소리를 따로 녹음하여 목소리에 보정이 가능합니다. 이어폰이나 헤드셋을 끼워 더 좋은 품질로 녹음하세요!</string>
