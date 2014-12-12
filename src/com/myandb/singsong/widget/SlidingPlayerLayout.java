@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.graphics.Bitmap;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -98,6 +99,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	private ImageView ivMenu;
 	private ImageView ivMovingBackground;
 	private ImageView ivBackgroundMask;
+	private ImageView ivBackgroundGradient;
 	private Button btnSubmitComment;
 	private EditText etComment;
 	private View vDragPanelOnExpanded;
@@ -137,7 +139,9 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 			
 			registerSharedPreferenceChangeListener();
 			
-			ivLoopControl.setOnClickListener(loopControlClickListener);
+			setBackgroundGradientRadius();
+			
+			ivLoopControl.setOnClickListener(loopControlClickListener); 
 			ivAutoplayControl.setOnClickListener(autoplayControlClickListener);
 			ivPlayControl.setOnClickListener(playControlClickListener);
 			ivDragPlayControl.setOnClickListener(playControlClickListener);
@@ -215,6 +219,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		ivMenu = (ImageView) findViewById(R.id.iv_menu);
 		ivMovingBackground = (ImageView) findViewById(R.id.iv_background);
 		ivBackgroundMask = (ImageView) findViewById(R.id.iv_background_mask);
+		ivBackgroundGradient = (ImageView) findViewById(R.id.iv_background_gradient);
 		
 		lvComments = (ListView) findViewById(R.id.listview);
 		btnSubmitComment = (Button) findViewById(R.id.btn_submit_comment);
@@ -297,6 +302,13 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	
 	private void makeToast(int stringRes) {
 		Toast.makeText(getContext().getApplicationContext(), getContext().getString(stringRes), Toast.LENGTH_SHORT).show();
+	}
+	
+	private void setBackgroundGradientRadius() {
+		GradientDrawable gradient = (GradientDrawable) ivBackgroundGradient.getBackground();
+		int radius = getResources().getDimensionPixelSize(R.dimen.gradient_radius);
+		gradient.mutate();
+		gradient.setGradientRadius(radius);
 	}
 	
 	private OnClickListener loopControlClickListener = new OnClickListener() {
@@ -392,7 +404,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	}
 	
 	public void showDefaultWindow() {
-		ViewHelper.setAlpha(ivBackgroundMask, 0.5f);
+		ViewHelper.setAlpha(ivBackgroundMask, 0.15f);
 		vDefaultWindow.setVisibility(View.VISIBLE);
 		vCommentWindow.setVisibility(View.GONE);
 	}
@@ -403,7 +415,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		}
 		
 		if (shown) {
-			ViewHelper.setAlpha(ivBackgroundMask, 0.8f);
+			ViewHelper.setAlpha(ivBackgroundMask, 0.6f);
 			vDefaultWindow.setVisibility(View.GONE);
 			vCommentWindow.setVisibility(View.VISIBLE);
 		} else {
@@ -863,7 +875,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		
 		private void setAlphaOnMask(float slideOffset) {
 			if (vDefaultWindow.isShown()) {
-				ViewHelper.setAlpha(ivBackgroundMask, Math.min(Math.max((float) (1 - slideOffset), 0.5f), 0.8f));
+				ViewHelper.setAlpha(ivBackgroundMask, Math.min(Math.max((float) (1 - slideOffset), 0.15f), 0.3f));
 			}
 		}
 		
