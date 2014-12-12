@@ -52,6 +52,10 @@
         <include
             android:id="@+id/layout_player_comment"
             layout="@layout/player_comment" /> 
+            
+        <include
+            android:id="@+id/layout_player_liking"
+            layout="@layout/player_liking" />
         
     </FrameLayout>
 
