@@ -60,14 +60,12 @@
 	 
 		<TextView
 		    android:id="@+id/tv_user_part"
-		    android:layout_marginBottom="@dimen/margin"
+		    android:layout_marginBottom="@dimen/margin_tiny"
 		    android:textColor="@color/font_male_active"
 		    style="@style/TextViewHint" />
 	 
 		<TextView
 		    android:id="@+id/tv_song_message"
-		    android:ellipsize="end"
-		    android:gravity="center_horizontal"
 		    style="@style/TextViewBase" />
         
 	</LinearLayout>
