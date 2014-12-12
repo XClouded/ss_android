@@ -124,9 +124,11 @@ public class HomeFragment extends BaseFragment {
 		
 		@Override
 		public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-			String countkey = getString(R.string.key_notification_count);
-			if (key.equals(countkey)) {
-				updateNotificationCount();
+			if (isAdded()) {
+				String countkey = getString(R.string.key_notification_count);
+				if (key.equals(countkey)) {
+					updateNotificationCount();
+				}
 			}
 		}
 	};

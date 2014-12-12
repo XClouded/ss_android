@@ -842,13 +842,17 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	}
 	
 	public void addComment(SongComment comment) {
-		commentAdapter.addItem(comment);
-		displayCommentNum(commentAdapter.getCount());
+		commentAdapter.addItemToHead(comment);
+		service.getSong().incrementCommentNum();
+		displayCommentNum(service.getSong().getCommentNum());
 	}
 	
 	public void deleteComment(SongComment comment) {
+		JustRequest request = new JustRequest(Method.DELETE, "comments/" + comment.getId(), null);
+		((App) getContext().getApplicationContext()).addShortLivedRequest(getContext(), request);
 		commentAdapter.removeItem(comment);
-		displayCommentNum(commentAdapter.getCount());
+		service.getSong().decrementCommentNum();
+		displayCommentNum(service.getSong().getCommentNum());
 	}
 	
 	/*
