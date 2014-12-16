@@ -1,6 +1,7 @@
 package com.myandb.singsong.adapter;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -19,8 +20,8 @@ public class SimpleSongAdapter extends HolderAdapter<Song, SimpleSongAdapter.Son
 	}
 
 	@Override
-	public SongHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		View view = View.inflate(parent.getContext(), R.layout.row_simple_song, null);
+	public SongHolder onCreateViewHolder(LayoutInflater inflater, ViewGroup parent, int viewType) {
+		View view = inflater.inflate(R.layout.row_simple_song, parent, false);
 		return new SongHolder(view);
 	}
 

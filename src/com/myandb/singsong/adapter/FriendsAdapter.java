@@ -10,6 +10,7 @@ import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.JustRequest;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
@@ -24,8 +25,8 @@ public class FriendsAdapter extends HolderAdapter<User, FriendsAdapter.UserHolde
 	}
 
 	@Override
-	public UserHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		View view = View.inflate(parent.getContext(), R.layout.row_friend, null);
+	public UserHolder onCreateViewHolder(LayoutInflater inflater, ViewGroup parent, int viewType) {
+		View view = inflater.inflate(R.layout.row_friend, parent, false);
 		return new UserHolder(view);
 	}
 

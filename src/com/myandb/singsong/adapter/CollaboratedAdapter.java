@@ -1,6 +1,7 @@
 package com.myandb.singsong.adapter;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -19,8 +20,8 @@ public class CollaboratedAdapter extends HolderAdapter<Song, CollaboratedAdapter
 	}
 
 	@Override
-	public SongHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		View view = View.inflate(parent.getContext(), R.layout.row_collaborated, null);
+	public SongHolder onCreateViewHolder(LayoutInflater inflater, ViewGroup parent, int viewType) {
+		View view = inflater.inflate(R.layout.row_collaborated, parent, false);
 		return new SongHolder(view);
 	}
 

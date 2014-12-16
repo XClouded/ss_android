@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import com.myandb.singsong.util.Utility;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -104,7 +105,8 @@ public abstract class HolderAdapter<T, E extends ViewHolder> extends BaseAdapter
 		final E viewHolder;
 		
 		if (view == null) {
-			viewHolder = onCreateViewHolder(parent, getItemViewType(position));
+			LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			viewHolder = onCreateViewHolder(inflater, parent, getItemViewType(position));
 			view = viewHolder.view;
 		} else {
 			viewHolder = (E) view.getTag();
@@ -115,7 +117,7 @@ public abstract class HolderAdapter<T, E extends ViewHolder> extends BaseAdapter
 		return view;
 	}
 	
-	public abstract E onCreateViewHolder(ViewGroup parent, int viewType);
+	public abstract E onCreateViewHolder(LayoutInflater inflater, ViewGroup parent, int viewType);
 	
 	public abstract void onBindViewHolder(Context context, E viewHolder, int position);
 	

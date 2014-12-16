@@ -1,6 +1,7 @@
 package com.myandb.singsong.adapter;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -22,8 +23,8 @@ public class ImageAdapter extends HolderAdapter<Image, ImageAdapter.ImageHolder>
 	}
 
 	@Override
-	public ImageHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		View view = View.inflate(parent.getContext(), R.layout.row_image, null);
+	public ImageHolder onCreateViewHolder(LayoutInflater inflater, ViewGroup parent, int viewType) {
+		View view = inflater.inflate(R.layout.row_image, parent, false);
 		return new ImageHolder(view);
 	}
 

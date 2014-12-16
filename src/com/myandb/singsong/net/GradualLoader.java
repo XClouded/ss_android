@@ -20,6 +20,7 @@ public class GradualLoader implements OnScrollListener {
 	private UrlBuilder urlBuilder;
 	private int count;
 	private int requiredTake;
+	private int initialLoadNum;
 	private boolean nothingToLoad;
 	private boolean loading;
     private int previousVisibleTotal = 0;
@@ -34,6 +35,13 @@ public class GradualLoader implements OnScrollListener {
 		this.loading = false;
 		this.count = 0;
 		this.requiredTake = 0;
+		
+		try {
+			int builderTake = Integer.parseInt(urlBuilder.getParam("take"));
+			this.initialLoadNum = builderTake > 0 ? builderTake : INITIAL_LOAD_NUM;
+		} catch (NumberFormatException e) {
+			this.initialLoadNum = INITIAL_LOAD_NUM;
+		}
 	}
 	
 	public void setOnLoadCompleteListener(OnLoadCompleteListener listener) {
@@ -46,7 +54,7 @@ public class GradualLoader implements OnScrollListener {
 	
 	public void load() {
 		if (isLoadable() && !nothingToLoad) {
-			int take = count > 0 ? ADDITIONAL_LOAD_NUM : INITIAL_LOAD_NUM;
+			int take = count > 0 ? ADDITIONAL_LOAD_NUM : initialLoadNum;
 			executeQuery(count, take);
 		}
 	}

@@ -6,6 +6,7 @@ import com.myandb.singsong.model.TaggableFriend;
 import com.myandb.singsong.util.Logger;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -20,8 +21,8 @@ public class TaggableFriendAdapter extends HolderAdapter<TaggableFriend, Taggabl
 	}
 	
 	@Override
-	public TaggableFriendHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		View view = View.inflate(parent.getContext(), R.layout.row_taggable, null);
+	public TaggableFriendHolder onCreateViewHolder(LayoutInflater inflater, ViewGroup parent, int viewType) {
+		View view = inflater.inflate(R.layout.row_taggable, parent, false);
 		return new TaggableFriendHolder(view);
 	}
 	

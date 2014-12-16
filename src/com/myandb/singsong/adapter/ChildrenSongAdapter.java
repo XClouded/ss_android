@@ -6,6 +6,7 @@ import com.myandb.singsong.model.Song;
 import com.myandb.singsong.model.User;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -18,8 +19,8 @@ public class ChildrenSongAdapter extends HolderAdapter<Song, ChildrenSongAdapter
 	}
 
 	@Override
-	public SongHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		View view = View.inflate(parent.getContext(), R.layout.row_child_song, null);
+	public SongHolder onCreateViewHolder(LayoutInflater inflater, ViewGroup parent, int viewType) {
+		View view = inflater.inflate(R.layout.row_child_song, parent, false);
 		return new SongHolder(view);
 	}
 

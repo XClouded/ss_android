@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.PopupMenu.OnMenuItemClickListener;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -36,8 +37,8 @@ public class CommentAdapter extends HolderAdapter<SongComment, CommentAdapter.Co
 	}
 
 	@Override
-	public CommentHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		View view = View.inflate(parent.getContext(), R.layout.row_comment, null);
+	public CommentHolder onCreateViewHolder(LayoutInflater inflater, ViewGroup parent, int viewType) {
+		View view = inflater.inflate(R.layout.row_comment, parent, false);
 		return new CommentHolder(view);
 	}
 

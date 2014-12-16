@@ -1,6 +1,7 @@
 package com.myandb.singsong.adapter;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -20,8 +21,8 @@ public class MyCommentAdapter extends HolderAdapter<SongComment, MyCommentAdapte
 	}
 
 	@Override
-	public CommentHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		View view = View.inflate(parent.getContext(), R.layout.row_my_comment, null);
+	public CommentHolder onCreateViewHolder(LayoutInflater inflater, ViewGroup parent, int viewType) {
+		View view = inflater.inflate(R.layout.row_my_comment, parent, false);
 		return new CommentHolder(view);
 	}
 

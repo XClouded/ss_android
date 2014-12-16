@@ -2,6 +2,7 @@ package com.myandb.singsong.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -18,8 +19,8 @@ public class ContactAdapter extends HolderAdapter<Contact, ContactAdapter.Contac
 	}
 
 	@Override
-	public ContactHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		View view = View.inflate(parent.getContext(), R.layout.row_contact, null);
+	public ContactHolder onCreateViewHolder(LayoutInflater inflater, ViewGroup parent, int viewType) {
+		View view = inflater.inflate(R.layout.row_contact, parent, false);
 		return new ContactHolder(view);
 	}
 

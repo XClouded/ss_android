@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -29,8 +30,8 @@ public class NotificationAdapter extends HolderAdapter<Notification, Notificatio
 	}
 
 	@Override
-	public NotificationHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		View view = View.inflate(parent.getContext(), R.layout.row_notification, null);
+	public NotificationHolder onCreateViewHolder(LayoutInflater inflater, ViewGroup parent, int viewType) {
+		View view = inflater.inflate(R.layout.row_notification, parent, false);
 		return new NotificationHolder(view);
 	}
 

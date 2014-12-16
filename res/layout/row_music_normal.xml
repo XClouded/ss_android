@@ -5,23 +5,10 @@
     android:layout_height="wrap_content"
     android:background="@drawable/row_selector" >
     
-    <TextView
-        android:id="@+id/tv_list_num"
-        android:layout_width="25sp"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="@dimen/margin_tiny"
-        android:layout_alignParentLeft="true"
-        android:gravity="center"
-        android:textSize="@dimen/text_big"
-        android:textColor="@color/font_highlight"
-        android:visibility="gone"
-        style="@style/TextViewBase" />
-    
     <com.myandb.singsong.widget.RoundedImageView
         android:id="@+id/iv_album_photo"
         android:layout_width="@dimen/photo"
         android:layout_height="@dimen/photo"
-        android:layout_toRightOf="@id/tv_list_num"
         app:corner_radius="@dimen/corner_radius"
         app:corner_top_left="true"
         app:corner_top_right="true"
