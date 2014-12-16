@@ -18,6 +18,7 @@
 	        android:layout_height="30dp"
 	        android:layout_alignParentRight="true"
 	        android:layout_marginLeft="@dimen/margin"
+	        android:layout_marginRight="@dimen/margin"
 	        android:layout_marginBottom="@dimen/margin_small"
 	        style="@style/ImageViewSquare" />
         
@@ -26,11 +27,11 @@
             android:layout_width="match_parent"
             android:layout_toLeftOf="@id/iv_album_photo"
             android:textSize="@dimen/text_small"
+            android:gravity="left"
             style="@style/TextViewEllipsize" />
         
         <com.myandb.singsong.widget.RoundedImageView
 	        android:id="@+id/iv_comment_user_photo"
-	        android:layout_marginRight="@dimen/margin_small"
 	        android:layout_below="@id/iv_album_photo"
 	        style="@style/ImageViewUserSmall" />
         
@@ -49,6 +50,7 @@
             android:layout_toLeftOf="@id/tv_comment_created"
             android:layout_marginBottom="@dimen/margin_tiny"
             android:textStyle="bold"
+            android:gravity="left"
             style="@style/TextViewEllipsize" />
            
        <TextView
@@ -56,6 +58,7 @@
 			android:layout_width="match_parent"
 			android:layout_toRightOf="@id/iv_comment_user_photo"
 			android:layout_below="@id/tv_comment_user_nickname"
+			android:layout_marginLeft="@dimen/margin_small"
 			style="@style/TextViewBase" />
         
     </RelativeLayout>

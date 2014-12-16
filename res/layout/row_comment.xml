@@ -9,8 +9,7 @@
     
     <com.myandb.singsong.widget.RoundedImageView
         android:id="@+id/iv_comment_user_photo"
-        android:layout_marginTop="@dimen/margin_tiny"
-        android:layout_marginRight="@dimen/margin"
+        android:layout_marginTop="@dimen/margin_small"
         style="@style/ImageViewUserSmall" />
     
     <RelativeLayout
@@ -36,7 +35,6 @@
         
 	    <TextView
 	        android:id="@+id/tv_comment_user_nickname"
-	        android:textColor="@color/font_white"
 	        android:layout_toLeftOf="@id/tv_comment_created"
 	        android:layout_alignTop="@id/tv_comment_created"
 	        android:layout_marginBottom="@dimen/margin_tiny"
@@ -46,7 +44,7 @@
 	    <TextView
 	        android:id="@+id/tv_comment_content"
 	        android:layout_below="@id/tv_comment_user_nickname"
-	        android:layout_alignLeft="@id/tv_comment_user_nickname"
+	        android:layout_marginLeft="@dimen/margin_small"
 	        android:textColor="@color/font_white"
 	        style="@style/TextViewBase" />
         

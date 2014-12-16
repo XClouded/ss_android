@@ -19,6 +19,7 @@
 	        android:layout_height="30dp"
 	        android:layout_alignParentRight="true"
 	        android:layout_marginLeft="@dimen/margin"
+	        android:layout_marginRight="@dimen/margin"
 	        android:layout_marginBottom="@dimen/margin_small"
 	        style="@style/ImageViewSquare" />
         
@@ -26,9 +27,9 @@
             android:id="@+id/tv_music_info"
             android:layout_width="match_parent"
             android:layout_toLeftOf="@id/iv_album_photo"
-            android:layout_marginLeft="@dimen/margin_small"
             android:layout_marginBottom="@dimen/margin"
             android:textSize="@dimen/text_small"
+            android:gravity="left"
             style="@style/TextViewEllipsize" />
         
         <RelativeLayout
@@ -42,7 +43,6 @@
 	        
 	        <com.myandb.singsong.widget.RoundedImageView
 		        android:id="@+id/iv_parent_user_photo"
-		        android:layout_marginRight="@dimen/margin_small"
 		        style="@style/ImageViewUserSmall" />
 	        
 	        <TextView
@@ -51,6 +51,7 @@
                 android:layout_toRightOf="@id/iv_parent_user_photo"
                 android:layout_marginBottom="@dimen/margin_tiny"
                 android:textStyle="bold"
+                android:gravity="left"
                 style="@style/TextViewEllipsize" />
             
             <TextView
@@ -59,6 +60,7 @@
                 android:layout_toRightOf="@id/iv_parent_user_photo"
                 android:layout_below="@id/tv_parent_user_nickname"
                 android:textColor="@color/font_hint"
+                android:gravity="left"
                 style="@style/TextViewEllipsize" />
             
         </RelativeLayout>
@@ -74,7 +76,6 @@
 	        
 	        <com.myandb.singsong.widget.RoundedImageView
 		        android:id="@+id/iv_this_user_photo"
-		        android:layout_marginRight="@dimen/margin_small"
 		        style="@style/ImageViewUserSmall" />
 	        
 	        <TextView
@@ -83,6 +84,7 @@
                 android:layout_toRightOf="@id/iv_this_user_photo"
                 android:layout_marginBottom="@dimen/margin_tiny"
                 android:textStyle="bold"
+                android:gravity="left"
                 style="@style/TextViewEllipsize" />
             
             <TextView
@@ -91,6 +93,7 @@
                 android:layout_toRightOf="@id/iv_this_user_photo"
                 android:layout_below="@id/tv_this_user_nickname"
                 android:textColor="@color/font_hint"
+                android:gravity="left"
                 style="@style/TextViewEllipsize" />
             
         </RelativeLayout>
