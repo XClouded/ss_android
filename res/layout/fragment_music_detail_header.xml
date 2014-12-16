@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+<RelativeLayout 
+	android:layout_width="match_parent"
+    android:layout_height="220dp" >
+     
+    <ImageView
+        android:id="@+id/iv_album_photo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@color/grey_dark"
+        style="@style/ImageViewBase" />
+     
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/mask_profile" />
+     
+    <LinearLayout
+        android:id="@+id/layout_tab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal" >
+         
+        <TextView
+    	    android:id="@+id/tv_popular"
+    	    android:layout_width="0dp"
+    	    android:layout_height="wrap_content"
+    	    android:layout_weight="1"
+    	    android:paddingTop="@dimen/margin_small"
+    	    android:paddingBottom="@dimen/margin_small"
+            android:textSize="16sp"
+            android:textColor="@color/font_highlight"
+            android:textStyle="bold"
+            android:lineSpacingExtra="3sp"
+            android:gravity="center"
+            android:background="@drawable/tab_selected"
+            android:text="인기"
+            style="@style/TextViewBase" />
+        
+        <TextView
+    	    android:id="@+id/tv_recent"
+    	    android:layout_width="0dp"
+    	    android:layout_height="wrap_content"
+    	    android:layout_weight="1"
+    	    android:paddingTop="@dimen/margin_small"
+    	    android:paddingBottom="@dimen/margin_small"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:lineSpacingExtra="3sp"
+            android:gravity="center"
+            android:background="@drawable/tab_selector"
+            android:text="최신"
+            style="@style/TextViewBase" />
+        
+        <TextView
+    	    android:id="@+id/tv_friend"
+    	    android:layout_width="0dp"
+    	    android:layout_height="wrap_content"
+    	    android:layout_weight="1"
+    	    android:paddingTop="@dimen/margin_small"
+    	    android:paddingBottom="@dimen/margin_small"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:lineSpacingExtra="3sp"
+            android:gravity="center"
+            android:background="@drawable/tab_selector"
+            android:text="친구"
+            style="@style/TextViewBase" />
+         
+	</LinearLayout>
+     
+    <TextView
+        android:id="@+id/tv_music_title"
+        android:layout_above="@id/layout_tab"
+        android:layout_marginBottom="@dimen/margin_bigger"
+        android:textSize="@dimen/text_biggest"
+        android:gravity="left"
+        style="@style/TextViewOverflowableImportant" />
+    
+    <TextView
+        android:id="@+id/tv_singer_name"
+        android:layout_above="@id/tv_music_title"
+        android:textColor="@color/font_white"
+        android:textSize="@dimen/text"
+        android:gravity="left"
+        style="@style/TextViewOverflowableLessImportant" />
+    
+    <TextView
+        android:id="@+id/tv_sing_num"
+        android:visibility="gone"
+        style="@style/TextViewBase" />
+     
+</RelativeLayout>
+</FrameLayout>

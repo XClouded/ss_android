@@ -8,7 +8,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.myandb.singsong.R;
-import com.myandb.singsong.event.Listeners;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Music;
 
@@ -81,7 +80,7 @@ public class MusicAdapter extends HolderAdapter<Music, MusicAdapter.MusicHolder>
 				setLastItemRightPadding(viewHolder.view);
 			}
 		} else {
-			viewHolder.view.setOnClickListener(Listeners.getRecordClickListener(context, music));
+			viewHolder.view.setOnClickListener(music.getMusicClickListener());
 		}
 	}
 	

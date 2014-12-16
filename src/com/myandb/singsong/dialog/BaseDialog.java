@@ -68,7 +68,7 @@ public abstract class BaseDialog extends DialogFragment {
 		setupViews();
 	}
 	
-	private void styleDialog(Dialog dialog) {
+	protected void styleDialog(Dialog dialog) {
 		DisplayMetrics metrics = new DisplayMetrics();
 		dialog.getWindow().getWindowManager().getDefaultDisplay().getMetrics(metrics);
 		dialog.getWindow().getAttributes().width = (int) (metrics.widthPixels * getWidthPercentage());
