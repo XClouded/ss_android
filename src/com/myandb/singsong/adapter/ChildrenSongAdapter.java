@@ -34,7 +34,7 @@ public class ChildrenSongAdapter extends HolderAdapter<Song, ChildrenSongAdapter
 		viewHolder.tvCreatedTime.setText(song.getWorkedCreatedTime(getCurrentDate()));
 		viewHolder.tvLikeNum.setText(song.getWorkedLikeNum());
 		viewHolder.tvCommentNum.setText(song.getWorkedCommentNum());
-		viewHolder.view.setOnClickListener(song.getPlayClickListener(context));
+		viewHolder.view.setOnClickListener(song.getPlayClickListener());
 		
 		ImageHelper.displayPhoto(creator, viewHolder.ivCreatorPhoto);
 	}

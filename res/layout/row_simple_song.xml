@@ -15,15 +15,12 @@
         
         <com.myandb.singsong.widget.RoundedImageView
 	        android:id="@+id/iv_album_photo"
+	        android:layout_width="30dp"
+	        android:layout_height="30dp"
 	        android:layout_alignParentRight="true"
-	        android:layout_marginRight="@dimen/margin_small"
 	        android:layout_marginLeft="@dimen/margin"
-	        app:corner_radius="@dimen/corner_radius"
-	        app:corner_top_left="true"
-	        app:corner_top_right="true"
-	        app:corner_bottom_left="true"
-	        app:corner_bottom_right="true"
-	        style="@style/UserSmallImageView" />
+	        android:layout_marginBottom="@dimen/margin_small"
+	        style="@style/ImageViewSquare" />
         
         <TextView
             android:id="@+id/tv_music_info"
@@ -46,10 +43,7 @@
 	        <com.myandb.singsong.widget.RoundedImageView
 		        android:id="@+id/iv_parent_user_photo"
 		        android:layout_marginRight="@dimen/margin_small"
-		        app:oval="true"
-		        app:border_width="0.1dp"
-		        app:border_color="@color/divider"
-		        style="@style/UserImageView" />
+		        style="@style/ImageViewUserSmall" />
 	        
 	        <TextView
                 android:id="@+id/tv_parent_user_nickname"
@@ -81,10 +75,7 @@
 	        <com.myandb.singsong.widget.RoundedImageView
 		        android:id="@+id/iv_this_user_photo"
 		        android:layout_marginRight="@dimen/margin_small"
-		        app:oval="true"
-		        app:border_width="0.1dp"
-		        app:border_color="@color/divider"
-		        style="@style/UserImageView" />
+		        style="@style/ImageViewUserSmall" />
 	        
 	        <TextView
                 android:id="@+id/tv_this_user_nickname"

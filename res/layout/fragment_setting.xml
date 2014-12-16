@@ -24,10 +24,10 @@
 				    android:id="@+id/iv_user_photo"
 				    android:layout_width="match_parent"
 				    android:layout_height="match_parent"
-				    style="@style/UserImageView" />
+				    style="@style/ImageViewUser" />
 				
 				<ImageView
-				    style="@style/BaseImageView"
+				    style="@style/ImageViewBase"
 				    android:src="@drawable/ic_camera" />
 		         
 		    </FrameLayout>

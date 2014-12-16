@@ -12,14 +12,14 @@
         android:src="@drawable/ic_magnifier"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
-        style="@style/BaseImageView" />
+        style="@style/ImageViewBase" />
     
     <ImageView
         android:id="@+id/iv_clear"
         android:src="@drawable/ic_x"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
-        style="@style/BaseImageView" />
+        style="@style/ImageViewBase" />
     
     <EditText
         android:id="@+id/et_search"

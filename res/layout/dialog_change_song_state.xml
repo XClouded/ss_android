@@ -18,7 +18,7 @@
 	        android:src="@drawable/ic_x_inverse"
 	        android:layout_alignParentRight="true"
 	        android:layout_centerVertical="true"
-	        style="@style/BaseImageView" />
+	        style="@style/ImageViewBase" />
         
     </RelativeLayout>
     

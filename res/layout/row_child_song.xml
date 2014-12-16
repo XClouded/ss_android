@@ -8,10 +8,7 @@
     <com.myandb.singsong.widget.RoundedImageView
 	    android:id="@+id/iv_parent_user_photo"
 	    android:layout_marginRight="@dimen/margin_small"
-	    app:oval="true"
-	    app:border_width="0.1dp"
-	    app:border_color="@color/divider"
-	    style="@style/UserImageView" />
+	    style="@style/ImageViewUserSmall" />
     
     <TextView
         android:id="@+id/tv_song_created_time"
@@ -32,7 +29,7 @@
         android:layout_toRightOf="@id/iv_parent_user_photo"
         android:layout_below="@id/tv_parent_user_nickname"
         android:textColor="@color/font_hint"
-        style="@style/BaseImageView" />
+        style="@style/ImageViewBase" />
     
     <LinearLayout
         android:layout_width="match_parent"

@@ -37,7 +37,7 @@ public class FriendsAdapter extends HolderAdapter<User, FriendsAdapter.UserHolde
 		
 		viewHolder.tvUserStatus.setText(profile.getStatusMessage());
 		viewHolder.tvUserNickname.setText(user.getNickname());
-		viewHolder.view.setOnClickListener(user.getProfileClickListener(context));
+		viewHolder.view.setOnClickListener(user.getProfileClickListener());
 		viewHolder.btnFollow.setTag(user);
 		toggleFollowing(viewHolder.btnFollow, user.isFollowing());
 		

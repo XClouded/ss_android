@@ -50,7 +50,7 @@ public class CommentAdapter extends HolderAdapter<SongComment, CommentAdapter.Co
 		viewHolder.tvNickname.setText(writer.getNickname());
 		viewHolder.tvCreated.setText(comment.getWorkedCreatedTime(getCurrentDate()));
 		viewHolder.tvCommentContent.setText(comment.getContent());
-		viewHolder.ivUserPhoto.setOnClickListener(writer.getProfileClickListener(context));
+		viewHolder.ivUserPhoto.setOnClickListener(writer.getProfileClickListener());
 		viewHolder.ivMenu.setTag(comment);
 		viewHolder.ivMenu.setOnClickListener(menuClickListener);
 		

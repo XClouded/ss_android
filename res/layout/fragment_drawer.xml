@@ -30,7 +30,7 @@
 		        app:oval="true"
 		        app:border_width="0.1dp"
 		        app:border_color="@color/divider"
-		        style="@style/UserImageView" />
+		        style="@style/ImageViewUser" />
 	        
 	        <TextView
 	            android:id="@+id/tv_drawer_user_nickname"

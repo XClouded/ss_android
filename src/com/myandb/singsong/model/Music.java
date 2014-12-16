@@ -1,9 +1,17 @@
 package com.myandb.singsong.model;
 
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.view.View;
+import android.view.View.OnClickListener;
 
+import com.google.gson.Gson;
+import com.myandb.singsong.activity.BaseActivity;
+import com.myandb.singsong.dialog.BaseDialog;
+import com.myandb.singsong.dialog.SelectRecordModeDialog;
+import com.myandb.singsong.event.ActivateOnlyClickListener;
 import com.myandb.singsong.util.Utility;
 
 public class Music extends Model {
@@ -65,6 +73,32 @@ public class Music extends Model {
 	
 	public boolean isLyricDynamic() {
 		return is_dynamic == 1;
+	}
+	
+	public OnClickListener getMusicClickListener() {
+		return new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				BaseActivity activity = (BaseActivity) v.getContext();
+				Gson gson = Utility.getGsonInstance();
+				Bundle bundle = new Bundle();
+				bundle.putString(SelectRecordModeDialog.EXTRA_MUSIC, gson.toJson(Music.this));
+				BaseDialog dialog = new SelectRecordModeDialog();
+				dialog.setArguments(bundle);
+				dialog.show(activity.getSupportFragmentManager(), "");
+			}
+		};
+	}
+	
+	public OnClickListener getRecordClickListener() {
+		return new ActivateOnlyClickListener() {
+			
+			@Override
+			public void onActivated(View v, User user) {
+				
+			}
+		};
 	}
 	
 }

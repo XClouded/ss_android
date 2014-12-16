@@ -30,7 +30,7 @@ public class LikingUserAdapter extends HolderAdapter<SongLiking, LikingUserAdapt
 		final User user = liking.getUser();
 		
 		viewHolder.tvUserNickname.setText(user.getNickname());
-		viewHolder.view.setOnClickListener(user.getProfileClickListener(context));
+		viewHolder.view.setOnClickListener(user.getProfileClickListener());
 		ImageHelper.displayPhoto(user, viewHolder.ivUserPhoto);
 	}
 	

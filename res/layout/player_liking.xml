@@ -9,7 +9,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:paddingRight="@dimen/margin"
-        style="@style/BaseImageView" />
+        style="@style/ImageViewBase" />
     
     <TextView
         android:id="@+id/tv_liking_num"

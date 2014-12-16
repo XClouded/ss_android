@@ -21,8 +21,24 @@
         <item name="android:textColor">@color/font_grey</item>
     </style>
     
-    <style name="SmallTextViewTitle" parent="@style/TextViewHint">
-        <item name="android:layout_marginBottom">@dimen/margin_tiny</item>
+    <style name="TextViewEllipsize" parent="@style/TextViewBase">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:layout_marginLeft">@dimen/margin</item>
+        <item name="android:layout_marginRight">@dimen/margin</item>
+        <item name="android:gravity">center</item>
+    </style>
+    
+    <style name="TextViewOverflowableLessImportant" parent="@style/TextViewEllipsize">
+        <item name="android:textSize">@dimen/text_small</item>
+        <item name="android:textColor">@color/font_grey</item>
+    </style>
+    
+    <style name="TextViewOverflowableImportant" parent="@style/TextViewEllipsize">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/text_big</item>
+        <item name="android:textStyle">bold</item>
     </style>
     
     <style name="TextViewDialog" parent="@style/TextViewBase">
@@ -47,12 +63,6 @@
         <item name="android:ellipsize">marquee</item>
         <item name="android:marqueeRepeatLimit">marquee_forever</item>
         <item name="android:scrollHorizontally">true</item>
-    </style>
-    
-    <style name="TextViewEllipsize" parent="@style/TextViewBase">
-        <item name="android:maxLines">1</item>
-        <item name="android:singleLine">true</item>
-        <item name="android:ellipsize">end</item>
     </style>
     
     <style name="TextViewIconLabel" parent="@style/TextViewHint">

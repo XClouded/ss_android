@@ -41,8 +41,8 @@ public class SimpleSongAdapter extends HolderAdapter<Song, SimpleSongAdapter.Son
 		viewHolder.tvMusicInfo.append(" - ");
 		viewHolder.tvMusicInfo.append(music.getTitle());
 		
-		viewHolder.ivParentUserPhoto.setOnClickListener(thisUser.getProfileClickListener(context));
-		viewHolder.view.setOnClickListener(thisSong.getPlayClickListener(context));
+		viewHolder.ivParentUserPhoto.setOnClickListener(thisUser.getProfileClickListener());
+		viewHolder.view.setOnClickListener(thisSong.getPlayClickListener());
 		
 		ImageHelper.displayPhoto(music.getAlbumPhotoUrl(), viewHolder.ivAlbumPhoto);
 		ImageHelper.displayPhoto(thisUser, viewHolder.ivParentUserPhoto);
@@ -54,7 +54,7 @@ public class SimpleSongAdapter extends HolderAdapter<Song, SimpleSongAdapter.Son
 			viewHolder.vPartnerWrapper.setVisibility(View.VISIBLE);
 			viewHolder.tvThisUserNickname.setText(parentUser.getNickname());
 			viewHolder.tvThisSongMessage.setText(parentSong.getCroppedMessage());
-			viewHolder.ivThisUserPhoto.setOnClickListener(parentUser.getProfileClickListener(context));
+			viewHolder.ivThisUserPhoto.setOnClickListener(parentUser.getProfileClickListener());
 			
 			ImageHelper.displayPhoto(parentUser, viewHolder.ivThisUserPhoto);
 		} else {

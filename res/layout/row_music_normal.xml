@@ -14,7 +14,7 @@
         app:corner_top_right="true"
         app:corner_bottom_left="true"
         app:corner_bottom_right="true"
-        style="@style/BaseImageView" />
+        style="@style/ImageViewBase" />
     
     <RelativeLayout
         android:id="@+id/header"

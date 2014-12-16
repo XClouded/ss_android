@@ -246,23 +246,26 @@ public class Song extends Model {
 		liking_num--;
 	}
 
-	public OnClickListener getPlayClickListener(final Context context) {
+	public OnClickListener getPlayClickListener() {
 		return new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				BaseActivity activity = (BaseActivity) context;
+				BaseActivity activity = (BaseActivity) v.getContext();
 				PlayerService service = activity.getPlayerService();
 				service.startPlaying(Song.this);
 			}
 		};
 	}
 	
-	public OnClickListener getCollaboClickListner(final Context context) {
+	public OnClickListener getCollaboClickListner() {
 		return new ActivateOnlyClickListener() {
+			
+			private Context context;
 			
 			@Override
 			public void onActivated(View v, User user) {
+				context = v.getContext();
 				JSONObjectRequest request = new JSONObjectRequest(
 						"songs/" + getParentSong().getId(), null,
 						successListener, errorListener);
@@ -293,11 +296,12 @@ public class Song extends Model {
 		};
 	}
 	
-	public OnClickListener getChildrenClickListener(final Context context) {
+	public OnClickListener getChildrenClickListener() {
 		return new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
+				Context context = v.getContext();
 				Bundle bundle = new Bundle();
 				bundle.putString(ChildrenSongFragment.EXTRA_ROOT_SONG, getParentSong().toString());
 				Intent intent = new Intent(context, RootActivity.class);

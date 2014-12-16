@@ -524,7 +524,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		public boolean onMenuItemClick(MenuItem item) {
 			switch (item.getItemId()) {
 			case R.id.action_other_collabo:
-				service.getSong().getChildrenClickListener(getContext()).onClick(null);
+				service.getSong().getChildrenClickListener().onClick(null);
 				return true;
 				
 			case R.id.action_song_likings:
@@ -590,9 +590,9 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		
 		initializeSeekBar(song);
 		
-		ivParentUserPhoto.setOnClickListener(parentUser.getProfileClickListener(getContext()));
-		ivThisUserPhoto.setOnClickListener(thisUser.getProfileClickListener(getContext()));
-		vStartCollabo.setOnClickListener(song.getCollaboClickListner(getContext()));
+		ivParentUserPhoto.setOnClickListener(parentUser.getProfileClickListener());
+		ivThisUserPhoto.setOnClickListener(thisUser.getProfileClickListener());
+		vStartCollabo.setOnClickListener(song.getCollaboClickListner());
 		ivLikeSong.setOnClickListener(likeClickListener);
 		btnSubmitComment.setOnClickListener(submitCommentClickListner);
 		

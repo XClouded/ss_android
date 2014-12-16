@@ -39,7 +39,7 @@ public class MyCommentAdapter extends HolderAdapter<SongComment, MyCommentAdapte
 		viewHolder.tvMusicInfo.setText(music.getSingerName());
 		viewHolder.tvMusicInfo.append(" - ");
 		viewHolder.tvMusicInfo.append(music.getTitle());
-		viewHolder.view.setOnClickListener(song.getPlayClickListener(context));
+		viewHolder.view.setOnClickListener(song.getPlayClickListener());
 		
 		ImageHelper.displayPhoto(user, viewHolder.ivCommentUserPhoto);
 		ImageHelper.displayPhoto(music.getAlbumPhotoUrl(), viewHolder.ivAlbumPhoto);

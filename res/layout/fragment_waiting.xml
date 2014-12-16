@@ -40,7 +40,7 @@
             android:padding="@dimen/margin_small"
             android:src="@drawable/ic_magnifier"
             android:background="@drawable/button_app_bg_selector"
-            style="@style/BaseImageView" />
+            style="@style/ImageViewBase" />
         
     </LinearLayout>
     

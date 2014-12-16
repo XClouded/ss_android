@@ -52,9 +52,9 @@ public class CollaboratedAdapter extends HolderAdapter<Song, CollaboratedAdapter
 		ImageHelper.displayPhoto(parentSong.getPhotoUrl(), viewHolder.ivParentSongImage);
 		ImageHelper.displayPhoto(thisSong.getPhotoUrl(), viewHolder.ivThisSongImage);
 		
-		viewHolder.ivParentUserPhoto.setOnClickListener(parentUser.getProfileClickListener(context));
-		viewHolder.ivThisUserPhoto.setOnClickListener(thisUser.getProfileClickListener(context));
-		viewHolder.view.setOnClickListener(thisSong.getPlayClickListener(context));
+		viewHolder.ivParentUserPhoto.setOnClickListener(parentUser.getProfileClickListener());
+		viewHolder.ivThisUserPhoto.setOnClickListener(thisUser.getProfileClickListener());
+		viewHolder.view.setOnClickListener(thisSong.getPlayClickListener());
 	}
 	
 	public static final class SongHolder extends ViewHolder {

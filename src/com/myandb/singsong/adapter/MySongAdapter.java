@@ -76,7 +76,7 @@ public class MySongAdapter extends HolderAdapter<Song, MySongAdapter.SongHolder>
 				ImageHelper.displayPhoto(creator, viewHolder.ivPartnerPhoto);
 				ImageHelper.displayPhoto(song.getPhotoUrl(), viewHolder.ivPartnerImage);
 				
-				viewHolder.view.setOnClickListener(song.getPlayClickListener(context));
+				viewHolder.view.setOnClickListener(song.getPlayClickListener());
 			}
 		} else if (children != null) {
 			viewHolder.vCollaboNumWrapper.setVisibility(View.VISIBLE);
@@ -99,9 +99,9 @@ public class MySongAdapter extends HolderAdapter<Song, MySongAdapter.SongHolder>
 			}
 			
 			if (children.size() == 0) {
-				viewHolder.view.setOnClickListener(song.getPlayClickListener(context));
+				viewHolder.view.setOnClickListener(song.getPlayClickListener());
 			} else {
-				viewHolder.view.setOnClickListener(song.getChildrenClickListener(context));
+				viewHolder.view.setOnClickListener(song.getChildrenClickListener());
 			}
 			
 			viewHolder.tvCollaboNum.setText(song.getWorkedCollaboNum());

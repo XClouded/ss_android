@@ -9,7 +9,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:paddingRight="@dimen/margin"
-        style="@style/BaseImageView" />
+        style="@style/ImageViewBase" />
     
     <RelativeLayout
         android:id="@+id/layout_comment_control"
@@ -32,9 +32,6 @@
             
 		    <Button
 		        android:id="@+id/btn_submit_comment"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:textColor="@color/white"
 		        android:text="@string/submit"
 		        android:textSize="@dimen/text_small"
 		        android:background="@drawable/button_primary_selector"

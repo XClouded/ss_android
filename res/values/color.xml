@@ -34,7 +34,7 @@
     <color name="font_default">#444</color>
     <color name="font_hint">#aaa</color>
     <color name="font_grey">#777</color>
-    <color name="font_white">#fafafa</color>
+    <color name="font_white">#eaeaea</color>
     <color name="font_highlight">#6ab8d3</color>
     <color name="font_noti_num">#ecddd6</color>
     <color name="font_male_active">#00e1ff</color>

@@ -7,7 +7,6 @@ import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.fragment.UserHomeFragment;
 import com.myandb.singsong.secure.Authenticator;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -91,7 +90,7 @@ public class User extends Model {
 		return Authenticator.getUser().equals(getId());
 	}
 	
-	public OnClickListener getProfileClickListener(final Context context) {
+	public OnClickListener getProfileClickListener() {
 		return new OnClickListener() {
 			
 			@Override
@@ -100,10 +99,10 @@ public class User extends Model {
 					return;
 				}
 				
-				BaseActivity activity = (BaseActivity) context;
+				BaseActivity activity = (BaseActivity) v.getContext();
 				Bundle bundle = new Bundle();
 				bundle.putString(UserHomeFragment.EXTRA_THIS_USER, User.this.toString());
-				Intent intent = new Intent(context, RootActivity.class);
+				Intent intent = new Intent(activity, RootActivity.class);
 				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, UserHomeFragment.class.getName());
 				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
 				activity.changePage(intent);

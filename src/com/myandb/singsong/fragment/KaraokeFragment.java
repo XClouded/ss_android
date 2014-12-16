@@ -46,6 +46,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Animation.AnimationListener;
@@ -102,8 +103,6 @@ public class KaraokeFragment extends BaseFragment {
 	private TextView tvScrollIndicator;
 	private ImageView ivThisUserPhoto;
 	private ImageView ivParentUserPhoto;
-	private ImageView ivThisUserBackground;
-	private ImageView ivParentUserBackground;
 	private View vLyricWrapper;
 	private View vParentUserWrapper;
 	private View vInfoWrapper;
@@ -149,8 +148,6 @@ public class KaraokeFragment extends BaseFragment {
 		
 		ivThisUserPhoto = (ImageView) view.findViewById(R.id.iv_this_user_photo);
 		ivParentUserPhoto = (ImageView) view.findViewById(R.id.iv_parent_user_photo);
-		ivThisUserBackground = (ImageView) view.findViewById(R.id.iv_this_user_bg);
-		ivParentUserBackground = (ImageView) view.findViewById(R.id.iv_parent_user_bg);
 		
 		vLyricWrapper = view.findViewById(R.id.ll_lyric_wrapper);
 		vParentUserWrapper = view.findViewById(R.id.ll_parent_user_wrapper);
@@ -234,7 +231,7 @@ public class KaraokeFragment extends BaseFragment {
 						
 						updateAudioProgress();
 						
-						ivThisUserBackground.startAnimation(blink);
+//						ivThisUserBackground.startAnimation(blink);
 						
 						if (music != null) {
 							PlayCounter.countAsync(getActivity(), "musics", music.getId());
@@ -247,7 +244,7 @@ public class KaraokeFragment extends BaseFragment {
 							lrcDisplayer.stop();
 						}
 						
-						ivThisUserBackground.clearAnimation();
+//						ivThisUserBackground.clearAnimation();
 						
 						stopRecording();
 						
@@ -514,7 +511,7 @@ public class KaraokeFragment extends BaseFragment {
 			vParentUserWrapper.setVisibility(View.GONE);
 		} else {
 			displayProfile(parentSong.getCreator(), tvParentUserNickname, ivParentUserPhoto);
-			displayPart(music, parentSong.getLyricPart(), tvParentUserPart, ivParentUserBackground);
+			displayPart(music, parentSong.getLyricPart(), tvParentUserPart, ivParentUserPhoto);
 			setThisUserPart(parentSong.getPartnerLyricPart());
 		}
 		
@@ -534,7 +531,7 @@ public class KaraokeFragment extends BaseFragment {
 	
 	public void setThisUserPart(int part) {
 		lyricPart = part;
-		displayPart(music, lyricPart, tvThisUserPart, ivThisUserBackground);
+		displayPart(music, lyricPart, tvThisUserPart, ivThisUserPhoto);
 	}
 	
 	private void displayPart(Music music, int lyricPart, TextView tvPart, ImageView photoBackground) {
@@ -543,12 +540,12 @@ public class KaraokeFragment extends BaseFragment {
 				tvPart.setText(music.getMalePart());
 				tvPart.setTextColor(getResources().getColor(R.color.font_highlight));
 				
-				photoBackground.setImageResource(R.drawable.circle_primary);
+				photoBackground.setBackgroundResource(R.drawable.circle_primary);
 			} else if (lyricPart == Music.PART_FEMALE) {
 				tvPart.setText(music.getFemalePart());
 				tvPart.setTextColor(getResources().getColor(R.color.red_dark));
 				
-				photoBackground.setImageResource(R.drawable.circle_red);
+				photoBackground.setBackgroundResource(R.drawable.circle_red);
 			}
 		}
 	}

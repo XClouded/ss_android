@@ -7,7 +7,7 @@
         android:id="@+id/iv_album_photo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        style="@style/BaseImageView" />
+        style="@style/ImageViewBase" />
     
     <ImageView
         android:layout_width="match_parent"
@@ -35,7 +35,7 @@
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:src="@drawable/ic_collabo_white"
-            style="@style/BaseImageView" />
+            style="@style/ImageViewBase" />
         
         <TextView
             android:id="@+id/tv_music_sing_num"

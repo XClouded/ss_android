@@ -282,7 +282,7 @@
 		                    android:id="@+id/iv_song_image"
 		                    android:layout_width="match_parent"
 		                    android:layout_height="match_parent"
-		                    style="@style/BaseImageView" />
+		                    style="@style/ImageViewBase" />
 		                
 		            </FrameLayout>
 		            

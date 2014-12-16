@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
@@ -26,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@color/grey_dark"
-            style="@style/BaseImageView" />
+            style="@style/ImageViewBase" />
         
         <ImageView
             android:layout_width="match_parent"
@@ -87,42 +86,30 @@
             
         </LinearLayout>
         
-        <FrameLayout
-            android:id="@+id/layout_user_photo"
-            android:layout_width="@dimen/photo_big"
-            android:layout_height="@dimen/photo_big"
-            android:padding="@dimen/border_width"
+        <com.myandb.singsong.widget.RoundedImageView
+        	android:id="@+id/iv_user_photo"
+        	android:layout_width="@dimen/photo_big"
+        	android:layout_height="@dimen/photo_big"
             android:layout_marginBottom="@dimen/margin_small"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="60dp"
-            android:background="@drawable/circle_white" >
-            
-            <com.myandb.singsong.widget.RoundedImageView
-	            android:id="@+id/iv_user_photo"
-	            android:layout_width="match_parent"
-	            android:layout_height="match_parent"
-	            app:oval="true"
-	            style="@style/UserImageView" />
-            
-        </FrameLayout>
+        	style="@style/ImageViewUserWithBorder" />
         
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_below="@id/layout_user_photo"
+            android:layout_below="@id/iv_user_photo"
             android:layout_marginLeft="@dimen/margin"
             android:layout_marginRight="@dimen/margin" >
 			
 			<TextView
 			    android:id="@+id/tv_user_nickname"
 			    android:layout_width="match_parent"
-			    android:textColor="@color/font_white"
-			    android:textStyle="bold"
 			    android:textSize="@dimen/text_biggest"
 			    android:layout_marginBottom="@dimen/margin_small"
 			    android:gravity="center"
-			    style="@style/TextViewBase" />
+			    style="@style/TextViewOverflowableImportant" />
 			
 			<TextView
 			    android:id="@+id/tv_user_status"
@@ -139,7 +126,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_alignTop="@id/layout_user_photo"
+            android:layout_alignTop="@id/iv_user_photo"
             android:layout_marginRight="@dimen/margin" >
             
 	        <Button

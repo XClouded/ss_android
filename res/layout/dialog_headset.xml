@@ -17,7 +17,7 @@
             android:layout_marginTop="@dimen/margin_big"
             android:layout_marginBottom="@dimen/margin_big"
             android:src="@drawable/img_headset"
-            style="@style/BaseImageView" />
+            style="@style/ImageViewBase" />
 	    
 	    <TextView
 	        android:layout_alignTop="@id/icon"

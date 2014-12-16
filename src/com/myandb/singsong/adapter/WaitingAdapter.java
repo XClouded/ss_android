@@ -47,8 +47,8 @@ public class WaitingAdapter extends HolderAdapter<Song, WaitingAdapter.SongHolde
 		ImageHelper.displayPhoto(thisUser, viewHolder.ivThisUserPhoto);
 		ImageHelper.displayPhoto(thisSong.getPhotoUrl(), viewHolder.ivThisSongImage);
 		
-		viewHolder.ivThisUserPhoto.setOnClickListener(thisUser.getProfileClickListener(context));
-		viewHolder.view.setOnClickListener(thisSong.getPlayClickListener(context));
+		viewHolder.ivThisUserPhoto.setOnClickListener(thisUser.getProfileClickListener());
+		viewHolder.view.setOnClickListener(thisSong.getPlayClickListener());
 	}
 	
 	public static final class SongHolder extends ViewHolder {

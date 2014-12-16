@@ -8,23 +8,13 @@
         android:id="@+id/iv_album_photo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:corner_radius="@dimen/corner_radius"
-        app:corner_top_left="true"
-        app:corner_top_right="true"
-        app:corner_bottom_left="true"
-        app:corner_bottom_right="true"
-        style="@style/BaseImageView" />
+        style="@style/ImageViewSquare" />
     
     <com.myandb.singsong.widget.RoundedImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/mask_profile"
-        app:corner_radius="@dimen/corner_radius"
-        app:corner_top_left="true"
-        app:corner_top_right="true"
-        app:corner_bottom_left="true"
-        app:corner_bottom_right="true"
-        style="@style/BaseImageView" />
+        style="@style/ImageViewSquare" />
     
     <TextView
         android:id="@+id/tv_music_title"
@@ -35,7 +25,6 @@
         android:textColor="@color/white"
         android:textSize="@dimen/text_biggest"
         android:textStyle="bold"
-        android:text="asdf"
         style="@style/TextViewBase" />
     
     <TextView
@@ -44,7 +33,6 @@
         android:layout_above="@id/tv_music_title"
         android:textColor="@color/font_white"
         android:textSize="@dimen/text"
-        android:text="fdfdf"
         style="@style/TextViewBase" />
     
     <TextView

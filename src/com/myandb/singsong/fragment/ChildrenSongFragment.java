@@ -74,7 +74,7 @@ public class ChildrenSongFragment extends ListFragment {
 		ImageHelper.displayPhoto(thisUser, ivUserPhoto);
 		ImageHelper.displayPhoto(thisSong.getPhotoUrl(), ivSongImage);
 		
-		ivUserPhoto.setOnClickListener(thisUser.getProfileClickListener(getActivity()));
+		ivUserPhoto.setOnClickListener(thisUser.getProfileClickListener());
 	}
 
 	@Override

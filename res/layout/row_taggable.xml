@@ -11,7 +11,7 @@
         app:border_width="0.1dp"
         app:border_color="@color/divider"
         android:layout_marginRight="@dimen/margin"
-        style="@style/UserImageView" />
+        style="@style/ImageViewUser" />
     
     <Button
         android:id="@+id/btn_invite"

@@ -18,29 +18,19 @@
 		    app:corner_radius="@dimen/corner_radius"
 		    app:corner_top_left="true"
 		    app:corner_top_right="true"
-		    android:src="@color/red"
-		    style="@style/BaseImageView" />
+		    style="@style/ImageViewBase" />
 	    
 	    <TextView
 	        android:id="@+id/tv_singer_name"
-	        android:layout_width="match_parent"
-	        android:gravity="center"
-	        android:text="singer"
-	        android:textColor="@color/font_grey"
-	        android:layout_margin="@dimen/margin_tiny"
-	        style="@style/TextViewEllipsize" />
+	        android:layout_margin="@dimen/margin_small"
+	        style="@style/TextViewOverflowableLessImportant" />
 	    
 	    <TextView
 	        android:id="@+id/tv_music_title"
-	        android:layout_width="match_parent"
-	        android:gravity="center"
+	        android:textColor="@color/font_default"
 	        android:textSize="@dimen/text_bigger"
-	        android:textStyle="bold"
-	        android:layout_marginLeft="@dimen/margin_small"
-	        android:layout_marginRight="@dimen/margin_small"
 	        android:layout_marginBottom="@dimen/margin"
-	        android:text="title"
-	        style="@style/TextViewEllipsize" />
+	        style="@style/TextViewOverflowableImportant" />
 	    
 	    <TextView
 	        android:id="@+id/tv_sing_num"

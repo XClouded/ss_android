@@ -5,21 +5,25 @@ import java.util.Calendar;
 
 import org.json.JSONArray;
 
+import com.google.gson.Gson;
 import com.myandb.singsong.R;
 import com.myandb.singsong.adapter.CategoryAdapter;
 import com.myandb.singsong.adapter.MusicAdapter;
 import com.myandb.singsong.adapter.MusicAdapter.LayoutType;
+import com.myandb.singsong.dialog.BaseDialog;
+import com.myandb.singsong.dialog.SelectRecordModeDialog;
 import com.myandb.singsong.model.Category;
 import com.myandb.singsong.model.Music;
 import com.myandb.singsong.net.GradualLoader;
 import com.myandb.singsong.net.GradualLoader.OnLoadCompleteListener;
 import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.util.Logger;
 import com.myandb.singsong.util.StringFormatter;
+import com.myandb.singsong.util.Utility;
 import com.myandb.singsong.widget.FloatableLayout;
 import com.myandb.singsong.widget.HorizontalListView;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -83,14 +87,7 @@ public class MusicHomeFragment extends BaseFragment {
 	private void loadPopularMusic() {
 		final MusicAdapter adapter = new MusicAdapter(LayoutType.POPULAR); 
 		hlvPopularMusic.setAdapter(adapter);
-		hlvPopularMusic.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				final Music music = (Music) parent.getItemAtPosition(position);
-				Logger.log(music.getTitle());
-			}
-		});
+		hlvPopularMusic.setOnItemClickListener(musicItemClickListener);
 		final UrlBuilder urlBuilder = new UrlBuilder().s("musics").p("order", "sing_num_this_week").take(5);
 		final GradualLoader loader = new GradualLoader(getActivity());
 		loader.setUrlBuilder(urlBuilder);
@@ -107,6 +104,7 @@ public class MusicHomeFragment extends BaseFragment {
 	private void loadRecentMusic() {
 		final MusicAdapter adapter = new MusicAdapter(LayoutType.RECENT); 
 		hlvRecentMusic.setAdapter(adapter);
+		hlvRecentMusic.setOnItemClickListener(musicItemClickListener);
 		final String startDate = StringFormatter.getDateString(Calendar.DATE, -7);
 		final UrlBuilder urlBuilder = new UrlBuilder().s("musics").start(startDate).p("order", "created_at").take(10);
 		GradualLoader loader = new GradualLoader(getActivity());
@@ -120,5 +118,19 @@ public class MusicHomeFragment extends BaseFragment {
 		});
 		loader.load();
 	}
+	
+	private OnItemClickListener musicItemClickListener = new OnItemClickListener() {
+
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			final Music music = (Music) parent.getItemAtPosition(position);
+			Gson gson = Utility.getGsonInstance();
+			Bundle bundle = new Bundle();
+			bundle.putString(SelectRecordModeDialog.EXTRA_MUSIC, gson.toJson(music));
+			BaseDialog dialog = new SelectRecordModeDialog();
+			dialog.setArguments(bundle);
+			dialog.show(getChildFragmentManager(), "");
+		}
+	};
 
 }
