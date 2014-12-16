@@ -81,7 +81,7 @@ public class WithdrawDialog extends BaseDialog {
 		unregisterGcm();
 		dismissProgressDialog();
 		if (getParentFragment() instanceof SettingFragment) {
-			((SettingFragment) getParentFragment()).restartApplication();
+			((SettingFragment) getParentFragment()).clearSharedPreferences();
 		}
 	}
 	

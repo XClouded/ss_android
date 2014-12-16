@@ -2,13 +2,20 @@ package com.myandb.singsong.fragment;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 
 import org.json.JSONArray;
 
 import com.google.gson.Gson;
 import com.myandb.singsong.R;
+import com.myandb.singsong.activity.BaseActivity;
+import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.adapter.CategoryAdapter;
+import com.myandb.singsong.adapter.FriendsAdapter;
 import com.myandb.singsong.adapter.MusicAdapter;
+import com.myandb.singsong.adapter.MyCommentAdapter;
+import com.myandb.singsong.adapter.MyLikeSongAdapter;
+import com.myandb.singsong.adapter.MySongAdapter;
 import com.myandb.singsong.adapter.MusicAdapter.LayoutType;
 import com.myandb.singsong.dialog.BaseDialog;
 import com.myandb.singsong.dialog.SelectRecordModeDialog;
@@ -23,9 +30,11 @@ import com.myandb.singsong.widget.FloatableLayout;
 import com.myandb.singsong.widget.HorizontalListView;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
@@ -61,6 +70,26 @@ public class MusicHomeFragment extends BaseFragment {
 	protected void setupViews() {
 		hlvPopularMusic.setDividerWidth(getResources().getDimensionPixelSize(R.dimen.margin));
 		hlvRecentMusic.setDividerWidth(getResources().getDimensionPixelSize(R.dimen.margin));
+		fltCategoryMusic.setHorizontalSpacing(R.dimen.margin_small);
+		fltCategoryMusic.setVerticalSpacing(R.dimen.margin_small);
+		
+		tvPopularMore.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				String segment = "musics/";
+				String adapterName = MusicAdapter.class.getName();
+				String title = "title";
+				Bundle bundle = new Bundle();
+				bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, title);
+				bundle.putString(ListFragment.EXTRA_URL_SEGMENT, segment);
+				bundle.putString(ListFragment.EXTRA_ADAPTER_NAME, adapterName);
+				Intent intent = new Intent(getActivity(), RootActivity.class);
+				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
+				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, ListFragment.class.getName());
+				startFragment(intent);
+			}
+		});
 	}
 
 	@Override
@@ -79,8 +108,6 @@ public class MusicHomeFragment extends BaseFragment {
 		CategoryAdapter adapter = new CategoryAdapter();
 		adapter.addAll(cgs);
 		
-		fltCategoryMusic.setHorizontalSpacing(R.dimen.margin_small);
-		fltCategoryMusic.setVerticalSpacing(R.dimen.margin_small);
 		fltCategoryMusic.setAdapter(adapter);
 	}
 	

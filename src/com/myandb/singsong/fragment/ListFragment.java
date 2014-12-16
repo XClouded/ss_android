@@ -60,7 +60,9 @@ public class ListFragment extends BaseFragment {
 		if (segment != null) {
 			urlBuilder = new UrlBuilder();
 			urlBuilder.s(segment);
-			urlBuilder.p(params);
+			if (params != null) {
+				urlBuilder.p(params);
+			}
 			
 			adapter = instantiateAdapter(adapterName);
 			if (adapter == null) {

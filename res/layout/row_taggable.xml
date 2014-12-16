@@ -7,9 +7,6 @@
     
     <com.myandb.singsong.widget.RoundedImageView
         android:id="@+id/iv_taggable_photo"
-        app:oval="true"
-        app:border_width="0.1dp"
-        app:border_color="@color/divider"
         android:layout_marginRight="@dimen/margin"
         style="@style/ImageViewUser" />
     

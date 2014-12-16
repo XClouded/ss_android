@@ -87,16 +87,22 @@ public class DrawerFragment extends BaseFragment {
 	}
 	
 	private GlobalMenu makeSingMenu() {
+		Bundle bundle = new Bundle();
+		bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_sing_title));
 		Intent intent = new Intent(getActivity(), RootActivity.class);
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, MusicHomeFragment.class.getName());
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_ROOT, true);
+		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
 		return new GlobalMenu(R.string.fragment_sing_title, intent, R.drawable.ic_menu_sing, true);
 	}
 	
 	private GlobalMenu makeListenMenu() {
+		Bundle bundle = new Bundle();
+		bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_listen_title));
 		Intent intent = new Intent(getActivity(), RootActivity.class);
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, CollaboratedFragment.class.getName());
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_ROOT, true);
+		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
 		return new GlobalMenu(R.string.fragment_listen_title, intent, R.drawable.ic_menu_listen);
 	}
 	

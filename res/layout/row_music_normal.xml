@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res/com.myandb.singsong"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/row_selector" >
@@ -9,12 +8,8 @@
         android:id="@+id/iv_album_photo"
         android:layout_width="@dimen/photo"
         android:layout_height="@dimen/photo"
-        app:corner_radius="@dimen/corner_radius"
-        app:corner_top_left="true"
-        app:corner_top_right="true"
-        app:corner_bottom_left="true"
-        app:corner_bottom_right="true"
-        style="@style/ImageViewBase" />
+        android:layout_marginRight="@dimen/margin_small"
+        style="@style/ImageViewSquare" />
     
     <RelativeLayout
         android:id="@+id/header"
@@ -40,26 +35,21 @@
     
     <TextView
         android:id="@+id/tv_singer_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_toLeftOf="@id/header"
         android:layout_toRightOf="@id/iv_album_photo"
-        android:layout_marginLeft="@dimen/margin"
-        android:textSize="@dimen/text_small"
-        android:textColor="@color/font_grey"
-        style="@style/TextViewEllipsize" />
+        android:layout_marginTop="@dimen/margin_tiny"
+        android:gravity="left"
+        style="@style/TextViewOverflowableLessImportant" />
     
     <TextView
         android:id="@+id/tv_music_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_toLeftOf="@id/header"
+        android:layout_toRightOf="@id/iv_album_photo"
         android:layout_below="@id/tv_singer_name"
-        android:layout_alignLeft="@id/tv_singer_name"
-        android:layout_marginTop="@dimen/margin_small"
-        android:textSize="@dimen/text_big"
-        android:textStyle="bold"
-        style="@style/TextViewEllipsize" />
+        android:layout_marginTop="@dimen/margin_tiny"
+        android:textColor="@color/font_default"
+        android:gravity="left"
+        style="@style/TextViewOverflowableImportant" />
     
 </RelativeLayout>
 

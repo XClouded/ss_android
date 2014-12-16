@@ -46,11 +46,13 @@ public class FriendsAdapter extends HolderAdapter<User, FriendsAdapter.UserHolde
 	
 	private void toggleFollowing(View v, boolean isFollowing) {
 		if (isFollowing) {
-			v.setBackgroundResource(R.drawable.img_following);
+			v.setBackgroundResource(R.drawable.button_primary_selector);
 			v.setOnClickListener(unfollowClickListener);
+			((Button) v).setText("ÆÈ·ÎÀ×");
 		} else {
-			v.setBackgroundResource(R.drawable.img_follow);
+			v.setBackgroundResource(R.drawable.button_grey_selector);
 			v.setOnClickListener(followClickListener);
+			((Button) v).setText("+ÆÈ·Î¿ì");
 		} 
 	}
 	

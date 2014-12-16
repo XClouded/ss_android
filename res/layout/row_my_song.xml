@@ -138,9 +138,6 @@
 				      
 					<com.myandb.singsong.widget.RoundedImageView
 					    android:id="@+id/iv_parent_user_photo"
-					    app:oval="true"
-					    app:border_width="0.1dp"
-					    app:border_color="@color/divider"
 					    style="@style/ImageViewUser" />
 				      
 		      	</FrameLayout>
@@ -180,9 +177,6 @@
 				      
 					<com.myandb.singsong.widget.RoundedImageView
 					    android:id="@+id/iv_this_user_photo"
-					    app:oval="true"
-					    app:border_width="0.1dp"
-					    app:border_color="@color/divider"
 					    style="@style/ImageViewUser" />
 				      
 		      	</FrameLayout>

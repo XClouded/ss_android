@@ -317,16 +317,20 @@ public class SettingFragment extends BaseFragment {
 	}
 	
 	public void onRemoveAccessTokenSuccess(JSONObject response) {
-		new Authenticator().logout();
-		restartApplication();
+		clearSharedPreferences();
 	}
 	
 	public void onRemoveAccessTokenError() {
+		clearSharedPreferences();
+	}
+	
+	public void clearSharedPreferences() {
 		new Authenticator().logout();
+		PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().clear().commit();
 		restartApplication();
 	}
 	
-	public void restartApplication() {
+	private void restartApplication() {
 		Intent intent = new Intent(getActivity(), RootActivity.class);
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, HomeFragment.class.getName());
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_ROOT, true);
