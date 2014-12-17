@@ -39,7 +39,7 @@ public class LauncherActivity extends FragmentActivity {
 			public void run() {
 				requestAppMetadata();
 			}
-		}, 500);
+		}, 350);
 	}
 	
 	private void requestAppMetadata() {
