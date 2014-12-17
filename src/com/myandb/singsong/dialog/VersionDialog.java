@@ -3,7 +3,6 @@ package com.myandb.singsong.dialog;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -13,16 +12,21 @@ import com.myandb.singsong.GoogleStore;
 import com.myandb.singsong.PackageHelper;
 import com.myandb.singsong.R;
 import com.myandb.singsong.Store;
+import com.myandb.singsong.activity.LauncherActivity;
 
 public class VersionDialog extends BaseDialog {
 	
 	private Button btnUpdate;
+	private Button btnNoUpdate;
 	private Button btnExit;
 	private Store store;
 	private boolean forceUpdate = false;
 
 	@Override
 	protected void initialize(Activity activity) {
+		getDialog().setCanceledOnTouchOutside(false);
+		getDialog().setCancelable(false);
+		
 		store = new GoogleStore();
 		if (isStoreUnavailable(store)) {
 			store = new GoogleStore();
@@ -37,6 +41,7 @@ public class VersionDialog extends BaseDialog {
 	@Override
 	protected void onViewInflated(View view, LayoutInflater inflater) {
 		btnUpdate = (Button) view.findViewById(R.id.btn_update);
+		btnNoUpdate = (Button) view.findViewById(R.id.btn_no_update);
 		btnExit = (Button) view.findViewById(R.id.btn_exit);
 	}
 
@@ -44,13 +49,11 @@ public class VersionDialog extends BaseDialog {
 	protected void setupViews() {
 		btnUpdate.setOnClickListener(toStoreClickListener);
 		btnExit.setOnClickListener(exitClickListener);
-	}
-	
-	@Override
-	public void show(FragmentManager manager, String tag) {
-		super.show(manager, tag);
 		if (forceUpdate) {
-			// Hide 'skip update'
+			btnNoUpdate.setVisibility(View.GONE);
+		} else {
+			btnNoUpdate.setVisibility(View.VISIBLE);
+			btnNoUpdate.setOnClickListener(startClickListner);
 		}
 	}
 
@@ -60,6 +63,15 @@ public class VersionDialog extends BaseDialog {
 		public void onClick(View v) {
 			moveToStore();
 			finishActivity();
+		}
+	};
+	
+	private OnClickListener startClickListner = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			dismiss();
+			((LauncherActivity) getActivity()).startRootActivity();
 		}
 	};
 	

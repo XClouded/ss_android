@@ -26,6 +26,7 @@
     <string name="upload">업로드하기</string>
     <string name="report">신고하기</string>
     <string name="update">업데이트</string>
+    <string name="no_update">나중에 하기</string>
     <string name="save">저장하기</string>
     <string name="nickname">닉네임</string>
     <string name="email">이메일</string>

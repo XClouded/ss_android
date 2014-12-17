@@ -163,6 +163,7 @@ public class RootActivity extends BaseActivity {
 		int latestNoticeId = intent.getIntExtra(EXTRA_NOTICE_ID, 0);
 		if (isExistUnreadLatestNotice(latestNoticeId)) {
 			// Show notice
+			saveLatestNoticeId(latestNoticeId);
 		}
 	}
 	
@@ -171,6 +172,12 @@ public class RootActivity extends BaseActivity {
 		String key = getString(R.string.key_read_notice_id);
 		int readNoticeId = preferences.getInt(key, 0);
 		return latestNoticeId > readNoticeId;
+	}
+	
+	private void saveLatestNoticeId(int latestNoticeId) {
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		String key = getString(R.string.key_read_notice_id);
+		preferences.edit().putInt(key, latestNoticeId).commit();
 	}
 
 	@Override

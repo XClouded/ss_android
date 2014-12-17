@@ -12,13 +12,30 @@
         android:layout_marginBottom="@dimen/margin"
         style="@style/TextViewTitle" />
     
-    <Button
-        android:id="@+id/btn_update"
-        android:text="@string/update"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:background="@drawable/button_grey_selector"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_big"
-        style="@style/ButtonBase" />
+        android:orientation="horizontal" >
+        
+	    <Button
+	        android:id="@+id/btn_update"
+	        android:text="@string/update"
+	        android:layout_width="0dp"
+	        android:layout_weight="1"
+	        android:background="@drawable/button_grey_selector"
+	        android:layout_marginRight="@dimen/margin"
+	        style="@style/ButtonBase" />
+        
+	    <Button
+	        android:id="@+id/btn_no_update"
+	        android:text="@string/no_update"
+	        android:layout_width="0dp"
+	        android:layout_weight="1"
+	        android:background="@drawable/button_grey_selector"
+	        style="@style/ButtonBase" />
+        
+    </LinearLayout>
     
     <Button
         android:id="@+id/btn_exit"
