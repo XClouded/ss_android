@@ -9,6 +9,7 @@ import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.util.Utility;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,19 +57,23 @@ public class MusicDetailFragment extends ListFragment {
 	}
 
 	@Override
-	protected void setupViews() {
-		super.setupViews();
+	protected void initialize(Activity activity) {
+		super.initialize(activity);
+		
+		UrlBuilder urlBuilder = new UrlBuilder();
+		urlBuilder.s("songs").s(74824).s("children");
+		setUrlBuilder(urlBuilder);
+		setInternalAdapter(new ChildrenSongAdapter());
+	}
+
+	@Override
+	protected void setupViews(Bundle savedInstanceState) {
+		super.setupViews(savedInstanceState);
 		
 		ImageHelper.displayPhoto(music.getAlbumPhotoUrl(), ivAlbumPhoto);
 		tvSingerName.setText(music.getSingerName());
 		tvMusicTitle.setText(music.getTitle());
 		tvSingNum.setText(music.getWorkedSingNum());
-		
-		UrlBuilder urlBuilder = new UrlBuilder();
-		urlBuilder.s("songs").s(74824).s("children");
-		setUrlBuilder(urlBuilder);
-		setAdapter(new ChildrenSongAdapter());
-		load();
 	}
 
 	@Override

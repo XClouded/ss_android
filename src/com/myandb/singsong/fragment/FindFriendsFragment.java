@@ -3,6 +3,7 @@ package com.myandb.singsong.fragment;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.RootActivity;
+import com.myandb.singsong.fragment.SearchFragment.SearchType;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.pager.InviteFriendsPagerAdapter;
 import com.myandb.singsong.secure.Authenticator;
@@ -45,8 +46,8 @@ public class FindFriendsFragment extends ListFragment {
 	}
 
 	@Override
-	protected void setupViews() {
-		super.setupViews();
+	protected void setupViews(Bundle savedInstanceState) {
+		super.setupViews(savedInstanceState);
 		btnSearchUser.setOnClickListener(searchUserClickListener);
 		btnConnectFacebook.setOnClickListener(connectFacebookClickListener);
 	}
@@ -55,7 +56,13 @@ public class FindFriendsFragment extends ListFragment {
 		
 		@Override
 		public void onClick(View v) {
-			
+			Bundle bundle = new Bundle();
+			bundle.putSerializable(SearchFragment.EXTRA_SEARCH_TYPE, SearchType.USER);
+			bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, "유저 검색");
+			Intent intent = new Intent(getActivity(), RootActivity.class);
+			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, SearchFragment.class.getName());
+			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
+			startFragment(intent);
 		}
 	};
 	

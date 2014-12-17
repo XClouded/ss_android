@@ -6,10 +6,15 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 
 public class SearchView extends RelativeLayout {
 	
@@ -17,6 +22,7 @@ public class SearchView extends RelativeLayout {
 	private ImageView clear;
 	private OnTextChangedListener changedListener;
 	private OnTextEmptyListener emptyListener;
+	private OnActionSearchListener searchListener;
 
 	public SearchView(Context context) {
 		super(context);
@@ -39,12 +45,41 @@ public class SearchView extends RelativeLayout {
 	private void initializeChildViews() {
 		search = (EditText) findViewById(R.id.et_search);
 		clear = (ImageView) findViewById(R.id.iv_clear);
-		search.addTextChangedListener(searchChangedWatcher);
+		search.addTextChangedListener(textChangedWatcher);
+		search.setOnEditorActionListener(editorActionListener);
 		search.setMaxLines(1);
 		clear.setOnClickListener(clearClickListener);
 	}
 	
-	private TextWatcher searchChangedWatcher = new TextWatcher() {
+	private OnEditorActionListener editorActionListener = new OnEditorActionListener() {
+		
+		@Override
+		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+			switch (actionId) {
+			case EditorInfo.IME_ACTION_SEARCH:
+				if (searchListener != null) {
+					searchListener.onSearch(search.getText().toString());
+				}
+				return true;
+
+			default:
+				return false;
+			}
+		}
+	};
+	
+	public void showSoftKeyboard() {
+		search.requestFocus();
+		InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.showSoftInput(search, 0);
+	}
+	
+	public void hideSoftKeyboard() {
+		InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE); 
+		imm.hideSoftInputFromWindow(search.getWindowToken(), 0);
+	}
+	
+	private TextWatcher textChangedWatcher = new TextWatcher() {
 		
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -93,7 +128,7 @@ public class SearchView extends RelativeLayout {
 			emptyListener.onEmpty();
 		}
 	}
-	
+
 	public void setSearchHint(String hint) {
 		if (search != null) {
 			search.setHint(hint);
@@ -108,6 +143,10 @@ public class SearchView extends RelativeLayout {
 		this.emptyListener = listener;
 	}
 	
+	public void setOnActionSearchListener(OnActionSearchListener listener) {
+		this.searchListener = listener;
+	}
+	
 	public static interface OnTextChangedListener {
 		
 		public void onChanged(CharSequence text);
@@ -117,6 +156,12 @@ public class SearchView extends RelativeLayout {
 	public static interface OnTextEmptyListener {
 		
 		public void onEmpty();
+		
+	}
+	
+	public static interface OnActionSearchListener {
+		
+		public void onSearch(CharSequence text);
 		
 	}
 

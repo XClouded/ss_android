@@ -25,6 +25,8 @@
         android:id="@+id/et_search"
         android:layout_toRightOf="@id/magnifier"
         android:layout_toLeftOf="@id/iv_clear"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
         android:background="@null"
         style="@style/BaseEditText" />
     

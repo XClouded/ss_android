@@ -57,7 +57,7 @@ public abstract class BaseFragment extends Fragment {
 		
 		initialize(getActivity());
 		
-		setupViews();
+		setupViews(savedInstanceState);
 		
 		notifyDataChanged();
 	}
@@ -238,7 +238,7 @@ public abstract class BaseFragment extends Fragment {
 	
 	protected abstract void initialize(Activity activity);
 	
-	protected abstract void setupViews();
+	protected abstract void setupViews(Bundle savedInstanceState);
 	
 	protected abstract void onDataChanged();
 	

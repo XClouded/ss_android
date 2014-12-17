@@ -99,10 +99,20 @@ public class UserHomeFragment extends ListFragment {
 	}
 
 	@Override
-	protected void setupViews() {
-		super.setupViews();
-		
+	protected void initialize(Activity activity) {
+		super.initialize(activity);
 		setHasOptionsMenu(true);
+		if (getAdapter() == null) {
+			UrlBuilder urlBuilder = new UrlBuilder();
+			urlBuilder.s("users").s(thisUser.getId()).s("songs").s("all").p("order", "created_at");
+			setUrlBuilder(urlBuilder);
+			setInternalAdapter(new MySongAdapter(activity, isCurrentUser(), false));
+		}
+	}
+
+	@Override
+	protected void setupViews(Bundle savedInstanceState) {
+		super.setupViews(savedInstanceState);
 		
 		displayUserSpecificViews();
 
@@ -111,8 +121,6 @@ public class UserHomeFragment extends ListFragment {
 		setUserPhoto();
 		
 		loadProfileData();
-		
-		loadUserSong();
 		
 		if (!thisUser.isActivated()) {
 			checkUserActivation();
@@ -414,16 +422,6 @@ public class UserHomeFragment extends ListFragment {
 			getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.hold);
 		}
 	};
-	
-	private void loadUserSong() {
-		UrlBuilder urlBuilder = new UrlBuilder();
-		urlBuilder.s("users").s(thisUser.getId()).s("songs").s("all").p("order", "created_at");
-		setUrlBuilder(urlBuilder);
-		
-		MySongAdapter adapter = new MySongAdapter(getActivity(), isCurrentUser(), false);
-		setAdapter(adapter);
-		load();
-	}
 	
 	private void checkUserActivation() {
 		JSONObjectRequest request = new JSONObjectRequest(

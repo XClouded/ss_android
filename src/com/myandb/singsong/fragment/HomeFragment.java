@@ -53,7 +53,7 @@ public class HomeFragment extends BaseFragment {
 	}
 
 	@Override
-	protected void setupViews() {
+	protected void setupViews(Bundle savedInstanceState) {
 		
 	}
 

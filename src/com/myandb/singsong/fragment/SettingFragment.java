@@ -117,7 +117,7 @@ public class SettingFragment extends BaseFragment {
 	}
 
 	@Override
-	protected void setupViews() {
+	protected void setupViews(Bundle savedInstanceState) {
 		registerSharedPreferenceChangeListener();
 		
 		ivUserPhoto.setOnClickListener(pickPhotoClickListener);

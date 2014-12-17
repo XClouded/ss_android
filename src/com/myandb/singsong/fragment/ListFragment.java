@@ -39,8 +39,10 @@ public class ListFragment extends BaseFragment {
 	private Animation fadeOut;
 	private GradualLoader loader;
 	private FadingActionBarHelper fadingActionBarHelper;
-	private UrlBuilder urlBuilder;
-	private ListAdapter adapter;
+	private UrlBuilder internalUrlBuilder;
+	private ListAdapter internalAdapter;
+	private int listViewIndex;
+	private int listViewTop;
 
 	@Override
 	protected final int getResourceId() {
@@ -51,22 +53,41 @@ public class ListFragment extends BaseFragment {
 	protected void onArgumentsReceived(Bundle bundle) {
 		super.onArgumentsReceived(bundle);
 		
-		final String segment = bundle.getString(EXTRA_URL_SEGMENT);
-		final Bundle params = bundle.getBundle(EXTRA_QUERY_PARAMS);
-		final String adapterName = bundle.getString(EXTRA_ADAPTER_NAME);
-		
-		if (segment != null) {
-			urlBuilder = new UrlBuilder();
-			urlBuilder.s(segment);
-			if (params != null) {
-				urlBuilder.p(params);
-			}
-			
-			adapter = instantiateAdapter(adapterName);
-			if (adapter == null) {
-				urlBuilder = null;
+		if (isFragmentCreated()) {
+			internalUrlBuilder = getUrlBuilderOnArgumentPassed(bundle);
+			internalAdapter = getListAdapterOnArgumentPassed(bundle);
+			if (internalUrlBuilder == null || internalAdapter == null) {
+				internalUrlBuilder = null;
+				internalAdapter = null;
 			}
 		}
+	}
+	
+	private boolean isFragmentCreated() {
+		return internalUrlBuilder == null && internalAdapter == null;
+	}
+	
+	private UrlBuilder getUrlBuilderOnArgumentPassed(Bundle bundle) {
+		final String segment = bundle.getString(EXTRA_URL_SEGMENT);
+		final Bundle params = bundle.getBundle(EXTRA_QUERY_PARAMS);
+		
+		if (segment != null) {
+			UrlBuilder builder = new UrlBuilder();
+			builder.s(segment);
+			if (params != null) {
+				builder.p(params);
+			}
+			return builder;
+		}
+		return null;
+	}
+	
+	private ListAdapter getListAdapterOnArgumentPassed(Bundle bundle) {
+		final String adapterName = bundle.getString(EXTRA_ADAPTER_NAME);
+		if (adapterName != null) {
+			return instantiateAdapter(adapterName);
+		}
+		return null;
 	}
 	
 	private ListAdapter instantiateAdapter(String adapterName) {
@@ -121,11 +142,14 @@ public class ListFragment extends BaseFragment {
 		fadeIn = AnimationUtils.loadAnimation(activity, android.R.anim.fade_in);
 		fadeOut = AnimationUtils.loadAnimation(activity, android.R.anim.fade_out);
 		
-		loader = new GradualLoader(activity);
+		if (loader == null) {
+			loader = new GradualLoader(activity);
+			setUrlBuilder(internalUrlBuilder);
+		}
 	}
 	
 	@Override
-	protected void setupViews() {
+	protected void setupViews(Bundle savedInstanceState) {
 		listView.setOnScrollListener(new OnScrollListener() {
 			
 			@Override
@@ -146,17 +170,23 @@ public class ListFragment extends BaseFragment {
 	}
 
 	@Override
-	protected void onDataChanged() {
-		if (urlBuilder != null) {
-			setUrlBuilder(urlBuilder);
-			setAdapter(adapter);
-			load();
-		}
-	}
+	protected void onDataChanged() {}
 	
 	@Override
 	public void onResume() {
 		super.onResume();
+		
+		if (internalAdapter != null) {
+			setAdapter(internalAdapter);
+			if (internalAdapter.getCount() == 0 && loader.isLoadable()) {
+				load();
+			} else {
+				setListShown(true);
+				if (listViewIndex > 0) {
+					listView.setSelectionFromTop(listViewIndex, listViewTop);
+				}
+			}
+		}
 		
 		if (listHeaderView != null) {
 			setActionBarOverlay(true);
@@ -168,20 +198,38 @@ public class ListFragment extends BaseFragment {
 		}
 	}
 
-	public void setAdapter(final ListAdapter adapter) {
+	@Override
+	public void onDestroyView() {
+		listViewIndex = listView.getFirstVisiblePosition();
+		View child = listView.getChildAt(0);
+		listViewTop = (child == null) ? 0 : child.getTop();
+		super.onDestroyView();
+	}
+	
+	public void setInternalAdapter(ListAdapter adapter) {
+		if (internalAdapter == null) {
+			internalAdapter = adapter;
+		}
+	}
+
+	private void setAdapter(final ListAdapter adapter) {
+		if (adapter == null) {
+			return;
+		}
+		
 		listView.setAdapter(adapter);
 		getGradualLoader().setOnLoadCompleteListener(new OnLoadCompleteListener() {
 			
 			@Override
 			public void onComplete(JSONArray response) {
-				if (adapter instanceof HolderAdapter) {
+				if (internalAdapter instanceof HolderAdapter) {
 					setListShown(true);
 					((HolderAdapter<?, ?>) adapter).addAll(response);
 				}
 			}
 		});
 	}
-	
+
 	public void setFixedHeaderShown(boolean shown) {
 		if (fixedHeaderContainer.isShown() == shown) {
 			return;
@@ -199,7 +247,7 @@ public class ListFragment extends BaseFragment {
 	}
 	
 	public ListAdapter getAdapter() {
-		return listView.getAdapter();
+		return internalAdapter;
 	}
 	
 	public GradualLoader getGradualLoader() {
@@ -207,7 +255,11 @@ public class ListFragment extends BaseFragment {
 	}
 	
 	public void setUrlBuilder(UrlBuilder urlBuilder) {
-		getGradualLoader().setUrlBuilder(urlBuilder);
+		if (urlBuilder == null || loader.isLoadable()) {
+			return;
+		}
+		
+		loader.setUrlBuilder(urlBuilder);
 	}
 	
 	public void load() {

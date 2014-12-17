@@ -11,6 +11,7 @@ import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.util.Utility;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,8 +57,17 @@ public class ChildrenSongFragment extends ListFragment {
 	}
 
 	@Override
-	protected void setupViews() {
-		super.setupViews();
+	protected void initialize(Activity activity) {
+		super.initialize(activity);
+		UrlBuilder urlBuilder = new UrlBuilder();
+		urlBuilder.s("songs").s(thisSong.getId()).s("children");
+		setUrlBuilder(urlBuilder);
+		setInternalAdapter(new ChildrenSongAdapter());
+	}
+
+	@Override
+	protected void setupViews(Bundle savedInstanceState) {
+		super.setupViews(savedInstanceState);
 		
 		final User thisUser = thisSong.getCreator();
 		final Music music = thisSong.getMusic();
@@ -75,17 +85,6 @@ public class ChildrenSongFragment extends ListFragment {
 		ImageHelper.displayPhoto(thisSong.getPhotoUrl(), ivSongImage);
 		
 		ivUserPhoto.setOnClickListener(thisUser.getProfileClickListener());
-	}
-
-	@Override
-	protected void onDataChanged() {
-		super.onDataChanged();
-		
-		UrlBuilder urlBuilder = new UrlBuilder();
-		urlBuilder.s("songs").s(thisSong.getId()).s("children");
-		setUrlBuilder(urlBuilder);
-		setAdapter(new ChildrenSongAdapter());
-		load();
 	}
 
 	@Override

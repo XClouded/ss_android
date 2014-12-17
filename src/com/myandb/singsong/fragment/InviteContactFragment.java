@@ -14,6 +14,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.database.Cursor;
+import android.os.Bundle;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,12 +41,12 @@ public class InviteContactFragment extends ListFragment {
 	}
 
 	@Override
-	protected void setupViews() {
-		super.setupViews();
+	protected void setupViews(Bundle savedInstanceState) {
+		super.setupViews(savedInstanceState);
 		searchView.setSearchHint(getString(R.string.hint_search_user));
 		searchView.setOnTextChangedListener(textChangedListener);
 		searchView.setOnTextEmptyListener(textEmptyListner);
-		setAdapter(adapter);
+		getListView().setAdapter(adapter);
 	}
 	
 	private OnTextChangedListener textChangedListener = new OnTextChangedListener() {

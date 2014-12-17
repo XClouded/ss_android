@@ -62,7 +62,7 @@ public class MusicHomeFragment extends BaseFragment {
 	}
 
 	@Override
-	protected void setupViews() {
+	protected void setupViews(Bundle savedInstanceState) {
 		hlvPopularMusic.setDividerWidth(getResources().getDimensionPixelSize(R.dimen.margin));
 		hlvRecentMusic.setDividerWidth(getResources().getDimensionPixelSize(R.dimen.margin));
 		fltCategoryMusic.setHorizontalSpacing(R.dimen.margin_small);

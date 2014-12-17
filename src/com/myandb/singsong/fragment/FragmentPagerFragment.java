@@ -72,7 +72,7 @@ public class FragmentPagerFragment extends BaseFragment {
 	}
 	
 	@Override
-	protected void setupViews() {
+	protected void setupViews(Bundle savedInstanceState) {
 		setAdapter(pagerAdapter);
 		viewPager.setPageMargin(getResources().getDimensionPixelSize(R.dimen.margin_small));
 	}

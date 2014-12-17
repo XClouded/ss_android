@@ -195,7 +195,7 @@ public class RecordSettingFragment extends BaseFragment {
 	}
 
 	@Override
-	protected void setupViews() {
+	protected void setupViews(Bundle savedInstanceState) {
 		if (headsetPlugged) {
 			vMixer.setVisibility(View.VISIBLE);
 		} else {

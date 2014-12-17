@@ -124,7 +124,7 @@ public class DrawerFragment extends BaseFragment {
 	}
 	
 	@Override
-	protected void setupViews() {
+	protected void setupViews(Bundle savedInstanceState) {
 		MenuAdapter adapter = new MenuAdapter();
 		adapter.addAll(menus);
 		lgvMenu.setColumnCount(2);

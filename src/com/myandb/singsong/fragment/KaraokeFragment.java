@@ -507,7 +507,7 @@ public class KaraokeFragment extends BaseFragment {
 	}
 
 	@Override
-	protected void setupViews() {
+	protected void setupViews(Bundle savedInstanceState) {
 		final Animation fadeIn = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in);
 		final Animation fadeOut = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
 		tsLyricStarter.setInAnimation(fadeIn);
