@@ -37,7 +37,7 @@
             android:paddingRight="@dimen/margin_small"
             android:minHeight="1dp"
             android:maxHeight="1dp"
-            android:progressDrawable="@drawable/seekbar"
+            android:progressDrawable="@drawable/seekbar_white"
             android:thumb="@drawable/seekbar_thumb"
             android:thumbOffset="0dp" />
         

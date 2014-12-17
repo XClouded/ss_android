@@ -1,29 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/DialogBox" >
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center" >
     
     <TextView
         android:text="@string/dialog_part_select_title"
-        style="@style/TextViewDialogTitle" />
+        android:textColor="@color/white"
+        style="@style/TextViewTitle" />
     
     <TextView
         android:text="@string/dialog_part_select_content"
-        android:padding="@dimen/margin_small"
+        android:gravity="center"
+        android:textColor="@color/font_white"
+        android:layout_marginBottom="@dimen/margin_bigger"
         style="@style/TextViewHint" />
-    
-    <ImageView
-        style="@style/DividerHorizontal" />
     
     <Button
         android:id="@+id/btn_select_male"
+        android:layout_marginBottom="@dimen/margin_big"
+        android:background="@drawable/button_transparent_primary_selector"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
         android:textColor="@color/primary"
         style="@style/ButtonBase" />
     
-   <ImageView
-        style="@style/DividerHorizontal" />
-    
     <Button
         android:id="@+id/btn_select_female"
+        android:layout_marginBottom="@dimen/margin_big"
+        android:background="@drawable/button_transparent_red_selector"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
         android:textColor="@color/red"
         style="@style/ButtonBase" />
 

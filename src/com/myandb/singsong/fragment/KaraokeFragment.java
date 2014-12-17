@@ -15,7 +15,7 @@ import com.myandb.singsong.audio.Recorder;
 import com.myandb.singsong.audio.Track;
 import com.myandb.singsong.dialog.HeadsetDialog;
 import com.myandb.singsong.dialog.LoadingDialog;
-import com.myandb.singsong.dialog.SelectorDialog;
+import com.myandb.singsong.dialog.SelectPartDialog;
 import com.myandb.singsong.event.OnCompleteListener;
 import com.myandb.singsong.event.OnCompleteWeakListener;
 import com.myandb.singsong.event.OnProgressListener;
@@ -46,7 +46,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Animation.AnimationListener;
@@ -89,7 +88,7 @@ public class KaraokeFragment extends BaseFragment {
 	
 	private HeadsetDialog headsetDialog;
 	private LoadingDialog loadingDialog;
-	private SelectorDialog selectorDialog;
+	private SelectPartDialog selectorDialog;
 	
 	private TextView tvMusicTitle;
 	private TextView tvSingerName;
@@ -103,6 +102,8 @@ public class KaraokeFragment extends BaseFragment {
 	private TextView tvScrollIndicator;
 	private ImageView ivThisUserPhoto;
 	private ImageView ivParentUserPhoto;
+	private ImageView ivThisUserBackground;
+	private ImageView ivParentUserBackground;
 	private View vLyricWrapper;
 	private View vParentUserWrapper;
 	private View vInfoWrapper;
@@ -148,6 +149,8 @@ public class KaraokeFragment extends BaseFragment {
 		
 		ivThisUserPhoto = (ImageView) view.findViewById(R.id.iv_this_user_photo);
 		ivParentUserPhoto = (ImageView) view.findViewById(R.id.iv_parent_user_photo);
+		ivThisUserBackground = (ImageView) view.findViewById(R.id.iv_this_user_bg);
+		ivParentUserBackground = (ImageView) view.findViewById(R.id.iv_parent_user_bg);
 		
 		vLyricWrapper = view.findViewById(R.id.ll_lyric_wrapper);
 		vParentUserWrapper = view.findViewById(R.id.ll_parent_user_wrapper);
@@ -231,7 +234,7 @@ public class KaraokeFragment extends BaseFragment {
 						
 						updateAudioProgress();
 						
-//						ivThisUserBackground.startAnimation(blink);
+						ivThisUserBackground.startAnimation(blink);
 						
 						if (music != null) {
 							PlayCounter.countAsync(getActivity(), "musics", music.getId());
@@ -244,7 +247,7 @@ public class KaraokeFragment extends BaseFragment {
 							lrcDisplayer.stop();
 						}
 						
-//						ivThisUserBackground.clearAnimation();
+						ivThisUserBackground.clearAnimation();
 						
 						stopRecording();
 						
@@ -273,7 +276,12 @@ public class KaraokeFragment extends BaseFragment {
 	private void initializeDialogs() {
 		headsetDialog = new HeadsetDialog();
 		loadingDialog = new LoadingDialog();
-		selectorDialog = new SelectorDialog();
+		
+		Bundle bundle = new Bundle();
+		bundle.putString(SelectPartDialog.EXTRA_PART_MALE, music.getMalePart());
+		bundle.putString(SelectPartDialog.EXTRA_PART_FEMALE, music.getFemalePart());
+		selectorDialog = new SelectPartDialog();
+		selectorDialog.setArguments(bundle);
 	}
 	
 	private void downloadDatas() {
@@ -412,7 +420,7 @@ public class KaraokeFragment extends BaseFragment {
 	
 	private void setupLoadingDialogForDownload() {
 		loadingDialog.setTitlePrefix("노래 로딩 중입니다...");
-		loadingDialog.showControlButton(false);
+		loadingDialog.setControlButtonShown(false);
 		loadingDialog.setOnCancelButtonClickListener(new OnClickListener() {
 			
 			@Override
@@ -428,7 +436,7 @@ public class KaraokeFragment extends BaseFragment {
 	
 	private void setupLoadingDialogForDecode() {
 		loadingDialog.setTitlePrefix("노래 압축을 풀고 있습니다...");
-		loadingDialog.showControlButton(true);
+		loadingDialog.setControlButtonShown(true);
 		loadingDialog.enableControlButton(false);
 		loadingDialog.setControlButtonText("기다리지 않고 시작하기");
 		loadingDialog.setOnCancelButtonClickListener(new OnClickListener() {
@@ -511,7 +519,7 @@ public class KaraokeFragment extends BaseFragment {
 			vParentUserWrapper.setVisibility(View.GONE);
 		} else {
 			displayProfile(parentSong.getCreator(), tvParentUserNickname, ivParentUserPhoto);
-			displayPart(music, parentSong.getLyricPart(), tvParentUserPart, ivParentUserPhoto);
+			displayPart(music, parentSong.getLyricPart(), tvParentUserPart, ivParentUserBackground);
 			setThisUserPart(parentSong.getPartnerLyricPart());
 		}
 		
@@ -531,7 +539,7 @@ public class KaraokeFragment extends BaseFragment {
 	
 	public void setThisUserPart(int part) {
 		lyricPart = part;
-		displayPart(music, lyricPart, tvThisUserPart, ivThisUserPhoto);
+		displayPart(music, lyricPart, tvThisUserPart, ivThisUserBackground);
 	}
 	
 	private void displayPart(Music music, int lyricPart, TextView tvPart, ImageView photoBackground) {
@@ -540,12 +548,12 @@ public class KaraokeFragment extends BaseFragment {
 				tvPart.setText(music.getMalePart());
 				tvPart.setTextColor(getResources().getColor(R.color.font_highlight));
 				
-				photoBackground.setBackgroundResource(R.drawable.circle_primary);
+				photoBackground.setImageResource(R.drawable.circle_primary);
 			} else if (lyricPart == Music.PART_FEMALE) {
 				tvPart.setText(music.getFemalePart());
 				tvPart.setTextColor(getResources().getColor(R.color.red_dark));
 				
-				photoBackground.setBackgroundResource(R.drawable.circle_red);
+				photoBackground.setImageResource(R.drawable.circle_red);
 			}
 		}
 	}
@@ -598,22 +606,9 @@ public class KaraokeFragment extends BaseFragment {
 			tvStartTime.setText(StringFormatter.getDuration(position));
 			pbPlayProgress.setProgress(position);
 			
-			Runnable r = new ProgressRunnable(this);
+			Runnable r = new WeakRunnable<KaraokeFragment>(this, "updateAudioProgress");
 			handler.postDelayed(r, 1000);
 		}
-	}
-	
-	private static class ProgressRunnable extends WeakRunnable<KaraokeFragment> {
-
-		public ProgressRunnable(KaraokeFragment reference) {
-			super(reference);
-		}
-
-		@Override
-		public void onFilteredRun(KaraokeFragment reference) {
-			reference.updateAudioProgress();
-		}
-		
 	}
 
 	@Override
@@ -714,21 +709,6 @@ public class KaraokeFragment extends BaseFragment {
 			decoder = null;
 		}
 		
-		if (headsetDialog != null) {
-			headsetDialog.dismiss();
-			headsetDialog = null;
-		}
-		
-		if (selectorDialog != null) {
-			selectorDialog.dismiss();
-			selectorDialog = null;
-		}
-		
-		if (loadingDialog != null) {
-			loadingDialog.dismiss();
-			loadingDialog = null;
-		}
-		
 		if (recorder != null) {
 			recorder.release();
 			recorder = null;
@@ -739,10 +719,7 @@ public class KaraokeFragment extends BaseFragment {
 			player = null;
 		}
 		
-		if (handler != null) {
-			handler.removeCallbacksAndMessages(null);
-			handler = null;
-		}
+		stopUpdatingProgressBar();
 		
 		running = false;
 	}

@@ -34,7 +34,7 @@
             android:id="@+id/pb_playbar"
             android:layout_width="match_parent"
             android:layout_height="5dp"
-            android:progressDrawable="@drawable/seekbar"
+            android:progressDrawable="@drawable/seekbar_white"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/tv_play_start_time"
             android:layout_toLeftOf="@id/tv_play_end_time"
@@ -109,11 +109,25 @@
             android:orientation="vertical"
             android:gravity="center_horizontal" >
             
-            <com.myandb.singsong.widget.RoundedImageView
-                android:id="@+id/iv_this_user_photo"
-	            android:layout_marginBottom="@dimen/margin_tiny"
-	            android:background="@drawable/circle_primary"
-                style="@style/ImageViewUserWithBorder" />
+            <FrameLayout
+	            android:layout_width="@dimen/photo_small_wrapper"
+	            android:layout_height="@dimen/photo_small_wrapper"
+	            android:layout_marginBottom="@dimen/margin_tiny" >
+	            
+	            <ImageView
+	                android:id="@+id/iv_this_user_bg"
+	                android:layout_width="match_parent"
+	                android:layout_height="match_parent"
+	                android:src="@drawable/circle_primary" />
+	            
+	            <com.myandb.singsong.widget.RoundedImageView
+	                android:id="@+id/iv_this_user_photo"
+	                android:layout_width="match_parent"
+	                android:layout_height="match_parent"
+	                android:layout_margin="@dimen/border_width_big"
+	                style="@style/ImageViewUser" />
+	            
+	        </FrameLayout>
 	        
 	        <TextView
 	            android:id="@+id/tv_this_user_nickname"
@@ -135,11 +149,25 @@
             android:gravity="center_horizontal"
             android:layout_marginLeft="@dimen/margin_small" >
 	        
-            <com.myandb.singsong.widget.RoundedImageView
-                android:id="@+id/iv_parent_user_photo"
-	            android:layout_marginBottom="@dimen/margin_tiny"
-	            android:background="@drawable/circle_primary"
-                style="@style/ImageViewUserWithBorder" />
+            <FrameLayout
+	            android:layout_width="@dimen/photo_small_wrapper"
+	            android:layout_height="@dimen/photo_small_wrapper"
+	            android:layout_marginBottom="@dimen/margin_tiny" >
+	            
+	            <ImageView
+	                android:id="@+id/iv_parent_user_bg"
+	                android:layout_width="match_parent"
+	                android:layout_height="match_parent"
+	                android:src="@drawable/circle_primary" />
+	            
+	            <com.myandb.singsong.widget.RoundedImageView
+	                android:id="@+id/iv_parent_user_photo"
+	                android:layout_width="match_parent"
+	                android:layout_height="match_parent"
+	                android:layout_margin="@dimen/border_width_big"
+	                style="@style/ImageViewUser" />
+	            
+	        </FrameLayout>
 	        
 	        <TextView
 	            android:id="@+id/tv_parent_user_nickname"

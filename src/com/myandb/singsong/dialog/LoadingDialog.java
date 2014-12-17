@@ -1,8 +1,6 @@
 package com.myandb.singsong.dialog;
 
 import android.app.Activity;
-import android.content.res.Resources.NotFoundException;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -10,6 +8,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.myandb.singsong.R;
+import com.nineoldandroids.view.ViewHelper;
 
 public class LoadingDialog extends BaseDialog {
 	
@@ -17,23 +16,12 @@ public class LoadingDialog extends BaseDialog {
 	private TextView tvProgressTitle;
 	private Button btnProgressControl;
 	private Button btnCancel;
-	private View controlWrapper;
 	private String titlePrefix;
-	private int enabledFontColor;
-	private int disabledFontColor;
 
 	@Override
 	protected void initialize(Activity activity) {
 		getDialog().setCanceledOnTouchOutside(false);
 		getDialog().setCancelable(false);
-		
-		try {
-			enabledFontColor = getResources().getColor(R.color.font_default);
-			disabledFontColor = getResources().getColor(R.color.font_grey);
-		} catch (NotFoundException e) {
-			enabledFontColor = Color.parseColor("#444444");
-			disabledFontColor = Color.parseColor("#a7a9a6");
-		}
 	}
 
 	@Override
@@ -42,12 +30,11 @@ public class LoadingDialog extends BaseDialog {
 		tvProgressTitle = (TextView) view.findViewById(R.id.tv_progress_title);
 		btnProgressControl = (Button) view.findViewById(R.id.btn_progress_control);
 		btnCancel = (Button) view.findViewById(R.id.btn_cancel);
-		controlWrapper = view.findViewById(R.id.ll_control_wrapper);
 	}
 
 	@Override
 	protected int getResourceId() {
-		return R.layout.dialog_progress;
+		return R.layout.dialog_loading;
 	}
 
 	@Override
@@ -66,13 +53,15 @@ public class LoadingDialog extends BaseDialog {
 		}
 	}
 	
-	public void showControlButton(boolean show) {
-		if (controlWrapper != null) {
-			if (show) {
-				controlWrapper.setVisibility(View.VISIBLE);
-			} else {
-				controlWrapper.setVisibility(View.GONE);
-			}
+	public void setControlButtonShown(boolean shown) {
+		if (btnProgressControl.isShown() == shown) {
+			return;
+		}
+		
+		if (shown) {
+			btnProgressControl.setVisibility(View.VISIBLE);
+		} else {
+			btnProgressControl.setVisibility(View.GONE);
 		}
 	}
 	
@@ -93,9 +82,9 @@ public class LoadingDialog extends BaseDialog {
 			btnProgressControl.setEnabled(enabled);
 			
 			if (enabled) {
-				btnProgressControl.setTextColor(enabledFontColor);
+				ViewHelper.setAlpha(btnProgressControl, 0.5f);
 			} else {
-				btnProgressControl.setTextColor(disabledFontColor);
+				ViewHelper.setAlpha(btnProgressControl, 1f);
 			}
 		}
 	}

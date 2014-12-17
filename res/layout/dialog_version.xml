@@ -1,22 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/DialogBox" >
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/margin"
+    android:background="@drawable/container_dialog" >
     
     <TextView
         android:text="@string/dialog_update_title"
-        style="@style/TextViewDialogTitle" />
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/margin"
+        style="@style/TextViewTitle" />
     
     <Button
         android:id="@+id/btn_update"
         android:text="@string/update"
+        android:layout_width="match_parent"
+        android:background="@drawable/button_grey_selector"
+        android:layout_marginBottom="@dimen/margin_big"
         style="@style/ButtonBase" />
-    
-    <ImageView
-        style="@style/DividerHorizontal" />
     
     <Button
         android:id="@+id/btn_exit"
         android:text="@string/exit"
+        android:layout_width="match_parent"
+        android:background="@drawable/button_grey_selector"
         style="@style/ButtonBase" />
 
 </LinearLayout>

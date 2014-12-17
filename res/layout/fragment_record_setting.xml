@@ -175,7 +175,7 @@
 			            android:minHeight="5dp"
 			            android:maxHeight="5dp"
 			            android:layout_centerVertical="true"
-			            android:progressDrawable="@drawable/seekbar"
+			            android:progressDrawable="@drawable/seekbar_white"
 			            android:thumb="@drawable/seekbar_thumb" />
 		            
 		        </RelativeLayout>
