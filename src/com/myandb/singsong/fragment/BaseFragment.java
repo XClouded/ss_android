@@ -128,7 +128,7 @@ public abstract class BaseFragment extends Fragment {
 	}
 
 	public void setActionBarTitle(String title) throws IllegalStateException {
-		if (title != null && title.length() > 0) {
+		if (title != null) {
 			getSupportActionBar().setTitle(title);
 		}
 	}
@@ -143,7 +143,7 @@ public abstract class BaseFragment extends Fragment {
 	}
 	
 	public void setActionBarSubtitle(String subtitle) throws IllegalStateException {
-		if (subtitle != null && subtitle.length() > 0) {
+		if (subtitle != null) {
 			getSupportActionBar().setSubtitle(subtitle);
 		}
 	}
