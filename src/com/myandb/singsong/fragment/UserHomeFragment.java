@@ -1,7 +1,5 @@
 package com.myandb.singsong.fragment;
 
-import java.util.HashMap;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
@@ -152,15 +150,15 @@ public class UserHomeFragment extends ListFragment {
 		String adapterName = "";
 		String title = getCroppedNickname(thisUser.getNickname());
 		title += "¥‘¿« ";
-		HashMap<String, String> params = new HashMap<String, String>();
+		Bundle params = new Bundle();
 		
 		switch (id) {
 		case R.id.action_user_followings:
 		case R.id.tv_user_followings:
 			title += getString(R.string.following);
 			segment += "followings";
-			params.put("req[]", "profile");
-			params.put("order", "friendships.created_at");
+			params.putString("req[]", "profile");
+			params.putString("order", "friendships.created_at");
 			adapterName = FriendsAdapter.class.getName();
 			break;
 			
@@ -168,29 +166,29 @@ public class UserHomeFragment extends ListFragment {
 		case R.id.tv_user_followers:
 			title += getString(R.string.follower);
 			segment += "followers";
-			params.put("req[]", "profile");
-			params.put("order", "friendships.created_at");
+			params.putString("req[]", "profile");
+			params.putString("order", "friendships.created_at");
 			adapterName = FriendsAdapter.class.getName();
 			break;
 			
 		case R.id.action_user_likings:
 			title += getString(R.string.like);
 			segment += "songs/likings";
-			params.put("order", "created_at");
+			params.putString("order", "created_at");
 			adapterName = MyLikeSongAdapter.class.getName();
 			break;
 			
 		case R.id.action_user_comments:
 			title += getString(R.string.comment);
 			segment += "songs/comments";
-			params.put("order", "created_at");
+			params.putString("order", "created_at");
 			adapterName = MyCommentAdapter.class.getName();
 			break;
 			
 		case R.id.action_user_trash:
 			title += getString(R.string.trash);
 			segment += "songs/trash";
-			params.put("order", "deleted_at");
+			params.putString("order", "deleted_at");
 			adapterName = MySongAdapter.class.getName();
 			break;
 			
@@ -202,7 +200,7 @@ public class UserHomeFragment extends ListFragment {
 		bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, title);
 		bundle.putString(ListFragment.EXTRA_URL_SEGMENT, segment);
 		bundle.putString(ListFragment.EXTRA_ADAPTER_NAME, adapterName);
-		bundle.putSerializable(ListFragment.EXTRA_QUERY_PARAMS, params);
+		bundle.putBundle(ListFragment.EXTRA_QUERY_PARAMS, params);
 		Intent intent = new Intent(getActivity(), RootActivity.class);
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, ListFragment.class.getName());

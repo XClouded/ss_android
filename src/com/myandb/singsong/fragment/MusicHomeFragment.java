@@ -2,7 +2,6 @@ package com.myandb.singsong.fragment;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 
 import org.json.JSONArray;
 
@@ -11,11 +10,7 @@ import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.adapter.CategoryAdapter;
-import com.myandb.singsong.adapter.FriendsAdapter;
 import com.myandb.singsong.adapter.MusicAdapter;
-import com.myandb.singsong.adapter.MyCommentAdapter;
-import com.myandb.singsong.adapter.MyLikeSongAdapter;
-import com.myandb.singsong.adapter.MySongAdapter;
 import com.myandb.singsong.adapter.MusicAdapter.LayoutType;
 import com.myandb.singsong.dialog.BaseDialog;
 import com.myandb.singsong.dialog.SelectRecordModeDialog;

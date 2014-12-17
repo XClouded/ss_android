@@ -1,7 +1,5 @@
 package com.myandb.singsong.fragment;
 
-import java.util.HashMap;
-
 import org.json.JSONArray;
 
 import com.myandb.singsong.R;
@@ -49,13 +47,12 @@ public class ListFragment extends BaseFragment {
 		return R.layout.fragment_list;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void onArgumentsReceived(Bundle bundle) {
 		super.onArgumentsReceived(bundle);
 		
 		final String segment = bundle.getString(EXTRA_URL_SEGMENT);
-		final HashMap<String, String> params = (HashMap<String, String>) bundle.getSerializable(EXTRA_QUERY_PARAMS);
+		final Bundle params = bundle.getBundle(EXTRA_QUERY_PARAMS);
 		final String adapterName = bundle.getString(EXTRA_ADAPTER_NAME);
 		
 		if (segment != null) {

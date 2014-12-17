@@ -1,7 +1,5 @@
 package com.myandb.singsong.fragment;
 
-import java.util.HashMap;
-
 import com.facebook.Session;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
@@ -92,13 +90,13 @@ public class HomeFragment extends BaseFragment {
 		
 		@Override
 		public void onClick(View v) {
-			HashMap<String, String> params = new HashMap<String, String>();
-			params.put("order", "updated_at");
+			Bundle params = new Bundle();
+			params.putString("order", "updated_at");
 			String userId = String.valueOf(Authenticator.getUser().getId());
 			Bundle bundle = new Bundle();
 			bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, "새로운 소식");
 			bundle.putString(ListFragment.EXTRA_URL_SEGMENT, "users/" + userId + "/notifications");
-			bundle.putSerializable(ListFragment.EXTRA_QUERY_PARAMS, params);
+			bundle.putBundle(ListFragment.EXTRA_QUERY_PARAMS, params);
 			bundle.putString(ListFragment.EXTRA_ADAPTER_NAME, NotificationAdapter.class.getName());
 			Intent intent = new Intent(getActivity(), UpActivity.class);
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, ListFragment.class.getName());
