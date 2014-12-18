@@ -26,9 +26,11 @@ import com.myandb.singsong.net.JSONObjectSuccessListener;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.secure.Encryption;
+import com.myandb.singsong.util.Logger;
 import com.myandb.singsong.util.Utility;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
@@ -101,6 +103,15 @@ public class LoginDialog extends BaseDialog {
 		return Html.fromHtml(findHtml);
 	}
 	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		Session session = Session.getActiveSession();
+		if (session != null) {
+			session.onActivityResult(getActivity(), requestCode, resultCode, data);
+		}
+	}
+
 	private View.OnClickListener facebookLoginClickListener = new View.OnClickListener() {
 		
 		@Override
@@ -129,6 +140,7 @@ public class LoginDialog extends BaseDialog {
 		
 		@Override
 		public void call(Session session, SessionState state, Exception exception) {
+			Logger.log(session.getState().name());
 			if (state.isOpened()) {
 				showProgressDialog();
 				
