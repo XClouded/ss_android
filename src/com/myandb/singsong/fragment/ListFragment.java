@@ -208,7 +208,7 @@ public class ListFragment extends BaseFragment {
 		if (listViewIndex > 0) {
 			listView.setSelectionFromTop(listViewIndex, listViewTop);
 		}
-		setListShown(true);
+		setListShown(true, false);
 	}
 
 	@Override
@@ -280,20 +280,28 @@ public class ListFragment extends BaseFragment {
 	}
 	
 	public void setListShown(boolean shown) {
-        if (listViewContainer.isShown() == shown) {
-            return;
-        }
-        
-        if (shown) {
-        	listViewContainer.startAnimation(fadeIn);
-        	progressContainer.setVisibility(View.GONE);
-            listViewContainer.setVisibility(View.VISIBLE);
-        } else {
-        	listViewContainer.startAnimation(fadeOut);
-        	progressContainer.setVisibility(View.VISIBLE);
-        	listViewContainer.setVisibility(View.GONE);
-        }
+		setListShown(shown, true);
     }
+	
+	private void setListShown(boolean shown, boolean animate) {
+		if (listViewContainer.isShown() == shown) {
+			return;
+		}
+		
+		if (shown) {
+			if (animate) {
+				listViewContainer.startAnimation(fadeIn);
+			}
+			progressContainer.setVisibility(View.GONE);
+			listViewContainer.setVisibility(View.VISIBLE);
+		} else {
+			if (animate) {
+				listViewContainer.startAnimation(fadeOut);
+			}
+			progressContainer.setVisibility(View.VISIBLE);
+			listViewContainer.setVisibility(View.GONE);
+		}
+	}
 	
 	public void setFadingActionBarTitle(CharSequence title) {
 		if (fadingActionBarHelper != null) {
