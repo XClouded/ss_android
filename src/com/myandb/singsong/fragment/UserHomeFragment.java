@@ -105,7 +105,7 @@ public class UserHomeFragment extends ListFragment {
 			UrlBuilder urlBuilder = new UrlBuilder();
 			urlBuilder.s("users").s(thisUser.getId()).s("songs").s("all").p("order", "created_at");
 			setUrlBuilder(urlBuilder);
-			setInternalAdapter(new MySongAdapter(activity, isCurrentUser(), false));
+			setAdapter(new MySongAdapter(activity, isCurrentUser(), false));
 		}
 	}
 

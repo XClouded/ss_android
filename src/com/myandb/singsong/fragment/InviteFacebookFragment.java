@@ -35,7 +35,7 @@ public class InviteFacebookFragment extends ListFragment {
 				List<TaggableFriend> friends = wrapper.getData();
 				TaggableFriendAdapter adapter = new TaggableFriendAdapter();
 				adapter.addAll(friends);
-				getListView().setAdapter(adapter);
+				setAdapter(adapter);
 				setListShown(true);
 			}
 		}

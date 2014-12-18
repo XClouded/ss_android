@@ -41,7 +41,7 @@ public class ListFragment extends BaseFragment {
 	private GradualLoader loader;
 	private FadingActionBarHelper fadingActionBarHelper;
 	private UrlBuilder internalUrlBuilder;
-	private ListAdapter internalAdapter;
+	private ListAdapter adapter;
 	private int listViewIndex;
 	private int listViewTop;
 
@@ -56,16 +56,16 @@ public class ListFragment extends BaseFragment {
 		
 		if (isFragmentCreated()) {
 			internalUrlBuilder = getUrlBuilderOnArgumentPassed(bundle);
-			internalAdapter = getListAdapterOnArgumentPassed(bundle);
-			if (internalUrlBuilder == null || internalAdapter == null) {
+			adapter = getListAdapterOnArgumentPassed(bundle);
+			if (internalUrlBuilder == null || adapter == null) {
 				internalUrlBuilder = null;
-				internalAdapter = null;
+				adapter = null;
 			}
 		}
 	}
 	
 	private boolean isFragmentCreated() {
-		return internalUrlBuilder == null && internalAdapter == null;
+		return internalUrlBuilder == null && adapter == null;
 	}
 	
 	private UrlBuilder getUrlBuilderOnArgumentPassed(Bundle bundle) {
@@ -172,19 +172,15 @@ public class ListFragment extends BaseFragment {
 	public void onResume() {
 		super.onResume();
 		
-		if (internalAdapter != null) {
-			setAdapter(internalAdapter);
-			if (internalAdapter.getCount() == 0 && loader.isLoadable()) {
-				load();
-			} else {
-				setListShown(true);
-				if (listViewIndex > 0) {
-					listView.setSelectionFromTop(listViewIndex, listViewTop);
-				}
-			}
+		setListViewAdapter();
+		
+		if (isDataAlive()) {
+			scrollToPreviousPosition();
+		} else if (isDataLoadable()) {
+			loader.load();
 		}
 		
-		if (listHeaderView != null) {
+		if (listHeaderView != null && fixedHeaderView == null) {
 			setActionBarOverlay(true);
 			listHeaderView.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
 			fadingActionBarHelper = new FadingActionBarHelper();
@@ -194,36 +190,43 @@ public class ListFragment extends BaseFragment {
 		}
 	}
 
+	private void setListViewAdapter() {
+		if (adapter != null) {
+			listView.setAdapter(adapter);
+		}
+	}
+	
+	private boolean isDataAlive() {
+		return adapter != null && adapter.getCount() > 0;
+	}
+	
+	private boolean isDataLoadable() {
+		return adapter != null && loader.isLoadable();
+	}
+	
+	private void scrollToPreviousPosition() {
+		if (listViewIndex > 0) {
+			listView.setSelectionFromTop(listViewIndex, listViewTop);
+		}
+		setListShown(true);
+	}
+
 	@Override
 	public void onDestroyView() {
-		listViewIndex = listView.getFirstVisiblePosition();
-		View child = listView.getChildAt(0);
-		listViewTop = (child == null) ? 0 : child.getTop();
+		saveCurrentPosition();
 		super.onDestroyView();
 	}
 	
-	public void setInternalAdapter(ListAdapter adapter) {
-		if (internalAdapter == null) {
-			internalAdapter = adapter;
-		}
+	private void saveCurrentPosition() {
+		listViewIndex = listView.getFirstVisiblePosition();
+		View child = listView.getChildAt(0);
+		listViewTop = (child == null) ? 0 : child.getTop();
 	}
-
-	private void setAdapter(final ListAdapter adapter) {
-		if (adapter == null) {
-			return;
+	
+	public void setAdapter(ListAdapter adapter) {
+		if (adapter != null) {
+			this.adapter = adapter;
 		}
-		
-		listView.setAdapter(adapter);
-		getGradualLoader().setOnLoadCompleteListener(new OnLoadCompleteListener() {
-			
-			@Override
-			public void onComplete(JSONArray response) {
-				if (internalAdapter instanceof HolderAdapter) {
-					setListShown(true);
-					((HolderAdapter<?, ?>) adapter).addAll(response);
-				}
-			}
-		});
 	}
 
 	public void setFixedHeaderShown(boolean shown) {
@@ -238,28 +241,42 @@ public class ListFragment extends BaseFragment {
 		}
 	}
 	
-	public ListView getListView() {
-		return listView;
-	}
-	
 	public ListAdapter getAdapter() {
-		return internalAdapter;
-	}
-	
-	public GradualLoader getGradualLoader() {
-		return loader;
+		return adapter;
 	}
 	
 	public void setUrlBuilder(UrlBuilder urlBuilder) {
-		if (urlBuilder == null || loader.isLoadable()) {
+		if (urlBuilder == null) {
 			return;
 		}
 		
+		setListShown(false);
 		loader.setUrlBuilder(urlBuilder);
+		loader.setOnLoadCompleteListener(loadCompleteListener);
+		if (adapter != null) {
+			if (adapter instanceof HolderAdapter) {
+				((HolderAdapter<?, ?>) adapter).clear();
+			}
+		}
 	}
 	
+	private OnLoadCompleteListener loadCompleteListener = new OnLoadCompleteListener() {
+		
+		@Override
+		public void onComplete(JSONArray response) {
+			if (adapter == null) {
+				return;
+			}
+			
+			if (adapter instanceof HolderAdapter) {
+				setListShown(true);
+				((HolderAdapter<?, ?>) adapter).addAll(response);
+			}
+		}
+	};
+	
 	public void load() {
-		getGradualLoader().load();
+		loader.load();
 	}
 	
 	public void setListShown(boolean shown) {

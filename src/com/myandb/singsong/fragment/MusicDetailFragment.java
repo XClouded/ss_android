@@ -59,10 +59,12 @@ public class MusicDetailFragment extends ListFragment {
 	protected void initialize(Activity activity) {
 		super.initialize(activity);
 		
-		UrlBuilder urlBuilder = new UrlBuilder();
-		urlBuilder.s("songs").s(74824).s("children");
-		setUrlBuilder(urlBuilder);
-		setInternalAdapter(new ChildrenSongAdapter());
+		if (getAdapter() == null) {
+			UrlBuilder urlBuilder = new UrlBuilder();
+			urlBuilder.s("songs").s(74824).s("children");
+			setUrlBuilder(urlBuilder);
+			setAdapter(new ChildrenSongAdapter());
+		}
 	}
 
 	@Override

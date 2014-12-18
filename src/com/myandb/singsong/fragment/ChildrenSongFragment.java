@@ -58,10 +58,13 @@ public class ChildrenSongFragment extends ListFragment {
 	@Override
 	protected void initialize(Activity activity) {
 		super.initialize(activity);
-		UrlBuilder urlBuilder = new UrlBuilder();
-		urlBuilder.s("songs").s(thisSong.getId()).s("children");
-		setUrlBuilder(urlBuilder);
-		setInternalAdapter(new ChildrenSongAdapter());
+		
+		if (getAdapter() == null) {
+			UrlBuilder urlBuilder = new UrlBuilder();
+			urlBuilder.s("songs").s(thisSong.getId()).s("children");
+			setUrlBuilder(urlBuilder);
+			setAdapter(new ChildrenSongAdapter());
+		}
 	}
 
 	@Override

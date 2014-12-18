@@ -21,9 +21,9 @@ public class GradualLoader implements OnScrollListener {
 	private int count;
 	private int requiredTake;
 	private int initialLoadNum;
+	private int previousTotalCount = 0;
 	private boolean nothingToLoad;
 	private boolean loading;
-    private int previousVisibleTotal = 0;
 
 	public GradualLoader(Context context) {
 		this.context = context;
@@ -35,6 +35,7 @@ public class GradualLoader implements OnScrollListener {
 		this.loading = false;
 		this.count = 0;
 		this.requiredTake = 0;
+		this.previousTotalCount = 0;
 		
 		try {
 			int builderTake = Integer.parseInt(urlBuilder.getParam("take"));
@@ -77,7 +78,6 @@ public class GradualLoader implements OnScrollListener {
 	}
 	
 	public void onLoadResponse(JSONArray response) {
-		loading = false;
 		count += response.length();
 		
 		if (response.length() < requiredTake) {
@@ -87,6 +87,8 @@ public class GradualLoader implements OnScrollListener {
 		if (completeListener != null) {
 			completeListener.onComplete(response);
 		}
+		
+		loading = false;
 	}
 	
 	public void onLoadError() {
@@ -107,14 +109,13 @@ public class GradualLoader implements OnScrollListener {
 	public void onScrollStateChanged(AbsListView view, int scrollState) {}
 	
 	@Override
-	public void onScroll(AbsListView view, int firstVisibleItem,
-			int visibleItemCount, int totalItemCount) {
-		if (isLoading()) {
-			if (totalItemCount > previousVisibleTotal) {
-				previousVisibleTotal = totalItemCount;
-			}
-		} else {
-			if ((totalItemCount - visibleItemCount) <= (firstVisibleItem + VISIBLE_THRESHOLD)) {
+	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+		if (totalItemCount > previousTotalCount) {
+			previousTotalCount = totalItemCount;
+		}
+		
+		if (!isLoading()) {
+			if ((previousTotalCount - visibleItemCount) <= (firstVisibleItem + VISIBLE_THRESHOLD)) {
 				load();
 			}
 		}

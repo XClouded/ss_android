@@ -18,8 +18,6 @@ import android.provider.ContactsContract.CommonDataKinds.Phone;
 
 public class InviteContactFragment extends ListFragment {
 	
-	private ContactAdapter adapter;
-
 	@Override
 	protected int getFixedHeaderViewResId() {
 		return R.layout.search_view;
@@ -28,7 +26,7 @@ public class InviteContactFragment extends ListFragment {
 	@Override
 	protected void initialize(Activity activity) {
 		super.initialize(activity);
-		adapter = new ContactAdapter();
+		setAdapter(new ContactAdapter());
 	}
 
 	@Override
@@ -40,7 +38,6 @@ public class InviteContactFragment extends ListFragment {
 			searchView.setSearchHint(getString(R.string.hint_search_user));
 			searchView.setOnTextChangedListener(textChangedListener);
 			searchView.setOnTextEmptyListener(textEmptyListner);
-			getListView().setAdapter(adapter);
 		}
 	}
 	
@@ -66,8 +63,8 @@ public class InviteContactFragment extends ListFragment {
 	}
 	
 	private void updateAdapter(List<Contact> contacts) {
-		adapter.clear();
-		adapter.addAll(contacts);
+		((ContactAdapter) getAdapter()).clear();
+		((ContactAdapter) getAdapter()).addAll(contacts);
 		setListShown(true);
 	}
 	

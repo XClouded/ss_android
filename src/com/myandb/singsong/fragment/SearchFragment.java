@@ -54,7 +54,6 @@ public class SearchFragment extends ListFragment {
 
 	private SearchView searchView;
 	private SearchType searchType;
-	private HolderAdapter<?, ?> adapter;
 	
 	@Override
 	protected void onArgumentsReceived(Bundle bundle) {
@@ -72,13 +71,12 @@ public class SearchFragment extends ListFragment {
 		super.initialize(activity);
 		if (getAdapter() == null) {
 			try {
-				adapter = searchType.newAdapterInstance();
+				setAdapter(searchType.newAdapterInstance());
 			} catch (IllegalAccessException e) {
 				e.printStackTrace();
 			} catch (java.lang.InstantiationException e) {
 				e.printStackTrace();
 			}
-			setInternalAdapter(adapter);
 		}
 	}
 
@@ -106,14 +104,12 @@ public class SearchFragment extends ListFragment {
 	private void search(String keyword) {
 		if (keyword != null && keyword.length() > 0) {
 			searchView.hideSoftKeyboard();
-			adapter.clear();
-			setListShown(false);
 			UrlBuilder urlBuilder = searchType.getUrlBuilder();
 			urlBuilder.keyword(keyword);
 			if (searchType.equals(SearchType.USER)) {
 				urlBuilder.p("req[]", "profile");
 			}
-			getGradualLoader().setUrlBuilder(urlBuilder);
+			setUrlBuilder(urlBuilder);
 			load();
 		}
 	}

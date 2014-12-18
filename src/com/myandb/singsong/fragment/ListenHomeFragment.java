@@ -20,11 +20,14 @@ public class ListenHomeFragment extends ListFragment {
 	@Override
 	protected void initialize(Activity activity) {
 		super.initialize(activity);
-		final String startDate = StringFormatter.getDateString(Calendar.DATE, -1);
-		UrlBuilder urlBuilder = new UrlBuilder().s("songs").s("leaf").p("order", "liking_num").start(startDate);
 		
-		setUrlBuilder(urlBuilder);
-		setInternalAdapter(new CollaboratedAdapter());
+		if (getAdapter() == null) {
+			final String startDate = StringFormatter.getDateString(Calendar.DATE, -1);
+			UrlBuilder urlBuilder = new UrlBuilder().s("songs").s("leaf").p("order", "liking_num").start(startDate);
+			
+			setUrlBuilder(urlBuilder);
+			setAdapter(new CollaboratedAdapter());
+		}
 	}
 
 	@Override
