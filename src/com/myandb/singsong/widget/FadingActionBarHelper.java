@@ -15,30 +15,32 @@ import android.widget.AbsListView.OnScrollListener;
 public class FadingActionBarHelper implements OnScrollListener {
 	
 	private static final int DEFAULT_VISIBLE_POSITION = 4000;
+	private static final int MAX_ALPHA = 255;
 	
 	private Drawable backgroundDrawable;
 	private ActionBar actionBar;
 	private CharSequence title;
 	private int backgroundResId;
 	private int fullyVisiblePosition;
-	private float maxAlpha;
+	private int maxAlpha;
+	private int previousAlpha = -1;
 	private float visibleThreshold;
 	
 	public FadingActionBarHelper setBackground(Drawable drawable) {
-		return setBackground(drawable, 1f);
+		return setBackground(drawable, MAX_ALPHA);
 	}
 	
-	public FadingActionBarHelper setBackground(Drawable drawable, float maxAlpha) {
+	public FadingActionBarHelper setBackground(Drawable drawable, int maxAlpha) {
 		this.backgroundDrawable = drawable;
 		this.maxAlpha = getProperAlpha(maxAlpha);
 		return this;
 	}
 	
 	public FadingActionBarHelper setBackground(int resId) {
-		return setBackground(resId, 1f);
+		return setBackground(resId, MAX_ALPHA);
 	}
 	
-	public FadingActionBarHelper setBackground(int resId, float maxAlpha) {
+	public FadingActionBarHelper setBackground(int resId, int maxAlpha) {
 		this.backgroundResId = resId;
 		this.maxAlpha = getProperAlpha(maxAlpha);
 		return this;
@@ -49,8 +51,8 @@ public class FadingActionBarHelper implements OnScrollListener {
 		return this;
 	}
 	
-	private float getProperAlpha(float alpha) {
-		return Math.max(Math.min(alpha, 1f), 0f);
+	private int getProperAlpha(int alpha) {
+		return Math.max(Math.min(alpha, MAX_ALPHA), 0);
 	}
 	
 	public FadingActionBarHelper setFullyVisiblePosition(int position) {
@@ -67,7 +69,7 @@ public class FadingActionBarHelper implements OnScrollListener {
 			actionBar.setBackgroundDrawable(backgroundDrawable);
 			
 			fullyVisiblePosition = fullyVisiblePosition > 0 ? fullyVisiblePosition : DEFAULT_VISIBLE_POSITION;
-			visibleThreshold = (float) (fullyVisiblePosition * maxAlpha);
+			visibleThreshold = (float) (fullyVisiblePosition * maxAlpha / MAX_ALPHA);
 		}
 	}
 	
@@ -83,27 +85,40 @@ public class FadingActionBarHelper implements OnScrollListener {
 			position = -topChild.getTop() + view.getFirstVisiblePosition() * topChild.getHeight();
         }
 		
-		if (position <= visibleThreshold) {
-			fade(position);
-		}
+		fade(position);
 	}
 	
 	private void fade(int position) {
-		float alphaInFloat = (float) Math.max(position, 0) / fullyVisiblePosition;
-		int alphaInInt = (int) (alphaInFloat * 255);
+		float ratio = 0f;
+		int newAlpha = maxAlpha;
+		if (position <= visibleThreshold) {
+			ratio = (float) Math.max(position, 0) / fullyVisiblePosition;
+			newAlpha = (int) (ratio * MAX_ALPHA);
+		}
 		
-		fadeBackground(alphaInInt);
-		fadeTitle(alphaInInt);
+		if (newAlpha != previousAlpha) {
+			fadeBackground(newAlpha);
+			fadeTitle(newAlpha);
+		}
+		previousAlpha = newAlpha;
 	}
 	
 	private void fadeBackground(int alpha) {
-		if (backgroundDrawable != null) {
-			backgroundDrawable.setAlpha(alpha);
+		if (backgroundDrawable == null) {
+			return;
 		}
+		
+		backgroundDrawable.setAlpha(alpha);
 	}
 	
 	private void fadeTitle(int alpha) {
-		if (title != null) {
+		if (title == null) {
+			return;
+		}
+		
+		if (alpha == MAX_ALPHA) {
+			actionBar.setTitle(title);
+		} else {
 			SpannableStringBuilder builder = new SpannableStringBuilder(title);
 			builder.setSpan(new ForegroundColorSpan(Color.argb(alpha, 0, 0, 0)), 0, builder.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 			actionBar.setTitle(builder);
