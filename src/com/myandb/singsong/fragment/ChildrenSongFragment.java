@@ -10,7 +10,6 @@ import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.util.Utility;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -30,10 +29,9 @@ public class ChildrenSongFragment extends ListFragment {
 	private TextView tvSongMessage;
 	private Song thisSong;
 
-	@SuppressLint("InflateParams")
 	@Override
-	protected View inflateListHeaderView(LayoutInflater inflater) {
-		return inflater.inflate(R.layout.fragment_children_song_header, null);
+	protected int getListHeaderViewResId() {
+		return R.layout.fragment_children_song_header;
 	}
 
 	@Override
@@ -48,6 +46,7 @@ public class ChildrenSongFragment extends ListFragment {
 	protected void onViewInflated(View view, LayoutInflater inflater) {
 		super.onViewInflated(view, inflater);
 		
+		view = getListHeaderView();
 		ivSongImage = (ImageView) view.findViewById(R.id.iv_song_image);
 		ivUserPhoto = (ImageView) view.findViewById(R.id.iv_user_photo);
 		tvMusicInfo = (TextView) view.findViewById(R.id.tv_music_info);

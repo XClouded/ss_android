@@ -1,6 +1,5 @@
 package com.myandb.singsong.fragment;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -67,10 +66,9 @@ public class UserHomeFragment extends ListFragment {
 	private Button btnFollow;
 	private Button btnEditProfile;
 
-	@SuppressLint("InflateParams")
 	@Override
-	protected View inflateListHeaderView(LayoutInflater inflater) {
-		return inflater.inflate(R.layout.fragment_user_home_header, null);
+	protected int getListHeaderViewResId() {
+		return R.layout.fragment_user_home_header;
 	}
 
 	@Override
@@ -86,6 +84,7 @@ public class UserHomeFragment extends ListFragment {
 	protected void onViewInflated(View view, LayoutInflater inflater) {
 		super.onViewInflated(view, inflater);
 		
+		view = getListHeaderView();
 		ivUserPhoto = (ImageView) view.findViewById(R.id.iv_user_photo);
 		ivUserPhotoBackground = (ImageView) view.findViewById(R.id.iv_user_photo_background);
 		tvNickname = (TextView) view.findViewById(R.id.tv_user_nickname);

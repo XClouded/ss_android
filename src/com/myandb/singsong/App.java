@@ -16,6 +16,8 @@ public class App extends Application {
 
 	public static final boolean TESTING = false;
 	
+	public static final int INVALID_RESOURCE_ID = 0; 
+	
 	public static final String AUTH_PREFERENCE_FILE = "_SSaS_";
 	
 	public static final int NOTI_ID_GCM = 1000;

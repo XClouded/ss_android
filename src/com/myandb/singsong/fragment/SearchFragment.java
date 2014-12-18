@@ -1,10 +1,7 @@
 package com.myandb.singsong.fragment;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
 
 import com.myandb.singsong.R;
 import com.myandb.singsong.adapter.FriendsAdapter;
@@ -65,14 +62,9 @@ public class SearchFragment extends ListFragment {
 		searchType = (SearchType) bundle.getSerializable(EXTRA_SEARCH_TYPE);
 	}
 
-	@SuppressLint("InflateParams")
 	@Override
-	protected View inflateFixedHeaderView(LayoutInflater inflater) {
-		View view = inflater.inflate(R.layout.search_view, null);
-		if (view instanceof SearchView) {
-			searchView = (SearchView) view;
-		}
-		return view; 
+	protected int getFixedHeaderViewResId() {
+		return R.layout.search_view;
 	}
 
 	@Override
@@ -93,8 +85,12 @@ public class SearchFragment extends ListFragment {
 	@Override
 	protected void setupViews(Bundle savedInstanceState) {
 		super.setupViews(savedInstanceState);
-		searchView.setSearchHint(getString(searchType.getHintResId()));
-		searchView.setOnActionSearchListener(actionSearchListener);
+		
+		if (getFixedHeaderView() instanceof SearchView) {
+			searchView = (SearchView) getFixedHeaderView();
+			searchView.setSearchHint(getString(searchType.getHintResId()));
+			searchView.setOnActionSearchListener(actionSearchListener);
+		}
 	}
 	
 	private OnActionSearchListener actionSearchListener = new OnActionSearchListener() {

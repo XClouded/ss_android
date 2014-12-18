@@ -8,7 +8,6 @@ import com.myandb.singsong.model.User;
 import com.myandb.singsong.pager.InviteFriendsPagerAdapter;
 import com.myandb.singsong.secure.Authenticator;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -31,15 +30,16 @@ public class FindFriendsFragment extends ListFragment {
 		setHasOptionsMenu(true);
 	}
 
-	@SuppressLint("InflateParams")
 	@Override
-	protected View inflateFixedHeaderView(LayoutInflater inflater) {
-		return inflater.inflate(R.layout.fragment_find_friends_fixed_header, null);
+	protected int getFixedHeaderViewResId() {
+		return R.layout.fragment_find_friends_fixed_header;
 	}
 
 	@Override
 	protected void onViewInflated(View view, LayoutInflater inflater) {
 		super.onViewInflated(view, inflater);
+		
+		view = getFixedHeaderView();
 		btnSearchUser = (Button) view.findViewById(R.id.btn_search_user);
 		btnConnectFacebook = (Button) view.findViewById(R.id.btn_connect_facebook);
 		vFacebookHeaderContainer = view.findViewById(R.id.v_facebook_header_container);

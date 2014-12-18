@@ -2,6 +2,7 @@ package com.myandb.singsong.fragment;
 
 import org.json.JSONArray;
 
+import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 import com.myandb.singsong.adapter.HolderAdapter;
 import com.myandb.singsong.net.GradualLoader;
@@ -29,9 +30,9 @@ public class ListFragment extends BaseFragment {
 	public static final String EXTRA_ADAPTER_NAME = "adapter_name";
 	
 	private ListView listView;
+	private ViewGroup fixedHeaderContainer;
+	private ViewGroup listViewContainer;
 	private View listHeaderView;
-	private View listViewContainer;
-	private View fixedHeaderContainer;
 	private View fixedHeaderView;
 	private View progressContainer;
 	private View emptyView;
@@ -108,30 +109,25 @@ public class ListFragment extends BaseFragment {
 
 	@Override
 	protected void onViewInflated(View view, LayoutInflater inflater) {
-		fixedHeaderContainer = view.findViewById(R.id.fl_fixed_header_container);
-		listViewContainer = view.findViewById(R.id.fl_listview_container);
+		fixedHeaderContainer = (ViewGroup) view.findViewById(R.id.fl_fixed_header_container);
+		listViewContainer = (ViewGroup) view.findViewById(R.id.fl_listview_container);
 		progressContainer = view.findViewById(R.id.fl_progress_container);
 		listView = (ListView) view.findViewById(R.id.listview);
 		
-		emptyView = inflateEmptyView(inflater);
-		listHeaderView = inflateListHeaderView(inflater);
-		fixedHeaderView = inflateFixedHeaderView(inflater);
-		
-		if (emptyView != null) {
+		if (getEmptyViewResId() != App.INVALID_RESOURCE_ID) {
+			emptyView = inflater.inflate(getEmptyViewResId(), listView, false);
 			listView.setEmptyView(emptyView);
 		}
 		
-		if (listHeaderView != null) {
+		if (getListHeaderViewResId() != App.INVALID_RESOURCE_ID) {
+			listHeaderView = inflater.inflate(getListHeaderViewResId(), listView, false);
 			listView.addHeaderView(listHeaderView);
 		}
 		
-		if (fixedHeaderView != null) {
-			if (fixedHeaderContainer instanceof ViewGroup) {
-				((ViewGroup) fixedHeaderContainer).addView(fixedHeaderView);
-				fixedHeaderContainer.setVisibility(View.VISIBLE);
-			} else {
-				throw new IllegalStateException("Fixed Header Container must be instance of ViewGroup");
-			}
+		if (getFixedHeaderViewResId() != App.INVALID_RESOURCE_ID) {
+			fixedHeaderView = inflater.inflate(getFixedHeaderViewResId(), fixedHeaderContainer, false);
+			fixedHeaderContainer.setVisibility(View.VISIBLE);
+			fixedHeaderContainer.addView(fixedHeaderView);
 		} else {
 			fixedHeaderContainer.setVisibility(View.GONE);
 		}
@@ -288,16 +284,28 @@ public class ListFragment extends BaseFragment {
 		}
 	}
 	
-	protected View inflateEmptyView(LayoutInflater inflater) {
-		return null;
+	public View getEmptyView() {
+		return emptyView;
 	}
 	
-	protected View inflateListHeaderView(LayoutInflater inflater) {
-		return null;
+	public View getListHeaderView() {
+		return listHeaderView;
 	}
 	
-	protected View inflateFixedHeaderView(LayoutInflater inflater) {
-		return null;
+	public View getFixedHeaderView() {
+		return fixedHeaderView;
+	}
+	
+	protected int getEmptyViewResId() {
+		return App.INVALID_RESOURCE_ID;
+	}
+	
+	protected int getListHeaderViewResId() {
+		return App.INVALID_RESOURCE_ID;
+	}
+	
+	protected int getFixedHeaderViewResId() {
+		return App.INVALID_RESOURCE_ID;
 	}
 
 }

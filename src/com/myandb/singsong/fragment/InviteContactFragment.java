@@ -10,28 +10,19 @@ import com.myandb.singsong.widget.SearchView;
 import com.myandb.singsong.widget.SearchView.OnTextChangedListener;
 import com.myandb.singsong.widget.SearchView.OnTextEmptyListener;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
-import android.view.LayoutInflater;
-import android.view.View;
 
 public class InviteContactFragment extends ListFragment {
 	
 	private ContactAdapter adapter;
-	private SearchView searchView;
 
-	@SuppressLint("InflateParams")
 	@Override
-	protected View inflateFixedHeaderView(LayoutInflater inflater) {
-		View view = inflater.inflate(R.layout.search_view, null);
-		if (view instanceof SearchView) {
-			searchView = (SearchView) view;
-		}
-		return view;
+	protected int getFixedHeaderViewResId() {
+		return R.layout.search_view;
 	}
 
 	@Override
@@ -43,10 +34,14 @@ public class InviteContactFragment extends ListFragment {
 	@Override
 	protected void setupViews(Bundle savedInstanceState) {
 		super.setupViews(savedInstanceState);
-		searchView.setSearchHint(getString(R.string.hint_search_user));
-		searchView.setOnTextChangedListener(textChangedListener);
-		searchView.setOnTextEmptyListener(textEmptyListner);
-		getListView().setAdapter(adapter);
+		
+		if (getFixedHeaderView() instanceof SearchView) {
+			SearchView searchView = (SearchView) getFixedHeaderView();
+			searchView.setSearchHint(getString(R.string.hint_search_user));
+			searchView.setOnTextChangedListener(textChangedListener);
+			searchView.setOnTextEmptyListener(textEmptyListner);
+			getListView().setAdapter(adapter);
+		}
 	}
 	
 	private OnTextChangedListener textChangedListener = new OnTextChangedListener() {
