@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.android.volley.Request.Method;
+import com.facebook.Session;
 import com.google.android.gcm.GCMRegistrar;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
@@ -327,7 +328,16 @@ public class SettingFragment extends BaseFragment {
 	public void clearSharedPreferences() {
 		new Authenticator().logout();
 		PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().clear().commit();
+		removeFacebookToken();
 		restartApplication();
+	}
+	
+	private void removeFacebookToken() {
+		Session session = Session.getActiveSession();
+		if (session != null) {
+			session.closeAndClearTokenInformation();
+			session.close();
+		}
 	}
 	
 	private void restartApplication() {
