@@ -26,7 +26,6 @@ import com.myandb.singsong.net.JSONObjectSuccessListener;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.secure.Encryption;
-import com.myandb.singsong.util.Logger;
 import com.myandb.singsong.util.Utility;
 
 import android.app.Activity;
@@ -140,7 +139,6 @@ public class LoginDialog extends BaseDialog {
 		
 		@Override
 		public void call(Session session, SessionState state, Exception exception) {
-			Logger.log(session.getState().name());
 			if (state.isOpened()) {
 				showProgressDialog();
 				
