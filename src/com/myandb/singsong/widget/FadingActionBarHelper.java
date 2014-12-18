@@ -20,6 +20,7 @@ public class FadingActionBarHelper implements OnScrollListener {
 	private Drawable backgroundDrawable;
 	private ActionBar actionBar;
 	private CharSequence title;
+	private int headerHeight;
 	private int backgroundResId;
 	private int fullyVisiblePosition;
 	private int maxAlpha;
@@ -77,15 +78,27 @@ public class FadingActionBarHelper implements OnScrollListener {
 	public void onScrollStateChanged(AbsListView view, int scrollState) {}
 	
 	@Override
-	public void onScroll(AbsListView view, int firstVisibleItem,
-			int visibleItemCount, int totalItemCount) {
-		View topChild = view.getChildAt(0);
+	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 		int position = 0;
+		
+		View topChild = view.getChildAt(0);
 		if (topChild != null) {
-			position = -topChild.getTop() + view.getFirstVisiblePosition() * topChild.getHeight();
-        }
+			if (headerHeight == 0) {
+				headerHeight = topChild.getHeight();
+			}
+			
+			if (isHeaderVisible(firstVisibleItem)) {
+				position = -topChild.getTop();
+			} else {
+				position = -topChild.getTop() + Math.max(firstVisibleItem - 1, 0) * topChild.getHeight() + headerHeight;
+			}
+		}
 		
 		fade(position);
+	}
+	
+	private boolean isHeaderVisible(int firstVisibleItem) {
+		return firstVisibleItem == 0;
 	}
 	
 	private void fade(int position) {
