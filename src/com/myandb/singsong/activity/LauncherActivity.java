@@ -24,7 +24,7 @@ public class LauncherActivity extends FragmentActivity {
 
 	private VersionDialog versionDialog;
 	private Handler handler;
-	private int latestNoticeId;
+	private JSONObject latestNotice;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +56,7 @@ public class LauncherActivity extends FragmentActivity {
 		try {
 			int latestVersion = response.getInt("latest_version");
 			int forceUpdateVersion = response.getInt("force_update_version");
-			latestNoticeId = 0;/*response.getInt("latest_notice_id");*/
+			latestNotice = response.getJSONObject("latest_notice");
 			
 			PackageHelper packageHelper = new PackageHelper(getPackageManager());
 			int versionCode = packageHelper.getVersionCode(getPackageName());
@@ -89,7 +89,7 @@ public class LauncherActivity extends FragmentActivity {
 		Intent intent = new Intent(this, RootActivity.class);
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, HomeFragment.class.getName());
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
-		intent.putExtra(RootActivity.EXTRA_NOTICE_ID, latestNoticeId);
+		intent.putExtra(RootActivity.EXTRA_NOTICE, latestNotice.toString());
 		startActivity(intent);
 		overridePendingTransition(enterAnim, exitAnim);
 		finish();
