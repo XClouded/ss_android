@@ -1,20 +1,15 @@
 package com.myandb.singsong.dialog;
 
-import java.lang.ref.WeakReference;
 import java.util.Arrays;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.facebook.Request;
-import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionLoginBehavior;
 import com.facebook.SessionState;
-import com.facebook.Request.GraphUserCallback;
 import com.facebook.Session.OpenRequest;
 import com.facebook.Session.StatusCallback;
-import com.facebook.model.GraphUser;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.myandb.singsong.R;
@@ -140,29 +135,10 @@ public class LoginDialog extends BaseDialog {
 		public void call(Session session, SessionState state, Exception exception) {
 			if (state.isOpened()) {
 				showProgressDialog();
-				
-				Request.newMeRequest(session, new GetUserCallback(LoginDialog.this)).executeAsync();
+				loginByFacebook(session.getAccessToken());
 			}
 		}
 	};
-	
-	private static class GetUserCallback implements GraphUserCallback {
-		
-		private WeakReference<LoginDialog> weakReference;
-		
-		public GetUserCallback(LoginDialog reference) {
-			weakReference = new WeakReference<LoginDialog>(reference);
-		}
-
-		@Override
-		public void onCompleted(GraphUser user, Response response) { 
-			LoginDialog reference = weakReference.get();
-			Session session = Session.getActiveSession();
-			if (session != null) {
-				reference.loginByFacebook(user, session.getAccessToken());
-			}
-		}
-	}
 	
 	private View.OnClickListener toJoinClickListener = new View.OnClickListener() {
 		
@@ -193,12 +169,10 @@ public class LoginDialog extends BaseDialog {
 	
 	private void loginByEmail(String username, String password) {
 		try {
-			JSONObject message = new JSONObject();
 			Encryption encryption = new Encryption();
-			
+			JSONObject message = new JSONObject();
 			message.put("username", username);
 			message.put("password", encryption.getSha512Convert(password));
-			
 			requestLogin(message);
 		} catch (JSONException e) {
 			onLoginError();
@@ -207,22 +181,12 @@ public class LoginDialog extends BaseDialog {
 		}
 	}
 	
-	private void loginByFacebook(GraphUser user, String token) {
+	private void loginByFacebook(String token) {
 		try {
-			JSONObject message = new JSONObject();
 			Encryption encryption = new Encryption();
-			
+			JSONObject message = new JSONObject();
 			message.put("facebook_token", token);
-			message.put("facebook_id", user.getId());
-			message.put("facebook_name", user.getName());
-			message.put("facebook_photo", "https://graph.facebook.com/" + user.getId() + "/picture?type=large");
 			message.put("device_id", encryption.getDeviceId(getActivity()));
-			
-			Object email = user.asMap().get("email");
-			if (email != null) {
-				message.put("facebook_email", email.toString());
-			}
-			
 			requestLogin(message);		
 		} catch (JSONException e) {
 			onLoginError();
