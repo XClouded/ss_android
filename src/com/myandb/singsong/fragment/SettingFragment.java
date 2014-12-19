@@ -4,12 +4,17 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.android.volley.Request.Method;
 import com.facebook.Session;
+import com.facebook.SessionState;
+import com.facebook.Session.StatusCallback;
+import com.facebook.SessionLoginBehavior;
+import com.facebook.Session.OpenRequest;
 import com.google.android.gcm.GCMRegistrar;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
@@ -259,9 +264,60 @@ public class SettingFragment extends BaseFragment {
 		
 		@Override
 		public void onClick(View v) {
-			
+			openFacebookSession();
 		}
 	};
+	
+	private void openFacebookSession() {
+		OpenRequest request = new OpenRequest(this);
+		request.setPermissions(Arrays.asList("email", "user_friends"));
+		request.setLoginBehavior(SessionLoginBehavior.SSO_WITH_FALLBACK);
+		
+		Session session = Session.getActiveSession();
+		if (session != null) {
+			session.close();
+		}
+		session = new Session(getActivity().getApplicationContext());
+		session.addCallback(statusCallback);
+		session.openForRead(request);
+		Session.setActiveSession(session);
+	}
+	
+	private StatusCallback statusCallback = new StatusCallback() {
+		
+		@Override
+		public void call(Session session, SessionState state, Exception exception) {
+			if (session.isOpened()) {
+				showProgressDialog();
+				updateUserFacebookId(session.getAccessToken());
+			}
+		}
+	};
+	
+	private void updateUserFacebookId(String token) {
+		try {
+			JSONObject message = new JSONObject();
+			message.put("facebook_token", token);
+			JSONObjectRequest request = new JSONObjectRequest(
+					Method.PUT, "users", message,
+					new JSONObjectSuccessListener(this, "onUpdateUserFacebookIdSuccess", User.class),
+					new JSONErrorListener(this, "onUpdateUserFacebookIdError"));
+			addRequest(request);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void onUpdateUserFacebookIdSuccess(User user) {
+		new Authenticator().update(user);
+		updateFacebookActivatedView(true);
+		dismissProgressDialog();
+	}
+	
+	public void onUpdateUserFacebookIdError() {
+		dismissProgressDialog();
+		makeToast(R.string.t_poor_network_connection);
+	}
 	
 	private OnClickListener logoutClickListener = new OnClickListener() {
 		
@@ -446,6 +502,10 @@ public class SettingFragment extends BaseFragment {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
+		Session session = Session.getActiveSession();
+		if (session != null) {
+			session.onActivityResult(getActivity(), requestCode, resultCode, data);
+		}
 		
 		switch (requestCode) {
 		case REQUEST_CODE_PHOTO_PICKER:
