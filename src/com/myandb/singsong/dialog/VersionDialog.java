@@ -1,8 +1,6 @@
 package com.myandb.singsong.dialog;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,6 +18,7 @@ public class VersionDialog extends BaseDialog {
 	private Button btnNoUpdate;
 	private Button btnExit;
 	private Store store;
+	private String packageName;
 	private boolean forceUpdate = false;
 
 	@Override
@@ -27,9 +26,10 @@ public class VersionDialog extends BaseDialog {
 		getDialog().setCanceledOnTouchOutside(false);
 		getDialog().setCancelable(false);
 		
-		store = new GoogleStore();
+		packageName = activity.getPackageName();
+		store = new GoogleStore(packageName);
 		if (isStoreUnavailable(store)) {
-			store = new GoogleStore();
+			store = new GoogleStore(packageName);
 		}
 	}
 
@@ -61,7 +61,7 @@ public class VersionDialog extends BaseDialog {
 		
 		@Override
 		public void onClick(View v) {
-			moveToStore();
+			store.move(getActivity());
 			finishActivity();
 		}
 	};
@@ -83,14 +83,6 @@ public class VersionDialog extends BaseDialog {
 		}
 	};
 	
-	private void moveToStore() {
-		String packageName = getActivity().getPackageName();
-		Uri uri = store.getDetailViewUri(packageName);
-		Intent intent = new Intent(Intent.ACTION_VIEW);
-		intent.setData(uri);
-		getActivity().startActivity(intent);
-	}
-	
 	private void finishActivity() {
 		dismiss();
 		getActivity().finish();
@@ -98,7 +90,7 @@ public class VersionDialog extends BaseDialog {
 	
 	private boolean isStoreUnavailable(Store store) {
 		PackageHelper helper = new PackageHelper(getActivity().getPackageManager());
-		return helper.isAppInstalled(store.getPackageName());
+		return helper.isAppInstalled(store.getStorePackageName());
 	}
 	
 	public void setForceUpdate(boolean forceUpdate) {
