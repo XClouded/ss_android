@@ -172,7 +172,7 @@ public class RootActivity extends BaseActivity {
 		Gson gson = Utility.getGsonInstance();
 		String noticeInJson = intent.getStringExtra(EXTRA_NOTICE);
 		Notice notice = gson.fromJson(noticeInJson, Notice.class);
-		if (isUnreadLatestNotice(notice.getId())) {
+		if (notice != null && isUnreadLatestNotice(notice.getId())) {
 			saveLatestNoticeId(notice.getId());
 			if (isNoticePoppable(notice)) {
 				Bundle bundle = new Bundle();
