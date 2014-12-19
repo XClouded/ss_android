@@ -89,7 +89,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 		return session != null && session.isOpened();
 	}
 	
-	private void requestFacebookMe(Session session) {
+	private void requestFacebookMe(final Session session) {
 		Request.newMeRequest(session, new GraphUserCallback() {
 			
 			@Override
@@ -97,6 +97,8 @@ public abstract class BaseActivity extends ActionBarActivity {
 				if (user == null) {
 					Toast.makeText(getApplicationContext(), "페이스북 세션이 만료되었습니다. 다시 로그인해주세요.", Toast.LENGTH_SHORT).show();
 					new Authenticator().logout();
+					session.close();
+					session.closeAndClearTokenInformation();
 					finish();
 				}
 			}
