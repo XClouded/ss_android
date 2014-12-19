@@ -49,7 +49,6 @@ public class LoginDialog extends BaseDialog {
 	private Button btnToJoin;
 	private Button btnFacebook;
 	private TextView tvFindPassword;
-	private String facebookToken;
 	private RootActivity activity;
 	private JoinDialog joinDialog;
 
@@ -143,7 +142,6 @@ public class LoginDialog extends BaseDialog {
 				showProgressDialog();
 				
 				Request.newMeRequest(session, new GetUserCallback(LoginDialog.this)).executeAsync();
-				facebookToken = session.getAccessToken();
 			}
 		}
 	};
@@ -159,12 +157,11 @@ public class LoginDialog extends BaseDialog {
 		@Override
 		public void onCompleted(GraphUser user, Response response) { 
 			LoginDialog reference = weakReference.get();
-			reference.loginByFacebook(user, reference.getFacebookToken());
+			Session session = Session.getActiveSession();
+			if (session != null) {
+				reference.loginByFacebook(user, session.getAccessToken());
+			}
 		}
-	}
-	
-	public String getFacebookToken() {
-		return facebookToken;
 	}
 	
 	private View.OnClickListener toJoinClickListener = new View.OnClickListener() {
