@@ -20,6 +20,7 @@ public class User extends Model {
 	private Date main_photo_updated_at;
 	private Profile profile;
 	private String facebook_id;
+	private FacebookUser facebookUser;
 	private int is_activated;
 	private int is_following;
 	
@@ -43,6 +44,14 @@ public class User extends Model {
 	
 	public String getPhotoUrl() {
 		return safeString(main_photo_url);
+	}
+	
+	public FacebookUser getFacebookUser() {
+		return facebookUser;
+	}
+	
+	public void setFacebookUser(FacebookUser facebookUser) {
+		this.facebookUser = facebookUser;
 	}
 	
 	public void setPhotoUrl(String url, Date updatedAt) {

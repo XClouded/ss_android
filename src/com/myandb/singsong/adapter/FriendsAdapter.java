@@ -5,6 +5,7 @@ import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 import com.myandb.singsong.event.ActivateOnlyClickListener;
 import com.myandb.singsong.image.ImageHelper;
+import com.myandb.singsong.model.FacebookUser;
 import com.myandb.singsong.model.Profile;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.JustRequest;
@@ -33,15 +34,24 @@ public class FriendsAdapter extends HolderAdapter<User, FriendsAdapter.UserHolde
 	@Override
 	public void onBindViewHolder(Context context, UserHolder viewHolder, int position) {
 		final User user = getItem(position);
+		final FacebookUser facebookUser = user.getFacebookUser();
 		final Profile profile = user.getProfile();
 		
-		viewHolder.tvUserStatus.setText(profile.getStatusMessage());
-		viewHolder.tvUserNickname.setText(user.getNickname());
-		viewHolder.view.setOnClickListener(user.getProfileClickListener());
-		viewHolder.btnFollow.setTag(user);
-		toggleFollowing(viewHolder.btnFollow, user.isFollowing());
+		if (profile != null) {
+			viewHolder.tvUserStatus.setText(profile.getStatusMessage());
+		}
 		
-		ImageHelper.displayPhoto(user, viewHolder.ivUserPhoto);
+		if (facebookUser != null) {
+			viewHolder.tvUserNickname.setText(facebookUser.getName());
+			ImageHelper.displayPhoto(facebookUser.getPhotoUrl(), viewHolder.ivUserPhoto);
+		} else {
+			viewHolder.tvUserNickname.setText(user.getNickname());
+			ImageHelper.displayPhoto(user, viewHolder.ivUserPhoto);
+		}
+		
+		viewHolder.btnFollow.setTag(user);
+		viewHolder.view.setOnClickListener(user.getProfileClickListener());
+		toggleFollowing(viewHolder.btnFollow, user.isFollowing());
 	}
 	
 	private void toggleFollowing(View v, boolean isFollowing) {
