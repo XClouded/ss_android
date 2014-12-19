@@ -105,6 +105,10 @@ public class GradualLoader implements OnScrollListener {
 		return urlBuilder != null;
 	}
 	
+	public boolean isNothingToLoad() {
+		return nothingToLoad;
+	}
+	
 	@Override
 	public void onScrollStateChanged(AbsListView view, int scrollState) {}
 	

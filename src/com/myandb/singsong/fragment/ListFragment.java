@@ -174,7 +174,7 @@ public class ListFragment extends BaseFragment {
 		
 		setListViewAdapter();
 		
-		if (isDataAlive()) {
+		if (isDataAlive() || loader.isNothingToLoad()) {
 			scrollToPreviousPosition();
 		} else if (isDataLoadable()) {
 			loader.load();
