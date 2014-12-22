@@ -61,7 +61,7 @@ public class MusicDetailFragment extends ListFragment {
 		
 		if (getAdapter() == null) {
 			UrlBuilder urlBuilder = new UrlBuilder();
-			urlBuilder.s("songs").s(74824).s("children");
+			urlBuilder.s("musics").s(music.getId()).s("songs").s("root");
 			setUrlBuilder(urlBuilder);
 			setAdapter(new ChildrenSongAdapter());
 		}
@@ -80,6 +80,8 @@ public class MusicDetailFragment extends ListFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
+		
+		setFadingActionBarTitle(music.getSingerName() + "-" + music.getTitle());
 	}
 
 }
