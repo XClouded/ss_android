@@ -1,9 +1,17 @@
 package com.myandb.singsong.model;
 
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.view.View;
+import android.view.View.OnClickListener;
 
+import com.google.gson.Gson;
+import com.myandb.singsong.activity.BaseActivity;
+import com.myandb.singsong.dialog.BaseDialog;
+import com.myandb.singsong.dialog.SelectRecordModeDialog;
+import com.myandb.singsong.event.ActivateOnlyClickListener;
 import com.myandb.singsong.util.Utility;
 
 public class Music extends Model {
@@ -20,7 +28,7 @@ public class Music extends Model {
 	private int sing_num;
 	
 	public String getSingerName() {
-		return toString(singer);
+		return safeString(singer);
 	}
 	
 	public Spannable getWorkedTitle() {
@@ -32,7 +40,7 @@ public class Music extends Model {
 	}
 	
 	public String getTitle() {
-		return toString(title);
+		return safeString(title);
 	}
 	
 	public String getAlbumPhotoUrl() {
@@ -48,15 +56,15 @@ public class Music extends Model {
 	}
 	
 	public String getMalePart() {
-		return toString(part_male);
+		return safeString(part_male);
 	}
 	
 	public String getFemalePart() {
-		return toString(part_female);
+		return safeString(part_female);
 	}
 	
 	public String getWorkedSingNum() {
-		return toString(sing_num);
+		return safeString(sing_num);
 	}
 	
 	public int getSingNum() {
@@ -65,6 +73,32 @@ public class Music extends Model {
 	
 	public boolean isLyricDynamic() {
 		return is_dynamic == 1;
+	}
+	
+	public OnClickListener getMusicClickListener() {
+		return new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				BaseActivity activity = (BaseActivity) v.getContext();
+				Gson gson = Utility.getGsonInstance();
+				Bundle bundle = new Bundle();
+				bundle.putString(SelectRecordModeDialog.EXTRA_MUSIC, gson.toJson(Music.this));
+				BaseDialog dialog = new SelectRecordModeDialog();
+				dialog.setArguments(bundle);
+				dialog.show(activity.getSupportFragmentManager(), "");
+			}
+		};
+	}
+	
+	public OnClickListener getRecordClickListener() {
+		return new ActivateOnlyClickListener() {
+			
+			@Override
+			public void onActivated(View v, User user) {
+				
+			}
+		};
 	}
 	
 }

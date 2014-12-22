@@ -4,30 +4,29 @@ import org.json.JSONArray;
 
 import android.content.Context;
 import android.widget.AbsListView;
-import android.widget.ListView;
 import android.widget.AbsListView.OnScrollListener;
 
-import com.android.volley.RequestQueue;
 import com.myandb.singsong.App;
-import com.myandb.singsong.event.OnVolleyWeakError;
-import com.myandb.singsong.event.OnVolleyWeakResponse;
 
-public class GradualLoader {
+public class GradualLoader implements OnScrollListener {
 	
 	private static final int INITIAL_LOAD_NUM = 25;
 	private static final int ADDITIONAL_LOAD_NUM = 15;
+	private static final int VISIBLE_THRESHOLD = 10; 
 
+	private Context context;
 	private OnLoadCompleteListener completeListener;
 	private OnLoadErrorListener errorListener;
-	private RequestQueue queue;
 	private UrlBuilder urlBuilder;
 	private int count;
 	private int requiredTake;
+	private int initialLoadNum;
+	private int previousTotalCount = 0;
 	private boolean nothingToLoad;
 	private boolean loading;
 
 	public GradualLoader(Context context) {
-		this.queue = ((App) context.getApplicationContext()).getQueueInstance();
+		this.context = context;
 	}
 	
 	public void setUrlBuilder(UrlBuilder urlBuilder) {
@@ -36,6 +35,14 @@ public class GradualLoader {
 		this.loading = false;
 		this.count = 0;
 		this.requiredTake = 0;
+		this.previousTotalCount = 0;
+		
+		try {
+			int builderTake = Integer.parseInt(urlBuilder.getParam("take"));
+			this.initialLoadNum = builderTake > 0 ? builderTake : INITIAL_LOAD_NUM;
+		} catch (NumberFormatException e) {
+			this.initialLoadNum = INITIAL_LOAD_NUM;
+		}
 	}
 	
 	public void setOnLoadCompleteListener(OnLoadCompleteListener listener) {
@@ -48,7 +55,7 @@ public class GradualLoader {
 	
 	public void load() {
 		if (isLoadable() && !nothingToLoad) {
-			int take = count > 0 ? ADDITIONAL_LOAD_NUM : INITIAL_LOAD_NUM;
+			int take = count > 0 ? ADDITIONAL_LOAD_NUM : initialLoadNum;
 			executeQuery(count, take);
 		}
 	}
@@ -61,18 +68,16 @@ public class GradualLoader {
 			urlBuilder.take(take);
 			requiredTake = take;
 			
-			OAuthJsonArrayRequest request = new OAuthJsonArrayRequest(
-				urlBuilder.toString(),
-				new OnVolleyWeakResponse<GradualLoader, JSONArray>(this, "onLoadResponse"),
-				new OnVolleyWeakError<GradualLoader>(this, "onLoadError")
+			JSONArrayRequest request = new JSONArrayRequest(
+				urlBuilder.build(),
+				new JSONArraySuccessListener(this, "onLoadResponse"),
+				new JSONErrorListener(this, "onLoadError")
 			);
-			
-			queue.add(request);
+			((App) context.getApplicationContext()).addShortLivedRequest(context, request);
 		}
 	}
 	
 	public void onLoadResponse(JSONArray response) {
-		loading = false;
 		count += response.length();
 		
 		if (response.length() < requiredTake) {
@@ -82,6 +87,8 @@ public class GradualLoader {
 		if (completeListener != null) {
 			completeListener.onComplete(response);
 		}
+		
+		loading = false;
 	}
 	
 	public void onLoadError() {
@@ -98,32 +105,25 @@ public class GradualLoader {
 		return urlBuilder != null;
 	}
 	
-	public void setListView(ListView listView) {
-		listView.setOnScrollListener(scrollListener);
+	public boolean isNothingToLoad() {
+		return nothingToLoad;
 	}
 	
-	private OnScrollListener scrollListener = new OnScrollListener() {
-		
-		private static final int VISIABLE_THRESHOLD = 10; 
-        private int previousTotal = 0;
-		
-		@Override
-		public void onScrollStateChanged(AbsListView view, int scrollState) {}
-		
-		@Override
-		public void onScroll(AbsListView view, int firstVisibleItem,
-			int visibleItemCount, int totalItemCount) {
-			if (isLoading()) {
-                if (totalItemCount > previousTotal) {
-                	previousTotal = totalItemCount;
-                }
-            } else {
-            	if ((totalItemCount - visibleItemCount) <= (firstVisibleItem + VISIABLE_THRESHOLD)) {
-            		load();
-            	}
-            }
+	@Override
+	public void onScrollStateChanged(AbsListView view, int scrollState) {}
+	
+	@Override
+	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+		if (totalItemCount > previousTotalCount) {
+			previousTotalCount = totalItemCount;
 		}
-	};
+		
+		if (!isLoading()) {
+			if ((previousTotalCount - visibleItemCount) <= (firstVisibleItem + VISIBLE_THRESHOLD)) {
+				load();
+			}
+		}
+	}
 	
 	public interface OnLoadCompleteListener {
 		
@@ -136,4 +136,5 @@ public class GradualLoader {
 		public void onError();
 		
 	}
+	
 }

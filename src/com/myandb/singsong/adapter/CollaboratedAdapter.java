@@ -1,13 +1,13 @@
 package com.myandb.singsong.adapter;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.myandb.singsong.R;
-import com.myandb.singsong.event.Listeners;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Song;
@@ -20,19 +20,18 @@ public class CollaboratedAdapter extends HolderAdapter<Song, CollaboratedAdapter
 	}
 
 	@Override
-	public SongHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		View view = View.inflate(parent.getContext(), R.layout.row_collaborated, null);
+	public SongHolder onCreateViewHolder(LayoutInflater inflater, ViewGroup parent, int viewType) {
+		View view = inflater.inflate(R.layout.row_collaborated, parent, false);
 		return new SongHolder(view);
 	}
 
 	@Override
-	public void onBindViewHolder(SongHolder viewHolder, int position) {
+	public void onBindViewHolder(Context context, SongHolder viewHolder, int position) {
 		final Song thisSong = getItem(position);
 		final Song parentSong = thisSong.getParentSong();
 		final User thisUser = thisSong.getCreator();
 		final User parentUser = thisSong.getParentUser();
 		final Music music = thisSong.getMusic();
-		final Context context = viewHolder.view.getContext();
 		
 		viewHolder.tvParentUserNickname.setText(parentUser.getNickname());
 		viewHolder.tvThisUserNickname.setText(thisUser.getNickname());
@@ -53,9 +52,9 @@ public class CollaboratedAdapter extends HolderAdapter<Song, CollaboratedAdapter
 		ImageHelper.displayPhoto(parentSong.getPhotoUrl(), viewHolder.ivParentSongImage);
 		ImageHelper.displayPhoto(thisSong.getPhotoUrl(), viewHolder.ivThisSongImage);
 		
-		viewHolder.ivParentUserPhoto.setOnClickListener(Listeners.getProfileClickListener(context, parentUser));
-		viewHolder.ivThisUserPhoto.setOnClickListener(Listeners.getProfileClickListener(context, thisUser));
-		viewHolder.view.setOnClickListener(Listeners.getPlayClickListener(context, thisSong));
+		viewHolder.ivParentUserPhoto.setOnClickListener(parentUser.getProfileClickListener());
+		viewHolder.ivThisUserPhoto.setOnClickListener(thisUser.getProfileClickListener());
+		viewHolder.view.setOnClickListener(thisSong.getPlayClickListener());
 	}
 	
 	public static final class SongHolder extends ViewHolder {

@@ -24,7 +24,7 @@
                 android:layout_height="@dimen/icon"
                 android:layout_marginRight="@dimen/margin_small"
                 android:src="@drawable/ic_launcher"
-                style="@style/BaseImageView" />
+                style="@style/ImageViewBase" />
             
             <TextView
                 android:text="@string/app_name"
@@ -46,10 +46,7 @@
 		    <com.myandb.singsong.widget.RoundedImageView
 		        android:id="@+id/iv_user_photo"
 		        android:layout_marginRight="@dimen/margin_small"
-		        app:oval="true"
-		        app:border_width="0.1dp"
-		        app:border_color="@color/divider"
-		        style="@style/UserImageView" />
+		        style="@style/ImageViewUser" />
 		    
 		    <TextView
 		        android:id="@+id/tv_user_name"

@@ -25,7 +25,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request.Method;
-import com.android.volley.RequestQueue;
 import com.google.android.gcm.GCMBaseIntentService;
 import com.google.gson.Gson;
 import com.myandb.singsong.activity.RootActivity;
@@ -36,9 +35,8 @@ import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Activity;
 import com.myandb.singsong.model.Notification;
 import com.myandb.singsong.model.User;
-import com.myandb.singsong.net.OAuthJustRequest;
+import com.myandb.singsong.net.JustRequest;
 import com.myandb.singsong.net.DownloadManager;
-import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.util.Utility;
 
@@ -266,15 +264,11 @@ public class GCMIntentService extends GCMBaseIntentService {
 	private void updateRegistrationId(String registrationId) {
 		if (Authenticator.isLoggedIn()) {
 			try {
-				UrlBuilder urlBuilder = new UrlBuilder();
-				String url = urlBuilder.s("users").toString();
-				
 				JSONObject message = new JSONObject();
 				message.put("push_id", registrationId);
 				
-				OAuthJustRequest request = new OAuthJustRequest(Method.PUT, url, message);
-				RequestQueue queue = ((App) getApplicationContext()).getQueueInstance();
-				queue.add(request);
+				JustRequest request = new JustRequest(Method.PUT, "users", message);
+				((App) getApplicationContext()).addLongLivedRequest(request);
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}

@@ -1,18 +1,17 @@
 package com.myandb.singsong.adapter;
 
-import com.android.volley.RequestQueue;
 import com.android.volley.Request.Method;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 import com.myandb.singsong.event.ActivateOnlyClickListener;
-import com.myandb.singsong.event.Listeners;
 import com.myandb.singsong.image.ImageHelper;
+import com.myandb.singsong.model.FacebookUser;
 import com.myandb.singsong.model.Profile;
 import com.myandb.singsong.model.User;
-import com.myandb.singsong.net.OAuthJustRequest;
-import com.myandb.singsong.net.UrlBuilder;
+import com.myandb.singsong.net.JustRequest;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
@@ -27,35 +26,43 @@ public class FriendsAdapter extends HolderAdapter<User, FriendsAdapter.UserHolde
 	}
 
 	@Override
-	public UserHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		View view = View.inflate(parent.getContext(), R.layout.row_friend, null);
+	public UserHolder onCreateViewHolder(LayoutInflater inflater, ViewGroup parent, int viewType) {
+		View view = inflater.inflate(R.layout.row_friend, parent, false);
 		return new UserHolder(view);
 	}
 
 	@Override
-	public void onBindViewHolder(UserHolder viewHolder, int position) {
+	public void onBindViewHolder(Context context, UserHolder viewHolder, int position) {
 		final User user = getItem(position);
+		final FacebookUser facebookUser = user.getFacebookUser();
 		final Profile profile = user.getProfile();
-		final Context context = viewHolder.view.getContext();
 		
-		viewHolder.tvUserStatus.setText(profile.getStatusMessage());
-		viewHolder.tvUserNickname.setText(user.getNickname());
+		if (profile != null) {
+			viewHolder.tvUserStatus.setText(profile.getStatusMessage());
+		}
 		
-		ImageHelper.displayPhoto(user, viewHolder.ivUserPhoto);
+		if (facebookUser != null) {
+			viewHolder.tvUserNickname.setText(facebookUser.getName());
+			ImageHelper.displayPhoto(facebookUser.getPhotoUrl(), viewHolder.ivUserPhoto);
+		} else {
+			viewHolder.tvUserNickname.setText(user.getNickname());
+			ImageHelper.displayPhoto(user, viewHolder.ivUserPhoto);
+		}
 		
 		viewHolder.btnFollow.setTag(user);
+		viewHolder.view.setOnClickListener(user.getProfileClickListener());
 		toggleFollowing(viewHolder.btnFollow, user.isFollowing());
-		
-		viewHolder.view.setOnClickListener(Listeners.getProfileClickListener(context, user));
 	}
 	
 	private void toggleFollowing(View v, boolean isFollowing) {
 		if (isFollowing) {
-			v.setBackgroundResource(R.drawable.img_following);
+			v.setBackgroundResource(R.drawable.button_primary_selector);
 			v.setOnClickListener(unfollowClickListener);
+			((Button) v).setText("ÆÈ·ÎÀ×");
 		} else {
-			v.setBackgroundResource(R.drawable.img_follow);
+			v.setBackgroundResource(R.drawable.button_grey_selector);
 			v.setOnClickListener(followClickListener);
+			((Button) v).setText("+ÆÈ·Î¿ì");
 		} 
 	}
 	
@@ -64,14 +71,8 @@ public class FriendsAdapter extends HolderAdapter<User, FriendsAdapter.UserHolde
 		@Override
 		public void onActivated(View v, User user) {
 			User friend = (User) v.getTag();
-			
-			UrlBuilder urlBuilder = new UrlBuilder();
-			String url = urlBuilder.s("friendships").s(friend.getId()).toString();
-			
-			RequestQueue queue = ((App) v.getContext().getApplicationContext()).getQueueInstance();
-			OAuthJustRequest request = new OAuthJustRequest(Method.POST, url, null);
-			queue.add(request);
-			
+			JustRequest request = new JustRequest(Method.POST, "friendships/" + friend.getId(), null);
+			((App) v.getContext().getApplicationContext()).addShortLivedRequest(v.getContext(), request);
 			toggleFollowing(v, true);
 		}
 	};
@@ -81,14 +82,8 @@ public class FriendsAdapter extends HolderAdapter<User, FriendsAdapter.UserHolde
 		@Override
 		public void onActivated(View v, User user) {
 			User friend = (User) v.getTag();
-			
-			UrlBuilder urlBuilder = new UrlBuilder();
-			String url = urlBuilder.s("friendships").s(friend.getId()).toString();
-			
-			RequestQueue queue = ((App) v.getContext().getApplicationContext()).getQueueInstance();
-			OAuthJustRequest request = new OAuthJustRequest(Method.DELETE, url, null);
-			queue.add(request);
-			
+			JustRequest request = new JustRequest(Method.DELETE, "friendships/" + friend.getId(), null);
+			((App) v.getContext().getApplicationContext()).addShortLivedRequest(v.getContext(), request);
 			toggleFollowing(v, false);
 		}
 	};

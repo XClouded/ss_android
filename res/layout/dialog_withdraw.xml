@@ -1,44 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/DialogBox" >
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/container_dialog" >
     
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/primary_dark" >
-	    
-	    <TextView
-	        android:layout_width="wrap_content"
-	        android:text="@string/withdraw"
-	        style="@style/TextViewDialogTitle" />
-	    
-	    <ImageView
-	        android:id="@+id/iv_cancel"
-	        android:src="@drawable/ic_x_inverse"
-	        android:layout_alignParentRight="true"
-	        android:layout_centerVertical="true"
-	        style="@style/BaseImageView" />
+        android:paddingLeft="@dimen/margin"
+        android:paddingRight="@dimen/margin"
+        android:orientation="vertical" >
         
-    </RelativeLayout>
-    
-    <TextView
-        android:text="@string/dialog_withdraw_ask"
-        style="@style/TextViewDialog" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/margin_big"
+            android:layout_marginBottom="@dimen/margin"
+            android:gravity="center"
+            android:textColor="@color/red_dark"
+            android:textStyle="bold"
+            android:text="탈퇴를 하시면 복구가 불가능할 수도 있습니다!\n확인을 위해 아이디를 입력해주세요."
+            style="@style/TextViewHint" />
+        
+        <ImageView
+        	style="@style/DividerHorizontal" />
+        
+        <EditText
+	        android:id="@+id/et_user_username"
+	        android:hint="@string/hint_id"
+	        android:inputType="textPersonName"
+	        android:maxLength="32"
+	        style="@style/BaseEditText" />
+        
+    </LinearLayout>
     
     <ImageView
         style="@style/DividerHorizontal" />
     
-    <Button
-        android:id="@+id/btn_yes"
-        android:text="@string/yes"
-        style="@style/ButtonDialog" />
-    
-    <ImageView
-        style="@style/DividerHorizontal" />
-    
-    <Button
-        android:id="@+id/btn_no"
-        android:text="@string/no"
-        style="@style/ButtonDialog" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin" >
+        
+        <Button
+		    android:id="@+id/btn_withdraw"
+		    android:layout_width="match_parent"
+		    android:text="@string/withdraw"
+		    android:background="@drawable/button_alert_selector"
+		    style="@style/ButtonBase" />
+        
+    </FrameLayout>
 
 </LinearLayout>

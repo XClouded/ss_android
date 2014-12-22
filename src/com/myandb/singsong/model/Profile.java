@@ -10,7 +10,7 @@ public class Profile extends Model {
 	private int sing_num;
 	
 	public String getKakaotalk() {
-		return toString(kakaotalk);
+		return safeString(kakaotalk);
 	}
 	
 	public void setKakaotalk(String kakaotalk) {
@@ -18,7 +18,7 @@ public class Profile extends Model {
 	}
 	
 	public String getEmail() {
-		return toString(email);
+		return safeString(email);
 	}
 	
 	public void setEmail(String email) {
@@ -26,7 +26,7 @@ public class Profile extends Model {
 	}
 	
 	public String getStatusMessage() {
-		return toString(status_message);
+		return safeString(status_message);
 	}
 	
 	public void setStatusMessage(String message) {
@@ -38,7 +38,7 @@ public class Profile extends Model {
 	}
 	
 	public String getWorkedFollowingsNum() {
-		return toString(followings_num);
+		return safeString(followings_num);
 	}
 	
 	public int getFollowersNum() {
@@ -46,7 +46,7 @@ public class Profile extends Model {
 	}
 	
 	public String getWorkedFollowersNum() {
-		return toString(followers_num);
+		return safeString(followers_num);
 	}
 	
 	public int getSingNum() {
@@ -54,7 +54,7 @@ public class Profile extends Model {
 	}
 	
 	public String getWorkedSingNum() {
-		return toString(sing_num);
+		return safeString(sing_num);
 	}
 
 }

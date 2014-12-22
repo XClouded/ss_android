@@ -11,15 +11,15 @@ public class Notice extends Model {
 	private Date finish_at;
 	
 	public String getTitle() {
-		return toString(title);
+		return safeString(title);
 	}
 	
 	public String getContent() {
-		return toString(content);
+		return safeString(content);
 	}
 	
 	public String getFrontImageUrl() {
-		return toString(front_img);
+		return safeString(front_img);
 	}
 	
 	public Date getStartedTime() {

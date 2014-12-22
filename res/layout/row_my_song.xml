@@ -10,7 +10,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/box_song" >
+        android:background="@drawable/card_song" >
         
         <LinearLayout
             android:id="@+id/wrapper"
@@ -25,7 +25,7 @@
 	            android:layout_weight="1"
 	            app:corner_radius="@dimen/corner_radius"
 	            app:corner_top_left="true"
-	            style="@style/BaseImageView" />
+	            style="@style/ImageViewBase" />
 	        
 	        <LinearLayout
 	            android:id="@+id/ll_partner_wrapper"
@@ -40,7 +40,7 @@
 		            android:layout_height="@dimen/compat_song_image_height_half"
 		            app:corner_radius="@dimen/corner_radius"
 		            app:corner_top_right="true"
-		            style="@style/BaseImageView" />    
+		            style="@style/ImageViewBase" />    
 		            
 	        	<LinearLayout
 	        	    android:id="@+id/ll_children_wrapper"
@@ -53,14 +53,14 @@
 			            android:layout_width="0dp"
 			            android:layout_height="match_parent"
 			            android:layout_weight="1"
-			            style="@style/BaseImageView" />
+			            style="@style/ImageViewBase" />
 	        		
 	        		<ImageView
 			            android:id="@+id/iv_second_children_upload_image"
 			            android:layout_width="0dp"
 			            android:layout_height="match_parent"
 			            android:layout_weight="1"
-			            style="@style/BaseImageView" />
+			            style="@style/ImageViewBase" />
 	        	    
 	        	</LinearLayout>
 	            
@@ -87,7 +87,7 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:src="@drawable/ic_collabo_white"
-                style="@style/BaseImageView" />
+                style="@style/ImageViewBase" />
             
             <TextView
                 android:id="@+id/tv_song_collabo_num"
@@ -111,7 +111,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/margin"
             android:layout_marginTop="@dimen/margin"
-            style="@style/BaseImageView" />
+            style="@style/ImageViewBase" />
         
         <LinearLayout
             android:id="@+id/ll_user_wrapper"
@@ -138,10 +138,7 @@
 				      
 					<com.myandb.singsong.widget.RoundedImageView
 					    android:id="@+id/iv_parent_user_photo"
-					    app:oval="true"
-					    app:border_width="0.1dp"
-					    app:border_color="@color/divider"
-					    style="@style/UserImageView" />
+					    style="@style/ImageViewUser" />
 				      
 		      	</FrameLayout>
 		         
@@ -180,10 +177,7 @@
 				      
 					<com.myandb.singsong.widget.RoundedImageView
 					    android:id="@+id/iv_this_user_photo"
-					    app:oval="true"
-					    app:border_width="0.1dp"
-					    app:border_color="@color/divider"
-					    style="@style/UserImageView" />
+					    style="@style/ImageViewUser" />
 				      
 		      	</FrameLayout>
 		         

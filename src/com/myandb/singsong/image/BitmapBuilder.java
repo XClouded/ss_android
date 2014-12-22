@@ -27,7 +27,6 @@ public class BitmapBuilder {
 			this.file = file;
 			this.sourceType = SOURCE_FILE;
 		}
-		
 		return this;
 	}
 	
@@ -37,7 +36,6 @@ public class BitmapBuilder {
 			this.resourceId = resourceId;
 			this.sourceType = SOURCE_RESOURCE;
 		}
-		
 		return this;
 	}
 	

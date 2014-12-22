@@ -16,6 +16,7 @@ import com.facebook.model.GraphUser;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.ExceptionParser;
 import com.google.analytics.tracking.android.ExceptionReporter;
+import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 import com.myandb.singsong.event.WeakRunnable;
 import com.myandb.singsong.model.User;
@@ -88,7 +89,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 		return session != null && session.isOpened();
 	}
 	
-	private void requestFacebookMe(Session session) {
+	private void requestFacebookMe(final Session session) {
 		Request.newMeRequest(session, new GraphUserCallback() {
 			
 			@Override
@@ -96,6 +97,8 @@ public abstract class BaseActivity extends ActionBarActivity {
 				if (user == null) {
 					Toast.makeText(getApplicationContext(), "페이스북 세션이 만료되었습니다. 다시 로그인해주세요.", Toast.LENGTH_SHORT).show();
 					new Authenticator().logout();
+					session.close();
+					session.closeAndClearTokenInformation();
 					finish();
 				}
 			}
@@ -156,7 +159,6 @@ public abstract class BaseActivity extends ActionBarActivity {
 	
 	protected void replaceContentFragment(Fragment fragment, boolean isRootFragment) {
 		final int containerId = R.id.fl_content_fragment_container;
-		final int transition = FragmentTransaction.TRANSIT_FRAGMENT_FADE;
 		
 		FragmentManager manager = getSupportFragmentManager();
 		if (isRootFragment) {
@@ -164,7 +166,6 @@ public abstract class BaseActivity extends ActionBarActivity {
 		}
 		FragmentTransaction transaction = manager.beginTransaction();
 		transaction.replace(containerId, fragment);
-		transaction.setTransition(transition);
 		transaction.addToBackStack(null);
 		transaction.commit();
 		
@@ -323,8 +324,17 @@ public abstract class BaseActivity extends ActionBarActivity {
 			handler.removeCallbacksAndMessages(null);
 			handler = null;
 		}
+		cancelRequests();
 		super.onDestroy();
 		uiHelper.onDestroy();
+	}
+	
+	public <T> void addRequest(com.android.volley.Request<T> request) {
+		((App) getApplicationContext()).addShortLivedRequest(this, request);
+	}
+	
+	private void cancelRequests() {
+		((App) getApplicationContext()).cancelRequests(this);
 	}
 	
 	public void onPlayerServiceConnected(PlayerService service) {

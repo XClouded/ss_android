@@ -58,14 +58,20 @@ public class UpActivity extends BaseActivity {
 	@Override
 	public void onPageChanged(Intent intent) {
 		if (isComponentOf(intent, RootActivity.class)) {
-			// finish all UpActivity
-			finish();
+			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 		} else if (isComponentOf(intent, UpActivity.class)) {
 			startActivity(intent);
+			overridePendingTransition(R.anim.slide_right_in, R.anim.hold);
 		} else {
 			replaceContentFragmentFromIntent(intent);
 		}
+	}
+
+	@Override
+	public void finish() {
+		super.finish();
+		overridePendingTransition(R.anim.hold, R.anim.slide_right_out);
 	}
 
 }

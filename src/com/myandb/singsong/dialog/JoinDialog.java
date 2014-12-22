@@ -5,23 +5,20 @@ import java.util.regex.Matcher;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Request.Method;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.RootActivity;
-import com.myandb.singsong.event.OnVolleyWeakError;
-import com.myandb.singsong.event.OnVolleyWeakResponse;
 import com.myandb.singsong.model.User;
+import com.myandb.singsong.net.JSONObjectRequest;
+import com.myandb.singsong.net.JSONErrorListener;
+import com.myandb.singsong.net.JSONObjectSuccessListener;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.secure.Encryption;
 import com.myandb.singsong.util.Utility;
 
-import android.app.ProgressDialog;
+import android.app.Activity;
 import android.content.Context;
 import android.text.Editable;
 import android.text.Html;
@@ -30,13 +27,13 @@ import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.Patterns;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager.LayoutParams;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class JoinDialog extends BaseDialog {
 	
@@ -49,14 +46,32 @@ public class JoinDialog extends BaseDialog {
 	private TextView tvValidRePassword;
 	private TextView tvAgreementPolicy;
 	private String lastInputUsername;
-	private ProgressDialog progressDialog;
 	private RootActivity activity;
 	private int colorGrey;
 	private int colorPrimary;
 
-	public JoinDialog(Context context) {
-		super(context);
-		activity = (RootActivity) context;
+	@Override
+	protected void initialize(Activity activity) {
+		setProgressDialogMessage("회원가입 중입니다.");
+		
+		if (activity instanceof RootActivity) {
+			this.activity = (RootActivity) activity;
+		}
+		
+		colorGrey = getResources().getColor(R.color.font_grey);
+		colorPrimary = getResources().getColor(R.color.primary);
+	}
+
+	@Override
+	protected void onViewInflated(View view, LayoutInflater inflater) {
+		etUsername = (EditText) view.findViewById(R.id.et_user_username);
+		etPassword = (EditText) view.findViewById(R.id.et_user_password);
+		etRePassword = (EditText) view.findViewById(R.id.et_user_password_re);
+		btnJoinComplete = (Button) view.findViewById(R.id.btn_join_complete);
+		tvValidUsername = (TextView) view.findViewById(R.id.tv_valid_username);
+		tvValidPassword = (TextView) view.findViewById(R.id.tv_valid_password);
+		tvValidRePassword = (TextView) view.findViewById(R.id.tv_valid_password_re);
+		tvAgreementPolicy = (TextView) view.findViewById(R.id.tv_agreement_policy);
 	}
 	
 	@Override
@@ -68,26 +83,8 @@ public class JoinDialog extends BaseDialog {
 	}
 
 	@Override
-	protected void initialize() {
-		colorGrey = getContext().getResources().getColor(R.color.font_grey);
-		colorPrimary = getContext().getResources().getColor(R.color.primary);
-	}
-
-	@Override
 	protected int getResourceId() {
 		return R.layout.dialog_join;
-	}
-
-	@Override
-	protected void onViewInflated() {
-		etUsername = (EditText) findViewById(R.id.et_user_username);
-		etPassword = (EditText) findViewById(R.id.et_user_password);
-		etRePassword = (EditText) findViewById(R.id.et_user_password_re);
-		btnJoinComplete = (Button) findViewById(R.id.btn_join_complete);
-		tvValidUsername = (TextView) findViewById(R.id.tv_valid_username);
-		tvValidPassword = (TextView) findViewById(R.id.tv_valid_password);
-		tvValidRePassword = (TextView) findViewById(R.id.tv_valid_password_re);
-		tvAgreementPolicy = (TextView) findViewById(R.id.tv_agreement_policy);
 	}
 
 	@Override
@@ -207,7 +204,7 @@ public class JoinDialog extends BaseDialog {
 	}
 	
 	private void hideSoftInput(EditText editText) {
-		InputMethodManager manager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+		InputMethodManager manager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 		manager.hideSoftInputFromWindow(editText.getWindowToken(), 0);
 	}
 	
@@ -226,46 +223,21 @@ public class JoinDialog extends BaseDialog {
 		}
 	};
 	
-	private void showProgressDialog() {
-		if (progressDialog == null) {
-			progressDialog = new ProgressDialog(getContext());
-			progressDialog.setIndeterminate(true);
-			progressDialog.setCanceledOnTouchOutside(false);
-			progressDialog.setCancelable(false);
-			progressDialog.setMessage("회원가입 중입니다.");
-		}
-		
-		if (!progressDialog.isShowing()) {
-			progressDialog.show();
-		}
-	}
-	
-	private void dismissProgressDialog() {
-		if (progressDialog != null && progressDialog.isShowing()) {
-			progressDialog.dismiss();
-		}
-	}
-	
 	private void checkUsernameDuplication(String username) {
 		lastInputUsername = username;
-		UrlBuilder urlBuilder = new UrlBuilder();
-		String url = urlBuilder.s("users").p("username", username).toString();
-		
-		JsonObjectRequest request = new JsonObjectRequest(
-				url, null,
-				new OnVolleyWeakResponse<JoinDialog, JSONObject>(JoinDialog.this, "onUsernameFound"),
-				new OnVolleyWeakError<JoinDialog>(JoinDialog.this, "onUsernameNotFound")
+		JSONObjectRequest request = new JSONObjectRequest(
+				"users?username=" + username, null,
+				new JSONObjectSuccessListener(this, "onUsernameFound"),
+				new JSONErrorListener(this, "onUsernameNotFound")
 		);
-		
-		RequestQueue queue = ((App) getContext().getApplicationContext()).getQueueInstance();
-		queue.add(request);
+		addRequest(request);
 	}
 	
 	public void onUsernameFound(JSONObject response) {
 		dismissProgressDialog();
 		String message = lastInputUsername;
-		message += getContext().getString(R.string.t_email_already_exist);
-		Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+		message += getString(R.string.t_email_already_exist);
+		makeToast(message);
 	}
 	
 	public void onUsernameNotFound() {
@@ -278,21 +250,16 @@ public class JoinDialog extends BaseDialog {
 		try {
 			JSONObject message = new JSONObject();
 			Encryption encryption = new Encryption();
-			
 			message.put("username", username);
 			message.put("password", password);
-			message.put("device_id", encryption.getDeviceId(getContext()));
+			message.put("device_id", encryption.getDeviceId(getActivity()));
 			
-			UrlBuilder urlBuilder = new UrlBuilder();
-			String url = urlBuilder.s("users").toString();
-			JsonObjectRequest request = new JsonObjectRequest(
-					Method.POST, url, message,
-					new OnVolleyWeakResponse<JoinDialog, JSONObject>(JoinDialog.this, "onJoinComplete"),
-					new OnVolleyWeakError<JoinDialog>(JoinDialog.this, "onJoinError")
+			JSONObjectRequest request = new JSONObjectRequest(
+					"users", message,
+					new JSONObjectSuccessListener(this, "onJoinComplete"),
+					new JSONErrorListener(this, "onJoinError")
 			);
-			
-			RequestQueue queue = ((App) getContext().getApplicationContext()).getQueueInstance();
-			queue.add(request);
+			addRequest(request);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -334,7 +301,7 @@ public class JoinDialog extends BaseDialog {
 	}
 	
 	public void onJoinError() {
-		Toast.makeText(getContext(), getContext().getString(R.string.t_join_failed), Toast.LENGTH_SHORT).show();
+		makeToast(R.string.t_join_failed);
 		clearTextFromAllEditText();
 		removeUserOnLocal();
 		dismissProgressDialog();
@@ -350,7 +317,6 @@ public class JoinDialog extends BaseDialog {
 	public void dismiss() {
 		super.dismiss();
 		clearTextFromAllEditText();
-		dismissProgressDialog();
 	}
 
 }

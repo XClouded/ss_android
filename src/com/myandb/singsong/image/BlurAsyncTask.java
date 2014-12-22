@@ -1,27 +1,24 @@
 package com.myandb.singsong.image;
 
-import java.io.File;
-
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.os.AsyncTask;
 import android.widget.ImageView;
 
-public class BlurAsyncTask extends AsyncTask<File, Integer, Bitmap> {
+public class BlurAsyncTask extends AsyncTask<Bitmap, Integer, Bitmap> {
 	
 	private int radius = 5;
 	private ImageView imageView;
 
 	@Override
-	protected Bitmap doInBackground(File... params) {
-		File file = params[0];
-		
-		if (file == null || !file.exists() || radius < 1) {
+	protected Bitmap doInBackground(Bitmap... params) {
+		Bitmap source = params[0];
+		if (source == null || radius < 1) {
 			return null;
 		}
 		
-		BitmapBuilder builder = new BitmapBuilder();
-		Bitmap bitmap = builder.setOutputSize(100).setSource(file).build();
+		Bitmap bitmap = Bitmap.createScaledBitmap(source, 300, 300, true);
+		
 		if (bitmap != null) {
 			Config config = bitmap.getConfig();
 			if (config == null) {

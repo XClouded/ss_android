@@ -11,7 +11,7 @@
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_gravity="center"
-        style="@style/BaseImageView" />
+        style="@style/ImageViewBase" />
 	    
 	<TextView 
 	    android:id="@+id/tv_gnb_title"

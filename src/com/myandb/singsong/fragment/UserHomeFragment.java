@@ -1,10 +1,5 @@
 package com.myandb.singsong.fragment;
 
-import java.io.File;
-
-import org.json.JSONObject;
-
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -12,40 +7,44 @@ import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request.Method;
-import com.android.volley.RequestQueue;
 import com.google.gson.Gson;
-import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.activity.UpActivity;
+import com.myandb.singsong.adapter.FriendsAdapter;
+import com.myandb.singsong.adapter.MyCommentAdapter;
+import com.myandb.singsong.adapter.MyLikeSongAdapter;
 import com.myandb.singsong.adapter.MySongAdapter;
-import com.myandb.singsong.dialog.LoginDialog;
+import com.myandb.singsong.dialog.BaseDialog;
+import com.myandb.singsong.dialog.GalleryDialog;
 import com.myandb.singsong.dialog.UpdateFriendshipDialog;
 import com.myandb.singsong.event.ActivateOnlyClickListener;
 import com.myandb.singsong.event.MemberOnlyClickListener;
-import com.myandb.singsong.event.OnVolleyWeakError;
-import com.myandb.singsong.event.OnVolleyWeakResponse;
-import com.myandb.singsong.image.BitmapBuilder;
 import com.myandb.singsong.image.BlurAsyncTask;
+import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Friendship;
 import com.myandb.singsong.model.Profile;
 import com.myandb.singsong.model.User;
-import com.myandb.singsong.net.OAuthJsonObjectRequest;
-import com.myandb.singsong.net.OAuthJustRequest;
+import com.myandb.singsong.net.JSONObjectRequest;
+import com.myandb.singsong.net.JustRequest;
+import com.myandb.singsong.net.JSONErrorListener;
+import com.myandb.singsong.net.JSONObjectSuccessListener;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.util.Utility;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.DiscCacheUtil;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 
 public class UserHomeFragment extends ListFragment {
 	
@@ -55,29 +54,21 @@ public class UserHomeFragment extends ListFragment {
 	private User thisUser;
 	private User currentUser;
 	private Friendship friendship;
-	private RequestQueue requestQueue;
-	private UpdateFriendshipDialog dialog;
 	
 	private ImageView ivUserPhoto;
-	private ImageView ivProfileBg;
-	private TextView tvUsername;
+	private ImageView ivUserPhotoBackground;
 	private TextView tvNickname;
 	private TextView tvUserStatus;
 	private TextView tvUserSongs;
 	private TextView tvUserFollowings;
 	private TextView tvUserFollowers;
-	private TextView tvUserLikings;
-	private TextView tvUserComments;
-	private ImageView ivUserTrashes;
+	private View tvResendEmail;
 	private Button btnFollow;
 	private Button btnEditProfile;
-	private View vResendEmail;
-	private Button btnResendEmail;
 
-	@SuppressLint("InflateParams")
 	@Override
-	protected View inflateListHeaderView(LayoutInflater inflater) {
-		return inflater.inflate(R.layout.fragment_user_home_header, null);
+	protected int getListHeaderViewResId() {
+		return R.layout.fragment_user_home_header;
 	}
 
 	@Override
@@ -93,33 +84,34 @@ public class UserHomeFragment extends ListFragment {
 	protected void onViewInflated(View view, LayoutInflater inflater) {
 		super.onViewInflated(view, inflater);
 		
+		view = getListHeaderView();
 		ivUserPhoto = (ImageView) view.findViewById(R.id.iv_user_photo);
-		ivProfileBg = (ImageView) view.findViewById(R.id.iv_profile_bg);
-		tvUsername = (TextView) view.findViewById(R.id.tv_user_username);
+		ivUserPhotoBackground = (ImageView) view.findViewById(R.id.iv_user_photo_background);
 		tvNickname = (TextView) view.findViewById(R.id.tv_user_nickname);
 		tvUserStatus = (TextView) view.findViewById(R.id.tv_user_status);
 		tvUserSongs = (TextView) view.findViewById(R.id.tv_user_songs);
 		tvUserFollowings = (TextView) view.findViewById(R.id.tv_user_followings);
 		tvUserFollowers = (TextView) view.findViewById(R.id.tv_user_followers);
-		tvUserLikings = (TextView) view.findViewById(R.id.tv_user_likings);
-		tvUserComments = (TextView) view.findViewById(R.id.tv_user_comments);
-		ivUserTrashes = (ImageView) view.findViewById(R.id.iv_user_trashes);
+		tvResendEmail = (TextView) view.findViewById(R.id.tv_resend_email);
 		btnFollow = (Button) view.findViewById(R.id.btn_follow);
 		btnEditProfile = (Button) view.findViewById(R.id.btn_edit_profile);
-		vResendEmail = view.findViewById(R.id.rl_resend_email);
-		btnResendEmail = (Button) view.findViewById(R.id.btn_resend_email);
 	}
 
 	@Override
 	protected void initialize(Activity activity) {
 		super.initialize(activity);
-		
-		requestQueue = ((App) getActivity().getApplicationContext()).getQueueInstance();
+		setHasOptionsMenu(true);
+		if (getAdapter() == null) {
+			UrlBuilder urlBuilder = new UrlBuilder();
+			urlBuilder.s("users").s(thisUser.getId()).s("songs").s("all").p("order", "created_at");
+			setUrlBuilder(urlBuilder);
+			setAdapter(new MySongAdapter(activity, isCurrentUser(), false));
+		}
 	}
 
 	@Override
-	protected void setupViews() {
-		super.setupViews();
+	protected void setupViews(Bundle savedInstanceState) {
+		super.setupViews(savedInstanceState);
 		
 		displayUserSpecificViews();
 
@@ -128,8 +120,6 @@ public class UserHomeFragment extends ListFragment {
 		setUserPhoto();
 		
 		loadProfileData();
-		
-		loadUserSong();
 		
 		if (!thisUser.isActivated()) {
 			checkUserActivation();
@@ -140,99 +130,130 @@ public class UserHomeFragment extends ListFragment {
 		tvNickname.setText(thisUser.getNickname());
 		
 		if (isCurrentUser()) {
-			tvUserComments.setVisibility(View.VISIBLE);
-			ivUserTrashes.setVisibility(View.VISIBLE);
 			btnEditProfile.setVisibility(View.VISIBLE);
 			btnFollow.setVisibility(View.GONE);
-			tvUsername.setText(thisUser.getUsername());
 		} else {
-			tvUserComments.setVisibility(View.GONE);
-			ivUserTrashes.setVisibility(View.GONE);
 			btnEditProfile.setVisibility(View.GONE);
 			btnFollow.setVisibility(View.VISIBLE);
-			tvUsername.setText(thisUser.getCroppedUsername());
 		}
 	}
 	
 	private void setOnToListClickListener() {
-		if (isCurrentUser()) {
-			tvUserComments.setOnClickListener(toListClickListener);
-			ivUserTrashes.setOnClickListener(toListClickListener);
-		}
-		
-		tvUserFollowings.setOnClickListener(toListClickListener);
-		tvUserFollowers.setOnClickListener(toListClickListener);
-		tvUserLikings.setOnClickListener(toListClickListener);
+		tvUserFollowings.setOnClickListener(toUserItemListClickListener);
+		tvUserFollowers.setOnClickListener(toUserItemListClickListener);
 	}
 	
-	private OnClickListener toListClickListener = new OnClickListener() {
+	private OnClickListener toUserItemListClickListener = new OnClickListener() {
 		
 		@Override
 		public void onClick(View view) {
-			Gson gson = Utility.getGsonInstance();
-			Bundle bundle = new Bundle();
-			bundle.putString(EXTRA_THIS_USER, gson.toJson(thisUser, User.class));
-			Intent intent = new Intent(getActivity(), RootActivity.class);
-			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
-			
-			switch (view.getId()) {
-			case R.id.tv_user_followings:
-				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, "");
-				break;
-
-			case R.id.tv_user_followers:
-				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, "");
-				break;
-				
-			case R.id.tv_user_likings:
-				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, "");
-				break;
-				
-			case R.id.tv_user_comments:
-				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, "");
-				break;
-			
-			case R.id.iv_user_trashes:
-				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, "");
-				break;
-				
-			default:
-				break;
-				
-			}
-			
-			startActivity(intent);
+			onToUserItemListClick(view.getId());
 		}
 	};
 	
-	private void setUserPhoto() {
-		File photo = null;
-		if (isCurrentUser()) {
-			photo = new File(getActivity().getFilesDir(), LoginDialog.FILE_USER_PHOTO);
-		} else if (thisUser.hasPhoto()) {
-			ImageLoader imageLoader = ImageLoader.getInstance();
-			photo = DiscCacheUtil.findInCache(thisUser.getPhotoUrl(), imageLoader.getDiscCache());
+	private void onToUserItemListClick(int id) {
+		String userId = String.valueOf(thisUser.getId());
+		String segment = "users/" + userId + "/";
+		String adapterName = "";
+		String title = getCroppedNickname(thisUser.getNickname());
+		title += "´ÔÀÇ ";
+		Bundle params = new Bundle();
+		
+		switch (id) {
+		case R.id.action_user_followings:
+		case R.id.tv_user_followings:
+			title += getString(R.string.following);
+			segment += "followings";
+			params.putString("req[]", "profile");
+			params.putString("order", "friendships.created_at");
+			adapterName = FriendsAdapter.class.getName();
+			break;
+			
+		case R.id.action_user_followers:	
+		case R.id.tv_user_followers:
+			title += getString(R.string.follower);
+			segment += "followers";
+			params.putString("req[]", "profile");
+			params.putString("order", "friendships.created_at");
+			adapterName = FriendsAdapter.class.getName();
+			break;
+			
+		case R.id.action_user_likings:
+			title += getString(R.string.like);
+			segment += "songs/likings";
+			params.putString("order", "created_at");
+			adapterName = MyLikeSongAdapter.class.getName();
+			break;
+			
+		case R.id.action_user_comments:
+			title += getString(R.string.comment);
+			segment += "songs/comments";
+			params.putString("order", "created_at");
+			adapterName = MyCommentAdapter.class.getName();
+			break;
+			
+		case R.id.action_user_trash:
+			title += getString(R.string.trash);
+			segment += "songs/trash";
+			params.putString("order", "deleted_at");
+			adapterName = MySongAdapter.class.getName();
+			break;
+			
+		default:
+			return;
 		}
-		setImageFileOnImageView(photo);
+		
+		Bundle bundle = new Bundle();
+		bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, title);
+		bundle.putString(ListFragment.EXTRA_URL_SEGMENT, segment);
+		bundle.putString(ListFragment.EXTRA_ADAPTER_NAME, adapterName);
+		bundle.putBundle(ListFragment.EXTRA_QUERY_PARAMS, params);
+		Intent intent = new Intent(getActivity(), RootActivity.class);
+		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
+		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, ListFragment.class.getName());
+		startFragment(intent);
 	}
 	
-	private void setImageFileOnImageView(File file) {
-		if (file != null && file.exists()) {
-			BitmapBuilder bitmapBuilder = new BitmapBuilder();
-			if (ivUserPhoto != null) {
-				Bitmap bitmap = bitmapBuilder
-						.setSource(file)
-						.setOutputSize(100)
-						.enableCrop(false)
-						.build();
-				ivUserPhoto.setImageBitmap(bitmap);
-				ivUserPhoto.setOnClickListener(photoZoomClickListener);
-			}
-			
-			BlurAsyncTask blurTask = new BlurAsyncTask();
-			blurTask.setImageView(ivProfileBg);
-			blurTask.execute(file);
+	private String getCroppedNickname(String nickname) {
+		String cropped = "";
+		if (nickname.length() > 12) {
+			cropped = nickname.substring(0, 6);
+			cropped += "..";
+			return cropped;
+		} else {
+			return nickname;
 		}
+	}
+	
+	private void setUserPhoto() {
+		if (thisUser.hasPhoto()) {
+			ImageHelper.displayPhoto(thisUser, ivUserPhoto, imageLoadingListener);
+		}
+	}
+	
+	private ImageLoadingListener imageLoadingListener = new ImageLoadingListener() {
+
+		@Override
+		public void onLoadingCancelled(String arg0, View arg1) {}
+
+		@Override
+		public void onLoadingComplete(String url, View imageView, Bitmap bitmap) {
+			ivUserPhoto.setOnClickListener(photoZoomClickListener);
+			setBackgroundBlurImage(bitmap);
+		}
+
+		@Override
+		public void onLoadingFailed(String arg0, View arg1, FailReason arg2) {}
+
+		@Override
+		public void onLoadingStarted(String arg0, View arg1) {}
+		
+	};
+	
+	private void setBackgroundBlurImage(Bitmap bitmap) {
+		BlurAsyncTask blurTask = new BlurAsyncTask();
+		blurTask.setImageView(ivUserPhotoBackground);
+		blurTask.execute(bitmap);
 	}
 	
 	private OnClickListener photoZoomClickListener = new OnClickListener() {
@@ -240,11 +261,10 @@ public class UserHomeFragment extends ListFragment {
 		@Override
 		public void onClick(View v) {
 			Bundle bundle = new Bundle();
-			bundle.putString("", thisUser.getPhotoUrl());
-			Intent intent = new Intent(getActivity(), UpActivity.class);
-			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, "");
-			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
-			startActivity(intent);
+			bundle.putString(GalleryDialog.EXTRA_PHOTO_URL, thisUser.getPhotoUrl());
+			GalleryDialog dialog = new GalleryDialog();
+			dialog.setArguments(bundle);
+			dialog.show(getChildFragmentManager(), "");
 		}
 	};
 	
@@ -253,16 +273,13 @@ public class UserHomeFragment extends ListFragment {
 	}
 	
 	private void loadProfileData() {
-		UrlBuilder urlBuilder = new UrlBuilder();
-		String url = urlBuilder.s("users").s(thisUser.getId()).s("profile").toString();
-		
-		OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
-				Method.GET, url, null,
-				new OnVolleyWeakResponse<UserHomeFragment, JSONObject>(this, "onGetProfileResponse", Profile.class),
-				new OnVolleyWeakError<UserHomeFragment>(this, "onGetProfileError")
+		String segment = "users/" + thisUser.getId() + "/profile";
+		JSONObjectRequest request = new JSONObjectRequest(
+				segment, null,
+				new JSONObjectSuccessListener(this, "onGetProfileResponse", Profile.class),
+				new JSONErrorListener(this, "onGetProfileError")
 		);
-		
-		requestQueue.add(request);
+		addRequest(request);
 	}
 	
 	public void onGetProfileResponse(Profile profile) {
@@ -277,15 +294,13 @@ public class UserHomeFragment extends ListFragment {
 	}
 	
 	public void onGetProfileError() {
-		Toast.makeText(getActivity(), getString(R.string.t_poor_network_connection), Toast.LENGTH_SHORT).show();
+		makeToast(R.string.t_poor_network_connection);
 		getActivity().finish();
 	}
 	
 	private void updateProfile(Profile profile) {
 		if (isCurrentUser()) {
-			currentUser.setProfile(profile);
-			Authenticator auth = new Authenticator();
-			auth.update(currentUser);
+			new Authenticator().update(profile);
 		}
 	}
 	
@@ -314,18 +329,8 @@ public class UserHomeFragment extends ListFragment {
 				textView.setText("\"");
 				textView.append("»óÅÂ±ÛÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä. :)");
 				textView.append("\"");
-			} else {
-				textView.setVisibility(View.GONE);
 			}
 		} else {
-			if (statusMessage.length() > 20) {
-				try {
-					statusMessage = new StringBuilder(statusMessage).insert(20, "\n").toString();
-				} catch (StringIndexOutOfBoundsException e) {
-					e.printStackTrace();
-				}
-			}
-			
 			textView.setText("\"");
 			textView.append(statusMessage);
 			textView.append("\"");
@@ -333,16 +338,12 @@ public class UserHomeFragment extends ListFragment {
 	}
 	
 	private void checkIsThisUserFriend() {
-		UrlBuilder urlBuilder = new UrlBuilder();
-		String url = urlBuilder.s("friendships").s(thisUser.getId()).toString();
-		
-		OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
-				Method.GET, url, null,
-				new OnVolleyWeakResponse<UserHomeFragment, JSONObject>(this, "onFriendshipFound", Friendship.class),
-				new OnVolleyWeakError<UserHomeFragment>(this, "onFriendshipNotFound")
+		JSONObjectRequest request = new JSONObjectRequest(
+				"friendships/" + thisUser.getId(), null,
+				new JSONObjectSuccessListener(this, "onFriendshipFound", Friendship.class),
+				new JSONErrorListener(this, "onFriendshipNotFound")
 		);
-		
-		requestQueue.add(request);
+		addRequest(request);
 	}
 	
 	public void onFriendshipFound(Friendship friendship) {
@@ -361,15 +362,24 @@ public class UserHomeFragment extends ListFragment {
 				friendship.setAllowNotify(true);
 			}
 			
-			btnFollow.setBackgroundResource(R.drawable.img_following_arrow);
+			btnFollow.setBackgroundResource(R.drawable.button_primary_selector);
+			btnFollow.setText("ÆÈ·ÎÀ×");
 			btnFollow.setOnClickListener(updateFriendshipClickListener);
 		} else {
 			if (friendship != null) {
 				friendship = null;
 			}
 			
-			btnFollow.setBackgroundResource(R.drawable.img_follow);
+			btnFollow.setBackgroundResource(R.drawable.button_transparent_selector);
+			btnFollow.setText("+ÆÈ·Î¿ì");
 			btnFollow.setOnClickListener(followClickListener);
+		}
+	}
+	
+	public void toggleAllowNotify() {
+		if (friendship != null) {
+			boolean current = friendship.isAllowNotify();
+			friendship.setAllowNotify(!current);
 		}
 	}
 	
@@ -377,10 +387,8 @@ public class UserHomeFragment extends ListFragment {
 		
 		@Override
 		public void onActivated(View v, User user) {
-			UrlBuilder urlBuilder = new UrlBuilder();
-			String url = urlBuilder.s("friendships").s(thisUser.getId()).toString();
-			OAuthJustRequest request = new OAuthJustRequest(Method.POST, url, null);
-			requestQueue.add(request);
+			JustRequest request = new JustRequest(Method.POST, "friendships/" + thisUser.getId(), null);
+			addRequest(request);
 			toggleFollowing(true);
 		}
 	};
@@ -389,11 +397,14 @@ public class UserHomeFragment extends ListFragment {
 		
 		@Override
 		public void onActivated(View v, User user) {
-			if (dialog == null) {
-				dialog = new UpdateFriendshipDialog(UserHomeFragment.this);
+			if (friendship != null) {
+				Gson gson = Utility.getGsonInstance();
+				Bundle bundle = new Bundle();
+				bundle.putString(UpdateFriendshipDialog.EXTRA_FRIENDSHIP, gson.toJson(friendship));
+				BaseDialog dialog = new UpdateFriendshipDialog();
+				dialog.setArguments(bundle);
+				dialog.show(getChildFragmentManager(), "");
 			}
-			dialog.setFriendship(friendship);
-			dialog.show();
 		}
 	};
 	
@@ -401,41 +412,31 @@ public class UserHomeFragment extends ListFragment {
 		
 		@Override
 		public void onLoggedIn(View v, User user) {
+			Bundle bundle = new Bundle();
+			bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_setting_title));
 			Intent intent = new Intent(getActivity(), UpActivity.class);
-			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, "");
-			startActivity(intent);
+			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, SettingFragment.class.getName());
+			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
+			startActivityForResult(intent, REQUEST_CODE_EDIT_PROFILE);
+			getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.hold);
 		}
 	};
 	
-	private void loadUserSong() {
-		UrlBuilder urlBuilder = new UrlBuilder();
-		urlBuilder.s("users").s(thisUser.getId()).s("songs").s("all").p("order", "created_at");
-		setUrlBuilder(urlBuilder);
-		
-		MySongAdapter adapter = new MySongAdapter(getActivity(), isCurrentUser(), false);
-		setAdapter(adapter);
-		load();
-	}
-	
 	private void checkUserActivation() {
-		UrlBuilder urlBuilder = new UrlBuilder();
-		String url = urlBuilder.s("users").s(currentUser.getId()).toString();
-		
-		OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
-				Method.GET, url, null,
-				new OnVolleyWeakResponse<UserHomeFragment, JSONObject>(this, "onCheckActivationResponse", User.class),
-				null
+		JSONObjectRequest request = new JSONObjectRequest(
+				"users/" + currentUser.getId(), null,
+				new JSONObjectSuccessListener(this, "onCheckActivationResponse", User.class),
+				new JSONErrorListener()
 		);
-		requestQueue.add(request);
+		addRequest(request);
 	}
 	
 	public void onCheckActivationResponse(User user) {
 		if (user.isActivated()) {
-			vResendEmail.setVisibility(View.GONE);
+			tvResendEmail.setVisibility(View.GONE);
 			updateUser(user);
 		} else {
-			vResendEmail.setVisibility(View.VISIBLE);
-			btnResendEmail.setOnClickListener(sendEmailClickListener);
+			tvResendEmail.setVisibility(View.VISIBLE);
 		}
 	}
 	
@@ -444,24 +445,9 @@ public class UserHomeFragment extends ListFragment {
 		auth.update(user);
 		currentUser = user;
 	}
-	
-	private OnClickListener sendEmailClickListener = new MemberOnlyClickListener() {
-		
-		@Override
-		public void onLoggedIn(View v, User user) {
-			UrlBuilder urlBuilder = new UrlBuilder();
-			String url = urlBuilder.s("activations").toString();
-			OAuthJustRequest request = new OAuthJustRequest(Method.POST, url, null);
-			requestQueue.add(request);
-			
-			Toast.makeText(getActivity(), getString(R.string.t_activation_email_send), Toast.LENGTH_SHORT).show();
-			vResendEmail.setVisibility(View.GONE);
-		}
-	};
 
 	@Override
-	protected void onDataChanged() {
-	}
+	protected void onDataChanged() {}
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -470,10 +456,15 @@ public class UserHomeFragment extends ListFragment {
 		switch (requestCode) {
 		case REQUEST_CODE_EDIT_PROFILE:
 			if (resultCode == Activity.RESULT_OK) {
-				currentUser = Authenticator.getUser();
+				currentUser = thisUser = Authenticator.getUser();
 				tvNickname.setText(currentUser.getNickname());
+				setActionBarTitle(currentUser.getNickname());
 				displayStatusMessage(tvUserStatus, currentUser.getProfile().getStatusMessage());
 				setUserPhoto();
+				
+				if (getActivity() instanceof RootActivity) {
+					((RootActivity) getActivity()).updateDrawer();
+				}
 			}
 			
 			break;
@@ -483,17 +474,22 @@ public class UserHomeFragment extends ListFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		setActionBarTitle(thisUser.getNickname());
+		setFadingActionBarTitle(thisUser.getNickname());
 	}
 
 	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		
-		if (dialog != null) {
-			dialog.dismiss();
-			dialog = null;
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		if (isCurrentUser()) {
+			inflater.inflate(R.menu.this_user_home, menu);
+		} else {
+			inflater.inflate(R.menu.user_home, menu);
 		}
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		onToUserItemListClick(item.getItemId());
+		return super.onOptionsItemSelected(item);
 	}
 	
 }

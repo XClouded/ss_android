@@ -3,42 +3,34 @@ package com.myandb.singsong.activity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.android.volley.Request.Method;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.myandb.singsong.App;
-import com.myandb.singsong.GoogleStore;
 import com.myandb.singsong.PackageHelper;
 import com.myandb.singsong.R;
-import com.myandb.singsong.Store;
-import com.myandb.singsong.dialog.BaseDialog;
-import com.myandb.singsong.event.OnVolleyWeakError;
-import com.myandb.singsong.event.OnVolleyWeakResponse;
+import com.myandb.singsong.dialog.VersionDialog;
 import com.myandb.singsong.fragment.BaseFragment;
 import com.myandb.singsong.fragment.HomeFragment;
-import com.myandb.singsong.net.UrlBuilder;
+import com.myandb.singsong.net.JSONObjectRequest;
+import com.myandb.singsong.net.JSONErrorListener;
+import com.myandb.singsong.net.JSONObjectSuccessListener;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.View;
-import android.widget.Button;
+import android.support.v4.app.FragmentActivity;
 import android.widget.Toast;
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 
-public class LauncherActivity extends Activity {
+public class LauncherActivity extends FragmentActivity {
 
 	private VersionDialog versionDialog;
 	private Handler handler;
+	private JSONObject latestNotice;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		setContentView(R.layout.activity_logo);
+		setContentView(R.layout.activity_launcher);
 		
 		handler = new Handler(Looper.getMainLooper());
 		handler.postDelayed(new Runnable() {
@@ -47,39 +39,35 @@ public class LauncherActivity extends Activity {
 			public void run() {
 				requestAppMetadata();
 			}
-		}, 500);
+		}, 350);
 	}
 	
 	private void requestAppMetadata() {
-		UrlBuilder urlBuilder = new UrlBuilder();
-		String url = urlBuilder.s("android").toString();
-		
-		JsonObjectRequest request = new JsonObjectRequest(
-				Method.GET, url, null,
-				new OnVolleyWeakResponse<LauncherActivity, JSONObject>(this, "onGetDataSuccess"),
-				new OnVolleyWeakError<LauncherActivity>(this, "onGetDataError")
+		JSONObjectRequest request = new JSONObjectRequest(
+				"android", null,
+				new JSONObjectSuccessListener(this, "onGetDataSuccess"),
+				new JSONErrorListener(this, "onGetDataError")
 		);
-		
-		RequestQueue queue = ((App) getApplicationContext()).getQueueInstance();
-		queue.add(request);
+		request.setRequireAccessToken(false);
+		((App) getApplicationContext()).addShortLivedRequest(this, request);
 	}
 	
 	public void onGetDataSuccess(JSONObject response) {
 		try {
 			int latestVersion = response.getInt("latest_version");
 			int forceUpdateVersion = response.getInt("force_update_version");
-			int latestNoticeId = 0;/*response.getInt("latest_notice_id");*/
+			latestNotice = response.getJSONObject("latest_notice");
 			
 			PackageHelper packageHelper = new PackageHelper(getPackageManager());
 			int versionCode = packageHelper.getVersionCode(getPackageName());
 			if (latestVersion > versionCode) {
-				versionDialog = new VersionDialog(this);
+				versionDialog = new VersionDialog();
 				if (forceUpdateVersion > versionCode) {
 					versionDialog.setForceUpdate(true);
 				}
-				versionDialog.show();
+				versionDialog.show(getSupportFragmentManager(), "");
 			} else {
-				startRootActivity(latestNoticeId);
+				startRootActivity();
 			}
 		} catch (JSONException e) {
 			Toast.makeText(this, getString(R.string.t_unknown_error), Toast.LENGTH_LONG).show();
@@ -88,11 +76,11 @@ public class LauncherActivity extends Activity {
 	}
 	
 	public void onGetDataError() {
-		Toast.makeText(this, getString(R.string.t_poor_network_connection), Toast.LENGTH_LONG).show();
+		Toast.makeText(LauncherActivity.this, getString(R.string.t_poor_network_connection), Toast.LENGTH_LONG).show();
 		finish();
 	}
 	
-	private void startRootActivity(int noticeId) {
+	public void startRootActivity() {
 		final int enterAnim = android.R.anim.fade_in;
 		final int exitAnim = android.R.anim.fade_out;
 		
@@ -101,7 +89,7 @@ public class LauncherActivity extends Activity {
 		Intent intent = new Intent(this, RootActivity.class);
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, HomeFragment.class.getName());
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
-		intent.putExtra(RootActivity.EXTRA_NOTICE_ID, noticeId);
+		intent.putExtra(RootActivity.EXTRA_NOTICE, latestNotice.toString());
 		startActivity(intent);
 		overridePendingTransition(enterAnim, exitAnim);
 		finish();
@@ -113,93 +101,8 @@ public class LauncherActivity extends Activity {
 			handler.removeCallbacksAndMessages(null);
 			handler = null;
 		}
+		((App) getApplicationContext()).cancelRequests(this);
 		super.onDestroy();
-	}
-
-	private static class VersionDialog extends BaseDialog {
-		
-		private Button btnUpdate;
-		private Button btnExit;
-		private Store store;
-		private boolean forceUpdate = false;
-
-		public VersionDialog(Context context) {
-			super(context, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
-		}
-
-		@Override
-		protected void initialize() {
-			store = new GoogleStore();
-			if (isStoreUnavailable(store)) {
-				store = new GoogleStore();
-			}
-		}
-
-		@Override
-		protected int getResourceId() {
-			return R.layout.dialog_update;
-		}
-
-		@Override
-		protected void onViewInflated() {
-			btnUpdate = (Button)findViewById(R.id.btn_update);
-			btnExit = (Button)findViewById(R.id.btn_exit);
-		}
-
-		@Override
-		protected void setupViews() {
-			btnUpdate.setOnClickListener(toStoreClickListener);
-			btnExit.setOnClickListener(exitClickListener);
-		}
-		
-		@Override
-		public void show() {
-			super.show();
-			if (forceUpdate) {
-				// Hide 'skip update'
-			}
-		}
-
-		private View.OnClickListener toStoreClickListener = new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				moveToStore();
-				finishActivity();
-			}
-		};
-		
-		private View.OnClickListener exitClickListener = new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				finishActivity();
-			}
-		};
-		
-		private void moveToStore() {
-			Activity activity = ((Activity) getContext());
-			String packageName = activity.getPackageName();
-			Uri uri = store.getDetailViewUri(packageName);
-			Intent intent = new Intent(Intent.ACTION_VIEW);
-			intent.setData(uri);
-			activity.startActivity(intent);
-		}
-		
-		private void finishActivity() {
-			dismiss();
-			((Activity) getContext()).finish();
-		}
-		
-		private boolean isStoreUnavailable(Store store) {
-			PackageHelper helper = new PackageHelper(getContext().getPackageManager());
-			return helper.isAppInstalled(store.getPackageName());
-		}
-		
-		public void setForceUpdate(boolean forceUpdate) {
-			this.forceUpdate = forceUpdate;
-		}
-		
 	}
 
 }

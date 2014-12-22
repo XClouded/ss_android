@@ -52,7 +52,7 @@ public class WebViewFragment extends BaseFragment {
 
 	@SuppressLint("SetJavaScriptEnabled")
 	@Override
-	protected void setupViews() {
+	protected void setupViews(Bundle savedInstanceState) {
 		webView.getSettings().setJavaScriptEnabled(true); 
 		webView.loadUrl(url, header);
 		webView.setWebViewClient(new WebViewClientClass());

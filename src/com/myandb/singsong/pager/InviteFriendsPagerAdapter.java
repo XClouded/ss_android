@@ -1,11 +1,8 @@
 package com.myandb.singsong.pager;
 
-import com.myandb.singsong.fragment.ConnectFacebookFragment;
 import com.myandb.singsong.fragment.InviteContactFragment;
 import com.myandb.singsong.fragment.InviteFacebookFragment;
 import com.myandb.singsong.fragment.InviteKakaoFragment;
-import com.myandb.singsong.model.User;
-import com.myandb.singsong.secure.Authenticator;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -21,12 +18,7 @@ public class InviteFriendsPagerAdapter extends FragmentPagerAdapter {
 	public Fragment getItem(int position) {
 		switch (position) {
 		case 0:
-			User user = Authenticator.getUser();
-			if (user.isFacebookActivated()) {
-				return new InviteFacebookFragment();
-			} else {
-				return new ConnectFacebookFragment();
-			}
+			return new InviteFacebookFragment();
 			
 		case 1:
 			return new InviteContactFragment();

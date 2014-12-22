@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+        
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin" >
+            
+            <TextView
+                android:text="@string/popular_music"
+                android:textSize="@dimen/text_big"
+                style="@style/TextViewBase" />
+            
+            <TextView
+                android:id="@+id/tv_popular_more"
+                android:text="@string/more"
+                android:textSize="@dimen/text_big"
+                android:layout_alignParentRight="true"
+                style="@style/TextViewBase" />
+            
+        </RelativeLayout>
+        
+        <com.myandb.singsong.widget.HorizontalListView
+            android:id="@+id/hlv_popular_music"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginBottom="@dimen/margin"
+            android:scrollbars="none" />
+        
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin" >
+            
+            <TextView
+                android:text="@string/recent_music"
+                android:textSize="@dimen/text_big"
+                style="@style/TextViewBase" />
+            
+            <TextView
+                android:id="@+id/tv_recent_more"
+                android:text="@string/more"
+                android:textSize="@dimen/text_big"
+                android:layout_alignParentRight="true"
+                style="@style/TextViewBase" />
+            
+        </RelativeLayout>
+        
+        <com.myandb.singsong.widget.HorizontalListView
+            android:id="@+id/hlv_recent_music"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:layout_marginBottom="@dimen/margin"
+            android:scrollbars="none" />
+        
+        <TextView
+            android:text="@string/category_music"
+            android:textSize="@dimen/text_big"
+            android:padding="@dimen/margin"
+            style="@style/TextViewBase" />
+        
+        <com.myandb.singsong.widget.FloatableLayout
+            android:id="@+id/flt_category_music"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/margin"
+            android:paddingRight="@dimen/margin"
+            android:layout_marginBottom="@dimen/margin" />
+        
+    </LinearLayout>
+    
+</ScrollView>

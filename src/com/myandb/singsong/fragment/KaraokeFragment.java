@@ -15,7 +15,7 @@ import com.myandb.singsong.audio.Recorder;
 import com.myandb.singsong.audio.Track;
 import com.myandb.singsong.dialog.HeadsetDialog;
 import com.myandb.singsong.dialog.LoadingDialog;
-import com.myandb.singsong.dialog.SelectorDialog;
+import com.myandb.singsong.dialog.SelectPartDialog;
 import com.myandb.singsong.event.OnCompleteListener;
 import com.myandb.singsong.event.OnCompleteWeakListener;
 import com.myandb.singsong.event.OnProgressListener;
@@ -55,7 +55,6 @@ import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class KaraokeFragment extends BaseFragment {
 	
@@ -89,7 +88,7 @@ public class KaraokeFragment extends BaseFragment {
 	
 	private HeadsetDialog headsetDialog;
 	private LoadingDialog loadingDialog;
-	private SelectorDialog selectorDialog;
+	private SelectPartDialog selectorDialog;
 	
 	private TextView tvMusicTitle;
 	private TextView tvSingerName;
@@ -198,9 +197,7 @@ public class KaraokeFragment extends BaseFragment {
 	}
 	
 	private void finish(Activity activity, String message) {
-		if (message != null) {
-			Toast.makeText(activity, message, Toast.LENGTH_LONG).show();
-		}
+		makeToast(message);
 		activity.finish();
 	}
 	
@@ -277,13 +274,18 @@ public class KaraokeFragment extends BaseFragment {
 	};
 	
 	private void initializeDialogs() {
-		headsetDialog = new HeadsetDialog(this);
-		loadingDialog = new LoadingDialog(this);
-		selectorDialog = new SelectorDialog(this, music.getMalePart(), music.getFemalePart());
+		headsetDialog = new HeadsetDialog();
+		loadingDialog = new LoadingDialog();
+		
+		Bundle bundle = new Bundle();
+		bundle.putString(SelectPartDialog.EXTRA_PART_MALE, music.getMalePart());
+		bundle.putString(SelectPartDialog.EXTRA_PART_FEMALE, music.getFemalePart());
+		selectorDialog = new SelectPartDialog();
+		selectorDialog.setArguments(bundle);
 	}
 	
 	private void downloadDatas() {
-		loadingDialog.show();
+		loadingDialog.show(getChildFragmentManager(), "");
 		setupLoadingDialogForDownload();
 		
 		DownloadManager lrcDownloader = new DownloadManager();
@@ -373,7 +375,7 @@ public class KaraokeFragment extends BaseFragment {
 	}
 	
 	public void updateLoadingDialog(Integer progress) {
-		if (loadingDialog != null && loadingDialog.isShowing()) {
+		if (loadingDialog != null && loadingDialog.getDialog().isShowing()) {
 			loadingDialog.updateProgressBar(progress);
 		}
 	}
@@ -399,7 +401,7 @@ public class KaraokeFragment extends BaseFragment {
 			
 			@Override
 			public void done(final Integer progress) {
-				if (loadingDialog.isShowing()) {
+				if (loadingDialog.getDialog().isShowing()) {
 					loadingDialog.updateProgressBar(progress);
 					
 					if (progress >= 30) {
@@ -418,7 +420,7 @@ public class KaraokeFragment extends BaseFragment {
 	
 	private void setupLoadingDialogForDownload() {
 		loadingDialog.setTitlePrefix("노래 로딩 중입니다...");
-		loadingDialog.showControlButton(false);
+		loadingDialog.setControlButtonShown(false);
 		loadingDialog.setOnCancelButtonClickListener(new OnClickListener() {
 			
 			@Override
@@ -434,7 +436,7 @@ public class KaraokeFragment extends BaseFragment {
 	
 	private void setupLoadingDialogForDecode() {
 		loadingDialog.setTitlePrefix("노래 압축을 풀고 있습니다...");
-		loadingDialog.showControlButton(true);
+		loadingDialog.setControlButtonShown(true);
 		loadingDialog.enableControlButton(false);
 		loadingDialog.setControlButtonText("기다리지 않고 시작하기");
 		loadingDialog.setOnCancelButtonClickListener(new OnClickListener() {
@@ -454,7 +456,7 @@ public class KaraokeFragment extends BaseFragment {
 				loadingDialog.dismiss();
 				
 				if (isSolo()) {
-					selectorDialog.show();
+					selectorDialog.show(getChildFragmentManager(), "");
 				} else {
 					prepareRecording();
 				}
@@ -468,13 +470,13 @@ public class KaraokeFragment extends BaseFragment {
 			if (receiver.isPlugged()) {
 				startRecordingWithHeadset();
 			} else {
-				headsetDialog.show(); 
+				headsetDialog.show(getChildFragmentManager(), ""); 
 			}
 		}
 	}
 
 	public void onHeadsetPlugged() {
-		if (headsetDialog != null && headsetDialog.isShowing()) {
+		if (headsetDialog != null && headsetDialog.getDialog().isShowing()) {
 			headsetDialog.dismiss();
 			prepareRecording();
 		}
@@ -505,7 +507,7 @@ public class KaraokeFragment extends BaseFragment {
 	}
 
 	@Override
-	protected void setupViews() {
+	protected void setupViews(Bundle savedInstanceState) {
 		final Animation fadeIn = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in);
 		final Animation fadeOut = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
 		tsLyricStarter.setInAnimation(fadeIn);
@@ -604,22 +606,9 @@ public class KaraokeFragment extends BaseFragment {
 			tvStartTime.setText(StringFormatter.getDuration(position));
 			pbPlayProgress.setProgress(position);
 			
-			Runnable r = new ProgressRunnable(this);
+			Runnable r = new WeakRunnable<KaraokeFragment>(this, "updateAudioProgress");
 			handler.postDelayed(r, 1000);
 		}
-	}
-	
-	private static class ProgressRunnable extends WeakRunnable<KaraokeFragment> {
-
-		public ProgressRunnable(KaraokeFragment reference) {
-			super(reference);
-		}
-
-		@Override
-		public void onFilteredRun(KaraokeFragment reference) {
-			reference.updateAudioProgress();
-		}
-		
 	}
 
 	@Override
@@ -720,21 +709,6 @@ public class KaraokeFragment extends BaseFragment {
 			decoder = null;
 		}
 		
-		if (headsetDialog != null) {
-			headsetDialog.dismiss();
-			headsetDialog = null;
-		}
-		
-		if (selectorDialog != null) {
-			selectorDialog.dismiss();
-			selectorDialog = null;
-		}
-		
-		if (loadingDialog != null) {
-			loadingDialog.dismiss();
-			loadingDialog = null;
-		}
-		
 		if (recorder != null) {
 			recorder.release();
 			recorder = null;
@@ -745,10 +719,7 @@ public class KaraokeFragment extends BaseFragment {
 			player = null;
 		}
 		
-		if (handler != null) {
-			handler.removeCallbacksAndMessages(null);
-			handler = null;
-		}
+		stopUpdatingProgressBar();
 		
 		running = false;
 	}
@@ -785,7 +756,7 @@ public class KaraokeFragment extends BaseFragment {
 
 	@Override
 	public void onBackPressed() {
-		super.onBackPressed();
+		return;
 	}
 
 }

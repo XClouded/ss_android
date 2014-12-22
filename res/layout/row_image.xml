@@ -11,12 +11,7 @@
         android:layout_height="50dp"
         android:layout_centerHorizontal="true"
         android:layout_marginRight="@dimen/margin_small"
-        app:corner_radius="@dimen/corner_radius"
-        app:corner_top_left="true"
-        app:corner_top_right="true"
-        app:corner_bottom_left="true"
-        app:corner_bottom_right="true"
-        style="@style/BaseImageView" />
+        style="@style/ImageViewSquare" />
     
     <TextView
         android:id="@+id/tv_created_time"

@@ -5,26 +5,28 @@
     android:layout_height="wrap_content"
     android:paddingLeft="@dimen/margin_small"
     android:paddingRight="@dimen/margin_small"
-    android:background="@drawable/search_view_background" >
+    android:background="@drawable/container_search_view" >
     
     <ImageView
         android:id="@+id/magnifier"
         android:src="@drawable/ic_magnifier"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
-        style="@style/BaseImageView" />
+        style="@style/ImageViewBase" />
     
     <ImageView
         android:id="@+id/iv_clear"
         android:src="@drawable/ic_x"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
-        style="@style/BaseImageView" />
+        style="@style/ImageViewBase" />
     
     <EditText
         android:id="@+id/et_search"
         android:layout_toRightOf="@id/magnifier"
         android:layout_toLeftOf="@id/iv_clear"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
         android:background="@null"
         style="@style/BaseEditText" />
     

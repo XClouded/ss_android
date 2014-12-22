@@ -9,9 +9,6 @@ import java.text.DecimalFormat;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.android.volley.Request.Method;
-import com.android.volley.RequestQueue;
-import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 import com.myandb.singsong.audio.OnPlayEventListener;
 import com.myandb.singsong.audio.PcmPlayer;
@@ -20,17 +17,16 @@ import com.myandb.singsong.audio.Recorder;
 import com.myandb.singsong.audio.Track;
 import com.myandb.singsong.dialog.ImageSelectDialog;
 import com.myandb.singsong.event.OnCompleteListener;
-import com.myandb.singsong.event.OnVolleyWeakError;
-import com.myandb.singsong.event.OnVolleyWeakResponse;
 import com.myandb.singsong.event.WeakRunnable;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.image.ResizeAsyncTask;
 import com.myandb.singsong.model.Image;
 import com.myandb.singsong.model.Model;
 import com.myandb.singsong.model.User;
-import com.myandb.singsong.net.OAuthJsonObjectRequest;
+import com.myandb.singsong.net.JSONObjectRequest;
+import com.myandb.singsong.net.JSONErrorListener;
+import com.myandb.singsong.net.JSONObjectSuccessListener;
 import com.myandb.singsong.net.UploadManager;
-import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.service.SongUploadService;
 
@@ -108,6 +104,7 @@ public class RecordSettingFragment extends BaseFragment {
 			}
 			player.setLeadTrack(TRACK_RECORD);
 		} catch (Exception e) {
+			e.printStackTrace();
 			// This cannot be happened
 		}
 	}
@@ -185,7 +182,7 @@ public class RecordSettingFragment extends BaseFragment {
 	protected void initialize(Activity activity) {
 		activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		
-		dialog = new ImageSelectDialog(this);
+		dialog = new ImageSelectDialog();
 		
 		handler = new Handler();
 		
@@ -198,7 +195,7 @@ public class RecordSettingFragment extends BaseFragment {
 	}
 
 	@Override
-	protected void setupViews() {
+	protected void setupViews(Bundle savedInstanceState) {
 		if (headsetPlugged) {
 			vMixer.setVisibility(View.VISIBLE);
 		} else {
@@ -305,16 +302,12 @@ public class RecordSettingFragment extends BaseFragment {
 					JSONObject message = new JSONObject();
 					message.put("url", Model.STORAGE_HOST + Model.STORAGE_IMAGE + imageName);
 					
-					UrlBuilder urlBuilder = new UrlBuilder();
-					String url = urlBuilder.s("images").toString();
-					OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
-							Method.POST, url, message,
-							new OnVolleyWeakResponse<RecordSettingFragment, JSONObject>(RecordSettingFragment.this, "onUploadSuccess", Image.class),
-							new OnVolleyWeakError<RecordSettingFragment>(RecordSettingFragment.this, "onUploadError")
+					JSONObjectRequest request = new JSONObjectRequest(
+							"images", message,
+							new JSONObjectSuccessListener(RecordSettingFragment.this, "onUploadSuccess", Image.class),
+							new JSONErrorListener(RecordSettingFragment.this, "onUploadError")
 					);
-					
-					RequestQueue queue = ((App) getActivity().getApplicationContext()).getQueueInstance();
-					queue.add(request);
+					addRequest(request);
 				} catch (JSONException e1) {
 					onUploadError();
 				}
@@ -419,7 +412,7 @@ public class RecordSettingFragment extends BaseFragment {
 				
 			case R.id.btn_other_images:
 				if (dialog != null) {
-					dialog.show();
+					dialog.show(getChildFragmentManager(), "");
 				}
 				break;
 				

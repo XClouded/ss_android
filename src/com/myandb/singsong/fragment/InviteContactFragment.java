@@ -10,42 +10,35 @@ import com.myandb.singsong.widget.SearchView;
 import com.myandb.singsong.widget.SearchView.OnTextChangedListener;
 import com.myandb.singsong.widget.SearchView.OnTextEmptyListener;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.database.Cursor;
+import android.os.Bundle;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
-import android.view.LayoutInflater;
-import android.view.View;
 
 public class InviteContactFragment extends ListFragment {
 	
-	private ContactAdapter adapter;
-	private SearchView searchView;
-
-	@SuppressLint("InflateParams")
 	@Override
-	protected View inflateFixedHeaderView(LayoutInflater inflater) {
-		View view = inflater.inflate(R.layout.search_view, null);
-		if (view instanceof SearchView) {
-			searchView = (SearchView) view;
-		}
-		return view;
+	protected int getFixedHeaderViewResId() {
+		return R.layout.search_view;
 	}
 
 	@Override
 	protected void initialize(Activity activity) {
 		super.initialize(activity);
-		adapter = new ContactAdapter();
-		setAdapter(adapter);
+		setAdapter(new ContactAdapter());
 	}
 
 	@Override
-	protected void setupViews() {
-		super.setupViews();
-		searchView.setSearchHint(getString(R.string.hint_search_user));
-		searchView.setOnTextChangedListener(textChangedListener);
-		searchView.setOnTextEmptyListener(textEmptyListner);
+	protected void setupViews(Bundle savedInstanceState) {
+		super.setupViews(savedInstanceState);
+		
+		if (getFixedHeaderView() instanceof SearchView) {
+			SearchView searchView = (SearchView) getFixedHeaderView();
+			searchView.setSearchHint(getString(R.string.hint_search_user));
+			searchView.setOnTextChangedListener(textChangedListener);
+			searchView.setOnTextEmptyListener(textEmptyListner);
+		}
 	}
 	
 	private OnTextChangedListener textChangedListener = new OnTextChangedListener() {
@@ -70,8 +63,8 @@ public class InviteContactFragment extends ListFragment {
 	}
 	
 	private void updateAdapter(List<Contact> contacts) {
-		adapter.clear();
-		adapter.addAll(contacts);
+		((ContactAdapter) getAdapter()).clear();
+		((ContactAdapter) getAdapter()).addAll(contacts);
 		setListShown(true);
 	}
 	

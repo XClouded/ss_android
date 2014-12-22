@@ -2,21 +2,30 @@ package com.myandb.singsong;
 
 import android.net.Uri;
 
-public class TStore implements Store {
+public class TStore extends StoreBase {
+	
+	private String id;
 
-	@Override
-	public Uri getDetailViewUri(String packageName) {
-		final String scheme = "tstore";
-		final String authority = "PRODUCT_VIEW";
-		final String id = "10000429";
-		final String ageGroup = "0";
-		
-		Uri.Builder builder = new Uri.Builder();
-		return builder.scheme(scheme).authority(authority).appendPath(id).appendPath(ageGroup).build();
+	public TStore(String id) {
+		super(id);
 	}
 
 	@Override
-	public String getPackageName() {
+	public Uri getDetailViewUri() {
+		final String scheme = "tstore";
+		final String authority = "PRODUCT_VIEW";
+		final String ageGroup = "0";
+		
+		Uri.Builder builder = new Uri.Builder();
+		return builder.scheme(scheme)
+				.authority(authority)
+				.appendPath(id)
+				.appendPath(ageGroup)
+				.build();
+	}
+
+	@Override
+	public String getStorePackageName() {
 		return "com.skt.skaf.A000Z00040";
 	}
 	

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <ImageView
+        android:id="@+id/iv_close_liking"
+        android:src="@drawable/ic_x"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:paddingRight="@dimen/margin"
+        style="@style/ImageViewBase" />
+    
+    <TextView
+        android:id="@+id/tv_liking_num"
+        android:textColor="@color/font_white"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:layout_marginLeft="@dimen/margin"
+        android:text="좋아요"
+        style="@style/TextViewBase" />
+    
+    <ImageView
+        android:id="@+id/upper_divider"
+        android:paddingLeft="@dimen/margin"
+        android:paddingRight="@dimen/margin"
+        android:layout_below="@id/tv_liking_num"
+        style="@style/DividerHorizontal" />
+    
+    <ImageView
+        android:id="@+id/lower_divider"
+        android:paddingLeft="@dimen/margin"
+        android:paddingRight="@dimen/margin"
+        android:layout_above="@id/iv_close_liking"
+        android:layout_marginBottom="@dimen/margin"
+        style="@style/DividerHorizontal" />
+    
+    <GridView
+        android:id="@+id/gv_liking"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/lower_divider"
+        android:layout_below="@id/upper_divider"
+        android:numColumns="3"
+        android:stretchMode="columnWidth"
+        android:horizontalSpacing="@dimen/margin_small"
+        android:verticalSpacing="@dimen/margin_big" />
+
+</RelativeLayout>

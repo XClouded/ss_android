@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@drawable/dialog_container" >
+    android:background="@drawable/container_dialog" >
     
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_marginBottom="@dimen/margin"
             android:text="@string/login_with_facebook"
-            android:background="@drawable/btn_facebook_selector"
+            android:background="@drawable/button_facebook_selector"
             style="@style/ButtonBase" />
         
         <ImageView
@@ -70,7 +70,7 @@
 		    android:layout_alignParentRight="true"
 		    android:layout_marginLeft="@dimen/margin"
 		    android:text="@string/to_join"
-		    android:background="@drawable/btn_primary_selector"
+		    android:background="@drawable/button_primary_selector"
 		    style="@style/ButtonBase" />
         
         <Button
@@ -78,7 +78,7 @@
 		    android:layout_toLeftOf="@id/btn_to_join"
 		    android:layout_marginLeft="@dimen/margin"
 		    android:text="@string/login"
-		    android:background="@drawable/btn_primary_selector"
+		    android:background="@drawable/button_primary_selector"
 		    style="@style/ButtonBase" />
         
         <TextView

@@ -3,24 +3,22 @@ package com.myandb.singsong.dialog;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.android.volley.Request.Method;
-import com.android.volley.RequestQueue;
-import com.myandb.singsong.App;
 import com.myandb.singsong.R;
-import com.myandb.singsong.event.OnVolleyWeakError;
-import com.myandb.singsong.event.OnVolleyWeakResponse;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Song;
 import com.myandb.singsong.model.SongComment;
 import com.myandb.singsong.model.User;
-import com.myandb.singsong.net.OAuthJsonObjectRequest;
-import com.myandb.singsong.net.UrlBuilder;
+import com.myandb.singsong.net.JSONObjectRequest;
+import com.myandb.singsong.net.JSONErrorListener;
+import com.myandb.singsong.net.JSONObjectSuccessListener;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.widget.SlidingPlayerLayout;
 
@@ -33,42 +31,25 @@ public class WriteCommentDialog extends BaseDialog {
 	private Song song;
 	private SlidingPlayerLayout layout;
 
-	public WriteCommentDialog(SlidingPlayerLayout layout) {
-		super(layout.getContext(), android.R.style.Theme_Translucent_NoTitleBar);
-		this.layout = layout;
-	}
-
 	@Override
-	protected void initialize() {
+	protected void initialize(Activity activity) {
 		user = Authenticator.getUser();
 	}
 
 	@Override
-	protected int getResourceId() {
-		return R.layout.dialog_write_comment;
+	protected void onViewInflated(View view, LayoutInflater inflater) {
+		etComment = (EditText) view.findViewById(R.id.et_comment);
 	}
 
 	@Override
-	protected void onViewInflated() {
-		ivWriterPhoto = (ImageView)findViewById(R.id.iv_writer_photo);
-		etComment = (EditText)findViewById(R.id.et_comment);
-		btnSubmit = (Button)findViewById(R.id.btn_submit);
+	protected int getResourceId() {
+		return 0;
 	}
 
 	@Override
 	protected void setupViews() {
 		ImageHelper.displayPhoto(user, ivWriterPhoto);
 		btnSubmit.setOnClickListener(submitClickListener);
-	}
-	
-	public void setSong(Song song) {
-		this.song = song;
-	}
-
-	@Override
-	public void dismiss() {
-		super.dismiss();
-//		parent.closeEditText(etComment);
 	}
 
 	private View.OnClickListener submitClickListener = new View.OnClickListener() {
@@ -90,20 +71,18 @@ public class WriteCommentDialog extends BaseDialog {
 					e.printStackTrace();
 				}
 				
-				UrlBuilder urlBuilder = new UrlBuilder();
-				String url = urlBuilder.s("songs").s(song.getId()).s("comments").toString();
-				OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
-						Method.POST, url, message,
-						new OnVolleyWeakResponse<WriteCommentDialog, JSONObject>(WriteCommentDialog.this, "onSubmitSuccess", SongComment.class),
-						new OnVolleyWeakError<WriteCommentDialog>(WriteCommentDialog.this, "onSubmitError")
+				JSONObjectRequest request = new JSONObjectRequest(
+						Method.POST,
+						"songs/" + song.getId() + "/comments",
+						message,
+						new JSONObjectSuccessListener(WriteCommentDialog.this, "onSubmitSuccess", SongComment.class),
+						new JSONErrorListener(WriteCommentDialog.this, "onSubmitError")
 				);
 				
-				RequestQueue queue = ((App) getContext().getApplicationContext()).getQueueInstance();
-				queue.add(request);
-				
-				WriteCommentDialog.this.dismiss();
+				addRequest(request);
+				dismiss();
 			} else {
-				Toast.makeText(getContext().getApplicationContext(), getContext().getString(R.string.t_comment_length_policy), Toast.LENGTH_SHORT).show();
+				makeToast(R.string.t_comment_length_policy);
 			}
 		}
 	};

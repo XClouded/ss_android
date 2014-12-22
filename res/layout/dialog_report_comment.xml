@@ -1,65 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res/com.myandb.singsong"
-    android:layout_gravity="top|center_horizontal"
-    android:layout_marginTop="50dp"
-    style="@style/DialogBox" >
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/container_dialog" >
     
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/primary_dark" >
-	    
-	    <TextView
-	        android:layout_width="wrap_content"
-	        android:text="@string/report_comment"
-	        android:gravity="left"
-	        style="@style/TextViewDialogTitle" />
-	    
-	    <ImageView
-	        android:id="@+id/iv_cancel"
-	        android:src="@drawable/ic_x_inverse"
-	        android:layout_alignParentRight="true"
-	        android:layout_centerVertical="true"
-	        style="@style/BaseImageView" />
-        
-    </RelativeLayout>
-    
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/margin_small" >
-        
-        <com.myandb.singsong.widget.RoundedImageView
-            android:id="@+id/iv_reporter_photo"
-            android:layout_marginRight="@dimen/margin_tiny"
-            app:oval="true"
-            style="@style/UserImageView" />
-        
-        <EditText
-            android:id="@+id/et_report_content"
-            android:layout_toRightOf="@id/iv_reporter_photo"
-            android:hint="@string/hint_report_comment"
-            android:gravity="top"
-            style="@style/CommentEditText" />
+        android:paddingLeft="@dimen/margin"
+        android:paddingRight="@dimen/margin"
+        android:orientation="vertical" >
         
         <TextView
-            android:id="@+id/tv_target_comment_content"
-            android:layout_width="match_parent"
-            android:layout_below="@id/et_report_content"
-            android:layout_marginTop="@dimen/margin_small"
-            android:layout_marginLeft="@dimen/margin"
-            android:layout_toRightOf="@id/iv_reporter_photo"
+            android:text="@string/report"
+            style="@style/TextViewTitle" />
+        
+        <ImageView
+        	style="@style/DividerHorizontal" />
+        
+        <TextView
+            android:id="@+id/tv_comment_content"
+            android:paddingTop="@dimen/margin"
+            android:paddingBottom="@dimen/margin"
             style="@style/TextViewHint" />
         
-    </RelativeLayout>
+        <ImageView
+        	style="@style/DividerHorizontal" />
+        
+        <EditText
+	        android:id="@+id/et_report_content"
+	        android:hint="@string/hint_report_comment"
+	        android:inputType="textShortMessage"
+	        android:maxLines="3"
+	        style="@style/BaseEditText" />
+        
+    </LinearLayout>
     
     <ImageView
         style="@style/DividerHorizontal" />
     
-    <Button
-        android:id="@+id/btn_submit"
-        android:text="@string/report"
-        style="@style/ButtonDialog" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin" >
+        
+        <Button
+		    android:id="@+id/btn_report"
+		    android:layout_alignParentRight="true"
+		    android:text="@string/submit"
+		    android:background="@drawable/button_primary_selector"
+		    style="@style/ButtonBase" />
+        
+    </RelativeLayout>
 
 </LinearLayout>

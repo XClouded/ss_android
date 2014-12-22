@@ -103,8 +103,8 @@ public class LinearGridView extends LinearLayout {
 	}
 	
 	private void setChildBackground(View child, int position) {
-		int oddSelector = R.drawable.btn_menu_odd_selector;
-		int evenSelector = R.drawable.btn_menu_even_selector;
+		int oddSelector = R.drawable.row_odd_selector;
+		int evenSelector = R.drawable.row_even_selector;
 		
 		if (isRowEven(position)) {
 			if (isPositionEven(position)) {

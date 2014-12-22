@@ -8,6 +8,7 @@ import com.myandb.singsong.model.User;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -21,13 +22,13 @@ public class MenuAdapter extends HolderAdapter<GlobalMenu, MenuAdapter.MenuHolde
 	}
 
 	@Override
-	public MenuHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		View view = View.inflate(parent.getContext(), R.layout.row_menu, null);
+	public MenuHolder onCreateViewHolder(LayoutInflater inflater, ViewGroup parent, int viewType) {
+		View view = inflater.inflate(R.layout.row_menu, parent, false);
 		return new MenuHolder(view);
 	}
 
 	@Override
-	public void onBindViewHolder(MenuHolder viewHolder, int position) {
+	public void onBindViewHolder(Context context, MenuHolder viewHolder, int position) {
 		final GlobalMenu menu = getItem(position);
 		
 		viewHolder.ivMenuIcon.setImageResource(menu.getIconResId());

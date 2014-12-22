@@ -11,6 +11,7 @@ import com.myandb.singsong.R;
 import com.myandb.singsong.net.UrlBuilder;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,12 +32,10 @@ public class InviteKakaoFragment extends BaseFragment {
 	}
 
 	@Override
-	protected void initialize(Activity activity) {
-		// Nothing to run
-	}
+	protected void initialize(Activity activity) {}
 
 	@Override
-	protected void setupViews() {
+	protected void setupViews(Bundle savedInstanceState) {
 		btnInviteKakao.setOnClickListener(inviteKakaoClickListener);
 	}
 	
@@ -64,8 +63,6 @@ public class InviteKakaoFragment extends BaseFragment {
 	};
 
 	@Override
-	protected void onDataChanged() {
-		// Nothing to run
-	}
+	protected void onDataChanged() {}
 
 }

@@ -1,12 +1,12 @@
 package com.myandb.singsong.adapter;
 
 import com.myandb.singsong.R;
-import com.myandb.singsong.event.Listeners;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Song;
 import com.myandb.singsong.model.User;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -19,26 +19,24 @@ public class ChildrenSongAdapter extends HolderAdapter<Song, ChildrenSongAdapter
 	}
 
 	@Override
-	public SongHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		View view = View.inflate(parent.getContext(), R.layout.row_child_song, null);
+	public SongHolder onCreateViewHolder(LayoutInflater inflater, ViewGroup parent, int viewType) {
+		View view = inflater.inflate(R.layout.row_child_song, parent, false);
 		return new SongHolder(view);
 	}
 
 	@Override
-	public void onBindViewHolder(SongHolder viewHolder, int position) {
-		Song song = getItem(position);
-		User creator = song.getCreator();
-		Context context = viewHolder.view.getContext();
+	public void onBindViewHolder(Context context, SongHolder viewHolder, int position) {
+		final Song song = getItem(position);
+		final User creator = song.getCreator();
 		
 		viewHolder.tvCreatorNickname.setText(creator.getNickname());
 		viewHolder.tvCreatorMessage.setText(song.getCroppedMessage());
 		viewHolder.tvCreatedTime.setText(song.getWorkedCreatedTime(getCurrentDate()));
 		viewHolder.tvLikeNum.setText(song.getWorkedLikeNum());
 		viewHolder.tvCommentNum.setText(song.getWorkedCommentNum());
+		viewHolder.view.setOnClickListener(song.getPlayClickListener());
 		
 		ImageHelper.displayPhoto(creator, viewHolder.ivCreatorPhoto);
-		
-		viewHolder.view.setOnClickListener(Listeners.getPlayClickListener(context, song));
 	}
 	
 	public static final class SongHolder extends ViewHolder {

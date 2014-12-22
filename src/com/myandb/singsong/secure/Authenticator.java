@@ -3,6 +3,7 @@ package com.myandb.singsong.secure;
 import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
+import com.myandb.singsong.model.Profile;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.util.Utility;
 
@@ -25,10 +26,22 @@ public class Authenticator {
 		preferences.edit().clear().commit();
 	}
 	
+	public void update(Profile profile) {
+		if (isLoggedIn()) {
+			User currentUser = getUser();
+			currentUser.setProfile(profile);
+			update(currentUser);
+		}
+	}
+	
 	public void update(User user) {
 		if (isLoggedIn()) {
 			User currentUser = getUser();
 			if (currentUser.getId() == user.getId()) {
+				if (user.getProfile() == null) {
+					Profile profile = currentUser.getProfile();
+					user.setProfile(profile);
+				}
 				Gson gson = Utility.getGsonInstance();
 				preferences.edit().putString(KEY_USER, gson.toJson(user, User.class)).commit();
 			}

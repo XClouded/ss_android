@@ -1,13 +1,13 @@
 package com.myandb.singsong.adapter;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.myandb.singsong.R;
-import com.myandb.singsong.event.Listeners;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Song;
@@ -20,17 +20,16 @@ public class SimpleSongAdapter extends HolderAdapter<Song, SimpleSongAdapter.Son
 	}
 
 	@Override
-	public SongHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		View view = View.inflate(parent.getContext(), R.layout.row_simple_song, null);
+	public SongHolder onCreateViewHolder(LayoutInflater inflater, ViewGroup parent, int viewType) {
+		View view = inflater.inflate(R.layout.row_simple_song, parent, false);
 		return new SongHolder(view);
 	}
 
 	@Override
-	public void onBindViewHolder(SongHolder viewHolder, int position) {
+	public void onBindViewHolder(Context context, SongHolder viewHolder, int position) {
 		final Song thisSong = getItem(position);
 		final User thisUser = thisSong.getCreator();
 		final Music music = thisSong.getMusic();
-		final Context context = viewHolder.view.getContext();
 
 		viewHolder.tvParentUserNickname.setText(thisUser.getNickname());
 		viewHolder.tvParentSongMessage.setText(thisSong.getCroppedMessage());
@@ -42,26 +41,25 @@ public class SimpleSongAdapter extends HolderAdapter<Song, SimpleSongAdapter.Son
 		viewHolder.tvMusicInfo.append(" - ");
 		viewHolder.tvMusicInfo.append(music.getTitle());
 		
+		viewHolder.ivParentUserPhoto.setOnClickListener(thisUser.getProfileClickListener());
+		viewHolder.view.setOnClickListener(thisSong.getPlayClickListener());
+		
 		ImageHelper.displayPhoto(music.getAlbumPhotoUrl(), viewHolder.ivAlbumPhoto);
 		ImageHelper.displayPhoto(thisUser, viewHolder.ivParentUserPhoto);
-		viewHolder.ivParentUserPhoto.setOnClickListener(Listeners.getProfileClickListener(context, thisUser));
 		
 		if (!thisSong.isRoot()) {
-			viewHolder.vPartnerWrapper.setVisibility(View.VISIBLE);
-			
 			final Song parentSong = thisSong.getParentSong();
 			final User parentUser = thisSong.getParentUser();
 			
+			viewHolder.vPartnerWrapper.setVisibility(View.VISIBLE);
 			viewHolder.tvThisUserNickname.setText(parentUser.getNickname());
 			viewHolder.tvThisSongMessage.setText(parentSong.getCroppedMessage());
+			viewHolder.ivThisUserPhoto.setOnClickListener(parentUser.getProfileClickListener());
 			
 			ImageHelper.displayPhoto(parentUser, viewHolder.ivThisUserPhoto);
-			viewHolder.ivThisUserPhoto.setOnClickListener(Listeners.getProfileClickListener(context, parentUser));
 		} else {
 			viewHolder.vPartnerWrapper.setVisibility(View.GONE);
 		}
-		
-		viewHolder.view.setOnClickListener(Listeners.getPlayClickListener(context, thisSong));
 	}
 	
 	public static final class SongHolder extends ViewHolder {

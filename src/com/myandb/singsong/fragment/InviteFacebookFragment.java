@@ -1,56 +1,70 @@
 package com.myandb.singsong.fragment;
 
-import java.util.List;
+import com.facebook.widget.FacebookDialog.MessageDialogBuilder;
+import com.myandb.singsong.GoogleStore;
+import com.myandb.singsong.R;
+import com.myandb.singsong.Store;
+import com.myandb.singsong.net.UrlBuilder;
 
-import org.json.JSONObject;
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 
-import com.facebook.HttpMethod;
-import com.facebook.Request;
-import com.facebook.Response;
-import com.facebook.Session;
-import com.facebook.model.GraphObject;
-import com.google.gson.Gson;
-import com.myandb.singsong.adapter.TaggableFriendAdapter;
-import com.myandb.singsong.model.TaggableFriend;
-import com.myandb.singsong.model.TaggableFriendsWrapper;
-import com.myandb.singsong.util.Utility;
-
-public class InviteFacebookFragment extends ListFragment {
+public class InviteFacebookFragment extends BaseFragment {
+	
+	private Button btnInviteFacebook;
 
 	@Override
-	protected void onDataChanged() {
-		Session session = Session.getActiveSession();
-		if (session != null && session.isOpened()) {
-			Request request = new Request(session, "/me/taggable_friends", null, HttpMethod.GET, getTaggableFriendsCallback);
-			request.executeAsync();
-		}
+	protected int getResourceId() {
+		return R.layout.fragment_invite_facebook;
+	}
+
+	@Override
+	protected void onViewInflated(View view, LayoutInflater inflater) {
+		btnInviteFacebook = (Button) view.findViewById(R.id.btn_invite_facebook);
+	}
+
+	@Override
+	protected void initialize(Activity activity) {}
+
+	@Override
+	protected void setupViews(Bundle savedInstanceState) {
+		btnInviteFacebook.setOnClickListener(inviteFacebookClickListener);
 	}
 	
-	private Request.Callback getTaggableFriendsCallback = new Request.Callback() {
+	private OnClickListener inviteFacebookClickListener = new OnClickListener() {
 		
 		@Override
-		public void onCompleted(Response response) {
-			TaggableFriendsWrapper wrapper = convertResponseToWrapper(response);
-			if (wrapper != null) {
-				List<TaggableFriend> friends = wrapper.getData();
-				TaggableFriendAdapter adapter = new TaggableFriendAdapter();
-				adapter.addAll(friends);
-				setAdapter(adapter);
-				setListShown(true);
+		public void onClick(View v) {
+			MessageDialogBuilder builder = new MessageDialogBuilder(getActivity());
+			if (builder.canPresent()) {
+				showFacebookMessageDialog(builder);
+			} else {
+				moveToFacebookMessengerOnGoogleStore();
 			}
 		}
 	};
 	
-	private TaggableFriendsWrapper convertResponseToWrapper(Response response) {
-		GraphObject graphObject = response.getGraphObject();
-		if (graphObject != null) {
-			JSONObject jsonObject = graphObject.getInnerJSONObject();
-			String taggableFriendsJson = jsonObject.toString();
-			Gson gson = Utility.getGsonInstance();
-			return gson.fromJson(taggableFriendsJson, TaggableFriendsWrapper.class);
-		} else {
-			return null;
-		}
+	private void showFacebookMessageDialog(MessageDialogBuilder builder) {
+		builder.setLink(new UrlBuilder().toString())
+			.setName(getString(R.string.app_name))
+			.setCaption(getString(R.string.app_name))
+			.setPicture(new UrlBuilder().s("img").s("actionbar_logo.png").toString())
+			.setDescription("노래도 부르고 짝도 찾는 콜라보 노래방과 함께 해보세요.")
+			.setFragment(this)
+			.build()
+			.present();
 	}
+	
+	private void moveToFacebookMessengerOnGoogleStore() {
+		Store store = new GoogleStore("com.facebook.orca");
+		store.move(getActivity());
+	}
+
+	@Override
+	protected void onDataChanged() {}
 
 }

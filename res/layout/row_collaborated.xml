@@ -10,7 +10,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/box_song" >
+        android:background="@drawable/card_song" >
         
         <LinearLayout
             android:id="@+id/wrapper"
@@ -25,7 +25,7 @@
 	            android:layout_weight="1"
 	            app:corner_radius="@dimen/corner_radius"
 	            app:corner_top_left="true"
-	            style="@style/BaseImageView" />
+	            style="@style/ImageViewBase" />
 	        
 	        <com.myandb.singsong.widget.RoundedImageView
 	            android:id="@+id/iv_this_song_image"
@@ -34,7 +34,7 @@
 	            android:layout_weight="1"
 	            app:corner_radius="@dimen/corner_radius"
 	            app:corner_top_right="true"
-	            style="@style/BaseImageView" />
+	            style="@style/ImageViewBase" />
             
         </LinearLayout>
          
@@ -66,39 +66,25 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical" >
-	        	
-		        <FrameLayout
-					android:id="@+id/parent_user_photo"
-					android:layout_width="@dimen/photo_wrapper"
-					android:layout_height="@dimen/photo_wrapper"
+			      
+				<com.myandb.singsong.widget.RoundedImageView
+				    android:id="@+id/iv_parent_user_photo"
 					android:layout_gravity="center"
-					android:padding="@dimen/border_width"
-					android:background="@drawable/circle_white" >
-				      
-					<com.myandb.singsong.widget.RoundedImageView
-					    android:id="@+id/iv_parent_user_photo"
-					    app:oval="true"
-					    app:border_width="0.1dp"
-					    app:border_color="@color/divider"
-					    style="@style/UserImageView" />
-				      
-		      	</FrameLayout>
+					android:layout_marginBottom="@dimen/margin_small"
+				    style="@style/ImageViewUserWithBorder" />
 		         
 		        <TextView
 		            android:id="@+id/tv_parent_user_nickname"
-		            android:layout_gravity="center"
 		            android:textStyle="bold"
-		            style="@style/TextViewBase" />
+		            android:layout_marginBottom="@dimen/margin_small"
+		            style="@style/TextViewEllipsize" />
 		         
 		        <TextView
 		            android:id="@+id/tv_parent_song_message"
-		            android:layout_marginLeft="@dimen/margin_tiny"
-		            android:layout_marginRight="@dimen/margin_tiny"
 		            android:layout_marginBottom="@dimen/margin_small"
-		            android:layout_gravity="center"
-		            android:gravity="center"
 		            android:textColor="@color/font_hint"
-		            style="@style/TextViewBase" />
+		            android:maxLines="3"
+		            style="@style/TextViewEllipsize" />
                 
             </LinearLayout>
             
@@ -109,38 +95,24 @@
                 android:layout_weight="1"
                 android:orientation="vertical" >
 	        	
-		        <FrameLayout
-					android:id="@+id/this_user_photo"
-					android:layout_width="@dimen/photo_wrapper"
-					android:layout_height="@dimen/photo_wrapper"
+		        <com.myandb.singsong.widget.RoundedImageView
+				    android:id="@+id/iv_this_user_photo"
 					android:layout_gravity="center"
-					android:padding="@dimen/border_width"
-					android:background="@drawable/circle_white" >
-				      
-					<com.myandb.singsong.widget.RoundedImageView
-					    android:id="@+id/iv_this_user_photo"
-					    app:oval="true"
-					    app:border_width="0.1dp"
-					    app:border_color="@color/divider"
-					    style="@style/UserImageView" />
-				      
-		      	</FrameLayout>
+					android:layout_marginBottom="@dimen/margin_small"
+				    style="@style/ImageViewUserWithBorder" />
 		         
 		        <TextView
 		            android:id="@+id/tv_this_user_nickname"
-		            android:layout_gravity="center"
 		            android:textStyle="bold"
-		            style="@style/TextViewBase" />
+		            android:layout_marginBottom="@dimen/margin_small"
+		            style="@style/TextViewEllipsize" />
 		         
 		        <TextView
 		            android:id="@+id/tv_this_song_message"
-		            android:layout_marginLeft="@dimen/margin_tiny"
-		            android:layout_marginRight="@dimen/margin_tiny"
 		            android:layout_marginBottom="@dimen/margin_small"
-		            android:layout_gravity="center"
-		            android:gravity="center"
+		            android:maxLines="3"
 		            android:textColor="@color/font_hint"
-		            style="@style/TextViewBase" />
+		            style="@style/TextViewEllipsize" />
                 
             </LinearLayout>
             

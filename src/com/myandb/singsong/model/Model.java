@@ -3,6 +3,7 @@ package com.myandb.singsong.model;
 import java.util.Date;
 
 import com.myandb.singsong.util.StringFormatter;
+import com.myandb.singsong.util.Utility;
 
 public abstract class Model {
 	
@@ -32,11 +33,11 @@ public abstract class Model {
 		return StringFormatter.getTimeLag(currentDate, created_at);
 	}
 	
-	protected final String toString(String string) {
+	protected final String safeString(String string) {
 		return string != null ? string : "";
 	}
 	
-	protected final String toString(int num) {
+	protected final String safeString(int num) {
 		String string = "";
 		
 		if (num < 1000) {
@@ -54,6 +55,11 @@ public abstract class Model {
 		}
 		
 		return string;
+	}
+
+	@Override
+	public String toString() {
+		return Utility.getGsonInstance().toJson(this, getClass());
 	}
 
 }

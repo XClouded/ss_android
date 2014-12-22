@@ -3,6 +3,7 @@ package com.myandb.singsong.net;
 import com.myandb.singsong.App;
 
 import android.net.Uri;
+import android.os.Bundle;
 
 public class UrlBuilder {
 
@@ -21,12 +22,12 @@ public class UrlBuilder {
 	}
 	
 	public UrlBuilder s(String segment) {
-		builder.appendPath(segment);
+		builder.appendEncodedPath(segment);
 		return this;
 	}
 	
 	public UrlBuilder s(int segment) {
-		builder.appendPath(String.valueOf(segment));
+		s(String.valueOf(segment));
 		return this;
 	}
 	
@@ -37,6 +38,13 @@ public class UrlBuilder {
 	
 	public UrlBuilder p(String key, int value) {
 		p(key, String.valueOf(value));
+		return this;
+	}
+	
+	public UrlBuilder p(Bundle map) {
+		for (String key : map.keySet()) {
+			p(key, map.getString(key));
+		}
 		return this;
 	}
 	

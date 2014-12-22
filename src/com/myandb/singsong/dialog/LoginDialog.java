@@ -1,55 +1,42 @@
 package com.myandb.singsong.dialog;
 
-import java.io.File;
-import java.lang.ref.WeakReference;
 import java.util.Arrays;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Request.Method;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.facebook.Request;
-import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionLoginBehavior;
 import com.facebook.SessionState;
-import com.facebook.Request.GraphUserCallback;
 import com.facebook.Session.OpenRequest;
 import com.facebook.Session.StatusCallback;
-import com.facebook.model.GraphUser;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.RootActivity;
-import com.myandb.singsong.event.OnCompleteWeakListener;
-import com.myandb.singsong.event.OnVolleyWeakError;
-import com.myandb.singsong.event.OnVolleyWeakResponse;
 import com.myandb.singsong.model.User;
-import com.myandb.singsong.net.DownloadManager;
+import com.myandb.singsong.net.JSONObjectRequest;
+import com.myandb.singsong.net.JSONErrorListener;
+import com.myandb.singsong.net.JSONObjectSuccessListener;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.secure.Encryption;
 import com.myandb.singsong.util.Utility;
 
-import android.app.ProgressDialog;
-import android.content.Context;
+import android.app.Activity;
+import android.content.Intent;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class LoginDialog extends BaseDialog {
-	
-	public static final String FILE_USER_PHOTO = "user_photo";
 	
 	private EditText etUsername;
 	private EditText etPassword;
@@ -57,14 +44,26 @@ public class LoginDialog extends BaseDialog {
 	private Button btnToJoin;
 	private Button btnFacebook;
 	private TextView tvFindPassword;
-	private String facebookToken;
 	private RootActivity activity;
-	private ProgressDialog progressDialog;
 	private JoinDialog joinDialog;
 
-	public LoginDialog(Context context) {
-		super(context);
-		this.activity = (RootActivity) context;
+	@Override
+	protected void initialize(Activity activity) {
+		setProgressDialogMessage("로그인 중입니다.");
+		
+		if (activity instanceof RootActivity) {
+			this.activity = (RootActivity) activity;
+		}
+	}
+
+	@Override
+	protected void onViewInflated(View view, LayoutInflater inflater) {
+		btnLogin = (Button) view.findViewById(R.id.btn_login);
+		btnToJoin = (Button) view.findViewById(R.id.btn_to_join);
+		btnFacebook = (Button) view.findViewById(R.id.btn_facebook);
+		etUsername = (EditText) view.findViewById(R.id.et_user_username);
+		etPassword = (EditText) view.findViewById(R.id.et_user_password);
+		tvFindPassword = (TextView) view.findViewById(R.id.tv_find_password);
 	}
 
 	@Override
@@ -76,23 +75,8 @@ public class LoginDialog extends BaseDialog {
 	}
 
 	@Override
-	protected void initialize() {
-		// Nothing to run
-	}
-
-	@Override
 	protected int getResourceId() {
 		return R.layout.dialog_login;
-	}
-
-	@Override
-	protected void onViewInflated() {
-		btnLogin = (Button) findViewById(R.id.btn_login);
-		btnToJoin = (Button) findViewById(R.id.btn_to_join);
-		btnFacebook = (Button) findViewById(R.id.btn_facebook);
-		etUsername = (EditText) findViewById(R.id.et_user_username);
-		etPassword = (EditText) findViewById(R.id.et_user_password);
-		tvFindPassword = (TextView) findViewById(R.id.tv_find_password);
 	}
 
 	@Override
@@ -112,25 +96,38 @@ public class LoginDialog extends BaseDialog {
 		return Html.fromHtml(findHtml);
 	}
 	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		Session session = Session.getActiveSession();
+		if (session != null) {
+			session.onActivityResult(getActivity(), requestCode, resultCode, data);
+		}
+	}
+
 	private View.OnClickListener facebookLoginClickListener = new View.OnClickListener() {
 		
 		@Override
 		public void onClick(View v) {
-			OpenRequest request = new OpenRequest(activity);
-			request.setPermissions(Arrays.asList("email", "user_friends"));
-			request.setLoginBehavior(SessionLoginBehavior.SSO_WITH_FALLBACK);
-			
-			Session session = Session.getActiveSession();
-			if (session != null) {
-				session.close();
-			}
-			session = new Session(getContext().getApplicationContext());
-			session.addCallback(statusCallback);
-			session.openForRead(request);
-			Session.setActiveSession(session);
+			openFacebookSession();
 		}
 		
 	};
+	
+	private void openFacebookSession() {
+		OpenRequest request = new OpenRequest(this);
+		request.setPermissions(Arrays.asList("email", "user_friends"));
+		request.setLoginBehavior(SessionLoginBehavior.SSO_WITH_FALLBACK);
+		
+		Session session = Session.getActiveSession();
+		if (session != null) {
+			session.close();
+		}
+		session = new Session(getActivity().getApplicationContext());
+		session.addCallback(statusCallback);
+		session.openForRead(request);
+		Session.setActiveSession(session);
+	}
 	
 	private Session.StatusCallback statusCallback = new StatusCallback() {
 		
@@ -138,31 +135,10 @@ public class LoginDialog extends BaseDialog {
 		public void call(Session session, SessionState state, Exception exception) {
 			if (state.isOpened()) {
 				showProgressDialog();
-				
-				Request.newMeRequest(session, new GetUserCallback(LoginDialog.this)).executeAsync();
-				facebookToken = session.getAccessToken();
+				loginByFacebook(session.getAccessToken());
 			}
 		}
 	};
-	
-	private static class GetUserCallback implements GraphUserCallback {
-		
-		private WeakReference<LoginDialog> weakReference;
-		
-		public GetUserCallback(LoginDialog reference) {
-			weakReference = new WeakReference<LoginDialog>(reference);
-		}
-
-		@Override
-		public void onCompleted(GraphUser user, Response response) { 
-			LoginDialog reference = weakReference.get();
-			reference.loginByFacebook(user, reference.getFacebookToken());
-		}
-	}
-	
-	public String getFacebookToken() {
-		return facebookToken;
-	}
 	
 	private View.OnClickListener toJoinClickListener = new View.OnClickListener() {
 		
@@ -174,9 +150,9 @@ public class LoginDialog extends BaseDialog {
 	
 	private void showJoinDialog() {
 		if (joinDialog == null) {
-			joinDialog = new JoinDialog(activity);
+			joinDialog = new JoinDialog();
 		}
-		joinDialog.show();
+		joinDialog.show(getChildFragmentManager(), "");
 	}
 
 	private View.OnClickListener loginClickListener = new View.OnClickListener() {
@@ -193,12 +169,10 @@ public class LoginDialog extends BaseDialog {
 	
 	private void loginByEmail(String username, String password) {
 		try {
-			JSONObject message = new JSONObject();
 			Encryption encryption = new Encryption();
-			
+			JSONObject message = new JSONObject();
 			message.put("username", username);
 			message.put("password", encryption.getSha512Convert(password));
-			
 			requestLogin(message);
 		} catch (JSONException e) {
 			onLoginError();
@@ -207,22 +181,12 @@ public class LoginDialog extends BaseDialog {
 		}
 	}
 	
-	private void loginByFacebook(GraphUser user, String token) {
+	private void loginByFacebook(String token) {
 		try {
-			JSONObject message = new JSONObject();
 			Encryption encryption = new Encryption();
-			
+			JSONObject message = new JSONObject();
 			message.put("facebook_token", token);
-			message.put("facebook_id", user.getId());
-			message.put("facebook_name", user.getName());
-			message.put("facebook_photo", "https://graph.facebook.com/" + user.getId() + "/picture?type=large");
-			message.put("device_id", encryption.getDeviceId(getContext()));
-			
-			Object email = user.asMap().get("email");
-			if (email != null) {
-				message.put("facebook_email", email.toString());
-			}
-			
+			message.put("device_id", encryption.getDeviceId(getActivity()));
 			requestLogin(message);		
 		} catch (JSONException e) {
 			onLoginError();
@@ -232,35 +196,12 @@ public class LoginDialog extends BaseDialog {
 	}
 	
 	private void requestLogin(JSONObject message) {
-		UrlBuilder urlBuilder = new UrlBuilder();
-		JsonObjectRequest request = new JsonObjectRequest(
-				Method.POST, urlBuilder.s("token").toString(), message,
-				new OnVolleyWeakResponse<LoginDialog, JSONObject>(this, "onLoginSuccess"),
-				new OnVolleyWeakError<LoginDialog>(this, "onLoginError")
+		JSONObjectRequest request = new JSONObjectRequest(
+				"token", message,
+				new JSONObjectSuccessListener(this, "onLoginSuccess"),
+				new JSONErrorListener(this, "onLoginError")
 		);
-		
-		RequestQueue queue = ((App) getContext().getApplicationContext()).getQueueInstance();
-		queue.add(request);
-	}
-	
-	private void showProgressDialog() {
-		if (progressDialog == null) {
-			progressDialog = new ProgressDialog(getContext());
-			progressDialog.setIndeterminate(true);
-			progressDialog.setCanceledOnTouchOutside(false);
-			progressDialog.setCancelable(false);
-			progressDialog.setMessage("로그인 중입니다.");
-		}
-		
-		if (!progressDialog.isShowing()) {
-			progressDialog.show();
-		}
-	}
-	
-	private void dismissProgressDialog() {
-		if (progressDialog != null && progressDialog.isShowing()) {
-			progressDialog.dismiss();
-		}
+		addRequest(request);
 	}
 	
 	public void onLoginSuccess(JSONObject response) {
@@ -268,13 +209,7 @@ public class LoginDialog extends BaseDialog {
 			User user = extractUserFromResponse(response);
 			String token = extractTokenFromResponse(response);
 			saveUserOnLocal(user, token);
-			
-			if (user.hasPhoto()) {
-				downloadUserPhoto(user.getPhotoUrl());
-			} else {
-				deleteLocalUserPhoto();
-				onLoginComplete();
-			}
+			onLoginComplete();
 		} catch (JSONException e) {
 			onLoginError();
 		} catch (JsonSyntaxException e) {
@@ -298,26 +233,6 @@ public class LoginDialog extends BaseDialog {
 	private void removeUserOnLocal() {
 		new Authenticator().logout();
 	}
-	
-	private void downloadUserPhoto(String photoUrl) {
-		File file = getUserPhotoFile();
-		DownloadManager networkFile = new DownloadManager(); 
-		networkFile.start(
-				photoUrl, file, 
-				new OnCompleteWeakListener<LoginDialog>(this, "onLoginComplete")
-		);
-	}
-	
-	private void deleteLocalUserPhoto() {
-		File file = getUserPhotoFile();
-		if (file.exists()) {
-			file.delete();
-		}
-	}
-	
-	private File getUserPhotoFile() {
-		return new File(getContext().getFilesDir(), FILE_USER_PHOTO);
-	}
 
 	public void onLoginComplete() {
 		dismissProgressDialog();
@@ -325,9 +240,9 @@ public class LoginDialog extends BaseDialog {
 	}
 	
 	public void onLoginError() {
-		Toast.makeText(getContext(), getContext().getString(R.string.t_login_failed), Toast.LENGTH_SHORT).show();
-		removeUserOnLocal();
 		dismissProgressDialog();
+		makeToast(R.string.t_login_failed);
+		removeUserOnLocal();
 	}
 	
 	private void clearTextFromAllEditText() {
@@ -345,7 +260,6 @@ public class LoginDialog extends BaseDialog {
 	public void dismiss() {
 		super.dismiss();
 		clearTextFromAllEditText();
-		dismissProgressDialog();
 		dismissJoinDialog();
 	}
 

@@ -10,13 +10,20 @@ import com.myandb.singsong.model.User;
 import com.nostra13.universalimageloader.cache.disc.DiscCacheAware;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.DiscCacheUtil;
+import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.assist.MemoryCacheUtil;
 
 public class ImageHelper {
 	
+	private static final int TIME_DIFFERENCE_FROM_SERVER = 10 * 60 * 1000;
+	
 	private ImageHelper() {}
 	
 	public static void displayPhoto(User user, ImageView imageView) {
+		displayPhoto(user, imageView, null);
+	}
+	
+	public static void displayPhoto(User user, ImageView imageView, ImageLoadingListener listener) {
 		ImageLoader imageLoader = ImageLoader.getInstance();
 		
 		if (user != null && user.hasPhoto()) {
@@ -26,7 +33,7 @@ public class ImageHelper {
 			
 			if (cached != null && cached.exists()) {
 				Date updatedAt = user.getPhotoUpdatedAt();
-				if (updatedAt != null && updatedAt.getTime() > cached.lastModified()) {
+				if (updatedAt != null && updatedAt.getTime() + TIME_DIFFERENCE_FROM_SERVER > cached.lastModified()) {
 					DiscCacheUtil.removeFromCache(url, discCache);
 					
 					try {
@@ -37,7 +44,11 @@ public class ImageHelper {
 				}
 			}
 			
-			imageLoader.displayImage(url, imageView);;
+			if (listener == null) {
+				imageLoader.displayImage(url, imageView);;
+			} else {
+				imageLoader.displayImage(url, imageView, listener);
+			}
 		} else {
 			imageView.setImageResource(R.drawable.user_default);
 		}

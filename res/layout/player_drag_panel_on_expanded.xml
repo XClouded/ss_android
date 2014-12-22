@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+            
+	<ImageView
+	    android:id="@+id/iv_collapse_drag_panel"
+	    android:layout_width="@dimen/player_drag_panel_icon_min_width"
+	    android:layout_height="@dimen/player_drag_panel_icon_min_width"
+	    android:src="@drawable/ic_arrow_down"
+	    android:layout_centerVertical="true"
+	    android:layout_marginRight="@dimen/margin"
+	    style="@style/ImageViewBase" />
+	
+	<ImageView
+	    android:id="@+id/iv_menu"
+	    android:src="@drawable/ic_overflow"
+	    android:layout_width="@dimen/player_drag_panel_icon_min_width"
+	    android:layout_height="@dimen/player_drag_panel_icon_min_width"
+	    android:layout_centerVertical="true"
+	    android:layout_marginLeft="@dimen/margin"
+	    android:layout_alignParentRight="true"
+	    style="@style/ImageViewBase" />
+	
+	<TextView
+	    android:id="@+id/tv_singer_name_on_expanded"
+	    android:layout_width="match_parent"
+	    android:layout_toRightOf="@id/iv_collapse_drag_panel"
+	    android:layout_toLeftOf="@id/iv_menu"
+	    android:layout_marginTop="@dimen/margin_small"
+	    android:layout_alignTop="@id/iv_collapse_drag_panel"
+	    android:gravity="center"
+	    android:text="asdf"
+	    android:textColor="@color/font_white"
+	    style="@style/TextViewHint" />
+	
+	<TextView
+	    android:id="@+id/tv_music_title_on_expanded"
+	    android:layout_width="match_parent"
+	    android:layout_toRightOf="@id/iv_collapse_drag_panel"
+	    android:layout_toLeftOf="@id/iv_menu"
+	    android:layout_below="@id/tv_singer_name_on_expanded"
+	    android:layout_marginTop="@dimen/margin_tiny"
+	    android:gravity="center"
+	    android:textSize="@dimen/text_bigger"
+	    android:textColor="@android:color/white"
+	    android:textStyle="bold"
+	    android:text="asdf"
+	    style="@style/TextViewMarquee" />
+            
+</RelativeLayout>

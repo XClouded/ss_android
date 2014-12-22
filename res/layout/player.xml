@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <ImageView
+        android:id="@+id/iv_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        style="@style/ImageViewBase" />
+    
+    <ImageView
+        android:id="@+id/iv_background_gradient"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/mask_player" />
+    
+    <ImageView
+        android:id="@+id/iv_background_mask"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@color/black" />
+    
+    <FrameLayout
+        android:id="@+id/layout_drag_panel"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/player_drag_panel_height"
+        android:paddingLeft="@dimen/margin"
+        android:paddingRight="@dimen/margin" >
+        
+        <include
+            android:id="@+id/layout_player_drag_panel_on_collapsed"
+            layout="@layout/player_drag_panel_on_collapsed" />
+        
+        <include
+            android:id="@+id/layout_player_drag_panel_on_expanded"
+            layout="@layout/player_drag_panel_on_expanded" />
+        
+    </FrameLayout>
+    
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/margin_bigger"
+        android:paddingBottom="@dimen/margin_bigger"
+        android:layout_below="@id/layout_drag_panel" >
+        
+        <include
+            android:id="@+id/layout_player_default"
+            layout="@layout/player_default" />
+        
+        <include
+            android:id="@+id/layout_player_comment"
+            layout="@layout/player_comment" /> 
+            
+        <include
+            android:id="@+id/layout_player_liking"
+            layout="@layout/player_liking" />
+        
+    </FrameLayout>
+
+</RelativeLayout>

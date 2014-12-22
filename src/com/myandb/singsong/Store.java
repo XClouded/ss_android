@@ -1,11 +1,11 @@
 package com.myandb.singsong;
 
-import android.net.Uri;
+import android.app.Activity;
 
 public interface Store {
 	
-	public Uri getDetailViewUri(String packageName);
+	public String getStorePackageName();
 	
-	public String getPackageName();
+	public void move(Activity activity);
 
 }

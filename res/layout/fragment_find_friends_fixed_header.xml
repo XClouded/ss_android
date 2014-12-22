@@ -14,34 +14,20 @@
         style="@style/ButtonLikeEditText" />
     
     <Button
-        android:id="@+id/btn_invite_friends"
+        android:id="@+id/btn_facebook_friends"
         android:layout_width="match_parent"
+        android:text="페이스북 친구 추가"
+        android:background="@drawable/button_facebook_selector"
         android:layout_marginBottom="@dimen/margin_big"
-        android:text="@string/invite_friends"
-        android:textColor="@color/font_default"
-        android:background="@drawable/box_selector"
         style="@style/ButtonBase" />
     
-    <Button
-        android:id="@+id/btn_connect_facebook"
-        android:layout_width="match_parent"
-        android:text="페이스북 연동하기"
-        android:background="@drawable/btn_facebook_selector"
-        style="@style/ButtonBase" />
-    
-    <LinearLayout
-        android:id="@+id/v_facebook_header_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
-        
-	    <TextView
-	        android:text="페이스북 친구 추가"
-	        style="@style/TextViewTitle" />
-        
-	    <ImageView
-	        style="@style/DividerHorizontal" />
-        
-    </LinearLayout>
+       
+    <TextView
+        android:text="팔로우 할 만한 사용자"
+        android:paddingBottom="@dimen/margin_small"
+        style="@style/TextViewTitle" />
+       
+    <ImageView
+        style="@style/DividerHorizontal" />
 
 </LinearLayout>

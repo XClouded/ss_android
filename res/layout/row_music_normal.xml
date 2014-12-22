@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/row_selector" >
+    
+    <com.myandb.singsong.widget.RoundedImageView
+        android:id="@+id/iv_album_photo"
+        android:layout_width="@dimen/photo"
+        android:layout_height="@dimen/photo"
+        android:layout_marginRight="@dimen/margin_small"
+        style="@style/ImageViewSquare" />
+    
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="60dp"
+        android:layout_height="@dimen/photo"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="@dimen/margin" >
+	    
+	    <ImageView
+	        android:id="@+id/icon_mixed"
+	        android:layout_alignParentLeft="true"
+	        android:layout_centerVertical="true"
+	        android:src="@drawable/ic_collabo"
+	        style="@style/IconImageView" />
+        
+        <TextView
+	        android:id="@+id/tv_sing_num"
+	        android:layout_centerVertical="true"
+	        android:layout_toRightOf="@id/icon_mixed"
+	        style="@style/TextViewIconLabel" />
+        
+    </RelativeLayout>
+    
+    <TextView
+        android:id="@+id/tv_singer_name"
+        android:layout_toLeftOf="@id/header"
+        android:layout_toRightOf="@id/iv_album_photo"
+        android:layout_marginTop="@dimen/margin_tiny"
+        android:gravity="left"
+        style="@style/TextViewOverflowableLessImportant" />
+    
+    <TextView
+        android:id="@+id/tv_music_title"
+        android:layout_toLeftOf="@id/header"
+        android:layout_toRightOf="@id/iv_album_photo"
+        android:layout_below="@id/tv_singer_name"
+        android:layout_marginTop="@dimen/margin_tiny"
+        android:textColor="@color/font_default"
+        android:gravity="left"
+        style="@style/TextViewOverflowableImportant" />
+    
+</RelativeLayout>
+

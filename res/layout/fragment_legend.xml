@@ -24,7 +24,7 @@
 	        android:layout_alignParentLeft="true"
 	        android:padding="@dimen/margin"
 	        android:src="@drawable/ic_arrow_left_dark"
-	        style="@style/BaseImageView" />
+	        style="@style/ImageViewBase" />
 	    
 	    <ImageView
 	        android:id="@+id/iv_next_week"
@@ -33,7 +33,7 @@
 	        android:layout_alignParentRight="true"
 	        android:padding="@dimen/margin"
 	        android:src="@drawable/ic_arrow_right_dark"
-	        style="@style/BaseImageView" />
+	        style="@style/ImageViewBase" />
 	    
 	</RelativeLayout>
 	

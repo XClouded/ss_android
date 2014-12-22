@@ -5,14 +5,10 @@
         <item name="android:windowEnterAnimation">@anim/slide_up</item>
         <item name="android:windowExitAnimation">@anim/slide_down</item>
     </style>
-        
-    <style name="DialogBox">
-        <item name="android:layout_width">@dimen/compat_dialog_width</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">@dimen/compat_dialog_inverse_margin</item>
-        <item name="android:layout_gravity">center</item>
-        <item name="android:orientation">vertical</item>
-        <item name="android:background">@color/white</item>
+    
+    <style name="DialogNoAnimation">
+        <item name="android:windowEnterAnimation">@null</item>
+        <item name="android:windowExitAnimation">@null</item>
     </style>
 
     <style name="CommonListView">
@@ -36,6 +32,20 @@
         <item name="android:layout_width">0.1dp</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:src">@color/divider</item>
+    </style>
+    
+    <style name="FormBase" >
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">@dimen/margin_big</item>
+        <item name="android:paddingBottom">@dimen/margin_big</item>
+        <item name="android:paddingLeft">@dimen/margin</item>
+        <item name="android:paddingRight">@dimen/margin</item>
+    </style>
+    
+    <style name="FormBaseTwoLine" parent="FormBase">
+        <item name="android:paddingTop">@dimen/margin</item>
+        <item name="android:paddingBottom">@dimen/margin</item>
     </style>
 
 </resources>

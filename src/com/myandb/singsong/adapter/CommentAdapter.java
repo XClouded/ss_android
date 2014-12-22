@@ -1,51 +1,112 @@
 package com.myandb.singsong.adapter;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.PopupMenu;
+import android.support.v7.widget.PopupMenu.OnMenuItemClickListener;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.myandb.singsong.R;
-import com.myandb.singsong.event.Listeners;
+import com.myandb.singsong.dialog.BaseDialog;
+import com.myandb.singsong.dialog.ReportCommentDialog;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.SongComment;
 import com.myandb.singsong.model.User;
+import com.myandb.singsong.secure.Authenticator;
+import com.myandb.singsong.widget.SlidingPlayerLayout;
 
 public class CommentAdapter extends HolderAdapter<SongComment, CommentAdapter.CommentHolder> {
+	
+	private SongComment selectedComment;
+	private SlidingPlayerLayout layout;
+	private FragmentManager fragmentManager;
 
-	public CommentAdapter() {
+	public CommentAdapter(SlidingPlayerLayout layout) {
 		super(SongComment.class);
+		this.layout = layout;
+		Context context = layout.getContext();
+		this.fragmentManager = ((ActionBarActivity) context).getSupportFragmentManager();
 	}
 
 	@Override
-	public CommentHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		View view = View.inflate(parent.getContext(), R.layout.row_comment, null);
+	public CommentHolder onCreateViewHolder(LayoutInflater inflater, ViewGroup parent, int viewType) {
+		View view = inflater.inflate(R.layout.row_comment, parent, false);
 		return new CommentHolder(view);
 	}
 
 	@Override
-	public void onBindViewHolder(CommentHolder viewHolder, int position) {
+	public void onBindViewHolder(Context context, CommentHolder viewHolder, int position) {
 		final SongComment comment = getItem(position);
 		final User writer = comment.getWriter();
-		final Context context = viewHolder.view.getContext();
 		
 		viewHolder.tvNickname.setText(writer.getNickname());
 		viewHolder.tvCreated.setText(comment.getWorkedCreatedTime(getCurrentDate()));
 		viewHolder.tvCommentContent.setText(comment.getContent());
+		viewHolder.ivUserPhoto.setOnClickListener(writer.getProfileClickListener());
+		viewHolder.ivMenu.setTag(comment);
+		viewHolder.ivMenu.setOnClickListener(menuClickListener);
 		
 		ImageHelper.displayPhoto(writer, viewHolder.ivUserPhoto);
-		viewHolder.ivUserPhoto.setOnClickListener(Listeners.getProfileClickListener(context, writer));
-		
-		// report and delete comment
-		// using pop up menu
 	}
+	
+	private OnClickListener menuClickListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			selectedComment = (SongComment) v.getTag();
+			PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
+			if (isUserWriter(selectedComment)) {
+				popupMenu.inflate(R.menu.delete_comment);
+			} else {
+				popupMenu.inflate(R.menu.report_comment);
+			}
+			popupMenu.setOnMenuItemClickListener(menuItemClickListener);
+			popupMenu.show();
+		}
+		
+		private boolean isUserWriter(SongComment comment) {
+			return Authenticator.getUser().getId() == comment.getWriter().getId();
+		}
+	};
+	
+	private OnMenuItemClickListener menuItemClickListener = new OnMenuItemClickListener() {
+		
+		@Override
+		public boolean onMenuItemClick(MenuItem item) {
+			switch (item.getItemId()) {
+			case R.id.action_report_comment:
+				BaseDialog dialog = new ReportCommentDialog();
+				Bundle bundle = new Bundle();
+				bundle.putInt(ReportCommentDialog.EXTRA_COMMENT_ID, selectedComment.getId());
+				bundle.putString(ReportCommentDialog.EXTRA_COMMENT_CONTENT, selectedComment.getContent());
+				dialog.setArguments(bundle);
+				dialog.show(fragmentManager, "");
+				return true;
+				
+			case R.id.action_delete_comment:
+				layout.deleteComment(selectedComment);
+				break;
+
+			default:
+				return false;
+			}
+			
+			return true;
+		}
+	};
 	
 	public static final class CommentHolder extends ViewHolder {
 		
 		public ImageView ivUserPhoto;
-		public ImageView ivReportComment;
-		public ImageView ivDeleteComment;
+		public ImageView ivMenu;
 		public TextView tvNickname;
 		public TextView tvCreated;
 		public TextView tvCommentContent;
@@ -54,8 +115,7 @@ public class CommentAdapter extends HolderAdapter<SongComment, CommentAdapter.Co
 			super(view);
 			
 			ivUserPhoto = (ImageView) view.findViewById(R.id.iv_comment_user_photo);
-			ivReportComment = (ImageView) view.findViewById(R.id.iv_report_comment);
-			ivDeleteComment = (ImageView) view.findViewById(R.id.iv_delete_comment);
+			ivMenu = (ImageView) view.findViewById(R.id.iv_menu);
 			tvNickname = (TextView) view.findViewById(R.id.tv_comment_user_nickname);
 			tvCreated = (TextView) view.findViewById(R.id.tv_comment_created);
 			tvCommentContent = (TextView) view.findViewById(R.id.tv_comment_content);

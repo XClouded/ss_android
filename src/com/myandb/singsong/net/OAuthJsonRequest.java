@@ -6,7 +6,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 
-public abstract class OAuthJsonRequest<T> extends OAuthRequest<T> {
+public abstract class OAuthJSONRequest<T> extends OAuthRequest<T> {
 	/** Charset for request. */
     private static final String PROTOCOL_CHARSET = "utf-8";
 
@@ -23,12 +23,12 @@ public abstract class OAuthJsonRequest<T> extends OAuthRequest<T> {
      *
      * @deprecated Use {@link #JsonRequest(int, String, String, Listener, ErrorListener)}.
      */
-    public OAuthJsonRequest(String url, String requestBody, Listener<T> listener,
+    public OAuthJSONRequest(String url, String requestBody, Listener<T> listener,
             ErrorListener errorListener) {
         this(Method.DEPRECATED_GET_OR_POST, url, requestBody, listener, errorListener);
     }
 
-    public OAuthJsonRequest(int method, String url, String requestBody, Listener<T> listener,
+    public OAuthJSONRequest(int method, String url, String requestBody, Listener<T> listener,
             ErrorListener errorListener) {
         super(method, url, errorListener);
         mListener = listener;

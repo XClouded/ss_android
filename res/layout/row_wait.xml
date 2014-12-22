@@ -10,7 +10,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/box_song" >
+        android:background="@drawable/card_song" >
                 
         <com.myandb.singsong.widget.RoundedImageView
             android:id="@+id/iv_this_song_image"
@@ -19,7 +19,7 @@
             app:corner_radius="@dimen/corner_radius"
             app:corner_top_left="true"
             app:corner_top_right="true"
-            style="@style/BaseImageView" />
+            style="@style/ImageViewBase" />
          
         <ImageView
             android:layout_width="match_parent"
@@ -39,7 +39,7 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:src="@drawable/ic_collabo_white"
-                style="@style/BaseImageView" />
+                style="@style/ImageViewBase" />
             
             <TextView
                 android:id="@+id/tv_song_collabo_num"
@@ -57,47 +57,38 @@
             android:layout_marginBottom="@dimen/margin_big"
             android:textColor="@color/font_white"
             style="@style/TextViewBase" />
-         
-        <FrameLayout
-			android:id="@+id/this_user_photo"
-			android:layout_width="@dimen/photo_wrapper"
-			android:layout_height="@dimen/photo_wrapper"
-			android:layout_centerHorizontal="true"
-			android:layout_below="@id/iv_this_song_image"
-			android:layout_marginTop="@dimen/photo_inverse_margin"
-			android:padding="@dimen/border_width"
-			android:background="@drawable/circle_white" >
-		      
+        
+        <LinearLayout
+            android:id="@+id/layout_user_wrapper"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/iv_this_song_image"
+            android:layout_marginTop="@dimen/photo_inverse_margin"
+            android:orientation="vertical" >
+     
 			<com.myandb.singsong.widget.RoundedImageView
 			    android:id="@+id/iv_this_user_photo"
-			    app:oval="true"
-			    app:border_width="0.1dp"
-			    app:border_color="@color/divider"
-			    style="@style/UserImageView" />
-		      
-      	</FrameLayout>
-         
-        <TextView
-            android:id="@+id/tv_this_user_nickname"
-            android:layout_below="@id/this_user_photo"
-            android:layout_centerHorizontal="true"
-            android:textStyle="bold"
-            style="@style/TextViewBase" />
-         
-        <TextView
-            android:id="@+id/tv_this_song_message"
-            android:layout_marginLeft="@dimen/margin_tiny"
-            android:layout_marginRight="@dimen/margin_tiny"
-            android:layout_marginBottom="@dimen/margin_small"
-            android:gravity="center"
-            android:layout_below="@id/tv_this_user_nickname"
-            android:layout_centerHorizontal="true"
-            android:textColor="@color/font_hint"
-            style="@style/TextViewBase" />
+				android:layout_gravity="center"
+			    style="@style/ImageViewUserWithBorder" />
+       
+	       <TextView
+	           android:id="@+id/tv_this_user_nickname"
+	           android:layout_gravity="center"
+	           android:textStyle="bold"
+	           style="@style/TextViewBase" />
+	       
+	       <TextView
+	           android:id="@+id/tv_this_song_message"
+	           android:layout_marginBottom="@dimen/margin_small"
+	           android:textColor="@color/font_hint"
+	           style="@style/TextViewEllipsize" />
+            
+        </LinearLayout>
         
         <ImageView
             android:id="@+id/divider"
-            android:layout_below="@id/tv_this_song_message"
+            android:layout_below="@id/layout_user_wrapper"
             android:layout_marginBottom="@dimen/margin_small"
             style="@style/DividerHorizontal" />
         

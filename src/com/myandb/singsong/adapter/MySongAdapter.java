@@ -3,6 +3,7 @@ package com.myandb.singsong.adapter;
 import java.util.List;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -11,7 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.myandb.singsong.R;
-import com.myandb.singsong.event.Listeners;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Song;
@@ -33,18 +33,17 @@ public class MySongAdapter extends HolderAdapter<Song, MySongAdapter.SongHolder>
 	}
 
 	@Override
-	public SongHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		View view = View.inflate(parent.getContext(), R.layout.row_my_song, null);
+	public SongHolder onCreateViewHolder(LayoutInflater inflater, ViewGroup parent, int viewType) {
+		View view = inflater.inflate(R.layout.row_my_song, parent, false);
 		return new SongHolder(view);
 	}
 
 	@Override
-	public void onBindViewHolder(SongHolder viewHolder, int position) {
+	public void onBindViewHolder(Context context, SongHolder viewHolder, int position) {
 		final Song song = getItem(position);
 		final Music music = song.getMusic();
 		final User creator = song.getCreator();
 		final List<Song> children = song.getChildren();
-		final Context context = viewHolder.view.getContext();
 
 		viewHolder.tvLikeNum.setText(song.getWorkedLikeNum());
 		viewHolder.tvCommentNum.setText(song.getWorkedCommentNum());
@@ -77,7 +76,7 @@ public class MySongAdapter extends HolderAdapter<Song, MySongAdapter.SongHolder>
 				ImageHelper.displayPhoto(creator, viewHolder.ivPartnerPhoto);
 				ImageHelper.displayPhoto(song.getPhotoUrl(), viewHolder.ivPartnerImage);
 				
-				viewHolder.view.setOnClickListener(Listeners.getPlayClickListener(context, song));
+				viewHolder.view.setOnClickListener(song.getPlayClickListener());
 			}
 		} else if (children != null) {
 			viewHolder.vCollaboNumWrapper.setVisibility(View.VISIBLE);
@@ -100,9 +99,9 @@ public class MySongAdapter extends HolderAdapter<Song, MySongAdapter.SongHolder>
 			}
 			
 			if (children.size() == 0) {
-				viewHolder.view.setOnClickListener(Listeners.getPlayClickListener(context, song));
+				viewHolder.view.setOnClickListener(song.getPlayClickListener());
 			} else {
-				viewHolder.view.setOnClickListener(Listeners.getChildrenClickListener(context, song));
+				viewHolder.view.setOnClickListener(song.getChildrenClickListener());
 			}
 			
 			viewHolder.tvCollaboNum.setText(song.getWorkedCollaboNum());

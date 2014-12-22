@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -29,17 +30,16 @@ public class NotificationAdapter extends HolderAdapter<Notification, Notificatio
 	}
 
 	@Override
-	public NotificationHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		View view = View.inflate(parent.getContext(), R.layout.row_notification, null);
+	public NotificationHolder onCreateViewHolder(LayoutInflater inflater, ViewGroup parent, int viewType) {
+		View view = inflater.inflate(R.layout.row_notification, parent, false);
 		return new NotificationHolder(view);
 	}
 
 	@Override
-	public void onBindViewHolder(NotificationHolder viewHolder, int position) {
+	public void onBindViewHolder(Context context, NotificationHolder viewHolder, int position) {
 		final Notification notification = getItem(position);
 		final Activity activity = notification.getActivity();
 		final User activityCreator = activity.getCreator();
-		final Context context = viewHolder.view.getContext();
 		
 		Spannable nicknameSpan = new SpannableString(activityCreator.getNickname());
 		Utility.getStyleSpan(nicknameSpan, Typeface.BOLD);

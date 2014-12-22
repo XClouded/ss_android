@@ -2,71 +2,71 @@ package com.myandb.singsong.dialog;
 
 import org.json.JSONObject;
 
-import com.android.volley.RequestQueue;
 import com.android.volley.Request.Method;
-import com.myandb.singsong.App;
+import com.google.android.gcm.GCMRegistrar;
 import com.myandb.singsong.R;
-import com.myandb.singsong.activity.SettingActivity;
-import com.myandb.singsong.event.OnVolleyWeakError;
-import com.myandb.singsong.event.OnVolleyWeakResponse;
-import com.myandb.singsong.net.OAuthJsonObjectRequest;
-import com.myandb.singsong.net.UrlBuilder;
+import com.myandb.singsong.fragment.SettingFragment;
+import com.myandb.singsong.model.User;
+import com.myandb.singsong.net.JSONObjectRequest;
+import com.myandb.singsong.net.JSONErrorListener;
+import com.myandb.singsong.net.JSONObjectSuccessListener;
 import com.myandb.singsong.secure.Authenticator;
 
-import android.content.Context;
+import android.app.Activity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 public class WithdrawDialog extends BaseDialog {
 	
-	private SettingActivity parent;
-	private Button btnYes;
-	private Button btnNo;
-
-	public WithdrawDialog(Context context) {
-		super(context);
-		parent = (SettingActivity) context;
-	}
-
-	@Override
-	protected void initialize() {
-		// Nothing to run
-	}
-
+	private EditText etUserUsername;
+	private Button btnWithdraw;
+	private User currentUser;
+	
 	@Override
 	protected int getResourceId() {
 		return R.layout.dialog_withdraw;
 	}
+	
+	@Override
+	protected void onViewInflated(View view, LayoutInflater inflater) {
+		etUserUsername = (EditText) view.findViewById(R.id.et_user_username);
+		btnWithdraw = (Button) view.findViewById(R.id.btn_withdraw);
+	}
 
 	@Override
-	protected void onViewInflated() {
-		btnYes = (Button) findViewById(R.id.btn_yes);
-		btnNo = (Button) findViewById(R.id.btn_no);
+	protected void initialize(Activity activity) {
+		currentUser = Authenticator.getUser();
 	}
 
 	@Override
 	protected void setupViews() {
-		btnYes.setOnClickListener(withdrawClickListener);
-		btnNo.setOnClickListener(cancelClickListener);
+		btnWithdraw.setOnClickListener(withdrawClickListener);
 	}
 	
 	private View.OnClickListener withdrawClickListener = new View.OnClickListener() {
 		
 		@Override
 		public void onClick(View v) {
-			UrlBuilder urlBuilder = new UrlBuilder();
-			String url = urlBuilder.s("users").toString();
+			String username = etUserUsername.getText().toString();
+			if (!username.equals(currentUser.getUsername())) {
+				makeToast("본인의 아이디를 정확히 입력해주세요.");
+				return;
+			}
 			
-			OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
-					Method.DELETE, url, null,
-					new OnVolleyWeakResponse<WithdrawDialog, JSONObject>(WithdrawDialog.this, "onWithdrawSuccess"),
-					new OnVolleyWeakError<WithdrawDialog>(WithdrawDialog.this, "onWithdrawError")
-			);
-			
-			RequestQueue queue = ((App) getContext().getApplicationContext()).getQueueInstance();
-			queue.add(request);
+			showProgressDialog();
+			withdraw();
 		}
 	};
+	
+	private void withdraw() {
+		JSONObjectRequest request = new JSONObjectRequest(
+				Method.DELETE, "users", null,
+				new JSONObjectSuccessListener(WithdrawDialog.this, "onWithdrawSuccess"),
+				new JSONErrorListener(WithdrawDialog.this, "onWithdrawError"));
+		addRequest(request);
+	}
 	
 	public void onWithdrawSuccess(JSONObject response) {
 		onWithdrawFinish();
@@ -77,19 +77,18 @@ public class WithdrawDialog extends BaseDialog {
 	}
 	
 	private void onWithdrawFinish() {
-		Authenticator auth = new Authenticator();
-		auth.logout();
-		
-//		parent.dismissProgressDialog();
-		parent.finish();
+		new Authenticator().logout();
+		unregisterGcm();
+		dismissProgressDialog();
+		if (getParentFragment() instanceof SettingFragment) {
+			((SettingFragment) getParentFragment()).clearSharedPreferences();
+		}
 	}
 	
-	private View.OnClickListener cancelClickListener = new View.OnClickListener() {
-		
-		@Override
-		public void onClick(View v) {
-			dismiss();
+	private void unregisterGcm() {
+		if (GCMRegistrar.isRegistered(getActivity())) {
+			GCMRegistrar.unregister(getActivity());
 		}
-	};
+	}
 
 }
