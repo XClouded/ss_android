@@ -8,7 +8,6 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageView;
 
 public class GalleryDialog extends BaseDialog {
@@ -34,7 +33,13 @@ public class GalleryDialog extends BaseDialog {
 	protected float getWidthPercentage() {
 		return 1.0f;
 	}
-
+	
+	@Override
+	protected void styleDialog(Dialog dialog) {
+		super.styleDialog(dialog);
+		dialog.getWindow().getAttributes().dimAmount = 0.8f;
+	}
+	
 	@Override
 	protected void onArgumentsReceived(Bundle bundle) {
 		super.onArgumentsReceived(bundle);
@@ -55,15 +60,7 @@ public class GalleryDialog extends BaseDialog {
 
 	@Override
 	protected void setupViews() {
-		setWindowDimAmount(0.8f);
-		
 		ImageHelper.displayPhoto(url, ivPhoto);
-	}
-	
-	private void setWindowDimAmount(float dimAmount) {
-		WindowManager.LayoutParams windowLayoutParams = getDialog().getWindow().getAttributes();
-		windowLayoutParams.dimAmount = dimAmount;
-		getDialog().getWindow().setAttributes(windowLayoutParams);
 	}
 
 }
