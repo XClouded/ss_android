@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/margin"
+    android:orientation="vertical" >
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+        
+        <com.myandb.singsong.widget.RoundedImageView
+            android:id="@+id/iv_artist_photo"
+	       	style="@style/ImageViewUser" />
+        
+        <TextView
+	        android:id="@+id/tv_artist_user_nickname"
+	        android:layout_toRightOf="@id/iv_artist_photo"
+	        android:layout_alignTop="@id/iv_artist_photo"
+	        android:layout_marginBottom="@dimen/margin_tiny"
+	        android:gravity="left"
+	        android:text="nickname"
+	        style="@style/TextViewOverflowableLessImportant" />
+        
+        <TextView
+	        android:id="@+id/tv_artist_nickname"
+	        android:layout_toRightOf="@id/iv_artist_photo"
+	        android:layout_below="@id/tv_artist_user_nickname"
+	        android:layout_marginBottom="@dimen/margin_tiny"
+	        android:gravity="left"
+	        android:text="artist nickname"
+	        style="@style/TextViewOverflowableLessImportant" />
+        
+        <TextView
+	        android:id="@+id/tv_artist_followers_num"
+	        android:layout_alignLeft="@id/tv_artist_nickname"
+	        android:layout_below="@id/tv_artist_nickname"
+	        android:text="33"
+	        style="@style/TextViewHint" />
+        
+        <TextView
+            android:id="@+id/tv_artist_num"
+            android:layout_below="@id/iv_artist_photo"
+            android:text="asdf"
+            style="@style/TextViewBase" />
+        
+        <TextView
+            android:id="@+id/tv_artist_introduction"
+            android:layout_below="@id/iv_artist_photo"
+            android:text="asdf"
+            style="@style/TextViewBase" />
+        
+    </RelativeLayout>
+    
+    <LinearLayout
+        android:id="@+id/ll_qna_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" />
+    
+    <TextView
+        android:id="@+id/tv_artist_songs"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_big"
+        android:textStyle="bold"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginBottom="@dimen/margin_small"
+        style="@style/TextViewBase" />
+    
+    <com.myandb.singsong.widget.HorizontalListView
+        android:id="@+id/hlv_artist_songs"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:scrollbars="none" />
+    
+    <TextView
+        android:id="@+id/tv_artist_comment_num"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_big"
+        android:textStyle="bold"
+        android:layout_marginBottom="@dimen/margin_small"
+        style="@style/TextViewBase" />
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_tiny"
+        android:padding="@dimen/margin_tiny"
+        android:background="@drawable/button_white_selector" >
+        
+        <FrameLayout
+            android:id="@+id/layout_submit_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="@dimen/margin"
+            android:layout_alignBottom="@+id/et_comment" >
+            
+		    <Button
+		        android:id="@+id/btn_submit_comment"
+		        android:text="@string/submit"
+		        android:textSize="@dimen/text_small"
+		        android:background="@drawable/button_primary_selector"
+		        android:layout_gravity="bottom"
+		        android:paddingLeft="@dimen/margin"
+		        android:paddingRight="@dimen/margin"
+		        android:paddingTop="@dimen/margin_small"
+		        android:paddingBottom="@dimen/margin_small"
+		        style="@style/ButtonBase" />
+            
+        </FrameLayout>
+	    
+	    <EditText
+	        android:id="@+id/et_comment"
+	        android:layout_toLeftOf="@id/layout_submit_container"
+	        android:paddingTop="@dimen/margin_small"
+	        android:paddingBottom="@dimen/margin_small"
+	        android:background="@null"
+	        android:hint="@string/hint_write_comment"
+	        android:maxLines="3"
+	        style="@style/BaseEditText" />
+        
+    </RelativeLayout>
+
+</LinearLayout>
