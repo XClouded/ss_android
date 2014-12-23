@@ -27,7 +27,8 @@ public class ArtistListFragment extends ListFragment {
 		
 		if (getAdapter() == null) {
 			UrlBuilder builder = new UrlBuilder();
-			builder.s("artist");
+			builder.s("artists");
+			setUrlBuilder(builder);
 			setAdapter(new ArtistAdapter());
 		}
 	}

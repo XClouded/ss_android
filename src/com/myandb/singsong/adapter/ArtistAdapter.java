@@ -31,9 +31,10 @@ public class ArtistAdapter extends HolderAdapter<Artist, ArtistAdapter.ArtistHol
 		
 		viewHolder.tvUserNickname.setText(user.getNickname());
 		viewHolder.tvArtistNickname.setText(artist.getNickname());
-		viewHolder.tvFollowersNum.setText(user.getProfile().getFollowersNum());
+//		viewHolder.tvFollowersNum.setText(user.getProfile().getFollowersNum());
 		viewHolder.tvArtistNum.setText(String.valueOf(artist.getId()));
 		viewHolder.tvArtistIntroduction.setText(artist.getIntroduction());
+		viewHolder.view.setOnClickListener(artist.getArtistClickListener());
 		
 		ImageHelper.displayPhoto(user, viewHolder.ivArtistPhoto);
 	}

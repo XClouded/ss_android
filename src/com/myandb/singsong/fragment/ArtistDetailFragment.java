@@ -1,5 +1,6 @@
 package com.myandb.singsong.fragment;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -24,12 +25,14 @@ import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Artist;
 import com.myandb.singsong.model.Comment;
 import com.myandb.singsong.model.User;
+import com.myandb.singsong.net.GradualLoader;
 import com.myandb.singsong.net.JSONErrorListener;
 import com.myandb.singsong.net.JSONObjectRequest;
 import com.myandb.singsong.net.JSONObjectSuccessListener;
 import com.myandb.singsong.net.UrlBuilder;
+import com.myandb.singsong.net.GradualLoader.OnLoadCompleteListener;
 import com.myandb.singsong.util.Utility;
-import com.myandb.singsong.widget.HorizontalListView;
+import com.myandb.singsong.widget.HorizontalAdapterView;
 
 public class ArtistDetailFragment extends ListFragment {
 	
@@ -46,7 +49,7 @@ public class ArtistDetailFragment extends ListFragment {
 	private Button btnSubmitComment;
 	private EditText etComment;
 	private ViewGroup vgQnaContainer;
-	private HorizontalListView hlvArtistSongs;
+	private HorizontalAdapterView havArtistSongs;
 	private Artist artist;
 
 	@Override
@@ -79,6 +82,7 @@ public class ArtistDetailFragment extends ListFragment {
 		btnSubmitComment = (Button) view.findViewById(R.id.btn_submit_comment);
 		etComment = (EditText) view.findViewById(R.id.et_comment);
 		vgQnaContainer = (ViewGroup) view.findViewById(R.id.ll_qna_container);
+		havArtistSongs = (HorizontalAdapterView) view.findViewById(R.id.hav_artist_songs);
 	}
 
 	@Override
@@ -91,6 +95,7 @@ public class ArtistDetailFragment extends ListFragment {
 			setUrlBuilder(builder);
 			setAdapter(new CommentAdapter());
 		}
+		setListShown(true);
 	}
 
 	@Override
@@ -100,7 +105,7 @@ public class ArtistDetailFragment extends ListFragment {
 		User user = artist.getUser();
 		tvUserNickname.setText(user.getNickname());
 		tvArtistNickname.setText(artist.getNickname());
-		tvFollowersNum.setText(user.getProfile().getFollowersNum());
+//		tvFollowersNum.setText(user.getProfile().getFollowersNum());
 		tvArtistNum.setText(String.valueOf(artist.getId()));
 		tvArtistIntroduction.setText(artist.getIntroduction());
 		ImageHelper.displayPhoto(user, ivArtistPhoto);
@@ -113,9 +118,7 @@ public class ArtistDetailFragment extends ListFragment {
 		
 		btnSubmitComment.setOnClickListener(submitCommentClickListner);
 		
-		CollaboratedAdapter songAdapter = new CollaboratedAdapter();
-		songAdapter.addAll(artist.getSongs());
-		hlvArtistSongs.setAdapter(songAdapter);
+		loadUserSongs(user);
 		
 		QnaAdapter qnaAdapter = new QnaAdapter();
 		qnaAdapter.addAll(artist.getQna());
@@ -123,6 +126,22 @@ public class ArtistDetailFragment extends ListFragment {
 			View child = qnaAdapter.getView(i, null, vgQnaContainer);
 			vgQnaContainer.addView(child);
 		}
+	}
+	
+	private void loadUserSongs(User user) {
+		final CollaboratedAdapter adapter = new CollaboratedAdapter();
+		havArtistSongs.setAdapter(adapter);
+		final UrlBuilder urlBuilder = new UrlBuilder().s("users").s(user.getId()).s("songs").s("leaf").p("order", "liking_num").take(5);
+		final GradualLoader loader = new GradualLoader(getActivity());
+		loader.setUrlBuilder(urlBuilder);
+		loader.setOnLoadCompleteListener(new OnLoadCompleteListener() {
+			
+			@Override
+			public void onComplete(JSONArray response) {
+				adapter.addAll(response);
+			}
+		});
+		loader.load();
 	}
 	
 	private OnClickListener submitCommentClickListner = new ActivateOnlyClickListener() {

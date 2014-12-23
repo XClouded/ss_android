@@ -67,8 +67,8 @@
         android:layout_marginBottom="@dimen/margin_small"
         style="@style/TextViewBase" />
     
-    <com.myandb.singsong.widget.HorizontalListView
-        android:id="@+id/hlv_artist_songs"
+    <com.myandb.singsong.widget.HorizontalAdapterView
+        android:id="@+id/hav_artist_songs"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_marginBottom="@dimen/margin_small"

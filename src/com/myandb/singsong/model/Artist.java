@@ -7,13 +7,21 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.myandb.singsong.activity.BaseActivity;
+import com.myandb.singsong.activity.RootActivity;
+import com.myandb.singsong.fragment.ArtistDetailFragment;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+
 public class Artist extends Model {
 	
 	private User user;
 	private String nickname;
 	private String introduction;
-	private String qnas;
-	private List<Song> songs;
+	private String to_users;
 	private int comment_num;
 	
 	public User getUser() {
@@ -30,7 +38,7 @@ public class Artist extends Model {
 	
 	public List<Qna> getQna() {
 		try {
-			JSONArray qnaJson = new JSONArray(qnas);
+			JSONArray qnaJson = new JSONArray(to_users);
 			List<Qna> qnaList = new ArrayList<Artist.Qna>();
 			for (int i = 0, l = qnaJson.length(); i < l; i++) {
 				JSONObject qna = qnaJson.getJSONObject(i);
@@ -43,12 +51,24 @@ public class Artist extends Model {
 		}
 	}
 	
-	public List<Song> getSongs() {
-		return songs;
-	}
-	
 	public String getCommentNum() {
 		return safeString(comment_num);
+	}
+	
+	public OnClickListener getArtistClickListener() {
+		return new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				BaseActivity activity = (BaseActivity) v.getContext();
+				Bundle bundle = new Bundle();
+				bundle.putString(ArtistDetailFragment.EXTRA_ARTIST, Artist.this.toString());
+				Intent intent = new Intent(activity, RootActivity.class);
+				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, ArtistDetailFragment.class.getName());
+				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
+				activity.changePage(intent);
+			}
+		};
 	}
 	
 	public static final class Qna {
