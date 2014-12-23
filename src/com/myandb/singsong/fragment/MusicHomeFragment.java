@@ -41,6 +41,8 @@ public class MusicHomeFragment extends BaseFragment {
 	private FloatableLayout fltCategoryMusic;
 	private TextView tvPopularMusicMore;
 	private TextView tvRecentMusicMore;
+	private MusicAdapter popularMusicAdapter;
+	private MusicAdapter recentMusicAdapter;
 	
 	@Override
 	protected int getResourceId() {
@@ -131,38 +133,46 @@ public class MusicHomeFragment extends BaseFragment {
 	}
 	
 	private void loadPopularMusic() {
-		final MusicAdapter adapter = new MusicAdapter(LayoutType.POPULAR); 
-		hlvPopularMusic.setAdapter(adapter);
-		hlvPopularMusic.setOnItemClickListener(musicItemClickListener);
-		final UrlBuilder urlBuilder = new UrlBuilder().s("musics").p("order", "sing_num_this_week").take(5);
-		final GradualLoader loader = new GradualLoader(getActivity());
-		loader.setUrlBuilder(urlBuilder);
-		loader.setOnLoadCompleteListener(new OnLoadCompleteListener() {
-			
-			@Override
-			public void onComplete(JSONArray response) {
-				adapter.addAll(response);
-			}
-		});
-		loader.load();
+		if (popularMusicAdapter == null) {
+			popularMusicAdapter = new MusicAdapter(LayoutType.POPULAR); 
+			hlvPopularMusic.setOnItemClickListener(musicItemClickListener);
+			final UrlBuilder urlBuilder = new UrlBuilder().s("musics").p("order", "sing_num_this_week").take(5);
+			final GradualLoader loader = new GradualLoader(getActivity());
+			loader.setUrlBuilder(urlBuilder);
+			loader.setOnLoadCompleteListener(new OnLoadCompleteListener() {
+				
+				@Override
+				public void onComplete(JSONArray response) {
+					popularMusicAdapter.addAll(response);
+					hlvPopularMusic.setAdapter(popularMusicAdapter);
+				}
+			});
+			loader.load();
+		} else {
+			hlvPopularMusic.setAdapter(popularMusicAdapter);
+		}
 	}
 	
 	private void loadRecentMusic() {
-		final MusicAdapter adapter = new MusicAdapter(LayoutType.RECENT); 
-		hlvRecentMusic.setAdapter(adapter);
-		hlvRecentMusic.setOnItemClickListener(musicItemClickListener);
-		final String startDate = StringFormatter.getDateString(Calendar.DATE, -7);
-		final UrlBuilder urlBuilder = new UrlBuilder().s("musics").start(startDate).p("order", "created_at").take(10);
-		GradualLoader loader = new GradualLoader(getActivity());
-		loader.setUrlBuilder(urlBuilder);
-		loader.setOnLoadCompleteListener(new OnLoadCompleteListener() {
-			
-			@Override
-			public void onComplete(JSONArray response) {
-				adapter.addAll(response);
-			}
-		});
-		loader.load();
+		if (recentMusicAdapter == null) {
+			recentMusicAdapter = new MusicAdapter(LayoutType.RECENT); 
+			hlvRecentMusic.setOnItemClickListener(musicItemClickListener);
+			final String startDate = StringFormatter.getDateString(Calendar.DATE, -7);
+			final UrlBuilder urlBuilder = new UrlBuilder().s("musics").start(startDate).p("order", "created_at").take(10);
+			GradualLoader loader = new GradualLoader(getActivity());
+			loader.setUrlBuilder(urlBuilder);
+			loader.setOnLoadCompleteListener(new OnLoadCompleteListener() {
+				
+				@Override
+				public void onComplete(JSONArray response) {
+					recentMusicAdapter.addAll(response);
+					hlvRecentMusic.setAdapter(recentMusicAdapter);
+				}
+			});
+			loader.load();
+		} else {
+			hlvRecentMusic.setAdapter(recentMusicAdapter);
+		}
 	}
 	
 	private OnItemClickListener musicItemClickListener = new OnItemClickListener() {

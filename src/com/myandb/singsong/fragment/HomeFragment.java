@@ -6,7 +6,9 @@ import org.json.JSONArray;
 
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
+import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.activity.UpActivity;
+import com.myandb.singsong.adapter.ArtistAdapter;
 import com.myandb.singsong.adapter.MusicAdapter;
 import com.myandb.singsong.adapter.NotificationAdapter;
 import com.myandb.singsong.adapter.MusicAdapter.LayoutType;
@@ -29,15 +31,21 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 public class HomeFragment extends BaseFragment {
 	
 	private TextView tvNotificationCount;
+	private TextView tvRecentMusicMore;
+	private TextView tvCollaboArtistMore;
 	private HorizontalListView hlvPopularMusic;
 	private HorizontalListView hlvRecentMusic;
-	private TextView tvRecentMusicMore;
+	private ViewGroup vgTodayCollaboArtistContainer;
+	private MusicAdapter popularMusicAdapter;
+	private MusicAdapter recentMusicAdapter;
+	private ArtistAdapter todayArtistAdapter;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -55,58 +63,130 @@ public class HomeFragment extends BaseFragment {
 		hlvPopularMusic = (HorizontalListView) view.findViewById(R.id.hlv_popular_music);
 		hlvRecentMusic = (HorizontalListView) view.findViewById(R.id.hlv_recent_music);
 		tvRecentMusicMore = (TextView) view.findViewById(R.id.tv_recent_music_more);
+		tvCollaboArtistMore = (TextView) view.findViewById(R.id.tv_collabo_artist_more);
+		vgTodayCollaboArtistContainer = (ViewGroup) view.findViewById(R.id.fl_today_collabo_artist_container);
 	}
 
 	@Override
 	protected void initialize(Activity activity) {
-		
+		hlvPopularMusic.setDividerWidth(getResources().getDimensionPixelSize(R.dimen.margin));
+		hlvRecentMusic.setDividerWidth(getResources().getDimensionPixelSize(R.dimen.margin));
 	}
 
 	@Override
 	protected void setupViews(Bundle savedInstanceState) {
-		hlvPopularMusic.setDividerWidth(getResources().getDimensionPixelSize(R.dimen.margin));
-		hlvRecentMusic.setDividerWidth(getResources().getDimensionPixelSize(R.dimen.margin));
+		loadTodayCollaboArtist();
 		
-		// load collabo artist
 		// load genre songs
-		// onresume logo on
 		
 		loadRecentMusic();
 		
 		loadPopularMusic();
+		
+		// onresume logo on
+		
+		tvCollaboArtistMore.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Bundle bundle = new Bundle();
+				bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_artist_list_title));
+				Intent intent = new Intent(getActivity(), RootActivity.class);
+				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, ArtistListFragment.class.getName());
+				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
+				startFragment(intent);
+			}
+		});
+		
+		tvRecentMusicMore.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				String segment = "musics/";
+				String adapterName = MusicAdapter.class.getName();
+				String title = getString(R.string.recent);
+				Bundle bundle = new Bundle();
+				Bundle params = new Bundle();
+				params.putString("order", "created_at");
+				bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, title);
+				bundle.putString(ListFragment.EXTRA_URL_SEGMENT, segment);
+				bundle.putString(ListFragment.EXTRA_ADAPTER_NAME, adapterName);
+				bundle.putBundle(ListFragment.EXTRA_QUERY_PARAMS, params);
+				Intent intent = new Intent(getActivity(), RootActivity.class);
+				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
+				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, ListFragment.class.getName());
+				startFragment(intent);
+			}
+		});
+	}
+	
+	private void loadTodayCollaboArtist() {
+		if (todayArtistAdapter == null) {
+			todayArtistAdapter = new ArtistAdapter();
+			final UrlBuilder urlBuilder = new UrlBuilder().s("artists").take(1);
+			final GradualLoader loader = new GradualLoader(getActivity());
+			loader.setUrlBuilder(urlBuilder);
+			loader.setOnLoadCompleteListener(new OnLoadCompleteListener() {
+				
+				@Override
+				public void onComplete(JSONArray response) {
+					todayArtistAdapter.addAll(response);
+					addArtistView();
+				}
+			});
+			loader.load(); 
+		} else {
+			addArtistView();
+		}
+	}
+	
+	private void addArtistView() {
+		if (todayArtistAdapter != null) {
+			View child = todayArtistAdapter.getView(0, null, vgTodayCollaboArtistContainer);
+			vgTodayCollaboArtistContainer.addView(child);
+		}
 	}
 	
 	private void loadPopularMusic() {
-		final MusicAdapter adapter = new MusicAdapter(LayoutType.POPULAR_HOME); 
-		hlvPopularMusic.setAdapter(adapter);
-		final UrlBuilder urlBuilder = new UrlBuilder().s("musics").p("order", "sing_num_this_week").p("req", "songs").take(5);
-		final GradualLoader loader = new GradualLoader(getActivity());
-		loader.setUrlBuilder(urlBuilder);
-		loader.setOnLoadCompleteListener(new OnLoadCompleteListener() {
-			
-			@Override
-			public void onComplete(JSONArray response) {
-				adapter.addAll(response);
-			}
-		});
-		loader.load();
+		if (popularMusicAdapter == null) {
+			popularMusicAdapter = new MusicAdapter(LayoutType.POPULAR_HOME); 
+			final UrlBuilder urlBuilder = new UrlBuilder().s("musics").p("order", "sing_num_this_week").p("req", "songs").take(5);
+			final GradualLoader loader = new GradualLoader(getActivity());
+			loader.setUrlBuilder(urlBuilder);
+			loader.setOnLoadCompleteListener(new OnLoadCompleteListener() {
+				
+				@Override
+				public void onComplete(JSONArray response) {
+					popularMusicAdapter.addAll(response);
+					hlvPopularMusic.setAdapter(popularMusicAdapter);
+				}
+			});
+			loader.load();
+		} else {
+			hlvPopularMusic.setAdapter(popularMusicAdapter);
+		}
 	}
 	
 	private void loadRecentMusic() {
-		final MusicAdapter adapter = new MusicAdapter(LayoutType.RECENT); 
-		hlvRecentMusic.setAdapter(adapter);
-		final String startDate = StringFormatter.getDateString(Calendar.DATE, -7);
-		final UrlBuilder urlBuilder = new UrlBuilder().s("musics").start(startDate).p("order", "created_at").take(10);
-		GradualLoader loader = new GradualLoader(getActivity());
-		loader.setUrlBuilder(urlBuilder);
-		loader.setOnLoadCompleteListener(new OnLoadCompleteListener() {
-			
-			@Override
-			public void onComplete(JSONArray response) {
-				adapter.addAll(response);
-			}
-		});
-		loader.load();
+		if (recentMusicAdapter == null) {
+			final MusicAdapter adapter = new MusicAdapter(LayoutType.RECENT); 
+			hlvRecentMusic.setAdapter(adapter);
+			final String startDate = StringFormatter.getDateString(Calendar.DATE, -7);
+			final UrlBuilder urlBuilder = new UrlBuilder().s("musics").start(startDate).p("order", "created_at").take(10);
+			GradualLoader loader = new GradualLoader(getActivity());
+			loader.setUrlBuilder(urlBuilder);
+			loader.setOnLoadCompleteListener(new OnLoadCompleteListener() {
+				
+				@Override
+				public void onComplete(JSONArray response) {
+					adapter.addAll(response);
+					hlvRecentMusic.setAdapter(recentMusicAdapter);
+				}
+			});
+			loader.load();
+		} else {
+			hlvRecentMusic.setAdapter(recentMusicAdapter);
+		}
 	}
 
 	@Override
