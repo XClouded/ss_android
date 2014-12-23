@@ -7,6 +7,7 @@ import com.myandb.singsong.activity.UpActivity;
 import com.myandb.singsong.adapter.FriendsAdapter;
 import com.myandb.singsong.fragment.SearchFragment.SearchType;
 import com.myandb.singsong.model.User;
+import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.pager.InviteFriendsPagerAdapter;
 import com.myandb.singsong.secure.Authenticator;
 
@@ -50,6 +51,9 @@ public class FindFriendsFragment extends ListFragment {
 	protected void initialize(Activity activity) {
 		super.initialize(activity);
 		if (getAdapter() == null) {
+			UrlBuilder builder = new UrlBuilder();
+			builder.s("users").s("recommendations");
+			setUrlBuilder(builder);
 			setAdapter(new FriendsAdapter());
 		}
 	}
@@ -108,7 +112,6 @@ public class FindFriendsFragment extends ListFragment {
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, SettingFragment.class.getName());
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
 		startFragment(intent);
-		getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.hold);
 	}
 
 	@Override
