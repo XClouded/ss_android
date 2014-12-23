@@ -1,6 +1,5 @@
 package com.myandb.singsong.fragment;
 
-import com.facebook.Session;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.UpActivity;
@@ -27,40 +26,37 @@ public class HomeFragment extends BaseFragment {
 	private TextView tvNotificationCount;
 	
 	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
+	}
+
+	@Override
 	protected int getResourceId() {
 		return R.layout.fragment_home;
 	}
 
 	@Override
 	protected void onViewInflated(View view, LayoutInflater inflater) {
-		view.findViewById(R.id.btn_logout).setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				new Authenticator().logout();
-				Session session = Session.getActiveSession();
-				if (session != null) {
-					session.closeAndClearTokenInformation();
-				}
-				getActivity().finish();
-			}
-		});
 	}
 
 	@Override
 	protected void initialize(Activity activity) {
-		setHasOptionsMenu(true);
+		
 	}
 
 	@Override
 	protected void setupViews(Bundle savedInstanceState) {
+		// load collabo artist
+		// load genre songs
+		// load update music
+		// load popular music with songs
 		
+		// onresume logo on
 	}
 
 	@Override
-	protected void onDataChanged() {
-		
-	}
+	protected void onDataChanged() {}
 	
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
