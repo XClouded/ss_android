@@ -19,7 +19,6 @@ import com.myandb.singsong.dialog.BaseDialog;
 import com.myandb.singsong.dialog.ReportCommentDialog;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Comment;
-import com.myandb.singsong.model.SongComment;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.widget.SlidingPlayerLayout;
@@ -27,7 +26,7 @@ import com.myandb.singsong.widget.SlidingPlayerLayout;
 @SuppressWarnings("rawtypes")
 public class CommentAdapter extends HolderAdapter<Comment, CommentAdapter.CommentHolder> {
 	
-	private SongComment selectedComment;
+	private Comment selectedComment;
 	private SlidingPlayerLayout layout;
 	private FragmentManager fragmentManager;
 	
@@ -73,7 +72,7 @@ public class CommentAdapter extends HolderAdapter<Comment, CommentAdapter.Commen
 		
 		@Override
 		public void onClick(View v) {
-			selectedComment = (SongComment) v.getTag();
+			selectedComment = (Comment) v.getTag();
 			PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
 			if (isUserWriter(selectedComment)) {
 				popupMenu.inflate(R.menu.delete_comment);
@@ -84,7 +83,7 @@ public class CommentAdapter extends HolderAdapter<Comment, CommentAdapter.Commen
 			popupMenu.show();
 		}
 		
-		private boolean isUserWriter(SongComment comment) {
+		private boolean isUserWriter(Comment comment) {
 			return Authenticator.getUser().getId() == comment.getWriter().getId();
 		}
 	};

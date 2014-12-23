@@ -42,6 +42,7 @@ import com.myandb.singsong.event.ActivateOnlyClickListener;
 import com.myandb.singsong.event.WeakRunnable;
 import com.myandb.singsong.image.BlurAsyncTask;
 import com.myandb.singsong.image.ImageHelper;
+import com.myandb.singsong.model.Comment;
 import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Song;
 import com.myandb.singsong.model.SongComment;
@@ -841,13 +842,13 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		
 	}
 	
-	public void addComment(SongComment comment) {
+	public void addComment(Comment<?> comment) {
 		commentAdapter.addItemToHead(comment);
 		service.getSong().incrementCommentNum();
 		displayCommentNum(service.getSong().getCommentNum());
 	}
 	
-	public void deleteComment(SongComment comment) {
+	public void deleteComment(Comment<?> comment) {
 		JustRequest request = new JustRequest(Method.DELETE, "comments/" + comment.getId(), null);
 		((App) getContext().getApplicationContext()).addShortLivedRequest(getContext(), request);
 		commentAdapter.removeItem(comment);
