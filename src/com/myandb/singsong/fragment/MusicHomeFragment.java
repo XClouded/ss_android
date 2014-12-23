@@ -39,8 +39,8 @@ public class MusicHomeFragment extends BaseFragment {
 	private HorizontalListView hlvPopularMusic;
 	private HorizontalListView hlvRecentMusic;
 	private FloatableLayout fltCategoryMusic;
-	private TextView tvPopularMore;
-	private TextView tvRecentMore;
+	private TextView tvPopularMusicMore;
+	private TextView tvRecentMusicMore;
 	
 	@Override
 	protected int getResourceId() {
@@ -52,8 +52,8 @@ public class MusicHomeFragment extends BaseFragment {
 		hlvPopularMusic = (HorizontalListView) view.findViewById(R.id.hlv_popular_music);
 		hlvRecentMusic = (HorizontalListView) view.findViewById(R.id.hlv_recent_music);
 		fltCategoryMusic = (FloatableLayout) view.findViewById(R.id.flt_category_music);
-		tvPopularMore = (TextView) view.findViewById(R.id.tv_popular_more);
-		tvRecentMore = (TextView) view.findViewById(R.id.tv_recent_more);
+		tvPopularMusicMore = (TextView) view.findViewById(R.id.tv_popular_music_more);
+		tvRecentMusicMore = (TextView) view.findViewById(R.id.tv_recent_music_more);
 	}
 
 	@Override
@@ -68,17 +68,41 @@ public class MusicHomeFragment extends BaseFragment {
 		fltCategoryMusic.setHorizontalSpacing(R.dimen.margin_small);
 		fltCategoryMusic.setVerticalSpacing(R.dimen.margin_small);
 		
-		tvPopularMore.setOnClickListener(new OnClickListener() {
+		tvPopularMusicMore.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				String segment = "musics/";
 				String adapterName = MusicAdapter.class.getName();
-				String title = "title";
+				String title = getString(R.string.popular);
 				Bundle bundle = new Bundle();
+				Bundle params = new Bundle();
+				params.putString("order", "sing_num_this_week");
 				bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, title);
 				bundle.putString(ListFragment.EXTRA_URL_SEGMENT, segment);
 				bundle.putString(ListFragment.EXTRA_ADAPTER_NAME, adapterName);
+				bundle.putBundle(ListFragment.EXTRA_QUERY_PARAMS, params);
+				Intent intent = new Intent(getActivity(), RootActivity.class);
+				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
+				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, ListFragment.class.getName());
+				startFragment(intent);
+			}
+		});
+		
+		tvRecentMusicMore.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				String segment = "musics/";
+				String adapterName = MusicAdapter.class.getName();
+				String title = getString(R.string.recent);
+				Bundle bundle = new Bundle();
+				Bundle params = new Bundle();
+				params.putString("order", "created_at");
+				bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, title);
+				bundle.putString(ListFragment.EXTRA_URL_SEGMENT, segment);
+				bundle.putString(ListFragment.EXTRA_ADAPTER_NAME, adapterName);
+				bundle.putBundle(ListFragment.EXTRA_QUERY_PARAMS, params);
 				Intent intent = new Intent(getActivity(), RootActivity.class);
 				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
 				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, ListFragment.class.getName());

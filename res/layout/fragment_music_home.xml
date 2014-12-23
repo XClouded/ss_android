@@ -19,7 +19,7 @@
                 style="@style/TextViewBase" />
             
             <TextView
-                android:id="@+id/tv_popular_more"
+                android:id="@+id/tv_popular_music_more"
                 android:text="@string/more"
                 android:textSize="@dimen/text_big"
                 android:layout_alignParentRight="true"
@@ -45,7 +45,7 @@
                 style="@style/TextViewBase" />
             
             <TextView
-                android:id="@+id/tv_recent_more"
+                android:id="@+id/tv_recent_music_more"
                 android:text="@string/more"
                 android:textSize="@dimen/text_big"
                 android:layout_alignParentRight="true"
