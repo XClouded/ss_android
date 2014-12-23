@@ -30,11 +30,11 @@
     	    android:paddingTop="@dimen/margin_small"
     	    android:paddingBottom="@dimen/margin_small"
             android:textSize="16sp"
-            android:textColor="@color/font_highlight"
+            android:textColor="@color/white"
             android:textStyle="bold"
             android:lineSpacingExtra="3sp"
             android:gravity="center"
-            android:background="@drawable/tab_selected"
+            android:background="@drawable/tab_selector"
             android:text="인기"
             style="@style/TextViewBase" />
         
