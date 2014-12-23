@@ -18,19 +18,25 @@ import com.myandb.singsong.R;
 import com.myandb.singsong.dialog.BaseDialog;
 import com.myandb.singsong.dialog.ReportCommentDialog;
 import com.myandb.singsong.image.ImageHelper;
+import com.myandb.singsong.model.Comment;
 import com.myandb.singsong.model.SongComment;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.widget.SlidingPlayerLayout;
 
-public class CommentAdapter extends HolderAdapter<SongComment, CommentAdapter.CommentHolder> {
+@SuppressWarnings("rawtypes")
+public class CommentAdapter extends HolderAdapter<Comment, CommentAdapter.CommentHolder> {
 	
 	private SongComment selectedComment;
 	private SlidingPlayerLayout layout;
 	private FragmentManager fragmentManager;
+	
+	public CommentAdapter() {
+		super(Comment.class);
+	}
 
 	public CommentAdapter(SlidingPlayerLayout layout) {
-		super(SongComment.class);
+		super(Comment.class);
 		this.layout = layout;
 		Context context = layout.getContext();
 		this.fragmentManager = ((ActionBarActivity) context).getSupportFragmentManager();
@@ -44,15 +50,21 @@ public class CommentAdapter extends HolderAdapter<SongComment, CommentAdapter.Co
 
 	@Override
 	public void onBindViewHolder(Context context, CommentHolder viewHolder, int position) {
-		final SongComment comment = getItem(position);
+		final Comment<?> comment = getItem(position);
 		final User writer = comment.getWriter();
 		
 		viewHolder.tvNickname.setText(writer.getNickname());
 		viewHolder.tvCreated.setText(comment.getWorkedCreatedTime(getCurrentDate()));
 		viewHolder.tvCommentContent.setText(comment.getContent());
 		viewHolder.ivUserPhoto.setOnClickListener(writer.getProfileClickListener());
-		viewHolder.ivMenu.setTag(comment);
-		viewHolder.ivMenu.setOnClickListener(menuClickListener);
+		
+		if (fragmentManager != null) {
+			viewHolder.ivMenu.setVisibility(View.VISIBLE);
+			viewHolder.ivMenu.setTag(comment);
+			viewHolder.ivMenu.setOnClickListener(menuClickListener);
+		} else {
+			viewHolder.ivMenu.setVisibility(View.INVISIBLE);
+		}
 		
 		ImageHelper.displayPhoto(writer, viewHolder.ivUserPhoto);
 	}
