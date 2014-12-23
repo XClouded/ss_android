@@ -79,29 +79,16 @@
             android:layout_marginBottom="@dimen/margin"
             android:scrollbars="none" />
         
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/margin" >
-            
-            <TextView
-                android:text="@string/popular_music"
-                android:textSize="@dimen/text_big"
-                style="@style/TextViewBase" />
-            
-            <TextView
-                android:id="@+id/tv_popular_music_more"
-                android:text="@string/more"
-                android:textSize="@dimen/text_big"
-                android:layout_alignParentRight="true"
-                style="@style/TextViewBase" />
-            
-        </RelativeLayout>
+        <TextView
+            android:text="@string/popular_music"
+            android:textSize="@dimen/text_big"
+            android:padding="@dimen/margin"
+            style="@style/TextViewBase" />
         
         <com.myandb.singsong.widget.HorizontalListView
             android:id="@+id/hlv_popular_music"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="220dp"
             android:layout_marginBottom="@dimen/margin"
             android:scrollbars="none" />
         

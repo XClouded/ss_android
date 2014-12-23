@@ -1,5 +1,8 @@
 package com.myandb.singsong.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Spannable;
@@ -24,6 +27,7 @@ public class Music extends Model {
 	private String title;
 	private String part_male;
 	private String part_female;
+	private List<Song> songs;
 	private int is_dynamic;
 	private int sing_num;
 	
@@ -69,6 +73,10 @@ public class Music extends Model {
 	
 	public int getSingNum() {
 		return sing_num;
+	}
+	
+	public List<Song> getSongs() {
+		return songs != null ? songs : new ArrayList<Song>();
 	}
 	
 	public boolean isLyricDynamic() {
