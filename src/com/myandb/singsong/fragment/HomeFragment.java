@@ -285,7 +285,7 @@ public class HomeFragment extends BaseFragment {
 		super.onResume();
 		getSupportActionBar().setDisplayShowTitleEnabled(false);
 		getSupportActionBar().setDisplayUseLogoEnabled(true);
-		getSupportActionBar().setLogo(R.drawable.ic_collabo);
+		getSupportActionBar().setLogo(R.drawable.logo_actionbar);
 	}
 
 }
