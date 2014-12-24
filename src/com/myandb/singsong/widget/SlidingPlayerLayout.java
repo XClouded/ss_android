@@ -13,7 +13,6 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.PopupMenu.OnMenuItemClickListener;
 import android.util.AttributeSet;
 import android.view.MenuItem;
@@ -101,7 +100,6 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	private ImageView ivDragPlayControl;
 	private ImageView ivLoopControl;
 	private ImageView ivAutoplayControl;
-	private ImageView ivMenu;
 	private ImageView ivMovingBackground;
 	private ImageView ivBackgroundMask;
 	private ImageView ivBackgroundGradient;
@@ -156,7 +154,6 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 			ivShowComment.setOnClickListener(showCommentClickListener);
 			ivCloseComment.setOnClickListener(closeCommentClickListener);
 			ivCloseLiking.setOnClickListener(closeLikingClickListener);
-			ivMenu.setOnClickListener(showMenuClickListener);
 			
 			service.getPlayer().setOnPlayEventListener(onPlayEventListener);
 			
@@ -234,7 +231,6 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		ivShowComment = (ImageView) findViewById(R.id.iv_show_comment);
 		ivCloseComment = (ImageView) findViewById(R.id.iv_close_comment);
 		ivCloseLiking = (ImageView) findViewById(R.id.iv_close_liking);
-		ivMenu = (ImageView) findViewById(R.id.iv_menu);
 		ivMovingBackground = (ImageView) findViewById(R.id.iv_background);
 		ivBackgroundMask = (ImageView) findViewById(R.id.iv_background_mask);
 		ivBackgroundGradient = (ImageView) findViewById(R.id.iv_background_gradient);
@@ -504,17 +500,6 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		@Override
 		public void onClick(View v) {
 			setLikingWindowShown(false);
-		}
-	};
-	
-	private OnClickListener showMenuClickListener = new OnClickListener() {
-		
-		@Override
-		public void onClick(View v) {
-			final PopupMenu menu = new PopupMenu(getContext(), v);
-			menu.inflate(R.menu.player);
-			menu.setOnMenuItemClickListener(menuItemClickListener);
-			menu.show();
 		}
 	};
 	
