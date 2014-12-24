@@ -51,6 +51,16 @@
         <item name="android:gravity">center</item>
     </style>
     
+    <style name="TextViewMarquee" parent="@style/TextViewEllipsize">
+        <item name="android:gravity">left</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:marqueeRepeatLimit">marquee_forever</item>
+        <item name="android:scrollHorizontally">true</item>
+    </style>
+    
     <style name="TextViewOverflowableLessImportant" parent="@style/TextViewEllipsize">
         <item name="android:textSize">@dimen/text_sub_content</item>
         <item name="android:textColor">@color/font_grey</item>
@@ -62,15 +72,15 @@
         <item name="android:textSize">@dimen/text_subtitle</item>
     </style>
     
-    <style name="TextViewMarquee" parent="@style/TextViewBase">
-        <item name="android:gravity">left</item>
-        <item name="android:focusable">true</item>
-        <item name="android:focusableInTouchMode">true</item>
-        <item name="android:singleLine">true</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:ellipsize">marquee</item>
-        <item name="android:marqueeRepeatLimit">marquee_forever</item>
-        <item name="android:scrollHorizontally">true</item>
+    <style name="TextViewOverflowableMarqueeLessImportant" parent="@style/TextViewMarquee">
+        <item name="android:textSize">@dimen/text_sub_content</item>
+        <item name="android:textColor">@color/font_grey</item>
+    </style>
+    
+    <style name="TextViewOverflowableMarqueeImportant" parent="@style/TextViewMarquee">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/text_subtitle</item>
     </style>
     
     <style name="TextViewIconLabel" parent="@style/TextViewLessImportant">

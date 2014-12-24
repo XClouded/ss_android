@@ -67,7 +67,6 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	
 	private PlayerService service;
 	private ViewGroup slidingContainer; 
-	private String bitlyUrl;
 	private User currentUser;
 	private Handler handler;
 	private GradualLoader commentLoader;
@@ -85,9 +84,9 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	private TextView tvThisSongMessage;
 	private TextView tvPlayStartTime;
 	private TextView tvPlayEndTime;
-	private TextView tvMusicTitleOnCollapsed;
+	private TextView tvMusicInfoOnCollapsed;
+	private TextView tvUsersInfoOnCollapsed;
 	private TextView tvMusicTitleOnExpanded;
-	private TextView tvSingerNameOnCollapsed;
 	private TextView tvSingerNameOnExpanded;
 	private TextView tvTargetContent;
 	private TextView tvCommentNum;
@@ -217,10 +216,10 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		tvThisSongMessage = (TextView) findViewById(R.id.tv_this_song_message);
 		tvPlayStartTime = (TextView) findViewById(R.id.tv_play_start_time);
 		tvPlayEndTime = (TextView) findViewById(R.id.tv_play_end_time);
-		tvMusicTitleOnCollapsed = (TextView) findViewById(R.id.tv_music_title_on_collapsed);
 		tvMusicTitleOnExpanded = (TextView) findViewById(R.id.tv_music_title_on_expanded);
-		tvSingerNameOnCollapsed = (TextView) findViewById(R.id.tv_singer_name_on_collapsed);
 		tvSingerNameOnExpanded = (TextView) findViewById(R.id.tv_singer_name_on_expanded);
+		tvMusicInfoOnCollapsed = (TextView) findViewById(R.id.tv_music_info_on_collapsed);
+		tvUsersInfoOnCollapsed = (TextView) findViewById(R.id.tv_users_info_on_collapsed);
 		tvTargetContent = (TextView) findViewById(R.id.tv_target_nickname);
 		tvCommentNum = (TextView) findViewById(R.id.tv_comment_num);
 		tvLikingNum = (TextView) findViewById(R.id.tv_liking_num);
@@ -567,6 +566,8 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		
 		displayMusicInfo(music);
 		
+		displayUsersInfo(thisUser, parentUser);
+		
 		displayBackgroundImage(song);
 		
 		displaySongMessage(song);
@@ -615,14 +616,23 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	}
 	
 	private void displayMusicInfo(Music music) {
-		tvMusicTitleOnCollapsed.setText(music.getTitle());
+		tvMusicInfoOnCollapsed.setText(music.getTitle() + " - " + music.getSingerName());
+		tvMusicInfoOnCollapsed.setSelected(true);
 		tvMusicTitleOnExpanded.setText(music.getTitle());
-		tvSingerNameOnCollapsed.setText(music.getSingerName());
 		tvSingerNameOnExpanded.setText(music.getSingerName());
-		tvMusicTitleOnCollapsed.setSelected(true);
 		tvMusicTitleOnExpanded.setSelected(true);
-		tvSingerNameOnCollapsed.setSelected(true);
 		tvSingerNameOnExpanded.setSelected(true);
+	}
+	
+	private void displayUsersInfo(User thisUser, User parentUser) {
+		if (thisUser != null) {
+			tvUsersInfoOnCollapsed.setText(thisUser.getNickname());
+		}
+		if (parentUser != null) {
+			tvUsersInfoOnCollapsed.append(" X ");
+			tvUsersInfoOnCollapsed.append(parentUser.getNickname());
+		}
+		tvUsersInfoOnCollapsed.setSelected(true);
 	}
 	
 	private void displayBackgroundImage(Song song) {
@@ -855,54 +865,6 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		service.getSong().decrementCommentNum();
 		displayCommentNum(service.getSong().getCommentNum());
 	}
-	
-	/*
-	private void getBitlyShortUrl() {
-		final String apiUrl = "https://api-ssl.bitly.com/v3/shorten?"; 
-		final String token = "adaad7e775370d959bdb74ddeafed457a541710c";
-		
-		UrlBuilder urlBuilder = new UrlBuilder();
-		String longUrl = urlBuilder.s("w").s("listen").s(thisSong.getId()).toString();
-		String requestUrl = apiUrl;
-		requestUrl += "access_token=" + token;
-		requestUrl += "&longUrl=" + longUrl;
-		
-		try {
-			JSONObject message = new JSONObject();
-			message.put("access_token", token);
-			message.put("longUrl", longUrl);
-			
-			JsonObjectRequest request = new JsonObjectRequest(
-					Method.GET, requestUrl, null,
-					new BitlyResponse(this), null
-			);
-			RequestQueue queue = ((App) getContext().getApplicationContext()).getQueueInstance();
-			queue.add(request);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private static class BitlyResponse extends OnVolleyWeakResponse<SlidingPlayerLayout, JSONObject> {
-
-		public BitlyResponse(SlidingPlayerLayout reference) {
-			super(reference);
-		}
-
-		@Override
-		public void onFilteredResponse(SlidingPlayerLayout reference, JSONObject response) {
-			try {
-				JSONObject data = response.getJSONObject("data");
-				String bitlyUrl = data.getString("url");
-				reference.showKakaotalkDialog(bitlyUrl);
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-		}
-		
-	}
-	
-	 */
 
     private PanelSlideListener panelSlideListener = new PanelSlideListener() {
     	
