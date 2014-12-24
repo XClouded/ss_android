@@ -172,12 +172,16 @@
 	        android:background="@drawable/row_naked_selector"
 	        style="@style/FormBase" >
 	        
-	        <TextView
-	            android:id="@+id/tv_is_facebook_activated"
+	        <ImageView
+	            android:id="@+id/iv_is_facebook_activated"
+	            android:layout_width="25dp"
+	            android:layout_height="25dp"
+	            android:padding="@dimen/margin_tiny"
+	            android:background="@drawable/button_transparent_primary_selector"
 	            android:layout_centerVertical="true"
 	            android:layout_alignParentRight="true"
-	            android:text="@string/_check"
-	            style="@style/TextViewLessImportant" />
+	            android:src="@drawable/ic_check"
+	            style="@style/ImageViewBase" />
 	        
 	        <TextView
 	            android:padding="0dp"
@@ -194,12 +198,16 @@
 	        android:background="@drawable/row_naked_selector"
 	        style="@style/FormBase" >
 	        
-	        <TextView
-	            android:id="@+id/tv_is_notification_enabled"
+	        <ImageView
+	            android:id="@+id/iv_is_notification_enabled"
+	            android:layout_width="25dp"
+	            android:layout_height="25dp"
+	            android:padding="@dimen/margin_tiny"
+	            android:background="@drawable/button_transparent_primary_selector"
 	            android:layout_centerVertical="true"
 	            android:layout_alignParentRight="true"
-	            android:text="@string/_check"
-	            style="@style/TextViewLessImportant" />
+	            android:src="@drawable/ic_check"
+	            style="@style/ImageViewBase" />
 	        
 	        <TextView
 	            android:padding="0dp"
