@@ -135,7 +135,6 @@ public class MusicHomeFragment extends BaseFragment {
 	private void loadPopularMusic() {
 		if (popularMusicAdapter == null) {
 			popularMusicAdapter = new MusicAdapter(LayoutType.POPULAR); 
-			hlvPopularMusic.setOnItemClickListener(musicItemClickListener);
 			final UrlBuilder urlBuilder = new UrlBuilder().s("musics").p("order", "sing_num_this_week").take(5);
 			final GradualLoader loader = new GradualLoader(getActivity());
 			loader.setUrlBuilder(urlBuilder);
@@ -145,18 +144,19 @@ public class MusicHomeFragment extends BaseFragment {
 				public void onComplete(JSONArray response) {
 					popularMusicAdapter.addAll(response);
 					hlvPopularMusic.setAdapter(popularMusicAdapter);
+					hlvPopularMusic.setOnItemClickListener(musicItemClickListener);
 				}
 			});
 			loader.load();
 		} else {
 			hlvPopularMusic.setAdapter(popularMusicAdapter);
+			hlvPopularMusic.setOnItemClickListener(musicItemClickListener);
 		}
 	}
 	
 	private void loadRecentMusic() {
 		if (recentMusicAdapter == null) {
 			recentMusicAdapter = new MusicAdapter(LayoutType.RECENT); 
-			hlvRecentMusic.setOnItemClickListener(musicItemClickListener);
 			final String startDate = StringFormatter.getDateString(Calendar.DATE, -7);
 			final UrlBuilder urlBuilder = new UrlBuilder().s("musics").start(startDate).p("order", "created_at").take(10);
 			GradualLoader loader = new GradualLoader(getActivity());
@@ -167,11 +167,13 @@ public class MusicHomeFragment extends BaseFragment {
 				public void onComplete(JSONArray response) {
 					recentMusicAdapter.addAll(response);
 					hlvRecentMusic.setAdapter(recentMusicAdapter);
+					hlvRecentMusic.setOnItemClickListener(musicItemClickListener);
 				}
 			});
 			loader.load();
 		} else {
 			hlvRecentMusic.setAdapter(recentMusicAdapter);
+			hlvRecentMusic.setOnItemClickListener(musicItemClickListener);
 		}
 	}
 	
