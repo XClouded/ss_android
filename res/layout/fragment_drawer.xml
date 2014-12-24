@@ -50,11 +50,20 @@
 	        android:gravity="center"
 	        android:orientation="vertical" >
 	        
+	        <ImageView
+	            android:layout_width="@dimen/photo_big"
+	            android:layout_height="@dimen/photo_big"
+	            android:layout_marginBottom="@dimen/margin_big"
+	            android:src="@drawable/user_character"
+	            style="@style/ImageViewBase" />
+	        
 	        <Button
 	            android:id="@+id/btn_drawer_login"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:text="@string/login" />
+	            android:text="로그인이 필요합니다"
+	            android:background="@drawable/button_grey_selector"
+	            style="@style/ButtonBase" />
 	        
 	    </LinearLayout>
         
