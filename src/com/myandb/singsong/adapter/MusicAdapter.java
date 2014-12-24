@@ -26,7 +26,9 @@ public class MusicAdapter extends HolderAdapter<Music, MusicAdapter.MusicHolder>
 		
 		RECENT(R.layout.row_music_recent, true),
 		
-		NORMAL(R.layout.row_music_normal, false);
+		NORMAL(R.layout.row_music_normal, false),
+		
+		NORMAL_POPULAR(R.layout.row_music_normal, false);
 		
 		private int layoutResId;
 		private boolean horizontal;
@@ -65,7 +67,7 @@ public class MusicAdapter extends HolderAdapter<Music, MusicAdapter.MusicHolder>
 	public MusicHolder onCreateViewHolder(LayoutInflater inflater, ViewGroup parent, int viewType) {
 		View view = inflater.inflate(layoutType.getLayoutResourceId(), parent, false);
 		padding = view.getResources().getDimensionPixelSize(R.dimen.margin);
-		return new MusicHolder(view, layoutType);
+		return new MusicHolder(view);
 	}
 
 	@Override
@@ -93,6 +95,19 @@ public class MusicAdapter extends HolderAdapter<Music, MusicAdapter.MusicHolder>
 		if (layoutType.equals(LayoutType.POPULAR_HOME)) {
 			final List<Song> songs = music.getSongs();
 			displayUsers(viewHolder, songs);
+		}
+		
+		if (layoutType.equals(LayoutType.NORMAL)) {
+			viewHolder.tvMusicNum.setVisibility(View.GONE);
+		}
+		
+		if (layoutType.equals(LayoutType.NORMAL_POPULAR)) {
+			viewHolder.tvMusicNum.setVisibility(View.VISIBLE);
+			if (position < 99) {
+				viewHolder.tvMusicNum.setText(String.valueOf(position + 1));
+			} else {
+				viewHolder.tvMusicNum.setText(String.valueOf("-"));
+			}
 		}
 	}
 	
@@ -126,6 +141,7 @@ public class MusicAdapter extends HolderAdapter<Music, MusicAdapter.MusicHolder>
 
 	public static final class MusicHolder extends ViewHolder {
 		
+		public TextView tvMusicNum;
 		public TextView tvSingerName;
 		public TextView tvMusicTitle;
 		public TextView tvSingNum;
@@ -133,9 +149,10 @@ public class MusicAdapter extends HolderAdapter<Music, MusicAdapter.MusicHolder>
 		public ImageView ivAlbumPhoto;
 		public List<ImageView> ivUserPhotos;
 
-		public MusicHolder(View view, LayoutType type) {
+		public MusicHolder(View view) {
 			super(view);
 			
+			tvMusicNum = (TextView) view.findViewById(R.id.tv_music_num);
 			tvSingerName = (TextView) view.findViewById(R.id.tv_singer_name);
 			tvMusicTitle = (TextView) view.findViewById(R.id.tv_music_title);
 			tvSingNum = (TextView) view.findViewById(R.id.tv_sing_num);

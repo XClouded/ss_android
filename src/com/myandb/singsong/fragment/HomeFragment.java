@@ -103,18 +103,16 @@ public class HomeFragment extends BaseFragment {
 			@Override
 			public void onClick(View v) {
 				String segment = "musics/";
-				String adapterName = MusicAdapter.class.getName();
 				String title = getString(R.string.recent);
 				Bundle bundle = new Bundle();
 				Bundle params = new Bundle();
 				params.putString("order", "created_at");
 				bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, title);
 				bundle.putString(ListFragment.EXTRA_URL_SEGMENT, segment);
-				bundle.putString(ListFragment.EXTRA_ADAPTER_NAME, adapterName);
 				bundle.putBundle(ListFragment.EXTRA_QUERY_PARAMS, params);
 				Intent intent = new Intent(getActivity(), RootActivity.class);
 				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
-				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, ListFragment.class.getName());
+				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, MusicListFragment.class.getName());
 				startFragment(intent);
 			}
 		});

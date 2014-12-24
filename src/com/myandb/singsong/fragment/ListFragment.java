@@ -57,10 +57,6 @@ public class ListFragment extends BaseFragment {
 		if (isFragmentCreated()) {
 			internalUrlBuilder = getUrlBuilderOnArgumentPassed(bundle);
 			adapter = getListAdapterOnArgumentPassed(bundle);
-			if (internalUrlBuilder == null || adapter == null) {
-				internalUrlBuilder = null;
-				adapter = null;
-			}
 		}
 	}
 	
