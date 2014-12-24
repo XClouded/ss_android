@@ -543,7 +543,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		
 		displayMusicInfo(music);
 		
-		displayUsersInfo(thisUser, parentUser);
+		displayUsersInfo(song);
 		
 		displayBackgroundImage(song);
 		
@@ -603,13 +603,11 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		tvSingerNameOnExpanded.setSelected(true);
 	}
 	
-	private void displayUsersInfo(User thisUser, User parentUser) {
-		if (thisUser != null) {
-			tvUsersInfoOnCollapsed.setText(thisUser.getNickname());
-		}
-		if (parentUser != null) {
+	private void displayUsersInfo(Song song) {
+		tvUsersInfoOnCollapsed.setText(song.getCreator().getNickname());
+		if (!song.isRoot()) {
 			tvUsersInfoOnCollapsed.append(" X ");
-			tvUsersInfoOnCollapsed.append(parentUser.getNickname());
+			tvUsersInfoOnCollapsed.append(song.getParentUser().getNickname());
 		}
 		tvUsersInfoOnCollapsed.setSelected(true);
 	}
