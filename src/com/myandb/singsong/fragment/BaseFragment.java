@@ -69,6 +69,8 @@ public abstract class BaseFragment extends Fragment {
 		setActionBarSubtitle(subtitle);
 		setActionBarBackground(R.drawable.actionbar_background);
 		setActionBarOverlay(false);
+		getSupportActionBar().setDisplayShowTitleEnabled(true);
+		getSupportActionBar().setDisplayUseLogoEnabled(false);
 	}
 
 	public void notifyDataChanged() {

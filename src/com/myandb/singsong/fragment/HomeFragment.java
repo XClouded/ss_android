@@ -280,4 +280,12 @@ public class HomeFragment extends BaseFragment {
 		}
 	};
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		getSupportActionBar().setDisplayShowTitleEnabled(false);
+		getSupportActionBar().setDisplayUseLogoEnabled(true);
+		getSupportActionBar().setLogo(R.drawable.ic_collabo);
+	}
+
 }

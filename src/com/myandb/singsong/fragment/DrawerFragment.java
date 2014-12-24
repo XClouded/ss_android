@@ -68,11 +68,8 @@ public class DrawerFragment extends BaseFragment {
 	
 	private GlobalMenu makeHomeMenu() {
 		Intent intent = new Intent(getActivity(), RootActivity.class);
-		Bundle bundle = new Bundle();
-		bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_home_title));
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, HomeFragment.class.getName());
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_ROOT, true);
-		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
 		return new GlobalMenu(R.string.fragment_home_title, intent, R.drawable.ic_menu_home);
 	}
 	
