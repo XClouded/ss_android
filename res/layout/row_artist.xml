@@ -39,7 +39,7 @@
 	        android:layout_alignLeft="@id/tv_artist_nickname"
 	        android:layout_below="@id/tv_artist_nickname"
 	        android:text="33"
-	        style="@style/TextViewHint" />
+	        style="@style/TextViewLessImportant" />
         
         <TextView
             android:id="@+id/tv_artist_num"

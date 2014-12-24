@@ -17,7 +17,7 @@
     
     <TextView
         android:id="@+id/tv_action_notification_count"
-        android:textSize="10sp"
+        android:textSize="@dimen/text_hint"
         android:textColor="@color/white"
         android:background="@drawable/circle_red"
         android:layout_gravity="right"

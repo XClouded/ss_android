@@ -76,7 +76,7 @@
         android:id="@+id/tv_music_title"
         android:layout_above="@id/layout_tab"
         android:layout_marginBottom="@dimen/margin_bigger"
-        android:textSize="@dimen/text_biggest"
+        android:textSize="@dimen/text_impact"
         android:gravity="left"
         style="@style/TextViewOverflowableImportant" />
     
@@ -84,7 +84,7 @@
         android:id="@+id/tv_singer_name"
         android:layout_above="@id/tv_music_title"
         android:textColor="@color/font_white"
-        android:textSize="@dimen/text"
+        android:textSize="@dimen/text_main_content"
         android:gravity="left"
         style="@style/TextViewOverflowableLessImportant" />
     

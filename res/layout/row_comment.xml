@@ -31,7 +31,7 @@
 	        android:layout_toLeftOf="@id/iv_menu"
 	        android:layout_marginTop="@dimen/margin_small"
 	        android:layout_marginLeft="@dimen/margin"
-	        style="@style/TextViewHint" />
+	        style="@style/TextViewLessImportant" />
         
 	    <TextView
 	        android:id="@+id/tv_comment_user_nickname"

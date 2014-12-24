@@ -146,7 +146,7 @@
 		            android:paddingTop="@dimen/margin_tiny"
 		            android:paddingBottom="@dimen/margin_tiny"
 		            android:textColor="@color/font_default"
-		            style="@style/TextViewHint" />
+		            style="@style/TextViewLessImportant" />
 		        
 		        <ImageView
 		            style="@style/DividerHorizontal" />
@@ -196,7 +196,7 @@
 		            android:layout_marginLeft="@dimen/margin_small"
 		            android:paddingTop="@dimen/margin_tiny"
 		            android:paddingBottom="@dimen/margin_tiny"
-		            style="@style/TextViewHint" />
+		            style="@style/TextViewLessImportant" />
 		        
 		        <ImageView
 		            style="@style/DividerHorizontal" />
@@ -250,7 +250,7 @@
 		            android:layout_marginLeft="@dimen/margin_small"
 		            android:paddingTop="@dimen/margin_tiny"
 		            android:paddingBottom="@dimen/margin_tiny"
-		            style="@style/TextViewHint" />
+		            style="@style/TextViewLessImportant" />
 		        
 		        <ImageView
 		            style="@style/DividerHorizontal" />
@@ -295,7 +295,7 @@
 		                android:background="@drawable/button_alert_selector"
 		                android:padding="@dimen/margin_tiny"
 		                android:textColor="@color/font_white"
-		                android:textSize="@dimen/text_tiny"
+		                android:textSize="@dimen/text_hint"
 		                android:textStyle="bold"
 		                android:text="@string/delete"
 		                style="@style/ButtonBase" />
@@ -306,7 +306,7 @@
 		                android:layout_height="wrap_content"
 		                android:padding="@dimen/margin_small"
 		                android:layout_toRightOf="@id/photo_wrapper"
-		                android:textSize="@dimen/text_small"
+		                android:textSize="@dimen/text_sub_content"
 		                android:textColorHint="@color/font_hint"
 		                android:hint="한마디를 남겨주세요!"
 		                android:maxLength="200"
@@ -317,7 +317,7 @@
 	            <Button
 	                android:id="@+id/btn_other_images"
 	                android:layout_margin="@dimen/margin_small"
-	                android:textSize="@dimen/text_small"
+	                android:textSize="@dimen/text_sub_content"
 	                android:text="업로드 했던 사진 보기"
 	                style="@style/ButtonDark" />
 		        

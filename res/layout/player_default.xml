@@ -44,7 +44,7 @@
             <TextView
                 android:layout_marginTop="-4sp"
                 android:textColor="@color/white"
-                android:textSize="@dimen/text_huge"
+                android:textSize="@dimen/text_impact"
                 android:textStyle="bold"
                 android:text="콜라보 하기"
                 style="@style/TextViewBase" />
@@ -85,7 +85,7 @@
 	            android:id="@+id/tv_parent_user_part"
 	            android:layout_marginBottom="@dimen/margin"
 	            android:textColor="@color/font_male_active"
-	            style="@style/TextViewHint" />
+	            style="@style/TextViewLessImportant" />
 	        
 	        <TextView
 	            android:id="@+id/tv_parent_song_message"
@@ -122,7 +122,7 @@
 	            android:id="@+id/tv_this_user_part"
 	            android:layout_marginBottom="@dimen/margin"
 	            android:textColor="@color/font_female_active"
-	            style="@style/TextViewHint" />
+	            style="@style/TextViewLessImportant" />
 	        
 	        <TextView
 	            android:id="@+id/tv_this_song_message"

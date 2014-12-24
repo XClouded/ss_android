@@ -9,7 +9,7 @@
         android:id="@+id/tv_progress_title"
         android:text="@string/loading"
         android:textColor="@color/white"
-        style="@style/TextViewTitle" />
+        style="@style/TextViewSubtitleAlone" />
 
     <ProgressBar
         android:id="@+id/pb_loading"

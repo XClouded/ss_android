@@ -19,7 +19,7 @@
             android:layout_height="match_parent"
             android:layout_marginRight="@dimen/margin"
             android:text="@string/popular"
-            android:textSize="@dimen/text_small"
+            android:textSize="@dimen/text_sub_content"
             android:gravity="right|center_vertical"
             style="@style/TextViewBase" />
         
@@ -29,7 +29,7 @@
             android:layout_height="match_parent"
             android:layout_marginRight="@dimen/margin"
             android:text="@string/recent"
-            android:textSize="@dimen/text_small"
+            android:textSize="@dimen/text_sub_content"
             android:gravity="right|center_vertical"
             style="@style/TextViewBase" />
         

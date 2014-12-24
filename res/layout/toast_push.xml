@@ -29,7 +29,7 @@
             <TextView
                 android:text="@string/app_name"
                 android:textColor="@color/font_white"
-                style="@style/TextViewHint" />
+                style="@style/TextViewLessImportant" />
             
         </LinearLayout>
         

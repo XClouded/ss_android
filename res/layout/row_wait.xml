@@ -45,7 +45,7 @@
                 android:id="@+id/tv_song_collabo_num"
                 android:layout_marginTop="-6sp"
                 android:textColor="@color/white"
-                style="@style/TextViewHint" />
+                style="@style/TextViewLessImportant" />
             
         </LinearLayout>
         

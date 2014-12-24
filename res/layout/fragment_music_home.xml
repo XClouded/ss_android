@@ -15,13 +15,13 @@
             
             <TextView
                 android:text="@string/popular_music"
-                android:textSize="@dimen/text_big"
+                android:textSize="@dimen/text_subtitle"
                 style="@style/TextViewBase" />
             
             <TextView
                 android:id="@+id/tv_popular_music_more"
                 android:text="@string/more"
-                android:textSize="@dimen/text_big"
+                android:textSize="@dimen/text_subtitle"
                 android:layout_alignParentRight="true"
                 style="@style/TextViewBase" />
             
@@ -41,13 +41,13 @@
             
             <TextView
                 android:text="@string/recent_music"
-                android:textSize="@dimen/text_big"
+                android:textSize="@dimen/text_subtitle"
                 style="@style/TextViewBase" />
             
             <TextView
                 android:id="@+id/tv_recent_music_more"
                 android:text="@string/more"
-                android:textSize="@dimen/text_big"
+                android:textSize="@dimen/text_subtitle"
                 android:layout_alignParentRight="true"
                 style="@style/TextViewBase" />
             
@@ -62,7 +62,7 @@
         
         <TextView
             android:text="@string/category_music"
-            android:textSize="@dimen/text_big"
+            android:textSize="@dimen/text_subtitle"
             android:padding="@dimen/margin"
             style="@style/TextViewBase" />
         

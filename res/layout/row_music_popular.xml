@@ -20,14 +20,14 @@
         android:id="@+id/tv_music_title"
         android:layout_marginBottom="@dimen/margin_bigger"
         android:layout_alignParentBottom="true"
-        android:textSize="@dimen/text_biggest"
+        android:textSize="@dimen/text_impact"
         style="@style/TextViewOverflowableImportant" />
     
     <TextView
         android:id="@+id/tv_singer_name"
         android:layout_above="@id/tv_music_title"
         android:textColor="@color/font_white"
-        android:textSize="@dimen/text"
+        android:textSize="@dimen/text_main_content"
         style="@style/TextViewOverflowableLessImportant" />
     
     <TextView

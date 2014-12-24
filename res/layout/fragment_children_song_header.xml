@@ -52,7 +52,7 @@
 		    android:id="@+id/tv_user_part"
 		    android:layout_marginBottom="@dimen/margin_tiny"
 		    android:textColor="@color/font_male_active"
-		    style="@style/TextViewHint" />
+		    style="@style/TextViewLessImportant" />
 	 
 		<TextView
 		    android:id="@+id/tv_song_message"

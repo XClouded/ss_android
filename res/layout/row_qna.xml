@@ -7,7 +7,7 @@
         android:id="@+id/tv_question"
         android:layout_marginBottom="@dimen/margin"
         android:textColor="@color/white"
-        android:textSize="@dimen/text_bigger"
+        android:textSize="@dimen/text_title"
         android:textStyle="bold"
         style="@style/TextViewBase" />
     
@@ -21,6 +21,6 @@
         android:id="@+id/tv_answer"
         android:layout_toRightOf="@id/iv_user_photo"
         android:layout_alignTop="@id/iv_user_photo"
-        style="@style/TextViewHint" />
+        style="@style/TextViewLessImportant" />
 
 </RelativeLayout>

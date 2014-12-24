@@ -64,7 +64,7 @@ public class LrcDisplayer {
 		this.textViewIndexes = new HashMap<Long, Integer>();
 		
 		this.context = context;
-		this.textSize = context.getResources().getDimension(R.dimen.text_bigger);
+		this.textSize = context.getResources().getDimension(R.dimen.text_title);
 		this.layoutParams = new LinearLayout.LayoutParams(
 				LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 		this.layoutParams.bottomMargin = (int) context.getResources().getDimension(R.dimen.margin);

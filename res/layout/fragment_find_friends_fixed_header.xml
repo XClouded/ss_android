@@ -25,7 +25,7 @@
     <TextView
         android:text="팔로우 할 만한 사용자"
         android:paddingBottom="@dimen/margin_small"
-        style="@style/TextViewTitle" />
+        style="@style/TextViewSubtitleAlone" />
        
     <ImageView
         style="@style/DividerHorizontal" />

@@ -28,7 +28,7 @@
 	    <TextView
 	        android:id="@+id/tv_music_title"
 	        android:textColor="@color/font_default"
-	        android:textSize="@dimen/text_bigger"
+	        android:textSize="@dimen/text_title"
 	        android:layout_marginBottom="@dimen/margin"
 	        style="@style/TextViewOverflowableImportant" />
 	    

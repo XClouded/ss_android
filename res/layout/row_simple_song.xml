@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_toLeftOf="@id/iv_album_photo"
             android:layout_marginBottom="@dimen/margin"
-            android:textSize="@dimen/text_small"
+            android:textSize="@dimen/text_sub_content"
             android:gravity="left"
             style="@style/TextViewEllipsize" />
         

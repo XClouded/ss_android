@@ -17,7 +17,7 @@
             android:layout_gravity="center_horizontal"
             android:text="페이스북으로 가입했다면 이 버튼을 누르세요."
             android:textColor="@color/font_hint"
-            android:textSize="@dimen/text_tiny"
+            android:textSize="@dimen/text_hint"
             android:layout_marginBottom="@dimen/margin_small"
             style="@style/TextViewBase" />
         
@@ -34,7 +34,7 @@
         
         <TextView
             android:text="이메일로 로그인"
-            style="@style/TextViewTitle" />
+            style="@style/TextViewSubtitleAlone" />
         
         <ImageView
         	style="@style/DividerHorizontal" />
@@ -87,7 +87,7 @@
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@id/btn_login"
             android:layout_centerVertical="true"
-            android:textSize="@dimen/text_tiny"
+            android:textSize="@dimen/text_hint"
             android:textColor="@color/font_hint"
             android:linksClickable="true" />
         

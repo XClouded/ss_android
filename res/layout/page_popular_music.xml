@@ -41,7 +41,7 @@
             android:id="@+id/tv_music_sing_num"
             android:layout_marginTop="-6sp"
             android:textColor="@color/white"
-            style="@style/TextViewHint" />
+            style="@style/TextViewLessImportant" />
         
     </LinearLayout>
 

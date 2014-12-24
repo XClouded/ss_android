@@ -18,13 +18,13 @@
 	    android:layout_toRightOf="@id/iv_drag_play_control"
 	    android:layout_alignTop="@id/iv_drag_play_control"
 	    android:textColor="@color/font_white"
-	    style="@style/TextViewHint" />
+	    style="@style/TextViewLessImportant" />
 	
 	<TextView
 	    android:id="@+id/tv_music_title_on_collapsed"
 	    android:layout_toRightOf="@id/iv_drag_play_control"
 	    android:layout_alignBottom="@id/iv_drag_play_control"
-	    android:textSize="@dimen/text_bigger"
+	    android:textSize="@dimen/text_title"
 	    android:textColor="@android:color/white"
 	    android:textStyle="bold"
 	    style="@style/TextViewMarquee" />
