@@ -13,9 +13,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
-import android.support.v7.widget.PopupMenu.OnMenuItemClickListener;
 import android.util.AttributeSet;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -90,6 +88,8 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	private TextView tvTargetContent;
 	private TextView tvCommentNum;
 	private TextView tvLikingNum;
+	private TextView tvLikingNumOut;
+	private TextView tvOtherCollabo;
 	private ImageView ivParentUserPhoto;
 	private ImageView ivThisUserPhoto;
 	private ImageView ivLikeSong;
@@ -103,6 +103,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	private ImageView ivMovingBackground;
 	private ImageView ivBackgroundMask;
 	private ImageView ivBackgroundGradient;
+	private ImageView ivShare;
 	private Button btnSubmitComment;
 	private EditText etComment;
 	private View vDragPanelOnExpanded;
@@ -112,6 +113,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	private View vLikingWindow;
 	private View vPartnerWrapper;
 	private View vStartCollabo;
+	private View vShowLiking;
 	private ListView lvComments;
 	private GridView gvLikings;
 	private SeekBar sbPlay;
@@ -154,6 +156,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 			ivShowComment.setOnClickListener(showCommentClickListener);
 			ivCloseComment.setOnClickListener(closeCommentClickListener);
 			ivCloseLiking.setOnClickListener(closeLikingClickListener);
+			vShowLiking.setOnClickListener(showLikingClickListener);
 			
 			service.getPlayer().setOnPlayEventListener(onPlayEventListener);
 			
@@ -204,6 +207,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		vLikingWindow = findViewById(R.id.layout_player_liking);
 		vPartnerWrapper = findViewById(R.id.layout_partner_wrapper);
 		vStartCollabo = findViewById(R.id.layout_collabo);
+		vShowLiking = findViewById(R.id.ll_liking_num);
 		
 		tvParentUserNickname = (TextView) findViewById(R.id.tv_parent_user_nickname);
 		tvThisUserNickname = (TextView) findViewById(R.id.tv_this_user_nickname);
@@ -220,6 +224,8 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		tvTargetContent = (TextView) findViewById(R.id.tv_target_nickname);
 		tvCommentNum = (TextView) findViewById(R.id.tv_comment_num);
 		tvLikingNum = (TextView) findViewById(R.id.tv_liking_num);
+		tvLikingNumOut = (TextView) findViewById(R.id.tv_liking_num_out);
+		tvOtherCollabo = (TextView) findViewById(R.id.tv_other_collabo);
 		
 		ivParentUserPhoto = (ImageView) findViewById(R.id.iv_parent_user_photo);
 		ivThisUserPhoto = (ImageView) findViewById(R.id.iv_this_user_photo);
@@ -234,6 +240,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		ivMovingBackground = (ImageView) findViewById(R.id.iv_background);
 		ivBackgroundMask = (ImageView) findViewById(R.id.iv_background_mask);
 		ivBackgroundGradient = (ImageView) findViewById(R.id.iv_background_gradient);
+		ivShare = (ImageView) findViewById(R.id.iv_share);
 		
 		lvComments = (ListView) findViewById(R.id.lv_comment);
 		gvLikings = (GridView) findViewById(R.id.gv_liking);
@@ -495,35 +502,20 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		}
 	};
 	
+	private OnClickListener showLikingClickListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			setLikingWindowShown(true);
+		}
+	};
+	
 	private OnClickListener closeLikingClickListener = new OnClickListener() {
 		
 		@Override
 		public void onClick(View v) {
 			setLikingWindowShown(false);
 		}
-	};
-	
-	private OnMenuItemClickListener menuItemClickListener = new OnMenuItemClickListener() {
-
-		@Override
-		public boolean onMenuItemClick(MenuItem item) {
-			switch (item.getItemId()) {
-			case R.id.action_other_collabo:
-				service.getSong().getChildrenClickListener().onClick(SlidingPlayerLayout.this);
-				return true;
-				
-			case R.id.action_song_likings:
-				setLikingWindowShown(true);
-				return true;
-				
-			case R.id.action_song_images:
-				return true;
-
-			default:
-				return false;
-			}
-		}
-		
 	};
 	
 	public void onProgressUpdate() {
@@ -582,6 +574,8 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		vStartCollabo.setOnClickListener(song.getCollaboClickListner());
 		ivLikeSong.setOnClickListener(likeClickListener);
 		btnSubmitComment.setOnClickListener(submitCommentClickListner);
+		tvOtherCollabo.setOnClickListener(song.getChildrenClickListener());
+		ivShare.setOnClickListener(song.getChildrenClickListener());
 		
 		if (song.isRoot()) {
 			vPartnerWrapper.setVisibility(View.GONE);
@@ -692,6 +686,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		tvLikingNum.setText("¡¡æ∆ø‰ (");
 		tvLikingNum.append(String.valueOf(num));
 		tvLikingNum.append(")");
+		tvLikingNumOut.setText(String.valueOf(num));
 	}
 	
 	private void checkUserLikeSong(User user, Song song) {

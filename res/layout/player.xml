@@ -41,7 +41,6 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/margin_bigger"
         android:paddingBottom="@dimen/margin_bigger"
         android:layout_below="@id/layout_drag_panel" >
         

@@ -25,7 +25,7 @@
     <dimen name="user_photo_big_horizontal_margin">@dimen/margin_big</dimen>
     <dimen name="user_photo_big_vertical_margin">@dimen/margin</dimen>
         
-    <dimen name="text_icon_label_inverse_margin">-4sp</dimen>
+    <dimen name="text_icon_label_inverse_margin">-3sp</dimen>
     
     <dimen name="text_hint">10sp</dimen>
     <dimen name="text_sub_content">12sp</dimen>
