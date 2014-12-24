@@ -4,21 +4,22 @@
  	android:id="@+id/rl_gnb_row"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/margin" >
+    android:paddingBottom="@dimen/margin_bigger" >
         
     <ImageView
         android:id="@+id/iv_gnb_icon"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_gravity="center"
         style="@style/ImageViewBase" />
 	    
 	<TextView 
 	    android:id="@+id/tv_gnb_title"
-	    android:layout_marginBottom="@dimen/margin_small"
+	    android:layout_marginBottom="@dimen/margin_bigger"
 	    android:layout_gravity="bottom|center_horizontal"
-	    android:textColor="@color/font_grey"
-	    android:textSize="@dimen/text_title"
+	    android:textColor="#6ecde1"
+	    android:textSize="@dimen/text_subtitle"
+	    android:textStyle="bold"
 	    android:maxLines="1"
 	    style="@style/TextViewBase" />
         

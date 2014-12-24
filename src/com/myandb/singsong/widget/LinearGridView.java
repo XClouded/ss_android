@@ -78,14 +78,6 @@ public class LinearGridView extends LinearLayout {
 		return position % columnCount == 0;
 	}
 	
-	private boolean isRowEven(int position) {
-		return (position / columnCount) % 2 == 0;
-	}
-	
-	private boolean isPositionEven(int position) {
-		return position % 2 == 0;
-	}
-	
 	private LinearLayout makeRow() {
 		LinearLayout row = new LinearLayout(getContext());
 		LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
@@ -103,23 +95,28 @@ public class LinearGridView extends LinearLayout {
 	}
 	
 	private void setChildBackground(View child, int position) {
-		int oddSelector = R.drawable.row_odd_selector;
-		int evenSelector = R.drawable.row_even_selector;
-		
-		if (isRowEven(position)) {
-			if (isPositionEven(position)) {
-				child.setBackgroundResource(oddSelector);
-			} else {
-				child.setBackgroundResource(evenSelector);
-			}
-		} else {
-			if (isPositionEven(position)) {
-				child.setBackgroundResource(evenSelector);
-			} else {
-				child.setBackgroundResource(oddSelector);
-			}
+		switch (position) {
+		case 0:
+		case 2:
+			child.setBackgroundResource(R.drawable.drawer_right_bottom_selector);
+			break;
+			
+		case 1:
+		case 3:
+			child.setBackgroundResource(R.drawable.drawer_bottom_selector);
+			break;
+			
+		case 4:
+			child.setBackgroundResource(R.drawable.drawer_right_selector);
+			break;
+			
+		case 5:
+			child.setBackgroundResource(R.drawable.drawer_selector);
+			break;
+
+		default:
+			break;
 		}
-		
 	}
 	
 	private class AdapterDataSetObserver extends DataSetObserver {

@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/menu_bg" >
+    android:background="@color/app_bg" >
     
     <com.myandb.singsong.widget.LinearGridView
         android:id="@+id/lgv_menu"
@@ -24,21 +24,22 @@
 	        android:orientation="vertical" >
 	        
 	        <com.myandb.singsong.widget.RoundedImageView
-	        	xmlns:app="http://schemas.android.com/apk/res/com.myandb.singsong"
 		        android:id="@+id/iv_drawer_user_photo"
-	            android:layout_marginBottom="@dimen/margin_small"
+		        android:layout_width="@dimen/photo_big"
+		        android:layout_height="@dimen/photo_big"
+	            android:layout_marginBottom="@dimen/margin"
 		        style="@style/ImageViewUser" />
 	        
 	        <TextView
 	            android:id="@+id/tv_drawer_user_nickname"
-	            android:textColor="@color/font_white"
+	            android:textColor="@color/font_default"
 	            android:layout_marginBottom="@dimen/margin_small"
-	            style="@style/TextViewBase" />
+	            style="@style/TextViewOverflowableImportant" />
 	        
 	        <TextView
 	            android:id="@+id/tv_drawer_user_username"
-	            android:textColor="@color/font_white"
-	            style="@style/TextViewBase" />
+	            android:textColor="@color/font_hint"
+	            style="@style/TextViewOverflowableLessImportant" />
 	        
 	    </LinearLayout>
 	    
