@@ -194,14 +194,16 @@ public class HomeFragment extends BaseFragment {
 	
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		inflater.inflate(R.menu.home, menu);
-		
-		View notificationView = getActionViewCompat(menu, R.id.action_notification);
-		if (notificationView != null) {
-			notificationView.setOnClickListener(notificationClickListener);
-			tvNotificationCount = (TextView) notificationView.findViewById(R.id.tv_action_notification_count);
-			updateNotificationCount();
-			registerNotificationCountListener();
+		if (Authenticator.isLoggedIn()) {
+			inflater.inflate(R.menu.home, menu);
+			
+			View notificationView = getActionViewCompat(menu, R.id.action_notification);
+			if (notificationView != null) {
+				notificationView.setOnClickListener(notificationClickListener);
+				tvNotificationCount = (TextView) notificationView.findViewById(R.id.tv_action_notification_count);
+				updateNotificationCount();
+				registerNotificationCountListener();
+			}
 		}
 	}
 	
