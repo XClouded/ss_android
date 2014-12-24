@@ -231,6 +231,9 @@
 	        android:textColor="@color/white"
 	        android:background="@drawable/button_transparent_selector"
 	        style="@style/ButtonBase" />
+	    
+	    <include
+	        layout="@layout/footer" />
 	     
     </LinearLayout>
 

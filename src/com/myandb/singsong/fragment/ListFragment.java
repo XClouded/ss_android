@@ -127,6 +127,9 @@ public class ListFragment extends BaseFragment {
 		} else {
 			fixedHeaderContainer.setVisibility(View.GONE);
 		}
+		
+		View footer = inflater.inflate(R.layout.footer, listView, false);
+		listView.addFooterView(footer);
 	}
 
 	@Override
