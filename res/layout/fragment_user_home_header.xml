@@ -135,11 +135,13 @@
 	            android:text="+팔로우"
 	            style="@style/ButtonMini" />
 	        
-	        <Button
-	            android:id="@+id/btn_edit_profile"
-	            android:background="@drawable/button_transparent_selector"
-	            android:text="프로필 수정"
-	            style="@style/ButtonMini" />
+	        <ImageView
+	            android:id="@+id/iv_edit_profile"
+	            android:layout_width="30dp"
+	            android:layout_height="30dp"
+	            android:layout_marginRight="@dimen/margin"
+	            android:src="@drawable/ic_wheel"
+	            style="@style/ImageViewBase" />
             
         </FrameLayout>
         

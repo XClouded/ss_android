@@ -57,6 +57,7 @@ public class UserHomeFragment extends ListFragment {
 	
 	private ImageView ivUserPhoto;
 	private ImageView ivUserPhotoBackground;
+	private ImageView ivEditProfile;
 	private TextView tvNickname;
 	private TextView tvUserStatus;
 	private TextView tvUserSongs;
@@ -64,7 +65,6 @@ public class UserHomeFragment extends ListFragment {
 	private TextView tvUserFollowers;
 	private View tvResendEmail;
 	private Button btnFollow;
-	private Button btnEditProfile;
 
 	@Override
 	protected int getListHeaderViewResId() {
@@ -87,6 +87,7 @@ public class UserHomeFragment extends ListFragment {
 		view = getListHeaderView();
 		ivUserPhoto = (ImageView) view.findViewById(R.id.iv_user_photo);
 		ivUserPhotoBackground = (ImageView) view.findViewById(R.id.iv_user_photo_background);
+		ivEditProfile = (ImageView) view.findViewById(R.id.iv_edit_profile);
 		tvNickname = (TextView) view.findViewById(R.id.tv_user_nickname);
 		tvUserStatus = (TextView) view.findViewById(R.id.tv_user_status);
 		tvUserSongs = (TextView) view.findViewById(R.id.tv_user_songs);
@@ -94,7 +95,6 @@ public class UserHomeFragment extends ListFragment {
 		tvUserFollowers = (TextView) view.findViewById(R.id.tv_user_followers);
 		tvResendEmail = (TextView) view.findViewById(R.id.tv_resend_email);
 		btnFollow = (Button) view.findViewById(R.id.btn_follow);
-		btnEditProfile = (Button) view.findViewById(R.id.btn_edit_profile);
 	}
 
 	@Override
@@ -130,10 +130,10 @@ public class UserHomeFragment extends ListFragment {
 		tvNickname.setText(thisUser.getNickname());
 		
 		if (isCurrentUser()) {
-			btnEditProfile.setVisibility(View.VISIBLE);
+			ivEditProfile.setVisibility(View.VISIBLE);
 			btnFollow.setVisibility(View.GONE);
 		} else {
-			btnEditProfile.setVisibility(View.GONE);
+			ivEditProfile.setVisibility(View.GONE);
 			btnFollow.setVisibility(View.VISIBLE);
 		}
 	}
@@ -287,7 +287,7 @@ public class UserHomeFragment extends ListFragment {
 		setupProfileRelatedViews(profile);
 		
 		if (isCurrentUser()) {
-			btnEditProfile.setOnClickListener(editProfileClickListener);
+			ivEditProfile.setOnClickListener(editProfileClickListener);
 		} else {
 			checkIsThisUserFriend();
 		}
