@@ -5,8 +5,8 @@
     android:paddingTop="65dp"
     android:paddingBottom="65dp"
     android:gravity="center"
-    android:clickable="false"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="@color/app_bg" >
     
     <TextView
         android:text="좋아하는 노래를 불러보세요!\n다른 사람 노래에 콜라보도 할 수 있어요 :)"
