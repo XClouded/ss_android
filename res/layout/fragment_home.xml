@@ -6,24 +6,26 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="@dimen/margin"
+        android:paddingBottom="@dimen/margin"
         android:orientation="vertical" >
         
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/margin" >
+            android:paddingLeft="@dimen/margin"
+            android:paddingRight="@dimen/margin" >
             
             <TextView
                 android:text="@string/today_collabo_artist"
-                android:textSize="@dimen/text_subtitle"
-                style="@style/TextViewBase" />
+                style="@style/TextViewSubtitle" />
             
             <TextView
                 android:id="@+id/tv_collabo_artist_more"
                 android:text="@string/more"
-                android:textSize="@dimen/text_subtitle"
+                android:textStyle="normal"
                 android:layout_alignParentRight="true"
-                style="@style/TextViewBase" />
+                style="@style/TextViewSubtitle" />
             
         </RelativeLayout>
         
@@ -36,19 +38,19 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/margin" >
+            android:paddingLeft="@dimen/margin"
+            android:paddingRight="@dimen/margin" >
             
             <TextView
                 android:text="@string/popular_song"
-                android:textSize="@dimen/text_subtitle"
-                style="@style/TextViewBase" />
+                style="@style/TextViewSubtitle" />
             
             <TextView
                 android:id="@+id/tv_popular_song_more"
                 android:text="@string/more"
-                android:textSize="@dimen/text_subtitle"
+                android:textStyle="normal"
                 android:layout_alignParentRight="true"
-                style="@style/TextViewBase" />
+                style="@style/TextViewSubtitle" />
             
         </RelativeLayout>
         
@@ -62,19 +64,19 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/margin" >
+            android:paddingLeft="@dimen/margin"
+            android:paddingRight="@dimen/margin" >
             
             <TextView
                 android:text="@string/recent_music"
-                android:textSize="@dimen/text_subtitle"
-                style="@style/TextViewBase" />
+                style="@style/TextViewSubtitle" />
             
             <TextView
                 android:id="@+id/tv_recent_music_more"
                 android:text="@string/more"
-                android:textSize="@dimen/text_subtitle"
+                android:textStyle="normal"
                 android:layout_alignParentRight="true"
-                style="@style/TextViewBase" />
+                style="@style/TextViewSubtitle" />
             
         </RelativeLayout>
         
@@ -87,9 +89,9 @@
         
         <TextView
             android:text="@string/popular_music"
-            android:textSize="@dimen/text_subtitle"
-            android:padding="@dimen/margin"
-            style="@style/TextViewBase" />
+            android:paddingLeft="@dimen/margin"
+            android:paddingRight="@dimen/margin"
+            style="@style/TextViewSubtitle" />
         
         <com.myandb.singsong.widget.HorizontalListView
             android:id="@+id/hlv_popular_music"

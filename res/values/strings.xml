@@ -95,6 +95,7 @@
     <string name="other_collabo">다른 콜라보</string>
     <string name="song_likings">좋아요한 사람들</string>
     <string name="song_images">사진 콜라보</string>
+    <string name="artist_interview">Artist\'s Interview</string>
     
     <string name="fragment_home_title">콜라보 홈</string>
     <string name="fragment_artist_list_title">콜라보 아티스트</string>

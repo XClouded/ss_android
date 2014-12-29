@@ -83,8 +83,6 @@ public class HomeFragment extends BaseFragment {
 		
 		loadPopularMusic();
 		
-		// onresume logo on
-		
 		tvCollaboArtistMore.setOnClickListener(new OnClickListener() {
 			
 			@Override
