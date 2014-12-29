@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.android.volley.Request.Method;
@@ -65,10 +66,11 @@ public class UserHomeFragment extends ListFragment {
 	private TextView tvUserFollowers;
 	private View tvResendEmail;
 	private Button btnFollow;
-
+	
 	@Override
-	protected int getListHeaderViewResId() {
-		return R.layout.fragment_user_home_header;
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
 	}
 
 	@Override
@@ -78,6 +80,11 @@ public class UserHomeFragment extends ListFragment {
 		String userInJson = bundle.getString(EXTRA_THIS_USER);
 		thisUser = gson.fromJson(userInJson, User.class);
 		currentUser = Authenticator.getUser();
+	}
+
+	@Override
+	protected int getListHeaderViewResId() {
+		return R.layout.fragment_user_home_header;
 	}
 
 	@Override
@@ -98,15 +105,13 @@ public class UserHomeFragment extends ListFragment {
 	}
 
 	@Override
-	protected void initialize(Activity activity) {
-		super.initialize(activity);
-		setHasOptionsMenu(true);
-		if (getAdapter() == null) {
-			UrlBuilder urlBuilder = new UrlBuilder();
-			urlBuilder.s("users").s(thisUser.getId()).s("songs").s("all").p("order", "created_at");
-			setUrlBuilder(urlBuilder);
-			setAdapter(new MySongAdapter(activity, isCurrentUser(), false));
-		}
+	protected ListAdapter instantiateAdapter(Activity activity) {
+		return new MySongAdapter(activity, isCurrentUser(), false);
+	}
+
+	@Override
+	protected UrlBuilder instantiateUrlBuilder(Activity activity) {
+		return new UrlBuilder().s("users").s(thisUser.getId()).s("songs").s("all");
 	}
 
 	@Override
@@ -269,7 +274,10 @@ public class UserHomeFragment extends ListFragment {
 	};
 	
 	private boolean isCurrentUser() {
-		return thisUser.getId() == currentUser.getId();
+		if (currentUser != null) {
+			return thisUser.getId() == currentUser.getId();
+		}
+		return false;
 	}
 	
 	private void loadProfileData() {

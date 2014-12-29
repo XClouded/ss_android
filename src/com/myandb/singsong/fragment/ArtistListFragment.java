@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ListAdapter;
 
 public class ArtistListFragment extends ListFragment {
 
@@ -22,15 +23,13 @@ public class ArtistListFragment extends ListFragment {
 	}
 
 	@Override
-	protected void initialize(Activity activity) {
-		super.initialize(activity);
-		
-		if (getAdapter() == null) {
-			UrlBuilder builder = new UrlBuilder();
-			builder.s("artists");
-			setUrlBuilder(builder);
-			setAdapter(new ArtistAdapter());
-		}
+	protected ListAdapter instantiateAdapter(Activity activity) {
+		return new ArtistAdapter();
+	}
+
+	@Override
+	protected UrlBuilder instantiateUrlBuilder(Activity activity) {
+		return new UrlBuilder().s("artists");
 	}
 
 	@Override

@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 
 public class MusicDetailFragment extends ListFragment {
@@ -58,12 +59,8 @@ public class MusicDetailFragment extends ListFragment {
 	}
 
 	@Override
-	protected void initialize(Activity activity) {
-		super.initialize(activity);
-		
-		if (getAdapter() == null) {
-			setAdapter(new ChildrenSongAdapter());
-		}
+	protected ListAdapter instantiateAdapter(Activity activity) {
+		return new ChildrenSongAdapter();
 	}
 
 	@Override

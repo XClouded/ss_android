@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 
 public class ChildrenSongFragment extends ListFragment {
@@ -56,15 +57,13 @@ public class ChildrenSongFragment extends ListFragment {
 	}
 
 	@Override
-	protected void initialize(Activity activity) {
-		super.initialize(activity);
-		
-		if (getAdapter() == null) {
-			UrlBuilder urlBuilder = new UrlBuilder();
-			urlBuilder.s("songs").s(thisSong.getId()).s("children");
-			setUrlBuilder(urlBuilder);
-			setAdapter(new ChildrenSongAdapter());
-		}
+	protected ListAdapter instantiateAdapter(Activity activity) {
+		return new ChildrenSongAdapter();
+	}
+
+	@Override
+	protected UrlBuilder instantiateUrlBuilder(Activity activity) {
+		return new UrlBuilder().s("songs").s(thisSong.getId()).s("children");
 	}
 
 	@Override

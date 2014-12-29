@@ -13,6 +13,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -86,15 +87,18 @@ public class ArtistDetailFragment extends ListFragment {
 	}
 
 	@Override
+	protected ListAdapter instantiateAdapter(Activity activity) {
+		return new CommentAdapter();
+	}
+
+	@Override
+	protected UrlBuilder instantiateUrlBuilder(Activity activity) {
+		return new UrlBuilder().s("artist").s(artist.getId()).s("comments");
+	}
+
+	@Override
 	protected void initialize(Activity activity) {
 		super.initialize(activity);
-		
-		if (getAdapter() == null) {
-			UrlBuilder builder = new UrlBuilder();
-			builder.s("artist").s(artist.getId()).s("comments");
-			setUrlBuilder(builder);
-			setAdapter(new CommentAdapter());
-		}
 		setListShown(true);
 	}
 

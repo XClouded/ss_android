@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ListAdapter;
 
 public class FindFriendsFragment extends ListFragment {
 	
@@ -48,14 +49,13 @@ public class FindFriendsFragment extends ListFragment {
 	}
 
 	@Override
-	protected void initialize(Activity activity) {
-		super.initialize(activity);
-		if (getAdapter() == null) {
-			UrlBuilder builder = new UrlBuilder();
-			builder.s("users").s("recommendations");
-			setUrlBuilder(builder);
-			setAdapter(new FriendsAdapter());
-		}
+	protected ListAdapter instantiateAdapter(Activity activity) {
+		return new FriendsAdapter();
+	}
+
+	@Override
+	protected UrlBuilder instantiateUrlBuilder(Activity activity) {
+		return new UrlBuilder().s("users").s("recommendations");
 	}
 
 	@Override

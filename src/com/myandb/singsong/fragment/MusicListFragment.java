@@ -5,6 +5,7 @@ import com.myandb.singsong.adapter.MusicAdapter.LayoutType;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.widget.ListAdapter;
 
 public class MusicListFragment extends ListFragment {
 	
@@ -19,14 +20,11 @@ public class MusicListFragment extends ListFragment {
 	}
 
 	@Override
-	protected void initialize(Activity activity) {
-		super.initialize(activity);
-		if (getAdapter() == null) {
-			if (showNum) {
-				setAdapter(new MusicAdapter(LayoutType.NORMAL_POPULAR));
-			} else {
-				setAdapter(new MusicAdapter());
-			}
+	protected ListAdapter instantiateAdapter(Activity activity) {
+		if (showNum) {
+			return new MusicAdapter(LayoutType.NORMAL_POPULAR);
+		} else {
+			return new MusicAdapter();
 		}
 	}
 

@@ -35,13 +35,13 @@ public class ListFragment extends BaseFragment {
 	private View listHeaderView;
 	private View fixedHeaderView;
 	private View progressContainer;
-	private View emptyView;
 	private Animation fadeIn;
 	private Animation fadeOut;
 	private GradualLoader loader;
 	private FadingActionBarHelper fadingActionBarHelper;
-	private UrlBuilder internalUrlBuilder;
+	private UrlBuilder urlBuilder;
 	private ListAdapter adapter;
+	private OnEmptyListener emptyListener;
 	private int listViewIndex;
 	private int listViewTop;
 
@@ -55,13 +55,13 @@ public class ListFragment extends BaseFragment {
 		super.onArgumentsReceived(bundle);
 		
 		if (isFragmentCreated()) {
-			internalUrlBuilder = getUrlBuilderOnArgumentPassed(bundle);
+			urlBuilder = getUrlBuilderOnArgumentPassed(bundle);
 			adapter = getListAdapterOnArgumentPassed(bundle);
 		}
 	}
 	
 	private boolean isFragmentCreated() {
-		return internalUrlBuilder == null && adapter == null;
+		return urlBuilder == null && adapter == null;
 	}
 	
 	private UrlBuilder getUrlBuilderOnArgumentPassed(Bundle bundle) {
@@ -82,12 +82,12 @@ public class ListFragment extends BaseFragment {
 	private ListAdapter getListAdapterOnArgumentPassed(Bundle bundle) {
 		final String adapterName = bundle.getString(EXTRA_ADAPTER_NAME);
 		if (adapterName != null) {
-			return instantiateAdapter(adapterName);
+			return instantiateAdapterFromString(adapterName);
 		}
 		return null;
 	}
 	
-	private ListAdapter instantiateAdapter(String adapterName) {
+	private ListAdapter instantiateAdapterFromString(String adapterName) {
 		if (adapterName != null) {
 			try {
 				Class<?> classForAdapter = Class.forName(adapterName);
@@ -109,11 +109,6 @@ public class ListFragment extends BaseFragment {
 		listViewContainer = (ViewGroup) view.findViewById(R.id.fl_listview_container);
 		progressContainer = view.findViewById(R.id.fl_progress_container);
 		listView = (ListView) view.findViewById(R.id.listview);
-		
-		if (getEmptyViewResId() != App.INVALID_RESOURCE_ID) {
-			emptyView = inflater.inflate(getEmptyViewResId(), listView, false);
-			listView.setEmptyView(emptyView);
-		}
 		
 		if (getListHeaderViewResId() != App.INVALID_RESOURCE_ID) {
 			listHeaderView = inflater.inflate(getListHeaderViewResId(), listView, false);
@@ -137,14 +132,31 @@ public class ListFragment extends BaseFragment {
 		fadeIn = AnimationUtils.loadAnimation(activity, android.R.anim.fade_in);
 		fadeOut = AnimationUtils.loadAnimation(activity, android.R.anim.fade_out);
 		
+		if (adapter == null) {
+			adapter = instantiateAdapter(activity);
+		}
+		
+		if (urlBuilder == null) {
+			urlBuilder = instantiateUrlBuilder(activity);
+		}
+		
 		if (loader == null) {
 			loader = new GradualLoader(activity);
-			setUrlBuilder(internalUrlBuilder);
+			setUrlBuilder(urlBuilder);
 		}
+	}
+	
+	protected ListAdapter instantiateAdapter(Activity activity) {
+		return null;
+	}
+	
+	protected UrlBuilder instantiateUrlBuilder(Activity activity) {
+		return null;
 	}
 	
 	@Override
 	protected void setupViews(Bundle savedInstanceState) {
+		listView.setAdapter(adapter);
 		listView.setOnScrollListener(new OnScrollListener() {
 			
 			@Override
@@ -171,12 +183,10 @@ public class ListFragment extends BaseFragment {
 	public void onResume() {
 		super.onResume();
 		
-		setListViewAdapter();
-		
-		if (isDataAlive() || loader.isNothingToLoad()) {
-			scrollToPreviousPosition();
-		} else if (isDataLoadable()) {
-			loader.load();
+		if (isFragmentStateRestore()) {
+			restoreListViewState();
+		} else {
+			load();
 		}
 		
 		if (listHeaderView != null && fixedHeaderView == null) {
@@ -188,22 +198,23 @@ public class ListFragment extends BaseFragment {
 			.initialize(getActivity());
 		}
 	}
-
-	private void setListViewAdapter() {
-		if (adapter != null) {
-			listView.setAdapter(adapter);
+	
+	private boolean isFragmentStateRestore() {
+		return adapter.getCount() > 0 || (adapter.getCount() == 0 && loader.isNothingToLoad());
+	}
+	
+	private void restoreListViewState() {
+		dispatchEmptyListener();
+		restoreListViewPosition();
+	}
+	
+	private void dispatchEmptyListener() {
+		if (adapter.getCount() == 0 && emptyListener != null) {
+			emptyListener.onEmpty();
 		}
 	}
 	
-	private boolean isDataAlive() {
-		return adapter != null && adapter.getCount() > 0;
-	}
-	
-	private boolean isDataLoadable() {
-		return adapter != null && loader.isLoadable();
-	}
-	
-	private void scrollToPreviousPosition() {
+	private void restoreListViewPosition() {
 		if (listViewIndex > 0) {
 			listView.setSelectionFromTop(listViewIndex, listViewTop);
 		}
@@ -220,12 +231,6 @@ public class ListFragment extends BaseFragment {
 		listViewIndex = listView.getFirstVisiblePosition();
 		View child = listView.getChildAt(0);
 		listViewTop = (child == null) ? 0 : child.getTop();
-	}
-	
-	public void setAdapter(ListAdapter adapter) {
-		if (adapter != null) {
-			this.adapter = adapter;
-		}
 	}
 
 	public void setFixedHeaderShown(boolean shown) {
@@ -271,8 +276,14 @@ public class ListFragment extends BaseFragment {
 				setListShown(true);
 				((HolderAdapter<?, ?>) adapter).addAll(response);
 			}
+			
+			dispatchEmptyListener();
 		}
 	};
+	
+	public void setOnEmptyListener(OnEmptyListener listener) {
+		this.emptyListener = listener;
+	}
 	
 	public void load() {
 		loader.load();
@@ -308,10 +319,6 @@ public class ListFragment extends BaseFragment {
 		}
 	}
 	
-	public View getEmptyView() {
-		return emptyView;
-	}
-	
 	public View getListHeaderView() {
 		return listHeaderView;
 	}
@@ -320,16 +327,18 @@ public class ListFragment extends BaseFragment {
 		return fixedHeaderView;
 	}
 	
-	protected int getEmptyViewResId() {
-		return App.INVALID_RESOURCE_ID;
-	}
-	
 	protected int getListHeaderViewResId() {
 		return App.INVALID_RESOURCE_ID;
 	}
 	
 	protected int getFixedHeaderViewResId() {
 		return App.INVALID_RESOURCE_ID;
+	}
+	
+	public interface OnEmptyListener {
+		
+		public void onEmpty();
+		
 	}
 
 }

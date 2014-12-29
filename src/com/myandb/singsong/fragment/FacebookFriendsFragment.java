@@ -30,21 +30,12 @@ import com.myandb.singsong.util.Utility;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.widget.ListAdapter;
 
 public class FacebookFriendsFragment extends ListFragment {
 	
 	private FriendsAdapter adapter;
 	private Map<String, FacebookUser> facebookUserMap;
-
-	@Override
-	protected void initialize(Activity activity) {
-		super.initialize(activity);
-		
-		if (getAdapter() == null) {
-			adapter = new FriendsAdapter();
-			setAdapter(adapter);
-		}
-	}
 	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -54,18 +45,20 @@ public class FacebookFriendsFragment extends ListFragment {
 			session.onActivityResult(getActivity(), requestCode, resultCode, data);
 		}
 	}
+	
+	@Override
+	protected ListAdapter instantiateAdapter(Activity activity) {
+		adapter = new FriendsAdapter();
+		return adapter;
+	}
 
 	@Override
 	protected void onDataChanged() {
 		super.onDataChanged();
 		
-		if (!isDataAlive()) {
+		if (adapter.getCount() == 0) {
 			openFacebookSession();
 		}
-	}
-	
-	private boolean isDataAlive() {
-		return adapter != null && adapter.getCount() > 0;
 	}
 
 	private void openFacebookSession() {

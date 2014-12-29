@@ -2,6 +2,7 @@ package com.myandb.singsong.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.widget.ListAdapter;
 
 import com.myandb.singsong.R;
 import com.myandb.singsong.adapter.FriendsAdapter;
@@ -67,17 +68,15 @@ public class SearchFragment extends ListFragment {
 	}
 
 	@Override
-	protected void initialize(Activity activity) {
-		super.initialize(activity);
-		if (getAdapter() == null) {
-			try {
-				setAdapter(searchType.newAdapterInstance());
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			} catch (java.lang.InstantiationException e) {
-				e.printStackTrace();
-			}
+	protected ListAdapter instantiateAdapter(Activity activity) {
+		try {
+			return searchType.newAdapterInstance();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (java.lang.InstantiationException e) {
+			e.printStackTrace();
 		}
+		return null;
 	}
 
 	@Override

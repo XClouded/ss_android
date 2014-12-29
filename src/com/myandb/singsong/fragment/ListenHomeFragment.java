@@ -3,7 +3,7 @@ package com.myandb.singsong.fragment;
 import java.util.Calendar;
 
 import android.app.Activity;
-import android.os.Bundle;
+import android.widget.ListAdapter;
 
 import com.myandb.singsong.adapter.CollaboratedAdapter;
 import com.myandb.singsong.net.UrlBuilder;
@@ -12,22 +12,14 @@ import com.myandb.singsong.util.StringFormatter;
 public class ListenHomeFragment extends ListFragment {
 
 	@Override
-	protected void setupViews(Bundle savedInstanceState) {
-		super.setupViews(savedInstanceState);
-		
+	protected ListAdapter instantiateAdapter(Activity activity) {
+		return new CollaboratedAdapter();
 	}
 
 	@Override
-	protected void initialize(Activity activity) {
-		super.initialize(activity);
-		
-		if (getAdapter() == null) {
-			final String startDate = StringFormatter.getDateString(Calendar.DATE, -1);
-			UrlBuilder urlBuilder = new UrlBuilder().s("songs").s("leaf").p("order", "liking_num").start(startDate);
-			
-			setUrlBuilder(urlBuilder);
-			setAdapter(new CollaboratedAdapter());
-		}
+	protected UrlBuilder instantiateUrlBuilder(Activity activity) {
+		final String startDate = StringFormatter.getDateString(Calendar.DATE, -1);
+		return new UrlBuilder().s("songs").s("leaf").p("order", "liking_num").start(startDate);
 	}
 
 	@Override
