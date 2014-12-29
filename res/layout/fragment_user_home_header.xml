@@ -146,5 +146,10 @@
         </FrameLayout>
         
     </RelativeLayout>
+    
+    <include
+        android:id="@+id/layout_empty_view"
+        android:visibility="gone"
+        layout="@layout/fragment_user_home_empty" />
 
 </LinearLayout>

@@ -65,6 +65,8 @@ public class UserHomeFragment extends ListFragment {
 	private TextView tvUserFollowings;
 	private TextView tvUserFollowers;
 	private View tvResendEmail;
+	private View vEmptyView;
+	private View vSing;
 	private Button btnFollow;
 	
 	@Override
@@ -102,6 +104,8 @@ public class UserHomeFragment extends ListFragment {
 		tvUserFollowers = (TextView) view.findViewById(R.id.tv_user_followers);
 		tvResendEmail = (TextView) view.findViewById(R.id.tv_resend_email);
 		btnFollow = (Button) view.findViewById(R.id.btn_follow);
+		vEmptyView = view.findViewById(R.id.layout_empty_view);
+		vSing = view.findViewById(R.id.ll_sing);
 	}
 
 	@Override
@@ -129,7 +133,36 @@ public class UserHomeFragment extends ListFragment {
 		if (!thisUser.isActivated()) {
 			checkUserActivation();
 		}
+		
+		setOnEmptyListener(emptyListener);
 	}
+	
+	private OnEmptyListener emptyListener = new OnEmptyListener() {
+		
+		@Override
+		public void onEmpty() {
+			if (isCurrentUser()) {
+				vEmptyView.setVisibility(View.VISIBLE);
+				vSing.setOnClickListener(singClickListener);
+			} else {
+				vEmptyView.setVisibility(View.GONE);
+			}
+		}
+	};
+	
+	private OnClickListener singClickListener = new ActivateOnlyClickListener() {
+		
+		@Override
+		public void onActivated(View v, User user) {
+			Bundle bundle = new Bundle();
+			bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_sing_title));
+			Intent intent = new Intent(getActivity(), RootActivity.class);
+			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, MusicHomeFragment.class.getName());
+			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_ROOT, true);
+			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
+			startFragment(intent);
+		}
+	};
 	
 	private void displayUserSpecificViews() {
 		tvNickname.setText(thisUser.getNickname());
