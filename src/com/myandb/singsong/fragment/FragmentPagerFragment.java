@@ -75,6 +75,11 @@ public class FragmentPagerFragment extends BaseFragment {
 	protected void setupViews(Bundle savedInstanceState) {
 		setAdapter(pagerAdapter);
 		viewPager.setPageMargin(getResources().getDimensionPixelSize(R.dimen.margin_small));
+		viewPager.setPageMarginDrawable(R.color.viewpager_bg);
+		tabStrip.setIndicatorColorResource(R.color.primary);
+		tabStrip.setIndicatorHeight(getResources().getDimensionPixelSize(R.dimen.margin_tiny));
+		tabStrip.setUnderlineHeight(1);
+		tabStrip.setDividerColorResource(android.R.color.transparent);
 	}
 
 	@Override

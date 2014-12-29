@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.myandb.singsong.R;
@@ -29,8 +28,8 @@ public class ContactAdapter extends HolderAdapter<Contact, ContactAdapter.Contac
 		final Contact contact = getItem(position);
 		
 		viewHolder.tvContactName.setText(contact.getName());
-		viewHolder.btnInvite.setTag(contact);
-		viewHolder.btnInvite.setOnClickListener(inviteClickListener);
+		viewHolder.vInvite.setTag(contact);
+		viewHolder.vInvite.setOnClickListener(inviteClickListener);
 	}
 	
 	private OnClickListener inviteClickListener = new OnClickListener() {
@@ -52,12 +51,12 @@ public class ContactAdapter extends HolderAdapter<Contact, ContactAdapter.Contac
 	public static final class ContactHolder extends ViewHolder {
 		
 		public TextView tvContactName;
-		public Button btnInvite;
+		public View vInvite;
 
 		public ContactHolder(View view) {
 			super(view);
 			tvContactName = (TextView) view.findViewById(R.id.tv_contact_name);
-			btnInvite = (Button) view.findViewById(R.id.btn_invite);
+			vInvite = view.findViewById(R.id.ll_invite);
 		}
 		
 	}

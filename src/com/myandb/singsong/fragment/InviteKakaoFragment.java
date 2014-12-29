@@ -15,11 +15,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 
 public class InviteKakaoFragment extends BaseFragment {
 	
-	private Button btnInviteKakao;
+	private View vInviteKakao;
 
 	@Override
 	protected int getResourceId() {
@@ -28,7 +27,7 @@ public class InviteKakaoFragment extends BaseFragment {
 
 	@Override
 	protected void onViewInflated(View view, LayoutInflater inflater) {
-		btnInviteKakao = (Button) view.findViewById(R.id.btn_invite_kakao);
+		vInviteKakao = view.findViewById(R.id.ll_invite_kakaotalk);
 	}
 
 	@Override
@@ -36,7 +35,7 @@ public class InviteKakaoFragment extends BaseFragment {
 
 	@Override
 	protected void setupViews(Bundle savedInstanceState) {
-		btnInviteKakao.setOnClickListener(inviteKakaoClickListener);
+		vInviteKakao.setOnClickListener(inviteKakaoClickListener);
 	}
 	
 	private OnClickListener inviteKakaoClickListener = new OnClickListener() {

@@ -1,13 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@color/app_bg" >
     
-    <Button
-        android:id="@+id/btn_invite_facebook"
-        android:text="페이스북 친구 초대"
-        android:background="@drawable/button_facebook_selector"
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        style="@style/ButtonBase" />
+        android:paddingBottom="100dp"
+        android:gravity="center"
+        android:orientation="vertical" >
+	    
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_facebook"
+            android:layout_marginBottom="@dimen/margin_bigger"
+            style="@style/ImageViewBase" />
+        
+        <TextView
+            android:gravity="center"
+            android:text="페이스북 친구들에게\n초대 메세지를 보내고 같이 노래도 불러보세요!"
+            android:lineSpacingExtra="8sp"
+            android:layout_marginBottom="@dimen/margin"
+            style="@style/TextViewBase" />
+        
+        <LinearLayout
+	        android:id="@+id/ll_invite_facebook"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:paddingTop="@dimen/margin"
+	        android:paddingBottom="@dimen/margin"
+	        android:paddingLeft="50dp"
+	        android:paddingRight="50dp"
+	        android:gravity="center"
+	        android:orientation="horizontal"
+	        android:background="@drawable/button_white_selector" >
+	        
+	        <ImageView
+	            android:layout_width="22dp"
+	            android:layout_height="22dp"
+	            android:layout_marginRight="@dimen/margin_tiny"
+	            android:src="@drawable/ic_menu_friend"
+	            style="@style/ImageViewBase" />
+	        
+	        <TextView
+	            android:text="페이스북 친구 초대"
+	            style="@style/TextViewImportant" />
+	        
+	    </LinearLayout>
+        
+    </LinearLayout>
+    
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" >
+	    
+	    <include
+	        layout="@layout/footer" />
+        
+    </FrameLayout>
 
 </RelativeLayout>

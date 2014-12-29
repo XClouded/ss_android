@@ -11,11 +11,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 
 public class InviteFacebookFragment extends BaseFragment {
 	
-	private Button btnInviteFacebook;
+	private View vInviteFacebook;
 
 	@Override
 	protected int getResourceId() {
@@ -24,7 +23,7 @@ public class InviteFacebookFragment extends BaseFragment {
 
 	@Override
 	protected void onViewInflated(View view, LayoutInflater inflater) {
-		btnInviteFacebook = (Button) view.findViewById(R.id.btn_invite_facebook);
+		vInviteFacebook = view.findViewById(R.id.ll_invite_facebook);
 	}
 
 	@Override
@@ -32,7 +31,7 @@ public class InviteFacebookFragment extends BaseFragment {
 
 	@Override
 	protected void setupViews(Bundle savedInstanceState) {
-		btnInviteFacebook.setOnClickListener(inviteFacebookClickListener);
+		vInviteFacebook.setOnClickListener(inviteFacebookClickListener);
 	}
 	
 	private OnClickListener inviteFacebookClickListener = new OnClickListener() {

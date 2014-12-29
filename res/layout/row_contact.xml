@@ -2,18 +2,36 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/margin" >
+    android:padding="@dimen/margin"
+    android:background="@color/app_bg" >
     
-    <Button
-        android:id="@+id/btn_invite"
-        android:text="초대"
+    <LinearLayout
+        android:id="@+id/ll_invite"
+        android:orientation="horizontal"
+        android:background="@drawable/button_grey_selector"
         android:layout_alignParentRight="true"
-        style="@style/ButtonBase" />
+        android:padding="@dimen/margin_small"
+        style="@style/ButtonDrawable" >
+        
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/ic_letter"
+            android:layout_marginRight="@dimen/margin_small"
+            style="@style/ImageViewBase" />
+        
+        <TextView
+            android:text="초대"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            style="@style/TextViewBase" />
+        
+    </LinearLayout>
     
     <TextView
         android:id="@+id/tv_contact_name"
         android:layout_width="match_parent"
-        android:layout_toLeftOf="@id/btn_invite"
+        android:layout_toLeftOf="@id/ll_invite"
         android:layout_centerVertical="true"
         style="@style/TextViewBase" />
 
