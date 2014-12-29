@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+	<LinearLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:paddingTop="@dimen/margin_bigger"
+	    android:paddingLeft="@dimen/margin"
+	    android:paddingRight="@dimen/margin"
+	    android:orientation="vertical" >
+	    
+	    <LinearLayout
+	        android:id="@+id/ll_search_user"
+	        android:layout_width="match_parent"
+	        android:orientation="horizontal"
+	        android:layout_marginBottom="@dimen/margin"
+	        style="@style/ButtonDrawable" >
+	        
+	        <ImageView
+	            android:layout_width="28dp"
+	            android:layout_height="28dp"
+	            android:src="@drawable/ic_magnifier"
+	            android:layout_marginRight="@dimen/margin"
+	            style="@style/ImageViewBase" />
+	        
+	        <TextView
+	            android:text="@string/hint_search_user"
+	            android:textColor="@color/font_hint"
+	            android:textSize="@dimen/text_subtitle"
+	            style="@style/TextViewBase" />
+	        
+	    </LinearLayout>
+	    
+	    <LinearLayout
+	        android:id="@+id/ll_facebook_friends"
+	        android:layout_width="match_parent"
+	        android:orientation="horizontal"
+	        android:layout_marginBottom="@dimen/margin"
+	        style="@style/ButtonDrawable" >
+	        
+	        <ImageView
+	            android:layout_width="28dp"
+	            android:layout_height="28dp"
+	            android:src="@drawable/ic_facebook"
+	            android:layout_marginRight="@dimen/margin"
+	            style="@style/ImageViewBase" />
+	        
+	        <TextView
+	            android:text="페이스북 친구 추가"
+	            android:textSize="@dimen/text_subtitle"
+	            style="@style/TextViewBase" />
+	        
+	    </LinearLayout>
+	    
+	       
+	    <TextView
+	        android:text="팔로우 할 만한 사용자"
+	        android:layout_width="match_parent"
+	        android:padding="@dimen/margin"
+	        android:background="@drawable/card_rounded_top"
+	        android:layout_margin="0dp"
+	        style="@style/TextViewSubtitle" />
+	    
+	    <com.myandb.singsong.widget.LinearGridView
+	        android:id="@+id/linear_grid_view"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:background="@drawable/card_rounded_bottom"
+	        android:layout_marginBottom="@dimen/margin"
+	        android:orientation="vertical" />
+	    
+	    <include
+	        layout="@layout/footer" />
+	
+	</LinearLayout>
+</ScrollView>
