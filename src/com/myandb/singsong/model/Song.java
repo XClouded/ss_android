@@ -281,6 +281,8 @@ public class Song extends Model {
 					Intent intent = new Intent(context, UpActivity.class);
 					intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, KaraokeFragment.class.getName());
 					intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
+					intent.putExtra(UpActivity.EXTRA_FULL_SCREEN, true);
+					intent.putExtra(UpActivity.EXTRA_SHOULD_STOP, true);
 					context.startActivity(intent);
 				}
 			};
