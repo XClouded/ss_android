@@ -20,18 +20,18 @@ public class MusicAdapter extends HolderAdapter<Music, MusicAdapter.MusicHolder>
 	
 	public enum LayoutType {
 		
-		POPULAR_HOME(R.layout.row_music_popular_home, true),
+		POPULAR_HOME(R.layout.row_music_popular_home),
 		
-		POPULAR(R.layout.row_music_popular, true),
+		POPULAR(R.layout.row_music_popular),
 		
 		RECENT(R.layout.row_music_recent, true),
 		
-		NORMAL(R.layout.row_music_normal, false),
+		NORMAL(R.layout.row_music_normal),
 		
-		NORMAL_POPULAR(R.layout.row_music_normal, false);
+		NORMAL_POPULAR(R.layout.row_music_normal);
 		
 		private int layoutResId;
-		private boolean horizontal;
+		private boolean horizontalListView;
 		
 		LayoutType(int resId) {
 			this(resId, false);
@@ -39,15 +39,15 @@ public class MusicAdapter extends HolderAdapter<Music, MusicAdapter.MusicHolder>
 		
 		LayoutType(int resId, boolean horizontal) {
 			this.layoutResId = resId;
-			this.horizontal = horizontal;
+			this.horizontalListView = horizontal;
 		}
 		
 		public int getLayoutResourceId() {
 			return layoutResId;
 		}
 		
-		public boolean isHorizontalView() {
-			return horizontal;
+		public boolean isHorizontalListView() {
+			return horizontalListView;
 		}
 	}
 	
@@ -81,7 +81,7 @@ public class MusicAdapter extends HolderAdapter<Music, MusicAdapter.MusicHolder>
 		viewHolder.tvSingNum.setText(String.valueOf(music.getWorkedSingNum()));
 		ImageHelper.displayPhoto(music.getAlbumPhotoUrl(), viewHolder.ivAlbumPhoto);
 		
-		if (layoutType.isHorizontalView()) {
+		if (layoutType.isHorizontalListView()) {
 			if (isFirstItem(position)) {
 				setFirstItemLeftPadding(viewHolder.view);
 			}

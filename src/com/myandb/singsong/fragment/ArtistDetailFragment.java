@@ -130,6 +130,8 @@ public class ArtistDetailFragment extends ListFragment {
 			View child = qnaAdapter.getView(i, null, vgQnaContainer);
 			vgQnaContainer.addView(child);
 		}
+		
+		enableFadingActionBar(false);
 	}
 	
 	private void loadUserSongs(User user) {

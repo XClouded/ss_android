@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.myandb.singsong.activity.BaseActivity;
@@ -45,7 +44,7 @@ public class Artist extends Model {
 				qnaList.add(new Qna(user, qna.getString("q"), qna.getString("a")));
 			}
 			return qnaList;
-		} catch (JSONException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return new ArrayList<Artist.Qna>();
 		}

@@ -19,6 +19,7 @@ import com.myandb.singsong.model.Music;
 import com.myandb.singsong.net.GradualLoader;
 import com.myandb.singsong.net.GradualLoader.OnLoadCompleteListener;
 import com.myandb.singsong.net.UrlBuilder;
+import com.myandb.singsong.pager.PagerWrappingAdapter;
 import com.myandb.singsong.util.StringFormatter;
 import com.myandb.singsong.util.Utility;
 import com.myandb.singsong.widget.FloatableLayout;
@@ -27,6 +28,7 @@ import com.myandb.singsong.widget.HorizontalListView;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -36,12 +38,12 @@ import android.widget.TextView;
 
 public class MusicHomeFragment extends BaseFragment {
 	
-	private HorizontalListView hlvPopularMusic;
+	private ViewPager vpPopularMusic;
+	private PagerWrappingAdapter popularMusicAdapter;
 	private HorizontalListView hlvRecentMusic;
 	private FloatableLayout fltCategoryMusic;
 	private TextView tvPopularMusicMore;
 	private TextView tvRecentMusicMore;
-	private MusicAdapter popularMusicAdapter;
 	private MusicAdapter recentMusicAdapter;
 	
 	@Override
@@ -51,7 +53,7 @@ public class MusicHomeFragment extends BaseFragment {
 
 	@Override
 	protected void onViewInflated(View view, LayoutInflater inflater) {
-		hlvPopularMusic = (HorizontalListView) view.findViewById(R.id.hlv_popular_music);
+		vpPopularMusic = (ViewPager) view.findViewById(R.id.vp_popular_music);
 		hlvRecentMusic = (HorizontalListView) view.findViewById(R.id.hlv_recent_music);
 		fltCategoryMusic = (FloatableLayout) view.findViewById(R.id.flt_category_music);
 		tvPopularMusicMore = (TextView) view.findViewById(R.id.tv_popular_music_more);
@@ -61,15 +63,20 @@ public class MusicHomeFragment extends BaseFragment {
 	@Override
 	protected void initialize(Activity activity) {
 		setHasOptionsMenu(true);
+		
+		hlvRecentMusic.setDividerWidth(getResources().getDimensionPixelSize(R.dimen.margin));
+		
+		fltCategoryMusic.setHorizontalSpacing(R.dimen.margin_small);
+		fltCategoryMusic.setVerticalSpacing(R.dimen.margin_small);
+		
+		int padding = getResources().getDimensionPixelSize(R.dimen.margin);
+		vpPopularMusic.setPadding(padding, 0, padding, 0);
+		vpPopularMusic.setClipToPadding(false);
+		vpPopularMusic.setPageMargin(padding / 2);
 	}
 
 	@Override
 	protected void setupViews(Bundle savedInstanceState) {
-		hlvPopularMusic.setDividerWidth(getResources().getDimensionPixelSize(R.dimen.margin));
-		hlvRecentMusic.setDividerWidth(getResources().getDimensionPixelSize(R.dimen.margin));
-		fltCategoryMusic.setHorizontalSpacing(R.dimen.margin_small);
-		fltCategoryMusic.setVerticalSpacing(R.dimen.margin_small);
-		
 		tvPopularMusicMore.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -131,23 +138,22 @@ public class MusicHomeFragment extends BaseFragment {
 	
 	private void loadPopularMusic() {
 		if (popularMusicAdapter == null) {
-			popularMusicAdapter = new MusicAdapter(LayoutType.POPULAR); 
-			final UrlBuilder urlBuilder = new UrlBuilder().s("musics").p("order", "sing_num_this_week").take(5);
+			final MusicAdapter adapter = new MusicAdapter(LayoutType.POPULAR);
+			popularMusicAdapter = new PagerWrappingAdapter(adapter);
+			final UrlBuilder urlBuilder = new UrlBuilder().s("musics").p("order", "sing_num_this_week").p("req", "songs").take(5);
 			final GradualLoader loader = new GradualLoader(getActivity());
 			loader.setUrlBuilder(urlBuilder);
 			loader.setOnLoadCompleteListener(new OnLoadCompleteListener() {
 				
 				@Override
 				public void onComplete(JSONArray response) {
-					popularMusicAdapter.addAll(response);
-					hlvPopularMusic.setAdapter(popularMusicAdapter);
-					hlvPopularMusic.setOnItemClickListener(musicItemClickListener);
+					adapter.addAll(response);
+					vpPopularMusic.setAdapter(popularMusicAdapter);
 				}
 			});
 			loader.load();
 		} else {
-			hlvPopularMusic.setAdapter(popularMusicAdapter);
-			hlvPopularMusic.setOnItemClickListener(musicItemClickListener);
+			vpPopularMusic.setAdapter(popularMusicAdapter);
 		}
 	}
 	

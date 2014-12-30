@@ -94,12 +94,11 @@
             android:paddingRight="@dimen/margin"
             style="@style/TextViewSubtitle" />
         
-        <com.myandb.singsong.widget.HorizontalListView
-            android:id="@+id/hlv_popular_music"
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vp_popular_music"
             android:layout_width="match_parent"
             android:layout_height="220dp"
-            android:layout_marginBottom="@dimen/margin"
-            android:scrollbars="none" />
+            android:layout_marginBottom="@dimen/margin" />
         
     </LinearLayout>
     

@@ -1,7 +1,5 @@
 package com.myandb.singsong.fragment;
 
-import java.util.Calendar;
-
 import org.json.JSONArray;
 
 import com.myandb.singsong.R;
@@ -15,8 +13,8 @@ import com.myandb.singsong.adapter.MusicAdapter.LayoutType;
 import com.myandb.singsong.net.GradualLoader;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.net.GradualLoader.OnLoadCompleteListener;
+import com.myandb.singsong.pager.PagerWrappingAdapter;
 import com.myandb.singsong.secure.Authenticator;
-import com.myandb.singsong.util.StringFormatter;
 import com.myandb.singsong.widget.HorizontalListView;
 
 import android.app.Activity;
@@ -26,6 +24,7 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -40,10 +39,10 @@ public class HomeFragment extends BaseFragment {
 	private TextView tvNotificationCount;
 	private TextView tvRecentMusicMore;
 	private TextView tvCollaboArtistMore;
-	private HorizontalListView hlvPopularMusic;
+	private ViewPager vpPopularMusic;
+	private PagerWrappingAdapter popularMusicAdapter;
 	private HorizontalListView hlvRecentMusic;
 	private ViewGroup vgTodayCollaboArtistContainer;
-	private MusicAdapter popularMusicAdapter;
 	private MusicAdapter recentMusicAdapter;
 	private ArtistAdapter todayArtistAdapter;
 	
@@ -60,7 +59,7 @@ public class HomeFragment extends BaseFragment {
 
 	@Override
 	protected void onViewInflated(View view, LayoutInflater inflater) {
-		hlvPopularMusic = (HorizontalListView) view.findViewById(R.id.hlv_popular_music);
+		vpPopularMusic = (ViewPager) view.findViewById(R.id.vp_popular_music);
 		hlvRecentMusic = (HorizontalListView) view.findViewById(R.id.hlv_recent_music);
 		tvRecentMusicMore = (TextView) view.findViewById(R.id.tv_recent_music_more);
 		tvCollaboArtistMore = (TextView) view.findViewById(R.id.tv_collabo_artist_more);
@@ -69,10 +68,13 @@ public class HomeFragment extends BaseFragment {
 
 	@Override
 	protected void initialize(Activity activity) {
-		hlvPopularMusic.setDividerWidth(getResources().getDimensionPixelSize(R.dimen.margin));
+		int padding = getResources().getDimensionPixelSize(R.dimen.margin);
 		hlvRecentMusic.setDividerWidth(getResources().getDimensionPixelSize(R.dimen.margin));
+		vpPopularMusic.setPadding(padding, 0, padding, 0);
+		vpPopularMusic.setClipToPadding(false);
+		vpPopularMusic.setPageMargin(padding / 2);
 	}
-
+	
 	@Override
 	protected void setupViews(Bundle savedInstanceState) {
 		loadTodayCollaboArtist();
@@ -145,7 +147,8 @@ public class HomeFragment extends BaseFragment {
 	
 	private void loadPopularMusic() {
 		if (popularMusicAdapter == null) {
-			popularMusicAdapter = new MusicAdapter(LayoutType.POPULAR_HOME); 
+			final MusicAdapter adapter = new MusicAdapter(LayoutType.POPULAR_HOME);
+			popularMusicAdapter = new PagerWrappingAdapter(adapter);
 			final UrlBuilder urlBuilder = new UrlBuilder().s("musics").p("order", "sing_num_this_week").p("req", "songs").take(5);
 			final GradualLoader loader = new GradualLoader(getActivity());
 			loader.setUrlBuilder(urlBuilder);
@@ -153,13 +156,13 @@ public class HomeFragment extends BaseFragment {
 				
 				@Override
 				public void onComplete(JSONArray response) {
-					popularMusicAdapter.addAll(response);
-					hlvPopularMusic.setAdapter(popularMusicAdapter);
+					adapter.addAll(response);
+					vpPopularMusic.setAdapter(popularMusicAdapter);
 				}
 			});
 			loader.load();
 		} else {
-			hlvPopularMusic.setAdapter(popularMusicAdapter);
+			vpPopularMusic.setAdapter(popularMusicAdapter);
 		}
 	}
 	
@@ -167,8 +170,7 @@ public class HomeFragment extends BaseFragment {
 		if (recentMusicAdapter == null) {
 			final MusicAdapter adapter = new MusicAdapter(LayoutType.RECENT); 
 			hlvRecentMusic.setAdapter(adapter);
-			final String startDate = StringFormatter.getDateString(Calendar.DATE, -7);
-			final UrlBuilder urlBuilder = new UrlBuilder().s("musics").start(startDate).p("order", "created_at").take(10);
+			final UrlBuilder urlBuilder = new UrlBuilder().s("musics").take(10);
 			GradualLoader loader = new GradualLoader(getActivity());
 			loader.setUrlBuilder(urlBuilder);
 			loader.setOnLoadCompleteListener(new OnLoadCompleteListener() {
