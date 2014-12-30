@@ -30,6 +30,7 @@
         android:background="@drawable/button_transparent_selector"
         android:paddingLeft="50dp"
         android:paddingRight="50dp"
+        android:visibility="gone"
         style="@style/ButtonBase" />
     
     <Button

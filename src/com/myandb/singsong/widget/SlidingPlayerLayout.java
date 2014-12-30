@@ -100,7 +100,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	private ImageView ivDragPlayControl;
 	private ImageView ivLoopControl;
 	private ImageView ivAutoplayControl;
-	private ImageView ivMovingBackground;
+	private ImageView ivBackground;
 	private ImageView ivBackgroundMask;
 	private ImageView ivBackgroundGradient;
 	private ImageView ivShare;
@@ -237,7 +237,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		ivShowComment = (ImageView) findViewById(R.id.iv_show_comment);
 		ivCloseComment = (ImageView) findViewById(R.id.iv_close_comment);
 		ivCloseLiking = (ImageView) findViewById(R.id.iv_close_liking);
-		ivMovingBackground = (ImageView) findViewById(R.id.iv_background);
+		ivBackground = (ImageView) findViewById(R.id.iv_background);
 		ivBackgroundMask = (ImageView) findViewById(R.id.iv_background_mask);
 		ivBackgroundGradient = (ImageView) findViewById(R.id.iv_background_gradient);
 		ivShare = (ImageView) findViewById(R.id.iv_share);
@@ -614,7 +614,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	
 	private void displayBackgroundImage(Song song) {
 		String url = song.getMusic().getAlbumPhotoUrl();
-		ImageLoader.getInstance().displayImage(url, ivMovingBackground, imageLoadingListener);
+		ImageLoader.getInstance().displayImage(url, ivBackground, imageLoadingListener);
 	}
 	
 	private ImageLoadingListener imageLoadingListener = new ImageLoadingListener() {

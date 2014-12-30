@@ -2,13 +2,8 @@ package com.myandb.singsong.event;
 
 import org.json.JSONObject;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
@@ -16,18 +11,12 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
-import com.myandb.singsong.activity.BaseActivity;
-import com.myandb.singsong.activity.RootActivity;
-import com.myandb.singsong.fragment.UserHomeFragment;
 import com.myandb.singsong.model.Activity;
-import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Notification;
 import com.myandb.singsong.model.Song;
-import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.JSONObjectRequest;
 import com.myandb.singsong.net.JSONErrorListener;
 import com.myandb.singsong.net.JSONObjectSuccessListener;
-import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.service.PlayerService;
 import com.myandb.singsong.util.Utility;
 
@@ -123,28 +112,6 @@ public class Listeners {
 				default:
 					return "";
 				}
-			}
-		};
-	}
-	
-	public static OnClickListener getRecordClickListener(final Context context, final Music music) {
-		return new ActivateOnlyClickListener() {
-			
-			@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-			@Override
-			public void onActivated(View v, User user) {
-				Gson gson = Utility.getGsonInstance();
-				String musicInJson = gson.toJson(music, Music.class);
-				
-				Intent intent = null;/*new Intent(context, RecordMainActivity.class);*/
-//				intent.putExtra(RecordMainActivity.INTENT_MUSIC, musicInJson);
-				
-				if (VERSION.SDK_INT > VERSION_CODES.GINGERBREAD_MR1) {
-					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-				}
-				
-				context.startActivity(intent);
-				
 			}
 		};
 	}
