@@ -34,7 +34,7 @@ public class ArtistListFragment extends ListFragment {
 	}
 
 	@Override
-	protected int getFixedHeaderViewResId() {
+	protected int getListHeaderViewResId() {
 		return R.layout.fragment_artist_list_header;
 	}
 
@@ -52,14 +52,14 @@ public class ArtistListFragment extends ListFragment {
 	protected void onViewInflated(View view, LayoutInflater inflater) {
 		super.onViewInflated(view, inflater);
 		
-		view = getFixedHeaderView();
+		view = getListHeaderView();
 		vgTodayCollaboArtistContainer = (ViewGroup) view.findViewById(R.id.fl_today_collabo_artist_container);
 	}
 
 	@Override
 	protected void setupViews(Bundle savedInstanceState) {
 		super.setupViews(savedInstanceState);
-		
+		enableFadingActionBar(false);
 		loadTodayCollaboArtist();
 	}
 	
