@@ -41,7 +41,7 @@
     <string name="popular_music">인기 반주 TOP5</string>
     <string name="recent">최신순</string>
     <string name="recent_music">최신 업데이트 반주</string>
-    <string name="category_music">장르, 테마 MR</string>
+    <string name="category_music">장르, 테마 반주</string>
     <string name="like">관심노래</string>
     <string name="withdraw">탈퇴하기</string>
     <string name="notification">알림</string>
