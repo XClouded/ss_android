@@ -1,6 +1,7 @@
 package com.myandb.singsong.dialog;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -35,6 +36,12 @@ public class LoadingDialog extends BaseDialog {
 	@Override
 	protected int getResourceId() {
 		return R.layout.dialog_loading;
+	}
+	
+	@Override
+	protected void styleDialog(Dialog dialog) {
+		super.styleDialog(dialog);
+		dialog.getWindow().getAttributes().dimAmount = 0.8f;
 	}
 
 	@Override
