@@ -454,7 +454,9 @@ public class KaraokeFragment extends BaseFragment {
 			if (receiver.isPlugged()) {
 				startRecordingWithHeadset();
 			} else {
-				headsetDialog.show(getChildFragmentManager(), ""); 
+				getChildFragmentManager().beginTransaction()
+				.add(headsetDialog, "")
+				.commitAllowingStateLoss();
 			}
 		}
 	}

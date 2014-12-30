@@ -505,11 +505,6 @@ public class RecordSettingFragment extends BaseFragment {
 			player.release();
 			player = null;
 		}
-		
-		if (dialog != null) {
-			dialog.dismiss();
-			dialog = null;
-		}
 	}
 
 }

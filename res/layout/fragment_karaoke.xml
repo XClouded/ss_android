@@ -13,7 +13,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="#a0000000" />
+        android:src="#c0000000" />
     
     <RelativeLayout
         android:id="@+id/seekbar_wrapper"
