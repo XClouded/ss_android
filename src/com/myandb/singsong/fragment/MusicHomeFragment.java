@@ -9,7 +9,7 @@ import com.google.gson.Gson;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.RootActivity;
-import com.myandb.singsong.adapter.CategoryAdapter;
+import com.myandb.singsong.adapter.MusicCategoryAdapter;
 import com.myandb.singsong.adapter.MusicAdapter;
 import com.myandb.singsong.adapter.MusicAdapter.LayoutType;
 import com.myandb.singsong.dialog.BaseDialog;
@@ -129,7 +129,7 @@ public class MusicHomeFragment extends BaseFragment {
 		cgs.add(new Category("성대모사"));
 		cgs.add(new Category("라디오"));
 		
-		CategoryAdapter adapter = new CategoryAdapter();
+		MusicCategoryAdapter adapter = new MusicCategoryAdapter();
 		adapter.addAll(cgs);
 		
 		fltCategoryMusic.setAdapter(adapter);

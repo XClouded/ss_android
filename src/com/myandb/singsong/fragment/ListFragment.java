@@ -253,6 +253,10 @@ public class ListFragment extends BaseFragment {
 		return adapter;
 	}
 	
+	public ListView getListView() {
+		return listView;
+	}
+	
 	public void setUrlBuilder(UrlBuilder urlBuilder) {
 		if (urlBuilder == null) {
 			return;
