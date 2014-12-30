@@ -1,5 +1,10 @@
 package com.myandb.singsong.net;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.myandb.singsong.App;
 
 import android.net.Uri;
@@ -13,16 +18,16 @@ public class UrlBuilder {
 	private static final String API_PATH = "/ss_api/public";
 	private static final String API_AUTHORITY = (App.TESTING ? API_DOMAIN_TEST : API_DOMAIN) + API_PATH;
 	
-	private Uri.Builder builder;
+	private List<String> segments;
+	private Map<String, String> parameters;
 	
 	public UrlBuilder() {
-		builder = new Uri.Builder();
-		builder.scheme(API_SCHEME);
-		builder.encodedAuthority(API_AUTHORITY);
+		segments = new ArrayList<String>();
+		parameters = new HashMap<String, String>();
 	}
 	
 	public UrlBuilder s(String segment) {
-		builder.appendEncodedPath(segment);
+		segments.add(segment);
 		return this;
 	}
 	
@@ -32,7 +37,7 @@ public class UrlBuilder {
 	}
 	
 	public UrlBuilder p(String key, String value) {
-		builder.appendQueryParameter(key, value);
+		parameters.put(key, value);
 		return this;
 	}
 	
@@ -49,8 +54,7 @@ public class UrlBuilder {
 	}
 	
 	public String getParam(String key) {
-		Uri uri = builder.build();
-		return uri.getQueryParameter(key);
+		return parameters.get(key);
 	}
 	
 	public UrlBuilder skip(int amount) {
@@ -79,12 +83,21 @@ public class UrlBuilder {
 	}
 	
 	public Uri build() {
+		Uri.Builder builder = new Uri.Builder();
+		builder.scheme(API_SCHEME);
+		builder.encodedAuthority(API_AUTHORITY);
+		for (String segment : segments) {
+			builder.appendEncodedPath(segment);
+		}
+		for (String key : parameters.keySet()) {
+			builder.appendQueryParameter(key, parameters.get(key));
+		}
 		return builder.build();
 	}
 	
 	@Override
 	public String toString() {
-		return builder.build().toString();
+		return build().toString();
 	}
 	
 }
