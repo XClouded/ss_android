@@ -64,15 +64,14 @@ public class MusicHomeFragment extends BaseFragment {
 	protected void initialize(Activity activity) {
 		setHasOptionsMenu(true);
 		
-		hlvRecentMusic.setDividerWidth(getResources().getDimensionPixelSize(R.dimen.margin));
-		
-		fltCategoryMusic.setHorizontalSpacing(R.dimen.margin_small);
-		fltCategoryMusic.setVerticalSpacing(R.dimen.margin_small);
-		
 		int padding = getResources().getDimensionPixelSize(R.dimen.margin);
+		hlvRecentMusic.setDividerWidth(padding / 2);
 		vpPopularMusic.setPadding(padding, 0, padding, 0);
 		vpPopularMusic.setClipToPadding(false);
 		vpPopularMusic.setPageMargin(padding / 2);
+		
+		fltCategoryMusic.setHorizontalSpacing(R.dimen.margin_small);
+		fltCategoryMusic.setVerticalSpacing(R.dimen.margin_small);
 	}
 
 	@Override

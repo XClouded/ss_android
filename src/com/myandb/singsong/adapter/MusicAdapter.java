@@ -84,9 +84,10 @@ public class MusicAdapter extends HolderAdapter<Music, MusicAdapter.MusicHolder>
 		if (layoutType.isHorizontalListView()) {
 			if (isFirstItem(position)) {
 				setFirstItemLeftPadding(viewHolder.view);
-			}
-			if (isLastItem(position)) {
+			} else if (isLastItem(position)) {
 				setLastItemRightPadding(viewHolder.view);
+			} else {
+				viewHolder.view.setPadding(0, 0, 0, 0);
 			}
 		} else {
 			viewHolder.view.setOnClickListener(music.getMusicClickListener());

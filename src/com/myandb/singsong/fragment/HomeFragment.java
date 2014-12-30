@@ -69,7 +69,7 @@ public class HomeFragment extends BaseFragment {
 	@Override
 	protected void initialize(Activity activity) {
 		int padding = getResources().getDimensionPixelSize(R.dimen.margin);
-		hlvRecentMusic.setDividerWidth(getResources().getDimensionPixelSize(R.dimen.margin));
+		hlvRecentMusic.setDividerWidth(padding / 2);
 		vpPopularMusic.setPadding(padding, 0, padding, 0);
 		vpPopularMusic.setClipToPadding(false);
 		vpPopularMusic.setPageMargin(padding / 2);
