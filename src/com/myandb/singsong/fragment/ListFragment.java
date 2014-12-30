@@ -44,6 +44,7 @@ public class ListFragment extends BaseFragment {
 	private OnEmptyListener emptyListener;
 	private int listViewIndex;
 	private int listViewTop;
+	private boolean enableFadingActionBar = false;
 
 	@Override
 	protected final int getResourceId() {
@@ -55,8 +56,8 @@ public class ListFragment extends BaseFragment {
 		super.onArgumentsReceived(bundle);
 		
 		if (isFragmentCreated()) {
-			urlBuilder = getUrlBuilderOnArgumentPassed(bundle);
-			adapter = getListAdapterOnArgumentPassed(bundle);
+			urlBuilder = extractUrlBuilderFromBundle(bundle);
+			adapter = extractAdapterFromBundle(bundle);
 		}
 	}
 	
@@ -64,7 +65,7 @@ public class ListFragment extends BaseFragment {
 		return urlBuilder == null && adapter == null;
 	}
 	
-	private UrlBuilder getUrlBuilderOnArgumentPassed(Bundle bundle) {
+	private UrlBuilder extractUrlBuilderFromBundle(Bundle bundle) {
 		final String segment = bundle.getString(EXTRA_URL_SEGMENT);
 		final Bundle params = bundle.getBundle(EXTRA_QUERY_PARAMS);
 		
@@ -79,15 +80,15 @@ public class ListFragment extends BaseFragment {
 		return null;
 	}
 	
-	private ListAdapter getListAdapterOnArgumentPassed(Bundle bundle) {
+	private ListAdapter extractAdapterFromBundle(Bundle bundle) {
 		final String adapterName = bundle.getString(EXTRA_ADAPTER_NAME);
 		if (adapterName != null) {
-			return instantiateAdapterFromString(adapterName);
+			return instantiateAdapterFromName(adapterName);
 		}
 		return null;
 	}
 	
-	private ListAdapter instantiateAdapterFromString(String adapterName) {
+	private ListAdapter instantiateAdapterFromName(String adapterName) {
 		if (adapterName != null) {
 			try {
 				Class<?> classForAdapter = Class.forName(adapterName);
@@ -113,12 +114,14 @@ public class ListFragment extends BaseFragment {
 		if (getListHeaderViewResId() != App.INVALID_RESOURCE_ID) {
 			listHeaderView = inflater.inflate(getListHeaderViewResId(), listView, false);
 			listView.addHeaderView(listHeaderView);
+			enableFadingActionBar = true;
 		}
 		
 		if (getFixedHeaderViewResId() != App.INVALID_RESOURCE_ID) {
 			fixedHeaderView = inflater.inflate(getFixedHeaderViewResId(), fixedHeaderContainer, false);
 			fixedHeaderContainer.setVisibility(View.VISIBLE);
 			fixedHeaderContainer.addView(fixedHeaderView);
+			enableFadingActionBar = false;
 		} else {
 			fixedHeaderContainer.setVisibility(View.GONE);
 		}
@@ -157,24 +160,25 @@ public class ListFragment extends BaseFragment {
 	@Override
 	protected void setupViews(Bundle savedInstanceState) {
 		listView.setAdapter(adapter);
-		listView.setOnScrollListener(new OnScrollListener() {
-			
-			@Override
-			public void onScrollStateChanged(AbsListView view, int scrollState) {}
-			
-			@Override
-			public void onScroll(AbsListView view, int firstVisibleItem,
-					int visibleItemCount, int totalItemCount) {
-				if (loader != null) {
-					loader.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
-				}
-				
-				if (fadingActionBarHelper != null) {
-					fadingActionBarHelper.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
-				}
-			}
-		});
+		listView.setOnScrollListener(onScrollListener);
 	}
+	
+	private OnScrollListener onScrollListener = new OnScrollListener() {
+		
+		@Override
+		public void onScrollStateChanged(AbsListView view, int scrollState) {}
+		
+		@Override
+		public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+			if (loader != null) {
+				loader.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
+			}
+			
+			if (fadingActionBarHelper != null) {
+				fadingActionBarHelper.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
+			}
+		}
+	}; 
 
 	@Override
 	protected void onDataChanged() {}
@@ -189,7 +193,7 @@ public class ListFragment extends BaseFragment {
 			load();
 		}
 		
-		if (listHeaderView != null && fixedHeaderView == null) {
+		if (enableFadingActionBar && listHeaderView != null) {
 			setActionBarOverlay(true);
 			listHeaderView.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
 			fadingActionBarHelper = new FadingActionBarHelper();
@@ -311,6 +315,10 @@ public class ListFragment extends BaseFragment {
 			progressContainer.setVisibility(View.VISIBLE);
 			listViewContainer.setVisibility(View.GONE);
 		}
+	}
+	
+	public void enableFadingActionBar(boolean enable) {
+		enableFadingActionBar = enable;
 	}
 	
 	public void setFadingActionBarTitle(CharSequence title) {
