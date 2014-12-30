@@ -33,9 +33,14 @@ public class GradualLoader implements OnScrollListener {
 		this.urlBuilder = urlBuilder;
 		this.nothingToLoad = false;
 		this.loading = false;
-		this.count = 0;
 		this.requiredTake = 0;
 		this.previousTotalCount = 0;
+		
+		try {
+			this.count = Integer.parseInt(urlBuilder.getParam("skip"));
+		} catch (NumberFormatException e) {
+			this.count = 0;
+		}
 		
 		try {
 			int builderTake = Integer.parseInt(urlBuilder.getParam("take"));
