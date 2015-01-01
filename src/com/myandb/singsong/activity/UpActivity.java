@@ -29,14 +29,16 @@ public class UpActivity extends BaseActivity {
 			setWindowFullScreen();
 		}
 		
-		setContentView(R.layout.content);
-		
-		ActionBar actionBar = getSupportActionBar();
-		if (actionBar != null) {
+		try {
+			ActionBar actionBar = getSupportActionBar();
 			actionBar.setHomeButtonEnabled(true);
 			actionBar.setDisplayHomeAsUpEnabled(true);
 			actionBar.setHomeAsUpIndicator(R.drawable.ic_action_back);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		
+		setContentView(R.layout.content);
 		
 		replaceContentFragmentFromIntent(getIntent());
 	}
