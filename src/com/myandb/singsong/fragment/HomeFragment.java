@@ -232,6 +232,12 @@ public class HomeFragment extends BaseFragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.action_sing:
+			Bundle bundle = new Bundle();
+			bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_sing_title));
+			Intent intent = new Intent(getActivity(), RootActivity.class);
+			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, MusicHomeFragment.class.getName());
+			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
+			startFragment(intent);
 			return true;
 		
 		default:
