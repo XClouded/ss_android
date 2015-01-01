@@ -32,9 +32,11 @@ public class UpActivity extends BaseActivity {
 		setContentView(R.layout.content);
 		
 		ActionBar actionBar = getSupportActionBar();
-		actionBar.setHomeButtonEnabled(true);
-		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.setHomeAsUpIndicator(R.drawable.ic_action_back);
+		if (actionBar != null) {
+			actionBar.setHomeButtonEnabled(true);
+			actionBar.setDisplayHomeAsUpEnabled(true);
+			actionBar.setHomeAsUpIndicator(R.drawable.ic_action_back);
+		}
 		
 		replaceContentFragmentFromIntent(getIntent());
 	}
