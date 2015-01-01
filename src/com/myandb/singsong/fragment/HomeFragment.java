@@ -243,6 +243,8 @@ public class HomeFragment extends BaseFragment {
 		
 		@Override
 		public void onClick(View v) {
+			setCurrentNotificationCount(0);
+			
 			Bundle params = new Bundle();
 			params.putString("order", "updated_at");
 			String userId = String.valueOf(Authenticator.getUser().getId());
@@ -271,6 +273,12 @@ public class HomeFragment extends BaseFragment {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 		String key = getString(R.string.key_notification_count);
 		return preferences.getInt(key, 0);
+	}
+	
+	private void setCurrentNotificationCount(int count) {
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+		String key = getString(R.string.key_notification_count);
+		preferences.edit().putInt(key, count).commit();
 	}
 	
 	private void setNotificationNum(int count, TextView textView) {
