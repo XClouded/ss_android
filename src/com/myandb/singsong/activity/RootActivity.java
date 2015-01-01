@@ -35,6 +35,7 @@ public class RootActivity extends BaseActivity {
 	
 	public static final String SAVED_STATE_ACTION_BAR_HIDDEN = "saved_state_action_bar_hidden";
 	public static final String EXTRA_NOTICE = "notice";
+	public static final String EXTRA_SHOW_PLAYER = "show_player";
 	
 	private SlidingMenu drawer;
 	private SlidingPlayerLayout slidingPlayerLayout;
@@ -225,6 +226,15 @@ public class RootActivity extends BaseActivity {
 	protected void onDestroy() {
 		slidingPlayerLayout.onDestroy();
 		super.onDestroy();
+	}
+
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		boolean showPlayer = intent.getBooleanExtra(EXTRA_SHOW_PLAYER, false);
+		if (showPlayer && !slidingPlayerLayout.isPanelExpanded()) {
+			slidingPlayerLayout.expandPanel();
+		}
 	}
 
 	@Override

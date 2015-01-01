@@ -195,7 +195,8 @@ public class PlayerService extends Service {
 	
 	private Notification makeNotification(Bitmap bitmap) {
 		Intent intent = new Intent(this, RootActivity.class);
-		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+		intent.putExtra(RootActivity.EXTRA_SHOW_PLAYER, true);
 		
 		String singerName = thisSong.getMusic().getSingerName();
 		String albumTitle = thisSong.getMusic().getTitle();

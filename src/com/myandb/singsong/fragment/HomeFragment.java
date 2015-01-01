@@ -9,7 +9,6 @@ import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.activity.UpActivity;
 import com.myandb.singsong.adapter.ArtistAdapter;
 import com.myandb.singsong.adapter.MusicAdapter;
-import com.myandb.singsong.adapter.NotificationAdapter;
 import com.myandb.singsong.adapter.MusicAdapter.LayoutType;
 import com.myandb.singsong.dialog.BaseDialog;
 import com.myandb.singsong.dialog.SelectRecordModeDialog;
@@ -249,19 +248,8 @@ public class HomeFragment extends BaseFragment {
 		
 		@Override
 		public void onClick(View v) {
-			setCurrentNotificationCount(0);
-			
-			Bundle params = new Bundle();
-			params.putString("order", "updated_at");
-			String userId = String.valueOf(Authenticator.getUser().getId());
-			Bundle bundle = new Bundle();
-			bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, "새로운 소식");
-			bundle.putString(ListFragment.EXTRA_URL_SEGMENT, "users/" + userId + "/notifications");
-			bundle.putBundle(ListFragment.EXTRA_QUERY_PARAMS, params);
-			bundle.putString(ListFragment.EXTRA_ADAPTER_NAME, NotificationAdapter.class.getName());
 			Intent intent = new Intent(getActivity(), UpActivity.class);
-			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, ListFragment.class.getName());
-			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
+			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, NotificationFragment.class.getName());
 			startFragment(intent);
 		}
 	};
@@ -279,12 +267,6 @@ public class HomeFragment extends BaseFragment {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 		String key = getString(R.string.key_notification_count);
 		return preferences.getInt(key, 0);
-	}
-	
-	private void setCurrentNotificationCount(int count) {
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-		String key = getString(R.string.key_notification_count);
-		preferences.edit().putInt(key, count).commit();
 	}
 	
 	private void setNotificationNum(int count, TextView textView) {
