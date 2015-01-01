@@ -575,7 +575,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		ivLikeSong.setOnClickListener(likeClickListener);
 		btnSubmitComment.setOnClickListener(submitCommentClickListner);
 		tvOtherCollabo.setOnClickListener(song.getChildrenClickListener());
-		ivShare.setOnClickListener(song.getChildrenClickListener());
+		ivShare.setOnClickListener(shareClickListener);
 		
 		if (song.isRoot()) {
 			vPartnerWrapper.setVisibility(View.GONE);
@@ -819,6 +819,14 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 			} else {
 				makeToast(R.string.t_comment_length_policy);
 			}
+		}
+	};
+	
+	private OnClickListener shareClickListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			
 		}
 	};
 	
