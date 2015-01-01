@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.graphics.Bitmap;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
@@ -29,12 +30,14 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import com.android.volley.Request.Method;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
+import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.adapter.CommentAdapter;
 import com.myandb.singsong.adapter.LikingUserAdapter;
 import com.myandb.singsong.audio.OnPlayEventListener;
 import com.myandb.singsong.audio.PlayEvent;
 import com.myandb.singsong.audio.StreamPlayer;
+import com.myandb.singsong.dialog.ShareDialog;
 import com.myandb.singsong.event.ActivateOnlyClickListener;
 import com.myandb.singsong.event.WeakRunnable;
 import com.myandb.singsong.image.BlurAsyncTask;
@@ -826,7 +829,13 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		
 		@Override
 		public void onClick(View v) {
-			
+			BaseActivity activity = ((BaseActivity) getContext());
+			Song song = service.getSong();
+			Bundle bundle = new Bundle();
+			bundle.putString(ShareDialog.EXTRA_SONG, song.toString());
+			ShareDialog dialog = new ShareDialog();
+			dialog.setArguments(bundle);
+			dialog.show(activity.getSupportFragmentManager(), "");
 		}
 	};
 	
