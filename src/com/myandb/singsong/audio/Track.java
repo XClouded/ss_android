@@ -60,7 +60,7 @@ public final class Track {
 	}
 	
 	public void setVolume(float volume) {
-		this.volume = Math.min(Math.max(volume, 0f), 1.5f);
+		this.volume = Math.min(Math.max(volume, 0f), 2.0f);
 	}
 	
 	public float getVolume() {
