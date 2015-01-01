@@ -1,7 +1,6 @@
 package com.myandb.singsong.fragment;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import org.json.JSONArray;
 
@@ -20,7 +19,6 @@ import com.myandb.singsong.net.GradualLoader;
 import com.myandb.singsong.net.GradualLoader.OnLoadCompleteListener;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.pager.PagerWrappingAdapter;
-import com.myandb.singsong.util.StringFormatter;
 import com.myandb.singsong.util.Utility;
 import com.myandb.singsong.widget.FloatableLayout;
 import com.myandb.singsong.widget.HorizontalListView;
@@ -159,8 +157,7 @@ public class MusicHomeFragment extends BaseFragment {
 	private void loadRecentMusic() {
 		if (recentMusicAdapter == null) {
 			recentMusicAdapter = new MusicAdapter(LayoutType.RECENT); 
-			final String startDate = StringFormatter.getDateString(Calendar.DATE, -7);
-			final UrlBuilder urlBuilder = new UrlBuilder().s("musics").start(startDate).p("order", "created_at").take(10);
+			final UrlBuilder urlBuilder = new UrlBuilder().s("musics").take(10);
 			GradualLoader loader = new GradualLoader(getActivity());
 			loader.setUrlBuilder(urlBuilder);
 			loader.setOnLoadCompleteListener(new OnLoadCompleteListener() {
