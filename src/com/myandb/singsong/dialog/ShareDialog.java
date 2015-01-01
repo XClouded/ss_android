@@ -13,6 +13,7 @@ import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.util.Utility;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -29,6 +30,13 @@ public class ShareDialog extends BaseDialog {
 	private TextView tvShareEtc;
 	private String webUrl;
 	private String photoUrl;
+
+	@Override
+	public Dialog onCreateDialog(Bundle savedInstanceState) {
+		Dialog dialog = super.onCreateDialog(savedInstanceState);
+		dialog.getWindow().setWindowAnimations(R.style.DialogNoAnimation);
+		return dialog;
+	}
 
 	@Override
 	protected int getResourceId() {
