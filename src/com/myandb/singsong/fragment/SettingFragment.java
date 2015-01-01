@@ -387,7 +387,6 @@ public class SettingFragment extends BaseFragment {
 		Session session = Session.getActiveSession();
 		if (session != null) {
 			session.closeAndClearTokenInformation();
-			session.close();
 		}
 	}
 	

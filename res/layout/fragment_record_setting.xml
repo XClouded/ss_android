@@ -302,6 +302,7 @@
 		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content"
 		        android:orientation="vertical"
+		        android:layout_marginBottom="@dimen/margin"
 		        android:background="@drawable/card_song" >
 	            
 		        <TextView
@@ -382,6 +383,42 @@
 	                style="@style/ButtonDark" />
 		        
 		    </LinearLayout>
+		    
+		    <RelativeLayout
+		        android:id="@+id/rl_facebook"
+		        android:layout_marginBottom="@dimen/margin_big"
+		        android:background="@drawable/card_song"
+		        style="@style/FormBase" >
+		        
+		        <ImageView
+		            android:id="@+id/iv_is_facebook_posting"
+		            android:layout_width="25dp"
+		            android:layout_height="25dp"
+		            android:padding="@dimen/margin_tiny"
+		            android:background="@drawable/button_transparent_primary_selector"
+		            android:layout_centerVertical="true"
+		            android:layout_alignParentRight="true"
+		            android:src="@drawable/ic_check"
+		            style="@style/ImageViewBase" />
+		        
+		        <ImageView
+		            android:id="@+id/icon_facebook"
+		            android:layout_width="25dp"
+		            android:layout_height="25dp"
+		            android:layout_marginRight="@dimen/margin_small"
+		            android:src="@drawable/ic_facebook"
+		            style="@style/ImageViewBase" />
+		        
+		        <TextView
+		            android:padding="0dp"
+		            android:layout_marginBottom="@dimen/margin_tiny"
+		            android:layout_centerVertical="true"
+		            android:layout_toRightOf="@id/icon_facebook"
+		            android:text="페이스북에 함께 포스팅"
+		            android:textSize="@dimen/text_sub_content"
+		            style="@style/TextViewBase" />
+		        
+		    </RelativeLayout>
 	        
 	    </LinearLayout>
         

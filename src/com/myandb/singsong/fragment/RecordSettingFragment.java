@@ -65,6 +65,7 @@ public class RecordSettingFragment extends BaseFragment {
 	private String imageName;
 	private boolean localImageExist;
 	private boolean headsetPlugged;
+	private boolean isFacebookPosting;
 	
 	private TextView tvSyncValue;
 	private TextView tvVolumeValue;
@@ -72,6 +73,7 @@ public class RecordSettingFragment extends BaseFragment {
 	private ImageView ivSyncBack;
 	private ImageView ivSyncforward;
 	private ImageView ivSongImage;
+	private ImageView ivIsFacebookPosting;
 	private Button btnOtherImages;
 	private Button btnDeletePhoto;
 	private EditText etSongMessage;
@@ -82,6 +84,7 @@ public class RecordSettingFragment extends BaseFragment {
 	private View vExit;
 	private View vMixer;
 	private View vVolume;
+	private View vFacebook;
 
 	@Override
 	protected int getResourceId() {
@@ -168,6 +171,7 @@ public class RecordSettingFragment extends BaseFragment {
 		ivSyncBack = (ImageView) view.findViewById(R.id.iv_sync_back);
 		ivSyncforward = (ImageView) view.findViewById(R.id.iv_sync_forward);
 		ivSongImage = (ImageView) view.findViewById(R.id.iv_song_image);
+		ivIsFacebookPosting = (ImageView) view.findViewById(R.id.iv_is_facebook_posting);
 		
 		tvSyncValue = (TextView) view.findViewById(R.id.tv_sync_value);
 		tvVolumeValue = (TextView) view.findViewById(R.id.tv_volume_value);
@@ -182,6 +186,7 @@ public class RecordSettingFragment extends BaseFragment {
 		vExit = view.findViewById(R.id.ll_exit);
 		vMixer = view.findViewById(R.id.ll_mixer);
 		vVolume = view.findViewById(R.id.ll_volume);
+		vFacebook = view.findViewById(R.id.rl_facebook);
 	}
 
 	@Override
@@ -208,6 +213,15 @@ public class RecordSettingFragment extends BaseFragment {
 		} else {
 			vMixer.setVisibility(View.GONE);
 			vVolume.setVisibility(View.GONE);
+		}
+		
+		if (Authenticator.getUser().isFacebookActivated()) {
+			updateFacebookPostingView(true);
+			vFacebook.setVisibility(View.VISIBLE);
+			vFacebook.setOnClickListener(facebookPostingClickListener);
+		} else {
+			updateFacebookPostingView(false);
+			vFacebook.setVisibility(View.GONE);
 		}
 		
 		ivPlayControl.setOnClickListener(playClickListener);
@@ -347,6 +361,7 @@ public class RecordSettingFragment extends BaseFragment {
 		intent.putExtra(SongUploadService.EXTRA_IMAGE_ID, getImageId());
 		intent.putExtra(SongUploadService.EXTRA_SONG_MESSAGE, getSongMessage());
 		intent.putExtra(SongUploadService.EXTRA_RECORD_VOLUME, getTrackVolume(TRACK_RECORD));
+		intent.putExtra(SongUploadService.EXTRA_FACEBOOK_POSTING, isFacebookPosting);
 		
 		getActivity().setResult(Activity.RESULT_FIRST_USER, intent);
 		getActivity().finish();
@@ -495,6 +510,23 @@ public class RecordSettingFragment extends BaseFragment {
 			ivSongImage.setImageDrawable(null);
 		}
 	}
+	
+	private void updateFacebookPostingView(boolean isPosting) {
+		isFacebookPosting = isPosting;
+		if (isPosting) {
+			ivIsFacebookPosting.setImageResource(R.drawable.ic_check);
+		} else {
+			ivIsFacebookPosting.setImageDrawable(null);
+		}
+	}
+	
+	private OnClickListener facebookPostingClickListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			updateFacebookPostingView(!isFacebookPosting);
+		}
+	};
 
 	@Override
 	protected void onDataChanged() {

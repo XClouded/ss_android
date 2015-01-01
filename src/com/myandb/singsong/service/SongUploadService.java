@@ -53,6 +53,7 @@ public class SongUploadService extends Service {
 	public static final String EXTRA_IMAGE_ID = "image_id";
 	public static final String EXTRA_SONG_MESSAGE = "song_message";
 	public static final String EXTRA_RECORD_VOLUME = "record_volume";
+	public static final String EXTRA_FACEBOOK_POSTING = "facebook_posting";
 	public static final int REQUEST_CODE = 10;
 	
 	private static boolean isRunning;
@@ -61,6 +62,7 @@ public class SongUploadService extends Service {
 	private int parentSongId;
 	private int creatorId;
 	private int imageId;
+	private boolean isFacebookPosting;
 	private String message;
 	private String songAudioName;
 	private String sampleAudioName;
@@ -110,6 +112,7 @@ public class SongUploadService extends Service {
 		lyricPart = intent.getIntExtra(EXTRA_LYRIC_PART, Music.PART_MALE);
 		imageId = intent.getIntExtra(EXTRA_IMAGE_ID, 0);
 		message = intent.getStringExtra(EXTRA_SONG_MESSAGE);
+		isFacebookPosting = intent.getBooleanExtra(EXTRA_FACEBOOK_POSTING, false);
 		
 		try {
 			tracks = new ArrayList<Track>();
@@ -380,7 +383,15 @@ public class SongUploadService extends Service {
 		
 		manager.notify(App.NOTI_ID_SONG_UPLOAD, builder.build());
 		
+		if (isFacebookPosting) {
+			postOnFacebook();
+		}
+		
 		isRunning = false;
+	}
+	
+	private void postOnFacebook() {
+		
 	}
 	
 	public static boolean isServiceRunning() {

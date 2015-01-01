@@ -639,30 +639,19 @@ public class KaraokeFragment extends BaseFragment {
 		switch (requestCode) {
 		case REQUEST_CODE_SETTING:
 			if (resultCode == Activity.RESULT_FIRST_USER) {
-				int musicOffset = data.getIntExtra(SongUploadService.EXTRA_MUSIC_OFFSET, 0);
-				int recordOffset = data.getIntExtra(SongUploadService.EXTRA_RECORD_OFFSET, 0);
-				int imageId = data.getIntExtra(SongUploadService.EXTRA_IMAGE_ID, 0);
-				float recordVolume = data.getFloatExtra(SongUploadService.EXTRA_RECORD_VOLUME, 1f);
-				String message = data.getStringExtra(SongUploadService.EXTRA_SONG_MESSAGE);
-				
-				Intent intent = new Intent(getActivity(), SongUploadService.class);
-				intent.putExtra(SongUploadService.EXTRA_HEADSET_PLUGGED, recorder.isHeadsetPlugged());
-				intent.putExtra(SongUploadService.EXTRA_RECORD_PCM_FILE_PATH, recordPcmFile.getAbsolutePath());
-				intent.putExtra(SongUploadService.EXTRA_RECORD_OFFSET, recordOffset);
-				intent.putExtra(SongUploadService.EXTRA_MUSIC_PCM_FILE_PATH, musicPcmFile.getAbsolutePath());
-				intent.putExtra(SongUploadService.EXTRA_MUSIC_OFFSET, musicOffset);
-				intent.putExtra(SongUploadService.EXTRA_CREATOR_ID, currentUser.getId());
-				intent.putExtra(SongUploadService.EXTRA_MUSIC_ID, music.getId());
-				intent.putExtra(SongUploadService.EXTRA_LYRIC_PART, lyricPart);
-				intent.putExtra(SongUploadService.EXTRA_IMAGE_ID, imageId);
-				intent.putExtra(SongUploadService.EXTRA_SONG_MESSAGE, message);
-				intent.putExtra(SongUploadService.EXTRA_RECORD_VOLUME, recordVolume);
+				data.setClass(getActivity(), SongUploadService.class);
+				data.putExtra(SongUploadService.EXTRA_HEADSET_PLUGGED, recorder.isHeadsetPlugged());
+				data.putExtra(SongUploadService.EXTRA_RECORD_PCM_FILE_PATH, recordPcmFile.getAbsolutePath());
+				data.putExtra(SongUploadService.EXTRA_MUSIC_PCM_FILE_PATH, musicPcmFile.getAbsolutePath());
+				data.putExtra(SongUploadService.EXTRA_CREATOR_ID, currentUser.getId());
+				data.putExtra(SongUploadService.EXTRA_MUSIC_ID, music.getId());
+				data.putExtra(SongUploadService.EXTRA_LYRIC_PART, lyricPart);
 				
 				if (!isSolo()) {
-					intent.putExtra(SongUploadService.EXTRA_PARENT_SONG_ID, parentSong.getId());
+					data.putExtra(SongUploadService.EXTRA_PARENT_SONG_ID, parentSong.getId());
 				}
 				
-				getActivity().startService(intent);
+				getActivity().startService(data);
 				finish(getActivity(), null);
 			} else if (resultCode == Activity.RESULT_OK) {
 				prepareRecording();
