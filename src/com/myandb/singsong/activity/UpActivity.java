@@ -2,6 +2,8 @@ package com.myandb.singsong.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -29,6 +31,11 @@ public class UpActivity extends BaseActivity {
 		
 		setContentView(R.layout.content);
 		
+		ActionBar actionBar = getSupportActionBar();
+		actionBar.setHomeButtonEnabled(true);
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setHomeAsUpIndicator(R.drawable.ic_action_back);
+		
 		replaceContentFragmentFromIntent(getIntent());
 	}
 	
@@ -52,6 +59,18 @@ public class UpActivity extends BaseActivity {
 		super.onPlayerServiceConnected(service);
 		if (shouldStop) {
 			service.pause();
+		}
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			onBackPressed();
+			return true;
+		
+		default:
+			return super.onOptionsItemSelected(item);
 		}
 	}
 
