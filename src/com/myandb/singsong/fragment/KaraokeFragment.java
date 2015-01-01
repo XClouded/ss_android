@@ -462,7 +462,7 @@ public class KaraokeFragment extends BaseFragment {
 	}
 
 	public void onHeadsetPlugged() {
-		if (headsetDialog != null) {
+		if (headsetDialog.getDialog() != null) {
 			headsetDialog.dismiss();
 			prepareRecording();
 		}
