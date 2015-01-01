@@ -67,6 +67,7 @@ public class RecordSettingFragment extends BaseFragment {
 	private boolean headsetPlugged;
 	
 	private TextView tvSyncValue;
+	private TextView tvVolumeValue;
 	private ImageView ivPlayControl;
 	private ImageView ivSyncBack;
 	private ImageView ivSyncforward;
@@ -75,10 +76,12 @@ public class RecordSettingFragment extends BaseFragment {
 	private Button btnDeletePhoto;
 	private EditText etSongMessage;
 	private SeekBar sbPlay;
+	private SeekBar sbVolume;
 	private View vRestart;
 	private View vUpload;
 	private View vExit;
 	private View vMixer;
+	private View vVolume;
 
 	@Override
 	protected int getResourceId() {
@@ -167,7 +170,9 @@ public class RecordSettingFragment extends BaseFragment {
 		ivSongImage = (ImageView) view.findViewById(R.id.iv_song_image);
 		
 		tvSyncValue = (TextView) view.findViewById(R.id.tv_sync_value);
+		tvVolumeValue = (TextView) view.findViewById(R.id.tv_volume_value);
 		sbPlay = (SeekBar) view.findViewById(R.id.sb_play);
+		sbVolume = (SeekBar) view.findViewById(R.id.sb_volume);
 		etSongMessage = (EditText) view.findViewById(R.id.et_song_message);
 		btnOtherImages = (Button) view.findViewById(R.id.btn_other_images);
 		btnDeletePhoto = (Button) view.findViewById(R.id.btn_delete_image);
@@ -176,6 +181,7 @@ public class RecordSettingFragment extends BaseFragment {
 		vUpload = view.findViewById(R.id.ll_upload);
 		vExit = view.findViewById(R.id.ll_exit);
 		vMixer = view.findViewById(R.id.ll_mixer);
+		vVolume = view.findViewById(R.id.ll_volume);
 	}
 
 	@Override
@@ -198,8 +204,10 @@ public class RecordSettingFragment extends BaseFragment {
 	protected void setupViews(Bundle savedInstanceState) {
 		if (headsetPlugged) {
 			vMixer.setVisibility(View.VISIBLE);
+			vVolume.setVisibility(View.VISIBLE);
 		} else {
 			vMixer.setVisibility(View.GONE);
+			vVolume.setVisibility(View.GONE);
 		}
 		
 		ivPlayControl.setOnClickListener(playClickListener);
@@ -214,7 +222,12 @@ public class RecordSettingFragment extends BaseFragment {
 		
 		tvSyncValue.setText("0.0");
 		sbPlay.setMax((int) player.getDuration());
-		sbPlay.setOnSeekBarChangeListener(seekBarChangeListener);
+		sbPlay.setOnSeekBarChangeListener(playSeekBarChangeListener);
+		
+		tvVolumeValue.setText("100%");
+		sbVolume.setMax(200);
+		sbVolume.setProgress(100);
+		sbVolume.setOnSeekBarChangeListener(volumeSeekBarChangeListener);
 	}
 	
 	private OnClickListener playClickListener = new OnClickListener() {
@@ -333,6 +346,7 @@ public class RecordSettingFragment extends BaseFragment {
 		intent.putExtra(SongUploadService.EXTRA_MUSIC_OFFSET, getTrackOffset(TRACK_MUSIC));
 		intent.putExtra(SongUploadService.EXTRA_IMAGE_ID, getImageId());
 		intent.putExtra(SongUploadService.EXTRA_SONG_MESSAGE, getSongMessage());
+		intent.putExtra(SongUploadService.EXTRA_RECORD_VOLUME, getTrackVolume(TRACK_RECORD));
 		
 		getActivity().setResult(Activity.RESULT_FIRST_USER, intent);
 		getActivity().finish();
@@ -346,6 +360,15 @@ public class RecordSettingFragment extends BaseFragment {
 		Track track = player.getTrack(key);
 		if (track != null) {
 			return track.getOffsetSize();
+		} else {
+			return 0;
+		}
+	}
+	
+	private float getTrackVolume(String key) {
+		Track track = player.getTrack(key);
+		if (track != null) {
+			return track.getVolume();
 		} else {
 			return 0;
 		}
@@ -422,7 +445,7 @@ public class RecordSettingFragment extends BaseFragment {
 		}
 	};
 	
-	private OnSeekBarChangeListener seekBarChangeListener = new OnSeekBarChangeListener() {
+	private OnSeekBarChangeListener playSeekBarChangeListener = new OnSeekBarChangeListener() {
 		
 		private boolean trackManuallyChanged;
 		
@@ -442,6 +465,23 @@ public class RecordSettingFragment extends BaseFragment {
 					trackManuallyChanged = false;
 				}
 			}
+		}
+	};
+	
+	private OnSeekBarChangeListener volumeSeekBarChangeListener = new OnSeekBarChangeListener() {
+		
+		@Override
+		public void onStopTrackingTouch(SeekBar seekBar) {}
+		
+		@Override
+		public void onStartTrackingTouch(SeekBar seekBar) {}
+		
+		@Override
+		public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+			final Track voiceTrack = player.getTrack(TRACK_RECORD);
+			final float volume = (float) (progress / 100.f);
+			voiceTrack.setVolume(volume);
+			tvVolumeValue.setText(String.valueOf(progress) + "%");
 		}
 	};
 	

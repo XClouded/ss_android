@@ -52,6 +52,7 @@ public class SongUploadService extends Service {
 	public static final String EXTRA_LYRIC_PART = "lyric_part";
 	public static final String EXTRA_IMAGE_ID = "image_id";
 	public static final String EXTRA_SONG_MESSAGE = "song_message";
+	public static final String EXTRA_RECORD_VOLUME = "record_volume";
 	public static final int REQUEST_CODE = 10;
 	
 	private static boolean isRunning;
@@ -101,6 +102,7 @@ public class SongUploadService extends Service {
 		final String musicPcmFilePath = intent.getStringExtra(EXTRA_MUSIC_PCM_FILE_PATH);
 		final File recordPcmFile = new File(recordPcmFilePath);
 		final File musicPcmFile = new File(musicPcmFilePath);
+		final float recordVolume = intent.getFloatExtra(EXTRA_RECORD_VOLUME, 1f);
 		
 		creatorId = intent.getIntExtra(EXTRA_CREATOR_ID, 0);
 		musicId = intent.getIntExtra(EXTRA_MUSIC_ID, 0);
@@ -113,6 +115,7 @@ public class SongUploadService extends Service {
 			tracks = new ArrayList<Track>();
 			Track recordTrack = new Track(recordPcmFile, Recorder.CHANNELS);
 			recordTrack.addOffsetFrame(recordOffset);
+			recordTrack.setVolume(recordVolume);
 			tracks.add(recordTrack);
 			if (headsetPlugged) {
 				Track musicTrack = new Track(musicPcmFile, PcmPlayer.CHANNELS);

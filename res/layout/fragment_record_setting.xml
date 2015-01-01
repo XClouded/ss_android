@@ -239,6 +239,66 @@
 		    </LinearLayout>
 		    
 		    <LinearLayout
+		        android:id="@+id/ll_volume"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:orientation="vertical"
+		        android:layout_marginBottom="@dimen/margin"
+		        android:background="@drawable/card_song" >
+	            
+		        <TextView
+		            android:text="목소리 볼륨조절"
+		            android:textColor="@color/font_default"
+		            android:layout_marginLeft="@dimen/margin_small"
+		            android:paddingTop="@dimen/margin_tiny"
+		            android:paddingBottom="@dimen/margin_tiny"
+		            style="@style/TextViewLessImportant" />
+		        
+		        <ImageView
+		            style="@style/DividerHorizontal" />
+		        
+		        <RelativeLayout
+				    android:layout_width="match_parent"
+				    android:layout_height="wrap_content"
+				    android:padding="@dimen/margin" >
+				    
+				    <ImageView
+				        android:id="@+id/icon_volume"
+			            android:layout_width="25dp"
+			            android:layout_height="25dp"
+			            android:layout_marginRight="@dimen/margin"
+			            android:src="@drawable/ic_arrow_left"
+			            android:scaleType="centerCrop" />
+				    
+				    <TextView
+				        android:id="@+id/tv_volume_value"
+				        android:layout_alignParentRight="true"
+				        android:text="100%"
+				        android:layout_centerVertical="true"
+				        android:layout_marginLeft="@dimen/margin"
+				        style="@style/TextViewBase" />
+				    
+				    <SeekBar
+			            android:id="@+id/sb_volume"
+			            android:layout_width="match_parent"
+			            android:layout_height="wrap_content"
+			            android:layout_toRightOf="@id/icon_volume"
+			            android:layout_toLeftOf="@id/tv_volume_value"
+			            android:paddingTop="5dp"
+			            android:paddingBottom="5dp"
+			            android:paddingLeft="18dp"
+			            android:paddingRight="18dp"
+			            android:minHeight="5dp"
+			            android:maxHeight="5dp"
+			            android:layout_centerVertical="true"
+			            android:progressDrawable="@drawable/seekbar_white"
+			            android:thumb="@drawable/seekbar_thumb" />
+				    
+				</RelativeLayout>
+		        
+		    </LinearLayout>
+		    
+		    <LinearLayout
 		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content"
 		        android:orientation="vertical"

@@ -642,6 +642,7 @@ public class KaraokeFragment extends BaseFragment {
 				int musicOffset = data.getIntExtra(SongUploadService.EXTRA_MUSIC_OFFSET, 0);
 				int recordOffset = data.getIntExtra(SongUploadService.EXTRA_RECORD_OFFSET, 0);
 				int imageId = data.getIntExtra(SongUploadService.EXTRA_IMAGE_ID, 0);
+				float recordVolume = data.getFloatExtra(SongUploadService.EXTRA_RECORD_VOLUME, 1f);
 				String message = data.getStringExtra(SongUploadService.EXTRA_SONG_MESSAGE);
 				
 				Intent intent = new Intent(getActivity(), SongUploadService.class);
@@ -655,6 +656,7 @@ public class KaraokeFragment extends BaseFragment {
 				intent.putExtra(SongUploadService.EXTRA_LYRIC_PART, lyricPart);
 				intent.putExtra(SongUploadService.EXTRA_IMAGE_ID, imageId);
 				intent.putExtra(SongUploadService.EXTRA_SONG_MESSAGE, message);
+				intent.putExtra(SongUploadService.EXTRA_RECORD_VOLUME, recordVolume);
 				
 				if (!isSolo()) {
 					intent.putExtra(SongUploadService.EXTRA_PARENT_SONG_ID, parentSong.getId());
