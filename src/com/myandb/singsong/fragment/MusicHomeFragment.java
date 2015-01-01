@@ -13,6 +13,7 @@ import com.myandb.singsong.adapter.MusicAdapter;
 import com.myandb.singsong.adapter.MusicAdapter.LayoutType;
 import com.myandb.singsong.dialog.BaseDialog;
 import com.myandb.singsong.dialog.SelectRecordModeDialog;
+import com.myandb.singsong.fragment.SearchFragment.SearchType;
 import com.myandb.singsong.model.Category;
 import com.myandb.singsong.model.Music;
 import com.myandb.singsong.net.GradualLoader;
@@ -28,6 +29,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -44,6 +48,12 @@ public class MusicHomeFragment extends BaseFragment {
 	private TextView tvRecentMusicMore;
 	private MusicAdapter recentMusicAdapter;
 	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
+	}
+
 	@Override
 	protected int getResourceId() {
 		return R.layout.fragment_music_home;
@@ -189,5 +199,29 @@ public class MusicHomeFragment extends BaseFragment {
 			dialog.show(getChildFragmentManager(), "");
 		}
 	};
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		super.onCreateOptionsMenu(menu, inflater);
+		inflater.inflate(R.menu.search, menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.action_search:
+			Bundle bundle = new Bundle();
+			bundle.putSerializable(SearchFragment.EXTRA_SEARCH_TYPE, SearchType.MUSIC);
+			bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, "노래 검색");
+			Intent intent = new Intent(getActivity(), RootActivity.class);
+			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, SearchFragment.class.getName());
+			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
+			startFragment(intent);
+			return true;
+
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
 
 }
