@@ -139,7 +139,7 @@ public class HomeFragment extends BaseFragment {
 	}
 	
 	private void addArtistView() {
-		if (todayArtistAdapter != null) {
+		if (todayArtistAdapter != null && todayArtistAdapter.getCount() > 0) {
 			View child = todayArtistAdapter.getView(0, null, vgTodayCollaboArtistContainer);
 			vgTodayCollaboArtistContainer.addView(child);
 		}
