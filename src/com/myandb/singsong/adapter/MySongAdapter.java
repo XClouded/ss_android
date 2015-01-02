@@ -25,7 +25,11 @@ public class MySongAdapter extends HolderAdapter<Song, MySongAdapter.SongHolder>
 	private final boolean isCurrentUser;
 	private final boolean isDeleted;
 	
-	public MySongAdapter(Context context, boolean isCurrentUser, boolean isDeleted) {
+	public MySongAdapter() {
+		this(true, true);
+	}
+	
+	public MySongAdapter(boolean isCurrentUser, boolean isDeleted) {
 		super(Song.class);
 		
 		this.isCurrentUser = isCurrentUser;

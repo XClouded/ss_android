@@ -110,7 +110,7 @@ public class UserHomeFragment extends ListFragment {
 
 	@Override
 	protected ListAdapter instantiateAdapter(Activity activity) {
-		return new MySongAdapter(activity, isCurrentUser(), false);
+		return new MySongAdapter(isCurrentUser(), false);
 	}
 
 	@Override
@@ -403,7 +403,7 @@ public class UserHomeFragment extends ListFragment {
 			}
 			
 			btnFollow.setBackgroundResource(R.drawable.button_primary_selector);
-			btnFollow.setText("ÆÈ·ÎÀ×");
+			btnFollow.setText("\u2713ÆÈ·ÎÀ×");
 			btnFollow.setOnClickListener(updateFriendshipClickListener);
 		} else {
 			if (friendship != null) {

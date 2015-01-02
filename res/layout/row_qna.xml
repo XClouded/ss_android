@@ -19,6 +19,7 @@
         android:id="@+id/tv_answer"
         android:layout_toRightOf="@id/iv_user_photo"
         android:layout_alignTop="@id/iv_user_photo"
+        android:lineSpacingExtra="@dimen/margin_tiny"
         style="@style/TextViewLessImportant" />
 
 </RelativeLayout>
