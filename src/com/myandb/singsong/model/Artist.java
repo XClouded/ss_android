@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.fragment.ArtistDetailFragment;
+import com.myandb.singsong.fragment.BaseFragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -62,6 +63,7 @@ public class Artist extends Model {
 				BaseActivity activity = (BaseActivity) v.getContext();
 				Bundle bundle = new Bundle();
 				bundle.putString(ArtistDetailFragment.EXTRA_ARTIST, Artist.this.toString());
+				bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getNickname());
 				Intent intent = new Intent(activity, RootActivity.class);
 				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, ArtistDetailFragment.class.getName());
 				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
