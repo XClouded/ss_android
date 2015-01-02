@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res/com.myandb.singsong"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingLeft="@dimen/margin"
-    android:paddingRight="@dimen/margin"
-    android:paddingTop="@dimen/margin_small" >
+    android:layout_height="wrap_content" >
     
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/card_song"
+        android:background="@drawable/card_selector"
         android:paddingTop="@dimen/margin_small" >
         
         <com.myandb.singsong.widget.RoundedImageView

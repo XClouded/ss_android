@@ -58,7 +58,7 @@
         <com.myandb.singsong.widget.HorizontalListView
             android:id="@+id/hlv_recent_music"
             android:layout_width="match_parent"
-            android:layout_height="180dp"
+            android:layout_height="170dp"
             android:layout_marginBottom="@dimen/margin"
             android:scrollbars="none" />
         

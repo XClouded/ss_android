@@ -52,7 +52,6 @@ public class MusicAdapter extends HolderAdapter<Music, MusicAdapter.MusicHolder>
 	}
 	
 	private LayoutType layoutType;
-	private int padding;
 	
 	public MusicAdapter() {
 		this(LayoutType.NORMAL);
@@ -66,7 +65,6 @@ public class MusicAdapter extends HolderAdapter<Music, MusicAdapter.MusicHolder>
 	@Override
 	public MusicHolder onCreateViewHolder(LayoutInflater inflater, ViewGroup parent, int viewType) {
 		View view = inflater.inflate(layoutType.getLayoutResourceId(), parent, false);
-		padding = view.getResources().getDimensionPixelSize(R.dimen.margin);
 		return new MusicHolder(view);
 	}
 
@@ -81,15 +79,7 @@ public class MusicAdapter extends HolderAdapter<Music, MusicAdapter.MusicHolder>
 		viewHolder.tvSingNum.setText(String.valueOf(music.getWorkedSingNum()));
 		ImageHelper.displayPhoto(music.getAlbumPhotoUrl(), viewHolder.ivAlbumPhoto);
 		
-		if (layoutType.isHorizontalListView()) {
-			if (isFirstItem(position)) {
-				setFirstItemLeftPadding(viewHolder.view);
-			} else if (isLastItem(position)) {
-				setLastItemRightPadding(viewHolder.view);
-			} else {
-				viewHolder.view.setPadding(0, 0, 0, 0);
-			}
-		} else {
+		if (!layoutType.isHorizontalListView()) {
 			viewHolder.view.setOnClickListener(music.getMusicClickListener());
 		}
 		
@@ -122,22 +112,6 @@ public class MusicAdapter extends HolderAdapter<Music, MusicAdapter.MusicHolder>
 				ImageHelper.displayPhoto(user, holder.ivUserPhotos.get(i));
 			}
 		}
-	}
-	
-	private void setFirstItemLeftPadding(View view) {
-		view.setPadding(padding, 0, 0, 0);
-	}
-	
-	private void setLastItemRightPadding(View view) {
-		view.setPadding(0, 0, padding, 0);
-	}
-	
-	private boolean isFirstItem(int position) {
-		return position == 0;
-	}
-	
-	private boolean isLastItem(int position) {
-		return position == getCount() - 1;
 	}
 
 	public static final class MusicHolder extends ViewHolder {

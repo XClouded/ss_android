@@ -9,6 +9,7 @@ import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.activity.UpActivity;
 import com.myandb.singsong.adapter.ArtistAdapter;
 import com.myandb.singsong.adapter.MusicAdapter;
+import com.myandb.singsong.adapter.SimpleSongAdapter;
 import com.myandb.singsong.adapter.MusicAdapter.LayoutType;
 import com.myandb.singsong.dialog.BaseDialog;
 import com.myandb.singsong.dialog.SelectRecordModeDialog;
@@ -45,8 +46,11 @@ public class HomeFragment extends BaseFragment {
 	private TextView tvNotificationCount;
 	private TextView tvRecentMusicMore;
 	private TextView tvCollaboArtistMore;
+	private TextView tvPopularSongMore;
 	private ViewPager vpPopularMusic;
+	private ViewPager vpPopularSong;
 	private PagerWrappingAdapter popularMusicAdapter;
+	private PagerWrappingAdapter popularSongAdapter;
 	private HorizontalListView hlvRecentMusic;
 	private ViewGroup vgTodayCollaboArtistContainer;
 	private MusicAdapter recentMusicAdapter;
@@ -66,26 +70,39 @@ public class HomeFragment extends BaseFragment {
 	@Override
 	protected void onViewInflated(View view, LayoutInflater inflater) {
 		vpPopularMusic = (ViewPager) view.findViewById(R.id.vp_popular_music);
+		vpPopularSong = (ViewPager) view.findViewById(R.id.vp_popular_song);
 		hlvRecentMusic = (HorizontalListView) view.findViewById(R.id.hlv_recent_music);
+		vgTodayCollaboArtistContainer = (ViewGroup) view.findViewById(R.id.fl_today_collabo_artist_container);
+		
 		tvRecentMusicMore = (TextView) view.findViewById(R.id.tv_recent_music_more);
 		tvCollaboArtistMore = (TextView) view.findViewById(R.id.tv_collabo_artist_more);
-		vgTodayCollaboArtistContainer = (ViewGroup) view.findViewById(R.id.fl_today_collabo_artist_container);
+		tvPopularSongMore = (TextView) view.findViewById(R.id.tv_popular_song_more);
 	}
 
 	@Override
 	protected void initialize(Activity activity) {
 		int padding = getResources().getDimensionPixelSize(R.dimen.margin);
+		
+		setHorizontalViewGroupPadding(hlvRecentMusic, padding);
 		hlvRecentMusic.setDividerWidth(padding / 2);
-		vpPopularMusic.setPadding(padding, 0, padding, 0);
-		vpPopularMusic.setClipToPadding(false);
+		
+		setHorizontalViewGroupPadding(vpPopularMusic, padding);
 		vpPopularMusic.setPageMargin(padding / 2);
+		
+		setHorizontalViewGroupPadding(vpPopularSong, padding);
+		vpPopularSong.setPageMargin(padding / 2);
+	}
+	
+	private void setHorizontalViewGroupPadding(ViewGroup parent, int padding) {
+		parent.setPadding(padding, 0, padding, 0);
+		parent.setClipToPadding(false);
 	}
 	
 	@Override
 	protected void setupViews(Bundle savedInstanceState) {
 		loadTodayCollaboArtist();
 		
-		// load genre songs
+		loadPopularSong();
 		
 		loadRecentMusic();
 		
@@ -148,6 +165,27 @@ public class HomeFragment extends BaseFragment {
 		if (todayArtistAdapter != null && todayArtistAdapter.getCount() > 0) {
 			View child = todayArtistAdapter.getView(0, null, vgTodayCollaboArtistContainer);
 			vgTodayCollaboArtistContainer.addView(child);
+		}
+	}
+	
+	private void loadPopularSong() {
+		if (popularSongAdapter == null) {
+			final SimpleSongAdapter adapter = new SimpleSongAdapter();
+			popularSongAdapter = new PagerWrappingAdapter(adapter);
+			final UrlBuilder urlBuilder = new UrlBuilder().s("songs").s("best");
+			final GradualLoader loader = new GradualLoader(getActivity());
+			loader.setUrlBuilder(urlBuilder);
+			loader.setOnLoadCompleteListener(new OnLoadCompleteListener() {
+				
+				@Override
+				public void onComplete(JSONArray response) {
+					adapter.addAll(response);
+					vpPopularSong.setAdapter(popularSongAdapter);
+				}
+			});
+			loader.load();
+		} else {
+			vpPopularSong.setAdapter(popularSongAdapter);
 		}
 	}
 	

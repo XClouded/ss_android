@@ -33,6 +33,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -70,16 +71,21 @@ public class MusicHomeFragment extends BaseFragment {
 
 	@Override
 	protected void initialize(Activity activity) {
-		setHasOptionsMenu(true);
-		
 		int padding = getResources().getDimensionPixelSize(R.dimen.margin);
+		
+		setHorizontalViewGroupPadding(hlvRecentMusic, padding);
 		hlvRecentMusic.setDividerWidth(padding / 2);
-		vpPopularMusic.setPadding(padding, 0, padding, 0);
-		vpPopularMusic.setClipToPadding(false);
+		
+		setHorizontalViewGroupPadding(vpPopularMusic, padding);
 		vpPopularMusic.setPageMargin(padding / 2);
 		
 		fltCategoryMusic.setHorizontalSpacing(R.dimen.margin_small);
 		fltCategoryMusic.setVerticalSpacing(R.dimen.margin_small);
+	}
+	
+	private void setHorizontalViewGroupPadding(ViewGroup parent, int padding) {
+		parent.setPadding(padding, 0, padding, 0);
+		parent.setClipToPadding(false);
 	}
 
 	@Override
