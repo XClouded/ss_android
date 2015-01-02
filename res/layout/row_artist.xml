@@ -35,11 +35,21 @@
 	        android:gravity="left"
 	        style="@style/TextViewOverflowableLessImportant" />
         
-        <TextView
-	        android:id="@+id/tv_artist_followers_num"
+        <ImageView
+            android:id="@+id/icon_follower"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
 	        android:layout_alignLeft="@id/tv_artist_nickname"
 	        android:layout_below="@id/tv_artist_nickname"
+	        android:layout_marginRight="@dimen/margin_tiny"
+            android:src="@drawable/ic_user_mini"
+            style="@style/ImageViewBase" />
+        
+        <TextView
+	        android:id="@+id/tv_artist_followers_num"
 	        android:textSize="@dimen/text_hint"
+	        android:layout_toRightOf="@id/icon_follower"
+	        android:layout_below="@id/tv_artist_nickname"
 	        style="@style/TextViewLessImportant" />
         
         <RelativeLayout
