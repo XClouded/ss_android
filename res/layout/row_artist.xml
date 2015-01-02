@@ -31,7 +31,6 @@
 	        android:id="@+id/tv_artist_nickname"
 	        android:layout_toRightOf="@id/iv_artist_photo"
 	        android:layout_below="@id/tv_artist_user_nickname"
-	        android:layout_marginBottom="@dimen/margin_tiny"
 	        android:gravity="left"
 	        style="@style/TextViewOverflowableLessImportant" />
         

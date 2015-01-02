@@ -5,7 +5,8 @@
     android:layout_height="wrap_content"
     android:paddingTop="@dimen/margin_small"
     android:paddingLeft="@dimen/margin_big"
-    android:paddingRight="@dimen/margin_big" >
+    android:paddingRight="@dimen/margin_big"
+    android:paddingBottom="@dimen/margin_small" >
     
     <com.myandb.singsong.widget.RoundedImageView
         android:id="@+id/iv_comment_user_photo"
@@ -39,21 +40,17 @@
 	        android:layout_alignTop="@id/tv_comment_created"
 	        android:layout_marginBottom="@dimen/margin_tiny"
 	        android:gravity="left"
+	        android:textColor="@color/font_white"
+	        android:textStyle="bold"
 	        style="@style/TextViewOverflowableLessImportant" />
 	    
 	    <TextView
 	        android:id="@+id/tv_comment_content"
 	        android:layout_below="@id/tv_comment_user_nickname"
 	        android:layout_marginLeft="@dimen/margin_small"
-	        android:textColor="@color/font_white"
+	        android:textColor="@color/white"
 	        style="@style/TextViewBase" />
         
     </RelativeLayout>
-    
-    <ImageView
-        android:src="#434343"
-        android:layout_below="@id/layout_comment_content"
-        android:layout_marginTop="@dimen/margin"
-        style="@style/DividerHorizontal" />
     
 </RelativeLayout>

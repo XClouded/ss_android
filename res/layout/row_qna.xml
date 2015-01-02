@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/margin_big" >
     
     <TextView
         android:id="@+id/tv_question"
-        android:layout_marginBottom="@dimen/margin"
-        android:textColor="@color/white"
-        android:textSize="@dimen/text_title"
-        android:textStyle="bold"
-        style="@style/TextViewBase" />
+        android:layout_marginBottom="@dimen/margin_tiny"
+        style="@style/TextViewSubtitle" />
     
     <com.myandb.singsong.widget.RoundedImageView
         android:id="@+id/iv_user_photo"

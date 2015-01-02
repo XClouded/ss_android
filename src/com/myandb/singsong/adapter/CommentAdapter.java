@@ -1,6 +1,7 @@
 package com.myandb.singsong.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
@@ -29,6 +30,8 @@ public class CommentAdapter extends HolderAdapter<Comment, CommentAdapter.Commen
 	private Comment selectedComment;
 	private SlidingPlayerLayout layout;
 	private FragmentManager fragmentManager;
+	private int textColorGrey = Color.parseColor("#777777");
+	private int textColorDefault = Color.parseColor("#444444");
 	
 	public CommentAdapter() {
 		super(Comment.class);
@@ -63,6 +66,8 @@ public class CommentAdapter extends HolderAdapter<Comment, CommentAdapter.Commen
 			viewHolder.ivMenu.setOnClickListener(menuClickListener);
 		} else {
 			viewHolder.ivMenu.setVisibility(View.INVISIBLE);
+			viewHolder.tvNickname.setTextColor(textColorDefault);
+			viewHolder.tvCommentContent.setTextColor(textColorGrey);
 		}
 		
 		ImageHelper.displayPhoto(writer, viewHolder.ivUserPhoto);

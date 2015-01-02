@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +19,9 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.myandb.singsong.R;
-import com.myandb.singsong.adapter.CollaboratedAdapter;
 import com.myandb.singsong.adapter.CommentAdapter;
 import com.myandb.singsong.adapter.QnaAdapter;
+import com.myandb.singsong.adapter.SimpleSongAdapter;
 import com.myandb.singsong.event.ActivateOnlyClickListener;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Artist;
@@ -32,8 +33,8 @@ import com.myandb.singsong.net.JSONObjectRequest;
 import com.myandb.singsong.net.JSONObjectSuccessListener;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.net.GradualLoader.OnLoadCompleteListener;
+import com.myandb.singsong.pager.PagerWrappingAdapter;
 import com.myandb.singsong.util.Utility;
-import com.myandb.singsong.widget.HorizontalAdapterView;
 
 public class ArtistDetailFragment extends ListFragment {
 	
@@ -43,15 +44,15 @@ public class ArtistDetailFragment extends ListFragment {
 	private TextView tvArtistNickname;
 	private TextView tvFollowersNum;
 	private TextView tvArtistNum;
-	private TextView tvArtistIntroduction;
 	private TextView tvArtistSongs;
 	private TextView tvArtistCommentNum;
 	private ImageView ivArtistPhoto;
 	private Button btnSubmitComment;
 	private EditText etComment;
 	private ViewGroup vgQnaContainer;
-	private HorizontalAdapterView havArtistSongs;
+	private ViewPager vpArtistSongs;
 	private Artist artist;
+	private PagerWrappingAdapter artistSongAdapter;
 
 	@Override
 	protected int getListHeaderViewResId() {
@@ -75,7 +76,6 @@ public class ArtistDetailFragment extends ListFragment {
 		tvArtistNickname = (TextView) view.findViewById(R.id.tv_artist_nickname);
 		tvFollowersNum = (TextView) view.findViewById(R.id.tv_artist_followers_num);
 		tvArtistNum = (TextView) view.findViewById(R.id.tv_artist_num);
-		tvArtistIntroduction = (TextView) view.findViewById(R.id.tv_artist_introduction);
 		tvArtistSongs = (TextView) view.findViewById(R.id.tv_artist_songs);
 		tvArtistCommentNum = (TextView) view.findViewById(R.id.tv_artist_comment_num);
 		
@@ -83,7 +83,7 @@ public class ArtistDetailFragment extends ListFragment {
 		btnSubmitComment = (Button) view.findViewById(R.id.btn_submit_comment);
 		etComment = (EditText) view.findViewById(R.id.et_comment);
 		vgQnaContainer = (ViewGroup) view.findViewById(R.id.ll_qna_container);
-		havArtistSongs = (HorizontalAdapterView) view.findViewById(R.id.hav_artist_songs);
+		vpArtistSongs = (ViewPager) view.findViewById(R.id.vp_artist_songs);
 	}
 
 	@Override
@@ -93,7 +93,7 @@ public class ArtistDetailFragment extends ListFragment {
 
 	@Override
 	protected UrlBuilder instantiateUrlBuilder(Activity activity) {
-		return new UrlBuilder().s("artist").s(artist.getId()).s("comments");
+		return new UrlBuilder().s("artists").s(artist.getId()).s("comments");
 	}
 
 	@Override
@@ -107,11 +107,12 @@ public class ArtistDetailFragment extends ListFragment {
 		super.setupViews(savedInstanceState);
 		
 		User user = artist.getUser();
+		tvArtistNum.setText("Collabo Artist No." + String.valueOf(artist.getId()));
 		tvUserNickname.setText(user.getNickname());
 		tvArtistNickname.setText(artist.getNickname());
-//		tvFollowersNum.setText(user.getProfile().getFollowersNum());
-		tvArtistNum.setText(String.valueOf(artist.getId()));
-		tvArtistIntroduction.setText(artist.getIntroduction());
+		if (user.getProfile() != null) {
+			tvFollowersNum.setText(String.valueOf(user.getProfile().getFollowersNum()));
+		}
 		ImageHelper.displayPhoto(user, ivArtistPhoto);
 		
 		tvArtistSongs.setText(user.getNickname() + "¥‘¿« ≥Î∑° µË±‚");
@@ -132,22 +133,32 @@ public class ArtistDetailFragment extends ListFragment {
 		}
 		
 		enableFadingActionBar(false);
+		
+		int padding = getResources().getDimensionPixelSize(R.dimen.margin);
+		vpArtistSongs.setPadding(padding, 0, padding, 0);
+		vpArtistSongs.setClipToPadding(false);
+		vpArtistSongs.setPageMargin(padding / 2);
 	}
 	
 	private void loadUserSongs(User user) {
-		final CollaboratedAdapter adapter = new CollaboratedAdapter();
-		havArtistSongs.setAdapter(adapter);
-		final UrlBuilder urlBuilder = new UrlBuilder().s("users").s(user.getId()).s("songs").s("leaf").p("order", "liking_num").take(5);
-		final GradualLoader loader = new GradualLoader(getActivity());
-		loader.setUrlBuilder(urlBuilder);
-		loader.setOnLoadCompleteListener(new OnLoadCompleteListener() {
-			
-			@Override
-			public void onComplete(JSONArray response) {
-				adapter.addAll(response);
-			}
-		});
-		loader.load();
+		if (artistSongAdapter == null) {
+			final SimpleSongAdapter adapter = new SimpleSongAdapter();
+			artistSongAdapter = new PagerWrappingAdapter(adapter);
+			final UrlBuilder urlBuilder = new UrlBuilder().s("users").s(user.getId()).s("songs").s("leaf").p("order", "liking_num").take(5);
+			final GradualLoader loader = new GradualLoader(getActivity());
+			loader.setUrlBuilder(urlBuilder);
+			loader.setOnLoadCompleteListener(new OnLoadCompleteListener() {
+				
+				@Override
+				public void onComplete(JSONArray response) {
+					adapter.addAll(response);
+					vpArtistSongs.setAdapter(artistSongAdapter);
+				}
+			});
+			loader.load();
+		} else {
+			vpArtistSongs.setAdapter(artistSongAdapter);
+		}
 	}
 	
 	private OnClickListener submitCommentClickListner = new ActivateOnlyClickListener() {
@@ -165,7 +176,7 @@ public class ArtistDetailFragment extends ListFragment {
 				}
 				
 				JSONObjectRequest request = new JSONObjectRequest(
-						"artist/" + artist.getId() + "/comments", message,
+						"artists/" + artist.getId() + "/comments", message,
 						new JSONObjectSuccessListener(ArtistDetailFragment.this, "onSubmitSuccess", Comment.class),
 						new JSONErrorListener(ArtistDetailFragment.this, "onSubmitError")
 				);

@@ -29,8 +29,8 @@ public class QnaAdapter extends HolderAdapter<Qna, QnaAdapter.QnaHolder> {
 		final Qna qna = getItem(position);
 		final User user = qna.getUser();
 		
-		viewHolder.tvQuestion.setText("Q." + qna.getQuestion());
-		viewHolder.tvAnswer.setText("A." + qna.getAnswer());
+		viewHolder.tvQuestion.setText("Q. " + qna.getQuestion());
+		viewHolder.tvAnswer.setText("A. " + qna.getAnswer());
 		viewHolder.ivUserPhoto.setOnClickListener(user.getProfileClickListener());
 
 		ImageHelper.displayPhoto(user, viewHolder.ivUserPhoto);
