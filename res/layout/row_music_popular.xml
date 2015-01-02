@@ -18,21 +18,38 @@
     
     <TextView
         android:id="@+id/tv_music_title"
-        android:layout_marginBottom="@dimen/margin_bigger"
+        android:layout_marginBottom="@dimen/margin_big"
+        android:layout_marginLeft="@dimen/margin"
         android:layout_alignParentBottom="true"
         android:textSize="@dimen/text_impact"
+        android:gravity="left"
         style="@style/TextViewOverflowableImportant" />
     
     <TextView
         android:id="@+id/tv_singer_name"
         android:layout_above="@id/tv_music_title"
+        android:layout_marginLeft="@dimen/margin"
         android:textColor="@color/font_white"
-        android:textSize="@dimen/text_main_content"
+        android:textSize="@dimen/text_subtitle"
+        android:gravity="left"
         style="@style/TextViewOverflowableLessImportant" />
     
     <TextView
         android:id="@+id/tv_sing_num"
-        android:visibility="gone"
+        android:textColor="@color/font_white"
+        android:textSize="@dimen/text_subtitle"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/margin"
+        android:layout_marginRight="@dimen/margin_small"
         style="@style/TextViewBase" />
+    
+    <ImageView
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:src="@drawable/ic_collabo_inverse"
+        android:layout_marginRight="@dimen/margin_tiny"
+        android:layout_toLeftOf="@id/tv_sing_num"
+        android:layout_alignTop="@id/tv_sing_num"
+        style="@style/ImageViewBase" />
 
 </RelativeLayout>

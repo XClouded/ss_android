@@ -34,9 +34,10 @@
 		    
 		    <TextView
 		        android:id="@+id/tv_music_title"
-		        android:layout_marginBottom="@dimen/margin_bigger"
+		        android:layout_marginBottom="@dimen/margin"
 		        android:layout_alignParentBottom="true"
-		        android:textSize="@dimen/text_impact"
+		        android:textSize="@dimen/text_title"
+		        android:gravity="left"
 		        style="@style/TextViewOverflowableImportant" />
 		    
 		    <TextView
@@ -44,12 +45,25 @@
 		        android:layout_above="@id/tv_music_title"
 		        android:textColor="@color/font_white"
 		        android:textSize="@dimen/text_main_content"
+		        android:gravity="left"
 		        style="@style/TextViewOverflowableLessImportant" />
 		    
 		    <TextView
 		        android:id="@+id/tv_sing_num"
-		        android:visibility="gone"
+		        android:textColor="@color/font_white"
+		        android:layout_alignParentRight="true"
+		        android:layout_marginTop="@dimen/margin"
+		        android:layout_marginRight="@dimen/margin_small"
 		        style="@style/TextViewBase" />
+		    
+		    <ImageView
+		        android:layout_width="15dp"
+		        android:layout_height="15dp"
+		        android:src="@drawable/ic_collabo_inverse"
+		        android:layout_marginRight="@dimen/margin_tiny"
+		        android:layout_toLeftOf="@id/tv_sing_num"
+		        android:layout_alignTop="@id/tv_sing_num"
+		        style="@style/ImageViewBase" />
 	        
 	    </RelativeLayout>
 	    
