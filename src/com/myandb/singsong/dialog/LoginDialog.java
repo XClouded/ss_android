@@ -236,6 +236,7 @@ public class LoginDialog extends BaseDialog {
 
 	public void onLoginComplete() {
 		dismissProgressDialog();
+		dismiss();
 		activity.restartActivity();
 	}
 	

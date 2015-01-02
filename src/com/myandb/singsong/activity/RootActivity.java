@@ -231,10 +231,8 @@ public class RootActivity extends BaseActivity {
 	@Override
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
-		boolean showPlayer = intent.getBooleanExtra(EXTRA_SHOW_PLAYER, false);
-		if (showPlayer && !slidingPlayerLayout.isPanelExpanded()) {
-			slidingPlayerLayout.expandPanel();
-		}
+		changePage(intent);
+		updateDrawer();
 	}
 
 	@Override
@@ -289,8 +287,15 @@ public class RootActivity extends BaseActivity {
 			drawer.showContent();;
 		}
 		
-		if (slidingPlayerLayout.isPanelExpanded()) {
-			slidingPlayerLayout.collapsePanel();
+		boolean showPlayer = intent.getBooleanExtra(EXTRA_SHOW_PLAYER, false);
+		if (showPlayer) {
+			if (!slidingPlayerLayout.isPanelExpanded()) {
+				slidingPlayerLayout.expandPanel();
+			}
+		} else {
+			if (slidingPlayerLayout.isPanelExpanded()) {
+				slidingPlayerLayout.collapsePanel();
+			}
 		}
 		
 		if (isComponentOf(intent, UpActivity.class)) {
@@ -302,8 +307,8 @@ public class RootActivity extends BaseActivity {
 	}
 	
 	public void restartActivity() {
-		Intent intent = new Intent(this, getClass());
-		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		Intent intent = new Intent(this, RootActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, HomeFragment.class.getName());
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_ROOT, true);
 		startActivity(intent);
