@@ -48,7 +48,7 @@ public class InviteFacebookFragment extends BaseFragment {
 	};
 	
 	private void showFacebookMessageDialog(MessageDialogBuilder builder) {
-		builder.setLink(new UrlBuilder().toString())
+		builder.setLink(new UrlBuilder().s("w").s("invitation").toString())
 			.setName(getString(R.string.app_name))
 			.setCaption(getString(R.string.app_name))
 			.setPicture(new UrlBuilder().s("img").s("actionbar_logo.png").toString())

@@ -1,12 +1,8 @@
 package com.myandb.singsong.fragment;
 
-import com.kakao.AppActionBuilder;
-import com.kakao.AppActionInfoBuilder;
 import com.kakao.KakaoLink;
 import com.kakao.KakaoParameterException;
 import com.kakao.KakaoTalkLinkMessageBuilder;
-import com.kakao.internal.Action;
-import com.kakao.internal.AppActionInfo;
 import com.myandb.singsong.R;
 import com.myandb.singsong.net.UrlBuilder;
 
@@ -47,12 +43,11 @@ public class InviteKakaoFragment extends BaseFragment {
 				String imageUrl = urlBuilder.s("img").s("playstore.png").toString();
 				final KakaoLink kakaoLink = KakaoLink.getKakaoLink(getActivity());
 				final KakaoTalkLinkMessageBuilder builder = kakaoLink.createKakaoTalkLinkMessageBuilder();
-				final AppActionInfo appActionInfo = AppActionInfoBuilder.createAndroidActionInfoBuilder().build();
-				final Action action = new AppActionBuilder().addActionInfo(appActionInfo).build();
 				final String message = builder
-						.addText("같이 불러요. 콜라보 노래방")
+						.addText("노래도 부르고 짝도 찾는 노래방 어플리케이션, 콜라보 노래방!\n"
+								+ "지금 플레이 스토어에서 다운받아 같이 노래 불러요! :)")
 						.addImage(imageUrl, 300, 100)
-						.addAppButton("앱으로 이동", action)
+						.addWebButton("둘러보기", new UrlBuilder().s("w").s("invitation").toString())
 						.build();
 				kakaoLink.sendMessage(message, getActivity());
 			} catch (KakaoParameterException e) {
