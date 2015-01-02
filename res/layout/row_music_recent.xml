@@ -22,7 +22,7 @@
 	    
 	    <TextView
 	        android:id="@+id/tv_singer_name"
-	        android:layout_marginTop="@dimen/margin_tiny"
+	        android:layout_marginTop="@dimen/margin_small"
 	        style="@style/TextViewOverflowableLessImportant" />
 	    
 	    <TextView

@@ -29,14 +29,14 @@
         android:id="@+id/tv_singer_name"
         android:layout_above="@id/tv_music_title"
         android:layout_marginLeft="@dimen/margin"
-        android:textColor="@color/font_white"
+        android:textColor="@color/white"
         android:textSize="@dimen/text_subtitle"
         android:gravity="left"
         style="@style/TextViewOverflowableLessImportant" />
     
     <TextView
         android:id="@+id/tv_sing_num"
-        android:textColor="@color/font_white"
+        android:textColor="@color/white"
         android:textSize="@dimen/text_subtitle"
         android:layout_alignParentRight="true"
         android:layout_marginTop="@dimen/margin"
