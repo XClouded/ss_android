@@ -70,7 +70,9 @@ public class ArtistAdapter extends HolderAdapter<Artist, ArtistAdapter.ArtistHol
 		
 		viewHolder.tvUserNickname.setText(user.getNickname());
 		viewHolder.tvArtistNickname.setText(artist.getNickname());
-//		viewHolder.tvFollowersNum.setText(user.getProfile().getFollowersNum());
+		if (user.getProfile() != null) {
+			viewHolder.tvFollowersNum.setText(String.valueOf(user.getProfile().getFollowersNum()));
+		}
 		viewHolder.view.setOnClickListener(artist.getArtistClickListener());
 		
 		if (layoutType.isShowNum() && position < 99) {
