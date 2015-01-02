@@ -30,9 +30,11 @@
 	    
 	    <ImageView
 	        android:id="@+id/icon_mixed"
+	        android:layout_width="12dp"
+	        android:layout_height="12dp"
 	        android:layout_alignParentLeft="true"
 	        android:layout_centerVertical="true"
-	        android:src="@drawable/ic_collabo"
+	        android:src="@drawable/ic_collabo_grey"
 	        style="@style/IconImageView" />
         
         <TextView
