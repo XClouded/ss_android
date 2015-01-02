@@ -13,7 +13,9 @@ import com.myandb.singsong.adapter.SimpleSongAdapter;
 import com.myandb.singsong.adapter.MusicAdapter.LayoutType;
 import com.myandb.singsong.dialog.BaseDialog;
 import com.myandb.singsong.dialog.SelectRecordModeDialog;
+import com.myandb.singsong.model.Category;
 import com.myandb.singsong.model.Music;
+import com.myandb.singsong.model.Song;
 import com.myandb.singsong.net.GradualLoader;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.net.GradualLoader.OnLoadCompleteListener;
@@ -118,6 +120,25 @@ public class HomeFragment extends BaseFragment {
 				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, ArtistListFragment.class.getName());
 				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
 				startFragment(intent);
+			}
+		});
+		
+		tvPopularSongMore.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				int position = vpPopularSong.getCurrentItem();
+				Song currentSong = (Song) popularSongAdapter.getItem(position);
+				if (currentSong != null) {
+					Bundle bundle = new Bundle();
+					Category category = currentSong.getCategory();
+					bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, category.getTitle());
+					bundle.putInt(ListenHomeFragment.EXTRA_CATEGORY_ID, category.getId());
+					Intent intent = new Intent(v.getContext(), RootActivity.class);
+					intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, ListenHomeFragment.class.getName());
+					intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
+					((BaseActivity) v.getContext()).changePage(intent);
+				}
 			}
 		});
 		

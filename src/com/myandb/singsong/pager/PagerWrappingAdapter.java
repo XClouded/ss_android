@@ -34,5 +34,12 @@ public class PagerWrappingAdapter extends PagerAdapter {
 	public int getCount() {
 		return adapter.getCount();
 	}
+	
+	public Object getItem(int position) {
+		if (position >= 0 && position < adapter.getCount()) {
+			return adapter.getItem(position);
+		}
+		return null;
+	}
 
 }

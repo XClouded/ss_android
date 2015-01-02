@@ -136,15 +136,9 @@ public class MusicHomeFragment extends BaseFragment {
 		loadRecentMusic();
 		
 		ArrayList<Category> cgs = new ArrayList<Category>();
-		cgs.add(new Category(1, "¹ß¶óµå"));
-		cgs.add(new Category(2, "´í½º"));
-		cgs.add(new Category(3, "·¦/ÈüÇÕ"));
-		cgs.add(new Category(4, "R&B/Soul"));
-		cgs.add(new Category(5, "·Ï"));
-		cgs.add(new Category(6, "OST"));
-		cgs.add(new Category(7, "Æ®·ÎÆ®"));
-		cgs.add(new Category(8, "Æ÷Å©"));
-		cgs.add(new Category(9, "ÀÎµðÀ½¾Ç"));
+		for (int i = 1; i < 10; i++) {
+			cgs.add(new Category(i));
+		}
 		
 		MusicCategoryAdapter adapter = new MusicCategoryAdapter();
 		adapter.addAll(cgs);

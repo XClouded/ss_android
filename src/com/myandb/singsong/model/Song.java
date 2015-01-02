@@ -68,12 +68,14 @@ public class Song extends Model {
 	private String file;
 	private String message;
 	private List<Image> photos;
+	private Category category;
 	private int duration;
 	private int lyric_part;
 	private int collabo_num;
 	private int comment_num;
 	private int liking_num;
 	private int song_id;
+	private int genre_id;
 	
 	public String getAudioUrl() {
 		return STORAGE_HOST + STORAGE_SONG + file;
@@ -244,6 +246,13 @@ public class Song extends Model {
 	
 	public void decrementLikeNum() {
 		liking_num--;
+	}
+	
+	public Category getCategory() {
+		if (category == null) {
+			category = new Category(genre_id);
+		}
+		return category;
 	}
 
 	public OnClickListener getPlayClickListener() {
