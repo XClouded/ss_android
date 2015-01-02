@@ -5,11 +5,13 @@ public class Category extends Model {
 	private String title;
 	private int imageResourceId;
 	
-	public Category(String title) {
+	public Category(int id, String title) {
+		this.id = id;
 		this.title = title;
 	}
 	
-	public Category(String title, int imageResId) {
+	public Category(int id, String title, int imageResId) {
+		this.id = id;
 		this.title = title;
 		this.imageResourceId = imageResId;
 	}
