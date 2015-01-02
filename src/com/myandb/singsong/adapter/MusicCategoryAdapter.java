@@ -34,8 +34,8 @@ public class MusicCategoryAdapter extends HolderAdapter<Category, MusicCategoryA
 		final Category category = getItem(position);
 		
 		viewHolder.btnCategory.setText(category.getTitle());
-		viewHolder.view.setTag(category);
-		viewHolder.view.setOnClickListener(categoryClickListener);
+		viewHolder.btnCategory.setTag(category);
+		viewHolder.btnCategory.setOnClickListener(categoryClickListener);
 	}
 	
 	private OnClickListener categoryClickListener = new OnClickListener() {

@@ -36,6 +36,7 @@ public class ListenCategoryFragment extends ListFragment {
 		getListView().setDivider(new ColorDrawable(Color.TRANSPARENT));
 		getListView().setDividerHeight(padding);
 		getListView().setPadding(padding, padding, padding, 0);
+		getListView().setVerticalScrollBarEnabled(false);
 	}
 
 }
