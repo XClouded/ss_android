@@ -104,10 +104,10 @@ public class Listeners {
 					
 				case Activity.TYPE_CREATE_COMMENT:
 				case Activity.TYPE_CREATE_LIKING:
-					return "songs" + activity.getParentId() + "?req[]=full";
+					return "songs/" + activity.getParentId() + "?req[]=full";
 				case Activity.TYPE_CREATE_ROOT_SONG:
 				case Activity.TYPE_CREATE_LEAF_SONG:
-					return "songs" + activity.getSourceId() + "?req[]=full";
+					return "songs/" + activity.getSourceId() + "?req[]=full";
 					
 				default:
 					return "";

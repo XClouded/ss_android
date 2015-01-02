@@ -8,6 +8,7 @@ public class Category extends Model {
 	private int imageResourceId;
 	
 	public Category(int id) {
+		this.id = id;
 		switch (id) {
 		case 1:
 			this.title = "¹ß¶óµå";
