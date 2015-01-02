@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center" >
+    
+    <TextView
+        android:id="@+id/tv_select_content"
+        android:gravity="center"
+        android:textColor="@color/font_white"
+        android:layout_marginBottom="@dimen/margin_bigger"
+        style="@style/TextViewLessImportant" />
+    
+    <Button
+        android:id="@+id/btn_ok"
+        android:layout_marginBottom="@dimen/margin_big"
+        android:background="@drawable/button_transparent_selector"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
+        android:text="@string/yes"
+        style="@style/ButtonBase" />
+    
+    <Button
+        android:id="@+id/btn_cancel"
+        android:layout_marginBottom="@dimen/margin_big"
+        android:background="@drawable/button_transparent_selector"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
+        android:text="@string/no"
+        style="@style/ButtonBase" />
+
+</LinearLayout>
