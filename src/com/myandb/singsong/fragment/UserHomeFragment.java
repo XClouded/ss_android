@@ -158,7 +158,6 @@ public class UserHomeFragment extends ListFragment {
 			bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_sing_title));
 			Intent intent = new Intent(getActivity(), RootActivity.class);
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, MusicHomeFragment.class.getName());
-			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_ROOT, true);
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
 			startFragment(intent);
 		}
