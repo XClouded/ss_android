@@ -102,7 +102,7 @@ public class ArtistListFragment extends ListFragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.action_candidate_artist:
-			String url = new UrlBuilder().s("w").s("apply-candidates").toString();
+			String url = new UrlBuilder().s("w").s("apply-candidate").toString();
 			Bundle bundle = new Bundle();
 			bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, "콜라보 아티스트 신청하기");
 			bundle.putString(WebViewFragment.EXTRA_WEBVIEW_URL, url);
