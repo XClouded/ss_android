@@ -39,7 +39,7 @@
         android:layout_marginTop="@dimen/margin_small" >
         
         <ImageView
-            android:src="@drawable/ic_like_pink"
+            android:src="@drawable/ic_like_mini"
             style="@style/IconImageView" />
         
         <TextView
@@ -48,7 +48,7 @@
             style="@style/TextViewIconLabel" />
         
         <ImageView
-            android:src="@drawable/ic_comment_blue"
+            android:src="@drawable/ic_comment_mini"
             style="@style/IconImageView" />
         
         <TextView

@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.myandb.singsong.R;
 import com.myandb.singsong.image.ImageHelper;
+import com.myandb.singsong.model.Category;
 import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Song;
 import com.myandb.singsong.model.SongLiking;
@@ -32,12 +33,14 @@ public class MyLikeSongAdapter extends HolderAdapter<SongLiking, MyLikeSongAdapt
 		final Song thisSong = liking.getLikeable();
 		final User thisUser = thisSong.getCreator();
 		final Music music = thisSong.getMusic();
+		final Category category = thisSong.getCategory();
 		
 		viewHolder.tvParentUserNickname.setText(thisUser.getNickname());
 		viewHolder.tvParentSongMessage.setText(thisSong.getCroppedMessage());
 		viewHolder.tvSongLikeNum.setText(thisSong.getWorkedLikeNum());
 		viewHolder.tvSongCommentNum.setText(thisSong.getWorkedCommentNum());
 		viewHolder.tvSongCreatedTime.setText(thisSong.getWorkedCreatedTime(getCurrentDate()));
+		viewHolder.tvCategoryTitle.setText(category.getTitle());
 		
 		viewHolder.tvMusicInfo.setText(music.getSingerName());
 		viewHolder.tvMusicInfo.append(" - ");
@@ -74,6 +77,7 @@ public class MyLikeSongAdapter extends HolderAdapter<SongLiking, MyLikeSongAdapt
 		public TextView tvThisUserNickname;
 		public TextView tvThisSongMessage;
 		public TextView tvMusicInfo;
+		public TextView tvCategoryTitle;
 		public ImageView ivParentUserPhoto;
 		public ImageView ivThisUserPhoto;
 		public ImageView ivAlbumPhoto;
@@ -90,6 +94,7 @@ public class MyLikeSongAdapter extends HolderAdapter<SongLiking, MyLikeSongAdapt
 			tvSongLikeNum = (TextView) view.findViewById(R.id.tv_song_like_num);
 			tvSongCommentNum = (TextView) view.findViewById(R.id.tv_song_comment_num);
 			tvSongCreatedTime = (TextView) view.findViewById(R.id.tv_song_created_time);
+			tvCategoryTitle = (TextView) view.findViewById(R.id.tv_category_title);
 			ivParentUserPhoto = (ImageView) view.findViewById(R.id.iv_parent_user_photo);
 			ivThisUserPhoto = (ImageView) view.findViewById(R.id.iv_this_user_photo);
 			ivAlbumPhoto = (ImageView) view.findViewById(R.id.iv_album_photo);
