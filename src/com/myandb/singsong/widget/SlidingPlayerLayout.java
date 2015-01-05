@@ -363,6 +363,11 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		@Override
 		public void onClick(View v) {
 			StreamPlayer player = service.getPlayer();
+			StreamPlayer samplePlayer = service.getSamplePlayer();
+			
+			if (samplePlayer.isPlaying()) {
+				samplePlayer.pause();
+			}
 			
 			if (player.isPlaying()) {
 				player.pause();

@@ -39,6 +39,7 @@ public class PlayerService extends Service {
 	private final IBinder binder = new PlayerBinder();
 	private Notification notification;
 	private StreamPlayer streamPlayer;
+	private StreamPlayer samplePlayer;
 	private Song thisSong;
 	private File tempFile;
 
@@ -53,6 +54,8 @@ public class PlayerService extends Service {
 		}
 		
 		streamPlayer = new StreamPlayer(this);
+		samplePlayer = new StreamPlayer();
+		samplePlayer.setAutoplay(true);
 		
 		TelephonyManager phoneManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
 		phoneManager.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
@@ -96,6 +99,10 @@ public class PlayerService extends Service {
 		OnPlayEventListener listener = streamPlayer.getOnPlayEventListener();
 		
 		try {
+			if (samplePlayer.isPlaying()) {
+				samplePlayer.pause();
+			}
+			
 			streamPlayer.setOnPlayEventListener(listener);
 			
 			if (isNewSong(song)) {
@@ -138,8 +145,41 @@ public class PlayerService extends Service {
 		}
 	}
 	
+	public void startSample(Song song, OnPlayEventListener listener) {
+		if (song == null) {
+			throw new IllegalArgumentException();
+		}
+		
+		try {
+			if (streamPlayer.isPlaying()) {
+				streamPlayer.pause();
+			}
+			
+			samplePlayer.pause();
+			samplePlayer.reset();
+			samplePlayer.setOnPlayEventListener(listener);
+			samplePlayer.setDataSource(getCompatDataSource(song.getSampleUrl()));
+			samplePlayer.prepareAsync();
+		} catch (Exception e) {
+			listener.onPlay(PlayEvent.ERROR);
+			e.printStackTrace();
+		}
+	}
+	
+	public void stopSample() {
+		try {
+			samplePlayer.pause();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public StreamPlayer getPlayer() {
 		return streamPlayer;
+	}
+	
+	public StreamPlayer getSamplePlayer() {
+		return samplePlayer;
 	}
 	
 	public Song getSong() {

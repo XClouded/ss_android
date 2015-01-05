@@ -45,6 +45,7 @@ public class SimpleSongAdapter extends HolderAdapter<Song, SimpleSongAdapter.Son
 		viewHolder.tvMusicInfo.append(music.getTitle());
 		
 		viewHolder.ivParentUserPhoto.setOnClickListener(thisUser.getProfileClickListener());
+		viewHolder.ivPrelistenControl.setOnClickListener(thisSong.getSampleClickListener());
 		viewHolder.view.setOnClickListener(thisSong.getPlayClickListener());
 		
 		ImageHelper.displayPhoto(music.getAlbumPhotoUrl(), viewHolder.ivAlbumPhoto);
@@ -79,6 +80,7 @@ public class SimpleSongAdapter extends HolderAdapter<Song, SimpleSongAdapter.Son
 		public ImageView ivParentUserPhoto;					
 		public ImageView ivThisUserPhoto;
 		public ImageView ivAlbumPhoto;
+		public ImageView ivPrelistenControl;
 		public View vPartnerWrapper;
 		
 		public SongHolder(View view) {
@@ -96,6 +98,7 @@ public class SimpleSongAdapter extends HolderAdapter<Song, SimpleSongAdapter.Son
 			ivParentUserPhoto = (ImageView) view.findViewById(R.id.iv_parent_user_photo);
 			ivThisUserPhoto = (ImageView) view.findViewById(R.id.iv_this_user_photo);
 			ivAlbumPhoto = (ImageView) view.findViewById(R.id.iv_album_photo);
+			ivPrelistenControl = (ImageView) view.findViewById(R.id.iv_prelisten_control);
 			vPartnerWrapper = view.findViewById(R.id.rl_partner_wrapper);
 		}
 		

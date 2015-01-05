@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.Response.ErrorListener;
@@ -20,6 +21,8 @@ import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.activity.UpActivity;
+import com.myandb.singsong.audio.OnPlayEventListener;
+import com.myandb.singsong.audio.PlayEvent;
 import com.myandb.singsong.event.ActivateOnlyClickListener;
 import com.myandb.singsong.fragment.ChildrenSongFragment;
 import com.myandb.singsong.fragment.KaraokeFragment;
@@ -79,6 +82,10 @@ public class Song extends Model {
 	
 	public String getAudioUrl() {
 		return STORAGE_HOST + STORAGE_SONG + file;
+	}
+	
+	public String getSampleUrl() {
+		return STORAGE_HOST + STORAGE_SONG + file.replace(".ogg", ".sample.ogg");
 	}
 	
 	public User getParentUser() {
@@ -263,6 +270,51 @@ public class Song extends Model {
 				BaseActivity activity = (BaseActivity) v.getContext();
 				PlayerService service = activity.getPlayerService();
 				service.startPlaying(Song.this);
+			}
+		};
+	}
+	
+	public OnClickListener getSampleClickListener() {
+		return new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				final ImageView iv = (ImageView) v;
+				if (iv == null) {
+					return;
+				}
+				
+				boolean playing = iv.getTag() == null ? false : (Boolean) iv.getTag();
+				BaseActivity activity = (BaseActivity) v.getContext();
+				PlayerService service = activity.getPlayerService();
+				if (playing) {
+					service.stopSample();
+				} else {
+					service.startSample(Song.this, new OnPlayEventListener() {
+						
+						@Override
+						public void onPlay(PlayEvent event) {
+							switch (event) {
+							case PLAY:
+								iv.setImageResource(R.drawable.ic_prelisten_stop_inverse);
+								iv.setTag(true);
+								break;
+								
+							case PAUSE:
+								iv.setImageResource(R.drawable.ic_prelisten_inverse);
+								iv.setTag(false);
+								break;
+								
+							case ERROR:
+								Toast.makeText(iv.getContext(), "미리듣기가 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
+								break;
+								
+							default:
+								break;
+							}
+						}
+					});
+				}
 			}
 		};
 	}
