@@ -28,6 +28,8 @@ public class ListFragment extends BaseFragment {
 	public static final String EXTRA_URL_SEGMENT = "url_segment";
 	public static final String EXTRA_QUERY_PARAMS = "query_params";
 	public static final String EXTRA_ADAPTER_NAME = "adapter_name";
+	public static final String EXTRA_HORIZONTAL_PADDING = "is_padding";
+	public static final String EXTRA_VERTICAL_PADDING = "is_divider";
 	
 	private ListView listView;
 	private ViewGroup fixedHeaderContainer;
@@ -45,6 +47,8 @@ public class ListFragment extends BaseFragment {
 	private int listViewIndex;
 	private int listViewTop;
 	private boolean enableFadingActionBar = false;
+	private boolean horizontalPadding;
+	private boolean verticalPadding;
 
 	@Override
 	protected final int getResourceId() {
@@ -59,6 +63,9 @@ public class ListFragment extends BaseFragment {
 			urlBuilder = extractUrlBuilderFromBundle(bundle);
 			adapter = extractAdapterFromBundle(bundle);
 		}
+		
+		horizontalPadding = bundle.getBoolean(EXTRA_HORIZONTAL_PADDING, false);
+		verticalPadding = bundle.getBoolean(EXTRA_VERTICAL_PADDING, false);
 	}
 	
 	private boolean isFragmentCreated() {
@@ -161,6 +168,19 @@ public class ListFragment extends BaseFragment {
 	protected void setupViews(Bundle savedInstanceState) {
 		listView.setAdapter(adapter);
 		listView.setOnScrollListener(onScrollListener);
+		
+		if (horizontalPadding) {
+			int padding = getResources().getDimensionPixelSize(R.dimen.margin);
+			listView.setPadding(padding, padding, padding, padding);
+			listView.setClipToPadding(false);
+			listView.setVerticalScrollBarEnabled(false);
+		}
+		
+		if (verticalPadding) {
+			int height = getResources().getDimensionPixelSize(R.dimen.margin);
+			listView.setDivider(null);
+			listView.setDividerHeight(height);
+		}
 	}
 	
 	private OnScrollListener onScrollListener = new OnScrollListener() {

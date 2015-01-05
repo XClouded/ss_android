@@ -194,6 +194,7 @@ public class UserHomeFragment extends ListFragment {
 		String adapterName = "";
 		String title = getCroppedNickname(thisUser.getNickname());
 		title += "¥‘¿« ";
+		Bundle bundle = new Bundle();
 		Bundle params = new Bundle();
 		
 		switch (id) {
@@ -220,6 +221,8 @@ public class UserHomeFragment extends ListFragment {
 			segment += "songs/likings";
 			params.putString("order", "created_at");
 			adapterName = MyLikeSongAdapter.class.getName();
+			bundle.putBoolean(ListFragment.EXTRA_HORIZONTAL_PADDING, true);
+			bundle.putBoolean(ListFragment.EXTRA_VERTICAL_PADDING, true);
 			break;
 			
 		case R.id.action_user_comments:
@@ -240,7 +243,6 @@ public class UserHomeFragment extends ListFragment {
 			return;
 		}
 		
-		Bundle bundle = new Bundle();
 		bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, title);
 		bundle.putString(ListFragment.EXTRA_URL_SEGMENT, segment);
 		bundle.putString(ListFragment.EXTRA_ADAPTER_NAME, adapterName);
