@@ -9,7 +9,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/card_song"
+        android:background="@drawable/card_idle"
         android:padding="@dimen/margin_small" >
         
         <com.myandb.singsong.widget.RoundedImageView
@@ -26,7 +26,7 @@
             android:id="@+id/tv_music_info"
             android:layout_width="match_parent"
             android:layout_toLeftOf="@id/iv_album_photo"
-            android:textSize="@dimen/text_small"
+            android:textSize="@dimen/text_sub_content"
             android:gravity="left"
             style="@style/TextViewEllipsize" />
         

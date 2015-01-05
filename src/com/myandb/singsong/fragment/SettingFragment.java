@@ -59,8 +59,6 @@ public class SettingFragment extends BaseFragment {
 	
 	private Uri tempUri;
 	private File scaledImageFile;
-	private int colorGrey;
-	private int colorPrimary;
 	
 	private ImageView ivUserPhoto;
 	private TextView tvUserUsername;
@@ -68,8 +66,8 @@ public class SettingFragment extends BaseFragment {
 	private TextView tvUserEmail;
 	private TextView tvUserKakao;
 	private TextView tvUserStatus;
-	private TextView tvIsFacebookActivated;
-	private TextView tvIsNotificationEnabled;
+	private ImageView ivIsFacebookActivated;
+	private ImageView ivIsNotificationEnabled;
 	private Button btnLogout;
 	private Button btnWithdraw;
 	private Button btnChangePhoto;
@@ -94,8 +92,8 @@ public class SettingFragment extends BaseFragment {
 		tvUserEmail = (TextView) view.findViewById(R.id.tv_user_email);
 		tvUserKakao = (TextView) view.findViewById(R.id.tv_user_kakao);
 		tvUserStatus = (TextView) view.findViewById(R.id.tv_user_status);
-		tvIsFacebookActivated = (TextView) view.findViewById(R.id.tv_is_facebook_activated);
-		tvIsNotificationEnabled = (TextView) view.findViewById(R.id.tv_is_notification_enabled);
+		ivIsFacebookActivated = (ImageView) view.findViewById(R.id.iv_is_facebook_activated);
+		ivIsNotificationEnabled = (ImageView) view.findViewById(R.id.iv_is_notification_enabled);
 		btnLogout = (Button) view.findViewById(R.id.btn_logout);
 		btnWithdraw = (Button) view.findViewById(R.id.btn_withdraw);
 		btnChangePhoto = (Button) view.findViewById(R.id.btn_change_photo);
@@ -110,9 +108,6 @@ public class SettingFragment extends BaseFragment {
 
 	@Override
 	protected void initialize(Activity activity) {
-		colorGrey = getResources().getColor(R.color.font_grey);
-		colorPrimary = getResources().getColor(R.color.primary);
-		
 		try {
 			scaledImageFile = File.createTempFile("scaled_image", null, activity.getCacheDir());
 			File file = File.createTempFile("user_selected", null, activity.getCacheDir());
@@ -150,9 +145,9 @@ public class SettingFragment extends BaseFragment {
 	
 	private void updateNotificationStatusView(boolean enabled) {
 		if (enabled) {
-			tvIsNotificationEnabled.setTextColor(colorPrimary);
+			ivIsNotificationEnabled.setImageResource(R.drawable.ic_check);
 		} else {
-			tvIsNotificationEnabled.setTextColor(colorGrey);
+			ivIsNotificationEnabled.setImageDrawable(null);
 		}
 	}
 	
@@ -173,11 +168,11 @@ public class SettingFragment extends BaseFragment {
 	
 	private void updateFacebookActivatedView(boolean activated) {
 		if (activated) {
-			tvIsFacebookActivated.setTextColor(colorPrimary);
+			ivIsFacebookActivated.setImageResource(R.drawable.ic_check);
 			vConnectFacebook.setOnClickListener(null);
 			vConnectFacebook.setClickable(false);
 		} else {
-			tvIsFacebookActivated.setTextColor(colorGrey);
+			ivIsFacebookActivated.setImageDrawable(null);
 			vConnectFacebook.setOnClickListener(connectFacebookClickListener);
 			vConnectFacebook.setClickable(true);
 		}
@@ -392,7 +387,6 @@ public class SettingFragment extends BaseFragment {
 		Session session = Session.getActiveSession();
 		if (session != null) {
 			session.closeAndClearTokenInformation();
-			session.close();
 		}
 	}
 	

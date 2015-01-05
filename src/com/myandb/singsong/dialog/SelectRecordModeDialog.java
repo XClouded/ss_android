@@ -7,6 +7,7 @@ import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.fragment.MusicDetailFragment;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Music;
+import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.util.Utility;
 
 import android.app.Activity;
@@ -67,10 +68,21 @@ public class SelectRecordModeDialog extends BaseDialog {
 		if (music != null) {
 			tvSingerName.setText(music.getSingerName());
 			tvMusicTitle.setText(music.getTitle());
-			btnSingAlone.setOnClickListener(music.getRecordClickListener());
+			if (Authenticator.isLoggedIn()) {
+				btnSingAlone.setOnClickListener(music.getRecordClickListener());
+			} else {
+				btnSingAlone.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						LoginDialog dialog = new LoginDialog();
+						dialog.show(getChildFragmentManager(), "login");
+					}
+				});
+			}
 			btnSingDuet.setOnClickListener(waitingClickListner);
 			
-			ImageHelper.displayPhoto(music.getAlbumPhotoUrl(), ivAlbumPhoto);
+			ImageHelper.displayPhoto(music.getAlbumPhotoUrl(), ivAlbumPhoto); 
 		} else {
 			dismiss();
 		}

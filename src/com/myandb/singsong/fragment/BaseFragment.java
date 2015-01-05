@@ -65,10 +65,21 @@ public abstract class BaseFragment extends Fragment {
 	@Override
 	public void onResume() {
 		super.onResume();
+		
+		try {
+			setupActionBar();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void setupActionBar() {
 		setActionBarTitle(title);
 		setActionBarSubtitle(subtitle);
 		setActionBarBackground(R.drawable.actionbar_background);
 		setActionBarOverlay(false);
+		getSupportActionBar().setDisplayShowTitleEnabled(true);
+		getSupportActionBar().setDisplayUseLogoEnabled(false);
 	}
 
 	public void notifyDataChanged() {

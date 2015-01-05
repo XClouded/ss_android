@@ -240,9 +240,13 @@ public class PcmPlayer extends AudioTrack {
 		}
 		
 		private void stopPlayer() {
-			player.flush();
-			if (player.isPlaying()) {
-				player.stop();
+			try {
+				player.flush();
+				if (player.isPlaying()) {
+					player.stop();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 		

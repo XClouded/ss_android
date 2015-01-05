@@ -15,6 +15,7 @@ import android.content.ContentResolver;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
+import android.widget.ListAdapter;
 
 public class InviteContactFragment extends ListFragment {
 	
@@ -24,9 +25,8 @@ public class InviteContactFragment extends ListFragment {
 	}
 
 	@Override
-	protected void initialize(Activity activity) {
-		super.initialize(activity);
-		setAdapter(new ContactAdapter());
+	protected ListAdapter instantiateAdapter(Activity activity) {
+		return new ContactAdapter();
 	}
 
 	@Override

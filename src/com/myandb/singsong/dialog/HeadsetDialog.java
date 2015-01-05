@@ -1,6 +1,7 @@
 package com.myandb.singsong.dialog;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +21,12 @@ public class HeadsetDialog extends BaseDialog {
 	@Override
 	protected void onViewInflated(View view, LayoutInflater inflater) {
 		btnNoHeadset = (Button) view.findViewById(R.id.btn_no_headset);
+	}
+	
+	@Override
+	protected void styleDialog(Dialog dialog) {
+		super.styleDialog(dialog);
+		dialog.getWindow().getAttributes().dimAmount = 0.8f;
 	}
 
 	@Override

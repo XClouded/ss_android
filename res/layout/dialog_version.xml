@@ -10,7 +10,7 @@
         android:text="@string/dialog_update_title"
         android:layout_gravity="center"
         android:layout_marginBottom="@dimen/margin"
-        style="@style/TextViewTitle" />
+        style="@style/TextViewSubtitleAlone" />
     
     <LinearLayout
         android:layout_width="match_parent"

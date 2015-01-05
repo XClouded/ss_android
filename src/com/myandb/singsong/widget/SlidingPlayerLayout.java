@@ -10,13 +10,11 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.graphics.Bitmap;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
-import android.support.v7.widget.PopupMenu;
-import android.support.v7.widget.PopupMenu.OnMenuItemClickListener;
 import android.util.AttributeSet;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -32,16 +30,19 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import com.android.volley.Request.Method;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
+import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.adapter.CommentAdapter;
 import com.myandb.singsong.adapter.LikingUserAdapter;
 import com.myandb.singsong.audio.OnPlayEventListener;
 import com.myandb.singsong.audio.PlayEvent;
 import com.myandb.singsong.audio.StreamPlayer;
+import com.myandb.singsong.dialog.ShareDialog;
 import com.myandb.singsong.event.ActivateOnlyClickListener;
 import com.myandb.singsong.event.WeakRunnable;
 import com.myandb.singsong.image.BlurAsyncTask;
 import com.myandb.singsong.image.ImageHelper;
+import com.myandb.singsong.model.Comment;
 import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Song;
 import com.myandb.singsong.model.SongComment;
@@ -66,7 +67,6 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	
 	private PlayerService service;
 	private ViewGroup slidingContainer; 
-	private String bitlyUrl;
 	private User currentUser;
 	private Handler handler;
 	private GradualLoader commentLoader;
@@ -84,13 +84,15 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	private TextView tvThisSongMessage;
 	private TextView tvPlayStartTime;
 	private TextView tvPlayEndTime;
-	private TextView tvMusicTitleOnCollapsed;
+	private TextView tvMusicInfoOnCollapsed;
+	private TextView tvUsersInfoOnCollapsed;
 	private TextView tvMusicTitleOnExpanded;
-	private TextView tvSingerNameOnCollapsed;
 	private TextView tvSingerNameOnExpanded;
 	private TextView tvTargetContent;
 	private TextView tvCommentNum;
 	private TextView tvLikingNum;
+	private TextView tvLikingNumOut;
+	private TextView tvOtherCollabo;
 	private ImageView ivParentUserPhoto;
 	private ImageView ivThisUserPhoto;
 	private ImageView ivLikeSong;
@@ -101,10 +103,10 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	private ImageView ivDragPlayControl;
 	private ImageView ivLoopControl;
 	private ImageView ivAutoplayControl;
-	private ImageView ivMenu;
-	private ImageView ivMovingBackground;
+	private ImageView ivBackground;
 	private ImageView ivBackgroundMask;
 	private ImageView ivBackgroundGradient;
+	private ImageView ivShare;
 	private Button btnSubmitComment;
 	private EditText etComment;
 	private View vDragPanelOnExpanded;
@@ -114,6 +116,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	private View vLikingWindow;
 	private View vPartnerWrapper;
 	private View vStartCollabo;
+	private View vShowLiking;
 	private ListView lvComments;
 	private GridView gvLikings;
 	private SeekBar sbPlay;
@@ -156,7 +159,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 			ivShowComment.setOnClickListener(showCommentClickListener);
 			ivCloseComment.setOnClickListener(closeCommentClickListener);
 			ivCloseLiking.setOnClickListener(closeLikingClickListener);
-			ivMenu.setOnClickListener(showMenuClickListener);
+			vShowLiking.setOnClickListener(showLikingClickListener);
 			
 			service.getPlayer().setOnPlayEventListener(onPlayEventListener);
 			
@@ -207,6 +210,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		vLikingWindow = findViewById(R.id.layout_player_liking);
 		vPartnerWrapper = findViewById(R.id.layout_partner_wrapper);
 		vStartCollabo = findViewById(R.id.layout_collabo);
+		vShowLiking = findViewById(R.id.ll_liking_num);
 		
 		tvParentUserNickname = (TextView) findViewById(R.id.tv_parent_user_nickname);
 		tvThisUserNickname = (TextView) findViewById(R.id.tv_this_user_nickname);
@@ -216,13 +220,15 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		tvThisSongMessage = (TextView) findViewById(R.id.tv_this_song_message);
 		tvPlayStartTime = (TextView) findViewById(R.id.tv_play_start_time);
 		tvPlayEndTime = (TextView) findViewById(R.id.tv_play_end_time);
-		tvMusicTitleOnCollapsed = (TextView) findViewById(R.id.tv_music_title_on_collapsed);
 		tvMusicTitleOnExpanded = (TextView) findViewById(R.id.tv_music_title_on_expanded);
-		tvSingerNameOnCollapsed = (TextView) findViewById(R.id.tv_singer_name_on_collapsed);
 		tvSingerNameOnExpanded = (TextView) findViewById(R.id.tv_singer_name_on_expanded);
+		tvMusicInfoOnCollapsed = (TextView) findViewById(R.id.tv_music_info_on_collapsed);
+		tvUsersInfoOnCollapsed = (TextView) findViewById(R.id.tv_users_info_on_collapsed);
 		tvTargetContent = (TextView) findViewById(R.id.tv_target_nickname);
 		tvCommentNum = (TextView) findViewById(R.id.tv_comment_num);
 		tvLikingNum = (TextView) findViewById(R.id.tv_liking_num);
+		tvLikingNumOut = (TextView) findViewById(R.id.tv_liking_num_out);
+		tvOtherCollabo = (TextView) findViewById(R.id.tv_other_collabo);
 		
 		ivParentUserPhoto = (ImageView) findViewById(R.id.iv_parent_user_photo);
 		ivThisUserPhoto = (ImageView) findViewById(R.id.iv_this_user_photo);
@@ -234,10 +240,10 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		ivShowComment = (ImageView) findViewById(R.id.iv_show_comment);
 		ivCloseComment = (ImageView) findViewById(R.id.iv_close_comment);
 		ivCloseLiking = (ImageView) findViewById(R.id.iv_close_liking);
-		ivMenu = (ImageView) findViewById(R.id.iv_menu);
-		ivMovingBackground = (ImageView) findViewById(R.id.iv_background);
+		ivBackground = (ImageView) findViewById(R.id.iv_background);
 		ivBackgroundMask = (ImageView) findViewById(R.id.iv_background_mask);
 		ivBackgroundGradient = (ImageView) findViewById(R.id.iv_background_gradient);
+		ivShare = (ImageView) findViewById(R.id.iv_share);
 		
 		lvComments = (ListView) findViewById(R.id.lv_comment);
 		gvLikings = (GridView) findViewById(R.id.gv_liking);
@@ -357,6 +363,11 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		@Override
 		public void onClick(View v) {
 			StreamPlayer player = service.getPlayer();
+			StreamPlayer samplePlayer = service.getSamplePlayer();
+			
+			if (samplePlayer.isPlaying()) {
+				samplePlayer.pause();
+			}
 			
 			if (player.isPlaying()) {
 				player.pause();
@@ -499,46 +510,20 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		}
 	};
 	
+	private OnClickListener showLikingClickListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			setLikingWindowShown(true);
+		}
+	};
+	
 	private OnClickListener closeLikingClickListener = new OnClickListener() {
 		
 		@Override
 		public void onClick(View v) {
 			setLikingWindowShown(false);
 		}
-	};
-	
-	private OnClickListener showMenuClickListener = new OnClickListener() {
-		
-		@Override
-		public void onClick(View v) {
-			final PopupMenu menu = new PopupMenu(getContext(), v);
-			menu.inflate(R.menu.player);
-			menu.setOnMenuItemClickListener(menuItemClickListener);
-			menu.show();
-		}
-	};
-	
-	private OnMenuItemClickListener menuItemClickListener = new OnMenuItemClickListener() {
-
-		@Override
-		public boolean onMenuItemClick(MenuItem item) {
-			switch (item.getItemId()) {
-			case R.id.action_other_collabo:
-				service.getSong().getChildrenClickListener().onClick(SlidingPlayerLayout.this);
-				return true;
-				
-			case R.id.action_song_likings:
-				setLikingWindowShown(true);
-				return true;
-				
-			case R.id.action_song_images:
-				return true;
-
-			default:
-				return false;
-			}
-		}
-		
 	};
 	
 	public void onProgressUpdate() {
@@ -566,6 +551,8 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		
 		displayMusicInfo(music);
 		
+		displayUsersInfo(song);
+		
 		displayBackgroundImage(song);
 		
 		displaySongMessage(song);
@@ -591,10 +578,14 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		initializeSeekBar(song);
 		
 		ivParentUserPhoto.setOnClickListener(parentUser.getProfileClickListener());
-		ivThisUserPhoto.setOnClickListener(thisUser.getProfileClickListener());
+		if (thisUser != null) {
+			ivThisUserPhoto.setOnClickListener(thisUser.getProfileClickListener());
+		}
 		vStartCollabo.setOnClickListener(song.getCollaboClickListner());
 		ivLikeSong.setOnClickListener(likeClickListener);
 		btnSubmitComment.setOnClickListener(submitCommentClickListner);
+		tvOtherCollabo.setOnClickListener(song.getChildrenClickListener());
+		ivShare.setOnClickListener(shareClickListener);
 		
 		if (song.isRoot()) {
 			vPartnerWrapper.setVisibility(View.GONE);
@@ -614,19 +605,26 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	}
 	
 	private void displayMusicInfo(Music music) {
-		tvMusicTitleOnCollapsed.setText(music.getTitle());
+		tvMusicInfoOnCollapsed.setText(music.getTitle() + " - " + music.getSingerName());
+		tvMusicInfoOnCollapsed.setSelected(true);
 		tvMusicTitleOnExpanded.setText(music.getTitle());
-		tvSingerNameOnCollapsed.setText(music.getSingerName());
 		tvSingerNameOnExpanded.setText(music.getSingerName());
-		tvMusicTitleOnCollapsed.setSelected(true);
 		tvMusicTitleOnExpanded.setSelected(true);
-		tvSingerNameOnCollapsed.setSelected(true);
 		tvSingerNameOnExpanded.setSelected(true);
+	}
+	
+	private void displayUsersInfo(Song song) {
+		tvUsersInfoOnCollapsed.setText(song.getCreator().getNickname());
+		if (!song.isRoot()) {
+			tvUsersInfoOnCollapsed.append(" X ");
+			tvUsersInfoOnCollapsed.append(song.getParentUser().getNickname());
+		}
+		tvUsersInfoOnCollapsed.setSelected(true);
 	}
 	
 	private void displayBackgroundImage(Song song) {
 		String url = song.getMusic().getAlbumPhotoUrl();
-		ImageLoader.getInstance().displayImage(url, ivMovingBackground, imageLoadingListener);
+		ImageLoader.getInstance().displayImage(url, ivBackground, imageLoadingListener);
 	}
 	
 	private ImageLoadingListener imageLoadingListener = new ImageLoadingListener() {
@@ -696,6 +694,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		tvLikingNum.setText("¡¡æ∆ø‰ (");
 		tvLikingNum.append(String.valueOf(num));
 		tvLikingNum.append(")");
+		tvLikingNumOut.setText(String.valueOf(num));
 	}
 	
 	private void checkUserLikeSong(User user, Song song) {
@@ -833,6 +832,20 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		}
 	};
 	
+	private OnClickListener shareClickListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			BaseActivity activity = ((BaseActivity) getContext());
+			Song song = service.getSong();
+			Bundle bundle = new Bundle();
+			bundle.putString(ShareDialog.EXTRA_SONG, song.toString());
+			ShareDialog dialog = new ShareDialog();
+			dialog.setArguments(bundle);
+			dialog.show(activity.getSupportFragmentManager(), "");
+		}
+	};
+	
 	public void onSubmitSuccess(SongComment response) {
 		addComment(response);
 	}
@@ -841,67 +854,19 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		
 	}
 	
-	public void addComment(SongComment comment) {
+	public void addComment(Comment<?> comment) {
 		commentAdapter.addItemToHead(comment);
 		service.getSong().incrementCommentNum();
 		displayCommentNum(service.getSong().getCommentNum());
 	}
 	
-	public void deleteComment(SongComment comment) {
+	public void deleteComment(Comment<?> comment) {
 		JustRequest request = new JustRequest(Method.DELETE, "comments/" + comment.getId(), null);
 		((App) getContext().getApplicationContext()).addShortLivedRequest(getContext(), request);
 		commentAdapter.removeItem(comment);
 		service.getSong().decrementCommentNum();
 		displayCommentNum(service.getSong().getCommentNum());
 	}
-	
-	/*
-	private void getBitlyShortUrl() {
-		final String apiUrl = "https://api-ssl.bitly.com/v3/shorten?"; 
-		final String token = "adaad7e775370d959bdb74ddeafed457a541710c";
-		
-		UrlBuilder urlBuilder = new UrlBuilder();
-		String longUrl = urlBuilder.s("w").s("listen").s(thisSong.getId()).toString();
-		String requestUrl = apiUrl;
-		requestUrl += "access_token=" + token;
-		requestUrl += "&longUrl=" + longUrl;
-		
-		try {
-			JSONObject message = new JSONObject();
-			message.put("access_token", token);
-			message.put("longUrl", longUrl);
-			
-			JsonObjectRequest request = new JsonObjectRequest(
-					Method.GET, requestUrl, null,
-					new BitlyResponse(this), null
-			);
-			RequestQueue queue = ((App) getContext().getApplicationContext()).getQueueInstance();
-			queue.add(request);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private static class BitlyResponse extends OnVolleyWeakResponse<SlidingPlayerLayout, JSONObject> {
-
-		public BitlyResponse(SlidingPlayerLayout reference) {
-			super(reference);
-		}
-
-		@Override
-		public void onFilteredResponse(SlidingPlayerLayout reference, JSONObject response) {
-			try {
-				JSONObject data = response.getJSONObject("data");
-				String bitlyUrl = data.getString("url");
-				reference.showKakaotalkDialog(bitlyUrl);
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-		}
-		
-	}
-	
-	 */
 
     private PanelSlideListener panelSlideListener = new PanelSlideListener() {
     	

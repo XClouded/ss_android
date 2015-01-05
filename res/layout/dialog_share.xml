@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/container_dialog" >
+    
+    <LinearLayout
+        android:id="@+id/ll_share_facebook"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin_small"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:background="@drawable/button_app_bg_selector" >
+        
+        <ImageView
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:src="@drawable/ic_facebook"
+            android:layout_marginRight="@dimen/margin"
+            style="@style/ImageViewBase" />
+        
+        <TextView
+            android:text="페이스북으로 공유하기"
+            android:textSize="@dimen/text_subtitle"
+            style="@style/TextViewBase" />
+        
+    </LinearLayout>
+    
+    <ImageView
+        style="@style/DividerVertical" />
+    
+    <LinearLayout
+        android:id="@+id/ll_share_kakaotalk"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin_small"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:background="@drawable/button_app_bg_selector" >
+        
+        <ImageView
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:src="@drawable/ic_kakaotalk"
+            android:layout_marginRight="@dimen/margin"
+            style="@style/ImageViewBase" />
+        
+        <TextView
+            android:text="카카오톡으로 공유하기"
+            android:textSize="@dimen/text_subtitle"
+            style="@style/TextViewBase" />
+        
+    </LinearLayout>
+    
+    <ImageView
+        style="@style/DividerVertical" />
+    
+    <TextView
+        android:id="@+id/tv_share_etc"
+        android:layout_width="match_parent"
+        android:textSize="@dimen/text_subtitle"
+        android:padding="@dimen/margin"
+        android:gravity="center"
+        android:text="기타"
+        android:background="@drawable/button_app_bg_selector"
+        style="@style/TextViewBase" />
+
+</LinearLayout>

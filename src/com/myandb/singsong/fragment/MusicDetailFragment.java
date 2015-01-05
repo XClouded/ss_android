@@ -12,7 +12,9 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 
 public class MusicDetailFragment extends ListFragment {
@@ -26,6 +28,7 @@ public class MusicDetailFragment extends ListFragment {
 	private TextView tvPopular;
 	private TextView tvRecent;
 	private TextView tvFriend;
+	private View currentTab;
 	private Music music;
 
 	@Override
@@ -56,15 +59,8 @@ public class MusicDetailFragment extends ListFragment {
 	}
 
 	@Override
-	protected void initialize(Activity activity) {
-		super.initialize(activity);
-		
-		if (getAdapter() == null) {
-			UrlBuilder urlBuilder = new UrlBuilder();
-			urlBuilder.s("musics").s(music.getId()).s("songs").s("root");
-			setUrlBuilder(urlBuilder);
-			setAdapter(new ChildrenSongAdapter());
-		}
+	protected ListAdapter instantiateAdapter(Activity activity) {
+		return new ChildrenSongAdapter();
 	}
 
 	@Override
@@ -75,13 +71,87 @@ public class MusicDetailFragment extends ListFragment {
 		tvSingerName.setText(music.getSingerName());
 		tvMusicTitle.setText(music.getTitle());
 		tvSingNum.setText(music.getWorkedSingNum());
+		
+		tvPopular.setOnClickListener(tabClickListener);
+		tvRecent.setOnClickListener(tabClickListener);
+		tvFriend.setOnClickListener(tabClickListener);
+	}
+
+	@Override
+	protected void onDataChanged() {
+		super.onDataChanged();
+		if (currentTab == null) {
+			tvPopular.performClick();
+		}
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		
 		setFadingActionBarTitle(music.getSingerName() + "-" + music.getTitle());
 	}
+	
+	private OnClickListener tabClickListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			if (currentTab == null || currentTab.getId() != v.getId()) {
+				changeContent(v);
+				changeTab(v);
+			}
+		}
+	};
+	
+	private void changeContent(View v) {
+		((ChildrenSongAdapter) getAdapter()).clear();
+		UrlBuilder urlBuilder = new UrlBuilder();
+		
+		switch (v.getId()) {
+		case R.id.tv_popular:
+			urlBuilder.s("musics").s(music.getId()).s("songs").s("root").p("order", "liking_num");
+			break;
+			
+		case R.id.tv_recent:
+			urlBuilder.s("musics").s(music.getId()).s("songs").s("root").p("order", "created_at");
+			break;
+			
+		case R.id.tv_friend:
+			urlBuilder.s("followings").s("musics").s(music.getId()).s("songs").s("root");
+			break;
 
+		default:
+			return;
+		}
+		
+		setUrlBuilder(urlBuilder);
+		load();
+	}
+	
+	private void changeTab(View v) {
+		View previousTab = currentTab;
+		dehighlightTab(previousTab);
+		highlightTab(v);
+		currentTab = v;
+	}
+	
+	private void highlightTab(View v) {
+		if (v != null) {
+			int paddingTop = v.getPaddingTop();
+			int paddingBottom = v.getPaddingBottom();
+			v.setBackgroundResource(R.drawable.tab_selected);
+			v.setPadding(0, paddingTop, 0, paddingBottom);
+			((TextView) v).setTextColor(getResources().getColor(R.color.font_highlight));
+		}
+	}
+	
+	private void dehighlightTab(View v) {
+		if (v != null) {
+			int paddingTop = v.getPaddingTop();
+			int paddingBottom = v.getPaddingBottom();
+			v.setBackgroundResource(R.drawable.tab_selector);
+			v.setPadding(0, paddingTop, 0, paddingBottom);
+			((TextView) v).setTextColor(getResources().getColor(R.color.white));
+		}
+	}
+	
 }

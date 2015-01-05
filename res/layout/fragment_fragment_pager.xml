@@ -4,13 +4,15 @@
     android:id="@+id/viewpager_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="@color/white" >
     
     <com.astuetz.PagerSlidingTabStrip
         android:id="@+id/tab_strip"
         android:layout_width="match_parent"
         android:layout_height="@dimen/abc_action_bar_default_height"
-        app:pstsShouldExpand="true" />
+        app:pstsShouldExpand="true"
+        app:pstsTabBackground="@drawable/tab_sliding_selector" />
     
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"

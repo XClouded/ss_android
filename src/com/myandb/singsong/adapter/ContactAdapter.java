@@ -6,11 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.myandb.singsong.R;
 import com.myandb.singsong.model.Contact;
+import com.myandb.singsong.net.UrlBuilder;
 
 public class ContactAdapter extends HolderAdapter<Contact, ContactAdapter.ContactHolder> {
 
@@ -29,8 +29,8 @@ public class ContactAdapter extends HolderAdapter<Contact, ContactAdapter.Contac
 		final Contact contact = getItem(position);
 		
 		viewHolder.tvContactName.setText(contact.getName());
-		viewHolder.btnInvite.setTag(contact);
-		viewHolder.btnInvite.setOnClickListener(inviteClickListener);
+		viewHolder.vInvite.setTag(contact);
+		viewHolder.vInvite.setOnClickListener(inviteClickListener);
 	}
 	
 	private OnClickListener inviteClickListener = new OnClickListener() {
@@ -40,7 +40,9 @@ public class ContactAdapter extends HolderAdapter<Contact, ContactAdapter.Contac
 			final Contact contact = (Contact) v.getTag();
 			if (contact != null) {
 				Intent intent = new Intent(Intent.ACTION_VIEW);
-				String body = "같이 즐겨요! 콜라보 노래방";
+				String body = "노래도 부르고 짝도 찾는 노래방 어플리케이션!\n";
+				body += new UrlBuilder().s("w").s("invitation").toString();
+				body += "\n지금 플레이 스토어에서 다운 받아 같이 노래 불러요 :)";
 				intent.putExtra("sms_body", body);
 				intent.putExtra("address", contact.getPhoneNumber());
 				intent.setType("vnd.android-dir/mms-sms");
@@ -52,12 +54,12 @@ public class ContactAdapter extends HolderAdapter<Contact, ContactAdapter.Contac
 	public static final class ContactHolder extends ViewHolder {
 		
 		public TextView tvContactName;
-		public Button btnInvite;
+		public View vInvite;
 
 		public ContactHolder(View view) {
 			super(view);
 			tvContactName = (TextView) view.findViewById(R.id.tv_contact_name);
-			btnInvite = (Button) view.findViewById(R.id.btn_invite);
+			vInvite = view.findViewById(R.id.ll_invite);
 		}
 		
 	}

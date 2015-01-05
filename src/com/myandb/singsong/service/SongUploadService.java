@@ -19,7 +19,6 @@ import com.myandb.singsong.audio.Recorder;
 import com.myandb.singsong.audio.Track;
 import com.myandb.singsong.event.OnCompleteListener;
 import com.myandb.singsong.event.OnProgressListener;
-import com.myandb.singsong.image.BitmapBuilder;
 import com.myandb.singsong.model.Model;
 import com.myandb.singsong.model.Music;
 import com.myandb.singsong.net.JSONObjectRequest;
@@ -31,7 +30,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.media.RingtoneManager;
 import android.os.IBinder;
 import android.os.Build.VERSION;
@@ -52,6 +50,9 @@ public class SongUploadService extends Service {
 	public static final String EXTRA_LYRIC_PART = "lyric_part";
 	public static final String EXTRA_IMAGE_ID = "image_id";
 	public static final String EXTRA_SONG_MESSAGE = "song_message";
+	public static final String EXTRA_RECORD_VOLUME = "record_volume";
+	public static final String EXTRA_FACEBOOK_POSTING = "facebook_posting";
+	public static final String EXTRA_SAMPLE_SKIP_SECOND = "sample_skip_second";
 	public static final int REQUEST_CODE = 10;
 	
 	private static boolean isRunning;
@@ -60,6 +61,8 @@ public class SongUploadService extends Service {
 	private int parentSongId;
 	private int creatorId;
 	private int imageId;
+	private boolean isFacebookPosting;
+	private float sampleSkipSecond;
 	private String message;
 	private String songAudioName;
 	private String sampleAudioName;
@@ -101,6 +104,7 @@ public class SongUploadService extends Service {
 		final String musicPcmFilePath = intent.getStringExtra(EXTRA_MUSIC_PCM_FILE_PATH);
 		final File recordPcmFile = new File(recordPcmFilePath);
 		final File musicPcmFile = new File(musicPcmFilePath);
+		final float recordVolume = intent.getFloatExtra(EXTRA_RECORD_VOLUME, 1f);
 		
 		creatorId = intent.getIntExtra(EXTRA_CREATOR_ID, 0);
 		musicId = intent.getIntExtra(EXTRA_MUSIC_ID, 0);
@@ -108,11 +112,14 @@ public class SongUploadService extends Service {
 		lyricPart = intent.getIntExtra(EXTRA_LYRIC_PART, Music.PART_MALE);
 		imageId = intent.getIntExtra(EXTRA_IMAGE_ID, 0);
 		message = intent.getStringExtra(EXTRA_SONG_MESSAGE);
+		isFacebookPosting = intent.getBooleanExtra(EXTRA_FACEBOOK_POSTING, false);
+		sampleSkipSecond = intent.getFloatExtra(EXTRA_SAMPLE_SKIP_SECOND, 0f);
 		
 		try {
 			tracks = new ArrayList<Track>();
 			Track recordTrack = new Track(recordPcmFile, Recorder.CHANNELS);
 			recordTrack.addOffsetFrame(recordOffset);
+			recordTrack.setVolume(recordVolume);
 			tracks.add(recordTrack);
 			if (headsetPlugged) {
 				Track musicTrack = new Track(musicPcmFile, PcmPlayer.CHANNELS);
@@ -162,7 +169,7 @@ public class SongUploadService extends Service {
 		
 		Encoder encoder = new Encoder();
 		encoder.setOutputFileName(sampleOggFile.getAbsolutePath());
-		encoder.enableSampleMode(44100 * 10);
+		encoder.enableSampleMode((int) (44100 * sampleSkipSecond));
 		encoder.setOnProgressListener(new OnProgressListener() {
 			
 			@Override
@@ -296,27 +303,8 @@ public class SongUploadService extends Service {
 	}
 	
 	private void submitNotification() {
-		BitmapBuilder bitmapBuilder = new BitmapBuilder();
-		Bitmap bitmap = null;
-		
-		/*
-		try {
-			if (FileManager.isExist(FileManager.USER_PHOTO)) {
-				bitmap = bitmapBuilder.setSource(FileManager.get(FileManager.USER_PHOTO))
-									  .enableCrop(true)
-									  .build();
-			} else {
-				bitmap = bitmapBuilder.setSource(getResources(), R.drawable.user_default)
-									  .enableCrop(true)
-									  .build();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		*/
-		
 		RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.notification_progressbar);
-		contentView.setImageViewBitmap(R.id.iv_icon, bitmap);
+		contentView.setImageViewResource(R.id.iv_icon, R.drawable.ic_launcher);
 		contentView.setTextViewText(R.id.tv_title, "서버에서 정보를 받아오고 있습니다.");
 		contentView.setProgressBar(R.id.pb_status, 100, 0, false);
 
@@ -377,7 +365,15 @@ public class SongUploadService extends Service {
 		
 		manager.notify(App.NOTI_ID_SONG_UPLOAD, builder.build());
 		
+		if (isFacebookPosting) {
+			postOnFacebook();
+		}
+		
 		isRunning = false;
+	}
+	
+	private void postOnFacebook() {
+		
 	}
 	
 	public static boolean isServiceRunning() {

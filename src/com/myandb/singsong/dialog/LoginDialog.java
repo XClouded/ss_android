@@ -121,7 +121,7 @@ public class LoginDialog extends BaseDialog {
 		
 		Session session = Session.getActiveSession();
 		if (session != null) {
-			session.close();
+			session.closeAndClearTokenInformation();
 		}
 		session = new Session(getActivity().getApplicationContext());
 		session.addCallback(statusCallback);
@@ -236,6 +236,7 @@ public class LoginDialog extends BaseDialog {
 
 	public void onLoginComplete() {
 		dismissProgressDialog();
+		dismiss();
 		activity.restartActivity();
 	}
 	

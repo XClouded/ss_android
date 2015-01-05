@@ -8,14 +8,14 @@
     <TextView
         android:text="@string/dialog_part_select_title"
         android:textColor="@color/white"
-        style="@style/TextViewTitle" />
+        style="@style/TextViewSubtitleAlone" />
     
     <TextView
         android:text="@string/dialog_part_select_content"
         android:gravity="center"
         android:textColor="@color/font_white"
         android:layout_marginBottom="@dimen/margin_bigger"
-        style="@style/TextViewHint" />
+        style="@style/TextViewLessImportant" />
     
     <Button
         android:id="@+id/btn_select_male"

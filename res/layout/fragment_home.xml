@@ -1,16 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:scrollbars="none" >
     
-    <Button
-        android:id="@+id/btn_logout"
-        android:layout_marginTop="@dimen/margin_bigger"
-        android:layout_gravity="center"
-        android:text="@string/logout"
-        android:textColor="@color/font_default"
-        android:background="@drawable/card_selector"
-        style="@style/ButtonBase" />
-
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/margin"
+        android:paddingBottom="@dimen/margin"
+        android:orientation="vertical" >
+        
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/margin"
+            android:paddingRight="@dimen/margin" >
+            
+            <TextView
+                android:text="@string/today_collabo_artist"
+                style="@style/TextViewSubtitle" />
+            
+            <TextView
+                android:id="@+id/tv_collabo_artist_more"
+                android:text="@string/more"
+                android:textStyle="normal"
+                android:layout_alignParentRight="true"
+                style="@style/TextViewSubtitle" />
+            
+        </RelativeLayout>
+        
+        <FrameLayout
+            android:id="@+id/fl_today_collabo_artist_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin" />
+        
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/margin"
+            android:paddingRight="@dimen/margin" >
+            
+            <TextView
+                android:text="@string/popular_song"
+                style="@style/TextViewSubtitle" />
+            
+            <TextView
+                android:id="@+id/tv_popular_song_more"
+                android:text="@string/more"
+                android:textStyle="normal"
+                android:layout_alignParentRight="true"
+                style="@style/TextViewSubtitle" />
+            
+        </RelativeLayout>
+        
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vp_popular_song"
+            android:layout_width="match_parent"
+            android:layout_height="170dp"
+            android:layout_marginBottom="@dimen/margin" />
+        
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/margin"
+            android:paddingRight="@dimen/margin" >
+            
+            <TextView
+                android:text="@string/recent_music"
+                style="@style/TextViewSubtitle" />
+            
+            <TextView
+                android:id="@+id/tv_recent_music_more"
+                android:text="@string/more"
+                android:textStyle="normal"
+                android:layout_alignParentRight="true"
+                style="@style/TextViewSubtitle" />
+            
+        </RelativeLayout>
+        
+        <com.myandb.singsong.widget.HorizontalListView
+            android:id="@+id/hlv_recent_music"
+            android:layout_width="match_parent"
+            android:layout_height="170dp"
+            android:layout_marginBottom="@dimen/margin"
+            android:scrollbars="none" />
+        
+        <TextView
+            android:text="@string/popular_music"
+            android:paddingLeft="@dimen/margin"
+            android:paddingRight="@dimen/margin"
+            style="@style/TextViewSubtitle" />
+        
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vp_popular_music"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:layout_marginBottom="@dimen/margin" />
+        
+    </LinearLayout>
+    
+</ScrollView>

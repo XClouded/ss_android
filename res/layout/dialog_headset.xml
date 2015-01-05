@@ -3,45 +3,32 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@drawable/container_dialog" >
+    android:gravity="center" >
+    
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_menu_listen"
+        style="@style/ImageViewBase" />
     
     <TextView
         android:text="@string/dialog_headset_title"
-        android:layout_gravity="center_horizontal"
-        style="@style/TextViewTitle" />
+        android:textColor="@color/white"
+        style="@style/TextViewSubtitleAlone" />
     
-    <RelativeLayout
+    <TextView
+        android:text="@string/dialog_headset_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-        
-        <ImageView
-            android:id="@+id/icon"
-            android:layout_marginLeft="@dimen/margin_small"
-            android:layout_marginRight="@dimen/margin_small"
-            android:layout_marginTop="@dimen/margin_big"
-            android:layout_marginBottom="@dimen/margin_big"
-            android:src="@drawable/img_headset"
-            style="@style/ImageViewBase" />
-	    
-	    <TextView
-	        android:layout_alignTop="@id/icon"
-	        android:layout_alignBottom="@id/icon"
-	        android:layout_toRightOf="@id/icon"
-	        android:gravity="center_vertical"
-	        android:text="@string/dialog_headset_content"
-	        style="@style/TextViewHint" />
-        
-    </RelativeLayout>
-    
-    <ImageView
-        style="@style/DividerHorizontal" />
+        android:gravity="center"
+        android:layout_marginBottom="@dimen/margin_bigger"
+        style="@style/TextViewLessImportant" />
     
     <Button
         android:id="@+id/btn_no_headset"
         android:text="@string/dialog_headset_no"
-        android:layout_width="match_parent"
-        android:background="@drawable/button_grey_selector"
-        android:layout_margin="@dimen/margin"
+        android:background="@drawable/button_transparent_selector"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
         style="@style/ButtonBase" />
 
 </LinearLayout>

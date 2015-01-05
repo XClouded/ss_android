@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/margin"
+    android:paddingRight="@dimen/margin" >
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin_small"
+        android:background="@drawable/card_selector" >
+        
+        <com.myandb.singsong.widget.RoundedImageView
+            android:id="@+id/iv_artist_photo"
+            android:layout_marginTop="@dimen/margin_tiny"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:layout_marginLeft="@dimen/margin_small"
+	       	style="@style/ImageViewUser" />
+        
+        <TextView
+	        android:id="@+id/tv_artist_user_nickname"
+	        android:layout_toRightOf="@id/iv_artist_photo"
+	        android:layout_alignTop="@id/iv_artist_photo"
+	        android:layout_marginBottom="@dimen/margin_tiny"
+	        android:gravity="left"
+	        android:textStyle="bold"
+	        style="@style/TextViewOverflowableLessImportant" />
+        
+        <TextView
+	        android:id="@+id/tv_artist_nickname"
+	        android:layout_toRightOf="@id/iv_artist_photo"
+	        android:layout_below="@id/tv_artist_user_nickname"
+	        android:gravity="left"
+	        style="@style/TextViewOverflowableLessImportant" />
+        
+        <ImageView
+            android:id="@+id/icon_follower"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+	        android:layout_alignLeft="@id/tv_artist_nickname"
+	        android:layout_below="@id/tv_artist_nickname"
+	        android:layout_marginRight="@dimen/margin_tiny"
+            android:src="@drawable/ic_user_mini"
+            style="@style/ImageViewBase" />
+        
+        <TextView
+	        android:id="@+id/tv_artist_followers_num"
+	        android:textSize="@dimen/text_hint"
+	        android:layout_toRightOf="@id/icon_follower"
+	        android:layout_below="@id/tv_artist_nickname"
+	        style="@style/TextViewLessImportant" />
+        
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_artist_photo"
+            android:background="@color/primary" >
+            
+            <ImageView
+                android:id="@+id/banner"
+                android:layout_width="62dp"
+                android:layout_height="51dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="@dimen/margin_small"
+                android:layout_marginRight="@dimen/margin"
+                android:layout_marginTop="@dimen/margin_bigger"
+                android:src="@drawable/img_artist_introduction_bg"
+                style="@style/ImageViewBase" />
+            
+            <TextView
+                android:id="@+id/tv_interview_title"
+                android:text="@string/artist_interview"
+                android:textSize="@dimen/text_sub_content"
+                android:textColor="@color/white"
+                android:textStyle="italic"
+                android:layout_margin="@dimen/margin_small"
+                style="@style/TextViewBase" />
+            
+            <TextView
+                android:id="@+id/tv_artist_introduction"
+                android:layout_width="match_parent"
+                android:layout_toLeftOf="@id/banner"
+                android:layout_marginLeft="@dimen/margin_small"
+                android:layout_below="@id/tv_interview_title"
+                android:ellipsize="end"
+                android:textColor="@color/white"
+                android:maxLines="2"
+                style="@style/TextViewBase" />
+            
+        </RelativeLayout>
+        
+    </RelativeLayout>
+
+</FrameLayout>

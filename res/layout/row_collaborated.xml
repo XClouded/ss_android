@@ -5,12 +5,13 @@
     android:layout_height="wrap_content"
     android:paddingLeft="@dimen/margin"
     android:paddingRight="@dimen/margin"
-    android:paddingTop="@dimen/margin_small" >
+    android:paddingTop="@dimen/margin_small"
+    android:background="@color/app_bg" >
     
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/card_song" >
+        android:background="@drawable/card_idle" >
         
         <LinearLayout
             android:id="@+id/wrapper"
@@ -49,7 +50,7 @@
             android:layout_marginRight="@dimen/margin"
             android:layout_marginBottom="@dimen/margin_big"
             android:layout_alignBottom="@id/wrapper"
-            android:textColor="@color/font_white"
+            android:textColor="@color/white"
             style="@style/TextViewBase" />
         
         <LinearLayout
@@ -128,8 +129,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/divider"
-            android:paddingLeft="@dimen/margin_big"
-            android:paddingRight="@dimen/margin_big"
+            android:paddingLeft="@dimen/margin"
+            android:paddingRight="@dimen/margin"
             android:paddingBottom="@dimen/margin_small" >
             
 	            <LinearLayout 
@@ -138,7 +139,7 @@
 	                android:orientation="horizontal" >
 	                
 	            <ImageView
-	                android:src="@drawable/ic_like_pink"
+	                android:src="@drawable/ic_like_mini"
 	                style="@style/IconImageView" />
 	            
 	            <TextView
@@ -147,7 +148,7 @@
 	                style="@style/TextViewIconLabel" />
 	            
 	            <ImageView
-	                android:src="@drawable/ic_comment_blue"
+	                android:src="@drawable/ic_comment_mini"
 	                style="@style/IconImageView" />
 	            
 	            <TextView

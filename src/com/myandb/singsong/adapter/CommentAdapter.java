@@ -1,6 +1,7 @@
 package com.myandb.singsong.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
@@ -18,19 +19,26 @@ import com.myandb.singsong.R;
 import com.myandb.singsong.dialog.BaseDialog;
 import com.myandb.singsong.dialog.ReportCommentDialog;
 import com.myandb.singsong.image.ImageHelper;
-import com.myandb.singsong.model.SongComment;
+import com.myandb.singsong.model.Comment;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.widget.SlidingPlayerLayout;
 
-public class CommentAdapter extends HolderAdapter<SongComment, CommentAdapter.CommentHolder> {
+@SuppressWarnings("rawtypes")
+public class CommentAdapter extends HolderAdapter<Comment, CommentAdapter.CommentHolder> {
 	
-	private SongComment selectedComment;
+	private Comment selectedComment;
 	private SlidingPlayerLayout layout;
 	private FragmentManager fragmentManager;
+	private int textColorGrey = Color.parseColor("#777777");
+	private int textColorDefault = Color.parseColor("#444444");
+	
+	public CommentAdapter() {
+		super(Comment.class);
+	}
 
 	public CommentAdapter(SlidingPlayerLayout layout) {
-		super(SongComment.class);
+		super(Comment.class);
 		this.layout = layout;
 		Context context = layout.getContext();
 		this.fragmentManager = ((ActionBarActivity) context).getSupportFragmentManager();
@@ -44,15 +52,23 @@ public class CommentAdapter extends HolderAdapter<SongComment, CommentAdapter.Co
 
 	@Override
 	public void onBindViewHolder(Context context, CommentHolder viewHolder, int position) {
-		final SongComment comment = getItem(position);
+		final Comment<?> comment = getItem(position);
 		final User writer = comment.getWriter();
 		
 		viewHolder.tvNickname.setText(writer.getNickname());
 		viewHolder.tvCreated.setText(comment.getWorkedCreatedTime(getCurrentDate()));
 		viewHolder.tvCommentContent.setText(comment.getContent());
 		viewHolder.ivUserPhoto.setOnClickListener(writer.getProfileClickListener());
-		viewHolder.ivMenu.setTag(comment);
-		viewHolder.ivMenu.setOnClickListener(menuClickListener);
+		
+		if (fragmentManager != null) {
+			viewHolder.ivMenu.setVisibility(View.VISIBLE);
+			viewHolder.ivMenu.setTag(comment);
+			viewHolder.ivMenu.setOnClickListener(menuClickListener);
+		} else {
+			viewHolder.ivMenu.setVisibility(View.INVISIBLE);
+			viewHolder.tvNickname.setTextColor(textColorDefault);
+			viewHolder.tvCommentContent.setTextColor(textColorGrey);
+		}
 		
 		ImageHelper.displayPhoto(writer, viewHolder.ivUserPhoto);
 	}
@@ -61,7 +77,7 @@ public class CommentAdapter extends HolderAdapter<SongComment, CommentAdapter.Co
 		
 		@Override
 		public void onClick(View v) {
-			selectedComment = (SongComment) v.getTag();
+			selectedComment = (Comment) v.getTag();
 			PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
 			if (isUserWriter(selectedComment)) {
 				popupMenu.inflate(R.menu.delete_comment);
@@ -72,7 +88,7 @@ public class CommentAdapter extends HolderAdapter<SongComment, CommentAdapter.Co
 			popupMenu.show();
 		}
 		
-		private boolean isUserWriter(SongComment comment) {
+		private boolean isUserWriter(Comment comment) {
 			return Authenticator.getUser().getId() == comment.getWriter().getId();
 		}
 	};

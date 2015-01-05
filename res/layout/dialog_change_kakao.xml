@@ -14,7 +14,7 @@
         
         <TextView
             android:text="카카오톡 아이디 변경"
-            style="@style/TextViewTitle" />
+            style="@style/TextViewSubtitleAlone" />
         
         <ImageView
         	style="@style/DividerHorizontal" />

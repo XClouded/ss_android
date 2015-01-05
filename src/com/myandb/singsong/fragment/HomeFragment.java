@@ -1,11 +1,28 @@
 package com.myandb.singsong.fragment;
 
-import com.facebook.Session;
+import org.json.JSONArray;
+
+import com.google.gson.Gson;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
+import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.activity.UpActivity;
-import com.myandb.singsong.adapter.NotificationAdapter;
+import com.myandb.singsong.adapter.ArtistAdapter;
+import com.myandb.singsong.adapter.MusicAdapter;
+import com.myandb.singsong.adapter.SimpleSongAdapter;
+import com.myandb.singsong.adapter.MusicAdapter.LayoutType;
+import com.myandb.singsong.dialog.BaseDialog;
+import com.myandb.singsong.dialog.SelectRecordModeDialog;
+import com.myandb.singsong.model.Category;
+import com.myandb.singsong.model.Music;
+import com.myandb.singsong.model.Song;
+import com.myandb.singsong.net.GradualLoader;
+import com.myandb.singsong.net.UrlBuilder;
+import com.myandb.singsong.net.GradualLoader.OnLoadCompleteListener;
+import com.myandb.singsong.pager.PagerWrappingAdapter;
 import com.myandb.singsong.secure.Authenticator;
+import com.myandb.singsong.util.Utility;
+import com.myandb.singsong.widget.HorizontalListView;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,18 +31,39 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class HomeFragment extends BaseFragment {
 	
 	private TextView tvNotificationCount;
+	private TextView tvRecentMusicMore;
+	private TextView tvCollaboArtistMore;
+	private TextView tvPopularSongMore;
+	private ViewPager vpPopularMusic;
+	private ViewPager vpPopularSong;
+	private PagerWrappingAdapter popularMusicAdapter;
+	private PagerWrappingAdapter popularSongAdapter;
+	private HorizontalListView hlvRecentMusic;
+	private ViewGroup vgTodayCollaboArtistContainer;
+	private MusicAdapter recentMusicAdapter;
+	private ArtistAdapter todayArtistAdapter;
 	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
+	}
+
 	@Override
 	protected int getResourceId() {
 		return R.layout.fragment_home;
@@ -33,45 +71,218 @@ public class HomeFragment extends BaseFragment {
 
 	@Override
 	protected void onViewInflated(View view, LayoutInflater inflater) {
-		view.findViewById(R.id.btn_logout).setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				new Authenticator().logout();
-				Session session = Session.getActiveSession();
-				if (session != null) {
-					session.closeAndClearTokenInformation();
-				}
-				getActivity().finish();
-			}
-		});
+		vpPopularMusic = (ViewPager) view.findViewById(R.id.vp_popular_music);
+		vpPopularSong = (ViewPager) view.findViewById(R.id.vp_popular_song);
+		hlvRecentMusic = (HorizontalListView) view.findViewById(R.id.hlv_recent_music);
+		vgTodayCollaboArtistContainer = (ViewGroup) view.findViewById(R.id.fl_today_collabo_artist_container);
+		
+		tvRecentMusicMore = (TextView) view.findViewById(R.id.tv_recent_music_more);
+		tvCollaboArtistMore = (TextView) view.findViewById(R.id.tv_collabo_artist_more);
+		tvPopularSongMore = (TextView) view.findViewById(R.id.tv_popular_song_more);
 	}
 
 	@Override
 	protected void initialize(Activity activity) {
-		setHasOptionsMenu(true);
-	}
-
-	@Override
-	protected void setupViews(Bundle savedInstanceState) {
+		int padding = getResources().getDimensionPixelSize(R.dimen.margin);
 		
-	}
-
-	@Override
-	protected void onDataChanged() {
+		setHorizontalViewGroupPadding(hlvRecentMusic, padding);
+		hlvRecentMusic.setDividerWidth(padding / 2);
 		
+		setHorizontalViewGroupPadding(vpPopularMusic, padding);
+		vpPopularMusic.setPageMargin(padding / 2);
+		
+		setHorizontalViewGroupPadding(vpPopularSong, padding);
+		vpPopularSong.setPageMargin(padding / 2);
+	}
+	
+	private void setHorizontalViewGroupPadding(ViewGroup parent, int padding) {
+		parent.setPadding(padding, 0, padding, 0);
+		parent.setClipToPadding(false);
 	}
 	
 	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		inflater.inflate(R.menu.home, menu);
+	protected void setupViews(Bundle savedInstanceState) {
+		loadTodayCollaboArtist();
 		
-		View notificationView = getActionViewCompat(menu, R.id.action_notification);
-		if (notificationView != null) {
-			notificationView.setOnClickListener(notificationClickListener);
-			tvNotificationCount = (TextView) notificationView.findViewById(R.id.tv_action_notification_count);
-			updateNotificationCount();
-			registerNotificationCountListener();
+		loadPopularSong();
+		
+		loadRecentMusic();
+		
+		loadPopularMusic();
+		
+		tvCollaboArtistMore.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Bundle bundle = new Bundle();
+				bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_artist_list_title));
+				Intent intent = new Intent(getActivity(), RootActivity.class);
+				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, ArtistListFragment.class.getName());
+				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
+				startFragment(intent);
+			}
+		});
+		
+		tvPopularSongMore.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				int position = vpPopularSong.getCurrentItem();
+				Song currentSong = (Song) popularSongAdapter.getItem(position);
+				if (currentSong != null) {
+					Bundle bundle = new Bundle();
+					Category category = currentSong.getCategory();
+					bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, category.getTitle());
+					bundle.putInt(ListenHomeFragment.EXTRA_CATEGORY_ID, category.getId());
+					Intent intent = new Intent(v.getContext(), RootActivity.class);
+					intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, ListenHomeFragment.class.getName());
+					intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
+					((BaseActivity) v.getContext()).changePage(intent);
+				}
+			}
+		});
+		
+		tvRecentMusicMore.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				String segment = "musics/";
+				String title = getString(R.string.recent);
+				Bundle bundle = new Bundle();
+				Bundle params = new Bundle();
+				params.putString("order", "created_at");
+				bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, title);
+				bundle.putString(ListFragment.EXTRA_URL_SEGMENT, segment);
+				bundle.putBundle(ListFragment.EXTRA_QUERY_PARAMS, params);
+				Intent intent = new Intent(getActivity(), RootActivity.class);
+				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
+				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, MusicListFragment.class.getName());
+				startFragment(intent);
+			}
+		});
+	}
+	
+	private void loadTodayCollaboArtist() {
+		if (todayArtistAdapter == null) {
+			todayArtistAdapter = new ArtistAdapter();
+			final UrlBuilder urlBuilder = new UrlBuilder().s("artists").take(1);
+			final GradualLoader loader = new GradualLoader(getActivity());
+			loader.setUrlBuilder(urlBuilder);
+			loader.setOnLoadCompleteListener(new OnLoadCompleteListener() {
+				
+				@Override
+				public void onComplete(JSONArray response) {
+					todayArtistAdapter.addAll(response);
+					addArtistView();
+				}
+			});
+			loader.load(); 
+		} else {
+			addArtistView();
+		}
+	}
+	
+	private void addArtistView() {
+		if (todayArtistAdapter != null && todayArtistAdapter.getCount() > 0) {
+			View child = todayArtistAdapter.getView(0, null, vgTodayCollaboArtistContainer);
+			vgTodayCollaboArtistContainer.addView(child);
+		}
+	}
+	
+	private void loadPopularSong() {
+		if (popularSongAdapter == null) {
+			final SimpleSongAdapter adapter = new SimpleSongAdapter();
+			popularSongAdapter = new PagerWrappingAdapter(adapter);
+			final UrlBuilder urlBuilder = new UrlBuilder().s("songs").s("best");
+			final GradualLoader loader = new GradualLoader(getActivity());
+			loader.setUrlBuilder(urlBuilder);
+			loader.setOnLoadCompleteListener(new OnLoadCompleteListener() {
+				
+				@Override
+				public void onComplete(JSONArray response) {
+					adapter.addAll(response);
+					vpPopularSong.setAdapter(popularSongAdapter);
+				}
+			});
+			loader.load();
+		} else {
+			vpPopularSong.setAdapter(popularSongAdapter);
+		}
+	}
+	
+	private void loadPopularMusic() {
+		if (popularMusicAdapter == null) {
+			final MusicAdapter adapter = new MusicAdapter(LayoutType.POPULAR_HOME);
+			popularMusicAdapter = new PagerWrappingAdapter(adapter);
+			final UrlBuilder urlBuilder = new UrlBuilder().s("musics").p("order", "sing_num_this_week").p("req", "songs").take(5);
+			final GradualLoader loader = new GradualLoader(getActivity());
+			loader.setUrlBuilder(urlBuilder);
+			loader.setOnLoadCompleteListener(new OnLoadCompleteListener() {
+				
+				@Override
+				public void onComplete(JSONArray response) {
+					adapter.addAll(response);
+					vpPopularMusic.setAdapter(popularMusicAdapter);
+				}
+			});
+			loader.load();
+		} else {
+			vpPopularMusic.setAdapter(popularMusicAdapter);
+		}
+	}
+	
+	private void loadRecentMusic() {
+		if (recentMusicAdapter == null) {
+			final MusicAdapter adapter = new MusicAdapter(LayoutType.RECENT); 
+			hlvRecentMusic.setAdapter(adapter);
+			final UrlBuilder urlBuilder = new UrlBuilder().s("musics").take(10);
+			GradualLoader loader = new GradualLoader(getActivity());
+			loader.setUrlBuilder(urlBuilder);
+			loader.setOnLoadCompleteListener(new OnLoadCompleteListener() {
+				
+				@Override
+				public void onComplete(JSONArray response) {
+					adapter.addAll(response);
+					hlvRecentMusic.setAdapter(recentMusicAdapter);
+					hlvRecentMusic.setOnItemClickListener(musicItemClickListener);
+				}
+			});
+			loader.load();
+		} else {
+			hlvRecentMusic.setAdapter(recentMusicAdapter);
+			hlvRecentMusic.setOnItemClickListener(musicItemClickListener);
+		}
+	}
+	
+	private OnItemClickListener musicItemClickListener = new OnItemClickListener() {
+
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			final Music music = (Music) parent.getItemAtPosition(position);
+			Gson gson = Utility.getGsonInstance();
+			Bundle bundle = new Bundle();
+			bundle.putString(SelectRecordModeDialog.EXTRA_MUSIC, gson.toJson(music));
+			BaseDialog dialog = new SelectRecordModeDialog();
+			dialog.setArguments(bundle);
+			dialog.show(getChildFragmentManager(), "");
+		}
+	};
+
+	@Override
+	protected void onDataChanged() {}
+	
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		if (Authenticator.isLoggedIn()) {
+			inflater.inflate(R.menu.home, menu);
+			
+			View notificationView = getActionViewCompat(menu, R.id.action_notification);
+			if (notificationView != null) {
+				notificationView.setOnClickListener(notificationClickListener);
+				tvNotificationCount = (TextView) notificationView.findViewById(R.id.tv_action_notification_count);
+				updateNotificationCount();
+				registerNotificationCountListener();
+			}
 		}
 	}
 	
@@ -79,6 +290,12 @@ public class HomeFragment extends BaseFragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.action_sing:
+			Bundle bundle = new Bundle();
+			bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_sing_title));
+			Intent intent = new Intent(getActivity(), RootActivity.class);
+			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, MusicHomeFragment.class.getName());
+			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
+			startFragment(intent);
 			return true;
 		
 		default:
@@ -90,17 +307,8 @@ public class HomeFragment extends BaseFragment {
 		
 		@Override
 		public void onClick(View v) {
-			Bundle params = new Bundle();
-			params.putString("order", "updated_at");
-			String userId = String.valueOf(Authenticator.getUser().getId());
-			Bundle bundle = new Bundle();
-			bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, "새로운 소식");
-			bundle.putString(ListFragment.EXTRA_URL_SEGMENT, "users/" + userId + "/notifications");
-			bundle.putBundle(ListFragment.EXTRA_QUERY_PARAMS, params);
-			bundle.putString(ListFragment.EXTRA_ADAPTER_NAME, NotificationAdapter.class.getName());
 			Intent intent = new Intent(getActivity(), UpActivity.class);
-			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, ListFragment.class.getName());
-			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
+			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, NotificationFragment.class.getName());
 			startFragment(intent);
 		}
 	};
@@ -149,5 +357,13 @@ public class HomeFragment extends BaseFragment {
 			}
 		}
 	};
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		getSupportActionBar().setDisplayShowTitleEnabled(false);
+		getSupportActionBar().setDisplayUseLogoEnabled(true);
+		getSupportActionBar().setLogo(R.drawable.logo_actionbar);
+	}
 
 }

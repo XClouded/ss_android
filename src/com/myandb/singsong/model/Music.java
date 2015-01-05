@@ -1,5 +1,9 @@
 package com.myandb.singsong.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Spannable;
@@ -7,11 +11,12 @@ import android.text.SpannableString;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-import com.google.gson.Gson;
 import com.myandb.singsong.activity.BaseActivity;
+import com.myandb.singsong.activity.UpActivity;
 import com.myandb.singsong.dialog.BaseDialog;
 import com.myandb.singsong.dialog.SelectRecordModeDialog;
 import com.myandb.singsong.event.ActivateOnlyClickListener;
+import com.myandb.singsong.fragment.KaraokeFragment;
 import com.myandb.singsong.util.Utility;
 
 public class Music extends Model {
@@ -24,6 +29,7 @@ public class Music extends Model {
 	private String title;
 	private String part_male;
 	private String part_female;
+	private List<Song> songs;
 	private int is_dynamic;
 	private int sing_num;
 	
@@ -71,6 +77,10 @@ public class Music extends Model {
 		return sing_num;
 	}
 	
+	public List<Song> getSongs() {
+		return songs != null ? songs : new ArrayList<Song>();
+	}
+	
 	public boolean isLyricDynamic() {
 		return is_dynamic == 1;
 	}
@@ -81,9 +91,8 @@ public class Music extends Model {
 			@Override
 			public void onClick(View v) {
 				BaseActivity activity = (BaseActivity) v.getContext();
-				Gson gson = Utility.getGsonInstance();
 				Bundle bundle = new Bundle();
-				bundle.putString(SelectRecordModeDialog.EXTRA_MUSIC, gson.toJson(Music.this));
+				bundle.putString(SelectRecordModeDialog.EXTRA_MUSIC, Music.this.toString());
 				BaseDialog dialog = new SelectRecordModeDialog();
 				dialog.setArguments(bundle);
 				dialog.show(activity.getSupportFragmentManager(), "");
@@ -96,7 +105,14 @@ public class Music extends Model {
 			
 			@Override
 			public void onActivated(View v, User user) {
-				
+				Bundle bundle = new Bundle();
+				bundle.putString(KaraokeFragment.EXTRA_MUSIC, Music.this.toString());
+				Intent intent = new Intent(v.getContext(), UpActivity.class);
+				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, KaraokeFragment.class.getName());
+				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
+				intent.putExtra(UpActivity.EXTRA_FULL_SCREEN, true);
+				intent.putExtra(UpActivity.EXTRA_SHOULD_STOP, true);
+				v.getContext().startActivity(intent);
 			}
 		};
 	}

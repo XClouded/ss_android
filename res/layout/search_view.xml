@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="@dimen/margin_small"
+    android:paddingLeft="@dimen/margin"
     android:paddingRight="@dimen/margin_small"
     android:background="@drawable/container_search_view" >
     
@@ -12,6 +12,8 @@
         android:src="@drawable/ic_magnifier"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
         style="@style/ImageViewBase" />
     
     <ImageView

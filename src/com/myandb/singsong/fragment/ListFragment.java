@@ -28,6 +28,8 @@ public class ListFragment extends BaseFragment {
 	public static final String EXTRA_URL_SEGMENT = "url_segment";
 	public static final String EXTRA_QUERY_PARAMS = "query_params";
 	public static final String EXTRA_ADAPTER_NAME = "adapter_name";
+	public static final String EXTRA_HORIZONTAL_PADDING = "is_padding";
+	public static final String EXTRA_VERTICAL_PADDING = "is_divider";
 	
 	private ListView listView;
 	private ViewGroup fixedHeaderContainer;
@@ -35,15 +37,18 @@ public class ListFragment extends BaseFragment {
 	private View listHeaderView;
 	private View fixedHeaderView;
 	private View progressContainer;
-	private View emptyView;
 	private Animation fadeIn;
 	private Animation fadeOut;
 	private GradualLoader loader;
 	private FadingActionBarHelper fadingActionBarHelper;
-	private UrlBuilder internalUrlBuilder;
+	private UrlBuilder urlBuilder;
 	private ListAdapter adapter;
+	private OnEmptyListener emptyListener;
 	private int listViewIndex;
 	private int listViewTop;
+	private boolean enableFadingActionBar = false;
+	protected boolean horizontalPadding;
+	protected boolean verticalPadding;
 
 	@Override
 	protected final int getResourceId() {
@@ -55,20 +60,19 @@ public class ListFragment extends BaseFragment {
 		super.onArgumentsReceived(bundle);
 		
 		if (isFragmentCreated()) {
-			internalUrlBuilder = getUrlBuilderOnArgumentPassed(bundle);
-			adapter = getListAdapterOnArgumentPassed(bundle);
-			if (internalUrlBuilder == null || adapter == null) {
-				internalUrlBuilder = null;
-				adapter = null;
-			}
+			urlBuilder = extractUrlBuilderFromBundle(bundle);
+			adapter = extractAdapterFromBundle(bundle);
 		}
+		
+		horizontalPadding = bundle.getBoolean(EXTRA_HORIZONTAL_PADDING, false);
+		verticalPadding = bundle.getBoolean(EXTRA_VERTICAL_PADDING, false);
 	}
 	
 	private boolean isFragmentCreated() {
-		return internalUrlBuilder == null && adapter == null;
+		return urlBuilder == null && adapter == null;
 	}
 	
-	private UrlBuilder getUrlBuilderOnArgumentPassed(Bundle bundle) {
+	private UrlBuilder extractUrlBuilderFromBundle(Bundle bundle) {
 		final String segment = bundle.getString(EXTRA_URL_SEGMENT);
 		final Bundle params = bundle.getBundle(EXTRA_QUERY_PARAMS);
 		
@@ -83,15 +87,15 @@ public class ListFragment extends BaseFragment {
 		return null;
 	}
 	
-	private ListAdapter getListAdapterOnArgumentPassed(Bundle bundle) {
+	private ListAdapter extractAdapterFromBundle(Bundle bundle) {
 		final String adapterName = bundle.getString(EXTRA_ADAPTER_NAME);
 		if (adapterName != null) {
-			return instantiateAdapter(adapterName);
+			return instantiateAdapterFromName(adapterName);
 		}
 		return null;
 	}
 	
-	private ListAdapter instantiateAdapter(String adapterName) {
+	private ListAdapter instantiateAdapterFromName(String adapterName) {
 		if (adapterName != null) {
 			try {
 				Class<?> classForAdapter = Class.forName(adapterName);
@@ -114,23 +118,23 @@ public class ListFragment extends BaseFragment {
 		progressContainer = view.findViewById(R.id.fl_progress_container);
 		listView = (ListView) view.findViewById(R.id.listview);
 		
-		if (getEmptyViewResId() != App.INVALID_RESOURCE_ID) {
-			emptyView = inflater.inflate(getEmptyViewResId(), listView, false);
-			listView.setEmptyView(emptyView);
-		}
-		
 		if (getListHeaderViewResId() != App.INVALID_RESOURCE_ID) {
 			listHeaderView = inflater.inflate(getListHeaderViewResId(), listView, false);
 			listView.addHeaderView(listHeaderView);
+			enableFadingActionBar = true;
 		}
 		
 		if (getFixedHeaderViewResId() != App.INVALID_RESOURCE_ID) {
 			fixedHeaderView = inflater.inflate(getFixedHeaderViewResId(), fixedHeaderContainer, false);
 			fixedHeaderContainer.setVisibility(View.VISIBLE);
 			fixedHeaderContainer.addView(fixedHeaderView);
+			enableFadingActionBar = false;
 		} else {
 			fixedHeaderContainer.setVisibility(View.GONE);
 		}
+		
+		View footer = inflater.inflate(R.layout.footer, listView, false);
+		listView.addFooterView(footer);
 	}
 
 	@Override
@@ -138,32 +142,63 @@ public class ListFragment extends BaseFragment {
 		fadeIn = AnimationUtils.loadAnimation(activity, android.R.anim.fade_in);
 		fadeOut = AnimationUtils.loadAnimation(activity, android.R.anim.fade_out);
 		
+		if (adapter == null) {
+			adapter = instantiateAdapter(activity);
+		}
+		
+		if (urlBuilder == null) {
+			urlBuilder = instantiateUrlBuilder(activity);
+		}
+		
 		if (loader == null) {
 			loader = new GradualLoader(activity);
-			setUrlBuilder(internalUrlBuilder);
+			setUrlBuilder(urlBuilder);
 		}
+	}
+	
+	protected ListAdapter instantiateAdapter(Activity activity) {
+		return null;
+	}
+	
+	protected UrlBuilder instantiateUrlBuilder(Activity activity) {
+		return null;
 	}
 	
 	@Override
 	protected void setupViews(Bundle savedInstanceState) {
-		listView.setOnScrollListener(new OnScrollListener() {
-			
-			@Override
-			public void onScrollStateChanged(AbsListView view, int scrollState) {}
-			
-			@Override
-			public void onScroll(AbsListView view, int firstVisibleItem,
-					int visibleItemCount, int totalItemCount) {
-				if (loader != null) {
-					loader.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
-				}
-				
-				if (fadingActionBarHelper != null) {
-					fadingActionBarHelper.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
-				}
-			}
-		});
+		listView.setAdapter(adapter);
+		listView.setOnScrollListener(onScrollListener);
+		
+		if (horizontalPadding) {
+			int padding = getResources().getDimensionPixelSize(R.dimen.margin);
+			listView.setPadding(padding, padding, padding, padding);
+			listView.setClipToPadding(false);
+			listView.setVerticalScrollBarEnabled(false);
+		}
+		
+		if (verticalPadding) {
+			int height = getResources().getDimensionPixelSize(R.dimen.margin);
+			listView.setDivider(null);
+			listView.setDividerHeight(height);
+		}
 	}
+	
+	private OnScrollListener onScrollListener = new OnScrollListener() {
+		
+		@Override
+		public void onScrollStateChanged(AbsListView view, int scrollState) {}
+		
+		@Override
+		public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+			if (loader != null) {
+				loader.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
+			}
+			
+			if (fadingActionBarHelper != null) {
+				fadingActionBarHelper.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
+			}
+		}
+	}; 
 
 	@Override
 	protected void onDataChanged() {}
@@ -172,15 +207,13 @@ public class ListFragment extends BaseFragment {
 	public void onResume() {
 		super.onResume();
 		
-		setListViewAdapter();
-		
-		if (isDataAlive() || loader.isNothingToLoad()) {
-			scrollToPreviousPosition();
-		} else if (isDataLoadable()) {
-			loader.load();
+		if (isFragmentStateRestore()) {
+			restoreListViewState();
+		} else {
+			load();
 		}
 		
-		if (listHeaderView != null && fixedHeaderView == null) {
+		if (enableFadingActionBar && listHeaderView != null) {
 			setActionBarOverlay(true);
 			listHeaderView.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
 			fadingActionBarHelper = new FadingActionBarHelper();
@@ -189,22 +222,23 @@ public class ListFragment extends BaseFragment {
 			.initialize(getActivity());
 		}
 	}
-
-	private void setListViewAdapter() {
-		if (adapter != null) {
-			listView.setAdapter(adapter);
+	
+	private boolean isFragmentStateRestore() {
+		return adapter.getCount() > 0 || (adapter.getCount() == 0 && loader.isNothingToLoad());
+	}
+	
+	private void restoreListViewState() {
+		dispatchEmptyListener();
+		restoreListViewPosition();
+	}
+	
+	private void dispatchEmptyListener() {
+		if (adapter.getCount() == 0 && emptyListener != null) {
+			emptyListener.onEmpty();
 		}
 	}
 	
-	private boolean isDataAlive() {
-		return adapter != null && adapter.getCount() > 0;
-	}
-	
-	private boolean isDataLoadable() {
-		return adapter != null && loader.isLoadable();
-	}
-	
-	private void scrollToPreviousPosition() {
+	private void restoreListViewPosition() {
 		if (listViewIndex > 0) {
 			listView.setSelectionFromTop(listViewIndex, listViewTop);
 		}
@@ -222,12 +256,6 @@ public class ListFragment extends BaseFragment {
 		View child = listView.getChildAt(0);
 		listViewTop = (child == null) ? 0 : child.getTop();
 	}
-	
-	public void setAdapter(ListAdapter adapter) {
-		if (adapter != null) {
-			this.adapter = adapter;
-		}
-	}
 
 	public void setFixedHeaderShown(boolean shown) {
 		if (fixedHeaderContainer.isShown() == shown) {
@@ -243,6 +271,10 @@ public class ListFragment extends BaseFragment {
 	
 	public ListAdapter getAdapter() {
 		return adapter;
+	}
+	
+	public ListView getListView() {
+		return listView;
 	}
 	
 	public void setUrlBuilder(UrlBuilder urlBuilder) {
@@ -272,8 +304,14 @@ public class ListFragment extends BaseFragment {
 				setListShown(true);
 				((HolderAdapter<?, ?>) adapter).addAll(response);
 			}
+			
+			dispatchEmptyListener();
 		}
 	};
+	
+	public void setOnEmptyListener(OnEmptyListener listener) {
+		this.emptyListener = listener;
+	}
 	
 	public void load() {
 		loader.load();
@@ -303,14 +341,14 @@ public class ListFragment extends BaseFragment {
 		}
 	}
 	
+	public void enableFadingActionBar(boolean enable) {
+		enableFadingActionBar = enable;
+	}
+	
 	public void setFadingActionBarTitle(CharSequence title) {
 		if (fadingActionBarHelper != null) {
 			fadingActionBarHelper.setTitle(title);
 		}
-	}
-	
-	public View getEmptyView() {
-		return emptyView;
 	}
 	
 	public View getListHeaderView() {
@@ -321,16 +359,18 @@ public class ListFragment extends BaseFragment {
 		return fixedHeaderView;
 	}
 	
-	protected int getEmptyViewResId() {
-		return App.INVALID_RESOURCE_ID;
-	}
-	
 	protected int getListHeaderViewResId() {
 		return App.INVALID_RESOURCE_ID;
 	}
 	
 	protected int getFixedHeaderViewResId() {
 		return App.INVALID_RESOURCE_ID;
+	}
+	
+	public interface OnEmptyListener {
+		
+		public void onEmpty();
+		
 	}
 
 }

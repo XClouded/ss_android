@@ -17,7 +17,7 @@
         android:id="@+id/tv_created_time"
         android:layout_alignBottom="@id/iv_image"
         android:layout_toRightOf="@id/iv_image"
-        style="@style/TextViewHint" />
+        style="@style/TextViewLessImportant" />
     
 </RelativeLayout>
 

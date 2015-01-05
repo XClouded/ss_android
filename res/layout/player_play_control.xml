@@ -16,7 +16,7 @@
             android:layout_centerVertical="true"
             android:text="@string/time_default"
             android:textColor="@color/white"
-            style="@style/TextViewHint" />
+            style="@style/TextViewLessImportant" />
         
         <TextView
             android:id="@+id/tv_play_end_time"
@@ -24,7 +24,7 @@
             android:layout_centerVertical="true"
             android:text="@string/time_default"
             android:textColor="@color/white"
-            style="@style/TextViewHint" />
+            style="@style/TextViewLessImportant" />
         
         <SeekBar
             android:id="@+id/sb_play"

@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.android.volley.Request.Method;
@@ -57,18 +58,21 @@ public class UserHomeFragment extends ListFragment {
 	
 	private ImageView ivUserPhoto;
 	private ImageView ivUserPhotoBackground;
+	private ImageView ivEditProfile;
 	private TextView tvNickname;
 	private TextView tvUserStatus;
 	private TextView tvUserSongs;
 	private TextView tvUserFollowings;
 	private TextView tvUserFollowers;
 	private View tvResendEmail;
+	private View vEmptyView;
+	private View vSing;
 	private Button btnFollow;
-	private Button btnEditProfile;
-
+	
 	@Override
-	protected int getListHeaderViewResId() {
-		return R.layout.fragment_user_home_header;
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
 	}
 
 	@Override
@@ -81,12 +85,18 @@ public class UserHomeFragment extends ListFragment {
 	}
 
 	@Override
+	protected int getListHeaderViewResId() {
+		return R.layout.fragment_user_home_header;
+	}
+
+	@Override
 	protected void onViewInflated(View view, LayoutInflater inflater) {
 		super.onViewInflated(view, inflater);
 		
 		view = getListHeaderView();
 		ivUserPhoto = (ImageView) view.findViewById(R.id.iv_user_photo);
 		ivUserPhotoBackground = (ImageView) view.findViewById(R.id.iv_user_photo_background);
+		ivEditProfile = (ImageView) view.findViewById(R.id.iv_edit_profile);
 		tvNickname = (TextView) view.findViewById(R.id.tv_user_nickname);
 		tvUserStatus = (TextView) view.findViewById(R.id.tv_user_status);
 		tvUserSongs = (TextView) view.findViewById(R.id.tv_user_songs);
@@ -94,19 +104,18 @@ public class UserHomeFragment extends ListFragment {
 		tvUserFollowers = (TextView) view.findViewById(R.id.tv_user_followers);
 		tvResendEmail = (TextView) view.findViewById(R.id.tv_resend_email);
 		btnFollow = (Button) view.findViewById(R.id.btn_follow);
-		btnEditProfile = (Button) view.findViewById(R.id.btn_edit_profile);
+		vEmptyView = view.findViewById(R.id.layout_empty_view);
+		vSing = view.findViewById(R.id.ll_sing);
 	}
 
 	@Override
-	protected void initialize(Activity activity) {
-		super.initialize(activity);
-		setHasOptionsMenu(true);
-		if (getAdapter() == null) {
-			UrlBuilder urlBuilder = new UrlBuilder();
-			urlBuilder.s("users").s(thisUser.getId()).s("songs").s("all").p("order", "created_at");
-			setUrlBuilder(urlBuilder);
-			setAdapter(new MySongAdapter(activity, isCurrentUser(), false));
-		}
+	protected ListAdapter instantiateAdapter(Activity activity) {
+		return new MySongAdapter(isCurrentUser(), false);
+	}
+
+	@Override
+	protected UrlBuilder instantiateUrlBuilder(Activity activity) {
+		return new UrlBuilder().s("users").s(thisUser.getId()).s("songs").s("all");
 	}
 
 	@Override
@@ -121,19 +130,49 @@ public class UserHomeFragment extends ListFragment {
 		
 		loadProfileData();
 		
-		if (!thisUser.isActivated()) {
-			checkUserActivation();
+		if (isCurrentUser()) {
+			if (!currentUser.isActivated()) {
+				checkUserActivation();
+			}
 		}
+		
+		setOnEmptyListener(emptyListener);
 	}
+	
+	private OnEmptyListener emptyListener = new OnEmptyListener() {
+		
+		@Override
+		public void onEmpty() {
+			if (isCurrentUser()) {
+				vEmptyView.setVisibility(View.VISIBLE);
+				vSing.setOnClickListener(singClickListener);
+			} else {
+				vEmptyView.setVisibility(View.GONE);
+			}
+		}
+	};
+	
+	private OnClickListener singClickListener = new ActivateOnlyClickListener() {
+		
+		@Override
+		public void onActivated(View v, User user) {
+			Bundle bundle = new Bundle();
+			bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_sing_title));
+			Intent intent = new Intent(getActivity(), RootActivity.class);
+			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, MusicHomeFragment.class.getName());
+			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
+			startFragment(intent);
+		}
+	};
 	
 	private void displayUserSpecificViews() {
 		tvNickname.setText(thisUser.getNickname());
 		
 		if (isCurrentUser()) {
-			btnEditProfile.setVisibility(View.VISIBLE);
+			ivEditProfile.setVisibility(View.VISIBLE);
 			btnFollow.setVisibility(View.GONE);
 		} else {
-			btnEditProfile.setVisibility(View.GONE);
+			ivEditProfile.setVisibility(View.GONE);
 			btnFollow.setVisibility(View.VISIBLE);
 		}
 	}
@@ -157,6 +196,7 @@ public class UserHomeFragment extends ListFragment {
 		String adapterName = "";
 		String title = getCroppedNickname(thisUser.getNickname());
 		title += "´ÔÀÇ ";
+		Bundle bundle = new Bundle();
 		Bundle params = new Bundle();
 		
 		switch (id) {
@@ -183,6 +223,8 @@ public class UserHomeFragment extends ListFragment {
 			segment += "songs/likings";
 			params.putString("order", "created_at");
 			adapterName = MyLikeSongAdapter.class.getName();
+			bundle.putBoolean(ListFragment.EXTRA_HORIZONTAL_PADDING, true);
+			bundle.putBoolean(ListFragment.EXTRA_VERTICAL_PADDING, true);
 			break;
 			
 		case R.id.action_user_comments:
@@ -203,7 +245,6 @@ public class UserHomeFragment extends ListFragment {
 			return;
 		}
 		
-		Bundle bundle = new Bundle();
 		bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, title);
 		bundle.putString(ListFragment.EXTRA_URL_SEGMENT, segment);
 		bundle.putString(ListFragment.EXTRA_ADAPTER_NAME, adapterName);
@@ -269,7 +310,10 @@ public class UserHomeFragment extends ListFragment {
 	};
 	
 	private boolean isCurrentUser() {
-		return thisUser.getId() == currentUser.getId();
+		if (currentUser != null) {
+			return thisUser.getId() == currentUser.getId();
+		}
+		return false;
 	}
 	
 	private void loadProfileData() {
@@ -287,7 +331,7 @@ public class UserHomeFragment extends ListFragment {
 		setupProfileRelatedViews(profile);
 		
 		if (isCurrentUser()) {
-			btnEditProfile.setOnClickListener(editProfileClickListener);
+			ivEditProfile.setOnClickListener(editProfileClickListener);
 		} else {
 			checkIsThisUserFriend();
 		}
@@ -363,7 +407,7 @@ public class UserHomeFragment extends ListFragment {
 			}
 			
 			btnFollow.setBackgroundResource(R.drawable.button_primary_selector);
-			btnFollow.setText("ÆÈ·ÎÀ×");
+			btnFollow.setText("\u2713ÆÈ·ÎÀ×");
 			btnFollow.setOnClickListener(updateFriendshipClickListener);
 		} else {
 			if (friendship != null) {

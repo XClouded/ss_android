@@ -3,7 +3,10 @@ package com.myandb.singsong.adapter;
 import java.util.List;
 
 import android.content.Context;
+import android.support.v7.widget.PopupMenu;
+import android.support.v7.widget.PopupMenu.OnMenuItemClickListener;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -11,11 +14,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.android.volley.Request.Method;
+import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Song;
 import com.myandb.singsong.model.User;
+import com.myandb.singsong.net.JustRequest;
 
 public class MySongAdapter extends HolderAdapter<Song, MySongAdapter.SongHolder> {
 	
@@ -24,8 +30,14 @@ public class MySongAdapter extends HolderAdapter<Song, MySongAdapter.SongHolder>
 
 	private final boolean isCurrentUser;
 	private final boolean isDeleted;
+	private Context context;
+	private Song selectedSong;
 	
-	public MySongAdapter(Context context, boolean isCurrentUser, boolean isDeleted) {
+	public MySongAdapter() {
+		this(true, true);
+	}
+	
+	public MySongAdapter(boolean isCurrentUser, boolean isDeleted) {
 		super(Song.class);
 		
 		this.isCurrentUser = isCurrentUser;
@@ -35,6 +47,7 @@ public class MySongAdapter extends HolderAdapter<Song, MySongAdapter.SongHolder>
 	@Override
 	public SongHolder onCreateViewHolder(LayoutInflater inflater, ViewGroup parent, int viewType) {
 		View view = inflater.inflate(R.layout.row_my_song, parent, false);
+		context = parent.getContext();
 		return new SongHolder(view);
 	}
 
@@ -129,14 +142,58 @@ public class MySongAdapter extends HolderAdapter<Song, MySongAdapter.SongHolder>
 				
 				@Override
 				public void onClick(View v) {
-					if (song != null) {
-						// popup menu
+					selectedSong = song;
+					PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
+					if (isDeleted) {
+						popupMenu.inflate(R.menu.restore_song);
+					} else {
+						popupMenu.inflate(R.menu.delete_song);
 					}
+					popupMenu.setOnMenuItemClickListener(menuItemClickListener);
+					popupMenu.show();
 				}
 			});
 		} else {
 			viewHolder.ivChangeStateSong.setVisibility(View.GONE);
 		}
+	}
+	
+	private OnMenuItemClickListener menuItemClickListener = new OnMenuItemClickListener() {
+
+		@Override
+		public boolean onMenuItemClick(MenuItem item) {
+			if (selectedSong == null) {
+				return false;
+			}
+			
+			switch (item.getItemId()) {
+			case R.id.action_delete_song:
+				deleteSong();
+				return true;
+				
+			case R.id.action_restore_song:
+				restoreSong();
+				return true;
+
+			default:
+				return false;
+			}
+		}
+		
+	};
+	
+	private void deleteSong() {
+		String segment = "songs/" + String.valueOf(selectedSong.getId());
+		JustRequest request = new JustRequest(Method.DELETE, segment, null);
+		((App) context.getApplicationContext()).addShortLivedRequest(context, request);
+		removeItem(selectedSong);
+	}
+	
+	private void restoreSong() {
+		String segment = "songs/" + String.valueOf(selectedSong.getId());
+		JustRequest request = new JustRequest(Method.PUT, segment, null);
+		((App) context.getApplicationContext()).addShortLivedRequest(context, request);
+		removeItem(selectedSong);
 	}
 	
 	private void setChildrenImage(List<Song> children, int index, ImageView imageView) {

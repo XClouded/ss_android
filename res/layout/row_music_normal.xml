@@ -4,11 +4,21 @@
     android:layout_height="wrap_content"
     android:background="@drawable/row_selector" >
     
+    <TextView
+        android:id="@+id/tv_music_num"
+        android:layout_width="25dp"
+        android:textColor="@color/primary"
+        android:textStyle="bold"
+        android:textSize="@dimen/text_subtitle"
+        android:layout_centerVertical="true"
+        style="@style/TextViewBase" />
+    
     <com.myandb.singsong.widget.RoundedImageView
         android:id="@+id/iv_album_photo"
         android:layout_width="@dimen/photo"
         android:layout_height="@dimen/photo"
         android:layout_marginRight="@dimen/margin_small"
+        android:layout_toRightOf="@id/tv_music_num"
         style="@style/ImageViewSquare" />
     
     <RelativeLayout
@@ -20,9 +30,11 @@
 	    
 	    <ImageView
 	        android:id="@+id/icon_mixed"
+	        android:layout_width="12dp"
+	        android:layout_height="12dp"
 	        android:layout_alignParentLeft="true"
 	        android:layout_centerVertical="true"
-	        android:src="@drawable/ic_collabo"
+	        android:src="@drawable/ic_collabo_grey"
 	        style="@style/IconImageView" />
         
         <TextView

@@ -9,7 +9,7 @@
         android:id="@+id/tv_progress_title"
         android:text="@string/loading"
         android:textColor="@color/white"
-        style="@style/TextViewTitle" />
+        style="@style/TextViewSubtitleAlone" />
 
     <ProgressBar
         android:id="@+id/pb_loading"
@@ -30,6 +30,7 @@
         android:background="@drawable/button_transparent_selector"
         android:paddingLeft="50dp"
         android:paddingRight="50dp"
+        android:visibility="gone"
         style="@style/ButtonBase" />
     
     <Button

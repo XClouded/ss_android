@@ -297,6 +297,7 @@ public class JoinDialog extends BaseDialog {
 	
 	private void onLoginComplete() {
 		dismissProgressDialog();
+		dismiss();
 		activity.restartActivity();
 	}
 	

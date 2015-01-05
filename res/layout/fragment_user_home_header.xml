@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical" >
     
     <TextView
@@ -106,7 +106,7 @@
 			<TextView
 			    android:id="@+id/tv_user_nickname"
 			    android:layout_width="match_parent"
-			    android:textSize="@dimen/text_biggest"
+			    android:textSize="@dimen/text_impact"
 			    android:layout_marginBottom="@dimen/margin_small"
 			    android:gravity="center"
 			    style="@style/TextViewOverflowableImportant" />
@@ -117,7 +117,7 @@
 			    android:gravity="center"
 			    android:text="상태글이 없습니다."
 			    android:textColor="@color/font_white"
-			    style="@style/TextViewHint" />
+			    style="@style/TextViewLessImportant" />
             
         </LinearLayout>
         
@@ -135,14 +135,21 @@
 	            android:text="+팔로우"
 	            style="@style/ButtonMini" />
 	        
-	        <Button
-	            android:id="@+id/btn_edit_profile"
-	            android:background="@drawable/button_transparent_selector"
-	            android:text="프로필 수정"
-	            style="@style/ButtonMini" />
+	        <ImageView
+	            android:id="@+id/iv_edit_profile"
+	            android:layout_width="30dp"
+	            android:layout_height="30dp"
+	            android:layout_marginRight="@dimen/margin"
+	            android:src="@drawable/ic_wheel"
+	            style="@style/ImageViewBase" />
             
         </FrameLayout>
         
     </RelativeLayout>
+    
+    <include
+        android:id="@+id/layout_empty_view"
+        android:visibility="gone"
+        layout="@layout/fragment_user_home_empty" />
 
 </LinearLayout>

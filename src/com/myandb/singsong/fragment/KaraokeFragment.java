@@ -21,6 +21,7 @@ import com.myandb.singsong.event.OnCompleteWeakListener;
 import com.myandb.singsong.event.OnProgressListener;
 import com.myandb.singsong.event.OnProgressWeakListener;
 import com.myandb.singsong.event.WeakRunnable;
+import com.myandb.singsong.image.BlurAsyncTask;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Song;
@@ -35,10 +36,14 @@ import com.myandb.singsong.util.StringFormatter;
 import com.myandb.singsong.util.Utility;
 import com.myandb.singsong.widget.CountViewFactory;
 import com.myandb.singsong.widget.SlideAnimation;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -49,7 +54,6 @@ import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Animation.AnimationListener;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
@@ -100,16 +104,17 @@ public class KaraokeFragment extends BaseFragment {
 	private TextView tvStartTime;
 	private TextView tvEndTime;
 	private TextView tvScrollIndicator;
+	private TextView tvRecordControl;
 	private ImageView ivThisUserPhoto;
 	private ImageView ivParentUserPhoto;
 	private ImageView ivThisUserBackground;
 	private ImageView ivParentUserBackground;
+	private ImageView ivBackground;
 	private View vLyricWrapper;
 	private View vParentUserWrapper;
 	private View vInfoWrapper;
 	private View vUserWrapper;
 	private ProgressBar pbPlayProgress;
-	private Button btnControl;
 	private ScrollView svLyricScroller;
 	private TextSwitcher tsLyricStarter;
 
@@ -151,13 +156,14 @@ public class KaraokeFragment extends BaseFragment {
 		ivParentUserPhoto = (ImageView) view.findViewById(R.id.iv_parent_user_photo);
 		ivThisUserBackground = (ImageView) view.findViewById(R.id.iv_this_user_bg);
 		ivParentUserBackground = (ImageView) view.findViewById(R.id.iv_parent_user_bg);
+		ivBackground = (ImageView) view.findViewById(R.id.iv_background);
 		
 		vLyricWrapper = view.findViewById(R.id.ll_lyric_wrapper);
 		vParentUserWrapper = view.findViewById(R.id.ll_parent_user_wrapper);
 		vInfoWrapper = view.findViewById(R.id.rl_info_wrapper);
 		vUserWrapper = view.findViewById(R.id.ll_user_wrapper);
 		
-		btnControl = (Button) view.findViewById(R.id.btn_record_control);
+		tvRecordControl = (TextView) view.findViewById(R.id.tv_record_control);
 		pbPlayProgress = (ProgressBar) view.findViewById(R.id.pb_playbar);
 		svLyricScroller = (ScrollView) view.findViewById(R.id.sv_lyric_scroller);
 		tsLyricStarter = (TextSwitcher) view.findViewById(R.id.ts_lyric_starter);
@@ -187,11 +193,13 @@ public class KaraokeFragment extends BaseFragment {
 		
 		initializeDialogs();
 		
-//		downloadDatas();
+		downloadDatas();
 
 		blink = AnimationUtils.loadAnimation(activity, R.anim.blink);
 		
 		handler = new Handler();
+		
+		currentUser = Authenticator.getUser();
 		
 		running = true;
 	}
@@ -286,7 +294,6 @@ public class KaraokeFragment extends BaseFragment {
 	
 	private void downloadDatas() {
 		loadingDialog.show(getChildFragmentManager(), "");
-		setupLoadingDialogForDownload();
 		
 		DownloadManager lrcDownloader = new DownloadManager();
 		lrcDownloader.start(
@@ -375,7 +382,7 @@ public class KaraokeFragment extends BaseFragment {
 	}
 	
 	public void updateLoadingDialog(Integer progress) {
-		if (loadingDialog != null && loadingDialog.getDialog().isShowing()) {
+		if (loadingDialog != null) {
 			loadingDialog.updateProgressBar(progress);
 		}
 	}
@@ -387,6 +394,10 @@ public class KaraokeFragment extends BaseFragment {
 			
 			@Override
 			public void done(Exception e) {
+				if (loadingDialog == null) {
+					return;
+				}
+				
 				if (e == null) {
 					loadingDialog.enableControlButton(true);
 					loadingDialog.setControlButtonText("시작하기!");
@@ -401,12 +412,13 @@ public class KaraokeFragment extends BaseFragment {
 			
 			@Override
 			public void done(final Integer progress) {
-				if (loadingDialog.getDialog().isShowing()) {
-					loadingDialog.updateProgressBar(progress);
-					
-					if (progress >= 30) {
-						loadingDialog.enableControlButton(true);
-					}
+				if (loadingDialog == null) {
+					return;
+				}
+				
+				loadingDialog.updateProgressBar(progress);
+				if (progress >= 30) {
+					loadingDialog.enableControlButton(true);
 				}
 				
 				tvDecodeProgress.setText(progress.toString());
@@ -418,37 +430,11 @@ public class KaraokeFragment extends BaseFragment {
 		decoder.start(musicOggFile, musicPcmFile);
 	}
 	
-	private void setupLoadingDialogForDownload() {
-		loadingDialog.setTitlePrefix("노래 로딩 중입니다...");
-		loadingDialog.setControlButtonShown(false);
-		loadingDialog.setOnCancelButtonClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				if (musicDownloader != null) {
-					musicDownloader.stop();
-				}
-				finish(getActivity(), null);
-			}
-			
-		});
-	}
-	
 	private void setupLoadingDialogForDecode() {
 		loadingDialog.setTitlePrefix("노래 압축을 풀고 있습니다...");
 		loadingDialog.setControlButtonShown(true);
 		loadingDialog.enableControlButton(false);
 		loadingDialog.setControlButtonText("기다리지 않고 시작하기");
-		loadingDialog.setOnCancelButtonClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				if (decoder != null) {
-					decoder.stop();
-				}
-				finish(getActivity(), null);
-			}
-		});
 		loadingDialog.setOnControlButtonClickListener(new OnClickListener() {
 			
 			@Override
@@ -470,13 +456,15 @@ public class KaraokeFragment extends BaseFragment {
 			if (receiver.isPlugged()) {
 				startRecordingWithHeadset();
 			} else {
-				headsetDialog.show(getChildFragmentManager(), ""); 
+				getChildFragmentManager().beginTransaction()
+				.add(headsetDialog, "")
+				.commitAllowingStateLoss();
 			}
 		}
 	}
 
 	public void onHeadsetPlugged() {
-		if (headsetDialog != null && headsetDialog.getDialog().isShowing()) {
+		if (headsetDialog.getDialog() != null) {
 			headsetDialog.dismiss();
 			prepareRecording();
 		}
@@ -514,6 +502,8 @@ public class KaraokeFragment extends BaseFragment {
 		tsLyricStarter.setOutAnimation(fadeOut);
 		tsLyricStarter.setFactory(new CountViewFactory(getActivity()));
 		
+		displayBackgroundImage(music);
+		
 		displayProfile(currentUser, tvThisUserNickname, ivThisUserPhoto);
 		if (isSolo()) {
 			vParentUserWrapper.setVisibility(View.GONE);
@@ -525,9 +515,39 @@ public class KaraokeFragment extends BaseFragment {
 		
 		tvMusicTitle.setText(music.getTitle());
 		tvSingerName.setText(music.getSingerName());
+		tvMusicTitle.setSelected(true);
+		tvSingerName.setSelected(true);
 		
-		btnControl.setOnClickListener(controlClickListener);
+		tvRecordControl.setOnClickListener(controlClickListener);
 		vLyricWrapper.setOnClickListener(lyricClickListener);
+	}
+
+	private void displayBackgroundImage(Music music) {
+		ImageLoader.getInstance().displayImage(music.getAlbumPhotoUrl(), ivBackground, imageLoadingListener);
+	}
+	
+	private ImageLoadingListener imageLoadingListener = new ImageLoadingListener() {
+
+		@Override
+		public void onLoadingCancelled(String arg0, View arg1) {}
+
+		@Override
+		public void onLoadingComplete(String url, View imageView, Bitmap bitmap) {
+			setBackgroundBlurImage(bitmap, (ImageView) imageView);
+		}
+
+		@Override
+		public void onLoadingFailed(String arg0, View arg1, FailReason arg2) {}
+
+		@Override
+		public void onLoadingStarted(String arg0, View imageView) {}
+		
+	};
+	
+	private void setBackgroundBlurImage(Bitmap bitmap, ImageView imageView) {
+		BlurAsyncTask blurTask = new BlurAsyncTask();
+		blurTask.setImageView(imageView);
+		blurTask.execute(bitmap);
 	}
 	
 	private void displayProfile(User user, TextView tvNickname, ImageView ivUserPhoto) {
@@ -612,11 +632,7 @@ public class KaraokeFragment extends BaseFragment {
 	}
 
 	@Override
-	protected void onDataChanged() {
-		receiver = new HeadsetReceiver(this); 
-		onLyricDownloadSuccess();
-		prepareRecording();
-	}
+	protected void onDataChanged() {}
 	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -625,28 +641,19 @@ public class KaraokeFragment extends BaseFragment {
 		switch (requestCode) {
 		case REQUEST_CODE_SETTING:
 			if (resultCode == Activity.RESULT_FIRST_USER) {
-				int musicOffset = data.getIntExtra(SongUploadService.EXTRA_MUSIC_OFFSET, 0);
-				int recordOffset = data.getIntExtra(SongUploadService.EXTRA_RECORD_OFFSET, 0);
-				int imageId = data.getIntExtra(SongUploadService.EXTRA_IMAGE_ID, 0);
-				String message = data.getStringExtra(SongUploadService.EXTRA_SONG_MESSAGE);
-				
-				Intent intent = new Intent(getActivity(), SongUploadService.class);
-				intent.putExtra(SongUploadService.EXTRA_HEADSET_PLUGGED, recorder.isHeadsetPlugged());
-				intent.putExtra(SongUploadService.EXTRA_RECORD_PCM_FILE_PATH, recordPcmFile.getAbsolutePath());
-				intent.putExtra(SongUploadService.EXTRA_RECORD_OFFSET, recordOffset);
-				intent.putExtra(SongUploadService.EXTRA_MUSIC_PCM_FILE_PATH, musicPcmFile.getAbsolutePath());
-				intent.putExtra(SongUploadService.EXTRA_MUSIC_OFFSET, musicOffset);
-				intent.putExtra(SongUploadService.EXTRA_CREATOR_ID, currentUser.getId());
-				intent.putExtra(SongUploadService.EXTRA_MUSIC_ID, music.getId());
-				intent.putExtra(SongUploadService.EXTRA_LYRIC_PART, lyricPart);
-				intent.putExtra(SongUploadService.EXTRA_IMAGE_ID, imageId);
-				intent.putExtra(SongUploadService.EXTRA_SONG_MESSAGE, message);
+				data.setClass(getActivity(), SongUploadService.class);
+				data.putExtra(SongUploadService.EXTRA_HEADSET_PLUGGED, recorder.isHeadsetPlugged());
+				data.putExtra(SongUploadService.EXTRA_RECORD_PCM_FILE_PATH, recordPcmFile.getAbsolutePath());
+				data.putExtra(SongUploadService.EXTRA_MUSIC_PCM_FILE_PATH, musicPcmFile.getAbsolutePath());
+				data.putExtra(SongUploadService.EXTRA_CREATOR_ID, currentUser.getId());
+				data.putExtra(SongUploadService.EXTRA_MUSIC_ID, music.getId());
+				data.putExtra(SongUploadService.EXTRA_LYRIC_PART, lyricPart);
 				
 				if (!isSolo()) {
-					intent.putExtra(SongUploadService.EXTRA_PARENT_SONG_ID, parentSong.getId());
+					data.putExtra(SongUploadService.EXTRA_PARENT_SONG_ID, parentSong.getId());
 				}
 				
-				getActivity().startService(intent);
+				getActivity().startService(data);
 				finish(getActivity(), null);
 			} else if (resultCode == Activity.RESULT_OK) {
 				prepareRecording();

@@ -64,7 +64,7 @@ public class LrcDisplayer {
 		this.textViewIndexes = new HashMap<Long, Integer>();
 		
 		this.context = context;
-		this.textSize = context.getResources().getDimension(R.dimen.text_bigger);
+		this.textSize = context.getResources().getDimension(R.dimen.text_title);
 		this.layoutParams = new LinearLayout.LayoutParams(
 				LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 		this.layoutParams.bottomMargin = (int) context.getResources().getDimension(R.dimen.margin);
@@ -107,6 +107,15 @@ public class LrcDisplayer {
 	
 	public Context getContext() {
 		return context;
+	}
+	
+	public float getSampleSkipSecond() {
+		long first = lrcTime.get(0);
+		if (isTypeCounter(types.get(first))) {
+			return first + 4;
+		} else {
+			return first;
+		}
 	}
 	
 	public void ready() {

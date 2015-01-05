@@ -1,6 +1,7 @@
 package com.myandb.singsong.dialog;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -24,6 +25,12 @@ public class SelectPartDialog extends BaseDialog {
 	@Override
 	protected int getResourceId() {
 		return R.layout.dialog_select_part;
+	}
+	
+	@Override
+	protected void styleDialog(Dialog dialog) {
+		super.styleDialog(dialog);
+		dialog.getWindow().getAttributes().dimAmount = 0.8f;
 	}
 
 	@Override

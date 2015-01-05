@@ -3,5 +3,7 @@
     android:id="@+id/btn_category"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/button_primary_selector"
+    android:background="@drawable/card_selector"
+    android:textColor="@color/font_grey"
+    android:textStyle="normal"
     style="@style/ButtonBase" />

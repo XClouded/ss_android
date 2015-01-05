@@ -14,7 +14,7 @@
         android:id="@+id/tv_song_created_time"
         android:layout_alignParentRight="true"
         android:layout_marginLeft="@dimen/margin_small"
-        style="@style/TextViewHint" />
+        style="@style/TextViewLessImportant" />
     
     <TextView
         android:id="@+id/tv_parent_user_nickname"
@@ -39,7 +39,7 @@
         android:layout_marginTop="@dimen/margin_small" >
         
         <ImageView
-            android:src="@drawable/ic_like_pink"
+            android:src="@drawable/ic_like_mini"
             style="@style/IconImageView" />
         
         <TextView
@@ -48,7 +48,7 @@
             style="@style/TextViewIconLabel" />
         
         <ImageView
-            android:src="@drawable/ic_comment_blue"
+            android:src="@drawable/ic_comment_mini"
             style="@style/IconImageView" />
         
         <TextView

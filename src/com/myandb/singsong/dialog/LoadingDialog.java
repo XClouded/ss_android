@@ -1,6 +1,7 @@
 package com.myandb.singsong.dialog;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -36,21 +37,28 @@ public class LoadingDialog extends BaseDialog {
 	protected int getResourceId() {
 		return R.layout.dialog_loading;
 	}
+	
+	@Override
+	protected void styleDialog(Dialog dialog) {
+		super.styleDialog(dialog);
+		dialog.getWindow().getAttributes().dimAmount = 0.8f;
+	}
 
 	@Override
 	protected void setupViews() {
 		titlePrefix = tvProgressTitle.getText().toString();
+		btnCancel.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				getActivity().finish();
+			}
+		});
 	}
 
 	public void setTitlePrefix(String text) {
 		titlePrefix = text;
 		updateProgressBar(0);
-	}
-	
-	public void setOnCancelButtonClickListener(View.OnClickListener listener) {
-		if (btnCancel != null) {
-			btnCancel.setOnClickListener(listener);
-		}
 	}
 	
 	public void setControlButtonShown(boolean shown) {
@@ -82,9 +90,9 @@ public class LoadingDialog extends BaseDialog {
 			btnProgressControl.setEnabled(enabled);
 			
 			if (enabled) {
-				ViewHelper.setAlpha(btnProgressControl, 0.5f);
-			} else {
 				ViewHelper.setAlpha(btnProgressControl, 1f);
+			} else {
+				ViewHelper.setAlpha(btnProgressControl, 0.5f);
 			}
 		}
 	}

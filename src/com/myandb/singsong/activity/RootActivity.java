@@ -35,6 +35,7 @@ public class RootActivity extends BaseActivity {
 	
 	public static final String SAVED_STATE_ACTION_BAR_HIDDEN = "saved_state_action_bar_hidden";
 	public static final String EXTRA_NOTICE = "notice";
+	public static final String EXTRA_SHOW_PLAYER = "show_player";
 	
 	private SlidingMenu drawer;
 	private SlidingPlayerLayout slidingPlayerLayout;
@@ -228,6 +229,13 @@ public class RootActivity extends BaseActivity {
 	}
 
 	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		changePage(intent);
+		updateDrawer();
+	}
+
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
@@ -279,8 +287,15 @@ public class RootActivity extends BaseActivity {
 			drawer.showContent();;
 		}
 		
-		if (slidingPlayerLayout.isPanelExpanded()) {
-			slidingPlayerLayout.collapsePanel();
+		boolean showPlayer = intent.getBooleanExtra(EXTRA_SHOW_PLAYER, false);
+		if (showPlayer) {
+			if (!slidingPlayerLayout.isPanelExpanded()) {
+				slidingPlayerLayout.expandPanel();
+			}
+		} else {
+			if (slidingPlayerLayout.isPanelExpanded()) {
+				slidingPlayerLayout.collapsePanel();
+			}
 		}
 		
 		if (isComponentOf(intent, UpActivity.class)) {
@@ -292,8 +307,8 @@ public class RootActivity extends BaseActivity {
 	}
 	
 	public void restartActivity() {
-		Intent intent = new Intent(this, getClass());
-		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		Intent intent = new Intent(this, RootActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, HomeFragment.class.getName());
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_ROOT, true);
 		startActivity(intent);

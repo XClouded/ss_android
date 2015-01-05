@@ -10,7 +10,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/card_song" >
+        android:background="@drawable/card_idle" >
                 
         <com.myandb.singsong.widget.RoundedImageView
             android:id="@+id/iv_this_song_image"
@@ -36,16 +36,15 @@
             android:background="@drawable/circle_primary_trans" >
             
             <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@drawable/ic_collabo_white"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_collabo_inverse"
                 style="@style/ImageViewBase" />
             
             <TextView
                 android:id="@+id/tv_song_collabo_num"
-                android:layout_marginTop="-6sp"
                 android:textColor="@color/white"
-                style="@style/TextViewHint" />
+                style="@style/TextViewLessImportant" />
             
         </LinearLayout>
         
@@ -55,7 +54,7 @@
             android:layout_marginLeft="@dimen/margin"
             android:layout_marginRight="@dimen/margin"
             android:layout_marginBottom="@dimen/margin_big"
-            android:textColor="@color/font_white"
+            android:textColor="@color/white"
             style="@style/TextViewBase" />
         
         <LinearLayout
@@ -96,8 +95,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/divider"
-            android:paddingLeft="@dimen/margin_big"
-            android:paddingRight="@dimen/margin_big"
+            android:paddingLeft="@dimen/margin"
+            android:paddingRight="@dimen/margin"
             android:paddingBottom="@dimen/margin_small" >
             
 	            <LinearLayout 
@@ -106,7 +105,7 @@
 	                android:orientation="horizontal" >
 	                
 	            <ImageView
-	                android:src="@drawable/ic_like_pink"
+	                android:src="@drawable/ic_like_mini"
 	                style="@style/IconImageView" />
 	            
 	            <TextView
@@ -115,7 +114,7 @@
 	                style="@style/TextViewIconLabel" />
 	            
 	            <ImageView
-	                android:src="@drawable/ic_comment_blue"
+	                android:src="@drawable/ic_comment_mini"
 	                style="@style/IconImageView" />
 	            
 	            <TextView

@@ -2,6 +2,8 @@ package com.myandb.singsong.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -25,6 +27,15 @@ public class UpActivity extends BaseActivity {
 		shouldStop = getIntent().getBooleanExtra(EXTRA_SHOULD_STOP, false);
 		if (isFullScreen) {
 			setWindowFullScreen();
+		}
+		
+		try {
+			ActionBar actionBar = getSupportActionBar();
+			actionBar.setHomeButtonEnabled(true);
+			actionBar.setDisplayHomeAsUpEnabled(true);
+			actionBar.setHomeAsUpIndicator(R.drawable.ic_action_back);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		
 		setContentView(R.layout.content);
@@ -54,11 +65,23 @@ public class UpActivity extends BaseActivity {
 			service.pause();
 		}
 	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			onBackPressed();
+			return true;
+		
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
 
 	@Override
 	public void onPageChanged(Intent intent) {
 		if (isComponentOf(intent, RootActivity.class)) {
-			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			startActivity(intent);
 		} else if (isComponentOf(intent, UpActivity.class)) {
 			startActivity(intent);

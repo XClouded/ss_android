@@ -96,7 +96,11 @@ public class User extends Model {
 	}
 	
 	public boolean isLoggedInUser() {
-		return Authenticator.getUser().equals(getId());
+		User loggedIn = Authenticator.getUser();
+		if (loggedIn != null) {
+			return loggedIn.equals(getId());
+		}
+		return false;
 	}
 	
 	public OnClickListener getProfileClickListener() {

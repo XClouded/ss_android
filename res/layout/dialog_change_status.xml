@@ -14,7 +14,7 @@
         
         <TextView
             android:text="상태 메세지 변경"
-            style="@style/TextViewTitle" />
+            style="@style/TextViewSubtitleAlone" />
         
         <ImageView
         	style="@style/DividerHorizontal" />
@@ -50,9 +50,9 @@
             android:layout_toLeftOf="@id/btn_change_nickname"
             android:layout_centerVertical="true"
             android:text="비속어를 사용하지 말아주세요. :)"
-            android:textSize="@dimen/text_tiny"
+            android:textSize="@dimen/text_hint"
             android:linksClickable="true"
-            style="@style/TextViewHint" />
+            style="@style/TextViewLessImportant" />
         
     </RelativeLayout>
 

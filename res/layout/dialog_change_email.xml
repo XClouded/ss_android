@@ -14,7 +14,7 @@
         
         <TextView
             android:text="이메일 변경"
-            style="@style/TextViewTitle" />
+            style="@style/TextViewSubtitleAlone" />
         
         <ImageView
         	style="@style/DividerHorizontal" />

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/margin"
+    android:paddingLeft="@dimen/margin"
+    android:paddingRight="@dimen/margin" >
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin_small"
+        android:background="@drawable/card_selector" >
+        
+        <TextView
+	        android:id="@+id/tv_artist_num"
+	        android:layout_width="25dp"
+	        android:textColor="@color/primary"
+	        android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_small"
+	        style="@style/TextViewSubtitle" />
+        
+        <com.myandb.singsong.widget.RoundedImageView
+            android:id="@+id/iv_artist_photo"
+            android:layout_marginTop="@dimen/margin_tiny"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:layout_toRightOf="@id/tv_artist_num"
+	       	style="@style/ImageViewUser" />
+        
+        <TextView
+	        android:id="@+id/tv_artist_user_nickname"
+	        android:layout_toRightOf="@id/iv_artist_photo"
+	        android:layout_alignTop="@id/iv_artist_photo"
+	        android:layout_marginBottom="@dimen/margin_tiny"
+	        android:gravity="left"
+	        android:textStyle="bold"
+	        style="@style/TextViewOverflowableLessImportant" />
+        
+        <TextView
+	        android:id="@+id/tv_artist_nickname"
+	        android:layout_toRightOf="@id/iv_artist_photo"
+	        android:layout_below="@id/tv_artist_user_nickname"
+	        android:gravity="left"
+	        style="@style/TextViewOverflowableLessImportant" />
+        
+        <ImageView
+            android:id="@+id/icon_follower"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+	        android:layout_alignLeft="@id/tv_artist_nickname"
+	        android:layout_below="@id/tv_artist_nickname"
+	        android:layout_marginRight="@dimen/margin_tiny"
+            android:src="@drawable/ic_user_mini"
+            style="@style/ImageViewBase" />
+        
+        <TextView
+	        android:id="@+id/tv_artist_followers_num"
+	        android:textSize="@dimen/text_hint"
+	        android:layout_toRightOf="@id/icon_follower"
+	        android:layout_below="@id/tv_artist_nickname"
+	        style="@style/TextViewLessImportant" />
+        
+    </RelativeLayout>
+
+</FrameLayout>

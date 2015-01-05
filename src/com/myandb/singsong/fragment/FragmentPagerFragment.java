@@ -37,10 +37,10 @@ public class FragmentPagerFragment extends BaseFragment {
 		super.onArgumentsReceived(bundle);
 		launchItemNum = bundle.getInt(EXTRA_ITEM_NUM);
 		String className = bundle.getString(EXTRA_PAGER_ADAPTER);
-		pagerAdapter = instantiatePagerAdapter(className);
+		pagerAdapter = instantiatePagerAdapterFromName(className);
 	}
 	
-	private FragmentPagerAdapter instantiatePagerAdapter(String className) {
+	private FragmentPagerAdapter instantiatePagerAdapterFromName(String className) {
 		if (className != null) {
 			try {
 				Class<?> classForAdapter = Class.forName(className);
@@ -73,8 +73,21 @@ public class FragmentPagerFragment extends BaseFragment {
 	
 	@Override
 	protected void setupViews(Bundle savedInstanceState) {
+		if (pagerAdapter == null) {
+			pagerAdapter = instantiatePagerAdapter();
+		}
 		setAdapter(pagerAdapter);
+		
 		viewPager.setPageMargin(getResources().getDimensionPixelSize(R.dimen.margin_small));
+		viewPager.setPageMarginDrawable(R.color.viewpager_bg);
+		tabStrip.setIndicatorColorResource(R.color.primary);
+		tabStrip.setIndicatorHeight(getResources().getDimensionPixelSize(R.dimen.margin_tiny));
+		tabStrip.setUnderlineHeight(1);
+		tabStrip.setDividerColorResource(android.R.color.transparent);
+	}
+	
+	protected FragmentPagerAdapter instantiatePagerAdapter() {
+		return null;
 	}
 
 	@Override
