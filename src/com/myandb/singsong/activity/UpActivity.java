@@ -1,6 +1,7 @@
 package com.myandb.singsong.activity;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
@@ -33,7 +34,10 @@ public class UpActivity extends BaseActivity {
 			ActionBar actionBar = getSupportActionBar();
 			actionBar.setHomeButtonEnabled(true);
 			actionBar.setDisplayHomeAsUpEnabled(true);
-			actionBar.setHomeAsUpIndicator(R.drawable.ic_action_back);
+			
+			Drawable drawable = getResources().getDrawable(R.drawable.ic_action_back);
+			drawable.setAlpha(255);
+			actionBar.setHomeAsUpIndicator(drawable);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
