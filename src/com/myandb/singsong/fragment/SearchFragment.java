@@ -17,15 +17,15 @@ public class SearchFragment extends ListFragment {
 	
 	public enum SearchType {
 		
-		USER(R.string.hint_id, FriendsAdapter.class, "users"),
+		USER(R.string.hint_search_user, FriendsAdapter.class, "users"),
 		
-		MUSIC(R.string.hint_id, MusicAdapter.class, "musics"),
+		MUSIC(R.string.hint_search_music, MusicAdapter.class, "musics"),
 		
-		WAITING(R.string.hint_id, SimpleSongAdapter.class, "songs/root"),
+		WAITING(R.string.hint_search_music, SimpleSongAdapter.class, "songs/root"),
 		
-		COLLABORATED(R.string.hint_id, SimpleSongAdapter.class, "songs/leaf"),
+		COLLABORATED(R.string.hint_search_music, SimpleSongAdapter.class, "songs/leaf"),
 		
-		ALL_SONG(R.string.hint_id, SimpleSongAdapter.class, "songs/all");
+		ALL_SONG(R.string.hint_search_music, SimpleSongAdapter.class, "songs/all");
 		
 		private int hintResId;
 		private Class<?> adapterClass;
@@ -77,6 +77,22 @@ public class SearchFragment extends ListFragment {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	@Override
+	protected void initialize(Activity activity) {
+		super.initialize(activity);
+		switch (searchType) {
+		case WAITING:
+		case COLLABORATED:
+		case ALL_SONG:
+			horizontalPadding = true;
+			verticalPadding = true;
+			break;
+
+		default:
+			break;
+		}
 	}
 
 	@Override

@@ -47,8 +47,8 @@ public class ListFragment extends BaseFragment {
 	private int listViewIndex;
 	private int listViewTop;
 	private boolean enableFadingActionBar = false;
-	private boolean horizontalPadding;
-	private boolean verticalPadding;
+	protected boolean horizontalPadding;
+	protected boolean verticalPadding;
 
 	@Override
 	protected final int getResourceId() {
