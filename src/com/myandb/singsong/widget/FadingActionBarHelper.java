@@ -1,5 +1,7 @@
 package com.myandb.singsong.widget;
 
+import com.myandb.singsong.R;
+
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -18,6 +20,7 @@ public class FadingActionBarHelper implements OnScrollListener {
 	private static final int MAX_ALPHA = 255;
 	
 	private Drawable backgroundDrawable;
+	private Drawable homeDrawable;
 	private ActionBar actionBar;
 	private CharSequence title;
 	private int headerHeight;
@@ -66,8 +69,12 @@ public class FadingActionBarHelper implements OnScrollListener {
 			if (backgroundDrawable == null) {
 				backgroundDrawable = activity.getResources().getDrawable(backgroundResId);
 			}
+			if (homeDrawable == null) {
+				homeDrawable = activity.getResources().getDrawable(R.drawable.ic_action_back);
+			}
 			actionBar = ((ActionBarActivity) activity).getSupportActionBar();
 			actionBar.setBackgroundDrawable(backgroundDrawable);
+			actionBar.setHomeAsUpIndicator(homeDrawable);
 			
 			fullyVisiblePosition = fullyVisiblePosition > 0 ? fullyVisiblePosition : DEFAULT_VISIBLE_POSITION;
 			visibleThreshold = (float) (fullyVisiblePosition * maxAlpha / MAX_ALPHA);
@@ -111,6 +118,7 @@ public class FadingActionBarHelper implements OnScrollListener {
 		
 		if (newAlpha != previousAlpha) {
 			fadeBackground(newAlpha);
+			fadeHome(newAlpha);
 			fadeTitle(newAlpha);
 		}
 		previousAlpha = newAlpha;
@@ -122,6 +130,14 @@ public class FadingActionBarHelper implements OnScrollListener {
 		}
 		
 		backgroundDrawable.setAlpha(alpha);
+	}
+	
+	private void fadeHome(int alpha) {
+		if (homeDrawable == null) {
+			return;
+		}
+		
+		homeDrawable.setAlpha(alpha);
 	}
 	
 	private void fadeTitle(int alpha) {

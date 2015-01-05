@@ -21,6 +21,7 @@ import com.myandb.singsong.widget.SlidingPlayerLayout;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
@@ -40,6 +41,8 @@ public class RootActivity extends BaseActivity {
 	private SlidingMenu drawer;
 	private SlidingPlayerLayout slidingPlayerLayout;
 	private DrawerFragment drawerFragment;
+	private Drawable backDrawable;
+	private Drawable homeDrawable;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +90,9 @@ public class RootActivity extends BaseActivity {
 		
 		FragmentManager manager = getSupportFragmentManager();
 		manager.addOnBackStackChangedListener(onBackStackChangedListener);
+		
+		homeDrawable = getResources().getDrawable(R.drawable.ic_action_drawer);
+		backDrawable = getResources().getDrawable(R.drawable.ic_action_back);
 	}
 	
 	@SuppressLint("InlinedApi")
@@ -109,9 +115,10 @@ public class RootActivity extends BaseActivity {
 			ActionBar actionBar = getSupportActionBar();
 			FragmentManager manager = getSupportFragmentManager();
 			if (manager.getBackStackEntryCount() > 1) {
-				actionBar.setHomeAsUpIndicator(R.drawable.ic_action_back);
+				backDrawable.setAlpha(255);
+				actionBar.setHomeAsUpIndicator(backDrawable);
 			} else {
-				actionBar.setHomeAsUpIndicator(R.drawable.ic_action_drawer);
+				actionBar.setHomeAsUpIndicator(homeDrawable);
 			}
 		}
 	};
