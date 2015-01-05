@@ -19,7 +19,6 @@ import com.myandb.singsong.audio.Recorder;
 import com.myandb.singsong.audio.Track;
 import com.myandb.singsong.event.OnCompleteListener;
 import com.myandb.singsong.event.OnProgressListener;
-import com.myandb.singsong.image.BitmapBuilder;
 import com.myandb.singsong.model.Model;
 import com.myandb.singsong.model.Music;
 import com.myandb.singsong.net.JSONObjectRequest;
@@ -31,7 +30,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.media.RingtoneManager;
 import android.os.IBinder;
 import android.os.Build.VERSION;
@@ -305,27 +303,8 @@ public class SongUploadService extends Service {
 	}
 	
 	private void submitNotification() {
-		BitmapBuilder bitmapBuilder = new BitmapBuilder();
-		Bitmap bitmap = null;
-		
-		/*
-		try {
-			if (FileManager.isExist(FileManager.USER_PHOTO)) {
-				bitmap = bitmapBuilder.setSource(FileManager.get(FileManager.USER_PHOTO))
-									  .enableCrop(true)
-									  .build();
-			} else {
-				bitmap = bitmapBuilder.setSource(getResources(), R.drawable.user_default)
-									  .enableCrop(true)
-									  .build();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		*/
-		
 		RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.notification_progressbar);
-		contentView.setImageViewBitmap(R.id.iv_icon, bitmap);
+		contentView.setImageViewResource(R.id.iv_icon, R.drawable.ic_launcher);
 		contentView.setTextViewText(R.id.tv_title, "서버에서 정보를 받아오고 있습니다.");
 		contentView.setProgressBar(R.id.pb_status, 100, 0, false);
 
