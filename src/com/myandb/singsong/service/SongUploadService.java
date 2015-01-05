@@ -54,6 +54,7 @@ public class SongUploadService extends Service {
 	public static final String EXTRA_SONG_MESSAGE = "song_message";
 	public static final String EXTRA_RECORD_VOLUME = "record_volume";
 	public static final String EXTRA_FACEBOOK_POSTING = "facebook_posting";
+	public static final String EXTRA_SAMPLE_SKIP_SECOND = "sample_skip_second";
 	public static final int REQUEST_CODE = 10;
 	
 	private static boolean isRunning;
@@ -63,6 +64,7 @@ public class SongUploadService extends Service {
 	private int creatorId;
 	private int imageId;
 	private boolean isFacebookPosting;
+	private float sampleSkipSecond;
 	private String message;
 	private String songAudioName;
 	private String sampleAudioName;
@@ -113,6 +115,7 @@ public class SongUploadService extends Service {
 		imageId = intent.getIntExtra(EXTRA_IMAGE_ID, 0);
 		message = intent.getStringExtra(EXTRA_SONG_MESSAGE);
 		isFacebookPosting = intent.getBooleanExtra(EXTRA_FACEBOOK_POSTING, false);
+		sampleSkipSecond = intent.getFloatExtra(EXTRA_SAMPLE_SKIP_SECOND, 0f);
 		
 		try {
 			tracks = new ArrayList<Track>();
@@ -168,7 +171,7 @@ public class SongUploadService extends Service {
 		
 		Encoder encoder = new Encoder();
 		encoder.setOutputFileName(sampleOggFile.getAbsolutePath());
-		encoder.enableSampleMode(44100 * 10);
+		encoder.enableSampleMode((int) (44100 * sampleSkipSecond));
 		encoder.setOnProgressListener(new OnProgressListener() {
 			
 			@Override

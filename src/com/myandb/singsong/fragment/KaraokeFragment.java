@@ -199,6 +199,8 @@ public class KaraokeFragment extends BaseFragment {
 		
 		handler = new Handler();
 		
+		currentUser = Authenticator.getUser();
+		
 		running = true;
 	}
 	

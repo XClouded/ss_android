@@ -109,6 +109,15 @@ public class LrcDisplayer {
 		return context;
 	}
 	
+	public float getSampleSkipSecond() {
+		long first = lrcTime.get(0);
+		if (isTypeCounter(types.get(first))) {
+			return first + 4;
+		} else {
+			return first;
+		}
+	}
+	
 	public void ready() {
 		handler.post(new Runnable() {
 			
