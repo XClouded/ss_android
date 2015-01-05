@@ -8,7 +8,9 @@ import com.kakao.KakaoLink;
 import com.kakao.KakaoParameterException;
 import com.kakao.KakaoTalkLinkMessageBuilder;
 import com.myandb.singsong.R;
+import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Song;
+import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.util.Utility;
 
@@ -28,8 +30,7 @@ public class ShareDialog extends BaseDialog {
 	private View vShareFacebook;
 	private View vShareKakaotalk;
 	private TextView tvShareEtc;
-	private String webUrl;
-	private String photoUrl;
+	private Song song;
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -48,9 +49,40 @@ public class ShareDialog extends BaseDialog {
 		super.onArgumentsReceived(bundle);
 		Gson gson = Utility.getGsonInstance();
 		String songInJson = bundle.getString(EXTRA_SONG);
-		Song song = gson.fromJson(songInJson, Song.class);
-		webUrl = new UrlBuilder().s("w").s("player").s(song.getId()).toString();
-		photoUrl = song.getMusic().getAlbumPhotoUrl();
+		song = gson.fromJson(songInJson, Song.class);
+	}
+	
+	private String getShareContent() {
+		String content = "";
+		if (song.isRoot()) {
+			final User creator = song.getCreator();
+			content += creator.getNickname();
+			content += "님이 부른 ";
+		} else {
+			final User creator = song.getCreator();
+			final User partner = song.getParentUser();
+			content += creator.getNickname();
+			content += "님과 ";
+			content += partner.getNickname();
+			content += "님이 함께 콜라보 한 ";
+		}
+		
+		final Music music = song.getMusic();
+		content += music.getSingerName();
+		content += "의 ";
+		content += music.getTitle();
+		content += "\n";
+		content += "지금 바로 들어보세요!";
+		
+		return content;
+	}
+	
+	private String getShareUrl() {
+		return new UrlBuilder().s("w").s("player").s(song.getId()).toString();
+	}
+	
+	private String getPhotoUrl() {
+		return song.getMusic().getAlbumPhotoUrl();
 	}
 
 	@Override
@@ -96,7 +128,10 @@ public class ShareDialog extends BaseDialog {
 	private void shareOnFacebook() {
 		if (FacebookDialog.canPresentShareDialog(getApplicationContext(), FacebookDialog.ShareDialogFeature.SHARE_DIALOG)) {
 		    FacebookDialog shareDialog = new FacebookDialog.ShareDialogBuilder(getActivity())
-		            .setLink(webUrl)
+		    		.setName(getString(R.string.app_name))
+		    		.setDescription(getShareContent())
+		    		.setPicture(getPhotoUrl())
+		            .setLink(getShareUrl())
 		            .build();
 		    shareDialog.present();
 		} else {
@@ -106,11 +141,10 @@ public class ShareDialog extends BaseDialog {
 	
 	private void publishFeedDialog() {
 	    Bundle params = new Bundle();
-	    params.putString("name", "Facebook SDK for Android");
-	    params.putString("caption", "Build great social apps and get more installs.");
-	    params.putString("description", "The Facebook SDK for Android makes it easier and faster to develop Facebook integrated Android apps.");
-	    params.putString("link", webUrl);
-	    params.putString("picture", photoUrl);
+	    params.putString("name", getString(R.string.app_name));
+	    params.putString("description", getShareContent());
+	    params.putString("link", getShareUrl());
+	    params.putString("picture", getPhotoUrl());
 
 	    WebDialog feedDialog = (
 	            new WebDialog.FeedDialogBuilder(getActivity(),
@@ -124,9 +158,9 @@ public class ShareDialog extends BaseDialog {
 			final KakaoLink kakaoLink = KakaoLink.getKakaoLink(getActivity());
 			final KakaoTalkLinkMessageBuilder builder = kakaoLink.createKakaoTalkLinkMessageBuilder();
 			final String message = builder
-					.addText("노래를 들어보세요!")
-					.addImage(photoUrl, 300, 100)
-					.addWebButton("노래 들어보기", webUrl)
+					.addText(getShareContent())
+					.addImage(getPhotoUrl(), 300, 300)
+					.addWebButton("노래 들어보기", getShareUrl())
 					.build();
 			kakaoLink.sendMessage(message, getActivity());
 		} catch (KakaoParameterException e) {
@@ -137,7 +171,7 @@ public class ShareDialog extends BaseDialog {
 	private void shareOnBasicIntent() {
 		Intent sendIntent = new Intent();
 		sendIntent.setAction(Intent.ACTION_SEND);
-		sendIntent.putExtra(Intent.EXTRA_TEXT, webUrl);
+		sendIntent.putExtra(Intent.EXTRA_TEXT, getShareContent() + "\n" + getShareUrl());
 		sendIntent.setType("text/plain");
 		startActivity(sendIntent);
 	}
