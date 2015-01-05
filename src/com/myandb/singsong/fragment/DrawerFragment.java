@@ -88,7 +88,7 @@ public class DrawerFragment extends BaseFragment {
 		Intent intent = new Intent(getActivity(), RootActivity.class);
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, MusicHomeFragment.class.getName());
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
-		return new GlobalMenu(R.string.fragment_sing_title, intent, R.drawable.ic_menu_sing, true);
+		return new GlobalMenu(R.string.fragment_sing_title, intent, R.drawable.ic_menu_sing);
 	}
 	
 	private GlobalMenu makeListenMenu() {
@@ -111,7 +111,7 @@ public class DrawerFragment extends BaseFragment {
 	
 	private GlobalMenu makeSettingMenu() {
 		Intent intent = new Intent(getActivity(), RootActivity.class);
-		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, SettingFragment.class.getName());
+		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, EtcFragment.class.getName());
 		return new GlobalMenu(R.string.fragment_setting_title, intent, R.drawable.ic_menu_setting);
 	}
 	
