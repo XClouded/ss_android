@@ -130,8 +130,10 @@ public class UserHomeFragment extends ListFragment {
 		
 		loadProfileData();
 		
-		if (!thisUser.isActivated()) {
-			checkUserActivation();
+		if (isCurrentUser()) {
+			if (!currentUser.isActivated()) {
+				checkUserActivation();
+			}
 		}
 		
 		setOnEmptyListener(emptyListener);
