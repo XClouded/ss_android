@@ -578,7 +578,9 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		initializeSeekBar(song);
 		
 		ivParentUserPhoto.setOnClickListener(parentUser.getProfileClickListener());
-		ivThisUserPhoto.setOnClickListener(thisUser.getProfileClickListener());
+		if (thisUser != null) {
+			ivThisUserPhoto.setOnClickListener(thisUser.getProfileClickListener());
+		}
 		vStartCollabo.setOnClickListener(song.getCollaboClickListner());
 		ivLikeSong.setOnClickListener(likeClickListener);
 		btnSubmitComment.setOnClickListener(submitCommentClickListner);
