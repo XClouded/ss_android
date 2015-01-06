@@ -29,6 +29,8 @@ import com.myandb.singsong.net.JSONObjectSuccessListener;
 import com.myandb.singsong.net.UploadManager;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.service.SongUploadService;
+import com.sromku.simple.fb.Permission.Type;
+import com.sromku.simple.fb.listeners.OnLoginListener;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -292,7 +294,33 @@ public class RecordSettingFragment extends BaseFragment {
 				
 				Track recordTrack = player.getTrack("record");
 				if (Recorder.isValidRecordingTime(recordTrack.getSourceDuration())) {
-					uploadImageIfExist();
+					if (isFacebookPosting) {
+						if (getSimpleFacebook().isLogin()) {
+							uploadImageIfExist();
+						} else {
+							getSimpleFacebook().login(new OnLoginListener() {
+								
+								@Override
+								public void onFail(String reason) {}
+								
+								@Override
+								public void onException(Throwable throwable) {}
+								
+								@Override
+								public void onThinking() {}
+								
+								@Override
+								public void onNotAcceptingPermissions(Type type) {}
+								
+								@Override
+								public void onLogin() {
+									uploadImageIfExist();
+								}
+							});
+						}
+					} else {
+						uploadImageIfExist();
+					}
 				} else {
 					Toast.makeText(getActivity(), getString(R.string.t_song_length_policy), Toast.LENGTH_SHORT).show();
 				}
