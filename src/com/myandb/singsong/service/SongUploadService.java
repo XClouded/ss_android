@@ -11,7 +11,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.Response.ErrorListener;
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.RootActivity;
@@ -26,8 +25,15 @@ import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Song;
 import com.myandb.singsong.net.JSONObjectRequest;
 import com.myandb.singsong.net.UploadManager;
+import com.myandb.singsong.net.UrlBuilder;
+import com.myandb.singsong.util.Logger;
 import com.myandb.singsong.util.StringFormatter;
 import com.myandb.singsong.util.Utility;
+import com.sromku.simple.fb.SimpleFacebook;
+import com.sromku.simple.fb.entities.Story;
+import com.sromku.simple.fb.entities.Story.StoryAction;
+import com.sromku.simple.fb.entities.Story.StoryObject;
+import com.sromku.simple.fb.listeners.OnPublishListener;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -293,7 +299,7 @@ public class SongUploadService extends Service {
 								if (isFacebookPosting) {
 									postOnFacebook(song);
 								}
-							} catch (JsonSyntaxException e) {
+							} catch (Exception e) {
 								e.printStackTrace();
 							} finally {
 								successNotification();
@@ -383,7 +389,45 @@ public class SongUploadService extends Service {
 	}
 	
 	private void postOnFacebook(Song song) {
+		final StoryObject object = getSongStoryObject(song);
+		final StoryAction action = getSongStoryAction(song);
+		final Story story = new Story.Builder()
+			.setObject(object)
+			.setAction(action)
+			.build();
 		
+		SimpleFacebook simpleFacebook = SimpleFacebook.getInstance();
+		if (simpleFacebook != null) {
+			simpleFacebook.publish(story, new OnPublishListener() {
+
+				@Override
+				public void onComplete(String response) {
+					super.onComplete(response);
+					Logger.log(response);
+				}
+			});
+		}
+	}
+	
+	private StoryObject getSongStoryObject(Song song) {
+		return new StoryObject.Builder()
+			.setNoun("Song")
+			.setTitle(song.getMusic().getTitle())
+			.setImage(song.getMusic().getAlbumPhotoUrl())
+			.setUrl(new UrlBuilder().s("w").s("player").s(song.getId()).toString())
+			.build();
+	}
+	
+	private StoryAction getSongStoryAction(Song song) {
+		if (song.isRoot()) {
+			return new StoryAction.Builder()
+				.setAction("Sing")
+				.build();
+		} else {
+			return new StoryAction.Builder()
+				.setAction("Collabo")
+				.build();
+		}
 	}
 	
 	public static boolean isServiceRunning() {
