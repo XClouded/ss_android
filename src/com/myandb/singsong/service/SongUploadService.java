@@ -10,10 +10,6 @@ import org.json.JSONObject;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.Response.ErrorListener;
-import com.facebook.HttpMethod;
-import com.facebook.Request;
-import com.facebook.RequestAsyncTask;
-import com.facebook.Session;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.myandb.singsong.App;
@@ -30,7 +26,6 @@ import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Song;
 import com.myandb.singsong.net.JSONObjectRequest;
 import com.myandb.singsong.net.UploadManager;
-import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.util.StringFormatter;
 import com.myandb.singsong.util.Utility;
 
@@ -40,7 +35,6 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.media.RingtoneManager;
-import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
@@ -389,18 +383,7 @@ public class SongUploadService extends Service {
 	}
 	
 	private void postOnFacebook(Song song) {
-		Session session = Session.getActiveSession();
-		if (session != null) {
-			Bundle postParams = new Bundle();
-	        postParams.putString("name", getString(R.string.app_name));
-	        postParams.putString("description", "");
-	        postParams.putString("link", new UrlBuilder().s("w").s("player").s(song.getMusic().getId()).toString());
-	        postParams.putString("picture", "");
-	        
-	        Request request = new Request(session, "me/feed", postParams, HttpMethod.POST);
-	        RequestAsyncTask task = new RequestAsyncTask(request);
-	        task.execute();
-		}
+		
 	}
 	
 	public static boolean isServiceRunning() {
