@@ -1,15 +1,9 @@
 package com.myandb.singsong.dialog;
 
-import java.util.Arrays;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.facebook.Session;
-import com.facebook.SessionLoginBehavior;
-import com.facebook.SessionState;
-import com.facebook.Session.OpenRequest;
-import com.facebook.Session.StatusCallback;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.myandb.singsong.R;
@@ -22,6 +16,9 @@ import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.secure.Encryption;
 import com.myandb.singsong.util.Utility;
+import com.sromku.simple.fb.SimpleFacebook;
+import com.sromku.simple.fb.Permission.Type;
+import com.sromku.simple.fb.listeners.OnLoginListener;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -46,6 +43,7 @@ public class LoginDialog extends BaseDialog {
 	private TextView tvFindPassword;
 	private RootActivity activity;
 	private JoinDialog joinDialog;
+	private SimpleFacebook simpleFacebook;
 
 	@Override
 	protected void initialize(Activity activity) {
@@ -97,46 +95,42 @@ public class LoginDialog extends BaseDialog {
 	}
 	
 	@Override
+	public void onResume() {
+		super.onResume();
+		simpleFacebook = SimpleFacebook.getInstance(getActivity());
+	}
+
+	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		simpleFacebook.onActivityResult(getActivity(), requestCode, resultCode, data);
 		super.onActivityResult(requestCode, resultCode, data);
-		Session session = Session.getActiveSession();
-		if (session != null) {
-			session.onActivityResult(getActivity(), requestCode, resultCode, data);
-		}
 	}
 
 	private View.OnClickListener facebookLoginClickListener = new View.OnClickListener() {
 		
 		@Override
 		public void onClick(View v) {
-			openFacebookSession();
-		}
-		
-	};
-	
-	private void openFacebookSession() {
-		OpenRequest request = new OpenRequest(this);
-		request.setPermissions(Arrays.asList("email", "user_friends"));
-		request.setLoginBehavior(SessionLoginBehavior.SSO_WITH_FALLBACK);
-		
-		Session session = Session.getActiveSession();
-		if (session != null) {
-			session.closeAndClearTokenInformation();
-		}
-		session = new Session(getActivity().getApplicationContext());
-		session.addCallback(statusCallback);
-		session.openForRead(request);
-		Session.setActiveSession(session);
-	}
-	
-	private Session.StatusCallback statusCallback = new StatusCallback() {
-		
-		@Override
-		public void call(Session session, SessionState state, Exception exception) {
-			if (state.isOpened()) {
-				showProgressDialog();
-				loginByFacebook(session.getAccessToken());
-			}
+			simpleFacebook.login(new OnLoginListener() {
+				
+				@Override
+				public void onFail(String arg0) {}
+				
+				@Override
+				public void onException(Throwable arg0) {}
+				
+				@Override
+				public void onThinking() {}
+				
+				@Override
+				public void onNotAcceptingPermissions(Type arg0) {}
+				
+				@Override
+				public void onLogin() {
+					showProgressDialog();
+					Session session = simpleFacebook.getSession();
+					loginByFacebook(session.getAccessToken());
+				}
+			});
 		}
 	};
 	

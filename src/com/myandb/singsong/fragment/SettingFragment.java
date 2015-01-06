@@ -4,17 +4,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.android.volley.Request.Method;
 import com.facebook.Session;
-import com.facebook.SessionState;
-import com.facebook.Session.StatusCallback;
-import com.facebook.SessionLoginBehavior;
-import com.facebook.Session.OpenRequest;
 import com.google.android.gcm.GCMRegistrar;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
@@ -37,6 +32,10 @@ import com.myandb.singsong.net.JSONObjectSuccessListener;
 import com.myandb.singsong.net.JSONErrorListener;
 import com.myandb.singsong.net.UploadManager;
 import com.myandb.singsong.secure.Authenticator;
+import com.sromku.simple.fb.SimpleFacebook;
+import com.sromku.simple.fb.Permission.Type;
+import com.sromku.simple.fb.listeners.OnLoginListener;
+import com.sromku.simple.fb.listeners.OnLogoutListener;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -259,33 +258,28 @@ public class SettingFragment extends BaseFragment {
 		
 		@Override
 		public void onClick(View v) {
-			openFacebookSession();
-		}
-	};
-	
-	private void openFacebookSession() {
-		OpenRequest request = new OpenRequest(this);
-		request.setPermissions(Arrays.asList("email", "user_friends"));
-		request.setLoginBehavior(SessionLoginBehavior.SSO_WITH_FALLBACK);
-		
-		Session session = Session.getActiveSession();
-		if (session != null) {
-			session.close();
-		}
-		session = new Session(getActivity().getApplicationContext());
-		session.addCallback(statusCallback);
-		session.openForRead(request);
-		Session.setActiveSession(session);
-	}
-	
-	private StatusCallback statusCallback = new StatusCallback() {
-		
-		@Override
-		public void call(Session session, SessionState state, Exception exception) {
-			if (session.isOpened()) {
-				showProgressDialog();
-				updateUserFacebookId(session.getAccessToken());
-			}
+			final SimpleFacebook simpleFacebook = getSimpleFacebook();
+			simpleFacebook.login(new OnLoginListener() {
+				
+				@Override
+				public void onFail(String arg0) {}
+				
+				@Override
+				public void onException(Throwable arg0) {}
+				
+				@Override
+				public void onThinking() {}
+				
+				@Override
+				public void onNotAcceptingPermissions(Type arg0) {}
+				
+				@Override
+				public void onLogin() {
+					showProgressDialog();
+					Session session = simpleFacebook.getSession();
+					updateUserFacebookId(session.getAccessToken());
+				}
+			});
 		}
 	};
 	
@@ -379,15 +373,25 @@ public class SettingFragment extends BaseFragment {
 	public void clearSharedPreferences() {
 		new Authenticator().logout();
 		PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().clear().commit();
-		removeFacebookToken();
+		logoutFacebook();
 		restartApplication();
 	}
 	
-	private void removeFacebookToken() {
-		Session session = Session.getActiveSession();
-		if (session != null) {
-			session.closeAndClearTokenInformation();
-		}
+	private void logoutFacebook() {
+		getSimpleFacebook().logout(new OnLogoutListener() {
+			
+			@Override
+			public void onFail(String arg0) {}
+			
+			@Override
+			public void onException(Throwable arg0) {}
+			
+			@Override
+			public void onThinking() {}
+			
+			@Override
+			public void onLogout() {}
+		});
 	}
 	
 	private void restartApplication() {
@@ -496,10 +500,6 @@ public class SettingFragment extends BaseFragment {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		Session session = Session.getActiveSession();
-		if (session != null) {
-			session.onActivityResult(getActivity(), requestCode, resultCode, data);
-		}
 		
 		switch (requestCode) {
 		case REQUEST_CODE_PHOTO_PICKER:

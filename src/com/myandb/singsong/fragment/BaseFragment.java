@@ -5,6 +5,7 @@ import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.service.PlayerService;
+import com.sromku.simple.fb.SimpleFacebook;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -29,6 +30,7 @@ public abstract class BaseFragment extends Fragment {
 	private String subtitle;
 	private ProgressDialog progressDialog;
 	private CharSequence progressMessage; 
+	private SimpleFacebook simpleFacebook;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -71,8 +73,20 @@ public abstract class BaseFragment extends Fragment {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		simpleFacebook = SimpleFacebook.getInstance(getActivity());
 	}
 	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		simpleFacebook.onActivityResult(getActivity(), requestCode, resultCode, data);
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+	
+	public SimpleFacebook getSimpleFacebook() {
+		return simpleFacebook;
+	}
+
 	private void setupActionBar() {
 		setActionBarTitle(title);
 		setActionBarSubtitle(subtitle);

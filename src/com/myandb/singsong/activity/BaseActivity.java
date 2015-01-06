@@ -5,24 +5,15 @@ import java.net.URLDecoder;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
-import com.facebook.Request;
-import com.facebook.Response;
-import com.facebook.Session;
-import com.facebook.SessionState;
-import com.facebook.UiLifecycleHelper;
-import com.facebook.Request.GraphUserCallback;
-import com.facebook.Session.StatusCallback;
-import com.facebook.model.GraphUser;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.ExceptionParser;
 import com.google.analytics.tracking.android.ExceptionReporter;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 import com.myandb.singsong.event.WeakRunnable;
-import com.myandb.singsong.model.User;
-import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.service.PlayerService;
 import com.myandb.singsong.service.PlayerServiceConnection;
+import com.sromku.simple.fb.SimpleFacebook;
 
 import android.annotation.SuppressLint;
 import android.content.ComponentName;
@@ -43,7 +34,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnTouchListener;
-import android.widget.Toast;
 
 public abstract class BaseActivity extends ActionBarActivity {
 	
@@ -56,53 +46,12 @@ public abstract class BaseActivity extends ActionBarActivity {
 	private PlayerService service;
 	private Fragment contentFragment;
 	private Handler handler;
-	private UiLifecycleHelper uiHelper;
+	private SimpleFacebook simpleFacebook;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		handler = new Handler(Looper.getMainLooper());
-		uiHelper = new UiLifecycleHelper(this, sessionStatusCallback);
-		uiHelper.onCreate(savedInstanceState);
-	}
-
-	private StatusCallback sessionStatusCallback = new StatusCallback() {
-		
-		@Override
-		public void call(Session session, SessionState state, Exception exception) {
-			onSessionStateChanged(session, state, exception);
-		}
-	};
-	
-	private void onSessionStateChanged(Session session, SessionState state, Exception exception) {
-		if (isLoginUserFacebookActivated() && isFacebookSessionOpened(session)) {
-			requestFacebookMe(session);
-		}
-	}
-	
-	private boolean isLoginUserFacebookActivated() {
-		User user = Authenticator.getUser();
-		return user != null && user.isFacebookActivated();
-	}
-	
-	private boolean isFacebookSessionOpened(Session session) {
-		return session != null && session.isOpened();
-	}
-	
-	private void requestFacebookMe(final Session session) {
-		Request.newMeRequest(session, new GraphUserCallback() {
-			
-			@Override
-			public void onCompleted(GraphUser user, Response response) {
-				if (user == null) {
-					Toast.makeText(getApplicationContext(), "페이스북 세션이 만료되었습니다. 다시 로그인해주세요.", Toast.LENGTH_SHORT).show();
-					new Authenticator().logout();
-					session.close();
-					session.closeAndClearTokenInformation();
-					finish();
-				}
-			}
-		}).executeAsync();
 	}
 
 	public void changePage(Intent intent) {
@@ -266,12 +215,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 	protected void onResumeFragments() {
 		super.onResumeFragments();
 		bindPlayerService();
-		
-		Session session = Session.getActiveSession();
-		if (session != null && (session.isOpened() || session.isClosed())) {
-			onSessionStateChanged(session, session.getState(), null);
-		}
-		uiHelper.onResume();
+		simpleFacebook = SimpleFacebook.getInstance(this);
 	}
 	
 	private void bindPlayerService() {
@@ -284,21 +228,14 @@ public abstract class BaseActivity extends ActionBarActivity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		simpleFacebook.onActivityResult(this, requestCode, resultCode, data);
 		super.onActivityResult(requestCode, resultCode, data);
-		uiHelper.onActivityResult(requestCode, resultCode, data);
-	}
-
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		uiHelper.onSaveInstanceState(outState);
 	}
 	
 	@Override
 	protected void onPause() {
 		super.onPause();
 		unbindPlayerService();
-		uiHelper.onPause();
 	}
 	
 	private void unbindPlayerService() {
@@ -326,7 +263,6 @@ public abstract class BaseActivity extends ActionBarActivity {
 		}
 		cancelRequests();
 		super.onDestroy();
-		uiHelper.onDestroy();
 	}
 	
 	public <T> void addRequest(com.android.volley.Request<T> request) {

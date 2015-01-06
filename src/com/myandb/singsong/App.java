@@ -8,6 +8,9 @@ import com.myandb.singsong.net.SelectAllRequestFilter;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.util.StringFormatter;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.sromku.simple.fb.Permission;
+import com.sromku.simple.fb.SimpleFacebook;
+import com.sromku.simple.fb.SimpleFacebookConfiguration;
 
 import android.app.Application;
 import android.content.Context;
@@ -36,6 +39,25 @@ public class App extends Application {
 		Authenticator.initialize(getSharedPreferences(AUTH_PREFERENCE_FILE, Context.MODE_PRIVATE));
 		
 		StringFormatter.initialize(getResources());
+		
+		initializeSimpleFacebook();
+	}
+	
+	private void initializeSimpleFacebook() {
+		Permission[] permissions = new Permission[] {
+			Permission.PUBLIC_PROFILE,
+			Permission.EMAIL,
+			Permission.USER_FRIENDS,
+			Permission.PUBLISH_ACTION
+		};
+		
+		SimpleFacebookConfiguration config = new SimpleFacebookConfiguration.Builder()
+			.setAppId(getString(R.string.fb_app_id))
+			.setNamespace(getPackageName())
+			.setPermissions(permissions)
+			.build();
+		
+		SimpleFacebook.setConfiguration(config);
 	}
 	
 	private RequestQueue getQueueInstance() {
