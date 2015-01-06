@@ -52,15 +52,13 @@ public class LrcDisplayer {
 	private int colorDualInActive;
 	
 	public LrcDisplayer(File source, Context context) {
+		Lrc lrc;
 		try {
-			LrcParser.read(source);
+			lrc = new Lrc(source);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 
 		
-		this.lrcTime = LrcParser.getTimeset();
-		this.infos = LrcParser.getInfos();
-		this.types = LrcParser.getTypes();
 		this.textViewIndexes = new HashMap<Long, Integer>();
 		
 		this.context = context;
