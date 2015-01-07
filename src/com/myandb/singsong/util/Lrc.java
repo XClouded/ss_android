@@ -81,6 +81,36 @@ public class Lrc {
 
 	public static class Line {
 		
+		public enum Type {
+			
+			MALE,
+			
+			FEMALE,
+			
+			DUAL,
+			
+			GO;
+			
+			public static class Builder {
+				
+				public static Type build(String name) {
+					if ("M".equals(name)) {
+						return Type.MALE;
+					} else if ("F".equals(name)) {
+						return Type.FEMALE;
+					} else if ("D".equals(name)) {
+						return Type.DUAL;
+					} else if ("G".equals(name)) {
+						return Type.GO;
+					} else {
+						return Type.DUAL;
+					}
+				}
+				
+			}
+			
+		}
+		
 		private static Pattern timePattern = Pattern.compile("(\\[[0-9]{2}:[0-9]{2}\\.[0-9]{2}\\])(.*$)");
 		private static Pattern typePattern = Pattern.compile("(\\[[F|M|D|G]{1}\\])(.*$)");
 		
@@ -203,36 +233,6 @@ public class Lrc {
 					+ "_e="
 					+ String.valueOf(endTime);
 					
-		}
-		
-	}
-	
-	public enum Type {
-		
-		MALE,
-		
-		FEMALE,
-		
-		DUAL,
-		
-		GO;
-		
-		public static class Builder {
-			
-			public static Type build(String name) {
-				if ("M".equals(name)) {
-					return Type.MALE;
-				} else if ("F".equals(name)) {
-					return Type.FEMALE;
-				} else if ("D".equals(name)) {
-					return Type.DUAL;
-				} else if ("G".equals(name)) {
-					return Type.GO;
-				} else {
-					return Type.DUAL;
-				}
-			}
-			
 		}
 		
 	}
