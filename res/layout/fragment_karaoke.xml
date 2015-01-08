@@ -215,7 +215,8 @@
         android:layout_height="match_parent"
         android:layout_below="@id/tv_scroll_indicator"
         android:layout_above="@id/seekbar_wrapper"
-        android:background="@color/mask_high" >
+        android:background="@color/mask_high"
+        android:scrollbars="none" >
         
         <LinearLayout
             android:id="@+id/ll_lyric_wrapper"
