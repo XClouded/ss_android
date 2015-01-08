@@ -30,10 +30,15 @@ import com.myandb.singsong.net.DownloadManager;
 import com.myandb.singsong.receiver.HeadsetReceiver;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.service.SongUploadService;
+import com.myandb.singsong.util.Lrc;
+import com.myandb.singsong.util.Lrc.Line.Type;
+import com.myandb.singsong.util.DynamicLrcDisplayer;
 import com.myandb.singsong.util.LrcDisplayer;
 import com.myandb.singsong.util.PlayCounter;
+import com.myandb.singsong.util.StaticLrcDisplayer;
 import com.myandb.singsong.util.StringFormatter;
 import com.myandb.singsong.util.Utility;
+import com.myandb.singsong.util.LrcDisplayer.OnTypeChangeListener;
 import com.myandb.singsong.widget.CountViewFactory;
 import com.myandb.singsong.widget.SlideAnimation;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -56,7 +61,6 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.Animation.AnimationListener;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.ScrollView;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 
@@ -73,7 +77,8 @@ public class KaraokeFragment extends BaseFragment {
 	
 	private static boolean running;
 	
-	private Handler handler;
+	private Handler playHandler;
+	private Handler countHandler;
 	private User currentUser;
 	private Music music;
 	private Song parentSong;
@@ -115,7 +120,6 @@ public class KaraokeFragment extends BaseFragment {
 	private View vInfoWrapper;
 	private View vUserWrapper;
 	private ProgressBar pbPlayProgress;
-	private ScrollView svLyricScroller;
 	private TextSwitcher tsLyricStarter;
 
 	@Override
@@ -165,7 +169,6 @@ public class KaraokeFragment extends BaseFragment {
 		
 		tvRecordControl = (TextView) view.findViewById(R.id.tv_record_control);
 		pbPlayProgress = (ProgressBar) view.findViewById(R.id.pb_playbar);
-		svLyricScroller = (ScrollView) view.findViewById(R.id.sv_lyric_scroller);
 		tsLyricStarter = (TextSwitcher) view.findViewById(R.id.ts_lyric_starter);
 	}
 
@@ -197,7 +200,8 @@ public class KaraokeFragment extends BaseFragment {
 
 		blink = AnimationUtils.loadAnimation(activity, R.anim.blink);
 		
-		handler = new Handler();
+		playHandler = new Handler();
+		countHandler = new Handler();
 		
 		currentUser = Authenticator.getUser();
 		
@@ -251,12 +255,6 @@ public class KaraokeFragment extends BaseFragment {
 						break;
 						
 					case STOP:
-						if (lrcDisplayer != null) {
-							lrcDisplayer.stop();
-						}
-						
-						ivThisUserBackground.clearAnimation();
-						
 						stopRecording();
 						
 						if (recorder != null) {
@@ -297,7 +295,8 @@ public class KaraokeFragment extends BaseFragment {
 		
 		DownloadManager lrcDownloader = new DownloadManager();
 		lrcDownloader.start(
-				music.getLrcUrl(), lyricFile,
+				"http://14.63.164.15/util/test.lrc"
+				/*music.getLrcUrl()*/, lyricFile,
 				new OnLyricDownloadCompleteListener(this)
 		);
 		
@@ -326,12 +325,58 @@ public class KaraokeFragment extends BaseFragment {
 	}
 	
 	public void onLyricDownloadSuccess() {
-		lrcDisplayer = new LrcDisplayer(lyricFile, getActivity());
-		lrcDisplayer.setScrollView(svLyricScroller)
-			.setLyricWrapper((ViewGroup) vLyricWrapper)
-			.setTextSwitcher(tsLyricStarter)
-			.setDynamic(music.isLyricDynamic())
-			.ready();
+		try {
+			Lrc lrc = new Lrc(lyricFile);
+			if (music.isLyricDynamic()) {
+				lrcDisplayer = new DynamicLrcDisplayer(getActivity());
+			} else {
+				lrcDisplayer = new StaticLrcDisplayer(getActivity());
+			}
+			lrcDisplayer.setLrc(lrc)
+				.setWrapper((ViewGroup) vLyricWrapper)
+				.setOnTypeChangeListener(typeChangeListener)
+				.initialize();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private OnTypeChangeListener typeChangeListener = new OnTypeChangeListener() {
+
+		@Override
+		public void onChange(Type type) {
+			switch (type) {
+			case GO:
+				updateTextSwitcher(countHandler, 3);
+				break;
+
+			default:
+				break;
+			}
+		}
+	};
+	
+	private void updateTextSwitcher(final Handler handler, final int count) {
+		if (count < -1) {
+			tsLyricStarter.setText("");
+			tsLyricStarter.setVisibility(View.GONE);
+			return;
+		}
+		
+		handler.postDelayed(new Runnable() {
+			
+			@Override
+			public void run() {
+				if (count > 0) {
+					tsLyricStarter.setVisibility(View.VISIBLE);
+					tsLyricStarter.setText(String.valueOf(count));
+				} else if (count == 0) {
+					tsLyricStarter.setText("GO!");
+				}
+				
+				updateTextSwitcher(handler, count - 1);
+			}
+		}, 1000);
 	}
 	
 	public void onLyricDownloadFailed() {
@@ -480,6 +525,42 @@ public class KaraokeFragment extends BaseFragment {
 		if (recorder != null && recorder.isRecording()) {
 			recorder.stop();
 		}
+		stopAnimations();
+	}
+	
+	private void stopAnimations() {
+		stopUpdatingProgressBar();
+		stopTextSwitcher();
+		stopLyricDisplayer();
+		stopBackgroundAnimation();
+	}
+	
+	private void stopLyricDisplayer() {
+		if (lrcDisplayer != null) {
+			lrcDisplayer.stop();
+		}
+	}
+
+	private void stopUpdatingProgressBar() {
+		if (playHandler != null) {
+			playHandler.removeCallbacksAndMessages(null);
+		}
+	}
+	
+	private void stopTextSwitcher() {
+		if (countHandler != null) {
+			countHandler.removeCallbacksAndMessages(null);
+		}
+		
+		if (tsLyricStarter != null) {
+			tsLyricStarter.setVisibility(View.GONE);
+		}
+	}
+	
+	private void stopBackgroundAnimation() {
+		if (ivThisUserBackground != null) {
+			ivThisUserBackground.clearAnimation();
+		}
 	}
 	
 	public void startRecordingWithHeadset() {
@@ -583,7 +664,6 @@ public class KaraokeFragment extends BaseFragment {
 		@Override
 		public void onClick(View v) {
 			stopRecording();
-			stopUpdatingProgressBar();
 		}
 	};
 	
@@ -627,7 +707,7 @@ public class KaraokeFragment extends BaseFragment {
 			pbPlayProgress.setProgress(position);
 			
 			Runnable r = new WeakRunnable<KaraokeFragment>(this, "updateAudioProgress");
-			handler.postDelayed(r, 1000);
+			playHandler.postDelayed(r, 1000);
 		}
 	}
 
@@ -692,14 +772,7 @@ public class KaraokeFragment extends BaseFragment {
 	@Override
 	public void onStop() {
 		super.onStop();
-		
-		if (lrcDisplayer != null) {
-			lrcDisplayer.stop();
-		}
-		
 		stopRecording();
-		
-		stopUpdatingProgressBar();
 	}
 	
 	@Override
@@ -726,19 +799,11 @@ public class KaraokeFragment extends BaseFragment {
 			player = null;
 		}
 		
-		stopUpdatingProgressBar();
-		
 		running = false;
 	}
 	
 	public static boolean isRunning() {
 		return running;
-	}
-
-	private void stopUpdatingProgressBar() {
-		if (handler != null) {
-			handler.removeCallbacksAndMessages(null);
-		}
 	}
 
 	private boolean isSolo() {

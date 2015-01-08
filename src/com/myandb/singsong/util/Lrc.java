@@ -32,7 +32,7 @@ public class Lrc {
 			String rawLine = null;
 			while ((rawLine = reader.readLine()) != null) {
 				Line line = new Line(rawLine);
-				if (line.isTimeLine()) {
+				if (line.isTimeLined()) {
 					lines.add(line);
 				}
 			}
@@ -89,21 +89,25 @@ public class Lrc {
 			
 			DUAL,
 			
-			GO;
+			HINT,
+			
+			GO,
+			
+			NULL;
 			
 			public static class Builder {
 				
 				public static Type build(String name) {
-					if ("M".equals(name)) {
+					if ("M".equals(name) || "m".equals(name)) {
 						return Type.MALE;
-					} else if ("F".equals(name)) {
+					} else if ("F".equals(name) || "f".equals(name)) {
 						return Type.FEMALE;
-					} else if ("D".equals(name)) {
+					} else if ("D".equals(name) || "d".equals(name)) {
 						return Type.DUAL;
-					} else if ("G".equals(name)) {
+					} else if ("G".equals(name) || "g".equals(name)) {
 						return Type.GO;
 					} else {
-						return Type.DUAL;
+						return Type.HINT;
 					}
 				}
 				
@@ -115,9 +119,10 @@ public class Lrc {
 		private static Pattern typePattern = Pattern.compile("(\\[[F|M|D|G]{1}\\])(.*$)");
 		
 		private List<Word> timeWords;
-		private Type type;
+		private Type type = Type.NULL;
 		private long startTime;
-		private boolean timeline;
+		private boolean timelined;
+		private boolean dynamicWords;
 		
 		public Line(String line) {
 			timeWords = new ArrayList<Word>();
@@ -127,12 +132,12 @@ public class Lrc {
 		private void parse(String line) {
 			Matcher timeMatcher = timePattern.matcher(line);
 			if (timeMatcher.find()) {
-				timeline = true;
+				timelined = true;
 				String time = removeBracket(timeMatcher.group(1));
 				startTime = convertStringToMilliSecond(time);
 				timeWords = parseContent(timeMatcher.group(2));
 			} else {
-				timeline = false;
+				timelined = false;
 			}
 		}
 		
@@ -143,7 +148,7 @@ public class Lrc {
 				type = Type.Builder.build(typeName);
 				return parseWords(typeMatcher.group(2));
 			} else {
-				type = Type.DUAL;
+				type = Type.HINT;
 				return parseWords(content);
 			}
 		}
@@ -151,18 +156,24 @@ public class Lrc {
 		private List<Word> parseWords(String contentOrTimeWords) {
 			List<Word> words = new ArrayList<Word>();
 			if (contentOrTimeWords.matches(Word.timePattern.pattern())) {
+				dynamicWords = true;
 				Matcher timeWordMatcher = Word.timePattern.matcher(contentOrTimeWords);
 				while (timeWordMatcher.find()) {
 					words.add(new Word(timeWordMatcher.group()));
 				}
 			} else {
+				dynamicWords = false;
 				words.add(new Word(contentOrTimeWords));
 			}
 			return words;
 		}
 		
-		public boolean isTimeLine() {
-			return timeline;
+		public boolean isTimeLined() {
+			return timelined;
+		}
+		
+		public boolean isDynamicWords() {
+			return dynamicWords;
 		}
 		
 		public Type getType() {
@@ -179,8 +190,7 @@ public class Lrc {
 
 		@Override
 		public String toString() {
-			String content = "line start: " + String.valueOf(startTime);
-			content += "type: " + type.name();
+			String content = "";
 			for (Word word : timeWords) {
 				content += word.toString();
 			}
@@ -223,16 +233,14 @@ public class Lrc {
 		public long getEndTime() {
 			return endTime;
 		}
+		
+		public long getDelay() {
+			return endTime - startTime;
+		}
 
 		@Override
 		public String toString() {
-			return "=s" 
-					+ String.valueOf(startTime)
-					+ "_"
-					+ content
-					+ "_e="
-					+ String.valueOf(endTime);
-					
+			return content; 
 		}
 		
 	}
