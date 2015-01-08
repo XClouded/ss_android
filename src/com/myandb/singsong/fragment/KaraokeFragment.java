@@ -295,8 +295,7 @@ public class KaraokeFragment extends BaseFragment {
 		
 		DownloadManager lrcDownloader = new DownloadManager();
 		lrcDownloader.start(
-				"http://14.63.164.15/util/test.lrc"
-				/*music.getLrcUrl()*/, lyricFile,
+				music.getLrcUrl(), lyricFile,
 				new OnLyricDownloadCompleteListener(this)
 		);
 		
