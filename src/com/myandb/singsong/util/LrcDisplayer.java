@@ -131,6 +131,10 @@ public abstract class LrcDisplayer {
 		return this;
 	}
 	
+	public float getSampleSkipSecond() {
+		return lrc.getTimeLines().get(0).getStartTime() / 1000f;
+	}
+	
 	public void initialize() {
 		if (initialized) {
 			return;

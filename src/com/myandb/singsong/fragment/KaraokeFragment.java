@@ -727,6 +727,7 @@ public class KaraokeFragment extends BaseFragment {
 				data.putExtra(SongUploadService.EXTRA_CREATOR_ID, currentUser.getId());
 				data.putExtra(SongUploadService.EXTRA_MUSIC_ID, music.getId());
 				data.putExtra(SongUploadService.EXTRA_LYRIC_PART, lyricPart);
+				data.putExtra(SongUploadService.EXTRA_SAMPLE_SKIP_SECOND, lrcDisplayer.getSampleSkipSecond());
 				
 				if (!isSolo()) {
 					data.putExtra(SongUploadService.EXTRA_PARENT_SONG_ID, parentSong.getId());

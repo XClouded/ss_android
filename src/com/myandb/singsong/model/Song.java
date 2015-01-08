@@ -300,6 +300,7 @@ public class Song extends Model {
 								iv.setTag(true);
 								break;
 								
+							case COMPLETED:
 							case PAUSE:
 								iv.setImageResource(R.drawable.ic_prelisten_inverse);
 								iv.setTag(false);

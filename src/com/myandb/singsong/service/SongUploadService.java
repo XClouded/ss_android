@@ -74,8 +74,8 @@ public class SongUploadService extends Service {
 	private boolean isFacebookPosting;
 	private float sampleSkipSecond;
 	private String message;
+	private String audioName;
 	private String songAudioName;
-	private String sampleAudioName;
 	private File songOggFile;
 	private File sampleOggFile;
 	private NotificationManager manager;
@@ -124,6 +124,7 @@ public class SongUploadService extends Service {
 		message = intent.getStringExtra(EXTRA_SONG_MESSAGE);
 		isFacebookPosting = intent.getBooleanExtra(EXTRA_FACEBOOK_POSTING, false);
 		sampleSkipSecond = intent.getFloatExtra(EXTRA_SAMPLE_SKIP_SECOND, 0f);
+		audioName = generateSongName(creatorId, musicId);
 		
 		try {
 			tracks = new ArrayList<Track>();
@@ -140,9 +141,19 @@ public class SongUploadService extends Service {
 			startNormalEncoding();
 		} catch (Exception e) {
 			e.printStackTrace();
+			errorNotification("노래 인코딩에 실패하였습니다.");
 		}
 		
 		return START_NOT_STICKY;
+	}
+	
+	private String generateSongName(int userId, int musicId) {
+		String keyStr = String.valueOf(userId);
+		keyStr += "_";
+		keyStr += String.valueOf(musicId);
+		keyStr += "_";
+		keyStr += String.valueOf(System.currentTimeMillis());
+		return keyStr;
 	}
 	
 	private void startNormalEncoding() {
@@ -171,7 +182,7 @@ public class SongUploadService extends Service {
 				}
 			}
 		});
-		encoder.execute((Track[]) tracks.toArray());
+		encoder.execute(tracks.toArray(new Track[tracks.size()]));
 	}
 	
 	private void startSampleEncoding() {
@@ -200,13 +211,13 @@ public class SongUploadService extends Service {
 				}
 			}
 		});
+		encoder.execute(tracks.toArray(new Track[tracks.size()]));
 	}
 	
 	private void uploadNormalSongFile() {
 		updateNotification(70, "업로드 중입니다.");
 		
-		songAudioName = generateSongName(creatorId, musicId);
-		songAudioName += Model.SUFFIX_OGG;
+		songAudioName = audioName + Model.SUFFIX_OGG;
 		UploadManager manager = new UploadManager();
 		try {
 			manager.start(
@@ -232,7 +243,7 @@ public class SongUploadService extends Service {
 	private void uploadSampleSongFile() {
 		updateNotification(80, "업로드 중입니다.");
 		
-		sampleAudioName = songAudioName + ".sample" + Model.SUFFIX_OGG;
+		String sampleAudioName = audioName + ".sample" + Model.SUFFIX_OGG;
 		UploadManager manager = new UploadManager();
 		try {
 			manager.start(
@@ -255,15 +266,6 @@ public class SongUploadService extends Service {
 		}
 	}
 	
-	private String generateSongName(int userId, int musicId) {
-		String keyStr = String.valueOf(userId);
-		keyStr += "_";
-		keyStr += String.valueOf(musicId);
-		keyStr += "_";
-		keyStr += String.valueOf(System.currentTimeMillis());
-		return keyStr;
-	}
-	
 	public void onFileUploadComplete() {
 		updateNotification(90, "노래정보를 갱신하고 있습니다.");
 
@@ -274,7 +276,6 @@ public class SongUploadService extends Service {
 			data.put("user_id", creatorId);
 			data.put("music_id", musicId);
 			data.put("file", songAudioName);
-			data.put("sample", sampleAudioName);
 			data.put("duration", duration);
 			data.put("lyric_part", lyricPart);
 			data.put("message", message);
