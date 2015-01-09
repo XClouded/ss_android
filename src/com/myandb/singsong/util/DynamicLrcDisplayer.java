@@ -208,6 +208,11 @@ public class DynamicLrcDisplayer extends LrcDisplayer {
 			if (shown) {
 				activeLineWrapper.setVisibility(View.VISIBLE);
 			} else {
+				if (activeLineWrapper.getTag() != null) {
+					LayoutParams layoutParams = (LayoutParams) activeLineWrapper.getLayoutParams();
+					layoutParams.width = 0;
+					activeLineWrapper.requestLayout();
+				}
 				activeLineWrapper.setVisibility(View.GONE);
 			}
 		}
