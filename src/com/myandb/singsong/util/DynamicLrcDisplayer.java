@@ -25,6 +25,8 @@ public class DynamicLrcDisplayer extends LrcDisplayer {
 	
 	private Handler lineHandler;
 	private LayoutParams lp;
+	private long preSystemTime;
+	private long expectedDelay;
 	
 	public DynamicLrcDisplayer(Context context) {
 		super(context);
@@ -171,6 +173,10 @@ public class DynamicLrcDisplayer extends LrcDisplayer {
 			delay -= previousLine.getStartTime();
 		}
 		
+		delay -= getSystemDelay();
+		expectedDelay = delay;
+		preSystemTime = System.currentTimeMillis();
+		
 		handler.postDelayed(new Runnable() {
 			
 			@Override
@@ -181,6 +187,16 @@ public class DynamicLrcDisplayer extends LrcDisplayer {
 				runNextLine(handler, index + 1);
 			}
 		}, delay);
+		
+	}
+	
+	private long getSystemDelay() {
+		if (preSystemTime == 0) {
+			return 0;
+		}
+		final long currentSystemTime = System.currentTimeMillis();
+		final long realDelayed = currentSystemTime - preSystemTime;
+		return realDelayed - expectedDelay;
 	}
 	
 	private void setActiveLineShown(ViewGroup lineWrapper, boolean shown) {
@@ -232,6 +248,10 @@ public class DynamicLrcDisplayer extends LrcDisplayer {
 	@Override
 	protected void initializeDisplay() {
 		super.initializeDisplay();
+		
+		preSystemTime = 0;
+		expectedDelay = 0;
+		
 		for (int i = 0, l = getWrapper().getChildCount(); i < l; i++) {
 			ViewGroup child = (ViewGroup) getWrapper().getChildAt(i);
 			setActiveLineShown(child, false);
