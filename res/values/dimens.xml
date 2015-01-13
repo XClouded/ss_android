@@ -57,8 +57,8 @@
     
     <dimen name="drawer_width">280dp</dimen>
     
-    <dimen name="player_drag_panel_height">64dp</dimen>
-    <dimen name="player_drag_panel_icon_min_width">48dp</dimen>
+    <dimen name="player_drag_panel_height">58dp</dimen>
+    <dimen name="player_drag_panel_icon_min_width">42dp</dimen>
     <dimen name="player_drag_panel_icon_vertical_padding">8dp</dimen>
     
     <dimen name="compat_toast_width">250dp</dimen>

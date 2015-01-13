@@ -30,8 +30,8 @@ public class ImageLoaderConfig {
 		
 		DisplayImageOptions.Builder optionBuilder = new DisplayImageOptions.Builder();
 		optionBuilder.resetViewBeforeLoading(true)
-			.showImageForEmptyUri(R.drawable.user_default)
-			.showImageOnFail(R.drawable.user_default)
+			.showImageForEmptyUri(R.drawable.user_character)
+			.showImageOnFail(R.drawable.user_character)
 			.cacheInMemory(true)
 			.cacheOnDisc(true)
 			.imageScaleType(ImageScaleType.IN_SAMPLE_INT)

@@ -1,16 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item>
-        <shape>
-            <solid android:color="@color/black" />
-        </shape>
-    </item>
     
 	<item>
 		<shape>
 	    	<solid android:color="@color/divider" />
-	    	<corners
-	    	    android:topRightRadius="10dp" />
 	 	</shape>
 	</item>
 	
@@ -18,11 +11,6 @@
 	    android:bottom="1dp" >
 		<shape>
 	    	<solid android:color="@color/white" />
-	    	<stroke
-	    	    android:width="0.1dp"
-	    	    android:color="@color/divider" />
-	    	<corners
-	    	    android:topRightRadius="10dp" />
 		</shape>
 	</item>
 	

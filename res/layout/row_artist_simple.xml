@@ -14,10 +14,12 @@
         
         <TextView
 	        android:id="@+id/tv_artist_num"
-	        android:layout_width="25dp"
-	        android:textColor="@color/primary"
+	        android:layout_width="20dp"
+	        android:textColor="@color/sub"
+	        android:textSize="15sp"
 	        android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/margin_small"
+	        android:gravity="center"
+            android:layout_marginRight="@dimen/margin_small"
 	        style="@style/TextViewSubtitle" />
         
         <com.myandb.singsong.widget.RoundedImageView

@@ -110,7 +110,10 @@ public class GCMIntentService extends GCMBaseIntentService {
 		Notification notification = new Notification(activity);
 		User creator = activity.getCreator();
 		User currentUser = Authenticator.getUser();
-		String message = notification.getContent(currentUser);
+		String message = "";
+		for (CharSequence charSequence : notification.getContent(currentUser)) {
+			message += charSequence;
+		}
 		
 		prepareAndSubmitNotification(creator, message);
 		
@@ -153,7 +156,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 	private Bitmap getIconBitmap() {
 		BitmapBuilder builder = new BitmapBuilder();
 		int size = getNotificationIconSize();
-		return builder.setSource(getResources(), R.drawable.user_default)
+		return builder.setSource(getResources(), R.drawable.user_character)
 				.setOutputSize(size)
 				.enableCrop(true)
 				.build();

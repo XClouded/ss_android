@@ -1,9 +1,6 @@
 package com.myandb.singsong.adapter;
 
 import android.content.Context;
-import android.graphics.Typeface;
-import android.text.Spannable;
-import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +14,6 @@ import com.myandb.singsong.model.Activity;
 import com.myandb.singsong.model.Notification;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.secure.Authenticator;
-import com.myandb.singsong.util.Utility;
 
 public class NotificationAdapter extends HolderAdapter<Notification, NotificationAdapter.NotificationHolder> {
 	
@@ -41,10 +37,9 @@ public class NotificationAdapter extends HolderAdapter<Notification, Notificatio
 		final Activity activity = notification.getActivity();
 		final User activityCreator = activity.getCreator();
 		
-		Spannable nicknameSpan = new SpannableString(activityCreator.getNickname());
-		Utility.getStyleSpan(nicknameSpan, Typeface.BOLD);
-		viewHolder.tvNotificationContent.setText(nicknameSpan);
-		viewHolder.tvNotificationContent.append(notification.getContent(currentUser));
+		for (CharSequence charSequence : notification.getContent(currentUser)) {
+			viewHolder.tvNotificationContent.append(charSequence);
+		}
 		viewHolder.tvCreatedTime.setText(notification.getWorkedCreatedTime(getCurrentDate()));
 		
 		ImageHelper.displayPhoto(activityCreator, viewHolder.ivUserPhoto);

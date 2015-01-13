@@ -14,30 +14,29 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.TextView;
 
-public class EtcFragment extends BaseFragment {
+public class CommunityFragment extends BaseFragment {
 	
-	private TextView tvLinkNotice;
-	private TextView tvLinkFaq;
-	private TextView tvLinkFree;
-	private TextView tvLinkRequestMr;
-	private TextView tvLinkFacebook;
-	private TextView tvLinkPlayStore;
+	private View vLinkNotice;
+	private View vLinkFaq;
+	private View vLinkFree;
+	private View vLinkMr;
+	private View vLinkFacebook;
+	private View vLinkReview;
 
 	@Override
 	protected int getResourceId() {
-		return R.layout.fragment_etc;
+		return R.layout.fragment_community;
 	}
 
 	@Override
 	protected void onViewInflated(View view, LayoutInflater inflater) {
-		tvLinkNotice = (TextView) view.findViewById(R.id.tv_link_notice);
-		tvLinkFaq = (TextView) view.findViewById(R.id.tv_link_faq);
-		tvLinkFree = (TextView) view.findViewById(R.id.tv_link_free);
-		tvLinkRequestMr = (TextView) view.findViewById(R.id.tv_link_request_mr);
-		tvLinkFacebook = (TextView) view.findViewById(R.id.tv_link_facebook);
-		tvLinkPlayStore = (TextView) view.findViewById(R.id.tv_link_playstore);
+		vLinkNotice = view.findViewById(R.id.rl_link_notice);
+		vLinkFaq = view.findViewById(R.id.rl_link_faq);
+		vLinkFree = view.findViewById(R.id.rl_link_free);
+		vLinkMr = view.findViewById(R.id.rl_link_mr);
+		vLinkFacebook = view.findViewById(R.id.rl_link_facebook);
+		vLinkReview = view.findViewById(R.id.rl_link_review);
 	}
 
 	@Override
@@ -45,12 +44,12 @@ public class EtcFragment extends BaseFragment {
 
 	@Override
 	protected void setupViews(Bundle savedInstanceState) {
-		tvLinkNotice.setOnClickListener(webLinkClickListener);
-		tvLinkFaq.setOnClickListener(webLinkClickListener);
-		tvLinkFree.setOnClickListener(webLinkClickListener);
-		tvLinkRequestMr.setOnClickListener(webLinkClickListener);
-		tvLinkFacebook.setOnClickListener(facebookClickListener);
-		tvLinkPlayStore.setOnClickListener(storeClickListener);
+		vLinkNotice.setOnClickListener(webLinkClickListener);
+		vLinkFaq.setOnClickListener(webLinkClickListener);
+		vLinkFree.setOnClickListener(webLinkClickListener);
+		vLinkMr.setOnClickListener(webLinkClickListener);
+		vLinkFacebook.setOnClickListener(facebookClickListener);
+		vLinkReview.setOnClickListener(storeClickListener);
 	}
 	
 	private OnClickListener webLinkClickListener = new OnClickListener() {
@@ -64,22 +63,22 @@ public class EtcFragment extends BaseFragment {
 			UrlBuilder builder = new UrlBuilder().s("w").s("board").s("list");
 			
 			switch (v.getId()) {
-			case R.id.tv_link_notice:
+			case R.id.rl_link_notice:
 				builder.s("1");
 				bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, "공지사항");
 				break;
 				
-			case R.id.tv_link_faq:
+			case R.id.rl_link_faq:
 				builder.s("2");
 				bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, "FAQ");
 				break;
 				
-			case R.id.tv_link_free:
+			case R.id.rl_link_free:
 				builder.s("3");
 				bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, "콜라보 게시판");
 				break;
 				
-			case R.id.tv_link_request_mr:
+			case R.id.rl_link_mr:
 				builder.s("4");
 				bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, "MR 요청 게시판");
 				break;

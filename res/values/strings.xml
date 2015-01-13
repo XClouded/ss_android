@@ -48,7 +48,7 @@
     <string name="change">변경</string>
     <string name="comment">쓴 댓글</string>
     <string name="trash">휴지통</string>
-    <string name="more">더보기 ></string>
+    <string name="more">더보기〉</string>
     <string name="today_collabo_artist">투데이 콜라보 아티스트</string>
     <string name="candidate">신청하기</string>
     
@@ -103,7 +103,7 @@
     <string name="fragment_sing_title">부르기</string>
     <string name="fragment_listen_title">듣기</string>
     <string name="fragment_find_friends_title">친구 찾기</string>
-    <string name="fragment_setting_title">설정</string>
+    <string name="fragment_community_title">커뮤니티</string>
     <string name="fragment_invite_friends_title">친구 초대</string>
     
     <string name="_check">✓</string>

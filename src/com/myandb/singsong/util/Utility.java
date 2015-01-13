@@ -4,7 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
@@ -69,6 +71,12 @@ public class Utility {
 			spannable.setSpan(
 					new StyleSpan(style), 0, spannable.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		}
+	}
+	
+	public static Spannable getBoldSpan(CharSequence charSequence) {
+		Spannable boldSpan = new SpannableString(charSequence);
+		getStyleSpan(boldSpan, Typeface.BOLD);
+		return boldSpan;
 	}
 	
 	public static void getColorSpan(Spannable spannable, String color) {

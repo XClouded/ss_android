@@ -72,7 +72,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@id/layout_album_photo"
-            android:layout_marginBottom="@dimen/margin" >
+            android:layout_marginTop="@dimen/margin_tiny" >
 	        
 	        <com.myandb.singsong.widget.RoundedImageView
 		        android:id="@+id/iv_parent_user_photo"
@@ -101,8 +101,9 @@
             android:id="@+id/rl_partner_wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/layout_creator"
-            android:layout_toLeftOf="@id/layout_album_photo" >
+            android:layout_alignBottom="@id/layout_album_photo"
+            android:layout_toLeftOf="@id/layout_album_photo"
+            android:layout_marginBottom="@dimen/margin_tiny" >
 	        
 	        <com.myandb.singsong.widget.RoundedImageView
 		        android:id="@+id/iv_this_user_photo"

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
-    <color name="primary">#90d5ea</color>
-    <color name="primary_dark">#83c4d6</color>
-    <color name="primary_darker">#7cb9cb</color>
+    <color name="primary">#6ecde1</color>
+    <color name="primary_dark">#61aab9</color>
     <color name="primary_bright">#c5eef9</color>
-    <color name="primary_trans">#E985c2dd</color>
+    <color name="primary_trans">#E96ecde1</color>
     
-    <color name="sub">#b481ea</color>
+    <color name="sub">#f98e5f</color>
+    <color name="sub_dark">#d67c5c</color>
     
     <color name="row_bg_primary">#f0f0f0</color>
     <color name="row_bg_sub">#ffffff</color>
@@ -37,10 +37,10 @@
     <color name="font_white">#cacaca</color>
     <color name="font_highlight">#6ab8d3</color>
     <color name="font_noti_num">#ecddd6</color>
-    <color name="font_male_active">#00e1ff</color>
-    <color name="font_male_inactive">#1c6871</color>
-    <color name="font_female_active">#ff1268</color>
-    <color name="font_female_inactive">#ad3d64</color>
+    <color name="font_male_active">#6ecde1</color>
+    <color name="font_male_inactive">#61aab9</color>
+    <color name="font_female_active">#f98e5f</color>
+    <color name="font_female_inactive">#d67c5c</color>
     <color name="font_dual_active">#ffffff</color>
     <color name="font_dual_inactive">#666666</color>
     

@@ -10,7 +10,7 @@
     <style name="ImageViewUser" parent="@style/ImageViewBase">
         <item name="android:layout_width">@dimen/photo</item>
         <item name="android:layout_height">@dimen/photo</item>
-        <item name="android:src">@drawable/user_default</item>
+        <item name="android:src">@drawable/user_character</item>
         <item name="oval">true</item>
         <item name="border_width">0.1dp</item>
         <item name="border_color">@color/divider</item>

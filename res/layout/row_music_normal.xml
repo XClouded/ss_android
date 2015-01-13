@@ -6,11 +6,13 @@
     
     <TextView
         android:id="@+id/tv_music_num"
-        android:layout_width="25dp"
-        android:textColor="@color/primary"
+        android:layout_width="20dp"
+        android:textColor="@color/sub"
         android:textStyle="bold"
-        android:textSize="@dimen/text_subtitle"
+        android:textSize="15sp"
+        android:gravity="center"
         android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/margin_small"
         style="@style/TextViewBase" />
     
     <com.myandb.singsong.widget.RoundedImageView

@@ -50,7 +50,7 @@ public class ImageHelper {
 				imageLoader.displayImage(url, imageView, listener);
 			}
 		} else {
-			imageView.setImageResource(R.drawable.user_default);
+			imageView.setImageResource(R.drawable.user_character);
 		}
 	}
 	
