@@ -22,13 +22,13 @@ public class UpActivity extends BaseActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		
 		isFullScreen = getIntent().getBooleanExtra(EXTRA_FULL_SCREEN, false);
 		shouldStop = getIntent().getBooleanExtra(EXTRA_SHOULD_STOP, false);
 		if (isFullScreen) {
 			setWindowFullScreen();
 		}
+		
+		super.onCreate(savedInstanceState);
 		
 		try {
 			ActionBar actionBar = getSupportActionBar();

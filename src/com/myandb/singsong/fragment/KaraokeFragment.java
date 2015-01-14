@@ -15,7 +15,6 @@ import com.myandb.singsong.audio.Recorder;
 import com.myandb.singsong.audio.Track;
 import com.myandb.singsong.dialog.HeadsetDialog;
 import com.myandb.singsong.dialog.LoadingDialog;
-import com.myandb.singsong.dialog.SelectPartDialog;
 import com.myandb.singsong.event.OnCompleteListener;
 import com.myandb.singsong.event.OnCompleteWeakListener;
 import com.myandb.singsong.event.OnProgressListener;
@@ -68,6 +67,7 @@ public class KaraokeFragment extends BaseFragment {
 	
 	public static final String EXTRA_MUSIC = "music";
 	public static final String EXTRA_PARENT_SONG = "parent_song";
+	public static final String EXTRA_PART = "part";
 	public static final int REQUEST_CODE_SETTING = 200;
 	
 	private static final String FILE_MUSIC_OGG = "music.ogg";
@@ -97,7 +97,6 @@ public class KaraokeFragment extends BaseFragment {
 	
 	private HeadsetDialog headsetDialog;
 	private LoadingDialog loadingDialog;
-	private SelectPartDialog selectorDialog;
 	
 	private TextView tvMusicTitle;
 	private TextView tvSingerName;
@@ -137,6 +136,7 @@ public class KaraokeFragment extends BaseFragment {
 		
 		if (musicInJson != null) {
 			music = gson.fromJson(musicInJson, Music.class);
+			lyricPart = bundle.getInt(EXTRA_PART);
 		} else if (songInJson != null) {
 			parentSong = gson.fromJson(songInJson, Song.class);
 			music = parentSong.getMusic();
@@ -282,12 +282,6 @@ public class KaraokeFragment extends BaseFragment {
 	private void initializeDialogs() {
 		headsetDialog = new HeadsetDialog();
 		loadingDialog = new LoadingDialog();
-		
-		Bundle bundle = new Bundle();
-		bundle.putString(SelectPartDialog.EXTRA_PART_MALE, music.getMalePart());
-		bundle.putString(SelectPartDialog.EXTRA_PART_FEMALE, music.getFemalePart());
-		selectorDialog = new SelectPartDialog();
-		selectorDialog.setArguments(bundle);
 	}
 	
 	private void downloadDatas() {
@@ -484,12 +478,7 @@ public class KaraokeFragment extends BaseFragment {
 			@Override
 			public void onClick(View v) {
 				loadingDialog.dismiss();
-				
-				if (isSolo()) {
-					selectorDialog.show(getChildFragmentManager(), "");
-				} else {
-					prepareRecording();
-				}
+				prepareRecording();
 			}
 			
 		});
@@ -587,6 +576,7 @@ public class KaraokeFragment extends BaseFragment {
 		displayProfile(currentUser, tvThisUserNickname, ivThisUserPhoto);
 		if (isSolo()) {
 			vParentUserWrapper.setVisibility(View.GONE);
+			setThisUserPart(lyricPart);
 		} else {
 			displayProfile(parentSong.getCreator(), tvParentUserNickname, ivParentUserPhoto);
 			displayPart(music, parentSong.getLyricPart(), tvParentUserPart, ivParentUserBackground);
@@ -651,9 +641,9 @@ public class KaraokeFragment extends BaseFragment {
 				photoBackground.setImageResource(R.drawable.circle_primary);
 			} else if (lyricPart == Music.PART_FEMALE) {
 				tvPart.setText(music.getFemalePart());
-				tvPart.setTextColor(getResources().getColor(R.color.red_dark));
+				tvPart.setTextColor(getResources().getColor(R.color.sub));
 				
-				photoBackground.setImageResource(R.drawable.circle_red);
+				photoBackground.setImageResource(R.drawable.circle_sub);
 			}
 		}
 	}

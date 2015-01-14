@@ -2,7 +2,6 @@ package com.myandb.singsong.fragment;
 
 import org.json.JSONArray;
 
-import com.google.gson.Gson;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.RootActivity;
@@ -11,8 +10,6 @@ import com.myandb.singsong.adapter.ArtistAdapter;
 import com.myandb.singsong.adapter.MusicAdapter;
 import com.myandb.singsong.adapter.SimpleSongAdapter;
 import com.myandb.singsong.adapter.MusicAdapter.LayoutType;
-import com.myandb.singsong.dialog.BaseDialog;
-import com.myandb.singsong.dialog.SelectRecordModeDialog;
 import com.myandb.singsong.model.Category;
 import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Song;
@@ -21,7 +18,6 @@ import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.net.GradualLoader.OnLoadCompleteListener;
 import com.myandb.singsong.pager.PagerWrappingAdapter;
 import com.myandb.singsong.secure.Authenticator;
-import com.myandb.singsong.util.Utility;
 import com.myandb.singsong.widget.HorizontalListView;
 
 import android.app.Activity;
@@ -260,12 +256,13 @@ public class HomeFragment extends BaseFragment {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 			final Music music = (Music) parent.getItemAtPosition(position);
-			Gson gson = Utility.getGsonInstance();
 			Bundle bundle = new Bundle();
-			bundle.putString(SelectRecordModeDialog.EXTRA_MUSIC, gson.toJson(music));
-			BaseDialog dialog = new SelectRecordModeDialog();
-			dialog.setArguments(bundle);
-			dialog.show(getChildFragmentManager(), "");
+			bundle.putString(SelectRecordModeFragment.EXTRA_MUSIC, music.toString());
+			Intent intent = new Intent(getActivity(), UpActivity.class);
+			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, SelectRecordModeFragment.class.getName());
+			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
+			intent.putExtra(UpActivity.EXTRA_FULL_SCREEN, true);
+			startFragment(intent);
 		}
 	};
 

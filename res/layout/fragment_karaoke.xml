@@ -99,7 +99,7 @@
 		    android:id="@+id/tv_singer_name"
 		    android:layout_below="@id/tv_music_title"
 		    android:layout_toLeftOf="@id/tv_decode_progress"
-		    android:textColor="@color/font_grey"
+		    android:textColor="@color/font_white"
 		    style="@style/TextViewOverflowableMarqueeLessImportant" />
         
     </RelativeLayout>
@@ -191,7 +191,7 @@
 	        
 	        <TextView
 	            android:id="@+id/tv_parent_user_part"
-	            android:textColor="@color/red_dark"
+	            android:textColor="@color/sub"
 	            style="@style/TextViewEllipsize" />
             
         </LinearLayout>
