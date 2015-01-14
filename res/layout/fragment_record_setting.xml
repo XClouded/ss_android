@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:padding="@dimen/margin_tiny"
+        android:padding="@dimen/margin"
         android:layout_marginTop="@dimen/margin_small"
         android:layout_marginBottom="@dimen/margin"
         android:baselineAligned="false"
@@ -21,12 +21,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginRight="@dimen/margin_small" >
+            android:layout_marginRight="@dimen/margin_big" >
             
             <com.myandb.singsong.widget.SquareImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/circle_grey_selector" />
+                android:background="@drawable/circle_sub_selector" />
             
             <LinearLayout
                 android:layout_width="match_parent"
@@ -36,15 +36,15 @@
                 android:orientation="vertical" >
                 
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginBottom="@dimen/margin_tiny"
-                    android:src="@drawable/ic_restore" />
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginBottom="@dimen/margin_small"
+                    android:src="@drawable/ic_repeat" />
                 
                 <TextView
                     android:gravity="center"
                     android:text="다시하기"
-                    android:textColor="@color/font_white"
+                    android:textColor="@color/white"
                     style="@style/TextViewBase" />
                 
             </LinearLayout>
@@ -56,7 +56,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginRight="@dimen/margin_small" >
+            android:layout_marginRight="@dimen/margin_big" >
             
             <com.myandb.singsong.widget.SquareImageView
                 android:layout_width="match_parent"
@@ -71,9 +71,9 @@
                 android:orientation="vertical" >
                 
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginBottom="@dimen/margin_tiny"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginBottom="@dimen/margin_small"
                     android:src="@drawable/ic_upload" />
                 
                 <TextView
@@ -105,15 +105,15 @@
                 android:orientation="vertical" >
                 
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginBottom="@dimen/margin_tiny"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginBottom="@dimen/margin_small"
                     android:src="@drawable/ic_exit" />
                 
                 <TextView
                     android:gravity="center"
                     android:text="@string/exit"
-                    android:textColor="@color/font_white"
+                    android:textColor="@color/white"
                     style="@style/TextViewBase" />
                 
             </LinearLayout>
@@ -142,9 +142,7 @@
 	            
 		        <TextView
 		            android:text="미리듣기"
-		            android:layout_marginLeft="@dimen/margin_small"
-		            android:paddingTop="@dimen/margin_tiny"
-		            android:paddingBottom="@dimen/margin_tiny"
+		            android:padding="@dimen/margin_small"
 		            android:textColor="@color/font_default"
 		            style="@style/TextViewLessImportant" />
 		        
@@ -153,25 +151,26 @@
 		        
 		        <RelativeLayout
 		            android:layout_width="match_parent"
-		            android:layout_height="wrap_content" >
+		            android:layout_height="wrap_content"
+		            android:padding="@dimen/margin" >
 		            
 			        <ImageView
 			            android:id="@+id/iv_play_control"
-			            android:layout_width="50dp"
-			            android:layout_height="50dp"
-			            android:padding="@dimen/margin"
-			            android:src="@drawable/ic_play_basic"
-			            android:scaleType="centerCrop" />
+			            android:layout_width="32dp"
+			            android:layout_height="32dp"
+			            android:layout_marginRight="@dimen/margin"
+			            style="@style/ImageViewBase"
+			            android:src="@drawable/ic_play_basic" />
 			        
 			        <SeekBar
 			            android:id="@+id/sb_play"
 			            android:layout_width="match_parent"
 			            android:layout_height="wrap_content"
 			            android:layout_toRightOf="@id/iv_play_control"
-			            android:paddingTop="5dp"
-			            android:paddingBottom="5dp"
-			            android:paddingLeft="18dp"
-			            android:paddingRight="18dp"
+			            android:paddingTop="@dimen/margin_tiny"
+			            android:paddingBottom="@dimen/margin_tiny"
+			            android:paddingLeft="@dimen/margin_small"
+			            android:paddingRight="@dimen/margin_small"
 			            android:minHeight="5dp"
 			            android:maxHeight="5dp"
 			            android:layout_centerVertical="true"
@@ -193,9 +192,7 @@
 		        <TextView
 		            android:text="싱크조절"
 		            android:textColor="@color/font_default"
-		            android:layout_marginLeft="@dimen/margin_small"
-		            android:paddingTop="@dimen/margin_tiny"
-		            android:paddingBottom="@dimen/margin_tiny"
+		            android:padding="@dimen/margin_small"
 		            style="@style/TextViewLessImportant" />
 		        
 		        <ImageView
@@ -203,15 +200,15 @@
 		        
 		        <RelativeLayout
 				    android:layout_width="match_parent"
-				    android:layout_height="wrap_content" >
+				    android:layout_height="wrap_content"
+				    android:padding="@dimen/margin" >
 				    
 				    <ImageView
 			            android:id="@+id/iv_sync_back"
-			            android:layout_width="50dp"
-			            android:layout_height="50dp"
-			            android:padding="@dimen/margin"
-			            android:src="@drawable/ic_arrow_left"
-			            android:scaleType="centerCrop" />
+			            android:layout_width="32dp"
+			            android:layout_height="32dp"
+			            style="@style/ImageViewBase"
+			            android:src="@drawable/ic_arrow_left" />
 				    
 				    <TextView
 				        android:id="@+id/tv_sync_value"
@@ -220,19 +217,18 @@
 				        style="@style/TextViewBase" />
 				    
 				    <TextView
-				        android:text="s"
+				        android:text="초"
 				        android:layout_toRightOf="@id/tv_sync_value"
 				        android:layout_centerVertical="true"
 				        style="@style/TextViewBase" />
 				    
 				    <ImageView
 				        android:id="@+id/iv_sync_forward"
-				        android:layout_width="50dp"
-			            android:layout_height="50dp"
-			            android:padding="@dimen/margin"
+				        android:layout_width="32dp"
+			            android:layout_height="32dp"
+			            style="@style/ImageViewBase"
 			            android:src="@drawable/ic_arrow_right"
-			            android:layout_alignParentRight="true"
-			            android:scaleType="centerCrop" />
+			            android:layout_alignParentRight="true" />
 				    
 				</RelativeLayout>
 		        
@@ -249,9 +245,7 @@
 		        <TextView
 		            android:text="목소리 볼륨조절"
 		            android:textColor="@color/font_default"
-		            android:layout_marginLeft="@dimen/margin_small"
-		            android:paddingTop="@dimen/margin_tiny"
-		            android:paddingBottom="@dimen/margin_tiny"
+		            android:padding="@dimen/margin_small"
 		            style="@style/TextViewLessImportant" />
 		        
 		        <ImageView
@@ -264,18 +258,18 @@
 				    
 				    <ImageView
 				        android:id="@+id/icon_volume"
-			            android:layout_width="25dp"
-			            android:layout_height="25dp"
+			            android:layout_width="32dp"
+			            android:layout_height="32dp"
 			            android:layout_marginRight="@dimen/margin"
-			            android:src="@drawable/ic_arrow_left"
-			            android:scaleType="centerCrop" />
+			            android:src="@drawable/ic_volume"
+			            style="@style/ImageViewBase" />
 				    
 				    <TextView
 				        android:id="@+id/tv_volume_value"
 				        android:layout_alignParentRight="true"
 				        android:text="100%"
 				        android:layout_centerVertical="true"
-				        android:layout_marginLeft="@dimen/margin"
+				        android:layout_marginLeft="@dimen/margin_small"
 				        style="@style/TextViewBase" />
 				    
 				    <SeekBar
@@ -284,10 +278,10 @@
 			            android:layout_height="wrap_content"
 			            android:layout_toRightOf="@id/icon_volume"
 			            android:layout_toLeftOf="@id/tv_volume_value"
-			            android:paddingTop="5dp"
-			            android:paddingBottom="5dp"
-			            android:paddingLeft="18dp"
-			            android:paddingRight="18dp"
+			            android:paddingTop="@dimen/margin_tiny"
+			            android:paddingBottom="@dimen/margin_tiny"
+			            android:paddingLeft="@dimen/margin_small"
+			            android:paddingRight="@dimen/margin_small"
 			            android:minHeight="5dp"
 			            android:maxHeight="5dp"
 			            android:layout_centerVertical="true"
@@ -308,9 +302,7 @@
 		        <TextView
 		            android:text="한마디&amp;커버사진 등록"
 		            android:textColor="@color/font_default"
-		            android:layout_marginLeft="@dimen/margin_small"
-		            android:paddingTop="@dimen/margin_tiny"
-		            android:paddingBottom="@dimen/margin_tiny"
+		            android:padding="@dimen/margin_small"
 		            style="@style/TextViewLessImportant" />
 		        
 		        <ImageView
@@ -355,9 +347,7 @@
 		                android:layout_marginTop="@dimen/margin_small"
 		                android:background="@drawable/button_alert_selector"
 		                android:padding="@dimen/margin_tiny"
-		                android:textColor="@color/font_white"
 		                android:textSize="@dimen/text_hint"
-		                android:textStyle="bold"
 		                android:text="@string/delete"
 		                style="@style/ButtonBase" />
 		            

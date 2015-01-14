@@ -34,6 +34,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnTouchListener;
+import android.widget.FrameLayout;
 
 public abstract class BaseActivity extends ActionBarActivity {
 	
@@ -52,6 +53,20 @@ public abstract class BaseActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		handler = new Handler(Looper.getMainLooper());
+		setHomeButtonRightMargin(0);
+	}
+	
+	@SuppressLint("InlinedApi")
+	private void setHomeButtonRightMargin(int pixel) {
+		View home = findViewById(android.R.id.home);
+		if (home != null) {
+			android.view.ViewGroup.LayoutParams layoutParams = home.getLayoutParams();
+			if (layoutParams instanceof FrameLayout.LayoutParams) {
+				FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) layoutParams;
+				lp.rightMargin = pixel;
+				home.setLayoutParams(lp);
+			}
+		}
 	}
 
 	public void changePage(Intent intent) {

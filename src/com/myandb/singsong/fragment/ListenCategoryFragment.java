@@ -20,7 +20,6 @@ public class ListenCategoryFragment extends ListFragment {
 		for (int i = 1; i < 10; i++) {
 			cgs.add(new Category(i));
 		}
-//		adapter.addItem(new Category(100, "엔터테인먼트", R.drawable.img_entertainment));
 		
 		SongCategoryAdapter adapter = new SongCategoryAdapter();
 		adapter.addAll(cgs);

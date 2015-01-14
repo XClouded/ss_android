@@ -18,7 +18,6 @@ import com.myandb.singsong.service.PlayerService;
 import com.myandb.singsong.util.Utility;
 import com.myandb.singsong.widget.SlidingPlayerLayout;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
@@ -29,8 +28,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentManager.OnBackStackChangedListener;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.FrameLayout;
 
 public class RootActivity extends BaseActivity {
 	
@@ -86,26 +83,12 @@ public class RootActivity extends BaseActivity {
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setHomeButtonEnabled(true);
 		actionBar.setDisplayHomeAsUpEnabled(true);
-		setHomeButtonRightMargin(0);
 		
 		FragmentManager manager = getSupportFragmentManager();
 		manager.addOnBackStackChangedListener(onBackStackChangedListener);
 		
 		homeDrawable = getResources().getDrawable(R.drawable.ic_action_drawer);
 		backDrawable = getResources().getDrawable(R.drawable.ic_action_back);
-	}
-	
-	@SuppressLint("InlinedApi")
-	private void setHomeButtonRightMargin(int pixel) {
-		View home = findViewById(android.R.id.home);
-		if (home != null) {
-			android.view.ViewGroup.LayoutParams layoutParams = home.getLayoutParams();
-			if (layoutParams instanceof FrameLayout.LayoutParams) {
-				FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) layoutParams;
-				lp.rightMargin = pixel;
-				home.setLayoutParams(lp);
-			}
-		}
 	}
 	
 	private OnBackStackChangedListener onBackStackChangedListener = new OnBackStackChangedListener() {

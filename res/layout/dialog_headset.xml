@@ -6,8 +6,8 @@
     android:gravity="center" >
     
     <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:src="@drawable/ic_menu_listen"
         style="@style/ImageViewBase" />
     

@@ -4,6 +4,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 import com.astuetz.PagerSlidingTabStrip;
+import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 
 import android.app.Activity;
@@ -22,7 +23,9 @@ public class FragmentPagerFragment extends BaseFragment {
 	public static final String EXTRA_ITEM_NUM = "item_num";
 
 	private ViewGroup vgPagerContainer;
+	private ViewGroup headerContainer;
 	private ViewPager viewPager;
+	private View headerView;
 	private PagerSlidingTabStrip tabStrip;
 	private FragmentPagerAdapter pagerAdapter;
 	private int launchItemNum;
@@ -69,6 +72,15 @@ public class FragmentPagerFragment extends BaseFragment {
 		vgPagerContainer = (ViewGroup) view.findViewById(R.id.viewpager_container);
 		viewPager = (ViewPager) view.findViewById(R.id.viewpager);
 		tabStrip = (PagerSlidingTabStrip) view.findViewById(R.id.tab_strip);
+		headerContainer = (ViewGroup) view.findViewById(R.id.fl_pager_header);
+		
+		if (getHeaderViewResId() != App.INVALID_RESOURCE_ID) {
+			headerContainer.setVisibility(View.VISIBLE);
+			headerView = inflater.inflate(getHeaderViewResId(), headerContainer, false);
+			headerContainer.addView(headerView);
+		} else {
+			headerContainer.setVisibility(View.GONE);
+		}
 	}
 	
 	@Override
@@ -104,6 +116,10 @@ public class FragmentPagerFragment extends BaseFragment {
 		tabStrip.setViewPager(viewPager);
 	}
 	
+	public View getHeaderView() {
+		return headerView;
+	}
+	
 	public ViewGroup getPagerContainer() {
 		return vgPagerContainer;
 	}
@@ -114,6 +130,10 @@ public class FragmentPagerFragment extends BaseFragment {
 	
 	public PagerSlidingTabStrip getTab() {
 		return tabStrip;
+	}
+	
+	protected int getHeaderViewResId() {
+		return App.INVALID_RESOURCE_ID;
 	}
 
 }

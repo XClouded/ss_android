@@ -42,17 +42,17 @@ public class Category extends Model {
 			
 		case 7:
 			this.title = "트로트";
-			this.imageResourceId = R.drawable.img_ost;
+			this.imageResourceId = R.drawable.img_trot;
 			break;
 			
 		case 8:
 			this.title = "포크";
-			this.imageResourceId = R.drawable.img_ost;
+			this.imageResourceId = R.drawable.img_folk;
 			break;
 			
 		case 9:
 			this.title = "인디음악";
-			this.imageResourceId = R.drawable.img_ost;
+			this.imageResourceId = R.drawable.img_indie;
 			break;
 
 		default:

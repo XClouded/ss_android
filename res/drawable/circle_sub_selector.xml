@@ -3,14 +3,15 @@
     
     <item android:state_pressed="true">
         <shape android:shape="oval" >
-			<solid android:color="@color/grey" />
+			<solid android:color="@color/sub_dark" />
 		</shape>
     </item>
-    
+        
+        
     <item>
         <shape android:shape="oval" >
-			<solid android:color="@color/grey_light" />
+			<solid android:color="@color/sub" />
 		</shape>
     </item>
-    
+        
 </selector>

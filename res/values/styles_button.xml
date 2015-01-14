@@ -30,7 +30,7 @@
     </style>
     
     <style name="ButtonDark" parent="@style/ButtonBase">
-        <item name="android:textColor">@color/font_white</item>
+        <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">bold</item>
         <item name="android:background">@drawable/button_grey_selector</item>
     </style>

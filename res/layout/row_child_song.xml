@@ -3,12 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res/com.myandb.singsong"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/row_selector" >
+    android:background="@drawable/card_selector"
+    android:padding="@dimen/margin" >
     
     <com.myandb.singsong.widget.RoundedImageView
 	    android:id="@+id/iv_parent_user_photo"
 	    android:layout_marginRight="@dimen/margin_small"
-	    style="@style/ImageViewUserSmall" />
+	    style="@style/ImageViewUser" />
     
     <TextView
         android:id="@+id/tv_song_created_time"
@@ -21,8 +22,10 @@
         android:layout_width="match_parent"
         android:layout_toRightOf="@id/iv_parent_user_photo"
         android:layout_toLeftOf="@id/tv_song_created_time"
-        android:textStyle="bold"
-        style="@style/TextViewMarquee" />
+        android:textColor="@color/font_default"
+        android:layout_marginLeft="0dp"
+        android:gravity="left"
+        style="@style/TextViewOverflowableImportant" />
     
     <TextView
         android:id="@+id/tv_parent_song_message"

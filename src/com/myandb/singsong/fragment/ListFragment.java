@@ -125,13 +125,16 @@ public class ListFragment extends BaseFragment {
 		}
 		
 		if (getFixedHeaderViewResId() != App.INVALID_RESOURCE_ID) {
-			fixedHeaderView = inflater.inflate(getFixedHeaderViewResId(), fixedHeaderContainer, false);
 			fixedHeaderContainer.setVisibility(View.VISIBLE);
+			fixedHeaderView = inflater.inflate(getFixedHeaderViewResId(), fixedHeaderContainer, false);
 			fixedHeaderContainer.addView(fixedHeaderView);
 			enableFadingActionBar = false;
 		} else {
 			fixedHeaderContainer.setVisibility(View.GONE);
 		}
+		
+		View footer = inflater.inflate(R.layout.footer, listView, false);
+		listView.addFooterView(footer);
 	}
 
 	@Override
@@ -179,6 +182,7 @@ public class ListFragment extends BaseFragment {
 			listView.setDividerHeight(height);
 			if (listHeaderView == null && fixedHeaderView == null) {
 				listView.setPadding(listView.getPaddingLeft(), padding, listView.getPaddingRight(), padding);
+				listView.setClipToPadding(false);
 			}
 		}
 	}
