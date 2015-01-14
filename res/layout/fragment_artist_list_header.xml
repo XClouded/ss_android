@@ -7,7 +7,6 @@
     
     <TextView
         android:text="@string/today_collabo_artist"
-        android:layout_marginLeft="@dimen/margin"
         android:layout_marginRight="@dimen/margin"
         style="@style/TextViewSubtitle" />
     
@@ -19,7 +18,6 @@
     
     <TextView
         android:text="역대 콜라보 아티스트"
-        android:layout_marginLeft="@dimen/margin"
         android:layout_marginRight="@dimen/margin"
         style="@style/TextViewSubtitle" />
 

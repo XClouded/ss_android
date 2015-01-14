@@ -49,6 +49,7 @@ public class ListenPagerAdapter extends FragmentPagerAdapter {
 		bundle.putString(ListFragment.EXTRA_URL_SEGMENT, segment);
 		bundle.putBundle(ListFragment.EXTRA_QUERY_PARAMS, params);
 		bundle.putString(ListFragment.EXTRA_ADAPTER_NAME, CollaboratedAdapter.class.getName());
+		bundle.putBoolean(ListFragment.EXTRA_VERTICAL_PADDING, true);
 		fragment.setArguments(bundle);
 		return fragment;
 	}

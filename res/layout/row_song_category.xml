@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="52dp"
-    android:background="@color/app_bg" >
+    android:layout_height="52dp" >
     
     <ImageView
         android:layout_width="52dp"
         android:layout_height="match_parent"
-        android:src="@drawable/circle_primary"
+        android:src="@drawable/circle_primary_old"
         android:layout_alignParentLeft="true" />
     
     <ImageView
         android:layout_width="52dp"
         android:layout_height="match_parent"
-        android:src="@drawable/circle_primary"
+        android:src="@drawable/circle_primary_old"
         android:layout_alignParentRight="true" />
     
     <RelativeLayout
@@ -25,7 +24,7 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@color/primary" />
+            android:src="@color/primary_old" />
         
         <ImageView
             android:id="@+id/iv_category_image"

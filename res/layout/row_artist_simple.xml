@@ -1,67 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="@dimen/margin"
-    android:paddingLeft="@dimen/margin"
-    android:paddingRight="@dimen/margin" >
-    
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/margin_small"
-        android:background="@drawable/card_selector" >
-        
-        <TextView
-	        android:id="@+id/tv_artist_num"
-	        android:layout_width="20dp"
-	        android:textColor="@color/sub"
-	        android:textSize="15sp"
-	        android:layout_centerVertical="true"
-	        android:gravity="center"
-            android:layout_marginRight="@dimen/margin_small"
-	        style="@style/TextViewSubtitle" />
-        
-        <com.myandb.singsong.widget.RoundedImageView
-            android:id="@+id/iv_artist_photo"
-            android:layout_marginTop="@dimen/margin_tiny"
-            android:layout_marginBottom="@dimen/margin_small"
-            android:layout_toRightOf="@id/tv_artist_num"
-	       	style="@style/ImageViewUser" />
-        
-        <TextView
-	        android:id="@+id/tv_artist_user_nickname"
-	        android:layout_toRightOf="@id/iv_artist_photo"
-	        android:layout_alignTop="@id/iv_artist_photo"
-	        android:layout_marginBottom="@dimen/margin_tiny"
-	        android:gravity="left"
-	        android:textStyle="bold"
-	        style="@style/TextViewOverflowableLessImportant" />
-        
-        <TextView
-	        android:id="@+id/tv_artist_nickname"
-	        android:layout_toRightOf="@id/iv_artist_photo"
-	        android:layout_below="@id/tv_artist_user_nickname"
-	        android:gravity="left"
-	        style="@style/TextViewOverflowableLessImportant" />
-        
-        <ImageView
-            android:id="@+id/icon_follower"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-	        android:layout_alignLeft="@id/tv_artist_nickname"
-	        android:layout_below="@id/tv_artist_nickname"
-	        android:layout_marginRight="@dimen/margin_tiny"
-            android:src="@drawable/ic_user_mini"
-            style="@style/ImageViewBase" />
-        
-        <TextView
-	        android:id="@+id/tv_artist_followers_num"
-	        android:textSize="@dimen/text_hint"
-	        android:layout_toRightOf="@id/icon_follower"
-	        android:layout_below="@id/tv_artist_nickname"
-	        style="@style/TextViewLessImportant" />
-        
-    </RelativeLayout>
+    android:background="@drawable/card_selector"
+    android:padding="@dimen/margin_small"
+    android:layout_marginBottom="@dimen/margin" >
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/tv_artist_num"
+        style="@style/TextViewSubtitle"
+        android:layout_width="20dp"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/margin_small"
+        android:gravity="center"
+        android:textColor="@color/sub"
+        android:textSize="15sp" />
+
+    <com.myandb.singsong.widget.RoundedImageView
+        android:id="@+id/iv_artist_photo"
+        style="@style/ImageViewUser"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_tiny"
+        android:layout_toRightOf="@id/tv_artist_num" />
+
+    <TextView
+        android:id="@+id/tv_artist_user_nickname"
+        style="@style/TextViewOverflowableLessImportant"
+        android:layout_alignTop="@id/iv_artist_photo"
+        android:layout_marginBottom="@dimen/margin_tiny"
+        android:layout_toRightOf="@id/iv_artist_photo"
+        android:gravity="left"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_artist_nickname"
+        style="@style/TextViewOverflowableLessImportant"
+        android:layout_below="@id/tv_artist_user_nickname"
+        android:layout_toRightOf="@id/iv_artist_photo"
+        android:gravity="left" />
+
+    <ImageView
+        android:id="@+id/icon_follower"
+        style="@style/ImageViewBase"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_alignLeft="@id/tv_artist_nickname"
+        android:layout_below="@id/tv_artist_nickname"
+        android:layout_marginRight="@dimen/margin_tiny"
+        android:src="@drawable/ic_user_mini" />
+
+    <TextView
+        android:id="@+id/tv_artist_followers_num"
+        style="@style/TextViewLessImportant"
+        android:layout_below="@id/tv_artist_nickname"
+        android:layout_toRightOf="@id/icon_follower"
+        android:textSize="@dimen/text_hint" />
+
+</RelativeLayout>

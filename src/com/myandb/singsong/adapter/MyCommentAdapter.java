@@ -39,10 +39,20 @@ public class MyCommentAdapter extends HolderAdapter<SongComment, MyCommentAdapte
 		viewHolder.tvMusicInfo.setText(music.getSingerName());
 		viewHolder.tvMusicInfo.append(" - ");
 		viewHolder.tvMusicInfo.append(music.getTitle());
+		viewHolder.tvUserInfo.setText(getUserInfo(song));
 		viewHolder.view.setOnClickListener(song.getPlayClickListener());
 		
 		ImageHelper.displayPhoto(user, viewHolder.ivCommentUserPhoto);
 		ImageHelper.displayPhoto(music.getAlbumPhotoUrl(), viewHolder.ivAlbumPhoto);
+	}
+	
+	private String getUserInfo(Song song) {
+		String info = song.getCreator().getNickname();
+		if (!song.isRoot()) {
+			info += " X ";
+			info += song.getParentUser().getNickname();
+		}
+		return info;
 	}
 	
 	public static final class CommentHolder extends ViewHolder {
@@ -51,6 +61,7 @@ public class MyCommentAdapter extends HolderAdapter<SongComment, MyCommentAdapte
 		public TextView tvCommentCreatedTime;
 		public TextView tvCommentContent;
 		public TextView tvMusicInfo;
+		public TextView tvUserInfo;
 		public ImageView ivAlbumPhoto;
 		public ImageView ivCommentUserPhoto;
 		
@@ -61,6 +72,7 @@ public class MyCommentAdapter extends HolderAdapter<SongComment, MyCommentAdapte
 			tvCommentContent = (TextView) view.findViewById(R.id.tv_comment_content);
 			tvCommentCreatedTime = (TextView) view.findViewById(R.id.tv_comment_created);
 			tvMusicInfo = (TextView) view.findViewById(R.id.tv_music_info);
+			tvUserInfo = (TextView) view.findViewById(R.id.tv_user_info);
 			ivAlbumPhoto = (ImageView) view.findViewById(R.id.iv_album_photo);
 			ivCommentUserPhoto = (ImageView) view.findViewById(R.id.iv_comment_user_photo);
 		}

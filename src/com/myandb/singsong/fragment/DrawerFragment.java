@@ -76,6 +76,7 @@ public class DrawerFragment extends BaseFragment {
 	private GlobalMenu makeArtistMenu() {
 		Bundle bundle = new Bundle();
 		bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_artist_list_title));
+		bundle.putBoolean(ListFragment.EXTRA_HORIZONTAL_PADDING, true);
 		Intent intent = new Intent(getActivity(), RootActivity.class);
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, ArtistListFragment.class.getName());
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
@@ -150,6 +151,7 @@ public class DrawerFragment extends BaseFragment {
 			String userInJson = Authenticator.getUserInJson();
 			Bundle bundle = new Bundle();
 			bundle.putString(UserHomeFragment.EXTRA_THIS_USER, userInJson);
+			bundle.putBoolean(ListFragment.EXTRA_VERTICAL_PADDING, true);
 			
 			Intent intent = new Intent(getActivity(), RootActivity.class);
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, UserHomeFragment.class.getName());

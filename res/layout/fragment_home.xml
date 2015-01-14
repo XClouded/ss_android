@@ -34,6 +34,8 @@
             android:id="@+id/fl_today_collabo_artist_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/margin"
+            android:paddingRight="@dimen/margin"
             android:layout_marginBottom="@dimen/margin" />
         
         <RelativeLayout

@@ -132,9 +132,6 @@ public class ListFragment extends BaseFragment {
 		} else {
 			fixedHeaderContainer.setVisibility(View.GONE);
 		}
-		
-		View footer = inflater.inflate(R.layout.footer, listView, false);
-		listView.addFooterView(footer);
 	}
 
 	@Override
@@ -169,9 +166,9 @@ public class ListFragment extends BaseFragment {
 		listView.setAdapter(adapter);
 		listView.setOnScrollListener(onScrollListener);
 		
+		int padding = getResources().getDimensionPixelSize(R.dimen.margin);
 		if (horizontalPadding) {
-			int padding = getResources().getDimensionPixelSize(R.dimen.margin);
-			listView.setPadding(padding, padding, padding, padding);
+			listView.setPadding(padding, 0, padding, 0);
 			listView.setClipToPadding(false);
 			listView.setVerticalScrollBarEnabled(false);
 		}
@@ -180,6 +177,9 @@ public class ListFragment extends BaseFragment {
 			int height = getResources().getDimensionPixelSize(R.dimen.margin);
 			listView.setDivider(null);
 			listView.setDividerHeight(height);
+			if (listHeaderView == null && fixedHeaderView == null) {
+				listView.setPadding(listView.getPaddingLeft(), padding, listView.getPaddingRight(), padding);
+			}
 		}
 	}
 	

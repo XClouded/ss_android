@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.RootActivity;
+import com.myandb.singsong.fragment.ListFragment;
 import com.myandb.singsong.fragment.UserHomeFragment;
 import com.myandb.singsong.secure.Authenticator;
 
@@ -115,6 +116,7 @@ public class User extends Model {
 				BaseActivity activity = (BaseActivity) v.getContext();
 				Bundle bundle = new Bundle();
 				bundle.putString(UserHomeFragment.EXTRA_THIS_USER, User.this.toString());
+				bundle.putBoolean(ListFragment.EXTRA_VERTICAL_PADDING, true);
 				Intent intent = new Intent(activity, RootActivity.class);
 				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, UserHomeFragment.class.getName());
 				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);

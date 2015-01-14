@@ -131,8 +131,11 @@
             
 	        <Button
 	            android:id="@+id/btn_follow"
+	            android:layout_width="75dp"
 	            android:background="@drawable/button_transparent_selector"
 	            android:text="+팔로우"
+	            android:paddingLeft="0dp"
+	    		android:paddingRight="0dp"
 	            style="@style/ButtonMini" />
 	        
 	        <ImageView

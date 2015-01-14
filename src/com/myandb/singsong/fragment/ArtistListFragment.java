@@ -62,6 +62,7 @@ public class ArtistListFragment extends ListFragment {
 		super.setupViews(savedInstanceState);
 		enableFadingActionBar(false);
 		loadTodayCollaboArtist();
+		getListView().setDivider(null);
 	}
 	
 	private void loadTodayCollaboArtist() {

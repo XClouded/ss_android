@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@color/app_bg" >
     
     <FrameLayout
         android:id="@+id/fl_fixed_header_container"
@@ -20,8 +21,11 @@
             android:id="@+id/listview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:listSelector="@android:color/transparent"
+            android:cacheColorHint="@android:color/transparent"
             android:divider="@color/divider"
-            android:dividerHeight="0.1dp" />
+            android:dividerHeight="0.1dp"
+            android:footerDividersEnabled="false" />
         
     </FrameLayout>
     

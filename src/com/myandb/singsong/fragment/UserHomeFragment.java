@@ -232,6 +232,8 @@ public class UserHomeFragment extends ListFragment {
 			segment += "songs/comments";
 			params.putString("order", "created_at");
 			adapterName = MyCommentAdapter.class.getName();
+			bundle.putBoolean(ListFragment.EXTRA_HORIZONTAL_PADDING, true);
+			bundle.putBoolean(ListFragment.EXTRA_VERTICAL_PADDING, true);
 			break;
 			
 		case R.id.action_user_trash:
@@ -239,6 +241,7 @@ public class UserHomeFragment extends ListFragment {
 			segment += "songs/trash";
 			params.putString("order", "deleted_at");
 			adapterName = MySongAdapter.class.getName();
+			bundle.putBoolean(ListFragment.EXTRA_VERTICAL_PADDING, true);
 			break;
 			
 		default:

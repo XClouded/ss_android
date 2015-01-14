@@ -6,7 +6,7 @@
 		   	<solid android:color="@color/icon_bg" />
 		   	<stroke 
 		   	    android:width="0.1dp"
-		   	    android:color="@color/divider" />
+		   	    android:color="@color/border" />
 		   	<corners
 		   	    android:radius="@dimen/corner_radius" />
 		</shape>
@@ -16,7 +16,7 @@
         <layer-list>
 			<item>
 				<shape>
-			    	<solid android:color="@color/divider" />
+			    	<solid android:color="@color/border" />
 			    	<corners
 				   	    android:radius="@dimen/corner_radius" />
 			 	</shape>
@@ -31,7 +31,7 @@
 			    	<solid android:color="@color/white" />
 			    	<stroke 
 				   	    android:width="0.1dp"
-				   	    android:color="@color/divider" />
+				   	    android:color="@color/border" />
 				   	<corners
 				   	    android:radius="@dimen/corner_radius" />
 				</shape>
