@@ -108,7 +108,7 @@ public class SelectRecordModeFragment extends BaseFragment {
 			Intent intent = new Intent(v.getContext(), RootActivity.class);
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, MusicDetailFragment.class.getName());
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
-			startActivity(intent);
+			startFragment(intent);
 		}
 		
 	};
