@@ -22,17 +22,16 @@ public class ChildrenSongFragment extends ListFragment {
 	
 	public static final String EXTRA_ROOT_SONG = "root_song";
 	
-	private ImageView ivSongImage;
 	private ImageView ivUserPhoto;
-	private TextView tvMusicInfo;
 	private TextView tvUserNickname;
 	private TextView tvUserPart;
 	private TextView tvSongMessage;
+	private TextView tvCollaboNum;
 	private Song thisSong;
 
 	@Override
-	protected int getListHeaderViewResId() {
-		return R.layout.fragment_children_song_header;
+	protected int getFixedHeaderViewResId() {
+		return R.layout.fragment_children_song_fixed_header;
 	}
 
 	@Override
@@ -47,13 +46,12 @@ public class ChildrenSongFragment extends ListFragment {
 	protected void onViewInflated(View view, LayoutInflater inflater) {
 		super.onViewInflated(view, inflater);
 		
-		view = getListHeaderView();
-		ivSongImage = (ImageView) view.findViewById(R.id.iv_song_image);
+		view = getFixedHeaderView();
 		ivUserPhoto = (ImageView) view.findViewById(R.id.iv_user_photo);
-		tvMusicInfo = (TextView) view.findViewById(R.id.tv_music_info);
 		tvUserNickname = (TextView) view.findViewById(R.id.tv_user_nickname);
 		tvUserPart = (TextView) view.findViewById(R.id.tv_user_part);
 		tvSongMessage = (TextView) view.findViewById(R.id.tv_song_message);
+		tvCollaboNum = (TextView) view.findViewById(R.id.tv_collabo_num);
 	}
 
 	@Override
@@ -71,27 +69,27 @@ public class ChildrenSongFragment extends ListFragment {
 		super.setupViews(savedInstanceState);
 		
 		final User thisUser = thisSong.getCreator();
-		final Music music = thisSong.getMusic();
-		
 		tvUserNickname.setText(thisUser.getNickname());
 		tvUserPart.setText(thisSong.getPartName());
 		tvSongMessage.setText(thisSong.getCroppedMessage());
-		tvMusicInfo.setText(music.getSingerName());
-		tvMusicInfo.append("\n");
-		tvMusicInfo.append(music.getWorkedTitle());
-		tvMusicInfo.append("\t");
-		tvMusicInfo.append("(" + thisSong.getWorkedDuration() + ")");
+		tvCollaboNum.setText(String.valueOf(thisSong.getCollaboNum()));
+		if (thisSong.getLyricPart() == Music.PART_MALE) {
+			tvUserPart.setTextColor(getResources().getColor(R.color.primary));
+		} else {
+			tvUserPart.setTextColor(getResources().getColor(R.color.sub));
+		}
 		
 		ImageHelper.displayPhoto(thisUser, ivUserPhoto);
-		ImageHelper.displayPhoto(thisSong.getPhotoUrl(), ivSongImage);
-		
 		ivUserPhoto.setOnClickListener(thisUser.getProfileClickListener());
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		setFadingActionBarTitle(getString(R.string.other_collabo));
+		final Music music = thisSong.getMusic();
+		if (music != null) {
+			setActionBarTitle(music.getTitle() + " - " + music.getSingerName());
+		}
 	}
 
 }

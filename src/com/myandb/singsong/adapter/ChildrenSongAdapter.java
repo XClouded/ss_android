@@ -43,6 +43,7 @@ public class ChildrenSongAdapter extends HolderAdapter<Song, ChildrenSongAdapter
 		viewHolder.tvCommentNum.setText(song.getWorkedCommentNum());
 		viewHolder.tvCollaboNum.setText(song.getWorkedCollaboNum());
 		viewHolder.view.setOnClickListener(song.getPlayClickListener());
+		viewHolder.vPrelistenControl.setOnClickListener(song.getSampleClickListener());
 		
 		ImageHelper.displayPhoto(creator, viewHolder.ivCreatorPhoto);
 	}
