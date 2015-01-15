@@ -162,9 +162,6 @@
                 style="@style/ImageViewBase" />
             
         </RelativeLayout>
-	    
-        <ImageView
-	        style="@style/DividerHorizontal" />
         
         <RelativeLayout
             android:id="@+id/rl_link_facebook"
@@ -201,6 +198,9 @@
                 style="@style/ImageViewBase" />
             
         </RelativeLayout>
+	    
+        <ImageView
+	        style="@style/DividerHorizontal" />
         
         <RelativeLayout
             android:id="@+id/rl_link_review"
