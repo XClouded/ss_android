@@ -2,14 +2,10 @@ package com.myandb.singsong.fragment;
 
 import java.util.ArrayList;
 
-import com.myandb.singsong.R;
 import com.myandb.singsong.adapter.SongCategoryAdapter;
 import com.myandb.singsong.model.Category;
 
 import android.app.Activity;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
 import android.widget.ListAdapter;
 
 public class ListenCategoryFragment extends ListFragment {
@@ -24,17 +20,6 @@ public class ListenCategoryFragment extends ListFragment {
 		SongCategoryAdapter adapter = new SongCategoryAdapter();
 		adapter.addAll(cgs);
 		return adapter;
-	}
-
-	@Override
-	protected void setupViews(Bundle savedInstanceState) {
-		super.setupViews(savedInstanceState);
-		
-		int padding = getResources().getDimensionPixelSize(R.dimen.margin);
-		getListView().setDivider(new ColorDrawable(Color.TRANSPARENT));
-		getListView().setDividerHeight(padding);
-		getListView().setPadding(padding, padding, padding, 0);
-		getListView().setVerticalScrollBarEnabled(false);
 	}
 
 }

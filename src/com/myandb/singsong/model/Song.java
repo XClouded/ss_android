@@ -26,6 +26,7 @@ import com.myandb.singsong.audio.PlayEvent;
 import com.myandb.singsong.event.ActivateOnlyClickListener;
 import com.myandb.singsong.fragment.ChildrenSongFragment;
 import com.myandb.singsong.fragment.KaraokeFragment;
+import com.myandb.singsong.fragment.ListFragment;
 import com.myandb.singsong.net.JSONObjectRequest;
 import com.myandb.singsong.service.PlayerService;
 import com.myandb.singsong.util.StringFormatter;
@@ -368,6 +369,7 @@ public class Song extends Model {
 				Context context = v.getContext();
 				Bundle bundle = new Bundle();
 				bundle.putString(ChildrenSongFragment.EXTRA_ROOT_SONG, getParentSong().toString());
+				bundle.putInt(ListFragment.EXTRA_COLUMN_NUM, 2);
 				Intent intent = new Intent(context, RootActivity.class);
 				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, ChildrenSongFragment.class.getName());
 				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);

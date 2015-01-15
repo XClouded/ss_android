@@ -1,7 +1,7 @@
 package com.myandb.singsong.pager;
 
-import com.myandb.singsong.fragment.MusicDetailListFragment;
-import com.myandb.singsong.fragment.MusicDetailListFragment.Type;
+import com.myandb.singsong.adapter.ChildrenSongAdapter;
+import com.myandb.singsong.fragment.ListFragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,27 +22,41 @@ public class MusicDetailPagerAdapter extends FragmentPagerAdapter {
 
 	@Override
 	public Fragment getItem(int position) {
-		Fragment fragment = new MusicDetailListFragment();
+		ListFragment fragment = new ListFragment();
+		String segment = "";
 		Bundle bundle = new Bundle();
-		bundle.putInt(MusicDetailListFragment.EXTRA_MUSIC_ID, musicId);
+		Bundle params = new Bundle();
 		
 		switch (position) {
 		case 0:
-			bundle.putSerializable(MusicDetailListFragment.EXTRA_LIST_TYPE, Type.POPULAR);
+			segment += "musics/";
+			segment += String.valueOf(musicId) + "/";
+			segment += "songs/root";
+			params.putString("order", "liking_num");
 			break;
 			
 		case 1:
-			bundle.putSerializable(MusicDetailListFragment.EXTRA_LIST_TYPE, Type.RECENT);
+			segment += "musics/";
+			segment += String.valueOf(musicId) + "/";
+			segment += "songs/root";
+			params.putString("order", "created_at");
 			break;
 			
 		case 2:
-			bundle.putSerializable(MusicDetailListFragment.EXTRA_LIST_TYPE, Type.FRIEND);
+			segment += "followings/musics/";
+			segment += String.valueOf(musicId) + "/";
+			segment += "songs/root";
 			break;
+			
 
 		default:
 			return null;
 		}
 		
+		bundle.putString(ListFragment.EXTRA_URL_SEGMENT, segment);
+		bundle.putBundle(ListFragment.EXTRA_QUERY_PARAMS, params);
+		bundle.putString(ListFragment.EXTRA_ADAPTER_NAME, ChildrenSongAdapter.class.getName());
+		bundle.putInt(ListFragment.EXTRA_COLUMN_NUM, 2);
 		fragment.setArguments(bundle);
 		return fragment;
 	}
