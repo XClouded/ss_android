@@ -202,7 +202,6 @@
         <ImageView
             android:id="@+id/divider"
             android:layout_below="@id/ll_user_wrapper"
-            android:layout_marginBottom="@dimen/margin_small"
             style="@style/DividerHorizontal" />
         
         <RelativeLayout
@@ -211,38 +210,57 @@
             android:layout_below="@id/divider"
             android:paddingLeft="@dimen/margin"
             android:paddingRight="@dimen/margin"
+            android:paddingTop="@dimen/margin_small"
             android:paddingBottom="@dimen/margin_small" >
-            
-	            <LinearLayout 
-	                android:layout_width="match_parent"
-	                android:layout_height="wrap_content"
-	                android:orientation="horizontal" >
-	                
-	            <ImageView
-	                android:src="@drawable/ic_like_mini"
-	                style="@style/IconImageView" />
-	            
-	            <TextView
-	                android:id="@+id/tv_song_like_num"
-	                android:layout_marginRight="@dimen/margin_big"
-	                style="@style/TextViewIconLabel" />
-	            
-	            <ImageView
-	                android:src="@drawable/ic_comment_mini"
-	                style="@style/IconImageView" />
-	            
-	            <TextView
-	                android:id="@+id/tv_song_comment_num"
-	                android:layout_marginRight="@dimen/margin_big"
-	                style="@style/TextViewIconLabel" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    style="@style/IconImageView"
+                    android:src="@drawable/ic_like_mini" />
+
+                <TextView
+                    android:id="@+id/tv_song_like_num"
+                    style="@style/TextViewIconLabel"
+                    android:layout_marginRight="@dimen/margin_big" />
+
+                <ImageView
+                    style="@style/IconImageView"
+                    android:src="@drawable/ic_comment_mini" />
+
+                <TextView
+                    android:id="@+id/tv_song_comment_num"
+                    style="@style/TextViewIconLabel"
+                    android:layout_marginRight="@dimen/margin_big" />
+
+                <TextView
+                    android:id="@+id/tv_song_created_time"
+                    style="@style/TextViewIconLabel"
+                    android:layout_alignParentRight="true" />
                 
             </LinearLayout>
             
-            <TextView
-                android:id="@+id/tv_song_created_time"
-                android:layout_alignParentRight="true"
-                android:layout_marginLeft="@dimen/margin"
-                style="@style/TextViewIconLabel" />
+            <LinearLayout
+		        android:id="@+id/ll_prelisten_control"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignParentRight="true"
+		        android:layout_centerVertical="true"
+		        android:orientation="horizontal" >
+		
+		        <ImageView
+		            style="@style/IconImageView"
+		            android:layout_marginTop="2dp"
+		            android:src="@drawable/ic_play_basic" />
+		
+		        <TextView
+		            style="@style/TextViewLessImportant"
+		            android:text="미리듣기" />
+		    </LinearLayout>
             
         </RelativeLayout>
         

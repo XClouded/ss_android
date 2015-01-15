@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -278,46 +279,75 @@ public class Song extends Model {
 	public OnClickListener getSampleClickListener() {
 		return new OnClickListener() {
 			
+			private ImageView icon;
+			private View parentView;
+			
 			@Override
-			public void onClick(View v) {
-				final ImageView iv = (ImageView) v;
-				if (iv == null) {
-					return;
-				}
-				
-				boolean playing = iv.getTag() == null ? false : (Boolean) iv.getTag();
-				BaseActivity activity = (BaseActivity) v.getContext();
+			public void onClick(final View view) {
+				BaseActivity activity = (BaseActivity) view.getContext();
 				PlayerService service = activity.getPlayerService();
-				if (playing) {
+				parentView = view;
+				icon = getIcon(parentView);
+				
+				if (isPlaying(parentView)) {
 					service.stopSample();
 				} else {
-					service.startSample(Song.this, new OnPlayEventListener() {
-						
-						@Override
-						public void onPlay(PlayEvent event) {
-							switch (event) {
-							case PLAY:
-								iv.setImageResource(R.drawable.ic_prelisten_stop_inverse);
-								iv.setTag(true);
-								break;
-								
-							case COMPLETED:
-							case PAUSE:
-								iv.setImageResource(R.drawable.ic_prelisten_inverse);
-								iv.setTag(false);
-								break;
-								
-							case ERROR:
-								Toast.makeText(iv.getContext(), "미리듣기가 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
-								break;
-								
-							default:
-								break;
-							}
-						}
-					});
+					service.startSample(Song.this, eventListener);
 				}
 			}
+			
+			private ImageView getIcon(View v) {
+				if (v instanceof ImageView) {
+					return (ImageView) v;
+				} else if (v instanceof ViewGroup) {
+					View child = ((ViewGroup) v).getChildAt(0);
+					if (child instanceof ImageView) {
+						return (ImageView) child;
+					}
+				}
+				return null;
+			}
+			
+			private boolean isPlaying(View view) {
+				if (view == null) {
+					return false;
+				}
+				return view.getTag() == null ? false : (Boolean) view.getTag();
+			}
+			
+			private OnPlayEventListener eventListener = new OnPlayEventListener() {
+				
+				@Override
+				public void onPlay(PlayEvent event) {
+					if (parentView == null) {
+						return;
+					}
+					
+					switch (event) {
+					case PLAY:
+						if (icon != null) {
+							icon.setImageResource(R.drawable.ic_pause_basic);
+						}
+						parentView.setTag(true);
+						break;
+						
+					case COMPLETED:
+					case PAUSE:
+						if (icon != null) {
+							icon.setImageResource(R.drawable.ic_play_basic);
+						}
+						parentView.setTag(false);
+						break;
+						
+					case ERROR:
+						Toast.makeText(parentView.getContext(), "미리듣기가 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
+						break;
+						
+					default:
+						break;
+					}
+				}
+			};
 		};
 	}
 	

@@ -2,40 +2,38 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="@drawable/card_selector" >
-    
+    android:background="@drawable/card_selector"
+    android:orientation="vertical" >
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="@dimen/margin_small" >
-	    
-	    <TextView
-	        android:id="@+id/tv_category_title"
-	        android:textSize="@dimen/text_hint"
-	        android:textColor="@color/white"
-	        android:paddingLeft="@dimen/margin_tiny"
-	        android:paddingRight="@dimen/margin_tiny"
-	        android:background="@drawable/button_primary_selector"
-	        style="@style/TextViewBase" />
-        
+
+        <TextView
+            android:id="@+id/tv_category_title"
+            style="@style/TextViewBase"
+            android:background="@drawable/button_primary_selector"
+            android:paddingLeft="@dimen/margin_tiny"
+            android:paddingRight="@dimen/margin_tiny"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_hint" />
+
         <TextView
             android:id="@+id/tv_music_info"
-            android:textSize="@dimen/text_sub_content"
+            style="@style/TextViewEllipsize"
             android:gravity="left"
-            style="@style/TextViewEllipsize" />
-        
+            android:textSize="@dimen/text_sub_content" />
     </LinearLayout>
-    
-    <ImageView
-        style="@style/DividerHorizontal" />
-    
+
+    <ImageView style="@style/DividerHorizontal" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/margin_small" >
-        
+
         <FrameLayout
             android:id="@+id/layout_album_photo"
             android:layout_width="90dp"
@@ -43,135 +41,151 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin" >
-	        
-	        <com.myandb.singsong.widget.RoundedImageView
-		        android:id="@+id/iv_album_photo"
-		        android:layout_width="match_parent"
-		        android:layout_height="match_parent"
-		        style="@style/ImageViewSquare" />
-	        
-	        <com.myandb.singsong.widget.RoundedImageView
-		        android:layout_width="match_parent"
-		        android:layout_height="match_parent"
-		        android:src="@drawable/mask_profile"
-		        style="@style/ImageViewSquare" />
-	        
-	        <ImageView
-	            android:id="@+id/iv_prelisten_control"
-	            android:layout_width="42dp"
-	            android:layout_height="42dp"
-	            android:src="@drawable/ic_prelisten_inverse"
-	            android:layout_gravity="center"
-	            style="@style/ImageViewBase" />
+
+            <com.myandb.singsong.widget.RoundedImageView
+                android:id="@+id/iv_album_photo"
+                style="@style/ImageViewSquare"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+            
+            <!-- 
+
+            <com.myandb.singsong.widget.RoundedImageView
+                style="@style/ImageViewSquare"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/mask_profile" />
+
+            <ImageView
+                android:id="@+id/iv_prelisten_control"
+                style="@style/ImageViewBase"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_prelisten_inverse" />
+                
+            -->
             
         </FrameLayout>
-        
+
         <RelativeLayout
             android:id="@+id/layout_creator"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/layout_album_photo"
-            android:layout_marginTop="@dimen/margin_tiny" >
-	        
-	        <com.myandb.singsong.widget.RoundedImageView
-		        android:id="@+id/iv_parent_user_photo"
-		        style="@style/ImageViewUserSmall" />
-	        
-	        <TextView
+            android:layout_marginTop="@dimen/margin_tiny"
+            android:layout_toLeftOf="@id/layout_album_photo" >
+
+            <com.myandb.singsong.widget.RoundedImageView
+                android:id="@+id/iv_parent_user_photo"
+                style="@style/ImageViewUserSmall" />
+
+            <TextView
                 android:id="@+id/tv_parent_user_nickname"
+                style="@style/TextViewEllipsize"
                 android:layout_width="match_parent"
                 android:layout_toRightOf="@id/iv_parent_user_photo"
-                android:textStyle="bold"
                 android:gravity="left"
-                style="@style/TextViewEllipsize" />
-            
+                android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/tv_parent_song_message"
+                style="@style/TextViewEllipsize"
                 android:layout_width="match_parent"
-                android:layout_toRightOf="@id/iv_parent_user_photo"
                 android:layout_below="@id/tv_parent_user_nickname"
-                android:textColor="@color/font_grey"
+                android:layout_toRightOf="@id/iv_parent_user_photo"
                 android:gravity="left"
-                style="@style/TextViewEllipsize" />
-            
+                android:textColor="@color/font_grey" />
         </RelativeLayout>
-        
+
         <RelativeLayout
             android:id="@+id/rl_partner_wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/layout_album_photo"
-            android:layout_toLeftOf="@id/layout_album_photo"
-            android:layout_marginBottom="@dimen/margin_tiny" >
-	        
-	        <com.myandb.singsong.widget.RoundedImageView
-		        android:id="@+id/iv_this_user_photo"
-		        style="@style/ImageViewUserSmall" />
-	        
-	        <TextView
+            android:layout_marginBottom="@dimen/margin_tiny"
+            android:layout_toLeftOf="@id/layout_album_photo" >
+
+            <com.myandb.singsong.widget.RoundedImageView
+                android:id="@+id/iv_this_user_photo"
+                style="@style/ImageViewUserSmall" />
+
+            <TextView
                 android:id="@+id/tv_this_user_nickname"
+                style="@style/TextViewEllipsize"
                 android:layout_width="match_parent"
                 android:layout_toRightOf="@id/iv_this_user_photo"
-                android:textStyle="bold"
                 android:gravity="left"
-                style="@style/TextViewEllipsize" />
-            
+                android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/tv_this_song_message"
+                style="@style/TextViewEllipsize"
                 android:layout_width="match_parent"
-                android:layout_toRightOf="@id/iv_this_user_photo"
                 android:layout_below="@id/tv_this_user_nickname"
-                android:textColor="@color/font_grey"
+                android:layout_toRightOf="@id/iv_this_user_photo"
                 android:gravity="left"
-                style="@style/TextViewEllipsize" />
-            
+                android:textColor="@color/font_grey" />
         </RelativeLayout>
-        
     </RelativeLayout>
-    
-    <ImageView
-        style="@style/DividerHorizontal" />
-        
+
+    <ImageView style="@style/DividerHorizontal" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/divider"
-        android:gravity="center_vertical"
+        android:paddingBottom="@dimen/margin_small"
         android:paddingLeft="@dimen/margin"
         android:paddingRight="@dimen/margin"
-        android:paddingTop="@dimen/margin_small"
-        android:paddingBottom="@dimen/margin_small" >
-            
-        <LinearLayout 
+        android:paddingTop="@dimen/margin_small" >
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:orientation="horizontal" >
-	                
+
             <ImageView
-                android:src="@drawable/ic_like_mini"
-                style="@style/IconImageView" />
-            
+                style="@style/IconImageView"
+                android:src="@drawable/ic_like_mini" />
+
             <TextView
                 android:id="@+id/tv_song_like_num"
-                android:layout_marginRight="@dimen/margin_big"
-                style="@style/TextViewIconLabel" />
-            
+                style="@style/TextViewIconLabel"
+                android:layout_marginRight="@dimen/margin_big" />
+
             <ImageView
-                android:src="@drawable/ic_comment_mini"
-                style="@style/IconImageView" />
-            
+                style="@style/IconImageView"
+                android:src="@drawable/ic_comment_mini" />
+
             <TextView
                 android:id="@+id/tv_song_comment_num"
-                android:layout_marginRight="@dimen/margin_big"
-                style="@style/TextViewIconLabel" />
-                
+                style="@style/TextViewIconLabel"
+                android:layout_marginRight="@dimen/margin_big" />
+
+            <TextView
+                android:id="@+id/tv_song_created_time"
+                style="@style/TextViewIconLabel"
+                android:layout_alignParentRight="true" />
         </LinearLayout>
-        
-        <TextView
-            android:id="@+id/tv_song_created_time"
+
+        <LinearLayout
+            android:id="@+id/ll_prelisten_control"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            style="@style/TextViewIconLabel" />
-            
+            android:layout_centerVertical="true"
+            android:orientation="horizontal" >
+
+            <ImageView
+                style="@style/IconImageView"
+                android:layout_marginTop="2dp"
+                android:src="@drawable/ic_play_basic" />
+
+            <TextView
+                style="@style/TextViewLessImportant"
+                android:text="미리듣기" />
+        </LinearLayout>
     </RelativeLayout>
 
 </LinearLayout>

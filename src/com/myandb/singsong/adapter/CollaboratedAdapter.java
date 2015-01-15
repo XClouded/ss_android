@@ -27,34 +27,35 @@ public class CollaboratedAdapter extends HolderAdapter<Song, CollaboratedAdapter
 
 	@Override
 	public void onBindViewHolder(Context context, SongHolder viewHolder, int position) {
-		final Song thisSong = getItem(position);
-		final Song parentSong = thisSong.getParentSong();
-		final User thisUser = thisSong.getCreator();
-		final User parentUser = thisSong.getParentUser();
-		final Music music = thisSong.getMusic();
+		final Song song = getItem(position);
+		final Song parentSong = song.getParentSong();
+		final User thisUser = song.getCreator();
+		final User parentUser = song.getParentUser();
+		final Music music = song.getMusic();
 		
 		viewHolder.tvParentUserNickname.setText(parentUser.getNickname());
 		viewHolder.tvThisUserNickname.setText(thisUser.getNickname());
 		viewHolder.tvParentSongMessage.setText(parentSong.getCroppedMessage());
-		viewHolder.tvThisSongMessage.setText(thisSong.getCroppedMessage());
-		viewHolder.tvSongLikeNum.setText(thisSong.getWorkedLikeNum());
-		viewHolder.tvSongCommentNum.setText(thisSong.getWorkedCommentNum());
-		viewHolder.tvSongCreatedTime.setText(thisSong.getWorkedCreatedTime(getCurrentDate()));
+		viewHolder.tvThisSongMessage.setText(song.getCroppedMessage());
+		viewHolder.tvSongLikeNum.setText(song.getWorkedLikeNum());
+		viewHolder.tvSongCommentNum.setText(song.getWorkedCommentNum());
+		viewHolder.tvSongCreatedTime.setText(song.getWorkedCreatedTime(getCurrentDate()));
 		
 		viewHolder.tvMusicInfo.setText(music.getWorkedTitle());
 		viewHolder.tvMusicInfo.append("\t");
-		viewHolder.tvMusicInfo.append("(" + thisSong.getWorkedDuration() + ")");
+		viewHolder.tvMusicInfo.append("(" + song.getWorkedDuration() + ")");
 		viewHolder.tvMusicInfo.append("\n");
 		viewHolder.tvMusicInfo.append(music.getSingerName());
 		
 		ImageHelper.displayPhoto(parentUser, viewHolder.ivParentUserPhoto);
 		ImageHelper.displayPhoto(thisUser, viewHolder.ivThisUserPhoto);
 		ImageHelper.displayPhoto(parentSong.getPhotoUrl(), viewHolder.ivParentSongImage);
-		ImageHelper.displayPhoto(thisSong.getPhotoUrl(), viewHolder.ivThisSongImage);
+		ImageHelper.displayPhoto(song.getPhotoUrl(), viewHolder.ivThisSongImage);
 		
 		viewHolder.ivParentUserPhoto.setOnClickListener(parentUser.getProfileClickListener());
 		viewHolder.ivThisUserPhoto.setOnClickListener(thisUser.getProfileClickListener());
-		viewHolder.view.setOnClickListener(thisSong.getPlayClickListener());
+		viewHolder.view.setOnClickListener(song.getPlayClickListener());
+		viewHolder.vPrelistenControl.setOnClickListener(song.getSampleClickListener());
 	}
 	
 	public static final class SongHolder extends ViewHolder {
@@ -71,6 +72,7 @@ public class CollaboratedAdapter extends HolderAdapter<Song, CollaboratedAdapter
 		public ImageView ivParentSongImage;
 		public ImageView ivThisUserPhoto;
 		public ImageView ivThisSongImage;
+		public View vPrelistenControl;
 		
 		public SongHolder(View view) {
 			super(view);
@@ -87,6 +89,7 @@ public class CollaboratedAdapter extends HolderAdapter<Song, CollaboratedAdapter
 			ivThisUserPhoto = (ImageView) view.findViewById(R.id.iv_this_user_photo);
 			ivParentSongImage = (ImageView) view.findViewById(R.id.iv_parent_song_image);
 			ivThisSongImage = (ImageView) view.findViewById(R.id.iv_this_song_image);
+			vPrelistenControl = view.findViewById(R.id.ll_prelisten_control);
 		}
 		
 	}

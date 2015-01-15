@@ -68,6 +68,8 @@ public class MySongAdapter extends HolderAdapter<Song, MySongAdapter.SongHolder>
 		viewHolder.tvMusicInfo.append("\n");
 		viewHolder.tvMusicInfo.append(music.getSingerName());
 		
+		viewHolder.vPrelistenControl.setOnClickListener(song.getSampleClickListener());
+		
 		if (!song.isRoot()) {
 			final Song parentSong = song.getParentSong();
 			final User parentUser = song.getParentUser();
@@ -228,6 +230,7 @@ public class MySongAdapter extends HolderAdapter<Song, MySongAdapter.SongHolder>
 		public View vPartnerWrapper;
 		public View vChildrenWrapper;
 		public View vPartnerPhotoWrapper;
+		public View vPrelistenControl;
 		
 		public SongHolder(View view) {
 			super(view);
@@ -252,6 +255,7 @@ public class MySongAdapter extends HolderAdapter<Song, MySongAdapter.SongHolder>
 			vPartnerWrapper = view.findViewById(R.id.ll_partner_wrapper);
 			vChildrenWrapper = view.findViewById(R.id.ll_children_wrapper);
 			vPartnerPhotoWrapper = view.findViewById(R.id.ll_partner_photo_wrapper);
+			vPrelistenControl = view.findViewById(R.id.ll_prelisten_control);
 		}
 		
 	}
