@@ -9,7 +9,7 @@
         android:id="@+id/ll_share_facebook"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/margin_small"
+        android:padding="@dimen/margin"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:background="@drawable/button_app_bg_selector" >
@@ -29,13 +29,13 @@
     </LinearLayout>
     
     <ImageView
-        style="@style/DividerVertical" />
+        style="@style/DividerHorizontal" />
     
     <LinearLayout
         android:id="@+id/ll_share_kakaotalk"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/margin_small"
+        android:padding="@dimen/margin"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:background="@drawable/button_app_bg_selector" >
@@ -55,13 +55,13 @@
     </LinearLayout>
     
     <ImageView
-        style="@style/DividerVertical" />
+        style="@style/DividerHorizontal" />
     
     <TextView
         android:id="@+id/tv_share_etc"
         android:layout_width="match_parent"
         android:textSize="@dimen/text_subtitle"
-        android:padding="@dimen/margin"
+        android:padding="@dimen/margin_big"
         android:gravity="center"
         android:text="기타"
         android:background="@drawable/button_app_bg_selector"
