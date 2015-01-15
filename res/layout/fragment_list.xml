@@ -11,7 +11,7 @@
         android:visibility="gone" />
     
     <FrameLayout
-        android:id="@+id/fl_listview_container"
+        android:id="@+id/fl_list_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/fl_fixed_header_container"

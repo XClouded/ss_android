@@ -20,6 +20,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
@@ -30,10 +31,11 @@ public class ListFragment extends BaseFragment {
 	public static final String EXTRA_ADAPTER_NAME = "adapter_name";
 	public static final String EXTRA_HORIZONTAL_PADDING = "is_padding";
 	public static final String EXTRA_VERTICAL_PADDING = "is_divider";
+	public static final String EXTRA_COLUMN_NUM = "column_num";
 	
-	private ListView listView;
+	private AbsListView absListView;
 	private ViewGroup fixedHeaderContainer;
-	private ViewGroup listViewContainer;
+	private ViewGroup listContainer;
 	private View listHeaderView;
 	private View fixedHeaderView;
 	private View progressContainer;
@@ -46,6 +48,7 @@ public class ListFragment extends BaseFragment {
 	private OnEmptyListener emptyListener;
 	private int listViewIndex;
 	private int listViewTop;
+	private int columnNum;
 	private boolean enableFadingActionBar = false;
 	protected boolean horizontalPadding;
 	protected boolean verticalPadding;
@@ -64,6 +67,7 @@ public class ListFragment extends BaseFragment {
 			adapter = extractAdapterFromBundle(bundle);
 		}
 		
+		columnNum = bundle.getInt(EXTRA_COLUMN_NUM, 1);
 		horizontalPadding = bundle.getBoolean(EXTRA_HORIZONTAL_PADDING, false);
 		verticalPadding = bundle.getBoolean(EXTRA_VERTICAL_PADDING, false);
 	}
@@ -114,27 +118,48 @@ public class ListFragment extends BaseFragment {
 	@Override
 	protected void onViewInflated(View view, LayoutInflater inflater) {
 		fixedHeaderContainer = (ViewGroup) view.findViewById(R.id.fl_fixed_header_container);
-		listViewContainer = (ViewGroup) view.findViewById(R.id.fl_listview_container);
+		listContainer = (ViewGroup) view.findViewById(R.id.fl_list_container);
 		progressContainer = view.findViewById(R.id.fl_progress_container);
-		listView = (ListView) view.findViewById(R.id.listview);
-		
-		if (getListHeaderViewResId() != App.INVALID_RESOURCE_ID) {
+		absListView = makeAbsListView(inflater, columnNum);
+		listContainer.addView(absListView);
+		addHeaderView(inflater, absListView);
+		addFixedHeaderView(inflater, fixedHeaderContainer);
+		addFooterView(inflater, absListView);
+	}
+	
+	private AbsListView makeAbsListView(LayoutInflater inflater, int columnNum) {
+		int layout = columnNum == 1 ? R.layout.listview : R.layout.gridview;
+		AbsListView absListView = (AbsListView) inflater.inflate(layout, listContainer, false);
+		if (columnNum > 1) {
+			((GridView) absListView).setNumColumns(columnNum);
+		}
+		return absListView;
+	}
+	
+	private void addHeaderView(LayoutInflater inflater, AbsListView listView) {
+		if (listView instanceof ListView && getListHeaderViewResId() != App.INVALID_RESOURCE_ID) {
 			listHeaderView = inflater.inflate(getListHeaderViewResId(), listView, false);
-			listView.addHeaderView(listHeaderView);
+			((ListView) listView).addHeaderView(listHeaderView);
 			enableFadingActionBar = true;
 		}
-		
+	}
+	
+	private void addFixedHeaderView(LayoutInflater inflater, ViewGroup container) {
 		if (getFixedHeaderViewResId() != App.INVALID_RESOURCE_ID) {
-			fixedHeaderContainer.setVisibility(View.VISIBLE);
-			fixedHeaderView = inflater.inflate(getFixedHeaderViewResId(), fixedHeaderContainer, false);
-			fixedHeaderContainer.addView(fixedHeaderView);
+			container.setVisibility(View.VISIBLE);
+			fixedHeaderView = inflater.inflate(getFixedHeaderViewResId(), container, false);
+			container.addView(fixedHeaderView);
 			enableFadingActionBar = false;
 		} else {
-			fixedHeaderContainer.setVisibility(View.GONE);
+			container.setVisibility(View.GONE);
 		}
-		
-		View footer = inflater.inflate(R.layout.footer, listView, false);
-		listView.addFooterView(footer);
+	}
+	
+	private void addFooterView(LayoutInflater inflater, AbsListView listView) {
+		if (listView instanceof ListView) {
+			View footer = inflater.inflate(R.layout.footer, listView, false);
+			((ListView) listView).addFooterView(footer);
+		}
 	}
 
 	@Override
@@ -166,24 +191,36 @@ public class ListFragment extends BaseFragment {
 	
 	@Override
 	protected void setupViews(Bundle savedInstanceState) {
-		listView.setAdapter(adapter);
-		listView.setOnScrollListener(onScrollListener);
-		
+		if (absListView instanceof GridView) {
+			((GridView) absListView).setAdapter(adapter);
+		} else if (absListView instanceof ListView) {
+			((ListView) absListView).setAdapter(adapter);
+		}
+		absListView.setOnScrollListener(onScrollListener);
+		setListViewHorizontalPadding(absListView);
+		setListViewVerticalPadding(absListView);
+	}
+	
+	private void setListViewHorizontalPadding(AbsListView listView) {
 		int padding = getResources().getDimensionPixelSize(R.dimen.margin);
-		if (horizontalPadding) {
+		if (listView instanceof GridView || horizontalPadding) {
 			listView.setPadding(padding, 0, padding, 0);
-			listView.setClipToPadding(false);
 			listView.setVerticalScrollBarEnabled(false);
 		}
-		
-		if (verticalPadding) {
-			int height = getResources().getDimensionPixelSize(R.dimen.margin);
-			listView.setDivider(null);
-			listView.setDividerHeight(height);
+	}
+	
+	private void setListViewVerticalPadding(AbsListView listView) {
+		int padding = getResources().getDimensionPixelSize(R.dimen.margin);
+		if (listView instanceof GridView) {
+			listView.setPadding(listView.getPaddingLeft(), padding, listView.getPaddingRight(), padding);
+		}
+		if (listView instanceof ListView && verticalPadding) {
 			if (listHeaderView == null && fixedHeaderView == null) {
 				listView.setPadding(listView.getPaddingLeft(), padding, listView.getPaddingRight(), padding);
-				listView.setClipToPadding(false);
 			}
+			int height = padding;
+			((ListView) listView).setDivider(null);
+			((ListView) listView).setDividerHeight(height);
 		}
 	}
 	
@@ -243,8 +280,8 @@ public class ListFragment extends BaseFragment {
 	}
 	
 	private void restoreListViewPosition() {
-		if (listViewIndex > 0) {
-			listView.setSelectionFromTop(listViewIndex, listViewTop);
+		if (absListView instanceof ListView && listViewIndex > 0) {
+			((ListView) absListView).setSelectionFromTop(listViewIndex, listViewTop);
 		}
 		setListShown(true, false);
 	}
@@ -256,8 +293,8 @@ public class ListFragment extends BaseFragment {
 	}
 	
 	private void saveCurrentPosition() {
-		listViewIndex = listView.getFirstVisiblePosition();
-		View child = listView.getChildAt(0);
+		listViewIndex = absListView.getFirstVisiblePosition();
+		View child = absListView.getChildAt(0);
 		listViewTop = (child == null) ? 0 : child.getTop();
 	}
 
@@ -277,8 +314,8 @@ public class ListFragment extends BaseFragment {
 		return adapter;
 	}
 	
-	public ListView getListView() {
-		return listView;
+	public AbsListView getListView() {
+		return absListView;
 	}
 	
 	public void setUrlBuilder(UrlBuilder urlBuilder) {
@@ -326,22 +363,22 @@ public class ListFragment extends BaseFragment {
     }
 	
 	private void setListShown(boolean shown, boolean animate) {
-		if (listViewContainer.isShown() == shown) {
+		if (listContainer.isShown() == shown) {
 			return;
 		}
 		
 		if (shown) {
 			if (animate) {
-				listViewContainer.startAnimation(fadeIn);
+				listContainer.startAnimation(fadeIn);
 			}
 			progressContainer.setVisibility(View.GONE);
-			listViewContainer.setVisibility(View.VISIBLE);
+			listContainer.setVisibility(View.VISIBLE);
 		} else {
 			if (animate) {
-				listViewContainer.startAnimation(fadeOut);
+				listContainer.startAnimation(fadeOut);
 			}
 			progressContainer.setVisibility(View.VISIBLE);
-			listViewContainer.setVisibility(View.GONE);
+			listContainer.setVisibility(View.GONE);
 		}
 	}
 	
