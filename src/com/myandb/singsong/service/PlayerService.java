@@ -282,7 +282,7 @@ public class PlayerService extends Service {
 		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1) {
 			return (int) res.getDimensionPixelSize(android.R.dimen.notification_large_icon_width);
 		}
-		return 60;
+		return (int) res.getDimensionPixelSize(R.dimen.notification_icon_width);
 	}
 	
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -290,7 +290,7 @@ public class PlayerService extends Service {
 		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1) {
 			return (int) res.getDimensionPixelSize(android.R.dimen.notification_large_icon_height);
 		}
-		return 60;
+		return (int) res.getDimensionPixelSize(R.dimen.notification_icon_height);
 	}
 	
 	public class PlayerBinder extends Binder {

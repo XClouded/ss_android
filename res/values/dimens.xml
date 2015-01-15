@@ -69,5 +69,8 @@
     <dimen name="compat_wide_ratio_height">190dp</dimen>
         
     <dimen name="form_height">45dp</dimen>
+    
+    <dimen name="notification_icon_width">64dp</dimen>
+    <dimen name="notification_icon_height">64dp</dimen>
 
 </resources>
