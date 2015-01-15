@@ -62,11 +62,11 @@ public class MySongAdapter extends HolderAdapter<Song, MySongAdapter.SongHolder>
 		viewHolder.tvCommentNum.setText(song.getWorkedCommentNum());
 		viewHolder.tvCreatedTime.setText(song.getWorkedCreatedTime(getCurrentDate()));
 		
-		viewHolder.tvMusicInfo.setText(music.getSingerName());
-		viewHolder.tvMusicInfo.append("\n");
-		viewHolder.tvMusicInfo.append(music.getWorkedTitle());
+		viewHolder.tvMusicInfo.setText(music.getWorkedTitle());
 		viewHolder.tvMusicInfo.append("\t");
 		viewHolder.tvMusicInfo.append("(" + song.getWorkedDuration() + ")");
+		viewHolder.tvMusicInfo.append("\n");
+		viewHolder.tvMusicInfo.append(music.getSingerName());
 		
 		if (!song.isRoot()) {
 			final Song parentSong = song.getParentSong();

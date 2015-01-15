@@ -36,9 +36,11 @@ public class MyCommentAdapter extends HolderAdapter<SongComment, MyCommentAdapte
 		viewHolder.tvCommentUserNickname.setText(user.getNickname());
 		viewHolder.tvCommentContent.setText(comment.getContent());
 		viewHolder.tvCommentCreatedTime.setText(comment.getWorkedCreatedTime(getCurrentDate()));
-		viewHolder.tvMusicInfo.setText(music.getSingerName());
-		viewHolder.tvMusicInfo.append(" - ");
+		
 		viewHolder.tvMusicInfo.append(music.getTitle());
+		viewHolder.tvMusicInfo.append(" - ");
+		viewHolder.tvMusicInfo.append(music.getSingerName());
+		
 		viewHolder.tvUserInfo.setText(getUserInfo(song));
 		viewHolder.view.setOnClickListener(song.getPlayClickListener());
 		

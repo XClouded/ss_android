@@ -42,9 +42,9 @@ public class MyLikeSongAdapter extends HolderAdapter<SongLiking, MyLikeSongAdapt
 		viewHolder.tvSongCreatedTime.setText(thisSong.getWorkedCreatedTime(getCurrentDate()));
 		viewHolder.tvCategoryTitle.setText(category.getTitle());
 		
-		viewHolder.tvMusicInfo.setText(music.getSingerName());
-		viewHolder.tvMusicInfo.append(" - ");
 		viewHolder.tvMusicInfo.append(music.getTitle());
+		viewHolder.tvMusicInfo.append(" - ");
+		viewHolder.tvMusicInfo.append(music.getSingerName());
 		
 		viewHolder.ivParentUserPhoto.setOnClickListener(thisUser.getProfileClickListener());
 		viewHolder.view.setOnClickListener(thisSong.getPlayClickListener());

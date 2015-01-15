@@ -13,21 +13,19 @@
 	    style="@style/ImageViewBase" />
 	
 	<TextView
-	    android:id="@+id/tv_singer_name_on_expanded"
-	    android:layout_width="match_parent"
-	    android:layout_toLeftOf="@id/iv_collapse_drag_panel"
-	    android:layout_marginTop="@dimen/margin_big"
-	    android:text="asdf"
-	    android:textColor="@color/font_white"
-	    style="@style/TextViewOverflowableMarqueeLessImportant" />
-	
-	<TextView
 	    android:id="@+id/tv_music_title_on_expanded"
 	    android:layout_width="match_parent"
 	    android:layout_toLeftOf="@id/iv_collapse_drag_panel"
-	    android:layout_below="@id/tv_singer_name_on_expanded"
+	    android:layout_marginTop="@dimen/margin_big"
 	    android:textSize="@dimen/text_title"
-	    android:text="asdf"
 	    style="@style/TextViewOverflowableMarqueeImportant" />
+	
+	<TextView
+	    android:id="@+id/tv_singer_name_on_expanded"
+	    android:layout_width="match_parent"
+	    android:layout_toLeftOf="@id/iv_collapse_drag_panel"
+	    android:layout_below="@id/tv_music_title_on_expanded"
+	    android:textColor="@color/font_white"
+	    style="@style/TextViewOverflowableMarqueeLessImportant" />
             
 </RelativeLayout>

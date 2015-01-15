@@ -38,11 +38,11 @@ public class WaitingAdapter extends HolderAdapter<Song, WaitingAdapter.SongHolde
 		viewHolder.tvSongCollaboNum.setText(thisSong.getWorkedCollaboNum());
 		viewHolder.tvSongCreatedTime.setText(thisSong.getWorkedCreatedTime(getCurrentDate()));
 		
-		viewHolder.tvMusicInfo.setText(music.getSingerName());
-		viewHolder.tvMusicInfo.append("\n");
-		viewHolder.tvMusicInfo.append(music.getWorkedTitle());
+		viewHolder.tvMusicInfo.setText(music.getWorkedTitle());
 		viewHolder.tvMusicInfo.append("\t");
 		viewHolder.tvMusicInfo.append("(" + thisSong.getWorkedDuration() + ")");
+		viewHolder.tvMusicInfo.append("\n");
+		viewHolder.tvMusicInfo.append(music.getSingerName());
 		
 		ImageHelper.displayPhoto(thisUser, viewHolder.ivThisUserPhoto);
 		ImageHelper.displayPhoto(thisSong.getPhotoUrl(), viewHolder.ivThisSongImage);

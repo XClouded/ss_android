@@ -617,7 +617,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		tvUsersInfoOnCollapsed.setText(song.getCreator().getNickname());
 		if (!song.isRoot()) {
 			tvUsersInfoOnCollapsed.append(" X ");
-			tvUsersInfoOnCollapsed.append(song.getParentUser().getNickname());
+			tvUsersInfoOnCollapsed.append(song.getParentUser().getNickname()); 
 		}
 		tvUsersInfoOnCollapsed.setSelected(true);
 	}

@@ -41,11 +41,11 @@ public class CollaboratedAdapter extends HolderAdapter<Song, CollaboratedAdapter
 		viewHolder.tvSongCommentNum.setText(thisSong.getWorkedCommentNum());
 		viewHolder.tvSongCreatedTime.setText(thisSong.getWorkedCreatedTime(getCurrentDate()));
 		
-		viewHolder.tvMusicInfo.setText(music.getSingerName());
-		viewHolder.tvMusicInfo.append("\n");
-		viewHolder.tvMusicInfo.append(music.getWorkedTitle());
+		viewHolder.tvMusicInfo.setText(music.getWorkedTitle());
 		viewHolder.tvMusicInfo.append("\t");
 		viewHolder.tvMusicInfo.append("(" + thisSong.getWorkedDuration() + ")");
+		viewHolder.tvMusicInfo.append("\n");
+		viewHolder.tvMusicInfo.append(music.getSingerName());
 		
 		ImageHelper.displayPhoto(parentUser, viewHolder.ivParentUserPhoto);
 		ImageHelper.displayPhoto(thisUser, viewHolder.ivThisUserPhoto);

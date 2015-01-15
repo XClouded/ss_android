@@ -33,20 +33,20 @@
 		        style="@style/ImageViewBase" />
 		    
 		    <TextView
-		        android:id="@+id/tv_music_title"
-		        android:layout_marginBottom="@dimen/margin"
-		        android:layout_alignParentBottom="true"
-		        android:textSize="@dimen/text_title"
-		        android:gravity="left"
-		        style="@style/TextViewOverflowableImportant" />
-		    
-		    <TextView
 		        android:id="@+id/tv_singer_name"
-		        android:layout_above="@id/tv_music_title"
+		        android:layout_alignParentBottom="true"
+		        android:layout_marginBottom="@dimen/margin"
 		        android:textColor="@color/white"
 		        android:textSize="@dimen/text_main_content"
 		        android:gravity="left"
 		        style="@style/TextViewOverflowableLessImportant" />
+		    
+		    <TextView
+		        android:id="@+id/tv_music_title"
+		        android:layout_above="@id/tv_singer_name"
+		        android:textSize="@dimen/text_title"
+		        android:gravity="left"
+		        style="@style/TextViewOverflowableImportant" />
 		    
 		    <TextView
 		        android:id="@+id/tv_sing_num"

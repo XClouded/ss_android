@@ -21,15 +21,15 @@
 		    style="@style/ImageViewBase" />
 	    
 	    <TextView
-	        android:id="@+id/tv_singer_name"
+	        android:id="@+id/tv_music_title"
 	        android:layout_marginTop="@dimen/margin_small"
 	        android:layout_marginBottom="@dimen/margin_tiny"
-	        style="@style/TextViewOverflowableLessImportant" />
-	    
-	    <TextView
-	        android:id="@+id/tv_music_title"
 	        android:textColor="@color/font_default"
 	        style="@style/TextViewOverflowableImportant" />
+	    
+	    <TextView
+	        android:id="@+id/tv_singer_name"
+	        style="@style/TextViewOverflowableLessImportant" />
 	    
 	    <TextView
 	        android:id="@+id/tv_sing_num"
