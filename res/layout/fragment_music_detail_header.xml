@@ -36,21 +36,21 @@
     </RelativeLayout>
     
     <TextView
-        android:id="@+id/tv_singer_name"
-        android:layout_toLeftOf="@id/header"
-        android:layout_toRightOf="@id/iv_album_photo"
-        android:layout_marginTop="@dimen/margin_tiny"
-        android:gravity="left"
-        style="@style/TextViewOverflowableLessImportant" />
-    
-    <TextView
         android:id="@+id/tv_music_title"
         android:layout_toLeftOf="@id/header"
         android:layout_toRightOf="@id/iv_album_photo"
-        android:layout_below="@id/tv_singer_name"
         android:layout_marginTop="@dimen/margin_tiny"
         android:textColor="@color/font_default"
         android:gravity="left"
         style="@style/TextViewOverflowableImportant" />
+    
+    <TextView
+        android:id="@+id/tv_singer_name"
+        android:layout_toLeftOf="@id/header"
+        android:layout_toRightOf="@id/iv_album_photo"
+        android:layout_marginTop="@dimen/margin_tiny"
+        android:layout_below="@id/tv_music_title"
+        android:gravity="left"
+        style="@style/TextViewOverflowableLessImportant" />
      
 </RelativeLayout>
