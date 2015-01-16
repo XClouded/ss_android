@@ -1,4 +1,6 @@
-package com.myandb.singsong.pager;
+package com.myandb.singsong.widget;
+
+import com.myandb.singsong.pager.InfinitePagerAdapter;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
@@ -23,6 +25,15 @@ public class InfiniteViewPager extends ViewPager {
     }
 
     @Override
+	public int getCurrentItem() {
+    	if (getAdapter() instanceof InfinitePagerAdapter) {
+    		InfinitePagerAdapter infAdapter = (InfinitePagerAdapter) getAdapter();
+    		return super.getCurrentItem() % infAdapter.getRealCount();
+    	}
+		return super.getCurrentItem();
+	}
+
+	@Override
     public void setCurrentItem(int item) {
         item = getOffsetAmount() + (item % getAdapter().getCount());
         super.setCurrentItem(item);
