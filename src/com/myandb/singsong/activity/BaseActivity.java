@@ -83,7 +83,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 			e.printStackTrace();
 		}
 		
-		handler.postDelayed(new WeakRunnable<BaseActivity>(this, "setActionBarIconNoDelay"), 500);
+		handler.postDelayed(new WeakRunnable<BaseActivity>(this, "setActionBarIconNoDelay"), 2000);
 	}
 	
 	public void setActionBarIconNoDelay() {

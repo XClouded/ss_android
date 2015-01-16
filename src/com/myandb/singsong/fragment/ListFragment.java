@@ -56,10 +56,10 @@ public class ListFragment extends BaseFragment {
 	private OnEmptyListener emptyListener;
 	private int listViewIndex;
 	private int listViewTop;
-	private int columnNum;
+	private int columnNum = 1;
 	private boolean enableFadingActionBar = false;
-	protected boolean horizontalPadding;
-	protected boolean verticalPadding;
+	protected boolean horizontalPadding = false;
+	protected boolean verticalPadding = false;
 
 	@Override
 	protected final int getResourceId() {
