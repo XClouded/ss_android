@@ -47,7 +47,7 @@ public class LoginDialog extends BaseDialog {
 
 	@Override
 	protected void initialize(Activity activity) {
-		setProgressDialogMessage("로그인 중입니다.");
+		setProgressDialogMessage(getString(R.string.progress_logining));
 		
 		if (activity instanceof RootActivity) {
 			this.activity = (RootActivity) activity;
@@ -236,7 +236,7 @@ public class LoginDialog extends BaseDialog {
 	
 	public void onLoginError() {
 		dismissProgressDialog();
-		makeToast(R.string.t_login_failed);
+		makeToast(R.string.t_alert_login_failed);
 		removeUserOnLocal();
 	}
 	

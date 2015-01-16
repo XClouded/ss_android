@@ -49,7 +49,7 @@ public abstract class ActivateOnlyClickListener extends MemberOnlyClickListener 
 	}
 	
 	public void onCheckActivationError() {
-		Toast.makeText(view.getContext(), view.getContext().getString(R.string.t_guest), Toast.LENGTH_SHORT).show();
+		Toast.makeText(view.getContext(), view.getContext().getString(R.string.t_notify_guest), Toast.LENGTH_SHORT).show();
 	}
 	
 	public abstract void onActivated(View v, User user);

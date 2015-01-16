@@ -100,7 +100,7 @@ public class FindFriendsFragment extends BaseFragment {
 	private void startUserSearchFragment() {
 		Bundle bundle = new Bundle();
 		bundle.putSerializable(SearchFragment.EXTRA_SEARCH_TYPE, SearchType.USER);
-		bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, "유저 검색");
+		bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_search_user_action_title));
 		Intent intent = new Intent(getActivity(), RootActivity.class);
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, SearchFragment.class.getName());
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
@@ -122,7 +122,7 @@ public class FindFriendsFragment extends BaseFragment {
 	
 	private void startFacebookFriendsFragment() {
 		Bundle bundle = new Bundle();
-		bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, "페이스북 친구 추가");
+		bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_facebook_friends_action_title));
 		Intent intent = new Intent(getActivity(), RootActivity.class);
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, FacebookFriendsFragment.class.getName());
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
@@ -131,7 +131,7 @@ public class FindFriendsFragment extends BaseFragment {
 	
 	private void startUserProfileFragment() {
 		Bundle bundle = new Bundle();
-		bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_community_title));
+		bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_community_action_title));
 		Intent intent = new Intent(getActivity(), UpActivity.class);
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, SettingFragment.class.getName());
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
@@ -167,7 +167,7 @@ public class FindFriendsFragment extends BaseFragment {
 		Bundle bundle = new Bundle();
 		bundle.putInt(FragmentPagerFragment.EXTRA_ITEM_NUM, 0);
 		bundle.putString(FragmentPagerFragment.EXTRA_PAGER_ADAPTER, InviteFriendsPagerAdapter.class.getName());
-		bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_invite_friends_title));
+		bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_invite_friends_action_title));
 		Intent intent = new Intent(getActivity(), RootActivity.class);
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, FragmentPagerFragment.class.getName());
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);

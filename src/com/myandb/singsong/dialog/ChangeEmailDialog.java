@@ -50,7 +50,7 @@ public class ChangeEmailDialog extends BaseDialog {
 
 	@Override
 	protected void initialize(Activity activity) {
-		setProgressDialogMessage("변경 중입니다.");
+		setProgressDialogMessage(getString(R.string.progress_changing));
 		originalEmail = originalEmail != null ? originalEmail : "";
 	}
 
@@ -71,7 +71,7 @@ public class ChangeEmailDialog extends BaseDialog {
 					changeEmail(newEmail);
 				}
 			} else {
-				makeToast("이메일을 입력해주세요.");
+				makeToast(getString(R.string.t_alert_email_validation_failed));
 			}
 		}
 		
@@ -110,7 +110,7 @@ public class ChangeEmailDialog extends BaseDialog {
 	}
 	
 	public void onChangedError() {
-		makeToast("이메일 변경에 실패하였습니다.");
+		makeToast(getString(R.string.t_alert_change_failed));
 		dismissProgressDialog();
 	}
 

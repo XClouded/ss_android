@@ -58,11 +58,11 @@ public class FriendsAdapter extends HolderAdapter<User, FriendsAdapter.UserHolde
 		if (isFollowing) {
 			v.setBackgroundResource(R.drawable.button_primary_selector);
 			v.setOnClickListener(unfollowClickListener);
-			((Button) v).setText("\u2713ÆÈ·ÎÀ×");
+			((Button) v).setText(v.getContext().getString(R.string.button_following));
 		} else {
 			v.setBackgroundResource(R.drawable.button_grey_selector);
 			v.setOnClickListener(followClickListener);
-			((Button) v).setText("+ÆÈ·Î¿ì");
+			((Button) v).setText(v.getContext().getString(R.string.button_follow));
 		} 
 	}
 	

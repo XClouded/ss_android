@@ -40,9 +40,9 @@ public class ContactAdapter extends HolderAdapter<Contact, ContactAdapter.Contac
 			final Contact contact = (Contact) v.getTag();
 			if (contact != null) {
 				Intent intent = new Intent(Intent.ACTION_VIEW);
-				String body = "노래도 부르고 짝도 찾는 노래방 어플리케이션!\n";
-				body += new UrlBuilder().s("w").s("invitation").toString();
-				body += "\n지금 플레이 스토어에서 다운 받아 같이 노래 불러요 :)";
+				String body = v.getContext().getString(R.string.invitation_message_header);
+				body += "\n" + new UrlBuilder().s("w").s("invitation").toString() + "\n";
+				body += v.getContext().getString(R.string.invitation_message_footer);
 				intent.putExtra("sms_body", body);
 				intent.putExtra("address", contact.getPhoneNumber());
 				intent.setType("vnd.android-dir/mms-sms");

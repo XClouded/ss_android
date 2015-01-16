@@ -7,26 +7,24 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/margin"
-        android:paddingBottom="@dimen/margin"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:background="@color/app_bg" >
         
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/margin"
-            android:paddingRight="@dimen/margin" >
+            android:padding="@dimen/margin" >
             
             <TextView
-                android:text="@string/today_collabo_artist"
+                android:text="@string/home_title_collabo_top10"
                 style="@style/TextViewSubtitle" />
             
             <TextView
-                android:id="@+id/tv_collabo_artist_more"
-                android:text="@string/more"
-                android:textStyle="normal"
+                android:id="@+id/tv_collabo_top10_time"
+                android:text="19:00 dsaf"
                 android:layout_alignParentRight="true"
-                style="@style/TextViewSubtitle" />
+                android:layout_centerVertical="true"
+                style="@style/TextViewLessImportant" />
             
         </RelativeLayout>
         
@@ -45,7 +43,6 @@
             android:paddingRight="@dimen/margin" >
             
             <TextView
-                android:text="@string/popular_song"
                 style="@style/TextViewSubtitle" />
             
             <TextView
@@ -90,7 +87,7 @@
             android:scrollbars="none" />
         
         <TextView
-            android:text="@string/popular_music"
+            android:text="@string/home_title_popular_music"
             android:paddingLeft="@dimen/margin"
             android:paddingRight="@dimen/margin"
             style="@style/TextViewSubtitle" />

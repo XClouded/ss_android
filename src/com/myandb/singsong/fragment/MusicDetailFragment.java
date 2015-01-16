@@ -68,7 +68,7 @@ public class MusicDetailFragment extends FragmentPagerFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		setActionBarTitle("콜라보 상대 선택");
+		setActionBarTitle(getString(R.string.fragment_music_detail_action_title));
 	}
 	
 }

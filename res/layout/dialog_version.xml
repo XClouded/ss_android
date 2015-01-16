@@ -29,7 +29,7 @@
         
 	    <Button
 	        android:id="@+id/btn_no_update"
-	        android:text="@string/no_update"
+	        android:text="@string/update_later"
 	        android:layout_width="0dp"
 	        android:layout_weight="1"
 	        android:background="@drawable/button_grey_selector"

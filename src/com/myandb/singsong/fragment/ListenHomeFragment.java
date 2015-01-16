@@ -50,7 +50,7 @@ public class ListenHomeFragment extends FragmentPagerFragment {
 		case R.id.action_search:
 			Bundle bundle = new Bundle();
 			bundle.putSerializable(SearchFragment.EXTRA_SEARCH_TYPE, SearchType.COLLABORATED);
-			bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, "노래 검색");
+			bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_search_song_action_title));
 			Intent intent = new Intent(getActivity(), RootActivity.class);
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, SearchFragment.class.getName());
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);

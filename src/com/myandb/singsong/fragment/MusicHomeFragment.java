@@ -92,7 +92,7 @@ public class MusicHomeFragment extends BaseFragment {
 			@Override
 			public void onClick(View v) {
 				String segment = "musics/";
-				String title = getString(R.string.popular);
+				String title = getString(R.string.sort_by_popularity);
 				Bundle bundle = new Bundle();
 				Bundle params = new Bundle();
 				params.putString("order", "sing_num_this_week");
@@ -112,7 +112,7 @@ public class MusicHomeFragment extends BaseFragment {
 			@Override
 			public void onClick(View v) {
 				String segment = "musics/";
-				String title = getString(R.string.recent);
+				String title = getString(R.string.sort_by_time);
 				Bundle bundle = new Bundle();
 				Bundle params = new Bundle();
 				params.putString("order", "created_at");
@@ -213,7 +213,7 @@ public class MusicHomeFragment extends BaseFragment {
 		case R.id.action_search:
 			Bundle bundle = new Bundle();
 			bundle.putSerializable(SearchFragment.EXTRA_SEARCH_TYPE, SearchType.MUSIC);
-			bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, "노래 검색");
+			bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_search_music_action_title));
 			Intent intent = new Intent(getActivity(), RootActivity.class);
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, SearchFragment.class.getName());
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);

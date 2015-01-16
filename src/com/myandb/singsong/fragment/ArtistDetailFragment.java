@@ -107,7 +107,7 @@ public class ArtistDetailFragment extends ListFragment {
 		super.setupViews(savedInstanceState);
 		
 		User user = artist.getUser();
-		tvArtistNum.setText("Collabo Artist No." + String.valueOf(artist.getId()));
+		tvArtistNum.setText(getString(R.string.fragment_artist_num_prefix) + String.valueOf(artist.getId()));
 		tvUserNickname.setText(user.getNickname());
 		tvArtistNickname.setText(artist.getNickname());
 		if (user.getProfile() != null) {
@@ -115,8 +115,8 @@ public class ArtistDetailFragment extends ListFragment {
 		}
 		ImageHelper.displayPhoto(user, ivArtistPhoto);
 		
-		tvArtistSongs.setText(user.getNickname() + "´ÔÀÇ ³ë·¡ µè±â");
-		tvArtistCommentNum.setText(user.getNickname() + "´Ô¿¡°Ô ÇÑ¸¶µð");
+		tvArtistSongs.setText(user.getNickname() + getString(R.string.fragment_artist_song_title_suffix));
+		tvArtistCommentNum.setText(user.getNickname() + getString(R.string.fragment_artist_comment_title_suffix));
 		tvArtistCommentNum.append(" (");
 		tvArtistCommentNum.append(artist.getCommentNum());
 		tvArtistCommentNum.append(")");
@@ -183,7 +183,7 @@ public class ArtistDetailFragment extends ListFragment {
 				addRequest(request);
 				etComment.setText("");
 			} else {
-				makeToast(R.string.t_comment_length_policy);
+				makeToast(R.string.t_alert_comment_validation_failed);
 			}
 		}
 	};

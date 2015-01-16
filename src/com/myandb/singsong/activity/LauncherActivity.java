@@ -69,13 +69,13 @@ public class LauncherActivity extends FragmentActivity {
 				startRootActivity();
 			}
 		} catch (JSONException e) {
-			Toast.makeText(this, getString(R.string.t_unknown_error), Toast.LENGTH_LONG).show();
+			Toast.makeText(this, getString(R.string.t_critical_unknown_error), Toast.LENGTH_LONG).show();
 			finish();
 		}
 	}
 	
 	public void onGetDataError() {
-		Toast.makeText(LauncherActivity.this, getString(R.string.t_poor_network_connection), Toast.LENGTH_LONG).show();
+		Toast.makeText(LauncherActivity.this, getString(R.string.t_critical_poor_network_connection), Toast.LENGTH_LONG).show();
 		finish();
 	}
 	

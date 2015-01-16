@@ -51,7 +51,7 @@ public class WithdrawDialog extends BaseDialog {
 		public void onClick(View v) {
 			String username = etUserUsername.getText().toString();
 			if (!username.equals(currentUser.getUsername())) {
-				makeToast("본인의 아이디를 정확히 입력해주세요.");
+				makeToast(getString(R.string.t_alert_withdraw_validation_failed));
 				return;
 			}
 			

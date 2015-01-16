@@ -16,7 +16,7 @@
         android:orderInCategory="200"
         android:showAsAction="ifRoom"
         app:showAsAction="ifRoom"
-        android:title="@string/fragment_sing_title"
+        android:title="@string/fragment_sing_action_title"
         android:icon="@drawable/ic_action_sing" />
 
 </menu>

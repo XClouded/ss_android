@@ -47,7 +47,7 @@ public class ChangeStatusDialog extends BaseDialog {
 
 	@Override
 	protected void initialize(Activity activity) {
-		setProgressDialogMessage("변경 중입니다.");
+		setProgressDialogMessage(getString(R.string.progress_changing));
 		originalStatus = originalStatus != null ? originalStatus : "";
 	}
 
@@ -98,7 +98,7 @@ public class ChangeStatusDialog extends BaseDialog {
 	}
 	
 	public void onChangedError() {
-		makeToast("상태 메세지 변경에 실패하였습니다.");
+		makeToast(getString(R.string.t_alert_change_failed));
 		dismissProgressDialog();
 	}
 

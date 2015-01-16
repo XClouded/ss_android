@@ -340,7 +340,8 @@ public class Song extends Model {
 						break;
 						
 					case ERROR:
-						Toast.makeText(parentView.getContext(), "미리듣기가 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
+						Context context = parentView.getContext();
+						Toast.makeText(context, context.getString(R.string.t_alert_sample_audio_not_exist), Toast.LENGTH_SHORT).show();
 						break;
 						
 					default:
@@ -384,7 +385,7 @@ public class Song extends Model {
 
 				@Override
 				public void onErrorResponse(VolleyError error) {
-					Toast.makeText(context, context.getString(R.string.t_deleted_song), Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, context.getString(R.string.t_alert_deleted_song), Toast.LENGTH_SHORT).show();
 				}
 			};
 			

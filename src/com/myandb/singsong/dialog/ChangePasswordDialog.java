@@ -40,7 +40,7 @@ public class ChangePasswordDialog extends BaseDialog {
 
 	@Override
 	protected void initialize(Activity activity) {
-		setProgressDialogMessage("변경 중입니다.");
+		setProgressDialogMessage(getString(R.string.progress_changing));
 	}
 
 	@Override
@@ -57,22 +57,22 @@ public class ChangePasswordDialog extends BaseDialog {
 			String newPasswordRe = etUserNewPasswordRe.getText().toString();
 			
 			if (!isProperPassword(oldPassword)) {
-				makeToast("기존 비밀번호를 정확히 입력해주세요.");
+				makeToast(getString(R.string.t_alert_old_password_validation_failed));
 				return;
 			}
 			
 			if (!isProperPassword(newPassword)) {
-				makeToast("비밀번호는 4자리 이상, 공백이 없어야 합니다.");
+				makeToast(getString(R.string.t_alert_new_password_validation_failed));
 				return;
 			}
 			
 			if (!newPassword.equals(newPasswordRe)) {
-				makeToast("새로운 비밀번호를 정확히 입력해주세요.");
+				makeToast(getString(R.string.t_alert_new_re_password_validation_failed));
 				return;
 			}
 			
 			if (oldPassword.equals(newPassword)) {
-				makeToast("기존 비밀번호와 다르게 설정해주세요.");
+				makeToast(getString(R.string.t_alert_new_password_not_changed));
 				return;
 			}
 			
@@ -115,7 +115,7 @@ public class ChangePasswordDialog extends BaseDialog {
 	
 	public void onChangeError() {
 		dismissProgressDialog();
-		makeToast("비밀번호 변경에 실패하였습니다.");
+		makeToast(getString(R.string.t_alert_change_failed));
 	}
 
 }

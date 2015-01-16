@@ -52,7 +52,7 @@ public class JoinDialog extends BaseDialog {
 
 	@Override
 	protected void initialize(Activity activity) {
-		setProgressDialogMessage("회원가입 중입니다.");
+		setProgressDialogMessage(getString(R.string.progress_joining));
 		
 		if (activity instanceof RootActivity) {
 			this.activity = (RootActivity) activity;
@@ -236,7 +236,7 @@ public class JoinDialog extends BaseDialog {
 	public void onUsernameFound(JSONObject response) {
 		dismissProgressDialog();
 		String message = lastInputUsername;
-		message += getString(R.string.t_email_already_exist);
+		message += getString(R.string.t_alert_email_duplicated);
 		makeToast(message);
 	}
 	
@@ -302,7 +302,7 @@ public class JoinDialog extends BaseDialog {
 	}
 	
 	public void onJoinError() {
-		makeToast(R.string.t_join_failed);
+		makeToast(R.string.t_alert_join_failed);
 		clearTextFromAllEditText();
 		removeUserOnLocal();
 		dismissProgressDialog();

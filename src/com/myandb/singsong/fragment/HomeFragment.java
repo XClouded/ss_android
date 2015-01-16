@@ -73,7 +73,6 @@ public class HomeFragment extends BaseFragment {
 		vgTodayCollaboArtistContainer = (ViewGroup) view.findViewById(R.id.fl_today_collabo_artist_container);
 		
 		tvRecentMusicMore = (TextView) view.findViewById(R.id.tv_recent_music_more);
-		tvCollaboArtistMore = (TextView) view.findViewById(R.id.tv_collabo_artist_more);
 		tvPopularSongMore = (TextView) view.findViewById(R.id.tv_popular_song_more);
 	}
 
@@ -106,12 +105,13 @@ public class HomeFragment extends BaseFragment {
 		
 		loadPopularMusic();
 		
+		/*
 		tvCollaboArtistMore.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				Bundle bundle = new Bundle();
-				bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_artist_list_title));
+				bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_artist_list_action_title));
 				bundle.putBoolean(ListFragment.EXTRA_HORIZONTAL_PADDING, true);
 				Intent intent = new Intent(getActivity(), RootActivity.class);
 				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, ArtistListFragment.class.getName());
@@ -119,6 +119,7 @@ public class HomeFragment extends BaseFragment {
 				startFragment(intent);
 			}
 		});
+		*/
 		
 		tvPopularSongMore.setOnClickListener(new OnClickListener() {
 			
@@ -144,7 +145,7 @@ public class HomeFragment extends BaseFragment {
 			@Override
 			public void onClick(View v) {
 				String segment = "musics/";
-				String title = getString(R.string.recent);
+				String title = getString(R.string.sort_by_time);
 				Bundle bundle = new Bundle();
 				Bundle params = new Bundle();
 				params.putString("order", "created_at");
@@ -289,7 +290,7 @@ public class HomeFragment extends BaseFragment {
 		switch (item.getItemId()) {
 		case R.id.action_sing:
 			Bundle bundle = new Bundle();
-			bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_sing_title));
+			bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_sing_action_title));
 			Intent intent = new Intent(getActivity(), RootActivity.class);
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, MusicHomeFragment.class.getName());
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);

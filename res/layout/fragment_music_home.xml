@@ -18,7 +18,7 @@
             android:paddingRight="@dimen/margin" >
             
             <TextView
-                android:text="@string/popular_music"
+                android:text="@string/home_title_popular_music"
                 style="@style/TextViewSubtitle" />
             
             <TextView

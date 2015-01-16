@@ -48,7 +48,7 @@ public class ChangeNicknameDialog extends BaseDialog {
 	
 	@Override
 	protected void initialize(Activity activity) {
-		setProgressDialogMessage("변경 중입니다.");
+		setProgressDialogMessage(getString(R.string.progress_changing));
 		originalNickname = originalNickname != null ? originalNickname : "";
 	}
 
@@ -69,7 +69,7 @@ public class ChangeNicknameDialog extends BaseDialog {
 					checkNicknameDuplication(newNickname);
 				}
 			} else {
-				makeToast("2글자 이상 입력해주세요.");
+				makeToast(getString(R.string.t_alert_nickname_validation_failed));
 			}
 		}
 		
@@ -95,7 +95,7 @@ public class ChangeNicknameDialog extends BaseDialog {
 	
 	public void onNicknameFound(JSONObject response) {
 		dismissProgressDialog();
-		makeToast("이미 존재하는 닉네임입니다.");
+		makeToast(getString(R.string.t_alert_nickname_duplicated));
 	}
 	
 	public void onNicknameNotFound() {
@@ -126,7 +126,7 @@ public class ChangeNicknameDialog extends BaseDialog {
 	}
 	
 	public void onChangedError() {
-		makeToast("닉네임 변경에 실패하였습니다.");
+		makeToast(getString(R.string.t_alert_change_failed));
 		dismissProgressDialog();
 	}
 

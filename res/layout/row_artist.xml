@@ -66,7 +66,7 @@
             android:id="@+id/tv_interview_title"
             style="@style/TextViewBase"
             android:layout_margin="@dimen/margin_small"
-            android:text="@string/artist_interview"
+            android:text="@string/fragment_artist_interview_title"
             android:textColor="@color/white"
             android:textSize="@dimen/text_sub_content"
             android:textStyle="italic" />

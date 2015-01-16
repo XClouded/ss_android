@@ -156,7 +156,7 @@ public class UserHomeFragment extends ListFragment {
 		@Override
 		public void onActivated(View v, User user) {
 			Bundle bundle = new Bundle();
-			bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_sing_title));
+			bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_sing_action_title));
 			Intent intent = new Intent(getActivity(), RootActivity.class);
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, MusicHomeFragment.class.getName());
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
@@ -218,7 +218,7 @@ public class UserHomeFragment extends ListFragment {
 			break;
 			
 		case R.id.action_user_likings:
-			title += getString(R.string.like);
+			title += getString(R.string.user_liking_songs);
 			segment += "songs/likings";
 			params.putString("order", "created_at");
 			adapterName = MyLikeSongAdapter.class.getName();
@@ -227,7 +227,7 @@ public class UserHomeFragment extends ListFragment {
 			break;
 			
 		case R.id.action_user_comments:
-			title += getString(R.string.comment);
+			title += getString(R.string.user_comments);
 			segment += "songs/comments";
 			params.putString("order", "created_at");
 			adapterName = MyCommentAdapter.class.getName();
@@ -340,7 +340,7 @@ public class UserHomeFragment extends ListFragment {
 	}
 	
 	public void onGetProfileError() {
-		makeToast(R.string.t_poor_network_connection);
+		makeToast(R.string.t_critical_poor_network_connection);
 		getActivity().finish();
 	}
 	
@@ -351,11 +351,11 @@ public class UserHomeFragment extends ListFragment {
 	}
 	
 	private void setupProfileRelatedViews(Profile profile) {
-		displayTextOnMainTab(tvUserSongs, profile.getWorkedSingNum(), "ºÎ¸¥ ³ë·¡");
+		displayTextOnMainTab(tvUserSongs, profile.getWorkedSingNum(), getString(R.string.user_songs));
 		
-		displayTextOnMainTab(tvUserFollowings, profile.getWorkedFollowingsNum(), "ÆÈ·ÎÀ×");
+		displayTextOnMainTab(tvUserFollowings, profile.getWorkedFollowingsNum(), getString(R.string.following));
 		
-		displayTextOnMainTab(tvUserFollowers, profile.getWorkedFollowersNum(), "ÆÈ·Î¿ö");
+		displayTextOnMainTab(tvUserFollowers, profile.getWorkedFollowersNum(), getString(R.string.follower));
 		
 		displayStatusMessage(tvUserStatus, profile.getStatusMessage());
 	}
@@ -372,9 +372,7 @@ public class UserHomeFragment extends ListFragment {
 	private void displayStatusMessage(TextView textView, String statusMessage) {
 		if (statusMessage.isEmpty()) {
 			if (isCurrentUser()) {
-				textView.setText("\"");
-				textView.append("»óÅÂ±ÛÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä. :)");
-				textView.append("\"");
+				textView.setText(getString(R.string.fragment_user_home_empty_status_message));
 			}
 		} else {
 			textView.setText("\"");
@@ -409,7 +407,7 @@ public class UserHomeFragment extends ListFragment {
 			}
 			
 			btnFollow.setBackgroundResource(R.drawable.button_primary_selector);
-			btnFollow.setText("\u2713ÆÈ·ÎÀ×");
+			btnFollow.setText(getString(R.string.button_following));
 			btnFollow.setOnClickListener(updateFriendshipClickListener);
 		} else {
 			if (friendship != null) {
@@ -417,7 +415,7 @@ public class UserHomeFragment extends ListFragment {
 			}
 			
 			btnFollow.setBackgroundResource(R.drawable.button_transparent_selector);
-			btnFollow.setText("+ÆÈ·Î¿ì");
+			btnFollow.setText(getString(R.string.button_follow));
 			btnFollow.setOnClickListener(followClickListener);
 		}
 	}
@@ -459,7 +457,7 @@ public class UserHomeFragment extends ListFragment {
 		@Override
 		public void onLoggedIn(View v, User user) {
 			Bundle bundle = new Bundle();
-			bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_community_title));
+			bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_community_action_title));
 			Intent intent = new Intent(getActivity(), UpActivity.class);
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, SettingFragment.class.getName());
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);

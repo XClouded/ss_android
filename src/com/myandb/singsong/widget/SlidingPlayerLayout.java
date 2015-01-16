@@ -302,9 +302,9 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	
 	private void showLoopingChangeMessage(boolean looping) {
 		if (looping) {
-			makeToast(R.string.t_enable_replay);
+			makeToast(R.string.t_notify_enabled_replay);
 		} else {
-			makeToast(R.string.t_disable_replay);
+			makeToast(R.string.t_notify_disabled_replay);
 		}
 	}
 	
@@ -319,9 +319,9 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	
 	private void showAutoplayChangeMessage(boolean autoplay) {
 		if (autoplay) {
-			makeToast(R.string.t_enable_autoplay);
+			makeToast(R.string.t_notify_enabled_autoplay);
 		} else {
-			makeToast(R.string.t_disable_autoplay);
+			makeToast(R.string.t_notify_disabled_autoplay);
 		}
 	}
 	
@@ -827,7 +827,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 				
 				etComment.setText("");
 			} else {
-				makeToast(R.string.t_comment_length_policy);
+				makeToast(R.string.t_alert_comment_validation_failed);
 			}
 		}
 	};

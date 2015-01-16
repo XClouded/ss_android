@@ -74,9 +74,9 @@ public class ReportCommentDialog extends BaseDialog {
 				}
 				
 				dismiss();
-				makeToast(R.string.t_report_has_accepted);
+				makeToast(R.string.t_notify_report_accepted);
 			} else {
-				makeToast(R.string.t_report_length_policy);
+				makeToast(R.string.t_alert_report_reason_validation_failed);
 			}
 		}
 	};

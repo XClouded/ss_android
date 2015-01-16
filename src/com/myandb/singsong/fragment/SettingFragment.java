@@ -305,7 +305,7 @@ public class SettingFragment extends BaseFragment {
 	
 	public void onUpdateUserFacebookIdError() {
 		dismissProgressDialog();
-		makeToast(R.string.t_poor_network_connection);
+		makeToast(R.string.t_critical_poor_network_connection);
 	}
 	
 	private OnClickListener logoutClickListener = new OnClickListener() {
@@ -459,13 +459,13 @@ public class SettingFragment extends BaseFragment {
 	public void onUpdateSuccess(User user) {
 		new Authenticator().update(user);
 		btnChangePhoto.setVisibility(View.GONE);
-		makeToast("사진이 변경 되었습니다.");
+		makeToast(getString(R.string.t_notify_upload_photo_succeed));
 		dismissProgressDialog();
 	}
 	
 	public void onUploadError() {
 		dismissProgressDialog();
-		makeToast("사진 업로드에 실패하였습니다.");
+		makeToast(getString(R.string.t_alert_upload_failed));
 	}
 
 	@Override

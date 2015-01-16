@@ -21,14 +21,14 @@
         android:orderInCategory="300"
         android:showAsAction="never"
         app:showAsAction="never"
-        android:title="@string/like" />
+        android:title="@string/user_liking_songs" />
     
     <item
         android:id="@+id/action_user_comments"
         android:orderInCategory="400"
         android:showAsAction="never"
         app:showAsAction="never"
-        android:title="@string/comment" />
+        android:title="@string/user_comments" />
     
     <item
         android:id="@+id/action_user_trash"

@@ -177,12 +177,12 @@ public class KaraokeFragment extends BaseFragment {
 		activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		
 		if (SongUploadService.isServiceRunning()) {
-			finish(activity, "업로드 중입니다. 잠시 후에 불러주세요 :)");
+			finish(activity, getString(R.string.t_alert_uploading));
 			return;
 		}
 		
 		if (music == null) {
-			finish(activity, "지정된 곡이 없습니다! myandb@myandb.com 으로 문의해주세요.");
+			finish(activity, getString(R.string.t_critical_recording_error));
 			return;
 		}
 		
@@ -190,7 +190,7 @@ public class KaraokeFragment extends BaseFragment {
 			initializeFiles();
 			initializeRecorder();
 		} catch (Exception e) {
-			finish(activity, "레코딩에 이상이 있습니다! myandb@myandb.com 으로 문의해주세요.");
+			finish(activity, getString(R.string.t_critical_recording_error));
 			return;
 		}
 		
@@ -373,7 +373,7 @@ public class KaraokeFragment extends BaseFragment {
 	}
 	
 	public void onLyricDownloadFailed() {
-		finish(getActivity(), "가사를 받는 도중 오류가 발생하였습니다. 잠시 후 다시 이용해주세요.");
+		finish(getActivity(), getString(R.string.t_critical_download_lyric_error));
 	}
 	
 	private static class OnAudioDownloadCompleteListener extends OnCompleteWeakListener<KaraokeFragment> {
@@ -403,7 +403,7 @@ public class KaraokeFragment extends BaseFragment {
 	}
 	
 	public void onAudioDownloadFailed() {
-		finish(getActivity(), "음원을 받는 도중 오류가 발생하였습니다. 잠시 후 다시 이용해주세요.");
+		finish(getActivity(), getString(R.string.t_critical_download_audio_error));
 	}
 	
 	private static class OnAudioDownloadProgressListener extends OnProgressWeakListener<KaraokeFragment> {
@@ -438,7 +438,7 @@ public class KaraokeFragment extends BaseFragment {
 				
 				if (e == null) {
 					loadingDialog.enableControlButton(true);
-					loadingDialog.setControlButtonText("시작하기!");
+					loadingDialog.setControlButtonText(getString(R.string.button_start_record));
 				} else {
 					e.printStackTrace();
 				}
@@ -469,10 +469,10 @@ public class KaraokeFragment extends BaseFragment {
 	}
 	
 	private void setupLoadingDialogForDecode() {
-		loadingDialog.setTitlePrefix("노래 압축을 풀고 있습니다...");
+		loadingDialog.setTitlePrefix(getString(R.string.loading_title_audio_decompressing));
 		loadingDialog.setControlButtonShown(true);
 		loadingDialog.enableControlButton(false);
-		loadingDialog.setControlButtonText("기다리지 않고 시작하기");
+		loadingDialog.setControlButtonText(getString(R.string.button_start_record_no_waiting));
 		loadingDialog.setOnControlButtonClickListener(new OnClickListener() {
 			
 			@Override

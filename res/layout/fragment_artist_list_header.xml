@@ -6,7 +6,7 @@
     android:orientation="vertical" >
     
     <TextView
-        android:text="@string/today_collabo_artist"
+        android:text="@string/home_title_collabo_artist"
         android:layout_marginRight="@dimen/margin"
         style="@style/TextViewSubtitle" />
     

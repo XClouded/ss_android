@@ -82,14 +82,14 @@ public class Listeners {
 			public void onFail() {
 				switch(activity.getSourceType()) {
 				case Activity.TYPE_CREATE_FRIENDSHIP:
-					Toast.makeText(context, context.getString(R.string.t_unknown_user), Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, context.getString(R.string.t_alert_unknown_user), Toast.LENGTH_SHORT).show();
 					break;
 					
 				case Activity.TYPE_CREATE_COMMENT:
 				case Activity.TYPE_CREATE_LIKING:
 				case Activity.TYPE_CREATE_ROOT_SONG:
 				case Activity.TYPE_CREATE_LEAF_SONG:
-					Toast.makeText(context, context.getString(R.string.t_deleted_song), Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, context.getString(R.string.t_alert_deleted_song), Toast.LENGTH_SHORT).show();
 					break;
 					
 				default:

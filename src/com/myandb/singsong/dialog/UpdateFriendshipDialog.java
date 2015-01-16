@@ -63,9 +63,9 @@ public class UpdateFriendshipDialog extends BaseDialog {
 	private void updateTextOnAllowPush() {
 		if (friendship.isAllowNotify()) {
 			btnAllowPush.setText("✓ ");
-			btnAllowPush.append("알림 받기");
+			btnAllowPush.append(getString(R.string.allow_notify));
 		} else {
-			btnAllowPush.setText("알림 받기");
+			btnAllowPush.setText(getString(R.string.allow_notify));
 		}
 	}
 	
@@ -111,7 +111,7 @@ public class UpdateFriendshipDialog extends BaseDialog {
 			int followingId = friendship.getFollowingUserId();
 			JustRequest request = new JustRequest(Method.POST, "candidates/" + followingId, null);
 			addRequest(request);
-			makeToast(R.string.t_recommend_has_accepted);
+			makeToast(R.string.t_notify_recommendation_accepted);
 			dismiss();
 		}
 	};

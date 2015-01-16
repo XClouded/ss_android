@@ -322,7 +322,7 @@ public class RecordSettingFragment extends BaseFragment {
 						uploadImageIfExist();
 					}
 				} else {
-					Toast.makeText(getActivity(), getString(R.string.t_song_length_policy), Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), getString(R.string.t_alert_song_length_validation_failed), Toast.LENGTH_SHORT).show();
 				}
 				break;
 			}
@@ -378,7 +378,7 @@ public class RecordSettingFragment extends BaseFragment {
 	}
 	
 	public void onUploadError() {
-		Toast.makeText(getActivity(), getString(R.string.t_upload_failed), Toast.LENGTH_SHORT).show();
+		Toast.makeText(getActivity(), getString(R.string.t_alert_upload_failed), Toast.LENGTH_SHORT).show();
 		vUpload.setEnabled(true);
 	}
 	

@@ -33,7 +33,7 @@ public class NotificationFragment extends ListFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		setActionBarTitle("새로운 소식");
+		setActionBarTitle(getString(R.string.fragment_notification_action_title));
 	}
 	
 	private void setCurrentNotificationCount(int count) {
