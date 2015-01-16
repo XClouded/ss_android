@@ -16,7 +16,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
-
 import com.android.volley.Request.Method;
 import com.google.gson.Gson;
 import com.myandb.singsong.R;
@@ -522,6 +521,7 @@ public class UserHomeFragment extends ListFragment {
 	public void onResume() {
 		super.onResume();
 		setFadingActionBarTitle(thisUser.getNickname());
+		setFadingActionBarIcon(getString(R.string.abc_action_menu_overflow_description));
 	}
 
 	@Override

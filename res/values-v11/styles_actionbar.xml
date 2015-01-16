@@ -3,7 +3,9 @@
     
     <style name="AppTheme" parent="AppBaseTheme">
         <item name="android:actionBarStyle">@style/AppTheme.ActionBarStyle</item>
+        <item name="android:actionOverflowButtonStyle">@style/AppTheme.ActionBar.Overflow</item>
     </style>
+    
     <style name="AppTheme.ActionBarStyle" parent="@style/Widget.AppCompat.ActionBar">
         <item name="android:icon">@android:color/transparent</item>
         <item name="android:background">@drawable/actionbar_background</item>

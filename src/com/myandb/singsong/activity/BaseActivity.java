@@ -53,7 +53,8 @@ public abstract class BaseActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		handler = new Handler(Looper.getMainLooper());
-		setHomeButtonRightMargin(0);
+		int margin = getResources().getDimensionPixelSize(R.dimen.margin);
+		setHomeButtonRightMargin(margin);
 	}
 	
 	@SuppressLint("InlinedApi")

@@ -12,15 +12,18 @@ import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.ImageView;
 import android.widget.AbsListView.OnScrollListener;
 
 public class FadingActionBarHelper implements OnScrollListener {
 	
 	private static final int DEFAULT_VISIBLE_POSITION = 4000;
 	private static final int MAX_ALPHA = 255;
+	private static final int ICON_TRANSITION_ALPHA = 130;
 	
 	private Drawable backgroundDrawable;
 	private Drawable homeDrawable;
+	private ImageView overflow;
 	private ActionBar actionBar;
 	private CharSequence title;
 	private int headerHeight;
@@ -28,6 +31,7 @@ public class FadingActionBarHelper implements OnScrollListener {
 	private int fullyVisiblePosition;
 	private int maxAlpha;
 	private int previousAlpha = -1;
+	private int currentOverflowImageRes;
 	private float visibleThreshold;
 	
 	public FadingActionBarHelper setBackground(Drawable drawable) {
@@ -47,6 +51,11 @@ public class FadingActionBarHelper implements OnScrollListener {
 	public FadingActionBarHelper setBackground(int resId, int maxAlpha) {
 		this.backgroundResId = resId;
 		this.maxAlpha = getProperAlpha(maxAlpha);
+		return this;
+	}
+	
+	public FadingActionBarHelper setOverflow(ImageView overflow) {
+		this.overflow = overflow;
 		return this;
 	}
 	
@@ -121,6 +130,8 @@ public class FadingActionBarHelper implements OnScrollListener {
 			fadeHome(newAlpha);
 			fadeTitle(newAlpha);
 		}
+		fadeOverflow(newAlpha);
+		
 		previousAlpha = newAlpha;
 	}
 	
@@ -152,6 +163,27 @@ public class FadingActionBarHelper implements OnScrollListener {
 			builder.setSpan(new ForegroundColorSpan(Color.argb(alpha, 0, 0, 0)), 0, builder.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 			actionBar.setTitle(builder);
 		}
+	}
+	
+	private void fadeOverflow(int alpha) {
+		if (overflow == null) {
+			return;
+		}
+		
+		if (alpha > ICON_TRANSITION_ALPHA) {
+			setOverflowImageResource(R.drawable.ic_overflow_sky);
+		} else {
+			setOverflowImageResource(R.drawable.ic_overflow_white);
+		}
+	}
+	
+	private void setOverflowImageResource(int imageRes) {
+		if (imageRes == currentOverflowImageRes) {
+			return;
+		}
+		
+		overflow.setImageResource(imageRes);
+		currentOverflowImageRes = imageRes;
 	}
 
 }

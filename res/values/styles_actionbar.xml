@@ -8,6 +8,7 @@
     
     <style name="AppTheme" parent="AppBaseTheme">
         <item name="actionBarStyle">@style/AppTheme.ActionBarStyle</item>
+	    <item name="actionOverflowButtonStyle">@style/AppTheme.ActionBar.Overflow</item>
     </style>
     
     <style name="AppTheme.ActionBarStyle" parent="@style/Widget.AppCompat.ActionBar">
@@ -20,6 +21,11 @@
     
     <style name="AppTheme.ActionBar.TitleTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
         <item name="android:textColor">@color/font_default</item>
+    </style>
+    
+    <style name="AppTheme.ActionBar.Overflow" parent="@style/Widget.AppCompat.ActionButton.Overflow">
+	    <item name="android:contentDescription">@string/abc_action_menu_overflow_description</item>
+	    <item name="android:src">@drawable/ic_overflow_sky</item>
     </style>
     
 </resources>
