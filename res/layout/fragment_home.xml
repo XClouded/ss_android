@@ -174,7 +174,9 @@
                 android:id="@+id/fl_collabo_artist_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/margin_small"
+                android:paddingLeft="@dimen/margin_small"
+                android:paddingRight="@dimen/margin_small"
+                android:paddingBottom="@dimen/margin_small"
                 android:background="@color/white" />
         </LinearLayout>
     </ScrollView>

@@ -69,7 +69,6 @@ public class ArtistAdapter extends HolderAdapter<Artist, ArtistAdapter.ArtistHol
 		final User user = artist.getUser();
 		
 		viewHolder.tvUserNickname.setText(user.getNickname());
-		viewHolder.tvArtistNickname.setText(artist.getNickname());
 		if (user.getProfile() != null) {
 			viewHolder.tvFollowersNum.setText(String.valueOf(user.getProfile().getFollowersNum()));
 		}
@@ -93,7 +92,6 @@ public class ArtistAdapter extends HolderAdapter<Artist, ArtistAdapter.ArtistHol
 	public static final class ArtistHolder extends ViewHolder {
 		
 		public TextView tvUserNickname;
-		public TextView tvArtistNickname;
 		public TextView tvFollowersNum;
 		public TextView tvArtistNum;
 		public TextView tvArtistIntroduction;
@@ -104,7 +102,6 @@ public class ArtistAdapter extends HolderAdapter<Artist, ArtistAdapter.ArtistHol
 			super(view);
 			
 			tvUserNickname = (TextView) view.findViewById(R.id.tv_artist_user_nickname);
-			tvArtistNickname = (TextView) view.findViewById(R.id.tv_artist_nickname);
 			tvFollowersNum = (TextView) view.findViewById(R.id.tv_artist_followers_num);
 			tvArtistNum = (TextView) view.findViewById(R.id.tv_artist_num);
 			tvArtistIntroduction = (TextView) view.findViewById(R.id.tv_artist_introduction);

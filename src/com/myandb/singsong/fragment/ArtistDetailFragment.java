@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,7 +19,6 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.myandb.singsong.R;
 import com.myandb.singsong.adapter.CommentAdapter;
-import com.myandb.singsong.adapter.QnaAdapter;
 import com.myandb.singsong.adapter.SimpleSongAdapter;
 import com.myandb.singsong.event.ActivateOnlyClickListener;
 import com.myandb.singsong.image.ImageHelper;
@@ -41,15 +39,14 @@ public class ArtistDetailFragment extends ListFragment {
 	public static final String EXTRA_ARTIST = "artist";
 	
 	private TextView tvUserNickname;
-	private TextView tvArtistNickname;
 	private TextView tvFollowersNum;
 	private TextView tvArtistNum;
 	private TextView tvArtistSongs;
 	private TextView tvArtistCommentNum;
+	private TextView tvArtistIntroduction;
 	private ImageView ivArtistPhoto;
 	private Button btnSubmitComment;
 	private EditText etComment;
-	private ViewGroup vgQnaContainer;
 	private ViewPager vpArtistSongs;
 	private Artist artist;
 	private PagerWrappingAdapter artistSongAdapter;
@@ -73,16 +70,15 @@ public class ArtistDetailFragment extends ListFragment {
 		
 		view = getListHeaderView();
 		tvUserNickname = (TextView) view.findViewById(R.id.tv_artist_user_nickname);
-		tvArtistNickname = (TextView) view.findViewById(R.id.tv_artist_nickname);
 		tvFollowersNum = (TextView) view.findViewById(R.id.tv_artist_followers_num);
 		tvArtistNum = (TextView) view.findViewById(R.id.tv_artist_num);
 		tvArtistSongs = (TextView) view.findViewById(R.id.tv_artist_songs);
 		tvArtistCommentNum = (TextView) view.findViewById(R.id.tv_artist_comment_num);
+		tvArtistIntroduction = (TextView) view.findViewById(R.id.tv_artist_introduction);
 		
 		ivArtistPhoto = (ImageView) view.findViewById(R.id.iv_artist_photo);
 		btnSubmitComment = (Button) view.findViewById(R.id.btn_submit_comment);
 		etComment = (EditText) view.findViewById(R.id.et_comment);
-		vgQnaContainer = (ViewGroup) view.findViewById(R.id.ll_qna_container);
 		vpArtistSongs = (ViewPager) view.findViewById(R.id.vp_artist_songs);
 	}
 
@@ -109,7 +105,7 @@ public class ArtistDetailFragment extends ListFragment {
 		User user = artist.getUser();
 		tvArtistNum.setText(getString(R.string.fragment_artist_num_prefix) + String.valueOf(artist.getId()));
 		tvUserNickname.setText(user.getNickname());
-		tvArtistNickname.setText(artist.getNickname());
+		tvArtistIntroduction.setText("\"" + artist.getIntroduction() + "\"");
 		if (user.getProfile() != null) {
 			tvFollowersNum.setText(String.valueOf(user.getProfile().getFollowersNum()));
 		}
@@ -124,13 +120,6 @@ public class ArtistDetailFragment extends ListFragment {
 		btnSubmitComment.setOnClickListener(submitCommentClickListner);
 		
 		loadUserSongs(user);
-		
-		QnaAdapter qnaAdapter = new QnaAdapter();
-		qnaAdapter.addAll(artist.getQna());
-		for (int i = 0, l = qnaAdapter.getCount(); i < l; i++) {
-			View child = qnaAdapter.getView(i, null, vgQnaContainer);
-			vgQnaContainer.addView(child);
-		}
 		
 		enableFadingActionBar(false);
 		
