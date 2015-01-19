@@ -142,19 +142,16 @@
 		         
 		        <TextView
 		            android:id="@+id/tv_parent_user_nickname"
-		            android:layout_gravity="center"
-		            android:textStyle="bold"
-		            style="@style/TextViewBase" />
+		            android:textColor="@color/font_default"
+		            android:textSize="@dimen/text_main_content"
+		            style="@style/TextViewOverflowableImportant" />
 		         
 		        <TextView
 		            android:id="@+id/tv_parent_song_message"
-		            android:layout_marginLeft="@dimen/margin_tiny"
-		            android:layout_marginRight="@dimen/margin_tiny"
 		            android:layout_marginBottom="@dimen/margin_small"
-		            android:layout_gravity="center"
-		            android:gravity="center"
+		            android:maxLines="3"
 		            android:textColor="@color/font_hint"
-		            style="@style/TextViewBase" />
+		            style="@style/TextViewEllipsize" />
                 
             </LinearLayout>
             
@@ -181,19 +178,16 @@
 		         
 		        <TextView
 		            android:id="@+id/tv_this_user_nickname"
-		            android:layout_gravity="center"
-		            android:textStyle="bold"
-		            style="@style/TextViewBase" />
+		            android:textColor="@color/font_default"
+		            android:textSize="@dimen/text_main_content"
+		            style="@style/TextViewOverflowableImportant" />
 		         
 		        <TextView
 		            android:id="@+id/tv_this_song_message"
-		            android:layout_marginLeft="@dimen/margin_tiny"
-		            android:layout_marginRight="@dimen/margin_tiny"
 		            android:layout_marginBottom="@dimen/margin_small"
-		            android:layout_gravity="center"
-		            android:gravity="center"
+		            android:maxLines="3"
 		            android:textColor="@color/font_hint"
-		            style="@style/TextViewBase" />
+		            style="@style/TextViewEllipsize" />
                 
             </LinearLayout>
             
