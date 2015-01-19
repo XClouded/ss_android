@@ -148,7 +148,7 @@ public class HomeFragment extends BaseFragment {
 		});
 		
 		tvRecentMusicMore.setOnClickListener(musicMoreClickListener);
-		tvPopularMusicMore.setOnClickListener(musicMoreClickListener);
+		tvPopularMusicMore.setOnClickListener(musicMoreClickListener); 
 		
 		Date now = new Date();
 		SimpleDateFormat format = new SimpleDateFormat("k:00", Locale.KOREA);
