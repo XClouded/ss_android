@@ -21,7 +21,7 @@ public class WaitingAdapter extends HolderAdapter<Song, WaitingAdapter.SongHolde
 
 	@Override
 	public SongHolder onCreateViewHolder(LayoutInflater inflater, ViewGroup parent, int viewType) {
-		View view = inflater.inflate(R.layout.row_wait, parent, false);
+		View view = inflater.inflate(R.layout.row_song_wait, parent, false);
 		return new SongHolder(view);
 	}
 

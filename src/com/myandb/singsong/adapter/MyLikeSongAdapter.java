@@ -23,7 +23,7 @@ public class MyLikeSongAdapter extends HolderAdapter<SongLiking, MyLikeSongAdapt
 
 	@Override
 	public SongHolder onCreateViewHolder(LayoutInflater inflater, ViewGroup parent, int viewType) {
-		View view = inflater.inflate(R.layout.row_simple_song, parent, false);
+		View view = inflater.inflate(R.layout.row_song_simple, parent, false);
 		return new SongHolder(view);
 	}
 

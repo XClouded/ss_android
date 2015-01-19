@@ -22,7 +22,7 @@ public class ChildrenSongAdapter extends HolderAdapter<Song, ChildrenSongAdapter
 
 	@Override
 	public SongHolder onCreateViewHolder(LayoutInflater inflater, ViewGroup parent, int viewType) {
-		View view = inflater.inflate(R.layout.row_child_song, parent, false);
+		View view = inflater.inflate(R.layout.row_song_children, parent, false);
 		return new SongHolder(view);
 	}
 

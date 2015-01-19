@@ -46,7 +46,7 @@ public class MySongAdapter extends HolderAdapter<Song, MySongAdapter.SongHolder>
 
 	@Override
 	public SongHolder onCreateViewHolder(LayoutInflater inflater, ViewGroup parent, int viewType) {
-		View view = inflater.inflate(R.layout.row_my_song, parent, false);
+		View view = inflater.inflate(R.layout.row_song_user_page, parent, false);
 		context = parent.getContext();
 		return new SongHolder(view);
 	}

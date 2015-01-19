@@ -21,7 +21,7 @@ public class CollaboratedAdapter extends HolderAdapter<Song, CollaboratedAdapter
 
 	@Override
 	public SongHolder onCreateViewHolder(LayoutInflater inflater, ViewGroup parent, int viewType) {
-		View view = inflater.inflate(R.layout.row_collaborated, parent, false);
+		View view = inflater.inflate(R.layout.row_song_collaborated, parent, false);
 		return new SongHolder(view);
 	}
 
