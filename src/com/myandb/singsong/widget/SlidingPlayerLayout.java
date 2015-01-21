@@ -148,6 +148,10 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	}
 	
 	public void setPlayerService(PlayerService service) {
+		if (this.service != null) {
+			return;
+		}
+		
 		this.service = service;
 		
 		if (!initialized) {
