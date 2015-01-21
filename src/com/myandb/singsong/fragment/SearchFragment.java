@@ -138,5 +138,11 @@ public class SearchFragment extends ListFragment {
 		setListShown(true);
 		searchView.showSoftKeyboard();
 	}
+
+	@Override
+	public void onDestroyView() {
+		searchView.hideSoftKeyboard();
+		super.onDestroyView();
+	}
 	
 }

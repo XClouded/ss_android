@@ -5,11 +5,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -193,6 +195,13 @@ public class ArtistDetailFragment extends ListFragment {
 	public void onResume() {
 		super.onResume();
 		setFadingActionBarTitle(artist.getNickname());
+	}
+
+	@Override
+	public void onDestroyView() {
+		InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE); 
+		imm.hideSoftInputFromWindow(etComment.getWindowToken(), 0);
+		super.onDestroyView();
 	}
 
 }

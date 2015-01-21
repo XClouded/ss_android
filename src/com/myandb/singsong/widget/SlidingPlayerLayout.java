@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -473,6 +474,8 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		vCommentWindow.setVisibility(View.GONE);
 		vLikingWindow.setVisibility(View.GONE);
 		vFloatingWrapper.setVisibility(View.GONE);
+		InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE); 
+		imm.hideSoftInputFromWindow(etComment.getWindowToken(), 0);
 	}
 	
 	public void setCommentWindowShown(boolean shown) {
@@ -1086,6 +1089,8 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 			
 			vDragPanelOnCollapsed.setVisibility(View.VISIBLE);
 			vDragPanelOnExpanded.setVisibility(View.GONE);
+			InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE); 
+			imm.hideSoftInputFromWindow(etComment.getWindowToken(), 0);
 		}
 		
 		@Override
