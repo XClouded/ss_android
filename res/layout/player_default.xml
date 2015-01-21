@@ -25,7 +25,8 @@
         android:layout_marginBottom="@dimen/margin_description"
         android:layout_above="@id/layout_player_play_control"
         android:lineSpacingExtra="@dimen/margin_small"
-        android:visibility="invisible"
+        android:visibility="visible"
+        android:text="\n"
         style="@style/TextViewBase" />
     
     <FrameLayout
