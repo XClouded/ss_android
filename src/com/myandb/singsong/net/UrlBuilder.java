@@ -13,7 +13,7 @@ import android.os.Bundle;
 public class UrlBuilder {
 
 	private static final String API_SCHEME = "http";
-	private static final String API_DOMAIN = "14.63.171.91:8880";
+	private static final String API_DOMAIN = "www.myandb.com:8880";
 	private static final String API_DOMAIN_TEST = "14.63.164.15";
 	private static final String API_PATH = "/ss_api/public";
 	private static final String API_AUTHORITY = (App.TESTING ? API_DOMAIN_TEST : API_DOMAIN) + API_PATH;
