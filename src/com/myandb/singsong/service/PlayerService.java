@@ -242,7 +242,7 @@ public class PlayerService extends Service {
 		String albumTitle = thisSong.getMusic().getTitle();
 		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-		builder.setSmallIcon(R.drawable.ic_note_symbol)
+		builder.setSmallIcon(R.drawable.logo)
 			.setContentTitle(singerName)
 			.setContentText(albumTitle)
 			.setAutoCancel(true)

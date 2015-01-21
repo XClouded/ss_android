@@ -14,11 +14,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -43,6 +48,7 @@ import com.myandb.singsong.event.WeakRunnable;
 import com.myandb.singsong.image.BlurAsyncTask;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Comment;
+import com.myandb.singsong.model.Model;
 import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Song;
 import com.myandb.singsong.model.SongComment;
@@ -57,6 +63,7 @@ import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.service.PlayerService;
 import com.myandb.singsong.util.StringFormatter;
+import com.myandb.singsong.util.Utility;
 import com.nineoldandroids.view.ViewHelper;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
@@ -67,7 +74,6 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	
 	private PlayerService service;
 	private ViewGroup slidingContainer; 
-	private User currentUser;
 	private Handler handler;
 	private GradualLoader commentLoader;
 	private GradualLoader likingLoader;
@@ -78,8 +84,10 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 
 	private TextView tvParentUserNickname;
 	private TextView tvThisUserNickname;
+	private TextView tvFloatingUserNickname;
 	private TextView tvParentUserPart;
 	private TextView tvThisUserPart;
+	private TextView tvFloatingUserPart;
 	private TextView tvParentSongMessage;
 	private TextView tvThisSongMessage;
 	private TextView tvPlayStartTime;
@@ -88,13 +96,13 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	private TextView tvUsersInfoOnCollapsed;
 	private TextView tvMusicTitleOnExpanded;
 	private TextView tvSingerNameOnExpanded;
-	private TextView tvTargetContent;
 	private TextView tvCommentNum;
+	private TextView tvCommentNumOut;
 	private TextView tvLikingNum;
-	private TextView tvLikingNumOut;
-	private TextView tvOtherCollabo;
+	private TextView tvFloatingDescription;
 	private ImageView ivParentUserPhoto;
 	private ImageView ivThisUserPhoto;
+	private ImageView ivFloatingUserPhoto;
 	private ImageView ivLikeSong;
 	private ImageView ivShowComment;
 	private ImageView ivCloseComment;
@@ -107,6 +115,8 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	private ImageView ivBackgroundMask;
 	private ImageView ivBackgroundGradient;
 	private ImageView ivShare;
+	private ImageView ivOtherCollabo;
+	private Button btnLikingNumOut;
 	private Button btnSubmitComment;
 	private EditText etComment;
 	private View vDragPanelOnExpanded;
@@ -116,7 +126,10 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	private View vLikingWindow;
 	private View vPartnerWrapper;
 	private View vStartCollabo;
-	private View vShowLiking;
+	private View vFloatingCollabo; 
+	private View vFloatingWrapper;
+	private View vFloatingUserWrapper;
+	private View vFloatingCollaboWrapper;
 	private ListView lvComments;
 	private GridView gvLikings;
 	private SeekBar sbPlay;
@@ -159,7 +172,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 			ivShowComment.setOnClickListener(showCommentClickListener);
 			ivCloseComment.setOnClickListener(closeCommentClickListener);
 			ivCloseLiking.setOnClickListener(closeLikingClickListener);
-			vShowLiking.setOnClickListener(showLikingClickListener);
+			btnLikingNumOut.setOnClickListener(showLikingClickListener);
 			
 			service.getPlayer().setOnPlayEventListener(onPlayEventListener);
 			
@@ -175,9 +188,23 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		}
 	}
 	
+	private int getRelativeLeft(View view) {
+	    if (view.getParent() == view.getRootView()) {
+	    	return view.getLeft();
+	    } else {
+	    	return view.getLeft() + getRelativeLeft((View) view.getParent());
+	    }
+	}
+
+	private int getRelativeTop(View view) {
+	    if (view.getParent() == view.getRootView()) {
+	    	return view.getTop();
+	    } else {
+	    	return view.getTop() + getRelativeTop((View) view.getParent());
+	    }
+	}
+	
 	private void initialize() {
-		currentUser = Authenticator.getUser();
-		
 		commentAdapter = new CommentAdapter(this);
 		commentLoader = new GradualLoader(getContext());
 		lvComments.setAdapter(commentAdapter);
@@ -210,7 +237,10 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		vLikingWindow = findViewById(R.id.layout_player_liking);
 		vPartnerWrapper = findViewById(R.id.layout_partner_wrapper);
 		vStartCollabo = findViewById(R.id.layout_collabo);
-		vShowLiking = findViewById(R.id.ll_liking_num);
+		vFloatingCollabo = findViewById(R.id.layout_floating_collabo);
+		vFloatingCollaboWrapper = findViewById(R.id.ll_floating_collabo_wrapper);
+		vFloatingUserWrapper = findViewById(R.id.ll_floating_user_wrapper);
+		vFloatingWrapper = findViewById(R.id.fl_floating_wrapper);
 		
 		tvParentUserNickname = (TextView) findViewById(R.id.tv_parent_user_nickname);
 		tvThisUserNickname = (TextView) findViewById(R.id.tv_this_user_nickname);
@@ -224,11 +254,12 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		tvSingerNameOnExpanded = (TextView) findViewById(R.id.tv_singer_name_on_expanded);
 		tvMusicInfoOnCollapsed = (TextView) findViewById(R.id.tv_music_info_on_collapsed);
 		tvUsersInfoOnCollapsed = (TextView) findViewById(R.id.tv_users_info_on_collapsed);
-		tvTargetContent = (TextView) findViewById(R.id.tv_target_nickname);
 		tvCommentNum = (TextView) findViewById(R.id.tv_comment_num);
+		tvCommentNumOut = (TextView) findViewById(R.id.tv_comment_num_out);
 		tvLikingNum = (TextView) findViewById(R.id.tv_liking_num);
-		tvLikingNumOut = (TextView) findViewById(R.id.tv_liking_num_out);
-		tvOtherCollabo = (TextView) findViewById(R.id.tv_other_collabo);
+		tvFloatingUserNickname = (TextView) findViewById(R.id.tv_floating_user_nickname);
+		tvFloatingUserPart = (TextView) findViewById(R.id.tv_floating_user_part);
+		tvFloatingDescription = (TextView) findViewById(R.id.tv_floating_description);
 		
 		ivParentUserPhoto = (ImageView) findViewById(R.id.iv_parent_user_photo);
 		ivThisUserPhoto = (ImageView) findViewById(R.id.iv_this_user_photo);
@@ -244,10 +275,13 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		ivBackgroundMask = (ImageView) findViewById(R.id.iv_background_mask);
 		ivBackgroundGradient = (ImageView) findViewById(R.id.iv_background_gradient);
 		ivShare = (ImageView) findViewById(R.id.iv_share);
+		ivFloatingUserPhoto = (ImageView) findViewById(R.id.iv_floating_user_photo);
+		ivOtherCollabo = (ImageView) findViewById(R.id.iv_other_collabo);
 		
 		lvComments = (ListView) findViewById(R.id.lv_comment);
 		gvLikings = (GridView) findViewById(R.id.gv_liking);
 		btnSubmitComment = (Button) findViewById(R.id.btn_submit_comment);
+		btnLikingNumOut = (Button) findViewById(R.id.btn_liking_num_out);
 		etComment = (EditText) findViewById(R.id.et_comment);
 		sbPlay = (SeekBar) findViewById(R.id.sb_play);
 	}
@@ -438,6 +472,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		vDefaultWindow.setVisibility(View.VISIBLE);
 		vCommentWindow.setVisibility(View.GONE);
 		vLikingWindow.setVisibility(View.GONE);
+		vFloatingWrapper.setVisibility(View.GONE);
 	}
 	
 	public void setCommentWindowShown(boolean shown) {
@@ -544,6 +579,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 			return;
 		}
 		
+		final User currentUser = Authenticator.getUser();
 		final Song song = service.getSong();
 		final User parentUser = song.getParentUser();
 		final User thisUser = song.isRoot() ? currentUser : song.getCreator();
@@ -561,9 +597,11 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		
 		displayProfile(thisUser, ivThisUserPhoto, tvThisUserNickname);
 		
+		displayProfile(currentUser, ivFloatingUserPhoto, tvFloatingUserNickname);
+		
 		displaySongPart(song);
 		
-		displayTargetContent(parentUser.getNickname());
+		displayTargetContent(parentUser.getNickname(), song);
 		
 		displayCommentNum(song.getCommentNum());
 		
@@ -581,16 +619,18 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		if (thisUser != null) {
 			ivThisUserPhoto.setOnClickListener(thisUser.getProfileClickListener());
 		}
-		vStartCollabo.setOnClickListener(song.getCollaboClickListner());
 		ivLikeSong.setOnClickListener(likeClickListener);
 		btnSubmitComment.setOnClickListener(submitCommentClickListner);
-		tvOtherCollabo.setOnClickListener(song.getChildrenClickListener());
 		ivShare.setOnClickListener(shareClickListener);
+		ivOtherCollabo.setOnClickListener(song.getChildrenClickListener());
 		
 		if (song.isRoot()) {
 			vPartnerWrapper.setVisibility(View.GONE);
+			setCollaboButtonReal(vStartCollabo, song);
 		} else {
-			vPartnerWrapper.setVisibility(View.VISIBLE);
+			vPartnerWrapper.setVisibility(View.VISIBLE); 
+			setCollaboButtonFake(vStartCollabo);
+			vFloatingCollabo.setOnClickListener(song.getCollaboClickListner());
 		}
 		
 		if (isPanelExpanded()) {
@@ -601,7 +641,53 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 			vDragPanelOnCollapsed.setVisibility(View.VISIBLE);
 		}
 		
+		vFloatingWrapper.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				v.setVisibility(View.GONE);
+				vPartnerWrapper.setVisibility(View.VISIBLE);
+			}
+		});
+		
 		showDefaultWindow();
+	}
+	
+	private void setCollaboButtonFake(View view) {
+		view.setBackgroundResource(R.drawable.button_collabo_transparent);
+		view.setOnClickListener(new ActivateOnlyClickListener() {
+			
+			@Override
+			public void onActivated(View v, User user) {
+				final Animation fadeIn = AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_in);
+				fadeIn.setDuration(200);
+				vPartnerWrapper.setVisibility(View.INVISIBLE);
+				vFloatingWrapper.setVisibility(View.VISIBLE);
+				vFloatingWrapper.startAnimation(fadeIn);
+				positioningFloatingWrapper(vPartnerWrapper, vFloatingUserWrapper, getResources().getDimensionPixelSize(R.dimen.margin));
+				positioningFloatingWrapper(vStartCollabo, vFloatingCollaboWrapper, getResources().getDimensionPixelSize(R.dimen.abc_action_bar_default_height) / 2);
+			}
+		});
+		TextView text = (TextView) view.findViewWithTag(getResources().getString(R.string.tag_button_collabo_text));
+		text.setText("콜라보 하기");
+	}
+	
+	private void setCollaboButtonReal(View view, Song song) {
+		view.setBackgroundResource(R.drawable.button_collabo_primary);
+		view.setOnClickListener(song.getCollaboClickListner());
+		TextView text = (TextView) view.findViewWithTag(getResources().getString(R.string.tag_button_collabo_text));
+		text.setText("콜라보 시작");
+	}
+	
+	private void positioningFloatingWrapper(View original, View floating, int offset) {
+		int left = getRelativeLeft(original);
+		int top = getRelativeTop(original);
+		int width = original.getWidth();
+		FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) floating.getLayoutParams();
+		lp.topMargin = top - offset;
+		lp.leftMargin = left;
+		lp.width = width;
+		floating.requestLayout();
 	}
 	
 	private void displayMusicInfo(Music music) {
@@ -671,30 +757,80 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	private void displaySongPart(Song song) {
 		tvParentUserPart.setText(song.getParentPartName());
 		tvThisUserPart.setText(song.getPartName());
+		tvFloatingUserPart.setText(song.getPartName());
+		
+		int thisSongLyricPart = song.getLyricPart();
+		int rootSongLyricPart = song.getPartnerLyricPart();
+		if (song.isRoot()) {
+			paintSongPart(thisSongLyricPart, tvParentUserPart);
+			paintSongPart(thisSongLyricPart, ivParentUserPhoto);
+		} else {
+			paintSongPart(thisSongLyricPart, tvThisUserPart);
+			paintSongPart(thisSongLyricPart, ivThisUserPhoto);
+			paintSongPart(thisSongLyricPart, tvFloatingUserPart);
+			paintSongPart(thisSongLyricPart, ivFloatingUserPhoto);
+			paintSongPart(thisSongLyricPart, ivOtherCollabo);
+			paintSongPart(rootSongLyricPart, tvParentUserPart);
+			paintSongPart(rootSongLyricPart, ivParentUserPhoto);
+		}
 	}
 	
-	private void displayTargetContent(String nickname) {
+	private void paintSongPart(int part, TextView textView) {
+		if (part == Music.PART_MALE) {
+			textView.setTextColor(getResources().getColor(R.color.primary));
+		} else if (part == Music.PART_FEMALE) {
+			textView.setTextColor(getResources().getColor(R.color.sub));
+		}
+	}
+	
+	private void paintSongPart(int part, ImageView imageView) {
+		if (part == Music.PART_MALE) {
+			imageView.setBackgroundResource(R.drawable.circle_primary);
+		} else if (part == Music.PART_FEMALE) {
+			imageView.setBackgroundResource(R.drawable.circle_sub);
+		}
+	}
+	
+	private void displayTargetContent(String nickname, Song song) {
+		String croppedNickname = "";
 		final int maxDisplayNicknameLength = 8;
 		if (nickname.length() > maxDisplayNicknameLength) {
-			tvTargetContent.setText(nickname.substring(0, maxDisplayNicknameLength));
-			tvTargetContent.append("..");
+			croppedNickname += nickname.substring(0, maxDisplayNicknameLength);
+			croppedNickname += "..";
 		} else {
-			tvTargetContent.setText(nickname);
+			croppedNickname += nickname;
 		}
-		tvTargetContent.append(" 님과");
+		Spannable spannableNickname = Utility.getBoldSpan(croppedNickname);
+		Utility.getColorSpan(spannableNickname, getResources().getColor(R.color.white));
+		
+		tvFloatingDescription.setText(spannableNickname);
+		tvFloatingDescription.append("님이 부른\n");
+		
+		String partName = song.getParentPartName();
+		Spannable spannablePartName = new SpannableString(partName);
+		if (song.getPartnerLyricPart() == Music.PART_MALE) {
+			Utility.getColorSpan(spannablePartName, getResources().getColor(R.color.primary));
+		} else {
+			Utility.getColorSpan(spannablePartName, getResources().getColor(R.color.sub));
+		}
+		
+		tvFloatingDescription.append(spannablePartName);
+		tvFloatingDescription.append(" 파트에 콜라보를 해보세요!");
+		
 	}
 	
 	private void displayCommentNum(int num) {
 		tvCommentNum.setText("댓글 (");
 		tvCommentNum.append(String.valueOf(num));
 		tvCommentNum.append(")");
+		tvCommentNumOut.setText(Model.safeString(num));
 	}
 	
 	private void displayLikeNum(int num) {
 		tvLikingNum.setText("좋아요 (");
 		tvLikingNum.append(String.valueOf(num));
 		tvLikingNum.append(")");
-		tvLikingNumOut.setText(String.valueOf(num));
+		btnLikingNumOut.setText(Model.safeString(num));
 	}
 	
 	private void checkUserLikeSong(User user, Song song) {

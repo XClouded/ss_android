@@ -6,6 +6,7 @@
     <string name="fragment_artist_request_action_title">콜라보 아티스트 신청하기</string>
     <string name="fragment_sing_action_title">부르기</string>
     <string name="fragment_listen_action_title">듣기</string>
+    <string name="fragment_setting_action_title">프로필 설정</string> 
     <string name="fragment_find_friends_action_title">친구 찾기</string>
     <string name="fragment_community_action_title">커뮤니티</string>
     <string name="fragment_invite_friends_action_title">친구 초대</string>

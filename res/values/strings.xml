@@ -110,6 +110,8 @@
     <string name="button_start_record">시작하기!</string>
     <string name="button_start_record_no_waiting">기다리지 않고 시작하기</string>
     
+    <string name="tag_button_collabo_text">_tag_ss_collabo_text_</string>
+        
     <string name="fragment_user_home_empty_status_message">"상태글을 입력해주세요. :)"</string>
     
     <string name="_check">✓</string>

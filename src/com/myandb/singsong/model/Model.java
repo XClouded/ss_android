@@ -33,11 +33,11 @@ public abstract class Model {
 		return StringFormatter.getTimeLag(currentDate, created_at);
 	}
 	
-	protected final String safeString(String string) {
+	public static final String safeString(String string) {
 		return string != null ? string : "";
 	}
 	
-	protected final String safeString(int num) {
+	public static final String safeString(int num) {
 		String string = "";
 		
 		if (num < 1000) {

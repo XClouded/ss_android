@@ -61,7 +61,10 @@ public class RootActivity extends BaseActivity {
 		
 		showUnreadLatestNotice(getIntent());
 		
-		replaceContentFragmentFromIntent(getIntent());
+		Intent intent = getIntent();
+		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, HomeFragment.class.getName());
+		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_ROOT, true);
+		changePage(intent);
 	}
 
 	private void initializePreference() {

@@ -42,12 +42,13 @@ public class MyLikeSongAdapter extends HolderAdapter<SongLiking, MyLikeSongAdapt
 		viewHolder.tvSongCreatedTime.setText(thisSong.getWorkedCreatedTime(getCurrentDate()));
 		viewHolder.tvCategoryTitle.setText(category.getTitle());
 		
-		viewHolder.tvMusicInfo.append(music.getTitle());
+		viewHolder.tvMusicInfo.setText(music.getTitle());
 		viewHolder.tvMusicInfo.append(" - ");
 		viewHolder.tvMusicInfo.append(music.getSingerName());
 		
 		viewHolder.ivParentUserPhoto.setOnClickListener(thisUser.getProfileClickListener());
 		viewHolder.view.setOnClickListener(thisSong.getPlayClickListener());
+		viewHolder.vPreListenControl.setOnClickListener(thisSong.getSampleClickListener());
 		
 		ImageHelper.displayPhoto(music.getAlbumPhotoUrl(), viewHolder.ivAlbumPhoto);
 		ImageHelper.displayPhoto(thisUser, viewHolder.ivParentUserPhoto);
@@ -82,6 +83,7 @@ public class MyLikeSongAdapter extends HolderAdapter<SongLiking, MyLikeSongAdapt
 		public ImageView ivThisUserPhoto;
 		public ImageView ivAlbumPhoto;
 		public View vPartnerWrapper;
+		public View vPreListenControl;
 		
 		public SongHolder(View view) {
 			super(view);
@@ -99,6 +101,7 @@ public class MyLikeSongAdapter extends HolderAdapter<SongLiking, MyLikeSongAdapt
 			ivThisUserPhoto = (ImageView) view.findViewById(R.id.iv_this_user_photo);
 			ivAlbumPhoto = (ImageView) view.findViewById(R.id.iv_album_photo);
 			vPartnerWrapper = view.findViewById(R.id.rl_partner_wrapper);
+			vPreListenControl = view.findViewById(R.id.ll_prelisten_control);
 		}
 		
 	}

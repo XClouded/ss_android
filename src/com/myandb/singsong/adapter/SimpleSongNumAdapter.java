@@ -42,7 +42,7 @@ public class SimpleSongNumAdapter extends HolderAdapter<Song, SimpleSongNumAdapt
 		viewHolder.tvSongLikeNum.setText(thisSong.getWorkedLikeNum());
 		viewHolder.tvSongNum.setText(String.valueOf(position + 1 + numOffset));
 		
-		viewHolder.tvMusicInfo.append(music.getTitle());
+		viewHolder.tvMusicInfo.setText(music.getTitle());
 		viewHolder.tvMusicInfo.append(" - ");
 		viewHolder.tvMusicInfo.append(music.getSingerName());
 		

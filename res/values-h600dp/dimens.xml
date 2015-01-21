@@ -1,0 +1,8 @@
+<resources>
+
+    <dimen name="margin_drawer">20dp</dimen>
+    <dimen name="drawer_width">280dp</dimen>
+    <dimen name="photo_player">120dp</dimen>
+    <dimen name="margin_description">20dp</dimen>
+    
+</resources>

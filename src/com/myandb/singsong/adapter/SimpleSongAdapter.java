@@ -40,7 +40,7 @@ public class SimpleSongAdapter extends HolderAdapter<Song, SimpleSongAdapter.Son
 		viewHolder.tvSongCreatedTime.setText(thisSong.getWorkedCreatedTime(getCurrentDate()));
 		viewHolder.tvCategoryTitle.setText(category.getTitle());
 		
-		viewHolder.tvMusicInfo.append(music.getTitle());
+		viewHolder.tvMusicInfo.setText(music.getTitle());
 		viewHolder.tvMusicInfo.append(" - ");
 		viewHolder.tvMusicInfo.append(music.getSingerName());
 		

@@ -80,9 +80,13 @@ public class Utility {
 	}
 	
 	public static void getColorSpan(Spannable spannable, String color) {
+		getColorSpan(spannable, Color.parseColor(color));
+	}
+	
+	public static void getColorSpan(Spannable spannable, int color) {
 		if (spannable != null) {
 			spannable.setSpan(
-					new ForegroundColorSpan(Color.parseColor(color)), 0, spannable.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+					new ForegroundColorSpan(color), 0, spannable.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		}
 	}
 	

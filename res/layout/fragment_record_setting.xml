@@ -171,8 +171,8 @@
 			            android:paddingBottom="@dimen/margin_tiny"
 			            android:paddingLeft="@dimen/margin_small"
 			            android:paddingRight="@dimen/margin_small"
-			            android:minHeight="5dp"
-			            android:maxHeight="5dp"
+			            android:minHeight="3dp"
+			            android:maxHeight="3dp"
 			            android:layout_centerVertical="true"
 			            android:progressDrawable="@drawable/seekbar_white"
 			            android:thumb="@drawable/seekbar_thumb" />
@@ -282,8 +282,8 @@
 			            android:paddingBottom="@dimen/margin_tiny"
 			            android:paddingLeft="@dimen/margin_small"
 			            android:paddingRight="@dimen/margin_small"
-			            android:minHeight="5dp"
-			            android:maxHeight="5dp"
+			            android:minHeight="3dp"
+			            android:maxHeight="3dp"
 			            android:layout_centerVertical="true"
 			            android:progressDrawable="@drawable/seekbar_white"
 			            android:thumb="@drawable/seekbar_thumb" />

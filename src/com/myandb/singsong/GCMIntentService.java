@@ -18,6 +18,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -215,7 +216,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 		
 		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-		builder.setSmallIcon(R.drawable.ic_launcher)
+		builder.setSmallIcon(R.drawable.logo)
 			   .setContentTitle(user.getNickname())
 			   .setContentText(message)
 			   .setAutoCancel(true)
@@ -239,18 +240,19 @@ public class GCMIntentService extends GCMBaseIntentService {
 			View view = View.inflate(context, R.layout.toast_push, null);
 			
 			ImageView ivUserPhoto = (ImageView) view.findViewById(R.id.iv_user_photo);
-			TextView tvUserName = (TextView) view.findViewById(R.id.tv_user_name);
 			TextView tvMessage = (TextView) view.findViewById(R.id.tv_message);
 			
 			ImageHelper.displayPhoto(user, ivUserPhoto);
-			tvUserName.setText(user.getNickname());
 			tvMessage.setText(message);
 			
-			setGravity(Gravity.TOP|Gravity.FILL_HORIZONTAL, 0, 300);
-			setDuration(Toast.LENGTH_SHORT);
+			setGravity(Gravity.TOP|Gravity.FILL_HORIZONTAL, 0, (int) pixelFromDp(context, 100));
+			setDuration(Toast.LENGTH_LONG);
 			setView(view);
 		}
 		
+		private float pixelFromDp(Context context, float dp) {
+			return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics());
+		}
 	}
 
 	@Override

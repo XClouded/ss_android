@@ -7,7 +7,6 @@ import com.myandb.singsong.App;
 import com.myandb.singsong.PackageHelper;
 import com.myandb.singsong.R;
 import com.myandb.singsong.dialog.VersionDialog;
-import com.myandb.singsong.fragment.HomeFragment;
 import com.myandb.singsong.net.JSONObjectRequest;
 import com.myandb.singsong.net.JSONErrorListener;
 import com.myandb.singsong.net.JSONObjectSuccessListener;
@@ -84,7 +83,6 @@ public class LauncherActivity extends FragmentActivity {
 		final int exitAnim = android.R.anim.fade_out;
 		
 		Intent intent = new Intent(this, RootActivity.class);
-		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, HomeFragment.class.getName());
 		intent.putExtra(RootActivity.EXTRA_NOTICE, latestNotice.toString());
 		startActivity(intent);
 		overridePendingTransition(enterAnim, exitAnim);

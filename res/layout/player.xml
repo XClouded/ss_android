@@ -50,11 +50,75 @@
         
         <include
             android:id="@+id/layout_player_comment"
+            android:visibility="gone"
             layout="@layout/player_comment" /> 
             
         <include
             android:id="@+id/layout_player_liking"
+            android:visibility="gone"
             layout="@layout/player_liking" />
+        
+    </FrameLayout>
+    
+    <FrameLayout
+        android:id="@+id/fl_floating_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" >
+        
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="#A0000000" />
+        
+        <LinearLayout
+            android:id="@+id/ll_floating_user_wrapper"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal" >
+            
+            <com.myandb.singsong.widget.RoundedImageView
+	            android:id="@+id/iv_floating_user_photo"
+	            android:layout_width="@dimen/photo_player"
+	            android:layout_height="@dimen/photo_player"
+                android:layout_marginBottom="@dimen/margin_small"
+	            style="@style/ImageViewUserWithBorder" />
+	        
+	        <TextView
+	            android:id="@+id/tv_floating_user_nickname"
+	            android:layout_marginBottom="@dimen/margin_tiny"
+	            android:textSize="@dimen/text_title"
+	            style="@style/TextViewOverflowableImportant" />
+	        
+	        <TextView
+	            android:id="@+id/tv_floating_user_part"
+	            android:textSize="@dimen/text_subtitle"
+	            style="@style/TextViewImportant" />
+            
+        </LinearLayout>
+        
+        <LinearLayout
+            android:id="@+id/ll_floating_collabo_wrapper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical" >
+            
+	        <include
+	            android:id="@+id/layout_floating_collabo"
+	            layout="@layout/player_button_collabo" />
+	        
+	        <TextView
+	            android:id="@+id/tv_floating_description"
+	            android:layout_width="match_parent"
+	            android:textColor="@color/font_hint"
+	            android:layout_marginTop="@dimen/margin"
+	            android:lineSpacingExtra="@dimen/margin_small"
+	            android:gravity="center"
+	            style="@style/TextViewBase" />
+            
+        </LinearLayout>
         
     </FrameLayout>
 
