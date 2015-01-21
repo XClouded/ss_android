@@ -167,8 +167,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 		}
 	}
 	
-	
-	private View getActionBarView() {
+	public View getActionBarView() {
 	    int actionViewResId = 0;
 	    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
 	        actionViewResId = getResources().getIdentifier(

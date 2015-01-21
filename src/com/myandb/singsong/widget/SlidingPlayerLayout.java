@@ -1015,6 +1015,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
     	
     	private static final float OFFSET_MULTIPLIER = 1.5f;
     	private ActionBar actionBar;
+    	private View actionBarContainer; 
     	
 		@Override
 		public void onPanelSlide(View panel, float slideOffset) {
@@ -1027,18 +1028,34 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		
 		private void initializeActionBar() {
 			if (actionBar == null) {
-				actionBar = ((RootActivity) getContext()).getSupportActionBar();
+				actionBar = ((BaseActivity) getContext()).getSupportActionBar();
+				if (actionBarContainer == null) {
+					actionBarContainer = ((BaseActivity) getContext()).getActionBarView();
+				}
 			}
 		}
 		
 		private void showOrHideActionBar(float slideOffset) {
-			if (slideOffset > 0.8) {
-				if (actionBar.isShowing()) {
-					actionBar.hide();
+			if (actionBarContainer != null) {
+				ViewHelper.setAlpha(actionBarContainer, 1 - slideOffset);
+				if (!actionBarContainer.isShown()) {
+					actionBarContainer.setVisibility(View.VISIBLE);
 				}
-			} else if (slideOffset < 0.2){
-				if (!actionBar.isShowing()) {
-					actionBar.show();
+			} else {
+				showOrHideActionBarCompat(slideOffset);
+			}
+		}
+		
+		private void showOrHideActionBarCompat(float slideOffset) {
+			if (actionBar != null) {
+				if (slideOffset > 0.8) {
+					if (actionBar.isShowing()) {
+						actionBar.hide();
+					}
+				} else if (slideOffset < 0.2) {
+					if (!actionBar.isShowing()) {
+						actionBar.show();
+					}
 				}
 			}
 		}
@@ -1081,6 +1098,10 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 				((RootActivity) getContext()).onContentInvisible();
 			}
 			
+			if (actionBarContainer != null) {
+				actionBarContainer.setVisibility(View.GONE);
+			}
+			
 			vDragPanelOnExpanded.setVisibility(View.VISIBLE);
 			vDragPanelOnCollapsed.setVisibility(View.GONE);
 		}
@@ -1089,6 +1110,10 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		public void onPanelCollapsed(View panel) {
 			if (getContext() instanceof RootActivity) {
 				((RootActivity) getContext()).onContentVisible();
+			}
+			
+			if (actionBarContainer != null) {
+				actionBarContainer.setVisibility(View.VISIBLE);
 			}
 			
 			vDragPanelOnCollapsed.setVisibility(View.VISIBLE);
