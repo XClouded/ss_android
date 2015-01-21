@@ -671,7 +671,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 				vPartnerWrapper.setVisibility(View.INVISIBLE);
 				vFloatingWrapper.setVisibility(View.VISIBLE);
 				vFloatingWrapper.startAnimation(fadeIn);
-				positioningFloatingWrapper(vPartnerWrapper, vFloatingUserWrapper, getResources().getDimensionPixelSize(R.dimen.margin));
+				positioningFloatingWrapper(vPartnerWrapper, vFloatingUserWrapper, getResources().getDimensionPixelSize(R.dimen.abc_action_bar_default_height) / 2);
 				positioningFloatingWrapper(vStartCollabo, vFloatingCollaboWrapper, getResources().getDimensionPixelSize(R.dimen.abc_action_bar_default_height) / 2);
 			}
 		});
