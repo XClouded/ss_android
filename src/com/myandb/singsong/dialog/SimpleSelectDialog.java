@@ -33,8 +33,9 @@ public abstract class SimpleSelectDialog extends BaseDialog {
 
 	@Override
 	protected void setupViews() {
-		// TODO Auto-generated method stub
-		
+		tvSelectContent.setText("");
+		btnOk.setOnClickListener(null);
+		btnCancel.setOnClickListener(null);
 	}
 
 	@Override

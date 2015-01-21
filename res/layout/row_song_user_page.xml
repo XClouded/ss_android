@@ -233,8 +233,7 @@
 
                 <TextView
                     android:id="@+id/tv_song_created_time"
-                    style="@style/TextViewIconLabel"
-                    android:layout_alignParentRight="true" />
+                    style="@style/TextViewIconLabel" />
                 
             </LinearLayout>
             

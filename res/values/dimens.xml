@@ -8,24 +8,6 @@
     <dimen name="margin_bigger">20dp</dimen>
     <dimen name="margin_description">5dp</dimen>
     <dimen name="margin_drawer">8dp</dimen>
-    
-    <dimen name="item_header_footer_horizontal_padding">@dimen/margin_tiny</dimen>
-    <dimen name="item_header_footer_vertical_padding">@dimen/margin_small</dimen>
-    
-    <dimen name="item_content_horizontal_padding">@dimen/margin_small</dimen>
-    <dimen name="item_content_vertical_padding">@dimen/margin</dimen>
-    
-    <dimen name="photo_horizontal_margin">@dimen/margin_small</dimen>
-    <dimen name="photo_vertical_margin">@dimen/margin_small</dimen>
-    
-    <dimen name="user_photo_horizontal_margin">@dimen/margin</dimen>
-    <dimen name="user_photo_vertical_margin">@dimen/margin_small</dimen>
-    
-    <dimen name="user_photo_small_horizontal_margin">@dimen/margin_small</dimen>
-    <dimen name="user_photo_small_vertical_margin">@dimen/margin_small</dimen>
-    
-    <dimen name="user_photo_big_horizontal_margin">@dimen/margin_big</dimen>
-    <dimen name="user_photo_big_vertical_margin">@dimen/margin</dimen>
         
     <dimen name="text_icon_label_inverse_margin">-3sp</dimen>
     
@@ -55,23 +37,15 @@
     <dimen name="icon">12dp</dimen>
     <dimen name="icon_text_inverse_margin">-3sp</dimen>
     
-    <dimen name="launcher_image_width">100dp</dimen>
-    <dimen name="launcher_image_height">200dp</dimen>
-    
     <dimen name="drawer_width">220dp</dimen>
     
     <dimen name="player_drag_panel_height">58dp</dimen>
     <dimen name="player_drag_panel_icon_min_width">42dp</dimen>
-    <dimen name="player_drag_panel_icon_vertical_padding">8dp</dimen>
     
     <dimen name="compat_toast_width">300dp</dimen>
     
     <dimen name="compat_song_image_height">140dp</dimen>
     <dimen name="compat_song_image_height_half">70dp</dimen>
-    
-    <dimen name="compat_wide_ratio_height">190dp</dimen>
-        
-    <dimen name="form_height">45dp</dimen>
     
     <dimen name="notification_icon_width">64dp</dimen>
     <dimen name="notification_icon_height">64dp</dimen>

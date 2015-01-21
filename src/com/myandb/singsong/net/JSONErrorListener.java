@@ -10,6 +10,7 @@ import com.android.volley.Response.ErrorListener;
 import com.android.volley.AuthFailureError;
 import com.android.volley.VolleyError;
 import com.facebook.Session;
+import com.myandb.singsong.R;
 import com.myandb.singsong.secure.Authenticator;
 
 public class JSONErrorListener implements ErrorListener {
@@ -46,7 +47,7 @@ public class JSONErrorListener implements ErrorListener {
 			}
 			
 			if (getContext() != null) {
-				Toast.makeText(getContext(), "인증 정보가 유효하지 않습니다. 다시 로그인해주세요.", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getContext(), getContext().getString(R.string.t_critical_invalid_token), Toast.LENGTH_SHORT).show();
 			}
 		}
 		

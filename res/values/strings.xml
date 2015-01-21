@@ -22,16 +22,10 @@
     <string name="no">아니오</string>
     <string name="cancel">취소하기</string>
     <string name="exit">종료하기</string>
-    <string name="restart">다시부르기</string>
     <string name="upload">업로드하기</string>
     <string name="report">신고하기</string>
     <string name="update">업데이트</string>
     <string name="update_later">나중에 하기</string>
-    <string name="save">저장하기</string>
-    <string name="nickname">닉네임</string>
-    <string name="email">이메일</string>
-    <string name="kakaotalk">카카오톡</string>
-    <string name="status_message">상태 메시지</string>
     <string name="button_follow">+팔로우</string>
     <string name="button_following">\u2713팔로잉</string>
     <string name="trash">휴지통</string>
@@ -42,7 +36,6 @@
     <string name="user_comments">쓴 댓글</string>
     <string name="sort_by_popularity">인기순</string>
     <string name="sort_by_time">최신순</string>
-    <string name="recent_music">최신 업데이트 반주</string>
     <string name="category_music">장르, 테마 반주</string>
     <string name="notification">알림</string>
     <string name="more">더보기〉</string>
@@ -54,13 +47,10 @@
     <string name="dialog_headset_title">이어폰이나 헤드셋을 끼우세요!</string>
     <string name="dialog_headset_content">콜라보 노래방은 반주와 목소리를 따로 녹음하여 목소리에 보정이 가능합니다. 이어폰이나 헤드셋을 끼워 더 좋은 품질로 녹음하세요!</string>
     <string name="dialog_headset_no">그냥할래요</string>
-    <string name="dialog_part_select_title">파트를 선택하세요</string>
-    <string name="dialog_part_select_content">파트를 선택하고 각 파트에 해당하는 색깔의 가사를 부르세요. 흰색 가사는 같이 부르세요</string>
     <string name="dialog_update_title">새로운 버전이 나왔습니다!</string>
     
     <string name="hint_write_comment">한마디를 남겨주세요!</string>
     <string name="hint_report_comment">신고사유를 적어주세요 (10자 이상)</string>
-    <string name="hint_send_kakaotalk">친구에게 메세지를 보내세요!</string>
     <string name="hint_username">이메일 입력</string>
     <string name="hint_username_compat">이메일 또는 아이디 입력</string>
     <string name="hint_id">아이디 입력</string>
@@ -72,29 +62,13 @@
     <string name="hint_new_password">새로운 비밀번호 입력</string>
     <string name="hint_password">비밀번호 입력 (4자 이상)</string>
     <string name="hint_re_password">비밀번호 확인</string>
-    <string name="hint_keyword">검색어를 입력해주세요.</string>
     <string name="hint_search_user">메일 또는 닉네임을 입력해주세요</string>
     <string name="hint_search_music">노래 제목 또는 가수 이름을 입력해주세요</string>
     
-    <string name="ask_app_finish">2초 안에 뒤로가기 버튼을 다시 누르면 어플리케이션이 종료됩니다.</string>
-    <string name="lyric_help">내 파트에 맞는 색을 불러주세요! 흰색 가사는 같이 불러요!</string>
-    <string name="write_comment">댓글달기</string>
     <string name="cancel_follow">팔로우 취소</string>
-    <string name="my_song">부른 노래</string>
-    <string name="my_like_song">관심\n노래</string>
-    <string name="my_comments">쓴 댓글</string>
     <string name="login_with_facebook">페이스북으로 로그인</string>
-    <string name="account_setting">계정설정</string>
-    <string name="program_info">프로그램 정보</string>
-    <string name="enable_push">푸시 알림 받기</string>
-    <string name="service_suggestion">서비스 제안</string>
-    <string name="collabo_facebook">콜라보노래방 facebook</string>
     <string name="time_default">88:88</string>
-    <string name="change_password">비밀번호 변경</string>
     <string name="invite_friends">친구초대</string>
-    <string name="other_collabo">다른 콜라보</string>
-    <string name="song_likings">좋아요한 사람들</string>
-    <string name="song_images">사진 콜라보</string>
     <string name="allow_notify">알림 받기</string>
     
     <string name="home_title_collabo_top10">실시간 콜라보 TOP10</string>

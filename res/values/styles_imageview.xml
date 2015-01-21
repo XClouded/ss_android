@@ -35,8 +35,8 @@
     </style>
 
     <style name="IconImageView" parent="@style/ImageViewBase">
-        <item name="android:layout_width">12dp</item>
-        <item name="android:layout_height">12dp</item>
+        <item name="android:layout_width">@dimen/icon</item>
+        <item name="android:layout_height">@dimen/icon</item>
         <item name="android:layout_marginRight">@dimen/margin_tiny</item>
     </style>
     

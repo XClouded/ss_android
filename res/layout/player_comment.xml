@@ -66,14 +66,14 @@
         style="@style/TextViewBase" />
     
     <ImageView
-        android:id="@+id/upper_divider"
+        android:id="@+id/upper_divider_comment"
         android:paddingLeft="@dimen/margin"
         android:paddingRight="@dimen/margin"
         android:layout_below="@id/tv_comment_num"
         style="@style/DividerHorizontal" />
     
     <ImageView
-        android:id="@+id/lower_divider"
+        android:id="@+id/lower_divider_comment"
         android:paddingLeft="@dimen/margin"
         android:paddingRight="@dimen/margin"
         android:layout_above="@id/layout_comment_control"
@@ -84,7 +84,7 @@
         android:id="@+id/lv_comment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/lower_divider"
-        android:layout_below="@id/upper_divider" />
+        android:layout_above="@id/lower_divider_comment"
+        android:layout_below="@id/upper_divider_comment" />
 
 </RelativeLayout>

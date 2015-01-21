@@ -44,6 +44,7 @@
     </FrameLayout>
     
     <LinearLayout
+        android:baselineAligned="false"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/layout_collabo_wrapper"

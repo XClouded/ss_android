@@ -5,7 +5,6 @@
     <string name="t_notify_report_accepted">신고가 접수되었습니다.</string>
     <string name="t_notify_recommendation_accepted">추천되었습니다.</string>
     <string name="t_notify_guest">이메일 인증을 해주세요.\n인증을 하시면 콜라보 노래방의 모든 기능을 이용하실 수 있습니다.</string>
-    <string name="t_notify_activation_email_sent">인증 이메일이 발송되었습니다.</string>
     <string name="t_notify_enabled_replay">반복재생이 설정되었습니다.</string>
     <string name="t_notify_disabled_replay">반복재생이 해제되었습니다.</string>
     <string name="t_notify_enabled_autoplay">자동재생이 설정되었습니다.</string>
@@ -28,7 +27,6 @@
     <string name="t_alert_deleted_song">삭제된 노래입니다.</string>
     <string name="t_alert_song_length_validation_failed">30초 이상 불러주세요 :)</string>
     <string name="t_alert_comment_validation_failed">댓글을 입력하세요.</string>
-    <string name="t_alert_keyword_validation_failed">검색어를 입력해주세요.</string>
     <string name="t_alert_upload_failed">업로드에 실패하였습니다.</string>
     <string name="t_alert_uploading">업로드 중입니다. 잠시 후에 불러주세요 :)</string>
     <string name="t_alert_sample_audio_not_exist">미리듣기가 존재하지 않습니다.</string>

@@ -10,11 +10,6 @@
     <color name="sub">#f98e5f</color>
     <color name="sub_dark">#d67c5c</color>
     
-    <color name="row_bg_primary">#f0f0f0</color>
-    <color name="row_bg_sub">#ffffff</color>
-    <color name="row_bg_pressed">#465054</color>
-    <color name="menu_bg">#2f363a</color>
-    
     <color name="red">#ff1268</color>
     <color name="red_dark">#d30f56</color>
     <color name="black">#000000</color>
@@ -28,9 +23,7 @@
     
     <color name="divider">#c1c1c1</color>
     <color name="border">#eaeaea</color>
-    <color name="gnb_divider">#636363</color>
     
-    <color name="mask_low">#30000000</color>
     <color name="mask_middle">#80000000</color>
     <color name="mask_high">#C0000000</color>
     
@@ -39,7 +32,6 @@
     <color name="font_grey">#777</color>
     <color name="font_white">#cacaca</color>
     <color name="font_highlight">#6ab8d3</color>
-    <color name="font_noti_num">#ecddd6</color>
     <color name="font_male_active">#6ecde1</color>
     <color name="font_male_inactive">#61aab9</color>
     <color name="font_female_active">#f98e5f</color>
@@ -50,7 +42,6 @@
     <color name="app_bg">#f4f4f4</color>
     <color name="viewpager_bg">#eaeaea</color>
     <color name="icon_bg">#fafafa</color>
-    <color name="noti_num_bg">#ec2913</color>
     
     <color name="facebook">#7a9fcc</color>
     
