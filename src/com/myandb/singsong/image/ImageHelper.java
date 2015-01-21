@@ -15,7 +15,7 @@ import com.nostra13.universalimageloader.core.assist.MemoryCacheUtil;
 
 public class ImageHelper {
 	
-	private static final int TIME_DIFFERENCE_FROM_SERVER = 10 * 60 * 1000;
+	private static final int TIME_DIFFERENCE_FROM_SERVER = 2 * 60 * 1000;
 	
 	private ImageHelper() {}
 	
