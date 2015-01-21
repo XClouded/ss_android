@@ -17,7 +17,7 @@ public class BitmapBuilder {
 	private int resourceId;
 	private boolean autoScale = true;
 	private boolean crop = false;
-	private int scaleSize;
+	private int scaleSize = 1;
 	private int outputSize = 60;
 	private int sourceType;
 	private Config config;
