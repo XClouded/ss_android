@@ -87,11 +87,13 @@ public class BitmapBuilder {
 		}
 		
 		if (autoScale) {
-			float widthScale = option.outWidth / outputSize;
-			float heightScale = option.outHeight / outputSize;
+			float widthScale = option.outWidth / ((float) outputSize);
+			float heightScale = option.outHeight / ((float) outputSize);
 			float scale = widthScale > heightScale ? heightScale : widthScale;
 			
-			if (scale >= 8) {
+			if (scale >= 10) {
+				option.inSampleSize = 10;
+			} else if (scale >= 8) {
 				option.inSampleSize = 8;
 			} else if (scale >= 6) {
 				option.inSampleSize = 6;

@@ -20,7 +20,7 @@ public class ResizeAsyncTask extends AsyncTask<InputStream, Integer, Bitmap> {
 
 	private ImageView imageView;
 	private File outputFile;
-	private int outputSize = 120;
+	private int outputSize = 256;
 	
 	@Override
 	protected Bitmap doInBackground(InputStream... params) {
