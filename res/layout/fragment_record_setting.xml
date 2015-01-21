@@ -171,11 +171,12 @@
 			            android:paddingBottom="@dimen/margin_tiny"
 			            android:paddingLeft="@dimen/margin_small"
 			            android:paddingRight="@dimen/margin_small"
-			            android:minHeight="3dp"
-			            android:maxHeight="3dp"
+			            android:minHeight="2dp"
+			            android:maxHeight="2dp"
 			            android:layout_centerVertical="true"
 			            android:progressDrawable="@drawable/seekbar_white"
-			            android:thumb="@drawable/seekbar_thumb" />
+			            android:thumb="@drawable/seekbar_thumb"
+			            android:thumbOffset="0dp" />
 		            
 		        </RelativeLayout>
 		        
