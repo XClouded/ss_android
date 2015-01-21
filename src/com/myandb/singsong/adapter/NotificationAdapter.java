@@ -37,6 +37,7 @@ public class NotificationAdapter extends HolderAdapter<Notification, Notificatio
 		final Activity activity = notification.getActivity();
 		final User activityCreator = activity.getCreator();
 		
+		viewHolder.tvNotificationContent.setText("");
 		for (CharSequence charSequence : notification.getContent(currentUser)) {
 			viewHolder.tvNotificationContent.append(charSequence);
 		}
