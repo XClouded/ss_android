@@ -147,8 +147,9 @@ public class FadingActionBarHelper implements OnScrollListener {
 		if (homeDrawable == null) {
 			return;
 		}
-		
+	
 		homeDrawable.setAlpha(alpha);
+		actionBar.setHomeAsUpIndicator(homeDrawable);
 	}
 	
 	private void fadeTitle(int alpha) {
