@@ -686,8 +686,8 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 				vPartnerWrapper.setVisibility(View.INVISIBLE);
 				vFloatingWrapper.setVisibility(View.VISIBLE);
 				vFloatingWrapper.startAnimation(fadeIn);
-				positioningFloatingWrapper(vPartnerWrapper, vFloatingUserWrapper, getResources().getDimensionPixelSize(R.dimen.abc_action_bar_default_height) / 2);
-				positioningFloatingWrapper(vStartCollabo, vFloatingCollaboWrapper, getResources().getDimensionPixelSize(R.dimen.abc_action_bar_default_height) / 2);
+				positioningFloatingWrapper(vPartnerWrapper, vFloatingUserWrapper, false);
+				positioningFloatingWrapper(vStartCollabo, vFloatingCollaboWrapper, true);
 			}
 		});
 		TextView text = (TextView) view.findViewWithTag(getResources().getString(R.string.tag_button_collabo_text));
@@ -701,14 +701,16 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		text.setText("콜라보 시작");
 	}
 	
-	private void positioningFloatingWrapper(View original, View floating, int offset) {
+	private void positioningFloatingWrapper(View original, View floating, boolean matchParent) {
 		int left = getRelativeLeft(original);
 		int top = getRelativeTop(original);
 		int width = original.getWidth();
 		FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) floating.getLayoutParams();
-		lp.topMargin = top - offset;
-		lp.leftMargin = left;
-		lp.width = width;
+		lp.topMargin = top - getResources().getDimensionPixelSize(R.dimen.player_floating_offset);
+		if (!matchParent) {
+			lp.leftMargin = left;
+			lp.width = width;
+		}
 		floating.requestLayout();
 	}
 	
@@ -842,7 +844,6 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		
 		tvFloatingDescription.append(spannablePartName);
 		tvFloatingDescription.append(" 파트에 콜라보를 해보세요!");
-		
 	}
 	
 	private void displayCommentNum(int num) {

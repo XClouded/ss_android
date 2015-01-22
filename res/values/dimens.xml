@@ -41,6 +41,7 @@
     
     <dimen name="player_drag_panel_height">58dp</dimen>
     <dimen name="player_drag_panel_icon_min_width">42dp</dimen>
+    <dimen name="player_floating_offset">25dp</dimen>
     
     <dimen name="compat_toast_width">300dp</dimen>
     
