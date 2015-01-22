@@ -1,40 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/DialogBox" >
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center" >
+    
+    <ImageView
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:src="@drawable/ic_menu_listen"
+        style="@style/ImageViewBase" />
     
     <TextView
         android:text="@string/dialog_headset_title"
-        style="@style/DialogTextViewTitle" />
+        android:textColor="@color/white"
+        style="@style/TextViewSubtitleAlone" />
     
-    <RelativeLayout
+    <TextView
+        android:text="@string/dialog_headset_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-        
-        <ImageView
-            android:id="@+id/icon"
-            android:layout_marginLeft="@dimen/margin_small"
-            android:layout_marginRight="@dimen/margin_small"
-            android:layout_marginTop="@dimen/margin_big"
-            android:layout_marginBottom="@dimen/margin_big"
-            android:src="@drawable/img_headset"
-            style="@style/BaseImageView" />
-	    
-	    <TextView
-	        android:layout_alignTop="@id/icon"
-	        android:layout_alignBottom="@id/icon"
-	        android:layout_toRightOf="@id/icon"
-	        android:gravity="center_vertical"
-	        android:text="@string/dialog_headset_content"
-	        style="@style/SmallTextView" />
-        
-    </RelativeLayout>
-    
-    <ImageView
-        style="@style/DividerHorizontal" />
+        android:gravity="center"
+        android:layout_marginBottom="@dimen/margin_bigger"
+        style="@style/TextViewLessImportant" />
     
     <Button
         android:id="@+id/btn_no_headset"
         android:text="@string/dialog_headset_no"
-        style="@style/DialogButton" />
+        android:background="@drawable/button_transparent_selector"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
+        style="@style/ButtonBase" />
 
 </LinearLayout>

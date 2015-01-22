@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <style name="AppTheme" parent="@style/Theme.AppCompat.Light">
+        <item name="android:windowActionBarOverlay">true</item>
+    	<item name="android:windowContentOverlay">@null</item>
+        <item name="android:actionBarStyle">@style/AppTheme.ActionBarStyle</item>
+        <item name="android:actionOverflowButtonStyle">@style/AppTheme.ActionBar.Overflow</item>
+    </style>
+    
+    <style name="AppTheme.ActionBarStyle" parent="@style/Widget.AppCompat.ActionBar">
+        <item name="android:icon">@android:color/transparent</item>
+        <item name="android:background">@drawable/actionbar_background</item>
+        <item name="android:titleTextStyle">@style/AppTheme.ActionBar.TitleTextStyle</item>
+    </style>
+    
+</resources>

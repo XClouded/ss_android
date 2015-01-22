@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+    <PreferenceCategory
+        android:title="Notification">
+        
+        <CheckBoxPreference
+            android:key="@string/key_notification"
+            android:title="푸시 알림받기"
+            android:defaultValue="true"
+            android:summaryOn="팔로워들의 소식이 업데이트 되었을때 알림을 받습니다."
+            android:summaryOff="알림을 끕니다." />
+        
+    </PreferenceCategory>
+    
+    <PreferenceCategory
+        android:title="Player" >
+        
+        <CheckBoxPreference
+            android:key="@string/key_player_looping"
+            android:title="반복재생"
+            android:defaultValue="true"
+            android:summary="플레이어가 노래를 반복해서 재생합니다." />
+        
+        <CheckBoxPreference 
+            android:key="@string/key_player_autoplay"
+            android:title="자동재생"
+            android:defaultValue="true"
+            android:summary="노래를 클릭했을 시 자동으로 노래를 재생합니다." />
+        
+    </PreferenceCategory>
+
+</PreferenceScreen>

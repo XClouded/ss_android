@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/card_selector"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <com.myandb.singsong.widget.RoundedImageView
+        android:id="@+id/iv_parent_user_photo"
+        style="@style/ImageViewUser"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin" />
+
+    <TextView
+        android:id="@+id/tv_parent_user_nickname"
+        style="@style/TextViewOverflowableImportant"
+        android:textColor="@color/font_default" />
+
+    <TextView
+        android:id="@+id/tv_parent_user_part"
+        style="@style/TextViewOverflowableLessImportant"
+        android:layout_marginBottom="@dimen/margin_small" />
+
+    <TextView
+        android:id="@+id/tv_parent_song_message"
+        style="@style/TextViewBase"
+        android:layout_marginBottom="@dimen/margin"
+        android:layout_marginLeft="@dimen/margin_small"
+        android:layout_marginRight="@dimen/margin_small"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="2" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/margin_big"
+            android:orientation="horizontal" >
+
+            <ImageView
+                style="@style/IconImageView"
+                android:src="@drawable/ic_like_mini" />
+
+            <TextView
+                android:id="@+id/tv_song_like_num"
+                style="@style/TextViewIconLabel" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/margin_big"
+            android:orientation="horizontal" >
+
+            <ImageView
+                style="@style/IconImageView"
+                android:src="@drawable/ic_comment_mini" />
+
+            <TextView
+                android:id="@+id/tv_song_comment_num"
+                style="@style/TextViewIconLabel" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <ImageView
+                style="@style/IconImageView"
+                android:src="@drawable/ic_collabo_grey" />
+
+            <TextView
+                android:id="@+id/tv_song_collabo_num"
+                style="@style/TextViewIconLabel" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView style="@style/DividerHorizontal" />
+
+    <LinearLayout
+        android:id="@+id/ll_prelisten_control"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_small"
+        android:orientation="horizontal" >
+
+        <ImageView
+            style="@style/IconImageView"
+            android:layout_marginTop="2dp"
+            android:src="@drawable/ic_play_basic" />
+
+        <TextView
+            style="@style/TextViewLessImportant"
+            android:text="미리듣기" />
+    </LinearLayout>
+
+</LinearLayout>

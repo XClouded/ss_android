@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+   	android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center" >
+    
+    <TextView
+        android:id="@+id/tv_progress_title"
+        android:text="@string/loading_title_audio_downloading"
+        android:textColor="@color/white"
+        style="@style/TextViewSubtitleAlone" />
+
+    <ProgressBar
+        android:id="@+id/pb_loading"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:max="100"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_marginTop="@dimen/margin_big"
+        android:layout_marginBottom="@dimen/margin_bigger"
+        android:layout_marginLeft="@dimen/margin_small"
+        android:layout_marginRight="@dimen/margin_small"
+        android:progressDrawable="@drawable/seekbar_white" />
+    
+	    
+    <Button
+        android:id="@+id/btn_progress_control"
+        android:layout_marginBottom="@dimen/margin_big"
+        android:background="@drawable/button_transparent_selector"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
+        android:visibility="gone"
+        style="@style/ButtonBase" />
+    
+    <Button
+        android:id="@+id/btn_cancel"
+        android:text="@string/cancel"
+        android:background="@drawable/button_transparent_selector"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
+        style="@style/ButtonBase" />
+    
+</LinearLayout>

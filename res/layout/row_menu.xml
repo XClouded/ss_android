@@ -1,52 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.myandb.singsong.widget.SquareFrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+ 	android:id="@+id/rl_gnb_row"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
-    
-    <RelativeLayout
-	    android:id="@+id/rl_gnb_row"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="12dp"
-        android:paddingBottom="12dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp" >
+    android:paddingBottom="@dimen/margin_bigger" >
         
-	    <ImageView
-	        android:id="@+id/iv_gnb_icon"
-	        android:layout_width="20dp"
-	        android:layout_height="20dp"
-	        android:layout_alignParentLeft="true"
-	        android:layout_marginRight="15dp"
-	        style="@style/BaseImageView" />
-	    
-	    <TextView
-	        android:id="@+id/tv_push_num"
-	        android:layout_alignParentRight="true"
-	        android:layout_centerVertical="true"
-	        android:visibility="invisible"
-	        style="@style/NotificationTextView" />
-	    
-		<TextView 
-		    android:id="@+id/tv_gnb_title"
-		    android:layout_width="match_parent"
-		    android:layout_centerVertical="true"
-		    android:layout_toLeftOf="@id/tv_push_num"
-		    android:layout_toRightOf="@id/iv_gnb_icon"
-		    android:gravity="left|center_vertical"
-		    android:textSize="15sp"
-		    android:textColor="@color/font_white"
-		    android:maxLines="1"
-		    style="@style/BaseTextView" />
-        
-    </RelativeLayout>
-    
     <ImageView
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:src="@color/gnb_divider"
-        style="@style/DividerHorizontal" />
-    
-</LinearLayout>
-
+        android:id="@+id/iv_gnb_icon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        style="@style/ImageViewBase" />
+	    
+	<TextView 
+	    android:id="@+id/tv_gnb_title"
+	    android:layout_marginBottom="@dimen/margin_drawer"
+	    android:layout_gravity="bottom|center_horizontal"
+	    android:textColor="#6ecde1"
+	    android:textSize="@dimen/text_subtitle"
+	    android:textStyle="bold"
+	    android:maxLines="1"
+	    style="@style/TextViewBase" />
+        
+</com.myandb.singsong.widget.SquareFrameLayout>

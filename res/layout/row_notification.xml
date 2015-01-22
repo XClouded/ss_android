@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res/com.myandb.singsong"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/row_selector" >
@@ -8,16 +7,14 @@
     <com.myandb.singsong.widget.RoundedImageView
         android:id="@+id/iv_user_photo"
         android:layout_marginRight="@dimen/margin_small"
-        app:oval="true"
-        app:border_width="0.1dp"
-        app:border_color="@color/divider"
-        style="@style/UserImageView" />
+        style="@style/ImageViewUserSmall" />
     
     <TextView
 	    android:id="@+id/tv_created_time"
 	    android:layout_alignParentRight="true"
 	    android:textColor="@color/font_hint"
-	    style="@style/BaseTextView" />
+	    android:text="asdf"
+	    style="@style/TextViewBase" />
     
     <TextView
         android:id="@+id/tv_notification_content"
@@ -25,7 +22,7 @@
         android:layout_toRightOf="@id/iv_user_photo"
         android:layout_toLeftOf="@id/tv_created_time"
         android:lineSpacingExtra="@dimen/margin_tiny"
-        style="@style/BaseTextView" />
+        style="@style/TextViewBase" />
     
 </RelativeLayout>
 

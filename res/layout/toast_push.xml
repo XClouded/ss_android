@@ -1,74 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res/com.myandb.singsong"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/transparent" >
-    
-    <LinearLayout
+    android:layout_height="wrap_content" >
+
+    <RelativeLayout
         android:layout_width="@dimen/compat_toast_width"
-	    android:layout_height="wrap_content"
-	    android:layout_gravity="center_horizontal"
-	    android:background="@color/mask_high"
-	    android:orientation="vertical" >
-	    
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/margin_tiny"
-            android:gravity="center"
-            android:orientation="horizontal" >
-            
-            <ImageView
-                android:layout_width="@dimen/icon"
-                android:layout_height="@dimen/icon"
-                android:layout_marginRight="@dimen/margin_small"
-                android:src="@drawable/ic_launcher"
-                style="@style/BaseImageView" />
-            
-            <TextView
-                android:text="@string/app_name"
-                android:textColor="@color/font_white"
-                style="@style/SmallTextView" />
-            
-        </LinearLayout>
-        
+        android:layout_height="wrap_content"
+        android:background="@drawable/card_push_toast"
+        android:layout_gravity="center_horizontal"
+        android:padding="@dimen/margin" >
+
+        <com.myandb.singsong.widget.RoundedImageView
+            android:id="@+id/iv_user_photo"
+            style="@style/ImageViewUser"
+            android:layout_marginRight="@dimen/margin_small" />
+
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:src="@color/primary" />
-        
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/margin_small" >
-	        
-		    <com.myandb.singsong.widget.RoundedImageView
-		        android:id="@+id/iv_user_photo"
-		        android:layout_marginRight="@dimen/margin_small"
-		        app:oval="true"
-		        app:border_width="0.1dp"
-		        app:border_color="@color/divider"
-		        style="@style/UserImageView" />
-		    
-		    <TextView
-		        android:id="@+id/tv_user_name"
-		        android:layout_toRightOf="@id/iv_user_photo"
-		        android:textColor="@color/font_white"
-		        android:textSize="15sp"
-		        style="@style/BaseTextView" />
-		    
-		    <TextView
-		        android:id="@+id/tv_message"
-		        android:layout_below="@id/tv_user_name"
-		        android:layout_toRightOf="@id/iv_user_photo"
-		        android:layout_marginTop="@dimen/margin_small"
-		        android:textColor="@color/font_white"
-		        style="@style/BaseTextView" />
-            
-        </RelativeLayout>
-        
-        
-    </LinearLayout>
-    
+            android:id="@+id/logo"
+            style="@style/ImageViewBase"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginRight="@dimen/margin_tiny"
+            android:layout_toRightOf="@id/iv_user_photo"
+            android:src="@drawable/ic_launcher" />
+
+        <TextView
+            style="@style/TextViewImportant"
+            android:layout_alignBottom="@id/logo"
+            android:layout_alignTop="@id/logo"
+            android:layout_toRightOf="@id/logo"
+            android:gravity="center"
+            android:text="@string/app_name"
+            android:textColor="@color/font_white" />
+
+        <TextView
+            android:id="@+id/tv_message"
+            style="@style/TextViewBase"
+            android:layout_below="@id/logo"
+            android:layout_marginLeft="@dimen/margin_tiny"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_toRightOf="@id/iv_user_photo"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+
 </FrameLayout>

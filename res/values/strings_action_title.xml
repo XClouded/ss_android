@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string name="fragment_home_action_title">콜라보 홈</string>
+    <string name="fragment_artist_list_action_title">콜라보 아티스트</string>
+    <string name="fragment_artist_request_action_title">콜라보 아티스트 신청하기</string>
+    <string name="fragment_sing_action_title">부르기</string>
+    <string name="fragment_listen_action_title">듣기</string>
+    <string name="fragment_setting_action_title">프로필 설정</string> 
+    <string name="fragment_find_friends_action_title">친구 찾기</string>
+    <string name="fragment_community_action_title">커뮤니티</string>
+    <string name="fragment_invite_friends_action_title">친구 초대</string>
+    <string name="fragment_community_notice_action_title">공지사항</string>
+    <string name="fragment_community_faq_action_title">FAQ</string>
+    <string name="fragment_community_free_action_title">콜라보 게시판</string>
+    <string name="fragment_community_mr_action_title">MR 요청 게시판</string>
+    <string name="fragment_search_user_action_title">유저 검색</string>
+    <string name="fragment_search_song_action_title">노래 검색</string>
+    <string name="fragment_search_music_action_title">MR 검색</string>
+    <string name="fragment_facebook_friends_action_title">페이스북 친구 추가</string>
+    <string name="fragment_music_detail_action_title">콜라보 상대 선택</string>
+    <string name="fragment_notification_action_title">새로운 소식</string>
+    
+</resources>

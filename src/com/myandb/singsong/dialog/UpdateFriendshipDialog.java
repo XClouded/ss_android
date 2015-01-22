@@ -3,72 +3,69 @@ package com.myandb.singsong.dialog;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
 import com.android.volley.Request.Method;
-import com.myandb.singsong.App;
+import com.google.gson.Gson;
 import com.myandb.singsong.R;
-import com.myandb.singsong.fragment.ProfileRootFragment;
+import com.myandb.singsong.fragment.UserHomeFragment;
 import com.myandb.singsong.model.Friendship;
-import com.myandb.singsong.net.OAuthJustRequest;
-import com.myandb.singsong.net.UrlBuilder;
+import com.myandb.singsong.net.JustRequest;
+import com.myandb.singsong.util.Utility;
 
-public class UpdateFriendshipDialog extends BaseDiaglog {
+public class UpdateFriendshipDialog extends BaseDialog {
 	
-	private ProfileRootFragment parent;
-	private ImageView ivCancel;
+	public static final String EXTRA_FRIENDSHIP = "friendship";
+	
+	private UserHomeFragment fragment;
 	private Button btnAllowPush;
 	private Button btnUnfollow;
 	private Button btnRecommendArtist;
 	private Friendship friendship;
-
-	public UpdateFriendshipDialog(ProfileRootFragment fragment) {
-		super(fragment.getActivity(), android.R.style.Theme_Translucent_NoTitleBar);
-		
-		this.parent = fragment;
+	
+	@Override
+	protected int getResourceId() {
+		return R.layout.dialog_update_friendship;
 	}
 
 	@Override
-	protected void initializeView() {
-		setContentView(R.layout.dialog_update_friendship);
-		
-		ivCancel = (ImageView) findViewById(R.id.iv_cancel);
-		btnAllowPush = (Button) findViewById(R.id.btn_allow_push);
-		btnUnfollow = (Button) findViewById(R.id.btn_unfollow);
-		btnRecommendArtist = (Button) findViewById(R.id.btn_recommend_artist);
+	protected void onArgumentsReceived(Bundle bundle) {
+		super.onArgumentsReceived(bundle);
+		Gson gson = Utility.getGsonInstance();
+		String friendshipInJson = bundle.getString(EXTRA_FRIENDSHIP);
+		friendship = gson.fromJson(friendshipInJson, Friendship.class);
 	}
 
 	@Override
-	protected void setupView() {
+	protected void initialize(Activity activity) {
+		fragment = (UserHomeFragment) getParentFragment();
+	}
+
+	@Override
+	protected void onViewInflated(View view, LayoutInflater inflater) {
+		btnAllowPush = (Button) view.findViewById(R.id.btn_allow_push);
+		btnUnfollow = (Button) view.findViewById(R.id.btn_unfollow);
+		btnRecommendArtist = (Button) view.findViewById(R.id.btn_recommend_artist);
+	}
+
+	@Override
+	protected void setupViews() {
 		btnAllowPush.setOnClickListener(updateAllowPushClickListener);
 		btnUnfollow.setOnClickListener(unfollowClickListener);
 		btnRecommendArtist.setOnClickListener(recommendClickListener);
-		ivCancel.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				UpdateFriendshipDialog.this.dismiss();
-			}
-		});
-	}
-
-	@Override
-	public void show() {
-		super.show();
-		
 		updateTextOnAllowPush();
 	}
 	
 	private void updateTextOnAllowPush() {
 		if (friendship.isAllowNotify()) {
 			btnAllowPush.setText("✓ ");
-			btnAllowPush.append("알림 받기");
+			btnAllowPush.append(getString(R.string.allow_notify));
 		} else {
-			btnAllowPush.setText("알림 받기");
+			btnAllowPush.setText(getString(R.string.allow_notify));
 		}
 	}
 	
@@ -79,20 +76,18 @@ public class UpdateFriendshipDialog extends BaseDiaglog {
 			boolean isAllowNotify = !friendship.isAllowNotify();
 			
 			try {
-				UrlBuilder urlBuilder = UrlBuilder.getInstance();
-				String url = urlBuilder.l("friendships").l(friendship.getFollowingUserId()).build();
 				JSONObject message = new JSONObject();
 				message.put("allow_notify", isAllowNotify);
 				
-				OAuthJustRequest request = new OAuthJustRequest(Method.PUT, url, message);
-				RequestQueue queue = ((App) parent.getActivity().getApplicationContext()).getQueueInstance();
-				queue.add(request);
+				int followingId = friendship.getFollowingUserId();
+				JustRequest request = new JustRequest(Method.PUT, "friendships/" + followingId, message);
+				addRequest(request);
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
 			
+			fragment.toggleAllowNotify();
 			friendship.setAllowNotify(isAllowNotify);
-			
 			updateTextOnAllowPush();
 		}
 	};
@@ -101,16 +96,11 @@ public class UpdateFriendshipDialog extends BaseDiaglog {
 		
 		@Override
 		public void onClick(View v) {
-			UrlBuilder urlBuilder = UrlBuilder.getInstance();
-			String url = urlBuilder.l("friendships").l(friendship.getFollowingUserId()).build();
-			
-			OAuthJustRequest request = new OAuthJustRequest(Method.DELETE, url, null);
-			RequestQueue queue = ((App) parent.getActivity().getApplicationContext()).getQueueInstance();
-			queue.add(request);
-			
-			parent.toggleFollowing(false);
-			
-			UpdateFriendshipDialog.this.dismiss();
+			int followingId = friendship.getFollowingUserId();
+			JustRequest request = new JustRequest(Method.DELETE, "friendships/" + followingId, null);
+			addRequest(request);
+			fragment.toggleFollowing(false);
+			dismiss();
 		}
 	};
 	
@@ -118,21 +108,12 @@ public class UpdateFriendshipDialog extends BaseDiaglog {
 		
 		@Override
 		public void onClick(View v) {
-			UrlBuilder urlBuilder = UrlBuilder.getInstance();
-			String url = urlBuilder.l("candidates").l(friendship.getFollowingUserId()).build();
-			
-			OAuthJustRequest request = new OAuthJustRequest(Method.POST, url, null);
-			RequestQueue queue = ((App) parent.getActivity().getApplicationContext()).getQueueInstance();
-			queue.add(request);
-			
-			Toast.makeText(getContext(), "추천되었습니다!", Toast.LENGTH_SHORT).show();
-			
-			UpdateFriendshipDialog.this.dismiss();
+			int followingId = friendship.getFollowingUserId();
+			JustRequest request = new JustRequest(Method.POST, "candidates/" + followingId, null);
+			addRequest(request);
+			makeToast(R.string.t_notify_recommendation_accepted);
+			dismiss();
 		}
 	};
-	
-	public void setFriendship(Friendship friendship) {
-		this.friendship = friendship;
-	}
 
 }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/margin"
+    android:orientation="vertical" >
+    
+    <TextView
+        android:text="@string/home_title_collabo_artist"
+        android:layout_marginRight="@dimen/margin"
+        style="@style/TextViewSubtitle" />
+    
+    <FrameLayout
+        android:id="@+id/fl_today_collabo_artist_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin" />
+    
+    <TextView
+        android:text="역대 콜라보 아티스트"
+        android:layout_marginRight="@dimen/margin"
+        style="@style/TextViewSubtitle" />
+
+</LinearLayout>

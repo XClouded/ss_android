@@ -1,9 +1,7 @@
 package com.myandb.singsong.adapter;
 
 import android.content.Context;
-import android.graphics.Typeface;
-import android.text.Spannable;
-import android.text.SpannableString;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -11,67 +9,58 @@ import android.widget.TextView;
 
 import com.myandb.singsong.R;
 import com.myandb.singsong.event.Listeners;
+import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Activity;
 import com.myandb.singsong.model.Notification;
 import com.myandb.singsong.model.User;
-import com.myandb.singsong.secure.Auth;
-import com.myandb.singsong.util.ImageHelper;
-import com.myandb.singsong.util.Utility;
+import com.myandb.singsong.secure.Authenticator;
 
-public class NotificationAdapter extends AutoLoadAdapter<Notification> {
+public class NotificationAdapter extends HolderAdapter<Notification, NotificationAdapter.NotificationHolder> {
 	
 	private User currentUser;
 
-	public NotificationAdapter(Context context) {
-		super(context, Notification.class, true);
+	public NotificationAdapter() {
+		super(Notification.class);
 		
-		currentUser = Auth.getUser();
+		currentUser = Authenticator.getUser();
 	}
 
 	@Override
-	public View getView(int position, View view, ViewGroup parent) {
-		final NotificationHolder notificationHolder;
-		final Notification notification = (Notification) getItem(position);
+	public NotificationHolder onCreateViewHolder(LayoutInflater inflater, ViewGroup parent, int viewType) {
+		View view = inflater.inflate(R.layout.row_notification, parent, false);
+		return new NotificationHolder(view);
+	}
+
+	@Override
+	public void onBindViewHolder(Context context, NotificationHolder viewHolder, int position) {
+		final Notification notification = getItem(position);
 		final Activity activity = notification.getActivity();
+		final User activityCreator = activity.getCreator();
 		
-		if (view == null) {
-			view = View.inflate(getContext(), R.layout.row_notification, null);
-			
-			notificationHolder = new NotificationHolder();
-			
-			notificationHolder.tvNotificationContent = (TextView) view.findViewById(R.id.tv_notification_content);
-			notificationHolder.tvCreatedTime = (TextView) view.findViewById(R.id.tv_created_time);
-			notificationHolder.ivUserPhoto = (ImageView) view.findViewById(R.id.iv_user_photo);
-			
-			view.setTag(notificationHolder);
-		} else {
-			notificationHolder = (NotificationHolder) view.getTag();
+		viewHolder.tvNotificationContent.setText("");
+		for (CharSequence charSequence : notification.getContent(currentUser)) {
+			viewHolder.tvNotificationContent.append(charSequence);
 		}
+		viewHolder.tvCreatedTime.setText(notification.getWorkedCreatedTime(getCurrentDate()));
 		
-		if (activity != null) {
-			final User activityCreator = activity.getCreator();
-			
-			Spannable nicknameSpan = new SpannableString(activityCreator.getNickname());
-			Utility.getStyleSpan(nicknameSpan, Typeface.BOLD);
-			
-			notificationHolder.tvNotificationContent.setText(nicknameSpan);
-			notificationHolder.tvNotificationContent.append(notification.getContent(currentUser));
-			
-			notificationHolder.tvCreatedTime.setText(notification.getWorkedCreatedTime(getCurrentDate()));
-			
-			ImageHelper.displayPhoto(activityCreator, notificationHolder.ivUserPhoto);
-			
-			view.setOnClickListener(Listeners.getSourceClickListener(getContext(), notification));
-		}
+		ImageHelper.displayPhoto(activityCreator, viewHolder.ivUserPhoto);
 		
-		return view;
+		viewHolder.view.setOnClickListener(Listeners.getSourceClickListener(context, notification));
 	}
 	
-	public static class NotificationHolder {
+	public static final class NotificationHolder extends ViewHolder {
 		
 		public ImageView ivUserPhoto;
 		public TextView tvCreatedTime;
 		public TextView tvNotificationContent;
+		
+		public NotificationHolder(View view) {
+			super(view);
+			
+			tvNotificationContent = (TextView) view.findViewById(R.id.tv_notification_content);
+			tvCreatedTime = (TextView) view.findViewById(R.id.tv_created_time);
+			ivUserPhoto = (ImageView) view.findViewById(R.id.iv_user_photo);
+		}
 		
 	}
 

@@ -1,35 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="5dp" >
+    android:layout_height="wrap_content" >
     
     <ImageView
         android:id="@+id/iv_icon"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="@dimen/notification_icon_width"
+        android:layout_height="@dimen/notification_icon_height"
         android:layout_alignParentLeft="true"
-        android:layout_marginRight="15dp"
+        android:padding="@dimen/margin_small"
         android:scaleType="centerCrop" />
     
-    <TextView
-        android:id="@+id/tv_title"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerVertical="true"
         android:layout_toRightOf="@id/iv_icon"
-        android:layout_marginBottom="15dp"
-        android:layout_alignParentTop="true"
-        android:textAppearance="@android:style/TextAppearance.StatusBar.EventContent" />
-    
-    <ProgressBar
-        android:id="@+id/pb_status"
-        android:layout_width="match_parent"
-        android:layout_height="5dp"
-        android:layout_alignLeft="@id/tv_title"
-        android:layout_below="@id/tv_title"
-        android:paddingRight="10dp"
-        android:max="100"
-        android:progressDrawable="@drawable/progressbar"
-        style="?android:attr/progressBarStyleHorizontal" />
+        android:padding="@dimen/margin" >
+	    
+	    <TextView
+	        android:id="@+id/tv_title"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginBottom="@dimen/margin_small"
+	        android:textAppearance="@android:style/TextAppearance.StatusBar.EventContent" />
+	    
+	    <ProgressBar
+	        android:id="@+id/pb_status"
+	        android:layout_width="match_parent"
+	        android:layout_height="5dp"
+	        android:max="100"
+	        android:progressDrawable="@drawable/seekbar_white"
+	        style="?android:attr/progressBarStyleHorizontal" />
+        
+    </LinearLayout>
 
 </RelativeLayout>

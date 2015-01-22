@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+    
+    <TextView
+        android:id="@+id/tv_resend_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:background="@color/app_bg"
+        android:text="이메일 인증을 해주세요!\n인증 이메일이 도착하지 않은 경우 myandb@myandb.com 으로 문의해주세요."
+        android:textColor="@color/red"
+        android:textStyle="bold"
+        android:textSize="10sp"
+        android:visibility="gone" />
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="280dp" >
+        
+        <ImageView
+            android:id="@+id/iv_user_photo_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@color/grey_dark"
+            style="@style/ImageViewBase" />
+        
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/mask_profile" />
+        
+        <LinearLayout
+            android:id="@+id/layout_tab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal" >
+            
+            <TextView
+	            android:id="@+id/tv_user_songs"
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	            android:paddingTop="@dimen/margin_small"
+	            android:paddingBottom="@dimen/margin_small"
+	            android:textSize="16sp"
+	            android:textColor="@color/font_highlight"
+	            android:textStyle="bold"
+	            android:lineSpacingExtra="3sp"
+	            android:gravity="center"
+	            android:background="@drawable/tab_selector"
+	            style="@style/TextViewBase" />
+	        
+	        <TextView
+	            android:id="@+id/tv_user_followings"
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	            android:paddingTop="@dimen/margin_small"
+	            android:paddingBottom="@dimen/margin_small"
+	            android:textSize="16sp"
+	            android:textColor="@color/white"
+	            android:textStyle="bold"
+	            android:lineSpacingExtra="3sp"
+	            android:gravity="center"
+	            android:background="@drawable/tab_selector"
+	            style="@style/TextViewBase" />
+	        
+	        <TextView
+	            android:id="@+id/tv_user_followers"
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	            android:paddingTop="@dimen/margin_small"
+	            android:paddingBottom="@dimen/margin_small"
+	            android:textSize="16sp"
+	            android:textColor="@color/white"
+	            android:textStyle="bold"
+	            android:lineSpacingExtra="3sp"
+	            android:gravity="center"
+	            android:background="@drawable/tab_selector"
+	            style="@style/TextViewBase" />
+            
+        </LinearLayout>
+        
+        <com.myandb.singsong.widget.RoundedImageView
+        	android:id="@+id/iv_user_photo"
+        	android:layout_width="@dimen/photo_big"
+        	android:layout_height="@dimen/photo_big"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="60dp"
+        	style="@style/ImageViewUserWithBorder" />
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_below="@id/iv_user_photo"
+            android:layout_marginLeft="@dimen/margin"
+            android:layout_marginRight="@dimen/margin" >
+			
+			<TextView
+			    android:id="@+id/tv_user_nickname"
+			    android:layout_width="match_parent"
+			    android:textSize="@dimen/text_impact"
+			    android:layout_marginBottom="@dimen/margin_small"
+			    android:gravity="center"
+			    style="@style/TextViewOverflowableImportant" />
+			
+			<TextView
+			    android:id="@+id/tv_user_status"
+			    android:layout_width="match_parent"
+			    android:gravity="center"
+			    android:text="상태글이 없습니다."
+			    android:textColor="@color/font_white"
+			    style="@style/TextViewLessImportant" />
+            
+        </LinearLayout>
+        
+        <FrameLayout
+            android:id="@+id/layout_button_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@id/iv_user_photo"
+            android:layout_marginRight="@dimen/margin" >
+            
+	        <Button
+	            android:id="@+id/btn_follow"
+	            android:layout_width="75dp"
+	            android:background="@drawable/button_transparent_selector"
+	            android:text="+팔로우"
+	            android:paddingLeft="0dp"
+	    		android:paddingRight="0dp"
+	            style="@style/ButtonMini" />
+	        
+	        <ImageView
+	            android:id="@+id/iv_edit_profile"
+	            android:layout_width="30dp"
+	            android:layout_height="30dp"
+	            android:layout_marginRight="@dimen/margin"
+	            android:src="@drawable/ic_wheel"
+	            style="@style/ImageViewBase" />
+            
+        </FrameLayout>
+        
+    </RelativeLayout>
+    
+    <include
+        android:id="@+id/layout_empty_view"
+        android:visibility="gone"
+        layout="@layout/fragment_user_home_empty" />
+
+</LinearLayout>

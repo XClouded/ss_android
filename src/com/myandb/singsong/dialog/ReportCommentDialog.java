@@ -3,116 +3,82 @@ package com.myandb.singsong.dialog;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.Context;
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
-import com.myandb.singsong.App;
 import com.myandb.singsong.R;
-import com.myandb.singsong.activity.BaseActivity;
-import com.myandb.singsong.model.Comment;
-import com.myandb.singsong.model.User;
-import com.myandb.singsong.net.OAuthJustRequest;
-import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.util.ImageHelper;
+import com.myandb.singsong.net.JustRequest;
+import com.myandb.singsong.secure.Authenticator;
 
-public class ReportCommentDialog extends BaseDiaglog {
+public class ReportCommentDialog extends BaseDialog {
 	
-	private User user;
-	private Comment<?> comment;
-	private ImageView ivCancel;
-	private ImageView ivReporterPhoto;
-	private Button btnSubmitReport;
-	private TextView tvTargetCommentContent;
+	public static final String EXTRA_COMMENT_ID = "comment_id";
+	public static final String EXTRA_COMMENT_CONTENT = "comment_content";
+	
+	private Button btnReport;
+	private TextView tvCommentContent;
 	private EditText etReportContent;
-	private BaseActivity parent;
-
-	public ReportCommentDialog(Context context, User user) {
-		super(context, android.R.style.Theme_Translucent_NoTitleBar);
-		
-		this.user = user;
-		this.parent = (BaseActivity) context;
+	private int commentId;
+	private String commentContent;
+	
+	@Override
+	protected int getResourceId() {
+		return R.layout.dialog_report_comment;
 	}
 
 	@Override
-	protected void initializeView() {
-		setContentView(R.layout.dialog_report_comment);
-		
-		ivCancel = (ImageView) findViewById(R.id.iv_cancel);
-		ivReporterPhoto = (ImageView) findViewById(R.id.iv_reporter_photo);
-		btnSubmitReport = (Button) findViewById(R.id.btn_submit);
-		tvTargetCommentContent = (TextView) findViewById(R.id.tv_target_comment_content);
-		etReportContent = (EditText) findViewById(R.id.et_report_content);
+	protected void onArgumentsReceived(Bundle bundle) {
+		super.onArgumentsReceived(bundle);
+		commentId = bundle.getInt(EXTRA_COMMENT_ID);
+		commentContent = bundle.getString(EXTRA_COMMENT_CONTENT);
 	}
 
 	@Override
-	protected void setupView() {
-		if (user != null) {
-			ImageHelper.displayPhoto(user, ivReporterPhoto);
-		}
+	protected void initialize(Activity activity) {}
+
+	@Override
+	protected void onViewInflated(View view, LayoutInflater inflater) {
+		btnReport = (Button) view.findViewById(R.id.btn_report);
+		tvCommentContent = (TextView) view.findViewById(R.id.tv_comment_content);
+		etReportContent = (EditText) view.findViewById(R.id.et_report_content);
+	}
+
+	@Override
+	protected void setupViews() {
+		btnReport.setOnClickListener(reportClickListener);
+		tvCommentContent.setText(commentContent);
+	}
+	
+	private View.OnClickListener reportClickListener = new View.OnClickListener() {
 		
-		ivCancel.setOnClickListener(new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			String reportContent = etReportContent.getText().toString();
 			
-			@Override
-			public void onClick(View v) {
-				ReportCommentDialog.this.dismiss();
-			}
-		});
-	}
-	
-	@Override
-	public void show() {
-		super.show();
-		
-		if (comment != null) {
-			tvTargetCommentContent.setText(comment.getContent());
-			btnSubmitReport.setOnClickListener(new View.OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					String reportContent = etReportContent.getText().toString();
+			if (reportContent.length() >= 10) {
+				try {
+					JSONObject message = new JSONObject();
+					message.put("user_id", Authenticator.getUser().getId());
+					message.put("comment_id", commentId);
+					message.put("message", reportContent);
 					
-					if (reportContent != null && reportContent.length() > 10) {
-						try {
-							JSONObject message = new JSONObject();
-							message.put("user_id", user.getId());
-							message.put("comment_id", comment.getId());
-							message.put("message", reportContent);
-							
-							UrlBuilder urlBuilder = UrlBuilder.getInstance();
-							String url = urlBuilder.l("reports").build();
-							OAuthJustRequest request = new OAuthJustRequest(url, message);
-							RequestQueue queue = ((App) getContext().getApplicationContext()).getQueueInstance();
-							queue.add(request);
-						} catch (JSONException e) {
-							e.printStackTrace();
-						}
-						
-						ReportCommentDialog.this.dismiss();
-						
-						Toast.makeText(getContext(), "신고가 접수되었습니다. :)", Toast.LENGTH_SHORT).show();
-					} else {
-						Toast.makeText(getContext(), "신고사유를 10자 이상 써주세요.", Toast.LENGTH_SHORT).show();
-					}
+					JustRequest request = new JustRequest("reports", message);
+					addRequest(request);
+				} catch (JSONException e) {
+					e.printStackTrace();
 				}
-			});
+				
+				dismiss();
+				makeToast(R.string.t_notify_report_accepted);
+			} else {
+				makeToast(R.string.t_alert_report_reason_validation_failed);
+			}
 		}
-	}
-	
-	@Override
-	public void dismiss() {
-		super.dismiss();
-		
-		parent.closeEditText(etReportContent);
-	}
-
-	public void setComment(Comment<?> comment) {
-		this.comment = comment;
-	}
+	};
 
 }

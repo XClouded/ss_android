@@ -3,7 +3,34 @@ package com.myandb.singsong.model;
 import java.util.List;
 import java.util.Random;
 
-import com.myandb.singsong.util.TimeHelper;
+import org.json.JSONObject;
+
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.View.OnClickListener;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.android.volley.Response.ErrorListener;
+import com.android.volley.Response.Listener;
+import com.android.volley.VolleyError;
+import com.myandb.singsong.App;
+import com.myandb.singsong.R;
+import com.myandb.singsong.activity.BaseActivity;
+import com.myandb.singsong.activity.RootActivity;
+import com.myandb.singsong.activity.UpActivity;
+import com.myandb.singsong.audio.OnPlayEventListener;
+import com.myandb.singsong.audio.PlayEvent;
+import com.myandb.singsong.event.ActivateOnlyClickListener;
+import com.myandb.singsong.fragment.ChildrenSongFragment;
+import com.myandb.singsong.fragment.KaraokeFragment;
+import com.myandb.singsong.fragment.ListFragment;
+import com.myandb.singsong.net.JSONObjectRequest;
+import com.myandb.singsong.service.PlayerService;
+import com.myandb.singsong.util.StringFormatter;
 
 public class Song extends Model {
 	
@@ -46,15 +73,21 @@ public class Song extends Model {
 	private String file;
 	private String message;
 	private List<Image> photos;
+	private Category category;
 	private int duration;
 	private int lyric_part;
 	private int collabo_num;
 	private int comment_num;
 	private int liking_num;
 	private int song_id;
+	private int genre_id;
 	
 	public String getAudioUrl() {
 		return STORAGE_HOST + STORAGE_SONG + file;
+	}
+	
+	public String getSampleUrl() {
+		return STORAGE_HOST + STORAGE_SONG + file.replace(".ogg", ".sample.ogg");
 	}
 	
 	public User getParentUser() {
@@ -104,7 +137,12 @@ public class Song extends Model {
 	}
 	
 	public Song getParentSong() {
-		return isRoot() ? this : song;
+		if (isRoot()) {
+			return this;
+		} else {
+			song.setMusic(getMusic());
+			return song;
+		}
 	}
 	
 	public List<Song> getChildren() {
@@ -116,7 +154,7 @@ public class Song extends Model {
 	}
 	
 	public String getWorkedCollaboNum() {
-		return toString(collabo_num);
+		return safeString(collabo_num);
 	}
 	
 	public int getCommentNum() {
@@ -124,7 +162,7 @@ public class Song extends Model {
 	}
 	
 	public String getWorkedCommentNum() {
-		return toString(comment_num);
+		return safeString(comment_num);
 	}
 	
 	public int getLikeNum() {
@@ -132,7 +170,7 @@ public class Song extends Model {
 	}
 	
 	public String getWorkedLikeNum() {
-		return toString(liking_num);
+		return safeString(liking_num);
 	}
 	
 	public int getLyricPart() {
@@ -168,7 +206,7 @@ public class Song extends Model {
 	}
 	
 	public String getWorkedDuration() {
-		return TimeHelper.getDuration(duration);
+		return StringFormatter.getDuration(duration);
 	}
 	
 	public List<Image> getPhotos() {
@@ -176,10 +214,30 @@ public class Song extends Model {
 	}
 	
 	public String getPhotoUrl() {
-		if (photos != null && photos.size() > 0) {
+		if (hasPhoto()) {
 			return photos.get(0).getUrl();
 		} else {
 			return randomPhotos[random.nextInt(randomPhotos.length)];
+		}
+	}
+	
+	public boolean hasPhoto() {
+		return photos != null && photos.size() > 0;
+	}
+	
+	public int getPhotoSize() {
+		if (hasPhoto()) {
+			return photos.size();
+		} else {
+			return 0;
+		}
+	}
+	
+	public int getTotalPhotoSize() {
+		if (isRoot()) {
+			return getPhotoSize();
+		} else {
+			return getPhotoSize() + song.getPhotoSize();
 		}
 	}
 	
@@ -198,4 +256,157 @@ public class Song extends Model {
 	public void decrementLikeNum() {
 		liking_num--;
 	}
+	
+	public Category getCategory() {
+		if (category == null) {
+			category = new Category(genre_id);
+		}
+		return category;
+	}
+
+	public OnClickListener getPlayClickListener() {
+		return new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				BaseActivity activity = (BaseActivity) v.getContext();
+				PlayerService service = activity.getPlayerService();
+				service.startPlaying(Song.this);
+			}
+		};
+	}
+	
+	public OnClickListener getSampleClickListener() {
+		return new OnClickListener() {
+			
+			private ImageView icon;
+			private View parentView;
+			
+			@Override
+			public void onClick(final View view) {
+				BaseActivity activity = (BaseActivity) view.getContext();
+				PlayerService service = activity.getPlayerService();
+				parentView = view;
+				icon = getIcon(parentView);
+				
+				if (isPlaying(parentView)) {
+					service.stopSample();
+				} else {
+					service.startSample(Song.this, eventListener);
+				}
+			}
+			
+			private ImageView getIcon(View v) {
+				if (v instanceof ImageView) {
+					return (ImageView) v;
+				} else if (v instanceof ViewGroup) {
+					View child = ((ViewGroup) v).getChildAt(0);
+					if (child instanceof ImageView) {
+						return (ImageView) child;
+					}
+				}
+				return null;
+			}
+			
+			private boolean isPlaying(View view) {
+				if (view == null) {
+					return false;
+				}
+				return view.getTag() == null ? false : (Boolean) view.getTag();
+			}
+			
+			private OnPlayEventListener eventListener = new OnPlayEventListener() {
+				
+				@Override
+				public void onPlay(PlayEvent event) {
+					if (parentView == null) {
+						return;
+					}
+					
+					switch (event) {
+					case PLAY:
+						if (icon != null) {
+							icon.setImageResource(R.drawable.ic_pause_basic);
+						}
+						parentView.setTag(true);
+						break;
+						
+					case COMPLETED:
+					case PAUSE:
+						if (icon != null) {
+							icon.setImageResource(R.drawable.ic_play_basic);
+						}
+						parentView.setTag(false);
+						break;
+						
+					case ERROR:
+						Context context = parentView.getContext();
+						Toast.makeText(context, context.getString(R.string.t_alert_sample_audio_not_exist), Toast.LENGTH_SHORT).show();
+						break;
+						
+					default:
+						break;
+					}
+				}
+			};
+		};
+	}
+	
+	public OnClickListener getCollaboClickListner() {
+		return new ActivateOnlyClickListener() {
+			
+			private Context context;
+			
+			@Override
+			public void onActivated(View v, User user) {
+				context = v.getContext();
+				JSONObjectRequest request = new JSONObjectRequest(
+						"songs/" + getParentSong().getId(), null,
+						successListener, errorListener);
+				((App) context.getApplicationContext()).addShortLivedRequest(context, request);
+			}
+			
+			private Listener<JSONObject> successListener = new Listener<JSONObject>() {
+
+				@Override
+				public void onResponse(JSONObject response) {
+					Bundle bundle = new Bundle();
+					bundle.putString(KaraokeFragment.EXTRA_PARENT_SONG, getParentSong().toString());
+					Intent intent = new Intent(context, UpActivity.class);
+					intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, KaraokeFragment.class.getName());
+					intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
+					intent.putExtra(UpActivity.EXTRA_FULL_SCREEN, true);
+					intent.putExtra(UpActivity.EXTRA_SHOULD_STOP, true);
+					context.startActivity(intent);
+				}
+			};
+			
+			private ErrorListener errorListener = new ErrorListener() {
+
+				@Override
+				public void onErrorResponse(VolleyError error) {
+					Toast.makeText(context, context.getString(R.string.t_alert_deleted_song), Toast.LENGTH_SHORT).show();
+				}
+			};
+			
+		};
+	}
+	
+	public OnClickListener getChildrenClickListener() {
+		return new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Context context = v.getContext();
+				Bundle bundle = new Bundle();
+				bundle.putString(ChildrenSongFragment.EXTRA_ROOT_SONG, getParentSong().toString());
+				bundle.putInt(ListFragment.EXTRA_COLUMN_NUM, 2);
+				Intent intent = new Intent(context, RootActivity.class);
+				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, ChildrenSongFragment.class.getName());
+				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
+				((BaseActivity) context).changePage(intent);
+			}
+		};
+	}
+	
 }

@@ -1,86 +1,83 @@
 package com.myandb.singsong.adapter;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.myandb.singsong.R;
-import com.myandb.singsong.event.Listeners;
+import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Song;
 import com.myandb.singsong.model.SongComment;
 import com.myandb.singsong.model.User;
-import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.util.ImageHelper;
 
-public class MyCommentAdapter extends AutoLoadAdapter<SongComment> {
+public class MyCommentAdapter extends HolderAdapter<SongComment, MyCommentAdapter.CommentHolder> {
 	
-	public MyCommentAdapter(Context context) {
-		super(context, SongComment.class, true);
-	}
-	
-	public MyCommentAdapter(Context context, UrlBuilder urlBuilder) {
-		this(context);
-		
-		resetRequest(urlBuilder);
+	public MyCommentAdapter() {
+		super(SongComment.class);
 	}
 
 	@Override
-	public View getView(int position, View view, ViewGroup parent) {
-		final CommentHolder songHolder;
-		final SongComment comment = (SongComment) getItem(position);
+	public CommentHolder onCreateViewHolder(LayoutInflater inflater, ViewGroup parent, int viewType) {
+		View view = inflater.inflate(R.layout.row_my_comment, parent, false);
+		return new CommentHolder(view);
+	}
+
+	@Override
+	public void onBindViewHolder(Context context, CommentHolder viewHolder, int position) {
+		final SongComment comment = getItem(position);
 		final Song song = comment.getCommentable();
 		final User user = comment.getWriter();
+		final Music music = song.getMusic();
 		
-		if (view == null) {
-			view = View.inflate(getContext(), R.layout.row_my_comment, null);
-			
-			songHolder = new CommentHolder();
-			
-			songHolder.tvCommentUserNickname = (TextView) view.findViewById(R.id.tv_comment_user_nickname);
-			songHolder.tvCommentContent = (TextView) view.findViewById(R.id.tv_comment_content);
-			songHolder.tvCommentCreatedTime = (TextView) view.findViewById(R.id.tv_comment_created);
-			songHolder.tvMusicInfo = (TextView) view.findViewById(R.id.tv_music_info);
-			
-			songHolder.ivAlbumPhoto = (ImageView) view.findViewById(R.id.iv_album_photo);
-			songHolder.ivCommentUserPhoto = (ImageView) view.findViewById(R.id.iv_comment_user_photo);
-			
-			view.setTag(songHolder);
-		} else {
-			songHolder = (CommentHolder) view.getTag();
-		}
+		viewHolder.tvCommentUserNickname.setText(user.getNickname());
+		viewHolder.tvCommentContent.setText(comment.getContent());
+		viewHolder.tvCommentCreatedTime.setText(comment.getWorkedCreatedTime(getCurrentDate()));
 		
-		if (song != null) {
-			Music music = song.getMusic();
-			
-			songHolder.tvCommentUserNickname.setText(user.getNickname());
-			songHolder.tvCommentContent.setText(comment.getContent());
-			songHolder.tvCommentCreatedTime.setText(comment.getWorkedCreatedTime(getCurrentDate()));
-			
-			songHolder.tvMusicInfo.setText(music.getSingerName());
-			songHolder.tvMusicInfo.append(" - ");
-			songHolder.tvMusicInfo.append(music.getTitle());
-			
-			ImageHelper.displayPhoto(user, songHolder.ivCommentUserPhoto);
-			ImageHelper.displayPhoto(music.getAlbumPhotoUrl(), songHolder.ivAlbumPhoto);
-			
-			view.setOnClickListener(Listeners.getPlayClickListener(getContext(), song));
-		}
+		viewHolder.tvMusicInfo.setText(music.getTitle());
+		viewHolder.tvMusicInfo.append(" - ");
+		viewHolder.tvMusicInfo.append(music.getSingerName());
 		
-		return view;
+		viewHolder.tvUserInfo.setText(getUserInfo(song));
+		viewHolder.view.setOnClickListener(song.getPlayClickListener());
+		
+		ImageHelper.displayPhoto(user, viewHolder.ivCommentUserPhoto);
+		ImageHelper.displayPhoto(music.getAlbumPhotoUrl(), viewHolder.ivAlbumPhoto);
 	}
 	
-	private static class CommentHolder {
+	private String getUserInfo(Song song) {
+		String info = song.getParentUser().getNickname();
+		if (!song.isRoot()) {
+			info += " X ";
+			info += song.getCreator().getNickname();
+		}
+		return info;
+	}
+	
+	public static final class CommentHolder extends ViewHolder {
 		
-		public TextView tvCommentUserNickname,
-			tvCommentCreatedTime,
-			tvCommentContent,
-			tvMusicInfo;
+		public TextView tvCommentUserNickname;
+		public TextView tvCommentCreatedTime;
+		public TextView tvCommentContent;
+		public TextView tvMusicInfo;
+		public TextView tvUserInfo;
+		public ImageView ivAlbumPhoto;
+		public ImageView ivCommentUserPhoto;
 		
-		public ImageView ivAlbumPhoto,
-			ivCommentUserPhoto;
+		public CommentHolder(View view) {
+			super(view);
+
+			tvCommentUserNickname = (TextView) view.findViewById(R.id.tv_comment_user_nickname);
+			tvCommentContent = (TextView) view.findViewById(R.id.tv_comment_content);
+			tvCommentCreatedTime = (TextView) view.findViewById(R.id.tv_comment_created);
+			tvMusicInfo = (TextView) view.findViewById(R.id.tv_music_info);
+			tvUserInfo = (TextView) view.findViewById(R.id.tv_user_info);
+			ivAlbumPhoto = (ImageView) view.findViewById(R.id.iv_album_photo);
+			ivCommentUserPhoto = (ImageView) view.findViewById(R.id.iv_comment_user_photo);
+		}
 		
 	}
 

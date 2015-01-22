@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="65dp"
+    android:paddingBottom="65dp"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:background="@color/app_bg" >
+    
+    <TextView
+        android:text="좋아하는 노래를 불러보세요!\n다른 사람 노래에 콜라보도 할 수 있어요 :)"
+        android:gravity="center"
+        android:layout_marginBottom="@dimen/margin_big"
+        style="@style/TextViewBase" />
+    
+    <LinearLayout
+        android:id="@+id/ll_sing"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/margin_small"
+        android:paddingBottom="@dimen/margin_small"
+        android:paddingLeft="@dimen/margin_bigger"
+        android:paddingRight="@dimen/margin_bigger"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:background="@drawable/button_white_selector" >
+        
+        <ImageView
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_marginRight="@dimen/margin_tiny"
+            android:src="@drawable/ic_menu_sing"
+            style="@style/ImageViewBase" />
+        
+        <TextView
+            android:text="노래 부르기"
+            style="@style/TextViewImportant" />
+        
+    </LinearLayout>
+
+</LinearLayout>

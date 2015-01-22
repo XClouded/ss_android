@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#eee" >
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+        
+        <RelativeLayout
+            android:id="@+id/rl_link_free"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/margin_big"
+            android:paddingBottom="@dimen/margin_big"
+            android:paddingLeft="@dimen/margin"
+            android:paddingRight="@dimen/margin"
+            android:background="@drawable/row_naked_selector" >
+            
+            <ImageView
+                android:id="@+id/icon_free"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/margin_small"
+                android:src="@drawable/ic_community_free"
+                style="@style/ImageViewBase" />
+	        
+	        <TextView
+	            android:text="콜라보 게시판"
+	            android:textStyle="bold"
+	            android:layout_toRightOf="@id/icon_free"
+	            android:layout_centerVertical="true"
+	            style="@style/TextViewBase" />
+            
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_arrow_right_dark"
+                android:layout_alignParentRight="true"
+                style="@style/ImageViewBase" />
+            
+        </RelativeLayout>
+	    
+        <ImageView
+	        style="@style/DividerHorizontal" />
+        
+        <RelativeLayout
+            android:id="@+id/rl_link_mr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/margin_big"
+            android:paddingBottom="@dimen/margin_big"
+            android:paddingLeft="@dimen/margin"
+            android:paddingRight="@dimen/margin"
+            android:background="@drawable/row_naked_selector" >
+            
+            <ImageView
+                android:id="@+id/icon_mr"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/margin_small"
+                android:src="@drawable/ic_community_mr"
+                style="@style/ImageViewBase" />
+	        
+	        <TextView
+	            android:text="MR 요청 게시판"
+	            android:textStyle="bold"
+	            android:layout_toRightOf="@id/icon_mr"
+	            android:layout_centerVertical="true"
+	            style="@style/TextViewBase" />
+            
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_arrow_right_dark"
+                android:layout_alignParentRight="true"
+                style="@style/ImageViewBase" />
+            
+        </RelativeLayout>
+	    
+        <ImageView
+	        style="@style/DividerHorizontal" />
+        
+        <RelativeLayout
+            android:id="@+id/rl_link_notice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/margin_big"
+            android:paddingBottom="@dimen/margin_big"
+            android:paddingLeft="@dimen/margin"
+            android:paddingRight="@dimen/margin"
+            android:background="@drawable/row_naked_selector" >
+            
+            <ImageView
+                android:id="@+id/icon_notice"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/margin_small"
+                android:src="@drawable/ic_community_notice"
+                style="@style/ImageViewBase" />
+	        
+	        <TextView
+	            android:text="공지사항"
+	            android:textStyle="bold"
+	            android:layout_toRightOf="@id/icon_notice"
+	            android:layout_centerVertical="true"
+	            style="@style/TextViewBase" />
+            
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_arrow_right_dark"
+                android:layout_alignParentRight="true"
+                style="@style/ImageViewBase" />
+            
+        </RelativeLayout>
+	    
+        <ImageView
+	        style="@style/DividerHorizontal" />
+        
+        <RelativeLayout
+            android:id="@+id/rl_link_faq"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/margin_big"
+            android:paddingBottom="@dimen/margin_big"
+            android:paddingLeft="@dimen/margin"
+            android:paddingRight="@dimen/margin"
+            android:layout_marginBottom="@dimen/margin"
+            android:background="@drawable/row_naked_selector" >
+            
+            <ImageView
+                android:id="@+id/icon_faq"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/margin_small"
+                android:src="@drawable/ic_community_faq"
+                style="@style/ImageViewBase" />
+	        
+	        <TextView
+	            android:text="FAQ"
+	            android:textStyle="bold"
+	            android:layout_toRightOf="@id/icon_faq"
+	            android:layout_centerVertical="true"
+	            style="@style/TextViewBase" />
+            
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_arrow_right_dark"
+                android:layout_alignParentRight="true"
+                style="@style/ImageViewBase" />
+            
+        </RelativeLayout>
+        
+        <RelativeLayout
+            android:id="@+id/rl_link_facebook"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/margin_big"
+            android:paddingBottom="@dimen/margin_big"
+            android:paddingLeft="@dimen/margin"
+            android:paddingRight="@dimen/margin"
+            android:background="@drawable/row_naked_selector" >
+            
+            <ImageView
+                android:id="@+id/icon_facebook"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/margin_small"
+                android:src="@drawable/ic_community_facebook"
+                style="@style/ImageViewBase" />
+	        
+	        <TextView
+	            android:text="콜라보 노래방 페이스북 페이지"
+	            android:textStyle="bold"
+	            android:layout_toRightOf="@id/icon_facebook"
+	            android:layout_centerVertical="true"
+	            style="@style/TextViewBase" />
+            
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_arrow_right_dark"
+                android:layout_alignParentRight="true"
+                style="@style/ImageViewBase" />
+            
+        </RelativeLayout>
+	    
+        <ImageView
+	        style="@style/DividerHorizontal" />
+        
+        <RelativeLayout
+            android:id="@+id/rl_link_review"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/margin_big"
+            android:paddingBottom="@dimen/margin_big"
+            android:paddingLeft="@dimen/margin"
+            android:paddingRight="@dimen/margin"
+            android:background="@drawable/row_naked_selector" >
+            
+            <ImageView
+                android:id="@+id/icon_review"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/margin_small"
+                android:src="@drawable/ic_community_review"
+                style="@style/ImageViewBase" />
+	        
+	        <TextView
+	            android:text="플레이 스토어에 리뷰 남기기"
+	            android:textStyle="bold"
+	            android:layout_toRightOf="@id/icon_review"
+	            android:layout_centerVertical="true"
+	            style="@style/TextViewBase" />
+            
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_arrow_right_dark"
+                android:layout_alignParentRight="true"
+                style="@style/ImageViewBase" />
+            
+        </RelativeLayout>
+	    
+	    <include
+	        layout="@layout/footer" />
+	     
+    </LinearLayout>
+
+</ScrollView>
