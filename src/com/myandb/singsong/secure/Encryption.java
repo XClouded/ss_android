@@ -19,7 +19,7 @@ public class Encryption {
             byte[] mb = md.digest();
             for (int i = 0, l = mb.length; i < l; i++) {
                 byte temp = mb[i];
-                String s = Integer.toHexString(new Byte(temp));
+                String s = Integer.toHexString(Byte.valueOf(temp));
                 while (s.length() < 2) {
                     s = "0" + s;
                 }

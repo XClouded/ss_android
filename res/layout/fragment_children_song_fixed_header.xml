@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/margin"
+    android:background="@color/white" >
+    
+    <com.myandb.singsong.widget.RoundedImageView
+        android:id="@+id/iv_user_photo"
+	    android:layout_width="@dimen/photo_big"
+	    android:layout_height="@dimen/photo_big"
+	    style="@style/ImageViewUser" />
+    
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="60dp"
+        android:layout_height="@dimen/photo"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="@dimen/margin_small"
+        android:layout_centerVertical="true" >
+	    
+	    <ImageView
+	        android:id="@+id/icon_mixed"
+	        android:layout_width="12dp"
+	        android:layout_height="12dp"
+	        android:layout_alignParentLeft="true"
+	        android:layout_centerVertical="true"
+	        android:src="@drawable/ic_collabo_grey"
+	        style="@style/IconImageView" />
+        
+        <TextView
+	        android:id="@+id/tv_collabo_num"
+	        android:layout_centerVertical="true"
+	        android:layout_toRightOf="@id/icon_mixed"
+	        style="@style/TextViewIconLabel" />
+        
+    </RelativeLayout>
+ 
+	<TextView
+	    android:id="@+id/tv_user_nickname"
+	    android:layout_toRightOf="@id/iv_user_photo"
+	    android:layout_toLeftOf="@id/header"
+	    android:layout_alignTop="@id/iv_user_photo"
+	    android:layout_marginTop="@dimen/margin_small"
+	    android:textColor="@color/font_default"
+	    android:gravity="left"
+        style="@style/TextViewOverflowableImportant" />
+ 
+	<TextView
+	    android:id="@+id/tv_user_part"
+	    android:layout_alignLeft="@id/tv_user_nickname"
+	    android:layout_below="@id/tv_user_nickname"
+	    android:layout_marginBottom="@dimen/margin_small"
+	    style="@style/TextViewLessImportant" />
+ 
+	<TextView
+	    android:id="@+id/tv_song_message"
+	    android:layout_alignLeft="@id/tv_user_nickname"
+	    android:layout_below="@id/tv_user_part"
+	    android:layout_toLeftOf="@id/header"
+	    android:ellipsize="end"
+	    android:maxLines="3"
+	    style="@style/TextViewBase" />
+
+</RelativeLayout>

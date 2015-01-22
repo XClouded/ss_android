@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/margin_small" >
+    
+    <TextView
+        android:id="@+id/tv_song_num"
+        android:layout_width="20dp"
+        android:textColor="@color/sub"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/margin_small"
+        style="@style/TextViewBase" />
+    
+    <com.myandb.singsong.widget.RoundedImageView
+        android:id="@+id/iv_album_photo"
+        android:layout_width="@dimen/photo"
+        android:layout_height="@dimen/photo"
+        android:layout_toRightOf="@id/tv_song_num"
+        style="@style/ImageViewSquare" />
+    
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="50dp"
+        android:layout_height="@dimen/photo"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="@dimen/margin" >
+	    
+	    <ImageView
+	        android:id="@+id/icon_like"
+	        android:layout_width="12dp"
+	        android:layout_height="12dp"
+	        android:layout_alignParentLeft="true"
+	        android:layout_centerVertical="true"
+	        android:src="@drawable/ic_like_mini"
+	        style="@style/IconImageView" />
+        
+        <TextView
+	        android:id="@+id/tv_song_like_num"
+	        android:layout_centerVertical="true"
+	        android:layout_toRightOf="@id/icon_like"
+	        style="@style/TextViewIconLabel" />
+        
+    </RelativeLayout>
+    
+    <TextView
+        android:id="@+id/tv_music_info"
+        android:layout_toLeftOf="@id/header"
+        android:layout_toRightOf="@id/iv_album_photo"
+        android:layout_marginTop="@dimen/margin_tiny"
+        android:textColor="@color/font_default"
+        android:gravity="left"
+        style="@style/TextViewOverflowableImportant" />
+    
+    <TextView
+        android:id="@+id/tv_user_info"
+        android:layout_toLeftOf="@id/header"
+        android:layout_toRightOf="@id/iv_album_photo"
+        android:layout_marginTop="@dimen/margin_tiny"
+        android:layout_below="@id/tv_music_info"
+        android:gravity="left"
+        style="@style/TextViewOverflowableLessImportant" />
+    
+</RelativeLayout>
+

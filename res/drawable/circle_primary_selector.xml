@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item 
-        android:state_pressed="true"
-        android:drawable="@drawable/circle_primary_darker" />
-    <item
-        android:drawable="@drawable/circle_primary" />
+    
+    <item android:state_pressed="true">
+        <shape android:shape="oval" >
+			<solid android:color="@color/primary_dark" />
+		</shape>
+    </item>
+        
+        
+    <item>
+        <shape android:shape="oval" >
+			<solid android:color="@color/primary" />
+		</shape>
+    </item>
+        
 </selector>

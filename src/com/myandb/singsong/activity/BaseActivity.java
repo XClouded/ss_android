@@ -1,312 +1,257 @@
 package com.myandb.singsong.activity;
 
-import java.lang.ref.WeakReference;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.ExceptionParser;
 import com.google.analytics.tracking.android.ExceptionReporter;
+import com.myandb.singsong.App;
 import com.myandb.singsong.R;
-import com.myandb.singsong.file.Storage;
-import com.myandb.singsong.model.Music;
-import com.myandb.singsong.model.Song;
+import com.myandb.singsong.event.WeakRunnable;
 import com.myandb.singsong.service.PlayerService;
 import com.myandb.singsong.service.PlayerServiceConnection;
-import com.myandb.singsong.service.PlayerService.IPlayStatusCallback;
-import com.myandb.singsong.util.ImageHelper;
-import com.myandb.singsong.util.Utility;
-import com.myandb.singsong.widget.RotateProgressDialog;
+import com.sromku.simple.fb.SimpleFacebook;
 
+import android.annotation.SuppressLint;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
+import android.content.res.Resources;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
+import android.support.v4.app.Fragment.InstantiationException;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBarActivity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnClickListener;
-import android.view.inputmethod.InputMethodManager;
-import android.view.Window;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.view.View.OnTouchListener;
+import android.widget.FrameLayout;
 
-public abstract class BaseActivity extends FragmentActivity {
-
-	protected static final int NOT_USE_ACTION_BAR = 0;
+public abstract class BaseActivity extends ActionBarActivity {
 	
-	private static final String TAG = "SingSong";
+	public static final String EXTRA_URI_QUERY = "uri_query";
+	public static final String EXTRA_FRAGMENT_NAME = "fragment_name";
+	public static final String EXTRA_FRAGMENT_BUNDLE = "fragment_bundle";
+	public static final String EXTRA_FRAGMENT_ROOT = "fragment_root";
 	
-	private ImageView ivAlbumPhoto;
-	private ImageView ivLogo;
-	private ImageView ivKakaotalk;
-	private ImageView ivPlayControl;
-	private ImageView ivGnb;
-	private TextView tvAlbumInfo;
-	private ViewGroup childContainer;
-	private PlayerService playerService;
 	private PlayerServiceConnection serviceConnection;
-	private RotateProgressDialog progressDialog;
-	private Intent playerIntent = new Intent("com.myandb.singsong.service.PlayerService");
-	
-	protected abstract int getChildLayoutResourceId();
-	
-	protected abstract boolean isRootActivity();
-	
-	protected abstract boolean enablePlayingThumb();
-	
+	private PlayerService service;
+	private Fragment contentFragment;
+	private Handler handler;
+	private SimpleFacebook simpleFacebook;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		
-		if (getChildLayoutResourceId() != NOT_USE_ACTION_BAR) {
-			
-			setContentView(R.layout.application);
-			
-			initializeView();
-			
-			setupView();
+		handler = new Handler(Looper.getMainLooper());
+	}
+	
+	@SuppressLint("InlinedApi")
+	private void setHomeButtonRightMargin(int pixel) {
+		View home = findViewById(android.R.id.home);
+		if (home != null) {
+			android.view.ViewGroup.LayoutParams layoutParams = home.getLayoutParams();
+			if (layoutParams instanceof FrameLayout.LayoutParams) {
+				FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) layoutParams;
+				lp.rightMargin = pixel;
+				home.setLayoutParams(lp);
+			}
 		}
 	}
 
-	private void initializeView() {
-		childContainer = (ViewGroup) findViewById(R.id.fl_container);
-		View.inflate(this, getChildLayoutResourceId(), childContainer);
-		
-		ivGnb = (ImageView) findViewById(R.id.iv_actionbar_gnb);
-		ivLogo = (ImageView) findViewById(R.id.iv_actionbar_logo);
-		ivAlbumPhoto = (ImageView) findViewById(R.id.iv_actionbar_album_photo);
-		ivKakaotalk = (ImageView) findViewById(R.id.iv_actionbar_kakaotalk);
-		ivPlayControl = (ImageView) findViewById(R.id.iv_actionbar_play_control);
-		
-		tvAlbumInfo = (TextView) findViewById(R.id.tv_actionbar_album_info);
+	public void changePage(Intent intent) {
+		onPageChanged(intent);
 	}
 	
-	private void setupView() {
-		if (!isRootActivity()) {
-			ivGnb.setImageResource(R.drawable.ic_back_home);
-			ivGnb.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View view) {
-					Intent intent = new Intent(BaseActivity.this, MainActivity.class);
-					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-					startActivity(intent);
-				}
-				
-			});
+	protected void replaceContentFragmentFromIntent(Intent intent) {
+		try {
+			Fragment fragment = instantiateFragmentFromIntent(intent);
+			boolean isRootFragment = intent.getBooleanExtra(EXTRA_FRAGMENT_ROOT, false);
+			replaceContentFragment(fragment, isRootFragment);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		
+		handler.postDelayed(new WeakRunnable<BaseActivity>(this, "setActionBarIconNoDelay"), 2000);
 	}
 	
-	protected void setDrawerOnGnb(final DrawerLayout drawer, final View menu) {
-		if (ivGnb != null) {
-			ivGnb.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View view) {
-					if (drawer.isDrawerOpen(menu)) {
-						drawer.closeDrawers();
-					} else {
-						drawer.openDrawer(menu);
-					}
-				}
-				
-			});
+	public void setActionBarIconNoDelay() {
+		View actionBarView = getActionBarView();
+		recursiveSetOnTouchListener(actionBarView);				
+	}
+	
+	protected Fragment instantiateFragmentFromIntent(Intent intent) 
+			throws InstantiationException, UnsupportedEncodingException, NullPointerException {
+		String fragmentName = null;
+		Bundle fragmentBundle = null;
+		
+		if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+			Uri uri = intent.getData();
+			fragmentName = uri.getFragment();
+			fragmentBundle = getBundleFromQuery(uri.getQuery());
+		} else {
+			fragmentName = intent.getStringExtra(EXTRA_FRAGMENT_NAME);
+			fragmentBundle = intent.getBundleExtra(EXTRA_FRAGMENT_BUNDLE);
 		}
+		
+		return Fragment.instantiate(this, fragmentName, fragmentBundle);
 	}
 	
-	protected void setKakaotalkClickListener(OnClickListener listener) {
-		if (ivKakaotalk != null) {
-			final String kakaotalkPackageName = "com.kakao.talk";
+	private Bundle getBundleFromQuery(String query) throws UnsupportedEncodingException {
+		final String charset = "UTF-8";
+		
+		Bundle bundle = new Bundle();
+		String[] pairs = query.split("&");
+		for (String pair : pairs) {
+			final int index = pair.indexOf("=");
+			final String key = URLDecoder.decode(pair.substring(0, index), charset);
+			final String value = URLDecoder.decode(pair.substring(index + 1), charset);
+			bundle.putString(key, value);
+		}
+		return bundle;
+	}
+	
+	protected void replaceContentFragment(Fragment fragment, boolean isRootFragment) {
+		final int containerId = R.id.fl_content_fragment_container;
+		
+		FragmentManager manager = getSupportFragmentManager();
+		if (isRootFragment) {
+			manager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+		}
+		FragmentTransaction transaction = manager.beginTransaction();
+		transaction.replace(containerId, fragment);
+		transaction.addToBackStack(null);
+		transaction.commit();
+		
+		contentFragment = fragment;
+	}
+	
+	protected Fragment getContentFragment() {
+		return contentFragment;
+	}
+	
+	@SuppressLint("ClickableViewAccessibility")
+	private OnTouchListener noDelayOnTouchListener = new OnTouchListener() {
+		
+		@Override
+		public boolean onTouch(View v, MotionEvent event) {
+			if (event.getAction() == MotionEvent.ACTION_DOWN) {
+				v.setPressed(true);
+			}
+			return false;
+		}
+	};
+	
+	private void recursiveSetOnTouchListener(View v) {
+		if (v != null) {
+			v.setOnTouchListener(noDelayOnTouchListener);
 			
-			if (isApplicationInstalled(kakaotalkPackageName)) {
-				ivKakaotalk.setVisibility(View.VISIBLE);
-				ivKakaotalk.setOnClickListener(listener);
+			if (v instanceof ViewGroup) {
+				ViewGroup vg = (ViewGroup) v;
+				for (int i = 0, l = vg.getChildCount(); i < l; i++) {
+					View c = vg.getChildAt(i);
+					recursiveSetOnTouchListener(c);
+				}
 			}
 		}
 	}
 	
-	protected void finish(String message) {
-		if (message != null && !message.isEmpty()) {
-			Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-		}
-		
-		finish();
+	public View getActionBarView() {
+	    int actionViewResId = 0;
+	    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+	        actionViewResId = getResources().getIdentifier(
+	                "abc__action_bar_container", "id", getPackageName());
+	    } else {
+	        actionViewResId = Resources.getSystem().getIdentifier(
+	                "action_bar_container", "id", "android");
+	    }
+	    if (actionViewResId > 0) {
+	        return findViewById(actionViewResId);
+	    }
+	    return null;
 	}
-	
-	private boolean isApplicationInstalled(String packageName) {
-		try {
-			getPackageManager().getPackageInfo(packageName, PackageManager.GET_ACTIVITIES);
-		} catch (PackageManager.NameNotFoundException e) {
+
+	@Override
+	public void onBackPressed() {
+		FragmentManager manager = getSupportFragmentManager();
+		int backStackEntryCount = manager.getBackStackEntryCount();
+		boolean isRootFragment = backStackEntryCount < 2;
+		if (isRootFragment) {
+			finish();
+		} else {
+			super.onBackPressed();
+		}
+	}
+
+	protected boolean isComponentOf(Intent intent, Class<?> clazz) {
+		ComponentName component = intent.getComponent();
+		if (component == null) {
 			return false;
 		}
-		
-		return true;
+		return clazz.getName().equals(component.getClassName());
 	}
 	
 	@Override
 	protected void onStart() {
 		super.onStart();
-		
+		trackUncaughtExceptionUsingEasyTracker();
+	}
+	
+	private void trackUncaughtExceptionUsingEasyTracker() {
 		EasyTracker.getInstance(this).activityStart(this);
 		
 		Thread.UncaughtExceptionHandler uncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
-	    if (uncaughtExceptionHandler instanceof ExceptionReporter) {
-	    	ExceptionReporter exceptionReporter = (ExceptionReporter) uncaughtExceptionHandler;
-	    	exceptionReporter.setExceptionParser(new AnalyticsExceptionParser());
-	    }
+		if (uncaughtExceptionHandler instanceof ExceptionReporter) {
+			ExceptionReporter exceptionReporter = (ExceptionReporter) uncaughtExceptionHandler;
+			exceptionReporter.setExceptionParser(new AnalyticsExceptionParser());
+		}
 	}
 	
 	private static class AnalyticsExceptionParser implements ExceptionParser {
 
 		@Override
 		public String getDescription(String thread, Throwable throwable) {
-			return "Thread: " + thread + ", Exception: " + org.apache.commons.lang3.exception.ExceptionUtils.getStackTrace(throwable);
+			return "Thread: " + thread + ", Exception: " + ExceptionUtils.getStackTrace(throwable);
 		}
-		
 	}
 
 	@Override
 	protected void onResumeFragments() {
 		super.onResumeFragments();
-		
-		if (isRootActivity()) {
-			startService(playerIntent);
-		}
-		
+		bindPlayerService();
+		simpleFacebook = SimpleFacebook.getInstance(this);
+	}
+	
+	private void bindPlayerService() {
 		if (serviceConnection == null || !serviceConnection.bind) {
+			Intent playerIntent = new Intent(this, PlayerService.class);
 			serviceConnection = new PlayerServiceConnection(this);
 			getApplicationContext().bindService(playerIntent, serviceConnection, Context.BIND_AUTO_CREATE);
 		}
 	}
-	
-	public void closeEditText(EditText editText) {
-		closeEditText(editText, true);
-	}
-	
-	public void closeEditText(EditText editText, boolean isClear) {
-		if (editText != null) {
-			if (isClear) {
-				editText.setText("");
-			}
-			
-			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-			imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
-		}
-	}
-	
-	public void onPlayerConnected(PlayerService service) {
-		setService(service);
-		
-		if (getChildLayoutResourceId() != NOT_USE_ACTION_BAR && enablePlayingThumb()) {
-			ivAlbumPhoto.setVisibility(View.VISIBLE); 
-			
-			final Song currentSong = playerService.getSong();
-			if (currentSong != null) {
-				ivLogo.setVisibility(View.GONE);
-				ivPlayControl.setVisibility(View.VISIBLE);
-				tvAlbumInfo.setVisibility(View.VISIBLE);
-				
-				Storage preferences = new Storage();
-				playerService.startPlaying(
-						new PlayStatusCallback(this),
-						preferences.isPlayerAutoplay(),
-						preferences.isPlayerLooping());
-				tvAlbumInfo.setText(playerService.getSingerName() + "-" + playerService.getAlbumTitle());
-				tvAlbumInfo.setSelected(true);
-				ivPlayControl.setOnClickListener(new OnClickListener() {
-					
-					@Override
-					public void onClick(View view) {
-						if (playerService.isPlaying()) {
-							playerService.pause();
-							ivPlayControl.setImageResource(R.drawable.ic_play_basic);
-						} else {
-							playerService.resume();
-							ivPlayControl.setImageResource(R.drawable.ic_pause_basic);
-						}						
-					}
-					
-				});
-				ivAlbumPhoto.setOnClickListener(new OnClickListener() {
-					
-					@Override
-					public void onClick(View view) {
-						playerService.setSong(currentSong);
-						
-						Intent intent = new Intent(BaseActivity.this, PlayerActivity.class);
-						intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-						BaseActivity.this.startActivity(intent);
-					}
-					
-				});
-				
-				Music music = currentSong.getMusic();
-				if (music != null) {
-					ImageHelper.displayPhoto(music.getAlbumPhotoUrl(), ivAlbumPhoto);
-				}
-			} else {
-				ivLogo.setVisibility(View.VISIBLE);
-				ivPlayControl.setVisibility(View.GONE);
-				tvAlbumInfo.setVisibility(View.GONE);
-			}
-		}
-	}
-	
-	private static class PlayStatusCallback implements IPlayStatusCallback {
-		
-		private WeakReference<BaseActivity> weakReference;
-		
-		public PlayStatusCallback(BaseActivity reference) {
-			weakReference = new WeakReference<BaseActivity>(reference);
-		}
 
-		@Override
-		public void onStatusChange(int status) {
-			BaseActivity reference = weakReference.get();
-			if (reference != null) {
-				reference.catchPlayStatusChange(status);
-			}
-		}
-		
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		simpleFacebook.onActivityResult(this, requestCode, resultCode, data);
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 	
-	public void catchPlayStatusChange(final int status) {
-		runOnUiThread(new Runnable() { 
-			
-			@Override
-			public void run() {
-				switch (status) {
-				case IPlayStatusCallback.START:
-					ivPlayControl.setImageResource(R.drawable.ic_pause_basic);
-					break;
-					
-				case IPlayStatusCallback.STOP:
-					ivPlayControl.setImageResource(R.drawable.ic_play_basic);
-					break;
-					
-				case IPlayStatusCallback.RESUME:
-					if (playerService.isPlaying()) {
-						ivPlayControl.setImageResource(R.drawable.ic_pause_basic);
-					} else {
-						ivPlayControl.setImageResource(R.drawable.ic_play_basic);
-					}
-					break;
-				}
-			}
-			
-		});
-	}
-
 	@Override
 	protected void onPause() {
 		super.onPause();
-		
+		unbindPlayerService();
+	}
+	
+	private void unbindPlayerService() {
 		if (serviceConnection != null && serviceConnection.bind) {
 			getApplicationContext().unbindService(serviceConnection);
 			serviceConnection.bind = false;
@@ -316,90 +261,39 @@ public abstract class BaseActivity extends FragmentActivity {
 	@Override
 	protected void onStop() {
 		super.onStop();
-		
+		stopEasyTracking();
+	}
+	
+	private void stopEasyTracking() {
 		EasyTracker.getInstance(this).activityStop(this);
 	}
 
 	@Override
 	protected void onDestroy() {
-		dismissProgressDialog();
-		progressDialog = null;
-		
+		if (handler != null) {
+			handler.removeCallbacksAndMessages(null);
+			handler = null;
+		}
+		cancelRequests();
 		super.onDestroy();
-		
-		Utility.recursiveRecycle(childContainer);
-		
-		if (isRootActivity()) {
-			stopService(playerIntent);
-		}
 	}
 	
-	@Override
-	public void onBackPressed() {
-		if (!isRootActivity()) {
-			finish();
-		}
+	public <T> void addRequest(com.android.volley.Request<T> request) {
+		((App) getApplicationContext()).addShortLivedRequest(this, request);
 	}
 	
-	public void replaceFragment(Fragment fragment) {
-		replaceFragment(fragment, R.id.fl_fragment_container, null);
+	private void cancelRequests() {
+		((App) getApplicationContext()).cancelRequests(this);
 	}
 	
-	public void replaceFragment(Fragment fragment, String tag) {
-		replaceFragment(fragment, R.id.fl_fragment_container, tag);
+	public void onPlayerServiceConnected(PlayerService service) {
+		this.service = service;
 	}
 	
-	protected void replaceFragment(Fragment fragment, int containerResourceId) {
-		replaceFragment(fragment, containerResourceId, null);
+	public PlayerService getPlayerService() {
+		return service;
 	}
 	
-	protected void replaceFragment(Fragment fragment, int containerResourceId, String tag) {
-		getSupportFragmentManager().beginTransaction()
-		   						   .replace(containerResourceId, fragment, tag)
-		   						   .commit();		
-	}
+	public abstract void onPageChanged(Intent intent);
 	
-	protected Fragment getFragment(String tag) {
-		return getSupportFragmentManager().findFragmentByTag(tag);
-	}
-	
-	protected void setService(PlayerService service) {
-		playerService = service;
-	}
-	
-	public PlayerService getService() {
-		return playerService;
-	}
-	
-	public void showProgressDialog() {
-		if (progressDialog == null) {
-			progressDialog = new RotateProgressDialog(this);
-		}
-		
-		if (!progressDialog.isShowing()) {
-			progressDialog.show();
-		}
-	}
-	
-	public boolean dismissProgressDialog() {
-		if (progressDialog != null && progressDialog.isShowing()) {
-			progressDialog.dismiss();
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	protected void log(String message) {
-		Log.e(TAG, message);
-	}
-	
-	protected void log(int value) {
-		Log.e(TAG, "value : " + String.valueOf(value));
-	}
-	
-	protected void log(float value) {
-		Log.e(TAG, "value : " + String.valueOf(value));
-	}
-
 }

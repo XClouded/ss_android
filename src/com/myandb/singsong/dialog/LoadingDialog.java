@@ -1,75 +1,75 @@
 package com.myandb.singsong.dialog;
 
-import android.content.Context;
-import android.content.res.Resources.NotFoundException;
-import android.graphics.Color;
+import android.app.Activity;
+import android.app.Dialog;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.myandb.singsong.R;
+import com.nineoldandroids.view.ViewHelper;
 
-public class LoadingDialog extends BaseDiaglog {
+public class LoadingDialog extends BaseDialog {
 	
 	private ProgressBar pbLoading;
 	private TextView tvProgressTitle;
 	private Button btnProgressControl;
 	private Button btnCancel;
-	private View controlWrapper;
 	private String titlePrefix;
-	private int enabledFontColor;
-	private int disabledFontColor;
+
+	@Override
+	protected void initialize(Activity activity) {
+		getDialog().setCanceledOnTouchOutside(false);
+		getDialog().setCancelable(false);
+	}
+
+	@Override
+	protected void onViewInflated(View view, LayoutInflater inflater) {
+		pbLoading = (ProgressBar) view.findViewById(R.id.pb_loading);
+		tvProgressTitle = (TextView) view.findViewById(R.id.tv_progress_title);
+		btnProgressControl = (Button) view.findViewById(R.id.btn_progress_control);
+		btnCancel = (Button) view.findViewById(R.id.btn_cancel);
+	}
+
+	@Override
+	protected int getResourceId() {
+		return R.layout.dialog_loading;
+	}
 	
-	public LoadingDialog(Context context) {
-		super(context, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
-		
-		try {
-			enabledFontColor = context.getResources().getColor(R.color.font_default);
-			disabledFontColor = context.getResources().getColor(R.color.font_grey);
-		} catch (NotFoundException e) {
-			e.printStackTrace();
-			
-			enabledFontColor = Color.parseColor("#444444");
-			disabledFontColor = Color.parseColor("#a7a9a6");
-		}
+	@Override
+	protected void styleDialog(Dialog dialog) {
+		super.styleDialog(dialog);
+		dialog.getWindow().getAttributes().dimAmount = 0.8f;
 	}
 
 	@Override
-	protected void initializeView() {
-		setContentView(R.layout.dialog_progress);
-		
-		pbLoading = (ProgressBar) findViewById(R.id.pb_loading);
-		tvProgressTitle = (TextView) findViewById(R.id.tv_progress_title);
-		btnProgressControl = (Button) findViewById(R.id.btn_progress_control);
-		btnCancel = (Button) findViewById(R.id.btn_cancel);
-		controlWrapper = findViewById(R.id.ll_control_wrapper);
-	}
-
-	@Override
-	protected void setupView() {
+	protected void setupViews() {
 		titlePrefix = tvProgressTitle.getText().toString();
+		btnCancel.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				getActivity().finish();
+			}
+		});
 	}
 
 	public void setTitlePrefix(String text) {
 		titlePrefix = text;
-		
 		updateProgressBar(0);
 	}
 	
-	public void setOnCancelButtonClickListener(View.OnClickListener listener) {
-		if (btnCancel != null) {
-			btnCancel.setOnClickListener(listener);
+	public void setControlButtonShown(boolean shown) {
+		if (btnProgressControl.isShown() == shown) {
+			return;
 		}
-	}
-	
-	public void showControlButton(boolean show) {
-		if (controlWrapper != null) {
-			if (show) {
-				controlWrapper.setVisibility(View.VISIBLE);
-			} else {
-				controlWrapper.setVisibility(View.GONE);
-			}
+		
+		if (shown) {
+			btnProgressControl.setVisibility(View.VISIBLE);
+		} else {
+			btnProgressControl.setVisibility(View.GONE);
 		}
 	}
 	
@@ -90,9 +90,9 @@ public class LoadingDialog extends BaseDiaglog {
 			btnProgressControl.setEnabled(enabled);
 			
 			if (enabled) {
-				btnProgressControl.setTextColor(enabledFontColor);
+				ViewHelper.setAlpha(btnProgressControl, 1f);
 			} else {
-				btnProgressControl.setTextColor(disabledFontColor);
+				ViewHelper.setAlpha(btnProgressControl, 0.5f);
 			}
 		}
 	}

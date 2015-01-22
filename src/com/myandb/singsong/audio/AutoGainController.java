@@ -25,7 +25,7 @@ public class AutoGainController extends UGen {
 		super(context, 1, 1);
 		
 		try {
-			create(1, 16, AudioConfig.SAMPLERATE, 3); 
+			create(1, 16, 44100, 3); 
 		} catch (Exception e) {
 			e.printStackTrace(); 
 		}

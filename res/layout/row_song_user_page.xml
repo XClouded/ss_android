@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.myandb.singsong"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/margin"
+    android:paddingRight="@dimen/margin" >
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/card_idle" >
+        
+        <LinearLayout
+            android:id="@+id/wrapper"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/compat_song_image_height"
+            android:orientation="horizontal" >
+            
+	        <com.myandb.singsong.widget.RoundedImageView
+	            android:id="@+id/iv_parent_song_image"
+	            android:layout_width="0dp"
+	            android:layout_height="match_parent"
+	            android:layout_weight="1"
+	            app:corner_radius="@dimen/corner_radius"
+	            app:corner_top_left="true"
+	            style="@style/ImageViewBase" />
+	        
+	        <LinearLayout
+	            android:id="@+id/ll_partner_wrapper"
+	            android:layout_width="0dp"
+	            android:layout_height="match_parent"
+	            android:layout_weight="1"
+	            android:orientation="vertical" >
+	            
+	        	<com.myandb.singsong.widget.RoundedImageView
+		            android:id="@+id/iv_this_song_image"
+		            android:layout_width="match_parent"
+		            android:layout_height="@dimen/compat_song_image_height_half"
+		            app:corner_radius="@dimen/corner_radius"
+		            app:corner_top_right="true"
+		            style="@style/ImageViewBase" />    
+		            
+	        	<LinearLayout
+	        	    android:id="@+id/ll_children_wrapper"
+	        	    android:layout_width="match_parent"
+	        	    android:layout_height="@dimen/compat_song_image_height_half"
+	        	    android:orientation="horizontal" >
+	        	    
+	        		<ImageView
+			            android:id="@+id/iv_first_children_upload_image"
+			            android:layout_width="0dp"
+			            android:layout_height="match_parent"
+			            android:layout_weight="1"
+			            style="@style/ImageViewBase" />
+	        		
+	        		<ImageView
+			            android:id="@+id/iv_second_children_upload_image"
+			            android:layout_width="0dp"
+			            android:layout_height="match_parent"
+			            android:layout_weight="1"
+			            style="@style/ImageViewBase" />
+	        	    
+	        	</LinearLayout>
+	            
+	        </LinearLayout>
+            
+        </LinearLayout>
+         
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/compat_song_image_height"
+            android:src="@drawable/mask_rounded_top" />
+        
+        <LinearLayout
+            android:id="@+id/ll_collabo_num_wrapper"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginLeft="@dimen/margin"
+            android:layout_marginTop="@dimen/margin"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:background="@drawable/circle_primary_trans" >
+            
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_collabo_inverse"
+                style="@style/ImageViewBase" />
+            
+            <TextView
+                android:id="@+id/tv_song_collabo_num"
+                android:textColor="@color/white"
+                style="@style/TextViewLessImportant" />
+            
+        </LinearLayout>
+        
+        <TextView
+            android:id="@+id/tv_music_info"
+            android:layout_alignBottom="@id/wrapper"
+            android:layout_marginLeft="@dimen/margin"
+            android:layout_marginRight="@dimen/margin"
+            android:layout_marginBottom="@dimen/margin_big"
+            android:textColor="@color/white"
+            style="@style/TextViewBase" />
+            
+        <ImageView
+            android:id="@+id/iv_change_state_song"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/margin"
+            android:layout_marginTop="@dimen/margin"
+            style="@style/ImageViewBase" />
+        
+        <LinearLayout
+            android:id="@+id/ll_user_wrapper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+			android:layout_marginTop="@dimen/photo_inverse_margin"
+            android:layout_below="@id/wrapper"
+            android:baselineAligned="false"
+            android:orientation="horizontal" >
+            
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical" >
+	        	
+		        <FrameLayout
+					android:id="@+id/parent_user_photo"
+					android:layout_width="@dimen/photo_wrapper"
+					android:layout_height="@dimen/photo_wrapper"
+					android:layout_gravity="center"
+					android:padding="@dimen/border_width"
+					android:background="@drawable/circle_white" >
+				      
+					<com.myandb.singsong.widget.RoundedImageView
+					    android:id="@+id/iv_parent_user_photo"
+					    style="@style/ImageViewUser" />
+				      
+		      	</FrameLayout>
+		         
+		        <TextView
+		            android:id="@+id/tv_parent_user_nickname"
+		            android:textColor="@color/font_default"
+		            android:textSize="@dimen/text_main_content"
+		            style="@style/TextViewOverflowableImportant" />
+		         
+		        <TextView
+		            android:id="@+id/tv_parent_song_message"
+		            android:layout_marginBottom="@dimen/margin_small"
+		            android:maxLines="3"
+		            android:textColor="@color/font_hint"
+		            style="@style/TextViewEllipsize" />
+                
+            </LinearLayout>
+            
+            <LinearLayout
+                android:id="@+id/ll_partner_photo_wrapper"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical" >
+	        	
+		        <FrameLayout
+					android:id="@+id/this_user_photo"
+					android:layout_width="@dimen/photo_wrapper"
+					android:layout_height="@dimen/photo_wrapper"
+					android:layout_gravity="center"
+					android:padding="@dimen/border_width"
+					android:background="@drawable/circle_white" >
+				      
+					<com.myandb.singsong.widget.RoundedImageView
+					    android:id="@+id/iv_this_user_photo"
+					    style="@style/ImageViewUser" />
+				      
+		      	</FrameLayout>
+		         
+		        <TextView
+		            android:id="@+id/tv_this_user_nickname"
+		            android:textColor="@color/font_default"
+		            android:textSize="@dimen/text_main_content"
+		            style="@style/TextViewOverflowableImportant" />
+		         
+		        <TextView
+		            android:id="@+id/tv_this_song_message"
+		            android:layout_marginBottom="@dimen/margin_small"
+		            android:maxLines="3"
+		            android:textColor="@color/font_hint"
+		            style="@style/TextViewEllipsize" />
+                
+            </LinearLayout>
+            
+        </LinearLayout>
+        
+        <ImageView
+            android:id="@+id/divider"
+            android:layout_below="@id/ll_user_wrapper"
+            style="@style/DividerHorizontal" />
+        
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/divider"
+            android:paddingLeft="@dimen/margin"
+            android:paddingRight="@dimen/margin"
+            android:paddingTop="@dimen/margin_small"
+            android:paddingBottom="@dimen/margin_small" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    style="@style/IconImageView"
+                    android:src="@drawable/ic_like_mini" />
+
+                <TextView
+                    android:id="@+id/tv_song_like_num"
+                    style="@style/TextViewIconLabel"
+                    android:layout_marginRight="@dimen/margin_big" />
+
+                <ImageView
+                    style="@style/IconImageView"
+                    android:src="@drawable/ic_comment_mini" />
+
+                <TextView
+                    android:id="@+id/tv_song_comment_num"
+                    style="@style/TextViewIconLabel"
+                    android:layout_marginRight="@dimen/margin_big" />
+
+                <TextView
+                    android:id="@+id/tv_song_created_time"
+                    style="@style/TextViewIconLabel" />
+                
+            </LinearLayout>
+            
+            <LinearLayout
+		        android:id="@+id/ll_prelisten_control"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignParentRight="true"
+		        android:layout_centerVertical="true"
+		        android:orientation="horizontal" >
+		
+		        <ImageView
+		            style="@style/IconImageView"
+		            android:layout_marginTop="2dp"
+		            android:src="@drawable/ic_play_basic" />
+		
+		        <TextView
+		            style="@style/TextViewLessImportant"
+		            android:text="미리듣기" />
+		    </LinearLayout>
+            
+        </RelativeLayout>
+        
+    </RelativeLayout>
+    
+</FrameLayout>

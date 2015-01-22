@@ -6,41 +6,49 @@
     <dimen name="margin">12dp</dimen>
     <dimen name="margin_big">16dp</dimen>
     <dimen name="margin_bigger">20dp</dimen>
+    <dimen name="margin_description">5dp</dimen>
+    <dimen name="margin_drawer">8dp</dimen>
+        
+    <dimen name="text_icon_label_inverse_margin">-3sp</dimen>
     
-    <dimen name="text_tiny">11sp</dimen>
-    <dimen name="text_small">12sp</dimen>
-    <dimen name="text">13sp</dimen>
-    <dimen name="text_big">14sp</dimen>
-    <dimen name="text_bigger">15sp</dimen>
+    <dimen name="text_hint">10sp</dimen>
+    <dimen name="text_sub_content">12sp</dimen>
+    <dimen name="text_main_content">13sp</dimen>
+    <dimen name="text_subtitle">14sp</dimen>
+    <dimen name="text_title">16sp</dimen>
+    <dimen name="text_impact">20sp</dimen>
     
     <dimen name="corner_radius">5dp</dimen>
+    
+    <dimen name="gradient_radius">180dp</dimen>
+    
     <dimen name="border_width">3dp</dimen>
     <dimen name="border_width_big">6dp</dimen>
     
-    <dimen name="photo_tiny">25dp</dimen>
     <dimen name="photo_small_wrapper">48dp</dimen>
     <dimen name="photo_small">36dp</dimen>
-    <dimen name="photo_wrapper">54dp</dimen> <!-- photo + border_width * 2 -->
+    <dimen name="photo_wrapper">54dp</dimen>
     <dimen name="photo">48dp</dimen>
+    <dimen name="photo_big">70dp</dimen>
+    <dimen name="photo_player">70dp</dimen>
     <dimen name="photo_inverse_margin">-12dp</dimen>
     <dimen name="photo_profile">100dp</dimen>
     
     <dimen name="icon">12dp</dimen>
     <dimen name="icon_text_inverse_margin">-3sp</dimen>
     
-    <dimen name="compat_dialog_width">290dp</dimen>
-    <dimen name="compat_dialog_inverse_margin">-10dp</dimen>
+    <dimen name="drawer_width">220dp</dimen>
     
-    <dimen name="compat_toast_width">250dp</dimen>
+    <dimen name="player_drag_panel_height">58dp</dimen>
+    <dimen name="player_drag_panel_icon_min_width">42dp</dimen>
+    <dimen name="player_floating_offset">25dp</dimen>
     
-    <dimen name="compat_actionbar_height">45dp</dimen>
-    <dimen name="compat_actionbar_album_info_width">80dp</dimen>
+    <dimen name="compat_toast_width">300dp</dimen>
     
     <dimen name="compat_song_image_height">140dp</dimen>
     <dimen name="compat_song_image_height_half">70dp</dimen>
     
-    <dimen name="compat_wide_ratio_height">190dp</dimen>
-        
-    <dimen name="form_height">45dp</dimen>
+    <dimen name="notification_icon_width">64dp</dimen>
+    <dimen name="notification_icon_height">64dp</dimen>
 
 </resources>

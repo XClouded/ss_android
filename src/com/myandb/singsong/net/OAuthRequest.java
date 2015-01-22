@@ -10,26 +10,27 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.VolleyError;
-import com.myandb.singsong.secure.Auth;
+import com.myandb.singsong.secure.Authenticator;
 
 public abstract class OAuthRequest<T> extends Request<T> {
 	
-	private boolean isAccessTokenRequired = true;
+	private boolean requireAccessToken;
 	
 	public OAuthRequest(int method, String url, ErrorListener listener) {
 		super(method, url, listener);
+		requireAccessToken = true;
 	}
 	
-	public void isAccessTokenRequired(boolean required) {
-		this.isAccessTokenRequired = required;
+	public void setRequireAccessToken(boolean require) {
+		this.requireAccessToken = require;
 	}
 
 	@Override
 	public Map<String, String> getHeaders() throws AuthFailureError {
 		Map<String, String> headers = new HashMap<String, String>();
 		
-		if (isAccessTokenRequired) {
-			headers.put("oauth-token", Auth.getAccessToken());
+		if (requireAccessToken) {
+			headers.put("oauth-token", Authenticator.getAccessToken());
 		}
 		
 		return headers;

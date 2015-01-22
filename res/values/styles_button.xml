@@ -1,43 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     
-    <style name="BaseButton">
-        <item name="android:layout_width">match_parent</item>
+    <style name="ButtonBase">
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">@dimen/text</item>
-        <item name="android:textColor">@color/font_default</item>
-        <item name="android:padding">@dimen/margin</item>
+        <item name="android:textSize">@dimen/text_subtitle</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:paddingTop">@dimen/margin</item>
+        <item name="android:paddingBottom">@dimen/margin</item>
+        <item name="android:paddingLeft">@dimen/margin_big</item>
+        <item name="android:paddingRight">@dimen/margin_big</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:minWidth">0dp</item>
         <item name="android:gravity">center</item>
     </style>
     
-    <style name="DialogButton" parent="@style/BaseButton">
-        <item name="android:background">@drawable/btn_dialog_selector</item>
+    <style name="ButtonMini" parent="@style/ButtonBase">
+        <item name="android:paddingTop">@dimen/margin_small</item>
+        <item name="android:paddingBottom">@dimen/margin_small</item>
+        <item name="android:paddingLeft">@dimen/margin_small</item>
+        <item name="android:paddingRight">@dimen/margin_small</item>
     </style>
     
-    <style name="DisabledButton" parent="@style/BaseButton">
-        <item name="android:textColor">@color/font_grey</item>
-        <item name="android:background">@drawable/btn_tranparent</item>
+    <style name="ButtonDrawable" parent="@style/ButtonBase">
+        <item name="android:textStyle">normal</item>
+        <item name="android:gravity">left|center_vertical</item>
+        <item name="android:background">@drawable/card_selector</item>
     </style>
     
-    <style name="DarkButton" parent="@style/BaseButton">
-        <item name="android:textColor">@color/font_white</item>
+    <style name="ButtonDark" parent="@style/ButtonBase">
+        <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:background">@drawable/btn_grey_selector</item>
-    </style>
-    
-    <style name="SettingButton" parent="@style/BaseButton">
-        <item name="android:layout_marginBottom">@dimen/margin</item>
-        <item name="android:gravity">left</item>
-        <item name="android:background">@drawable/btn_white_selector</item>
-    </style>
-
-    <style name="TabButton" parent="@style/BaseButton">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:clickable">true</item>
-        <item name="android:background">@drawable/btn_tab_selector</item>
+        <item name="android:background">@drawable/button_grey_selector</item>
     </style>
     
 </resources>

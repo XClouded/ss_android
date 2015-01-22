@@ -1,46 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res/com.myandb.singsong"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingTop="@dimen/margin"
+    android:paddingBottom="@dimen/margin"
     android:background="@drawable/row_selector" >
     
     <com.myandb.singsong.widget.RoundedImageView
         android:id="@+id/iv_user_photo"
-        app:oval="true"
-        app:border_width="0.1dp"
-        app:border_color="@color/divider"
-        android:layout_marginRight="@dimen/margin"
-        style="@style/UserImageView" />
+        style="@style/ImageViewUserSmall" />
     
     <Button
 	    android:id="@+id/btn_follow"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
+	    android:layout_width="60dp"
 	    android:layout_alignParentRight="true"
 	    android:layout_centerVertical="true"
 	    android:layout_marginLeft="@dimen/margin_small"
-	    android:background="@drawable/img_follow" />
+	    android:background="@drawable/button_grey_selector"
+	    android:textSize="@dimen/text_sub_content"
+	    android:text="+팔로우"
+	    android:paddingLeft="0dp"
+	    android:paddingRight="0dp"
+	    style="@style/ButtonMini" />
     
     <TextView
         android:id="@+id/tv_user_nickname"
         android:layout_toRightOf="@id/iv_user_photo"
         android:layout_toLeftOf="@id/btn_follow"
-        android:layout_marginRight="@dimen/margin"
-        android:layout_marginTop="@dimen/margin_tiny"
         android:layout_marginBottom="@dimen/margin_tiny"
         android:layout_alignTop="@id/iv_user_photo"
-        android:textSize="14sp"
-        style="@style/BaseTextView" />
+        android:textColor="@color/font_default"
+        android:gravity="left"
+        style="@style/TextViewOverflowableImportant" />
     
     <TextView
         android:id="@+id/tv_user_status"
-        android:textSize="@dimen/text_small"
-        android:textColor="@color/font_grey"
         android:layout_toRightOf="@id/iv_user_photo"
         android:layout_toLeftOf="@id/btn_follow"
         android:layout_below="@id/tv_user_nickname"
-        style="@style/EllipsizeTextView" />
+        android:gravity="left"
+        style="@style/TextViewOverflowableLessImportant" />
     
 </RelativeLayout>
 

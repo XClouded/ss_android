@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <style name="AppTheme" parent="@style/Theme.AppCompat.Light">
+    	<item name="windowActionBarOverlay">true</item>
+    	<item name="android:windowContentOverlay">@null</item>
+        <item name="actionBarStyle">@style/AppTheme.ActionBarStyle</item>
+	    <item name="actionOverflowButtonStyle">@style/AppTheme.ActionBar.Overflow</item>
+    </style>
+    
+    <style name="AppTheme.ActionBarStyle" parent="@style/Widget.AppCompat.ActionBar">
+        <item name="icon">@android:color/transparent</item>
+        <item name="background">@drawable/actionbar_background</item>
+        <item name="titleTextStyle">@style/AppTheme.ActionBar.TitleTextStyle</item>
+    </style>
+    
+    <style name="AppTheme.ActionBar"></style>
+    
+    <style name="AppTheme.ActionBar.TitleTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/font_default</item>
+    </style>
+    
+    <style name="AppTheme.ActionBar.Overflow" parent="@style/Widget.AppCompat.ActionButton.Overflow">
+	    <item name="android:contentDescription">@string/abc_action_menu_overflow_description</item>
+	    <item name="android:src">@drawable/ic_overflow_sky</item>
+    </style>
+    
+</resources>

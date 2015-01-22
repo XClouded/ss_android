@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/container_dialog" >
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/margin_big"
+        android:paddingLeft="@dimen/margin"
+        android:paddingRight="@dimen/margin"
+        android:orientation="vertical" >
+        
+        <TextView
+            android:layout_gravity="center_horizontal"
+            android:text="페이스북으로 가입했다면 이 버튼을 누르세요."
+            android:textColor="@color/font_hint"
+            android:textSize="@dimen/text_hint"
+            android:layout_marginBottom="@dimen/margin_small"
+            style="@style/TextViewBase" />
+        
+        <Button
+            android:id="@+id/btn_facebook"
+            android:layout_width="match_parent"
+            android:layout_marginBottom="@dimen/margin"
+            android:text="@string/login_with_facebook"
+            android:background="@drawable/button_facebook_selector"
+            style="@style/ButtonBase" />
+        
+        <ImageView
+        	style="@style/DividerHorizontal" />
+        
+        <TextView
+            android:text="이메일로 로그인"
+            style="@style/TextViewSubtitleAlone" />
+        
+        <ImageView
+        	style="@style/DividerHorizontal" />
+        
+        <EditText
+	        android:id="@+id/et_user_username"
+	        android:hint="@string/hint_username_compat"
+	        android:inputType="textPersonName"
+	        style="@style/BaseEditText" />
+        
+        <ImageView
+        	style="@style/DividerHorizontal" />
+        
+        <EditText
+	        android:id="@+id/et_user_password"
+	        android:hint="@string/hint_password"
+	        android:maxLength="32"
+	        android:inputType="textPassword"
+	        style="@style/BaseEditText" />
+        
+    </LinearLayout>
+    
+    <ImageView
+        style="@style/DividerHorizontal" />
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin" >
+        
+        <Button
+		    android:id="@+id/btn_to_join"
+		    android:layout_alignParentRight="true"
+		    android:layout_marginLeft="@dimen/margin"
+		    android:text="@string/to_join"
+		    android:background="@drawable/button_primary_selector"
+		    style="@style/ButtonBase" />
+        
+        <Button
+		    android:id="@+id/btn_login"
+		    android:layout_toLeftOf="@id/btn_to_join"
+		    android:layout_marginLeft="@dimen/margin"
+		    android:text="@string/login"
+		    android:background="@drawable/button_primary_selector"
+		    style="@style/ButtonBase" />
+        
+        <TextView
+            android:id="@+id/tv_find_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/btn_login"
+            android:layout_centerVertical="true"
+            android:textSize="@dimen/text_hint"
+            android:textColor="@color/font_hint"
+            android:linksClickable="true" />
+        
+    </RelativeLayout>
+
+</LinearLayout>

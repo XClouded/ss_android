@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <ImageView
+        android:id="@+id/iv_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        style="@style/ImageViewBase" />
+    
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="#c0000000" />
+    
+    <RelativeLayout
+        android:id="@+id/seekbar_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/grey"
+        android:paddingTop="@dimen/margin"
+        android:paddingBottom="@dimen/margin"
+        android:paddingLeft="@dimen/margin_small"
+        android:paddingRight="@dimen/margin_small" >
+        
+        <TextView
+            android:id="@+id/tv_play_start_time"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="@string/time_default"
+            android:layout_marginLeft="@dimen/margin_small"
+            android:layout_marginRight="@dimen/margin_small"
+            android:textColor="@color/white"
+            style="@style/TextViewLessImportant" />
+        
+        <TextView
+            android:id="@+id/tv_play_end_time"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="@string/time_default"
+            android:layout_marginLeft="@dimen/margin_small"
+            android:layout_marginRight="@dimen/margin_small"
+            android:textColor="@color/white"
+            style="@style/TextViewLessImportant" />
+        
+        <ProgressBar
+            android:id="@+id/pb_playbar"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:progressDrawable="@drawable/seekbar_white"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/tv_play_start_time"
+            android:layout_toLeftOf="@id/tv_play_end_time"
+            style="?android:attr/progressBarStyleHorizontal" />
+        
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:id="@+id/rl_info_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="@dimen/margin_small"
+        android:paddingLeft="@dimen/margin"
+        android:paddingRight="@dimen/margin"
+        android:layout_alignParentTop="true" >
+        
+        <TextView
+            android:id="@+id/tv_record_control"
+            android:textColor="@color/white"
+            android:background="@drawable/button_transparent_selector"
+            android:padding="@dimen/margin_small"
+            android:layout_marginBottom="0dp"
+		    android:layout_marginLeft="@dimen/margin_tiny"
+		    android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="STOP"
+            style="@style/TextViewTitle" />
+		
+		<TextView
+		    android:id="@+id/tv_decode_progress"
+		    android:layout_toLeftOf="@id/tv_record_control"
+		    android:layout_centerVertical="true"
+		    android:layout_marginLeft="@dimen/margin_tiny"
+		    android:textColor="@color/font_white"
+		    style="@style/TextViewLessImportant" />
+		
+		<TextView
+		    android:id="@+id/tv_music_title"
+		    android:layout_alignParentLeft="true"
+		    android:layout_alignTop="@id/tv_record_control"
+		    android:layout_toLeftOf="@id/tv_decode_progress"
+		    android:layout_marginBottom="@dimen/margin_tiny"
+		    style="@style/TextViewOverflowableMarqueeImportant" />
+		
+		<TextView
+		    android:id="@+id/tv_singer_name"
+		    android:layout_below="@id/tv_music_title"
+		    android:layout_toLeftOf="@id/tv_decode_progress"
+		    android:textColor="@color/font_white"
+		    style="@style/TextViewOverflowableMarqueeLessImportant" />
+        
+    </RelativeLayout>
+    
+    <LinearLayout
+        android:id="@+id/ll_user_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_info_wrapper"
+        android:paddingTop="@dimen/margin"
+        android:paddingBottom="@dimen/margin"
+        android:paddingLeft="@dimen/margin_small"
+        android:paddingRight="@dimen/margin_small"
+        android:gravity="center_horizontal"
+        android:baselineAligned="false"
+        android:weightSum="2"
+        android:orientation="horizontal" >
+		
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center_horizontal" >
+            
+            <FrameLayout
+	            android:layout_width="@dimen/photo_small_wrapper"
+	            android:layout_height="@dimen/photo_small_wrapper"
+	            android:layout_marginBottom="@dimen/margin_tiny" >
+	            
+	            <ImageView
+	                android:id="@+id/iv_this_user_bg"
+	                android:layout_width="match_parent"
+	                android:layout_height="match_parent"
+	                android:src="@drawable/circle_primary" />
+	            
+	            <com.myandb.singsong.widget.RoundedImageView
+	                android:id="@+id/iv_this_user_photo"
+	                android:layout_width="match_parent"
+	                android:layout_height="match_parent"
+	                android:layout_margin="@dimen/border_width_big"
+	                style="@style/ImageViewUser" />
+	            
+	        </FrameLayout>
+	        
+	        <TextView
+	            android:id="@+id/tv_this_user_nickname"
+	            style="@style/TextViewOverflowableImportant" />
+	        
+	        <TextView
+	            android:id="@+id/tv_this_user_part"
+	            android:textColor="@color/font_highlight"
+	            style="@style/TextViewEllipsize" />
+            
+        </LinearLayout>
+        
+        <LinearLayout
+            android:id="@+id/ll_parent_user_wrapper"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/margin_small" >
+	        
+            <FrameLayout
+	            android:layout_width="@dimen/photo_small_wrapper"
+	            android:layout_height="@dimen/photo_small_wrapper"
+	            android:layout_marginBottom="@dimen/margin_tiny" >
+	            
+	            <ImageView
+	                android:id="@+id/iv_parent_user_bg"
+	                android:layout_width="match_parent"
+	                android:layout_height="match_parent"
+	                android:src="@drawable/circle_primary" />
+	            
+	            <com.myandb.singsong.widget.RoundedImageView
+	                android:id="@+id/iv_parent_user_photo"
+	                android:layout_width="match_parent"
+	                android:layout_height="match_parent"
+	                android:layout_margin="@dimen/border_width_big"
+	                style="@style/ImageViewUser" />
+	            
+	        </FrameLayout>
+	        
+	        <TextView
+	            android:id="@+id/tv_parent_user_nickname"
+	            style="@style/TextViewOverflowableImportant" />
+	        
+	        <TextView
+	            android:id="@+id/tv_parent_user_part"
+	            android:textColor="@color/sub"
+	            style="@style/TextViewEllipsize" />
+            
+        </LinearLayout>
+        
+    </LinearLayout>
+    
+    <TextView
+        android:id="@+id/tv_scroll_indicator"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_below="@id/ll_user_wrapper"
+        android:text="▲"
+        android:textColor="@color/font_white"
+        android:textSize="@dimen/text_title"
+        android:background="@color/mask_high"
+        style="@style/TextViewBase" />
+    
+    <ScrollView
+        android:id="@+id/sv_lyric_scroller"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tv_scroll_indicator"
+        android:layout_above="@id/seekbar_wrapper"
+        android:background="@color/mask_high"
+        android:scrollbars="none" >
+        
+        <LinearLayout
+            android:id="@+id/ll_lyric_wrapper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_small"
+            android:orientation="vertical" >
+            
+        </LinearLayout>
+        
+    </ScrollView>
+    
+    <TextSwitcher
+        android:id="@+id/ts_lyric_starter"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/mask_middle"
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        android:layout_below="@id/rl_info_wrapper"
+        android:layout_above="@id/seekbar_wrapper" />
+        
+</RelativeLayout>

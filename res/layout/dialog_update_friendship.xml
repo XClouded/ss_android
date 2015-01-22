@@ -1,45 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/DialogBox" >
-    
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/primary_dark" >
-	    
-	    <TextView
-	        android:layout_width="wrap_content"
-	        android:text="@string/setting"
-	        android:gravity="left"
-	        style="@style/DialogTextViewTitle" />
-	    
-	    <ImageView
-	        android:id="@+id/iv_cancel"
-	        android:src="@drawable/ic_x_inverse"
-	        android:layout_alignParentRight="true"
-	        android:layout_centerVertical="true"
-	        style="@style/BaseImageView" />
-        
-    </RelativeLayout>
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/container_dialog" >
     
     <Button
         android:id="@+id/btn_recommend_artist"
+        android:layout_width="match_parent"
         android:text="콜라보 아티스트로 추천하기"
-        style="@style/DialogButton" />
+        android:textColor="@color/font_default"
+        android:background="@null"
+        style="@style/ButtonBase" />
     
     <ImageView
         style="@style/DividerHorizontal" />
     
     <Button
         android:id="@+id/btn_allow_push"
-        style="@style/DialogButton" />
+        android:layout_width="match_parent"
+        android:textColor="@color/font_default"
+        android:background="@null"
+        style="@style/ButtonBase" />
     
     <ImageView
         style="@style/DividerHorizontal" />
     
     <Button
         android:id="@+id/btn_unfollow"
+        android:layout_width="match_parent"
         android:text="@string/cancel_follow"
-        style="@style/DialogButton" />
+        android:textColor="@color/font_default"
+        android:background="@null"
+        style="@style/ButtonBase" />
+    
+    <ImageView
+        style="@style/DividerHorizontal" />
 
 </LinearLayout>

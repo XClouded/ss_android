@@ -175,7 +175,6 @@ public class Analyzer implements SegmentMaker {
 	 * @param extractors the extractors
 	 * @param settings the settings
 	 */
-	@SuppressWarnings("unchecked")
 	private void setup(AudioContext ac, List<Class<? extends FeatureExtractor<?,?>>> extractors, AnalysisSettings settings) {
 		results = new FeatureSet();
 		FeatureTrack lowLevel = new FeatureTrack();
@@ -191,7 +190,7 @@ public class Analyzer implements SegmentMaker {
 		sfs.addSegmentListener(lowLevel);
 		extractorArrangement.put(AudioSegmenter.class, sfs);
 		if(extractors != null) {
-			for(Class extractor : extractors) {
+			for(Class<?> extractor : extractors) {
 				if(extractor.equals(PowerSpectrum.class)) {
 					powerSpectrum(extractorArrangement);
 				} else if(extractor.equals(FFT.class)) {
@@ -216,9 +215,9 @@ public class Analyzer implements SegmentMaker {
 		//inisit on spectral diff
 		spectralDifference(extractorArrangement);
 		//add low level stuff
-		for(Class featureName : extractorArrangement.keySet()) {
+		for(Class<?> featureName : extractorArrangement.keySet()) {
 			if(extractorArrangement.get(featureName) instanceof FeatureExtractor) {
-				lowLevel.addFeatureExtractor((FeatureExtractor)extractorArrangement.get(featureName));
+				lowLevel.addFeatureExtractor((FeatureExtractor<?, ?>)extractorArrangement.get(featureName));
 			}
 		}
 		//add beat stuff

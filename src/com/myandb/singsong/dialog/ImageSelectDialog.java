@@ -1,65 +1,63 @@
 package com.myandb.singsong.dialog;
 
-import com.myandb.singsong.R;
-import com.myandb.singsong.activity.RecordSettingActivity;
-import com.myandb.singsong.adapter.ImageAdapter;
-import com.myandb.singsong.model.Image;
-import com.myandb.singsong.net.UrlBuilder;
+import org.json.JSONArray;
 
-import android.content.Context;
+import com.myandb.singsong.R;
+import com.myandb.singsong.adapter.HolderAdapter;
+import com.myandb.singsong.adapter.ImageAdapter;
+import com.myandb.singsong.fragment.RecordSettingFragment;
+import com.myandb.singsong.model.Image;
+import com.myandb.singsong.net.GradualLoader;
+import com.myandb.singsong.net.UrlBuilder;
+import com.myandb.singsong.net.GradualLoader.OnLoadCompleteListener;
+
+import android.app.Activity;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ListView;
 
-public class ImageSelectDialog extends BaseDiaglog {
+public class ImageSelectDialog extends BaseDialog {
 	
-	private ImageView ivCancel;
 	private ListView listView;
-	private RecordSettingActivity parent;
 	private ImageAdapter adapter;
-
-	public ImageSelectDialog(Context context) {
-		super(context, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
-		
-		parent = (RecordSettingActivity) context;
-		adapter = new ImageAdapter(context, this);
+	private GradualLoader loader;
+	
+	@Override
+	protected int getResourceId() {
+		return R.layout.dialog_image_select;
+	}
+	
+	@Override
+	protected void onViewInflated(View view, LayoutInflater inflater) {
+		listView = (ListView) view.findViewById(R.id.lv_full_width);
 	}
 
 	@Override
-	protected void initializeView() {
-		setContentView(R.layout.dialog_image_select);
+	protected void initialize(Activity activity) {
+		adapter = new ImageAdapter(this);
 		
-		ivCancel = (ImageView) findViewById(R.id.iv_cancel);
-		listView = (ListView) findViewById(R.id.lv_full_width);
+		loader = new GradualLoader(activity);
+		loader.setUrlBuilder(new UrlBuilder().s("images"));
 	}
 
 	@Override
-	protected void setupView() {
-		ivCancel.setOnClickListener(new View.OnClickListener() {
+	protected void setupViews() {
+		listView.setAdapter(adapter);
+		listView.setOnScrollListener(loader);
+		loader.setOnLoadCompleteListener(new OnLoadCompleteListener() {
 			
 			@Override
-			public void onClick(View v) {
-				ImageSelectDialog.this.dismiss();
+			public void onComplete(JSONArray response) {
+				if (adapter instanceof HolderAdapter) {
+					((HolderAdapter<?, ?>) adapter).addAll(response);
+				}
 			}
 		});
-		
-		listView.setAdapter(adapter);
 	}
 	
 	public void selectImage(Image image) {
-		parent.setImage(image);
-		
+		((RecordSettingFragment) getParentFragment()).setImage(image);
 		dismiss();
-	}
-
-	@Override
-	public void show() {
-		super.show();
-		
-		UrlBuilder urlBuilder = UrlBuilder.create();
-		urlBuilder.l("images");
-		
-		adapter.resetRequest(urlBuilder);
 	}
 
 }

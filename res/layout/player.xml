@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <ImageView
+        android:id="@+id/iv_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@color/black"
+        style="@style/ImageViewBase" />
+    
+    <ImageView
+        android:id="@+id/iv_background_gradient"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/mask_player" />
+    
+    <ImageView
+        android:id="@+id/iv_background_mask"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@color/black" />
+    
+    <FrameLayout
+        android:id="@+id/layout_drag_panel"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/player_drag_panel_height"
+        android:paddingLeft="@dimen/margin"
+        android:paddingRight="@dimen/margin" >
+        
+        <include
+            android:id="@+id/layout_player_drag_panel_on_collapsed"
+            layout="@layout/player_drag_panel_on_collapsed" />
+        
+        <include
+            android:id="@+id/layout_player_drag_panel_on_expanded"
+            android:visibility="gone"
+            layout="@layout/player_drag_panel_on_expanded" />
+        
+    </FrameLayout>
+    
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/margin_bigger"
+        android:layout_below="@id/layout_drag_panel" >
+        
+        <include
+            android:id="@+id/layout_player_default"
+            layout="@layout/player_default" />
+        
+        <include
+            android:id="@+id/layout_player_comment"
+            android:visibility="gone"
+            layout="@layout/player_comment" /> 
+            
+        <include
+            android:id="@+id/layout_player_liking"
+            android:visibility="gone"
+            layout="@layout/player_liking" />
+        
+    </FrameLayout>
+    
+    <FrameLayout
+        android:id="@+id/fl_floating_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" >
+        
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="#A0000000" />
+        
+        <LinearLayout
+            android:id="@+id/ll_floating_user_wrapper"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal" >
+            
+            <com.myandb.singsong.widget.RoundedImageView
+	            android:id="@+id/iv_floating_user_photo"
+	            android:layout_width="@dimen/photo_player"
+	            android:layout_height="@dimen/photo_player"
+                android:layout_marginBottom="@dimen/margin_small"
+	            style="@style/ImageViewUserWithBorder" />
+	        
+	        <TextView
+	            android:id="@+id/tv_floating_user_nickname"
+	            android:layout_marginBottom="@dimen/margin_tiny"
+	            android:textSize="@dimen/text_title"
+	            style="@style/TextViewOverflowableImportant" />
+	        
+	        <TextView
+	            android:id="@+id/tv_floating_user_part"
+	            android:textSize="@dimen/text_subtitle"
+	            style="@style/TextViewImportant" />
+            
+        </LinearLayout>
+        
+        <LinearLayout
+            android:id="@+id/ll_floating_collabo_wrapper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical" >
+            
+	        <include
+	            android:id="@+id/layout_floating_collabo"
+	            layout="@layout/player_button_collabo" />
+	        
+	        <TextView
+	            android:id="@+id/tv_floating_description"
+	            android:layout_width="match_parent"
+	            android:textColor="@color/font_hint"
+	            android:layout_marginTop="@dimen/margin"
+	            android:lineSpacingExtra="@dimen/margin_small"
+	            android:gravity="center"
+	            style="@style/TextViewBase" />
+            
+        </LinearLayout>
+        
+    </FrameLayout>
+
+</RelativeLayout>

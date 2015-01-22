@@ -1,6 +1,6 @@
 package com.myandb.singsong.receiver;
 
-import com.myandb.singsong.activity.RecordMainActivity;
+import com.myandb.singsong.fragment.KaraokeFragment;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -9,10 +9,10 @@ import android.content.Intent;
 public class HeadsetReceiver extends BroadcastReceiver {
 	
 	private boolean isPlugged = false;
-	private RecordMainActivity parent;
+	private KaraokeFragment fragment;
 	
-	public HeadsetReceiver(Context context) {
-		parent = (RecordMainActivity) context;
+	public HeadsetReceiver(KaraokeFragment fragment) {
+		this.fragment = fragment;
 	}
 	
 	@Override
@@ -23,13 +23,13 @@ public class HeadsetReceiver extends BroadcastReceiver {
 			switch (state) {
 			case 0:
 				isPlugged = false;
-				parent.onHeadsetUnplugged();
+				fragment.onHeadsetUnplugged();
 				
 				break;
 				
 			case 1:
 				isPlugged = true;
-				parent.onHeadsetPlugged();
+				fragment.onHeadsetPlugged();
 				
 				break;
 				

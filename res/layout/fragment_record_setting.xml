@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_bg" >
+    
+    <LinearLayout
+        android:id="@+id/buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:padding="@dimen/margin"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginBottom="@dimen/margin"
+        android:baselineAligned="false"
+        android:weightSum="3"
+        android:orientation="horizontal" >
+        
+        <RelativeLayout
+            android:id="@+id/ll_restart"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginRight="@dimen/margin_big" >
+            
+            <com.myandb.singsong.widget.SquareImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/circle_sub_selector" />
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:orientation="vertical" >
+                
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginBottom="@dimen/margin_small"
+                    android:src="@drawable/ic_repeat" />
+                
+                <TextView
+                    android:gravity="center"
+                    android:text="다시하기"
+                    android:textColor="@color/white"
+                    style="@style/TextViewBase" />
+                
+            </LinearLayout>
+            
+        </RelativeLayout>
+        
+        <RelativeLayout
+            android:id="@+id/ll_upload"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginRight="@dimen/margin_big" >
+            
+            <com.myandb.singsong.widget.SquareImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/circle_primary_selector" />
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:orientation="vertical" >
+                
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginBottom="@dimen/margin_small"
+                    android:src="@drawable/ic_upload" />
+                
+                <TextView
+                    android:gravity="center"
+                    android:text="@string/upload"
+                    android:textColor="@color/white"
+                    style="@style/TextViewBase" />
+                
+            </LinearLayout>
+            
+        </RelativeLayout>
+        
+        <RelativeLayout
+            android:id="@+id/ll_exit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" >
+            
+            <com.myandb.singsong.widget.SquareImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/circle_grey_selector" />
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:orientation="vertical" >
+                
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginBottom="@dimen/margin_small"
+                    android:src="@drawable/ic_exit" />
+                
+                <TextView
+                    android:gravity="center"
+                    android:text="@string/exit"
+                    android:textColor="@color/white"
+                    style="@style/TextViewBase" />
+                
+            </LinearLayout>
+            
+        </RelativeLayout>
+        
+    </LinearLayout>
+    
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/buttons" >
+        
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical"
+	        android:padding="@dimen/margin" >
+		    
+		    <LinearLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:orientation="vertical"
+		        android:layout_marginBottom="@dimen/margin"
+		        android:background="@drawable/card_idle" >
+	            
+		        <TextView
+		            android:text="미리듣기"
+		            android:padding="@dimen/margin_small"
+		            android:textColor="@color/font_default"
+		            style="@style/TextViewLessImportant" />
+		        
+		        <ImageView
+		            style="@style/DividerHorizontal" />
+		        
+		        <RelativeLayout
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:padding="@dimen/margin" >
+		            
+			        <ImageView
+			            android:id="@+id/iv_play_control"
+			            android:layout_width="32dp"
+			            android:layout_height="32dp"
+			            android:layout_marginRight="@dimen/margin"
+			            style="@style/ImageViewBase"
+			            android:src="@drawable/ic_play_basic" />
+			        
+			        <SeekBar
+			            android:id="@+id/sb_play"
+			            android:layout_width="match_parent"
+			            android:layout_height="wrap_content"
+			            android:layout_toRightOf="@id/iv_play_control"
+			            android:paddingTop="@dimen/margin_tiny"
+			            android:paddingBottom="@dimen/margin_tiny"
+			            android:paddingLeft="@dimen/margin_small"
+			            android:paddingRight="@dimen/margin_small"
+			            android:minHeight="2dp"
+			            android:maxHeight="2dp"
+			            android:layout_centerVertical="true"
+			            android:progressDrawable="@drawable/seekbar_white"
+			            android:thumb="@drawable/seekbar_thumb"
+			            android:thumbOffset="0dp" />
+		            
+		        </RelativeLayout>
+		        
+		    </LinearLayout>
+		    
+		    <LinearLayout
+		        android:id="@+id/ll_mixer"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:orientation="vertical"
+		        android:layout_marginBottom="@dimen/margin"
+		        android:background="@drawable/card_idle" >
+	            
+		        <TextView
+		            android:text="싱크조절"
+		            android:textColor="@color/font_default"
+		            android:padding="@dimen/margin_small"
+		            style="@style/TextViewLessImportant" />
+		        
+		        <ImageView
+		            style="@style/DividerHorizontal" />
+		        
+		        <RelativeLayout
+				    android:layout_width="match_parent"
+				    android:layout_height="wrap_content"
+				    android:padding="@dimen/margin" >
+				    
+				    <ImageView
+			            android:id="@+id/iv_sync_back"
+			            android:layout_width="32dp"
+			            android:layout_height="32dp"
+			            style="@style/ImageViewBase"
+			            android:src="@drawable/ic_arrow_left" />
+				    
+				    <TextView
+				        android:id="@+id/tv_sync_value"
+				        android:text="0.0"
+				        android:layout_centerInParent="true"
+				        style="@style/TextViewBase" />
+				    
+				    <TextView
+				        android:text="초"
+				        android:layout_toRightOf="@id/tv_sync_value"
+				        android:layout_centerVertical="true"
+				        style="@style/TextViewBase" />
+				    
+				    <ImageView
+				        android:id="@+id/iv_sync_forward"
+				        android:layout_width="32dp"
+			            android:layout_height="32dp"
+			            style="@style/ImageViewBase"
+			            android:src="@drawable/ic_arrow_right"
+			            android:layout_alignParentRight="true" />
+				    
+				</RelativeLayout>
+		        
+		    </LinearLayout>
+		    
+		    <LinearLayout
+		        android:id="@+id/ll_volume"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:orientation="vertical"
+		        android:layout_marginBottom="@dimen/margin"
+		        android:background="@drawable/card_idle" >
+	            
+		        <TextView
+		            android:text="목소리 볼륨조절"
+		            android:textColor="@color/font_default"
+		            android:padding="@dimen/margin_small"
+		            style="@style/TextViewLessImportant" />
+		        
+		        <ImageView
+		            style="@style/DividerHorizontal" />
+		        
+		        <RelativeLayout
+				    android:layout_width="match_parent"
+				    android:layout_height="wrap_content"
+				    android:padding="@dimen/margin" >
+				    
+				    <ImageView
+				        android:id="@+id/icon_volume"
+			            android:layout_width="32dp"
+			            android:layout_height="32dp"
+			            android:layout_marginRight="@dimen/margin"
+			            android:src="@drawable/ic_volume"
+			            style="@style/ImageViewBase" />
+				    
+				    <TextView
+				        android:id="@+id/tv_volume_value"
+				        android:layout_alignParentRight="true"
+				        android:text="100%"
+				        android:layout_centerVertical="true"
+				        android:layout_marginLeft="@dimen/margin_small"
+				        style="@style/TextViewBase" />
+				    
+				    <SeekBar
+			            android:id="@+id/sb_volume"
+			            android:layout_width="match_parent"
+			            android:layout_height="wrap_content"
+			            android:layout_toRightOf="@id/icon_volume"
+			            android:layout_toLeftOf="@id/tv_volume_value"
+			            android:paddingTop="@dimen/margin_tiny"
+			            android:paddingBottom="@dimen/margin_tiny"
+			            android:paddingLeft="@dimen/margin_small"
+			            android:paddingRight="@dimen/margin_small"
+			            android:minHeight="3dp"
+			            android:maxHeight="3dp"
+			            android:layout_centerVertical="true"
+			            android:progressDrawable="@drawable/seekbar_white"
+			            android:thumb="@drawable/seekbar_thumb" />
+				    
+				</RelativeLayout>
+		        
+		    </LinearLayout>
+		    
+		    <LinearLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:orientation="vertical"
+		        android:layout_marginBottom="@dimen/margin"
+		        android:background="@drawable/card_idle" >
+	            
+		        <TextView
+		            android:text="한마디&amp;커버사진 등록"
+		            android:textColor="@color/font_default"
+		            android:padding="@dimen/margin_small"
+		            style="@style/TextViewLessImportant" />
+		        
+		        <ImageView
+		            style="@style/DividerHorizontal" />
+		        
+		        <RelativeLayout
+				    android:layout_width="match_parent"
+				    android:layout_height="wrap_content"
+				    android:padding="@dimen/margin" >
+				    
+		            <FrameLayout
+		                android:id="@+id/photo_wrapper"
+		                android:layout_width="@dimen/photo_profile"
+		                android:layout_height="@dimen/photo_profile"
+		                android:layout_marginRight="@dimen/margin"
+		                android:background="@drawable/container_profile_photo" >
+		                
+		                <ImageView
+		                    android:layout_width="match_parent"
+		                    android:layout_height="match_parent"
+		                    android:src="@color/border" />
+		                
+		                <ImageView
+		                    android:layout_width="match_parent"
+		                    android:layout_height="match_parent"
+		                    android:scaleType="centerInside"
+		                    android:src="@drawable/ic_camera_big" />
+		                
+		                <ImageView
+		                    android:id="@+id/iv_song_image"
+		                    android:layout_width="match_parent"
+		                    android:layout_height="match_parent"
+		                    style="@style/ImageViewBase" />
+		                
+		            </FrameLayout>
+		            
+		            <Button
+		                android:id="@+id/btn_delete_image"
+		                android:layout_alignLeft="@id/photo_wrapper"
+		                android:layout_alignRight="@id/photo_wrapper"
+		                android:layout_below="@id/photo_wrapper"
+		                android:layout_marginTop="@dimen/margin_small"
+		                android:background="@drawable/button_alert_selector"
+		                android:padding="@dimen/margin_tiny"
+		                android:textSize="@dimen/text_hint"
+		                android:text="@string/delete"
+		                style="@style/ButtonBase" />
+		            
+		            <EditText
+		                android:id="@+id/et_song_message"
+		                android:layout_width="match_parent"
+		                android:layout_height="wrap_content"
+		                android:padding="@dimen/margin_small"
+		                android:layout_toRightOf="@id/photo_wrapper"
+		                android:textSize="@dimen/text_sub_content"
+		                android:textColorHint="@color/font_hint"
+		                android:hint="한마디를 남겨주세요!"
+		                android:maxLength="200"
+		                android:background="@null" />
+				    
+				</RelativeLayout>
+				
+	            <Button
+	                android:id="@+id/btn_other_images"
+	                android:layout_margin="@dimen/margin_small"
+	                android:textSize="@dimen/text_sub_content"
+	                android:text="업로드 했던 사진 보기"
+	                style="@style/ButtonDark" />
+		        
+		    </LinearLayout>
+		    
+		    <RelativeLayout
+		        android:id="@+id/rl_facebook"
+		        android:layout_marginBottom="@dimen/margin_big"
+		        android:background="@drawable/card_idle"
+		        style="@style/FormBase" >
+		        
+		        <ImageView
+		            android:id="@+id/iv_is_facebook_posting"
+		            android:layout_width="25dp"
+		            android:layout_height="25dp"
+		            android:padding="@dimen/margin_tiny"
+		            android:background="@drawable/button_transparent_primary_selector"
+		            android:layout_centerVertical="true"
+		            android:layout_alignParentRight="true"
+		            android:src="@drawable/ic_check"
+		            style="@style/ImageViewBase" />
+		        
+		        <ImageView
+		            android:id="@+id/icon_facebook"
+		            android:layout_width="25dp"
+		            android:layout_height="25dp"
+		            android:layout_marginRight="@dimen/margin_small"
+		            android:src="@drawable/ic_facebook"
+		            style="@style/ImageViewBase" />
+		        
+		        <TextView
+		            android:padding="0dp"
+		            android:layout_marginBottom="@dimen/margin_tiny"
+		            android:layout_centerVertical="true"
+		            android:layout_toRightOf="@id/icon_facebook"
+		            android:text="페이스북에 함께 포스팅"
+		            android:textSize="@dimen/text_sub_content"
+		            style="@style/TextViewBase" />
+		        
+		    </RelativeLayout>
+	        
+	    </LinearLayout>
+        
+    </ScrollView>
+    
+</RelativeLayout>

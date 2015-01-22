@@ -2,66 +2,70 @@ package com.myandb.singsong.dialog;
 
 import org.json.JSONObject;
 
-import com.android.volley.RequestQueue;
 import com.android.volley.Request.Method;
-import com.myandb.singsong.App;
+import com.google.android.gcm.GCMRegistrar;
 import com.myandb.singsong.R;
-import com.myandb.singsong.activity.SettingActivity;
-import com.myandb.singsong.event.OnVolleyWeakError;
-import com.myandb.singsong.event.OnVolleyWeakResponse;
-import com.myandb.singsong.net.OAuthJsonObjectRequest;
-import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.secure.Auth;
+import com.myandb.singsong.fragment.SettingFragment;
+import com.myandb.singsong.model.User;
+import com.myandb.singsong.net.JSONObjectRequest;
+import com.myandb.singsong.net.JSONErrorListener;
+import com.myandb.singsong.net.JSONObjectSuccessListener;
+import com.myandb.singsong.secure.Authenticator;
 
-import android.content.Context;
+import android.app.Activity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.EditText;
 
-public class WithdrawDialog extends BaseDiaglog {
+public class WithdrawDialog extends BaseDialog {
 	
-	private SettingActivity parent;
-	private ImageView ivCancel;
-	private Button btnYes;
-	private Button btnNo;
-
-	public WithdrawDialog(Context context) {
-		super(context, android.R.style.Theme_Translucent_NoTitleBar);
-		
-		parent = (SettingActivity) context;
+	private EditText etUserUsername;
+	private Button btnWithdraw;
+	private User currentUser;
+	
+	@Override
+	protected int getResourceId() {
+		return R.layout.dialog_withdraw;
+	}
+	
+	@Override
+	protected void onViewInflated(View view, LayoutInflater inflater) {
+		etUserUsername = (EditText) view.findViewById(R.id.et_user_username);
+		btnWithdraw = (Button) view.findViewById(R.id.btn_withdraw);
 	}
 
 	@Override
-	protected void initializeView() {
-		setContentView(R.layout.dialog_withdraw);
-		
-		ivCancel = (ImageView) findViewById(R.id.iv_cancel);
-		btnYes = (Button) findViewById(R.id.btn_yes);
-		btnNo = (Button) findViewById(R.id.btn_no);
+	protected void initialize(Activity activity) {
+		currentUser = Authenticator.getUser();
 	}
 
 	@Override
-	protected void setupView() {
-		ivCancel.setOnClickListener(cancelClickListener);
-		btnNo.setOnClickListener(cancelClickListener);
-		btnYes.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				parent.showProgressDialog();
-				UrlBuilder urlBuilder = UrlBuilder.getInstance();
-				String url = urlBuilder.l("users").build();
-				
-				OAuthJsonObjectRequest request = new OAuthJsonObjectRequest(
-						Method.DELETE, url, null,
-						new OnVolleyWeakResponse<WithdrawDialog, JSONObject>(WithdrawDialog.this, "onWithdrawSuccess"),
-						new OnVolleyWeakError<WithdrawDialog>(WithdrawDialog.this, "onWithdrawError")
-				);
-				
-				RequestQueue queue = ((App) getContext().getApplicationContext()).getQueueInstance();
-				queue.add(request);
+	protected void setupViews() {
+		btnWithdraw.setOnClickListener(withdrawClickListener);
+	}
+	
+	private View.OnClickListener withdrawClickListener = new View.OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			String username = etUserUsername.getText().toString();
+			if (!username.equals(currentUser.getUsername())) {
+				makeToast(getString(R.string.t_alert_withdraw_validation_failed));
+				return;
 			}
-		});
+			
+			showProgressDialog();
+			withdraw();
+		}
+	};
+	
+	private void withdraw() {
+		JSONObjectRequest request = new JSONObjectRequest(
+				Method.DELETE, "users", null,
+				new JSONObjectSuccessListener(WithdrawDialog.this, "onWithdrawSuccess"),
+				new JSONErrorListener(WithdrawDialog.this, "onWithdrawError"));
+		addRequest(request);
 	}
 	
 	public void onWithdrawSuccess(JSONObject response) {
@@ -73,19 +77,18 @@ public class WithdrawDialog extends BaseDiaglog {
 	}
 	
 	private void onWithdrawFinish() {
-		Auth auth = new Auth();
-		auth.logout();
-		
-		parent.dismissProgressDialog();
-		parent.finish();
+		new Authenticator().logout();
+		unregisterGcm();
+		dismissProgressDialog();
+		if (getParentFragment() instanceof SettingFragment) {
+			((SettingFragment) getParentFragment()).clearSharedPreferences();
+		}
 	}
 	
-	private View.OnClickListener cancelClickListener = new View.OnClickListener() {
-		
-		@Override
-		public void onClick(View v) {
-			WithdrawDialog.this.dismiss();
+	private void unregisterGcm() {
+		if (GCMRegistrar.isRegistered(getActivity())) {
+			GCMRegistrar.unregister(getActivity());
 		}
-	};
+	}
 
 }

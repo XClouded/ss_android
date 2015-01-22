@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fl_top10_first"
+    android:layout_width="match_parent"
+    android:layout_height="130dp"
+    android:paddingLeft="@dimen/margin"
+    android:paddingRight="@dimen/margin" >
+
+    <ImageView
+        android:id="@+id/iv_top10_first_album_photo"
+        style="@style/ImageViewBase"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@color/grey" />
+
+    <ImageView
+        style="@style/ImageViewBase"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/mask_no_rounded" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/margin_small" >
+
+        <TextView
+            style="@style/TextViewImportant"
+            android:layout_marginLeft="@dimen/margin_small"
+            android:text="1"
+            android:textColor="@color/white"
+            android:textSize="35sp" />
+
+        <TextView
+            android:id="@+id/tv_top10_first_like_num"
+            style="@style/TextViewBase"
+            android:layout_marginRight="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/white" />
+
+        <ImageView
+            style="@style/ImageViewBase"
+            android:layout_width="13dp"
+            android:layout_height="13dp"
+            android:layout_marginRight="@dimen/margin_tiny"
+            android:layout_marginTop="1dp"
+            android:layout_toLeftOf="@id/tv_top10_first_like_num"
+            android:layout_alignTop="@id/tv_top10_first_like_num"
+            android:src="@drawable/ic_like" />
+
+        <TextView
+            android:id="@+id/tv_top10_first_user_info"
+            style="@style/TextViewOverflowableLessImportant"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:gravity="left"
+            android:textColor="@color/font_white" />
+
+        <TextView
+            android:id="@+id/tv_top10_first_music_info"
+            style="@style/TextViewOverflowableImportant"
+            android:layout_above="@id/tv_top10_first_user_info"
+            android:layout_marginBottom="@dimen/margin_tiny"
+            android:gravity="left" />
+    </RelativeLayout>
+
+</FrameLayout>
