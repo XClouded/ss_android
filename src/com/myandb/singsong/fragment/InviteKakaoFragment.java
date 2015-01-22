@@ -46,7 +46,7 @@ public class InviteKakaoFragment extends BaseFragment {
 				final String message = builder
 						.addText(getString(R.string.invitation_message_header) + "\n"
 								+ getString(R.string.invitation_message_footer))
-						.addImage(imageUrl, 300, 300)
+						.addImage(imageUrl, 150, 150)
 						.addWebButton("둘러보기", new UrlBuilder().s("w").s("invitation").toString())
 						.build();
 				kakaoLink.sendMessage(message, getActivity());
