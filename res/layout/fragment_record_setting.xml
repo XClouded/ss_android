@@ -363,15 +363,19 @@
 		                android:hint="한마디를 남겨주세요!"
 		                android:maxLength="200"
 		                android:background="@null" />
+					
+		            <Button
+		                android:id="@+id/btn_other_images"
+		                android:layout_alignLeft="@id/photo_wrapper"
+		                android:layout_alignRight="@id/photo_wrapper"
+		                android:layout_below="@id/btn_delete_image"
+		                android:layout_marginTop="@dimen/margin_small"
+		                android:padding="@dimen/margin_tiny"
+		                android:textSize="@dimen/text_hint"
+		                android:text="업로드 했던 사진"
+		                style="@style/ButtonDark" />
 				    
 				</RelativeLayout>
-				
-	            <Button
-	                android:id="@+id/btn_other_images"
-	                android:layout_margin="@dimen/margin_small"
-	                android:textSize="@dimen/text_sub_content"
-	                android:text="업로드 했던 사진 보기"
-	                style="@style/ButtonDark" />
 		        
 		    </LinearLayout>
 		    
