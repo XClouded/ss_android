@@ -16,6 +16,7 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.method.ScrollingMovementMethod;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -179,6 +180,9 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 			ivCloseComment.setOnClickListener(closeCommentClickListener);
 			ivCloseLiking.setOnClickListener(closeLikingClickListener);
 			btnLikingNumOut.setOnClickListener(showLikingClickListener);
+			
+			tvParentSongMessage.setMovementMethod(new ScrollingMovementMethod());
+			tvThisSongMessage.setMovementMethod(new ScrollingMovementMethod());
 			
 			service.getPlayer().setOnPlayEventListener(onPlayEventListener);
 			
