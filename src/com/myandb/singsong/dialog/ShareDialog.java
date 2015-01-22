@@ -78,7 +78,7 @@ public class ShareDialog extends BaseDialog {
 	}
 	
 	private String getShareUrl() {
-		return new UrlBuilder().s("w").s("player").s(song.getId()).toString();
+		return new UrlBuilder().s("w").s("p").s(song.getId()).toString();
 	}
 	
 	private String getPhotoUrl() {

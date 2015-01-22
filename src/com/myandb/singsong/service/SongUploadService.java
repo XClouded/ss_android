@@ -392,7 +392,7 @@ public class SongUploadService extends Service {
 			.setDescription(song.getMusic().getSingerName())
 			.setCaption(song.getMessage())
 			.setPicture(song.getMusic().getAlbumPhotoUrl())
-			.setLink(new UrlBuilder().s("w").s("player").s(song.getId()).toString())
+			.setLink(new UrlBuilder().s("w").s("p").s(song.getId()).toString())
 			.build();
 		
 		final SimpleFacebook simpleFacebook = SimpleFacebook.getInstance();
