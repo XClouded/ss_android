@@ -18,9 +18,11 @@ import com.myandb.singsong.adapter.ArtistAdapter;
 import com.myandb.singsong.adapter.MusicAdapter;
 import com.myandb.singsong.adapter.SimpleSongNumAdapter;
 import com.myandb.singsong.adapter.MusicAdapter.LayoutType;
+import com.myandb.singsong.event.MemberOnlyClickListener;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Song;
+import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.GradualLoader;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.net.GradualLoader.OnLoadCompleteListener;
@@ -407,10 +409,10 @@ public class HomeFragment extends BaseFragment {
 		}
 	}
 	
-	private OnClickListener notificationClickListener = new OnClickListener() {
+	private OnClickListener notificationClickListener = new MemberOnlyClickListener() {
 		
 		@Override
-		public void onClick(View v) {
+		public void onLoggedIn(View v, User user) {
 			Intent intent = new Intent(getActivity(), UpActivity.class);
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, NotificationFragment.class.getName());
 			startFragment(intent);
