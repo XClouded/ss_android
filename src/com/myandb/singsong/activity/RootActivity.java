@@ -114,7 +114,6 @@ public class RootActivity extends BaseActivity {
 		slidingPlayerLayout = (SlidingPlayerLayout) findViewById(R.id.sliding_layout);
 		slidingPlayerLayout.setSlidingContainer(R.id.fl_sliding_container);
 		slidingPlayerLayout.setPanelHeight(panelHeight);
-		slidingPlayerLayout.hidePanel();
 	}
 	
 	private void configureDrawer() {

@@ -11,7 +11,6 @@ import com.myandb.singsong.R;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Song;
-import com.myandb.singsong.model.User;
 
 public class SimpleSongNumAdapter extends HolderAdapter<Song, SimpleSongNumAdapter.SongHolder> {
 	
@@ -35,10 +34,8 @@ public class SimpleSongNumAdapter extends HolderAdapter<Song, SimpleSongNumAdapt
 	@Override
 	public void onBindViewHolder(Context context, SongHolder viewHolder, int position) {
 		final Song thisSong = getItem(position);
-		final User thisUser = thisSong.getCreator();
 		final Music music = thisSong.getMusic();
 		
-		viewHolder.tvUserInfo.setText(thisUser.getNickname());
 		viewHolder.tvSongLikeNum.setText(thisSong.getWorkedLikeNum());
 		viewHolder.tvSongNum.setText(String.valueOf(position + 1 + numOffset));
 		
@@ -50,9 +47,10 @@ public class SimpleSongNumAdapter extends HolderAdapter<Song, SimpleSongNumAdapt
 		
 		ImageHelper.displayPhoto(music.getAlbumPhotoUrl(), viewHolder.ivAlbumPhoto);
 		
+		viewHolder.tvUserInfo.setText(thisSong.getParentUser().getNickname());
 		if (!thisSong.isRoot()) {
-			final User parentUser = thisSong.getParentUser();
-			viewHolder.tvUserInfo.append(" X " + parentUser.getNickname());
+			viewHolder.tvUserInfo.append(" X ");
+			viewHolder.tvUserInfo.append(thisSong.getCreator().getNickname());
 		}
 	}
 	

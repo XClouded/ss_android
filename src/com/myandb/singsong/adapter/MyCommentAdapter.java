@@ -49,10 +49,10 @@ public class MyCommentAdapter extends HolderAdapter<SongComment, MyCommentAdapte
 	}
 	
 	private String getUserInfo(Song song) {
-		String info = song.getCreator().getNickname();
+		String info = song.getParentUser().getNickname();
 		if (!song.isRoot()) {
 			info += " X ";
-			info += song.getParentUser().getNickname();
+			info += song.getCreator().getNickname();
 		}
 		return info;
 	}

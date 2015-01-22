@@ -7,6 +7,7 @@
         android:id="@+id/iv_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:src="@color/black"
         style="@style/ImageViewBase" />
     
     <ImageView
@@ -34,6 +35,7 @@
         
         <include
             android:id="@+id/layout_player_drag_panel_on_expanded"
+            android:visibility="gone"
             layout="@layout/player_drag_panel_on_expanded" />
         
     </FrameLayout>

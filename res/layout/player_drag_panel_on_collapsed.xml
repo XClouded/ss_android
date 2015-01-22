@@ -7,11 +7,19 @@
 	    android:id="@+id/iv_drag_play_control"
 	    android:src="@drawable/ic_play"
 	    android:layout_width="22dp"
-	    android:layout_height="31dp"
+	    android:layout_height="32dp"
 	    android:layout_centerVertical="true"
 	    android:layout_marginRight="@dimen/margin"
 	    android:layout_marginLeft="@dimen/margin"
 	    style="@style/ImageViewBase" />
+	
+	<TextView
+	    android:id="@+id/tv_no_song_on_collapsed"
+	    android:gravity="left"
+	    android:layout_centerVertical="true"
+	    android:layout_toRightOf="@id/iv_drag_play_control"
+	    android:text="재생중인 곡이 없습니다."
+	    style="@style/TextViewOverflowableImportant" />
 	
 	<LinearLayout
 	    android:layout_width="match_parent"

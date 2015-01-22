@@ -95,6 +95,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	private TextView tvPlayEndTime;
 	private TextView tvMusicInfoOnCollapsed;
 	private TextView tvUsersInfoOnCollapsed;
+	private TextView tvNoSongOnCollapsed;
 	private TextView tvMusicTitleOnExpanded;
 	private TextView tvSingerNameOnExpanded;
 	private TextView tvCommentNum;
@@ -184,14 +185,14 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 			initialized = true;
 		}
 		
-		if (service.getSong() != null) {
-			showPanel();
-			setupViews();
-			if (service.getPlayer().isPlaying()) {
-				catchPlayStatusChange(PlayEvent.PLAY);
-			}
+		setupViews();
+		
+		if (service.getPlayer().isPlaying()) {
+			catchPlayStatusChange(PlayEvent.PLAY);
 		}
 	}
+	
+	int k;
 	
 	private int getRelativeLeft(View view) {
 	    if (view.getParent() == view.getRootView()) {
@@ -259,6 +260,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		tvSingerNameOnExpanded = (TextView) findViewById(R.id.tv_singer_name_on_expanded);
 		tvMusicInfoOnCollapsed = (TextView) findViewById(R.id.tv_music_info_on_collapsed);
 		tvUsersInfoOnCollapsed = (TextView) findViewById(R.id.tv_users_info_on_collapsed);
+		tvNoSongOnCollapsed = (TextView) findViewById(R.id.tv_no_song_on_collapsed);
 		tvCommentNum = (TextView) findViewById(R.id.tv_comment_num);
 		tvCommentNumOut = (TextView) findViewById(R.id.tv_comment_num_out);
 		tvLikingNum = (TextView) findViewById(R.id.tv_liking_num);
@@ -432,10 +434,9 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 			public void run() {
 				switch (event) {
 				case LOADING:
-					showPanel();
-					expandPanel();
 					setupViews();
 					showDefaultWindow();
+					expandPanel();
 					ivPlayControl.setEnabled(false);
 					ivDragPlayControl.setEnabled(false);
 					break;
@@ -583,8 +584,14 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	
 	private void setupViews() {
 		if (service.getSong() == null) {
+			tvNoSongOnCollapsed.setVisibility(View.VISIBLE);
+			collapsePanel();
+			setSlidingEnabled(false);
 			return;
 		}
+		
+		tvNoSongOnCollapsed.setVisibility(View.GONE);
+		setSlidingEnabled(true);
 		
 		final User currentUser = Authenticator.getUser();
 		final Song song = service.getSong();
@@ -595,6 +602,8 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		displayMusicInfo(music);
 		
 		displayUsersInfo(song);
+		
+		setSelectedMarqueeViews();
 		
 		displayBackgroundImage(song);
 		
@@ -705,19 +714,23 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	
 	private void displayMusicInfo(Music music) {
 		tvMusicInfoOnCollapsed.setText(music.getTitle() + " - " + music.getSingerName());
-		tvMusicInfoOnCollapsed.setSelected(true);
 		tvMusicTitleOnExpanded.setText(music.getTitle());
 		tvSingerNameOnExpanded.setText(music.getSingerName());
-		tvMusicTitleOnExpanded.setSelected(true);
-		tvSingerNameOnExpanded.setSelected(true);
 	}
 	
 	private void displayUsersInfo(Song song) {
-		tvUsersInfoOnCollapsed.setText(song.getCreator().getNickname());
+		String info = song.getParentUser().getNickname();
 		if (!song.isRoot()) {
-			tvUsersInfoOnCollapsed.append(" X ");
-			tvUsersInfoOnCollapsed.append(song.getParentUser().getNickname()); 
+			info += " X ";
+			info += song.getCreator().getNickname();
 		}
+		tvUsersInfoOnCollapsed.setText(info);
+	}
+	
+	private void setSelectedMarqueeViews() {
+		tvMusicInfoOnCollapsed.setSelected(true);
+		tvMusicTitleOnExpanded.setSelected(true);
+		tvSingerNameOnExpanded.setSelected(true);
 		tvUsersInfoOnCollapsed.setSelected(true);
 	}
 	
