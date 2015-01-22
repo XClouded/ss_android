@@ -50,9 +50,9 @@ public class InviteFacebookFragment extends BaseFragment {
 	private void showFacebookMessageDialog(MessageDialogBuilder builder) {
 		builder.setLink(new UrlBuilder().s("w").s("invitation").toString())
 			.setName(getString(R.string.app_name))
-			.setCaption(getString(R.string.app_name))
-			.setPicture(new UrlBuilder().s("img").s("actionbar_logo.png").toString())
-			.setDescription("노래도 부르고 짝도 찾는 콜라보 노래방과 함께 해보세요.")
+			.setDescription(getString(R.string.invitation_message_header))
+			.setCaption(getString(R.string.invitation_message_footer))
+			.setPicture(new UrlBuilder().s("img").s("ic_launcher-web.png").toString())
 			.setFragment(this)
 			.build()
 			.present();

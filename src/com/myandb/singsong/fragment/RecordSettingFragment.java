@@ -301,16 +301,22 @@ public class RecordSettingFragment extends BaseFragment {
 							getSimpleFacebook().login(new OnLoginListener() {
 								
 								@Override
-								public void onFail(String reason) {}
+								public void onFail(String reason) {
+									uploadImageIfExist();
+								}
 								
 								@Override
-								public void onException(Throwable throwable) {}
+								public void onException(Throwable throwable) {
+									uploadImageIfExist();
+								}
 								
 								@Override
 								public void onThinking() {}
 								
 								@Override
-								public void onNotAcceptingPermissions(Type type) {}
+								public void onNotAcceptingPermissions(Type type) {
+									uploadImageIfExist();
+								}
 								
 								@Override
 								public void onLogin() {

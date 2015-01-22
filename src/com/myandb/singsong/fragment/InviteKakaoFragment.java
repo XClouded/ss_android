@@ -40,12 +40,12 @@ public class InviteKakaoFragment extends BaseFragment {
 		public void onClick(View v) {
 			try {
 				UrlBuilder urlBuilder = new UrlBuilder();
-				String imageUrl = urlBuilder.s("img").s("playstore.png").toString();
+				String imageUrl = urlBuilder.s("img").s("ic_launcher-web.png").toString();
 				final KakaoLink kakaoLink = KakaoLink.getKakaoLink(getActivity());
 				final KakaoTalkLinkMessageBuilder builder = kakaoLink.createKakaoTalkLinkMessageBuilder();
 				final String message = builder
-						.addText("노래도 부르고 짝도 찾는 노래방 어플리케이션, 콜라보 노래방!\n"
-								+ "지금 플레이 스토어에서 다운받아 같이 노래 불러요! :)")
+						.addText(getString(R.string.invitation_message_header) + "\n"
+								+ getString(R.string.invitation_message_footer))
 						.addImage(imageUrl, 300, 100)
 						.addWebButton("둘러보기", new UrlBuilder().s("w").s("invitation").toString())
 						.build();
