@@ -13,6 +13,7 @@ import com.myandb.singsong.event.OnCompleteListener;
 import com.myandb.singsong.image.BitmapBuilder;
 import com.myandb.singsong.model.Song;
 import com.myandb.singsong.net.DownloadManager;
+import com.myandb.singsong.secure.Authenticator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.DiscCacheUtil;
 
@@ -108,10 +109,13 @@ public class PlayerService extends Service {
 			if (isNewSong(song)) {
 				thisSong = song;
 				listener.onPlay(PlayEvent.LOADING);
+				clearPreviousNotification();
+				
+				if (!Authenticator.isLoggedIn()) {
+					return;
+				}
 				
 				try {
-					clearPreviousNotification();
-					
 					streamPlayer.pause();
 					streamPlayer.reset();
 					streamPlayer.setDataSource(getCompatDataSource(thisSong.getAudioUrl()));
