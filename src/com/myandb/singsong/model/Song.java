@@ -1,5 +1,6 @@
 package com.myandb.singsong.model;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -17,6 +18,8 @@ import android.widget.Toast;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.Fields;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
@@ -329,6 +332,7 @@ public class Song extends Model {
 							icon.setImageResource(R.drawable.ic_pause_basic);
 						}
 						parentView.setTag(true);
+						countOnAnalytics();
 						break;
 						
 					case COMPLETED:
@@ -347,6 +351,15 @@ public class Song extends Model {
 					default:
 						break;
 					}
+				}
+				
+				private void countOnAnalytics() {
+					HashMap<String, String> hitParameters = new HashMap<String, String>();
+					hitParameters.put(Fields.HIT_TYPE, com.google.analytics.tracking.android.HitTypes.EVENT);
+					hitParameters.put(Fields.EVENT_CATEGORY, "UI Action");
+					hitParameters.put(Fields.EVENT_ACTION, "Button Pressed");
+					hitParameters.put(Fields.EVENT_LABEL, "sample audio play");
+					EasyTracker.getInstance(parentView.getContext()).send(hitParameters);
 				}
 			};
 		};
