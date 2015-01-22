@@ -112,6 +112,7 @@ public class PlayerService extends Service {
 				clearPreviousNotification();
 				
 				if (!Authenticator.isLoggedIn()) {
+					listener.onPlay(PlayEvent.PREPARED);
 					return;
 				}
 				
