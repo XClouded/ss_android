@@ -41,6 +41,11 @@ public class ImageSelectDialog extends BaseDialog {
 	}
 
 	@Override
+	protected float getWidthPercentage() {
+		return 0.6f;
+	}
+
+	@Override
 	protected void setupViews() {
 		listView.setAdapter(adapter);
 		listView.setOnScrollListener(loader);
