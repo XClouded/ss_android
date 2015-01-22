@@ -53,8 +53,6 @@ public abstract class BaseActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		handler = new Handler(Looper.getMainLooper());
-		int margin = getResources().getDimensionPixelSize(R.dimen.margin);
-		setHomeButtonRightMargin(margin);
 	}
 	
 	@SuppressLint("InlinedApi")
@@ -171,7 +169,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 	    int actionViewResId = 0;
 	    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
 	        actionViewResId = getResources().getIdentifier(
-	                "abs__action_bar_container", "id", getPackageName());
+	                "abc__action_bar_container", "id", getPackageName());
 	    } else {
 	        actionViewResId = Resources.getSystem().getIdentifier(
 	                "action_bar_container", "id", "android");
