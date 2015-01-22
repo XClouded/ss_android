@@ -46,6 +46,7 @@ import com.myandb.singsong.audio.PlayEvent;
 import com.myandb.singsong.audio.StreamPlayer;
 import com.myandb.singsong.dialog.ShareDialog;
 import com.myandb.singsong.event.ActivateOnlyClickListener;
+import com.myandb.singsong.event.MemberOnlyClickListener;
 import com.myandb.singsong.event.WeakRunnable;
 import com.myandb.singsong.image.BlurAsyncTask;
 import com.myandb.singsong.image.ImageHelper;
@@ -64,6 +65,7 @@ import com.myandb.singsong.net.JSONObjectSuccessListener;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.service.PlayerService;
+import com.myandb.singsong.util.PlayCounter;
 import com.myandb.singsong.util.StringFormatter;
 import com.myandb.singsong.util.Utility;
 import com.nineoldandroids.view.ViewHelper;
@@ -403,10 +405,10 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		}
 	};
 
-	private OnClickListener playControlClickListener = new OnClickListener() {
+	private OnClickListener playControlClickListener = new MemberOnlyClickListener() {
 		
 		@Override
-		public void onClick(View v) {
+		public void onLoggedIn(View v, User user) {
 			StreamPlayer player = service.getPlayer();
 			StreamPlayer samplePlayer = service.getSamplePlayer();
 			
@@ -419,6 +421,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 			} else {
 				player.startIfPrepared();
 			}
+			
 		}
 	};
 	
@@ -451,6 +454,9 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 					break;
 					
 				case PLAY:
+					if (service != null && service.getSong() != null) {
+						PlayCounter.countAsync(getContext(), "songs", service.getSong().getId());
+					}
 					onProgressUpdate();
 					ivPlayControl.setImageResource(R.drawable.ic_pause);
 					ivDragPlayControl.setImageResource(R.drawable.ic_pause);

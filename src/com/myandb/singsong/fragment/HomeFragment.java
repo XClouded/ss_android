@@ -27,7 +27,6 @@ import com.myandb.singsong.net.GradualLoader;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.net.GradualLoader.OnLoadCompleteListener;
 import com.myandb.singsong.pager.PagerWrappingAdapter;
-import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.util.StringFormatter;
 import com.myandb.singsong.util.Utility;
 import com.myandb.singsong.widget.HorizontalListView;
@@ -379,16 +378,14 @@ public class HomeFragment extends BaseFragment {
 	
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		if (Authenticator.isLoggedIn()) {
-			inflater.inflate(R.menu.home, menu);
-			
-			View notificationView = getActionViewCompat(menu, R.id.action_notification);
-			if (notificationView != null) {
-				notificationView.setOnClickListener(notificationClickListener);
-				tvNotificationCount = (TextView) notificationView.findViewById(R.id.tv_action_notification_count);
-				updateNotificationCount();
-				registerNotificationCountListener();
-			}
+		inflater.inflate(R.menu.home, menu);
+		
+		View notificationView = getActionViewCompat(menu, R.id.action_notification);
+		if (notificationView != null) {
+			notificationView.setOnClickListener(notificationClickListener);
+			tvNotificationCount = (TextView) notificationView.findViewById(R.id.tv_action_notification_count);
+			updateNotificationCount();
+			registerNotificationCountListener();
 		}
 	}
 	
