@@ -657,6 +657,12 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 			}
 		});
 		
+		slidingContainer.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {}
+		});
+		
 		showDefaultWindow();
 	}
 	
