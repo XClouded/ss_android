@@ -17,7 +17,7 @@ import android.content.Context;
 
 public class App extends Application {
 
-	public static final boolean TESTING = true;
+	public static final boolean TESTING = false;
 	
 	public static final int INVALID_RESOURCE_ID = 0; 
 	
