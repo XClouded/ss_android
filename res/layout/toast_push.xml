@@ -22,7 +22,7 @@
             android:layout_height="20dp"
             android:layout_marginRight="@dimen/margin_tiny"
             android:layout_toRightOf="@id/iv_user_photo"
-            android:src="@drawable/logo" />
+            android:src="@drawable/ic_launcher" />
 
         <TextView
             style="@style/TextViewImportant"

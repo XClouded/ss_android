@@ -216,7 +216,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 		
 		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-		builder.setSmallIcon(R.drawable.logo)
+		builder.setSmallIcon(R.drawable.ic_launcher)
 			   .setContentTitle(user.getNickname())
 			   .setContentText(message)
 			   .setAutoCancel(true)
