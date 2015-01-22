@@ -61,7 +61,11 @@ public class CommentAdapter extends HolderAdapter<Comment, CommentAdapter.Commen
 		viewHolder.ivUserPhoto.setOnClickListener(writer.getProfileClickListener());
 		
 		if (fragmentManager != null) {
-			viewHolder.ivMenu.setVisibility(View.VISIBLE);
+			if (Authenticator.isLoggedIn()) {
+				viewHolder.ivMenu.setVisibility(View.VISIBLE);
+			} else {
+				viewHolder.ivMenu.setVisibility(View.INVISIBLE);
+			}
 			viewHolder.ivMenu.setTag(comment);
 			viewHolder.ivMenu.setOnClickListener(menuClickListener);
 		} else {
@@ -77,6 +81,10 @@ public class CommentAdapter extends HolderAdapter<Comment, CommentAdapter.Commen
 		
 		@Override
 		public void onClick(View v) {
+			if (!Authenticator.isLoggedIn()) {
+				return;
+			}
+			
 			selectedComment = (Comment) v.getTag();
 			PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
 			if (isUserWriter(selectedComment)) {
