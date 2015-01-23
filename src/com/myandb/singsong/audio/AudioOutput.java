@@ -69,7 +69,9 @@ public class AudioOutput extends AudioIO {
 			
 			convertShortToByteArray(pcm, data);
 			
-			outputStream.write(data);
+			if (outputStream != null) {
+				outputStream.write(data);
+			}
 		}
 	}
 	
