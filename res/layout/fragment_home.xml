@@ -34,6 +34,7 @@
                     style="@style/TextViewLessImportant"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
+                    android:visibility="gone"
                     android:text="19:00 dsaf" />
             </RelativeLayout>
 
