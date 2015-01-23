@@ -107,14 +107,14 @@ public final class Track {
 			if (channels == 1) {
 				for (int i = 0; i < writableLength; i++) {
 					int j = 2 * (i + skipFrame);
-					stereoPcm[j] += pcm[i] * volume;
-					stereoPcm[j + 1] += pcm[i] * volume;
+					stereoPcm[j] = (short) Math.max(Short.MIN_VALUE, Math.min(Short.MAX_VALUE, stereoPcm[j] + pcm[i] * volume));
+					stereoPcm[j + 1] = (short) Math.max(Short.MIN_VALUE, Math.min(Short.MAX_VALUE, stereoPcm[j + 1] + pcm[i] * volume));
 				}
 				return shortRead * 2;
 			} else if (channels == 2) {
 				for (int i = 0; i < writableLength; i++) {
 					int j = i + skipFrame;
-					stereoPcm[j] += pcm[i] * volume;
+					stereoPcm[j] = (short) Math.max(Short.MIN_VALUE, Math.min(Short.MAX_VALUE, stereoPcm[j] + pcm[i] * volume));
 				}
 				return shortRead;
 			}
