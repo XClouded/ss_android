@@ -80,7 +80,7 @@
             android:layout_marginTop="@dimen/margin"
             android:gravity="center"
             android:orientation="vertical"
-            android:background="@drawable/circle_primary_trans" >
+            android:background="@drawable/circle_collabo_num" >
             
             <ImageView
                 android:layout_width="20dp"
