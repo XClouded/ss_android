@@ -88,12 +88,12 @@ public abstract class BaseFragment extends Fragment {
 	}
 
 	private void setupActionBar() {
-		setActionBarTitle(title);
-		setActionBarSubtitle(subtitle);
-		setActionBarBackground(R.drawable.actionbar_background);
 		setActionBarOverlay(false);
+		setActionBarBackground(R.drawable.actionbar_background);
 		getSupportActionBar().setDisplayShowTitleEnabled(true);
 		getSupportActionBar().setDisplayUseLogoEnabled(false);
+		setActionBarTitle(title);
+		setActionBarSubtitle(subtitle);
 	}
 
 	public void notifyDataChanged() {

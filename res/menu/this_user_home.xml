@@ -3,38 +3,52 @@
     xmlns:app="http://schemas.android.com/apk/res-auto" >
     
     <item
-        android:id="@+id/action_user_followings"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        app:showAsAction="never"
-        android:title="@string/following" />
-    
-    <item
-        android:id="@+id/action_user_followers"
-        android:orderInCategory="200"
-        android:showAsAction="never"
-        app:showAsAction="never"
-        android:title="@string/follower" />
-    
-    <item
-        android:id="@+id/action_user_likings"
-        android:orderInCategory="300"
-        android:showAsAction="never"
-        app:showAsAction="never"
-        android:title="@string/user_liking_songs" />
-    
-    <item
-        android:id="@+id/action_user_comments"
-        android:orderInCategory="400"
-        android:showAsAction="never"
-        app:showAsAction="never"
-        android:title="@string/user_comments" />
-    
-    <item
-        android:id="@+id/action_user_trash"
-        android:orderInCategory="500"
-        android:showAsAction="never"
-        app:showAsAction="never"
-        android:title="@string/trash" />
+	    android:id="@+id/action_overflow"
+	    android:icon="@drawable/ic_overflow_sky"
+	    android:orderInCategory="100"
+	    android:showAsAction="always"
+	    android:title="@string/more"
+	    app:showAsAction="always" >
+	    
+        <menu>
+		    
+		    <item
+		        android:id="@+id/action_user_followings"
+		        android:orderInCategory="100"
+		        android:showAsAction="never"
+		        app:showAsAction="never"
+		        android:title="@string/following" />
+		    
+		    <item
+		        android:id="@+id/action_user_followers"
+		        android:orderInCategory="200"
+		        android:showAsAction="never"
+		        app:showAsAction="never"
+		        android:title="@string/follower" />
+		    
+		    <item
+		        android:id="@+id/action_user_likings"
+		        android:orderInCategory="300"
+		        android:showAsAction="never"
+		        app:showAsAction="never"
+		        android:title="@string/user_liking_songs" />
+		    
+		    <item
+		        android:id="@+id/action_user_comments"
+		        android:orderInCategory="400"
+		        android:showAsAction="never"
+		        app:showAsAction="never"
+		        android:title="@string/user_comments" />
+		    
+		    <item
+		        android:id="@+id/action_user_trash"
+		        android:orderInCategory="500"
+		        android:showAsAction="never"
+		        app:showAsAction="never"
+		        android:title="@string/trash" />
+            
+        </menu>
+	    
+    </item>
 
 </menu>
