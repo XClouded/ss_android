@@ -113,18 +113,15 @@ public class MySongAdapter extends HolderAdapter<Song, MySongAdapter.SongHolder>
 				viewHolder.ivSecondChildrenImage.setVisibility(View.VISIBLE);
 			}
 			
-			if (children.size() == 0) {
-				viewHolder.view.setOnClickListener(song.getPlayClickListener());
-			} else {
-				viewHolder.view.setOnClickListener(song.getChildrenClickListener());
-			}
-			
 			viewHolder.tvCollaboNum.setText(song.getWorkedCollaboNum());
 			viewHolder.tvCreatorNickname.setText(creator.getNickname());
 			viewHolder.tvCreatorMessage.setText(song.getCroppedMessage());
 			
 			ImageHelper.displayPhoto(creator.getPhotoUrl(), viewHolder.ivCreatorPhoto);
 			ImageHelper.displayPhoto(song.getPhotoUrl(), viewHolder.ivCreatorImage);
+			
+			viewHolder.vCollaboNumWrapper.setOnClickListener(song.getChildrenClickListener());
+			viewHolder.view.setOnClickListener(song.getPlayClickListener());
 			
 			setChildrenImage(children, 0, viewHolder.ivPartnerImage);
 			setChildrenImage(children, 1, viewHolder.ivFirstChildrenImage);
