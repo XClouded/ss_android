@@ -30,9 +30,7 @@ public class MusicCategoryAdapter extends HolderAdapter<Category, MusicCategoryA
 	}
 
 	@Override
-	public void onBindViewHolder(Context context, CategoryHolder viewHolder, int position) {
-		final Category category = getItem(position);
-		
+	public void onBindViewHolder(Context context, CategoryHolder viewHolder, Category category, int position) {
 		viewHolder.btnCategory.setText(category.getTitle());
 		viewHolder.btnCategory.setTag(category);
 		viewHolder.btnCategory.setOnClickListener(categoryClickListener);

@@ -50,7 +50,9 @@ public class Decoder extends AsyncTask<File, Integer, Exception> {
 				outputStream.write(buffer, 0, read * 2);
 				
 				totalRead += read;
-				currentProgressInPercent = Math.round(totalRead / estimateLengthInPercent);
+				if (estimateLengthInPercent > 0) {
+					currentProgressInPercent = Math.round(totalRead / estimateLengthInPercent);
+				}
 				
 				if (currentProgressInPercent > preProgressInPercent) {
 					preProgressInPercent = currentProgressInPercent;

@@ -30,9 +30,7 @@ public class SongCategoryAdapter extends HolderAdapter<Category, SongCategoryAda
 	}
 
 	@Override
-	public void onBindViewHolder(Context context, CategoryHolder viewHolder, int position) {
-		final Category category = getItem(position);
-		
+	public void onBindViewHolder(Context context, CategoryHolder viewHolder, final Category category, int position) {
 		viewHolder.tvCategoryText.setText(category.getTitle());
 		viewHolder.ivCategoryImage.setImageResource(category.getImageResourceId());
 		viewHolder.view.setOnClickListener(new OnClickListener() {

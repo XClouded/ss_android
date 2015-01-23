@@ -52,11 +52,13 @@ public class MySongAdapter extends HolderAdapter<Song, MySongAdapter.SongHolder>
 	}
 
 	@Override
-	public void onBindViewHolder(Context context, SongHolder viewHolder, int position) {
-		final Song song = getItem(position);
+	public void onBindViewHolder(Context context, SongHolder viewHolder, final Song song, int position) {
 		final Music music = song.getMusic();
 		final User creator = song.getCreator();
 		final List<Song> children = song.getChildren();
+		if (music == null || creator == null) {
+			return;
+		}
 
 		viewHolder.tvLikeNum.setText(song.getWorkedLikeNum());
 		viewHolder.tvCommentNum.setText(song.getWorkedCommentNum());

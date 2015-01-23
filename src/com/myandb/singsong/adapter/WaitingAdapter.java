@@ -26,10 +26,13 @@ public class WaitingAdapter extends HolderAdapter<Song, WaitingAdapter.SongHolde
 	}
 
 	@Override
-	public void onBindViewHolder(Context context, SongHolder viewHolder, int position) {
-		final Song thisSong = getItem(position);
+	public void onBindViewHolder(Context context, SongHolder viewHolder, Song thisSong, int position) {
 		final User thisUser = thisSong.getCreator();
 		final Music music = thisSong.getMusic();
+		
+		if (thisUser == null || music == null) {
+			return;
+		}
 
 		viewHolder.tvThisUserNickname.setText(thisUser.getNickname());
 		viewHolder.tvThisSongMessage.setText(thisSong.getCroppedMessage());

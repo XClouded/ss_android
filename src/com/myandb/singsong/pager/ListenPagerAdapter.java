@@ -3,9 +3,11 @@ package com.myandb.singsong.pager;
 import java.util.Calendar;
 
 import com.myandb.singsong.adapter.CollaboratedAdapter;
+import com.myandb.singsong.adapter.SimpleSongAdapter;
 import com.myandb.singsong.fragment.ListFragment;
 import com.myandb.singsong.util.StringFormatter;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -48,7 +50,12 @@ public class ListenPagerAdapter extends FragmentPagerAdapter {
 		
 		bundle.putString(ListFragment.EXTRA_URL_SEGMENT, segment);
 		bundle.putBundle(ListFragment.EXTRA_QUERY_PARAMS, params);
-		bundle.putString(ListFragment.EXTRA_ADAPTER_NAME, CollaboratedAdapter.class.getName());
+		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1) {
+			bundle.putString(ListFragment.EXTRA_ADAPTER_NAME, CollaboratedAdapter.class.getName());
+		} else {
+			bundle.putString(ListFragment.EXTRA_ADAPTER_NAME, SimpleSongAdapter.class.getName());
+			bundle.putBoolean(ListFragment.EXTRA_HORIZONTAL_PADDING, true);
+		}
 		bundle.putBoolean(ListFragment.EXTRA_VERTICAL_PADDING, true);
 		fragment.setArguments(bundle);
 		return fragment;

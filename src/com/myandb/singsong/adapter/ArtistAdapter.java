@@ -64,9 +64,11 @@ public class ArtistAdapter extends HolderAdapter<Artist, ArtistAdapter.ArtistHol
 	}
 	
 	@Override
-	public void onBindViewHolder(Context context, ArtistHolder viewHolder, int position) {
-		final Artist artist = getItem(position);
+	public void onBindViewHolder(Context context, ArtistHolder viewHolder, Artist artist, int position) {
 		final User user = artist.getUser();
+		if (user == null) {
+			return;
+		}
 		
 		viewHolder.tvUserNickname.setText(user.getNickname());
 		if (user.getProfile() != null) {

@@ -22,9 +22,7 @@ public class ListenNavigationAdapter
 	}
 
 	@Override
-	public void onBindViewHolder(Context context, ItemHolder viewHolder, int position) {
-		final NavigationItem item = getItem(position);
-		
+	public void onBindViewHolder(Context context, ItemHolder viewHolder, NavigationItem item, int position) {
 		viewHolder.tvTitle.setText(item.getTitle());
 	}
 

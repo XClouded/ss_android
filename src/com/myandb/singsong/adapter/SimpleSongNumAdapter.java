@@ -32,9 +32,12 @@ public class SimpleSongNumAdapter extends HolderAdapter<Song, SimpleSongNumAdapt
 	}
 
 	@Override
-	public void onBindViewHolder(Context context, SongHolder viewHolder, int position) {
-		final Song thisSong = getItem(position);
+	public void onBindViewHolder(Context context, SongHolder viewHolder, Song thisSong, int position) {
 		final Music music = thisSong.getMusic();
+		
+		if (music == null) {
+			return;
+		}
 		
 		viewHolder.tvSongLikeNum.setText(thisSong.getWorkedLikeNum());
 		viewHolder.tvSongNum.setText(String.valueOf(position + 1 + numOffset));
