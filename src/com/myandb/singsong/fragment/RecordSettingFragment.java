@@ -366,7 +366,7 @@ public class RecordSettingFragment extends BaseFragment {
 					message.put("url", Model.STORAGE_HOST + Model.STORAGE_IMAGE + imageName);
 					
 					JSONObjectRequest request = new JSONObjectRequest(
-							"images", message,
+							"images", null, message,
 							new JSONObjectSuccessListener(RecordSettingFragment.this, "onUploadSuccess", Image.class),
 							new JSONErrorListener(RecordSettingFragment.this, "onUploadError")
 					);

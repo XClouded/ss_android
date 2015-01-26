@@ -322,7 +322,7 @@ public class UserHomeFragment extends ListFragment {
 	private void loadProfileData() {
 		String segment = "users/" + thisUser.getId() + "/profile";
 		JSONObjectRequest request = new JSONObjectRequest(
-				segment, null,
+				segment, null, null,
 				new JSONObjectSuccessListener(this, "onGetProfileResponse", Profile.class),
 				new JSONErrorListener(this, "onGetProfileError")
 		);
@@ -384,7 +384,7 @@ public class UserHomeFragment extends ListFragment {
 	
 	private void checkIsThisUserFriend() {
 		JSONObjectRequest request = new JSONObjectRequest(
-				"friendships/" + thisUser.getId(), null,
+				"friendships/" + thisUser.getId(), null, null,
 				new JSONObjectSuccessListener(this, "onFriendshipFound", Friendship.class),
 				new JSONErrorListener(this, "onFriendshipNotFound")
 		);
@@ -432,7 +432,7 @@ public class UserHomeFragment extends ListFragment {
 		
 		@Override
 		public void onActivated(View v, User user) {
-			JustRequest request = new JustRequest(Method.POST, "friendships/" + thisUser.getId(), null);
+			JustRequest request = new JustRequest(Method.POST, "friendships/" + thisUser.getId(), null, null);
 			addRequest(request);
 			toggleFollowing(true);
 		}
@@ -469,7 +469,7 @@ public class UserHomeFragment extends ListFragment {
 	
 	private void checkUserActivation() {
 		JSONObjectRequest request = new JSONObjectRequest(
-				"users/" + currentUser.getId(), null,
+				"users/" + currentUser.getId(), null, null,
 				new JSONObjectSuccessListener(this, "onCheckActivationResponse", User.class),
 				new JSONErrorListener()
 		);

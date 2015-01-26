@@ -42,7 +42,7 @@ public class LauncherActivity extends FragmentActivity {
 	
 	private void requestAppMetadata() {
 		JSONObjectRequest request = new JSONObjectRequest(
-				"android", null,
+				"android", null, null,
 				new JSONObjectSuccessListener(this, "onGetDataSuccess"),
 				new JSONErrorListener(this, "onGetDataError")
 		);

@@ -30,7 +30,7 @@ public abstract class ActivateOnlyClickListener extends MemberOnlyClickListener 
 	private void checkUserActivation(View view, User user) {
 		int userId = user.getId();
 		JSONObjectRequest request = new JSONObjectRequest(
-				Method.GET, "users/" + userId, null,
+				Method.GET, "users/" + userId, null, null,
 				new JSONObjectSuccessListener(this, "onCheckActivationResponse", User.class),
 				new JSONErrorListener(this, "onCheckActivationError")
 		);

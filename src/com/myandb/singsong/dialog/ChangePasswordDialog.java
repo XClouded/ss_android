@@ -93,7 +93,7 @@ public class ChangePasswordDialog extends BaseDialog {
 			message.put("new_password", newPassword);
 			
 			JSONObjectRequest request = new JSONObjectRequest(
-					Method.PUT, "users", message,
+					Method.PUT, "users", null, message,
 					new JSONObjectSuccessListener(this, "onChangeSuccess"),
 					new JSONErrorListener(this, "onChangeError"));
 			addRequest(request);

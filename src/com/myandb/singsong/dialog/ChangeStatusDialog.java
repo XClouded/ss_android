@@ -80,7 +80,7 @@ public class ChangeStatusDialog extends BaseDialog {
 			message.put("status_message", status);
 			
 			JSONObjectRequest request = new JSONObjectRequest(
-					Method.PUT, "profile", message,
+					Method.PUT, "profile", null, message,
 					new JSONObjectSuccessListener(this, "onChangedSuccess", Profile.class),
 					new JSONErrorListener(this, "onChangedError"));
 			addRequest(request);

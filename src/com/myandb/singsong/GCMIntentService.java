@@ -274,7 +274,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 				JSONObject message = new JSONObject();
 				message.put("push_id", registrationId);
 				
-				JustRequest request = new JustRequest(Method.PUT, "users", message);
+				JustRequest request = new JustRequest(Method.PUT, "users", null, message);
 				((App) getApplicationContext()).addLongLivedRequest(request);
 			} catch (JSONException e) {
 				e.printStackTrace();

@@ -70,7 +70,7 @@ public class FriendsAdapter extends HolderAdapter<User, FriendsAdapter.UserHolde
 		@Override
 		public void onActivated(View v, User user) {
 			User friend = (User) v.getTag();
-			JustRequest request = new JustRequest(Method.POST, "friendships/" + friend.getId(), null);
+			JustRequest request = new JustRequest(Method.POST, "friendships/" + friend.getId(), null, null);
 			((App) v.getContext().getApplicationContext()).addShortLivedRequest(v.getContext(), request);
 			toggleFollowing(v, true);
 		}
@@ -81,7 +81,7 @@ public class FriendsAdapter extends HolderAdapter<User, FriendsAdapter.UserHolde
 		@Override
 		public void onActivated(View v, User user) {
 			User friend = (User) v.getTag();
-			JustRequest request = new JustRequest(Method.DELETE, "friendships/" + friend.getId(), null);
+			JustRequest request = new JustRequest(Method.DELETE, "friendships/" + friend.getId(), null, null);
 			((App) v.getContext().getApplicationContext()).addShortLivedRequest(v.getContext(), request);
 			toggleFollowing(v, false);
 		}

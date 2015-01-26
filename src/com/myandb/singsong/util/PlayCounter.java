@@ -25,7 +25,7 @@ public class PlayCounter {
 				.append("/")
 				.append(entityId)
 				.append("/logs").toString();
-		JustRequest request = new JustRequest(segment, new JSONObject());
+		JustRequest request = new JustRequest(segment, null, new JSONObject());
 		((App) context.getApplicationContext()).addShortLivedRequest(context, request);
 	}
 	

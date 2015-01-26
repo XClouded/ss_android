@@ -3,6 +3,7 @@ package com.myandb.singsong.net;
 import org.json.JSONObject;
 
 import android.net.Uri;
+import android.os.Bundle;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.Response;
@@ -10,10 +11,10 @@ import com.android.volley.toolbox.HttpHeaderParser;
 
 public class JustRequest extends OAuthJSONRequest<String> {
 	
-	public JustRequest(int method, String segment, JSONObject jsonRequest) {
+	public JustRequest(int method, String segment, Bundle params, JSONObject jsonRequest) {
 		super(
 			method,
-			new UrlBuilder().s(segment).toString(),
+			new UrlBuilder().s(segment).p(params).toString(),
 			jsonRequest == null ? null : jsonRequest.toString(),
 			null,
 			null
@@ -30,10 +31,11 @@ public class JustRequest extends OAuthJSONRequest<String> {
 		);
 	}
 	
-    public JustRequest(String segment, JSONObject jsonRequest) {
+    public JustRequest(String segment, Bundle params, JSONObject jsonRequest) {
         this(
         	jsonRequest == null ? Method.GET : Method.POST,
         	segment,
+        	params,
         	jsonRequest
         );
     }

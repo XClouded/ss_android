@@ -67,7 +67,7 @@ public class ReportCommentDialog extends BaseDialog {
 					message.put("comment_id", commentId);
 					message.put("message", reportContent);
 					
-					JustRequest request = new JustRequest("reports", message);
+					JustRequest request = new JustRequest("reports", null, message);
 					addRequest(request);
 				} catch (JSONException e) {
 					e.printStackTrace();

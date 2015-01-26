@@ -893,11 +893,13 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 			String segment = new StringBuilder()
 				.append("songs/")
 				.append(song.getId())
-				.append("/likings?user_id=")
-				.append(user.getId()).toString();
+				.append("/likings")
+				.toString();
+			Bundle params = new Bundle();
+			params.putString("user_id", String.valueOf(user.getId()));
 			
 			JSONObjectRequest request = new JSONObjectRequest(
-					segment, null,
+					segment, params, null,
 					new JSONObjectSuccessListener(this, "onGetUserLikeResponse"), 
 					new JSONErrorListener(this, "onGetUserLikeError")
 			);
@@ -989,7 +991,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 			setUserLikeSong(!like);
 			displayLikeNum(song.getLikeNum());
 			
-			JustRequest request = new JustRequest(method, segment, null);
+			JustRequest request = new JustRequest(method, segment, null, null);
 			((App) getContext().getApplicationContext()).addLongLivedRequest(request);
 		}
 	};
@@ -1010,7 +1012,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 				
 				Song song = service.getSong();
 				JSONObjectRequest request = new JSONObjectRequest(
-						"songs/" + song.getId() + "/comments", message,
+						"songs/" + song.getId() + "/comments", null, message,
 						new JSONObjectSuccessListener(SlidingPlayerLayout.this, "onSubmitSuccess", SongComment.class),
 						new JSONErrorListener(SlidingPlayerLayout.this, "onSubmitError")
 				);
@@ -1052,7 +1054,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	}
 	
 	public void deleteComment(Comment<?> comment) {
-		JustRequest request = new JustRequest(Method.DELETE, "comments/" + comment.getId(), null);
+		JustRequest request = new JustRequest(Method.DELETE, "comments/" + comment.getId(), null, null);
 		((App) getContext().getApplicationContext()).addShortLivedRequest(getContext(), request);
 		commentAdapter.removeItem(comment);
 		service.getSong().decrementCommentNum();

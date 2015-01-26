@@ -62,7 +62,7 @@ public class WithdrawDialog extends BaseDialog {
 	
 	private void withdraw() {
 		JSONObjectRequest request = new JSONObjectRequest(
-				Method.DELETE, "users", null,
+				Method.DELETE, "users", null, null,
 				new JSONObjectSuccessListener(WithdrawDialog.this, "onWithdrawSuccess"),
 				new JSONErrorListener(WithdrawDialog.this, "onWithdrawError"));
 		addRequest(request);

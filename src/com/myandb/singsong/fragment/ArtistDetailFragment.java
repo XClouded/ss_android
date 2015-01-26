@@ -167,7 +167,7 @@ public class ArtistDetailFragment extends ListFragment {
 				}
 				
 				JSONObjectRequest request = new JSONObjectRequest(
-						"artists/" + artist.getId() + "/comments", message,
+						"artists/" + artist.getId() + "/comments", null, message,
 						new JSONObjectSuccessListener(ArtistDetailFragment.this, "onSubmitSuccess", Comment.class),
 						new JSONErrorListener(ArtistDetailFragment.this, "onSubmitError")
 				);

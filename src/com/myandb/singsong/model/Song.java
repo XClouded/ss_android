@@ -374,7 +374,7 @@ public class Song extends Model {
 			public void onActivated(View v, User user) {
 				context = v.getContext();
 				JSONObjectRequest request = new JSONObjectRequest(
-						"songs/" + getParentSong().getId(), null,
+						"songs/" + getParentSong().getId(), null, null,
 						successListener, errorListener);
 				((App) context.getApplicationContext()).addShortLivedRequest(context, request);
 			}

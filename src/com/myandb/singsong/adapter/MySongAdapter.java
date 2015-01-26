@@ -185,14 +185,14 @@ public class MySongAdapter extends HolderAdapter<Song, MySongAdapter.SongHolder>
 	
 	private void deleteSong() {
 		String segment = "songs/" + String.valueOf(selectedSong.getId());
-		JustRequest request = new JustRequest(Method.DELETE, segment, null);
+		JustRequest request = new JustRequest(Method.DELETE, segment, null, null);
 		((App) context.getApplicationContext()).addShortLivedRequest(context, request);
 		removeItem(selectedSong);
 	}
 	
 	private void restoreSong() {
 		String segment = "songs/" + String.valueOf(selectedSong.getId());
-		JustRequest request = new JustRequest(Method.PUT, segment, null);
+		JustRequest request = new JustRequest(Method.PUT, segment, null, null);
 		((App) context.getApplicationContext()).addShortLivedRequest(context, request);
 		removeItem(selectedSong);
 	}
