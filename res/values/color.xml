@@ -33,9 +33,9 @@
     <color name="font_white">#cacaca</color>
     <color name="font_highlight">#6ab8d3</color>
     <color name="font_male_active">#6ecde1</color>
-    <color name="font_male_inactive">#61aab9</color>
+    <color name="font_male_inactive">#47757e</color>
     <color name="font_female_active">#f98e5f</color>
-    <color name="font_female_inactive">#d67c5c</color>
+    <color name="font_female_inactive">#955c46</color>
     <color name="font_dual_active">#ffffff</color>
     <color name="font_dual_inactive">#666666</color>
     
