@@ -181,6 +181,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 			ivDragPlayControl.setOnClickListener(playControlClickListener);
 			sbPlay.setOnSeekBarChangeListener(seekBarChangeListener);
 			ivShowComment.setOnClickListener(showCommentClickListener);
+			tvCommentNumOut.setOnClickListener(showCommentClickListener);
 			ivCloseComment.setOnClickListener(closeCommentClickListener);
 			ivCloseLiking.setOnClickListener(closeLikingClickListener);
 			btnLikingNumOut.setOnClickListener(showLikingClickListener);
