@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
@@ -93,6 +94,14 @@ public class UpActivity extends BaseActivity {
 		} else {
 			replaceContentFragmentFromIntent(intent);
 		}
+	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if ( keyCode == KeyEvent.KEYCODE_MENU ) {
+	        return true;
+	    }
+	    return super.onKeyDown(keyCode, event);
 	}
 
 	@Override
