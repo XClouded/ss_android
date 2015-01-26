@@ -17,7 +17,6 @@
     <style name="AppTheme.ActionBar"></style>
     
     <style name="AppTheme.ActionBar.TitleTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
-        <item name="android:textColor">@color/font_default</item>
     </style>
     
     <style name="AppTheme.ActionBar.Overflow" parent="@style/Widget.AppCompat.ActionButton.Overflow">

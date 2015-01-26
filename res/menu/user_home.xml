@@ -7,7 +7,7 @@
 	    android:icon="@drawable/ic_overflow_sky"
 	    android:orderInCategory="100"
 	    android:showAsAction="always"
-	    android:title="@string/more"
+	    android:title="더보기"
 	    app:showAsAction="always" >
 	    
         <menu>
