@@ -186,6 +186,10 @@ public class MusicHomeFragment extends BaseFragment {
 
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			if (!isAdded() || getActivity() == null) {
+				return;
+			}
+			
 			final Music music = (Music) parent.getItemAtPosition(position);
 			Bundle bundle = new Bundle();
 			bundle.putString(SelectRecordModeFragment.EXTRA_MUSIC, music.toString());
