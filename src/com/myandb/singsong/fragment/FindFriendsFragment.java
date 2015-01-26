@@ -7,13 +7,13 @@ import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.activity.UpActivity;
 import com.myandb.singsong.adapter.FriendsAdapter;
+import com.myandb.singsong.event.MemberOnlyClickListener;
 import com.myandb.singsong.fragment.SearchFragment.SearchType;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.GradualLoader;
 import com.myandb.singsong.net.GradualLoader.OnLoadCompleteListener;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.pager.InviteFriendsPagerAdapter;
-import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.widget.LinearGridView;
 
 import android.app.Activity;
@@ -107,11 +107,10 @@ public class FindFriendsFragment extends BaseFragment {
 		startFragment(intent);
 	}
 	
-	private OnClickListener facebookFriendsClickListener = new OnClickListener() {
+	private OnClickListener facebookFriendsClickListener = new MemberOnlyClickListener() {
 		
 		@Override
-		public void onClick(View v) {
-			User user = Authenticator.getUser();
+		public void onLoggedIn(View v, User user) {
 			if (user.isFacebookActivated()) {
 				startFacebookFriendsFragment();
 			} else {
