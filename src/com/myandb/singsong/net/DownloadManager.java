@@ -1,8 +1,8 @@
 package com.myandb.singsong.net;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -26,6 +26,7 @@ public class DownloadManager extends AsyncTask<File, Integer, Exception> {
 	@Override
 	protected Exception doInBackground(File... params) {
 		final int bufferSize = 16384;
+		Exception exception = null;
 			
 		try {
 			connection = (HttpURLConnection) new URL(url).openConnection();
@@ -58,12 +59,24 @@ public class DownloadManager extends AsyncTask<File, Integer, Exception> {
 					publishProgress(Integer.valueOf(currentPercent));
 				}
 			}
-
-			connection.disconnect();
-			
-			return null;
 		} catch (Exception e) {
-			return e;
+			exception = e;
+		}
+		
+		closeStream(inputStream);
+		closeStream(outputStream);
+		connection.disconnect();
+		
+		return exception;
+	}
+	
+	private void closeStream(Closeable closeable) {
+		if (closeable != null) {
+			try {
+				closeable.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -75,40 +88,13 @@ public class DownloadManager extends AsyncTask<File, Integer, Exception> {
 			progressListener.done(values[0]);
 		}
 	}
-	
-	@Override
-	protected void onCancelled() {
-		super.onCancelled();
-		releaseResources();
-	}
 
 	@Override
 	protected void onPostExecute(Exception result) {
 		super.onPostExecute(result);
-		releaseResources();
 		
 		if (completeListener != null) {
 			completeListener.done(result);
-		}
-	}
-	
-	private void releaseResources() {
-		if (inputStream != null) {
-			try {
-				inputStream.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			inputStream = null;
-		}
-		
-		if (outputStream != null) {
-			try {
-				outputStream.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			outputStream = null;
 		}
 	}
 	
@@ -126,7 +112,6 @@ public class DownloadManager extends AsyncTask<File, Integer, Exception> {
 	
 	public void stop() {
 		interrupt = true;
-		this.cancel(true);
 	}
 
 }
