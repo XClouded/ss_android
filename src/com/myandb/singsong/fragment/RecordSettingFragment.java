@@ -289,10 +289,12 @@ public class RecordSettingFragment extends BaseFragment {
 				return;
 				
 			case R.id.ll_upload:
-				v.setEnabled(false);
-				
 				Track recordTrack = player.getTrack("record");
 				if (Recorder.isValidRecordingTime(recordTrack.getSourceDuration())) {
+					vRestart.setEnabled(false);
+					vExit.setEnabled(false);
+					v.setEnabled(false);
+					
 					if (isFacebookPosting) {
 						if (getSimpleFacebook().isLogin()) {
 							uploadImageIfExist();
@@ -390,6 +392,8 @@ public class RecordSettingFragment extends BaseFragment {
 		dismissProgressDialog();
 		makeToast(R.string.t_alert_upload_failed);
 		vUpload.setEnabled(true);
+		vRestart.setEnabled(true);
+		vExit.setEnabled(true);
 	}
 	
 	private void finishWithUploadInfo() {
