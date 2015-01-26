@@ -440,6 +440,7 @@ public class KaraokeFragment extends BaseFragment {
 					loadingDialog.enableControlButton(true);
 					loadingDialog.setControlButtonText(getString(R.string.button_start_record));
 				} else {
+					makeToast(R.string.t_critical_recording_error);
 					e.printStackTrace();
 				}
 			}

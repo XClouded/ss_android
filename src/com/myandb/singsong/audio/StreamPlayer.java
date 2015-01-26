@@ -61,6 +61,10 @@ public class StreamPlayer extends MediaPlayer {
 			if (listener != null) {
 				listener.onPlay(PlayEvent.COMPLETED);
 			}
+			
+			if (service != null) {
+				service.stopForeground(true);
+			}
 		}
 	};
 	

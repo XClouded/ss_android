@@ -20,6 +20,15 @@
         android:text="좋아요"
         style="@style/TextViewBase" />
     
+    <TextView
+        android:id="@+id/tv_refresh_liking"
+        android:text="새로고침"
+        android:textColor="@color/font_white"
+        android:layout_alignParentRight="true"
+        android:layout_alignBottom="@id/tv_comment_num"
+        android:layout_marginRight="@dimen/margin"
+        style="@style/TextViewBase" />
+    
     <ImageView
         android:id="@+id/upper_divider_liking"
         android:paddingLeft="@dimen/margin"

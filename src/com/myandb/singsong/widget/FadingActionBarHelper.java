@@ -10,9 +10,9 @@ import android.support.v7.app.ActionBarActivity;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
-import android.widget.ImageView;
 import android.widget.AbsListView.OnScrollListener;
 
 public class FadingActionBarHelper implements OnScrollListener {
@@ -23,7 +23,7 @@ public class FadingActionBarHelper implements OnScrollListener {
 	
 	private Drawable backgroundDrawable;
 	private Drawable homeDrawable;
-	private ImageView overflow;
+	private MenuItem overflow;
 	private ActionBar actionBar;
 	private CharSequence title;
 	private int headerHeight;
@@ -54,7 +54,7 @@ public class FadingActionBarHelper implements OnScrollListener {
 		return this;
 	}
 	
-	public FadingActionBarHelper setOverflow(ImageView overflow) {
+	public FadingActionBarHelper setOverflow(MenuItem overflow) {
 		this.overflow = overflow;
 		return this;
 	}
@@ -183,7 +183,7 @@ public class FadingActionBarHelper implements OnScrollListener {
 			return;
 		}
 		
-		overflow.setImageResource(imageRes);
+		overflow.setIcon(imageRes);
 		currentOverflowImageRes = imageRes;
 	}
 

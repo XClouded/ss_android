@@ -133,9 +133,6 @@ public class MusicHomeFragment extends BaseFragment {
 	
 	private void loadPopularMusic() {
 		if (popularMusicAdapter == null) {
-			final MusicAdapter adapter = new MusicAdapter(LayoutType.NORMAL_POPULAR);
-			final PagerWrappingAdapter wrappingAdapter = new PagerWrappingAdapter(adapter, 3);
-			popularMusicAdapter = new InfinitePagerAdapter(wrappingAdapter);
 			final UrlBuilder urlBuilder = new UrlBuilder().s("musics").p("order", "sing_num_this_week").take(12);
 			final GradualLoader loader = new GradualLoader(getActivity());  
 			loader.setUrlBuilder(urlBuilder);
@@ -143,18 +140,34 @@ public class MusicHomeFragment extends BaseFragment {
 				
 				@Override
 				public void onComplete(JSONArray response) {
-					adapter.addAll(response);
-					vpPopularMusic.setAdapter(popularMusicAdapter);
-					cpiPopularMusic.setViewPager(vpPopularMusic); 
-					setContentShown(true);
+					popularMusicAdapter = getPopularMusicAdapter(response);
+					onLoadPopularMusic();
+				}
+				
+				private PagerAdapter getPopularMusicAdapter(JSONArray response) {
+					try {
+						MusicAdapter adapter = new MusicAdapter(LayoutType.NORMAL_POPULAR);
+						adapter.addAll(response);
+						PagerWrappingAdapter wrappingAdapter = new PagerWrappingAdapter(adapter, 3);
+						return new InfinitePagerAdapter(wrappingAdapter);
+					} catch (Exception e) {
+						e.printStackTrace();
+						return null;
+					}
 				}
 			});
 			loader.load();
 		} else {
+			onLoadPopularMusic();
+		}
+	}
+	
+	private void onLoadPopularMusic() {
+		if (popularMusicAdapter != null) {
 			vpPopularMusic.setAdapter(popularMusicAdapter);
 			cpiPopularMusic.setViewPager(vpPopularMusic);
-			setContentShown(true);
 		}
+		setContentShown(true);
 	}
 	
 	private void loadRecentMusic() {
@@ -186,6 +199,10 @@ public class MusicHomeFragment extends BaseFragment {
 
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			if (!isAdded() || getActivity() == null) {
+				return;
+			}
+			
 			final Music music = (Music) parent.getItemAtPosition(position);
 			Bundle bundle = new Bundle();
 			bundle.putString(SelectRecordModeFragment.EXTRA_MUSIC, music.toString());

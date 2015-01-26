@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import android.net.Uri;
+import android.os.Bundle;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
@@ -22,10 +23,10 @@ public class JSONArrayRequest extends OAuthJSONRequest<JSONArray> {
      * @param listener Listener to receive the JSON response
      * @param errorListener Error listener, or null to ignore errors.
      */
-    public JSONArrayRequest(String segment, Listener<JSONArray> listener, ErrorListener errorListener) {
+    public JSONArrayRequest(String segment, Bundle params, Listener<JSONArray> listener, ErrorListener errorListener) {
         super(
         	Method.GET,
-        	new UrlBuilder().s(segment).toString(),
+        	new UrlBuilder().s(segment).p(params).toString(),
         	null,
         	listener,
         	errorListener

@@ -71,7 +71,7 @@ public class UploadManager extends AsyncTask<File, Integer, Exception> {
 	private void requestUploadUrl(Context context, String bucket, String fileName) {
 		String segment = "uploads/url/" + bucket + "/" + fileName;
 		JSONObjectRequest request = new JSONObjectRequest(
-				segment, null,
+				segment, null, null,
 				
 				new Listener<JSONObject>() {
 

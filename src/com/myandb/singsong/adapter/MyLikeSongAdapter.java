@@ -28,12 +28,15 @@ public class MyLikeSongAdapter extends HolderAdapter<SongLiking, MyLikeSongAdapt
 	}
 
 	@Override
-	public void onBindViewHolder(Context context, SongHolder viewHolder, int position) {
-		final SongLiking liking = getItem(position);
+	public void onBindViewHolder(Context context, SongHolder viewHolder, SongLiking liking, int position) {
 		final Song thisSong = liking.getLikeable();
 		final User thisUser = thisSong.getCreator();
 		final Music music = thisSong.getMusic();
 		final Category category = thisSong.getCategory();
+		
+		if (thisSong == null || thisUser == null || music == null || category == null) {
+			return;
+		}
 		
 		viewHolder.tvParentUserNickname.setText(thisUser.getNickname());
 		viewHolder.tvParentSongMessage.setText(thisSong.getCroppedMessage());

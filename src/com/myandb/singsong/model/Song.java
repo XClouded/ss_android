@@ -329,7 +329,7 @@ public class Song extends Model {
 					switch (event) {
 					case PLAY:
 						if (icon != null) {
-							icon.setImageResource(R.drawable.ic_pause_basic);
+							icon.setImageResource(R.drawable.ic_stop_sample);
 						}
 						parentView.setTag(true);
 						countOnAnalytics();
@@ -338,7 +338,7 @@ public class Song extends Model {
 					case COMPLETED:
 					case PAUSE:
 						if (icon != null) {
-							icon.setImageResource(R.drawable.ic_play_basic);
+							icon.setImageResource(R.drawable.ic_play_sample);
 						}
 						parentView.setTag(false);
 						break;
@@ -374,7 +374,7 @@ public class Song extends Model {
 			public void onActivated(View v, User user) {
 				context = v.getContext();
 				JSONObjectRequest request = new JSONObjectRequest(
-						"songs/" + getParentSong().getId(), null,
+						"songs/" + getParentSong().getId(), null, null,
 						successListener, errorListener);
 				((App) context.getApplicationContext()).addShortLivedRequest(context, request);
 			}

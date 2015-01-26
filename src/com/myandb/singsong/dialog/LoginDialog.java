@@ -191,7 +191,7 @@ public class LoginDialog extends BaseDialog {
 	
 	private void requestLogin(JSONObject message) {
 		JSONObjectRequest request = new JSONObjectRequest(
-				"token", message,
+				"token", null, message,
 				new JSONObjectSuccessListener(this, "onLoginSuccess"),
 				new JSONErrorListener(this, "onLoginError")
 		);

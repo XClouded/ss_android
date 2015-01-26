@@ -27,11 +27,14 @@ public class SimpleSongAdapter extends HolderAdapter<Song, SimpleSongAdapter.Son
 	}
 
 	@Override
-	public void onBindViewHolder(Context context, SongHolder viewHolder, int position) {
-		final Song thisSong = getItem(position);
+	public void onBindViewHolder(Context context, SongHolder viewHolder, Song thisSong, int position) {
 		final User thisUser = thisSong.getCreator();
 		final Music music = thisSong.getMusic();
 		final Category category = thisSong.getCategory();
+		
+		if (thisUser == null || music == null || category == null) {
+			return;
+		}
 
 		viewHolder.tvParentUserNickname.setText(thisUser.getNickname());
 		viewHolder.tvParentSongMessage.setText(thisSong.getCroppedMessage());

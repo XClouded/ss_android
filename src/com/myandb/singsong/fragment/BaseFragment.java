@@ -79,7 +79,12 @@ public abstract class BaseFragment extends Fragment {
 	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		simpleFacebook.onActivityResult(getActivity(), requestCode, resultCode, data);
+		if (isAdded() && getActivity() != null) {
+			if (simpleFacebook == null) {
+				simpleFacebook = SimpleFacebook.getInstance(getActivity());
+			}
+			simpleFacebook.onActivityResult(getActivity(), requestCode, resultCode, data);
+		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 	
@@ -88,12 +93,12 @@ public abstract class BaseFragment extends Fragment {
 	}
 
 	private void setupActionBar() {
-		setActionBarTitle(title);
-		setActionBarSubtitle(subtitle);
 		setActionBarBackground(R.drawable.actionbar_background);
 		setActionBarOverlay(false);
 		getSupportActionBar().setDisplayShowTitleEnabled(true);
 		getSupportActionBar().setDisplayUseLogoEnabled(false);
+		setActionBarTitle(title);
+		setActionBarSubtitle(subtitle);
 	}
 
 	public void notifyDataChanged() {
@@ -183,10 +188,18 @@ public abstract class BaseFragment extends Fragment {
 	}
 	
 	public <T> void addRequest(Request<T> request) {
-		getApplicationContext().addShortLivedRequest(this, request);
+		try {
+			getApplicationContext().addShortLivedRequest(this, request);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void makeToast(String message) {
+		if (!isAdded()) {
+			return;
+		}
+		
 		if (message != null && message.length() > 0) {
 			if (getApplicationContext() != null) {
 				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();

@@ -29,9 +29,7 @@ public class ImageAdapter extends HolderAdapter<Image, ImageAdapter.ImageHolder>
 	}
 
 	@Override
-	public void onBindViewHolder(Context context, ImageHolder viewHolder, int position) {
-		final Image image = getItem(position);
-		
+	public void onBindViewHolder(Context context, ImageHolder viewHolder, final Image image, int position) {
 		viewHolder.tvCreatedTime.setText(image.getWorkedCreatedTime(getCurrentDate()));
 		ImageHelper.displayPhoto(image.getUrl(), viewHolder.ivImage);
 		

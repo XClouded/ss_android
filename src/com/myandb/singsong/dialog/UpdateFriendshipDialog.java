@@ -80,7 +80,7 @@ public class UpdateFriendshipDialog extends BaseDialog {
 				message.put("allow_notify", isAllowNotify);
 				
 				int followingId = friendship.getFollowingUserId();
-				JustRequest request = new JustRequest(Method.PUT, "friendships/" + followingId, message);
+				JustRequest request = new JustRequest(Method.PUT, "friendships/" + followingId, null, message);
 				addRequest(request);
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -97,7 +97,7 @@ public class UpdateFriendshipDialog extends BaseDialog {
 		@Override
 		public void onClick(View v) {
 			int followingId = friendship.getFollowingUserId();
-			JustRequest request = new JustRequest(Method.DELETE, "friendships/" + followingId, null);
+			JustRequest request = new JustRequest(Method.DELETE, "friendships/" + followingId, null, null);
 			addRequest(request);
 			fragment.toggleFollowing(false);
 			dismiss();
@@ -109,7 +109,7 @@ public class UpdateFriendshipDialog extends BaseDialog {
 		@Override
 		public void onClick(View v) {
 			int followingId = friendship.getFollowingUserId();
-			JustRequest request = new JustRequest(Method.POST, "candidates/" + followingId, null);
+			JustRequest request = new JustRequest(Method.POST, "candidates/" + followingId, null, null);
 			addRequest(request);
 			makeToast(R.string.t_notify_recommendation_accepted);
 			dismiss();

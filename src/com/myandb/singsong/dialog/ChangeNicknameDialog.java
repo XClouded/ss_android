@@ -85,8 +85,10 @@ public class ChangeNicknameDialog extends BaseDialog {
 	
 	private void checkNicknameDuplication(String nickname) {
 		lastInputNickname = nickname;
+		Bundle params = new Bundle();
+		params.putString("nickname", nickname);
 		JSONObjectRequest request = new JSONObjectRequest(
-				"users?nickname=" + nickname, null,
+				"users", params, null,
 				new JSONObjectSuccessListener(this, "onNicknameFound"),
 				new JSONErrorListener(this, "onNicknameNotFound")
 		);
@@ -108,7 +110,7 @@ public class ChangeNicknameDialog extends BaseDialog {
 			message.put("nickname", nickname);
 			
 			JSONObjectRequest request = new JSONObjectRequest(
-					Method.PUT, "users", message,
+					Method.PUT, "users", null, message,
 					new JSONObjectSuccessListener(this, "onChangedSuccess", User.class),
 					new JSONErrorListener(this, "onChangedError"));
 			addRequest(request);

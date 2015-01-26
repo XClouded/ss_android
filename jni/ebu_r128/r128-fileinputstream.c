@@ -120,7 +120,7 @@ void Java_com_myandb_singsong_audio_AutoGainController_destroy(
         jobject this
         )
 {
-    // ebu_r128_destroy(&config);
+	ebu_r128_destroy(&config);
 
 	free(pcmShorts);
 }

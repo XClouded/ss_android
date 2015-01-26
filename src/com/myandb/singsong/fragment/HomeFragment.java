@@ -159,9 +159,6 @@ public class HomeFragment extends BaseFragment {
 	
 	private void loadCollaboTop10() {
 		if (collaboTop10Adapter == null) {
-			final SimpleSongNumAdapter adapter = new SimpleSongNumAdapter(1);
-			final PagerWrappingAdapter wrappingAdapter = new PagerWrappingAdapter(adapter, 3);
-			collaboTop10Adapter = new InfinitePagerAdapter(wrappingAdapter);
 			final String yesterday = StringFormatter.getDateString(Calendar.DAY_OF_YEAR, -1);
 			final UrlBuilder urlBuilder = new UrlBuilder().s("songs").s("leaf").start(yesterday).p("order", "liking_num").take(10);
 			final GradualLoader loader = new GradualLoader(getActivity());  
@@ -171,25 +168,48 @@ public class HomeFragment extends BaseFragment {
 				@Override
 				public void onComplete(JSONArray response) {
 					try {
-						Gson gson = Utility.getGsonInstance();
-						top10First = gson.fromJson(response.getJSONObject(0).toString(), Song.class);
-						bindTop10First(top10First);
-						adapter.addAll(removeElement(response, 0));
-						vpCollaboTop10.setAdapter(collaboTop10Adapter);
-						cpiCollaboTop10.setViewPager(vpCollaboTop10);
-						setContentShown(true);
+						top10First = getTop10First(response);
+						collaboTop10Adapter = getCollaboTop10Adapter(response);
+						onLoadCollaboTop10();
 					} catch (Exception e) {
 						e.printStackTrace();
+					}
+				}
+				
+				private Song getTop10First(JSONArray response) {
+					try {
+						Gson gson = Utility.getGsonInstance();
+						return gson.fromJson(response.getJSONObject(0).toString(), Song.class);
+					} catch (Exception e) {
+						return null;
+					}
+				}
+				
+				private PagerAdapter getCollaboTop10Adapter(JSONArray response) {
+					SimpleSongNumAdapter adapter = new SimpleSongNumAdapter(1);
+					try {
+						adapter.addAll(removeElement(response, 0));
+						PagerWrappingAdapter wrappingAdapter = new PagerWrappingAdapter(adapter, 3);
+						return new InfinitePagerAdapter(wrappingAdapter);
+					} catch (Exception e) {
+						e.printStackTrace();
+						return null;
 					}
 				}
 			});
 			loader.load();
 		} else {
-			bindTop10First(top10First);
+			onLoadCollaboTop10();
+		}
+	}
+	
+	private void onLoadCollaboTop10() {
+		bindTop10First(top10First);
+		if (collaboTop10Adapter != null) {
 			vpCollaboTop10.setAdapter(collaboTop10Adapter);
 			cpiCollaboTop10.setViewPager(vpCollaboTop10);
-			setContentShown(true);
 		}
+		setContentShown(true);
 	}
 	
 	private JSONArray removeElement(JSONArray array, int index) throws JSONException {
@@ -222,9 +242,6 @@ public class HomeFragment extends BaseFragment {
 	
 	private void loadPopularMusic() {
 		if (popularMusicAdapter == null) {
-			final MusicAdapter adapter = new MusicAdapter(LayoutType.NORMAL_POPULAR);
-			final PagerWrappingAdapter wrappingAdapter = new PagerWrappingAdapter(adapter, 3);
-			popularMusicAdapter = new InfinitePagerAdapter(wrappingAdapter);
 			final UrlBuilder urlBuilder = new UrlBuilder().s("musics").p("order", "sing_num_this_week").take(12);
 			final GradualLoader loader = new GradualLoader(getActivity());  
 			loader.setUrlBuilder(urlBuilder);
@@ -232,18 +249,34 @@ public class HomeFragment extends BaseFragment {
 				
 				@Override
 				public void onComplete(JSONArray response) {
-					adapter.addAll(response);
-					vpPopularMusic.setAdapter(popularMusicAdapter);
-					cpiPopularMusic.setViewPager(vpPopularMusic); 
-					setContentShown(true);
+					popularMusicAdapter = getPopularMusicAdapter(response);
+					onLoadPopularMusic();
+				}
+				
+				private PagerAdapter getPopularMusicAdapter(JSONArray response) {
+					try {
+						MusicAdapter adapter = new MusicAdapter(LayoutType.NORMAL_POPULAR);
+						adapter.addAll(response);
+						PagerWrappingAdapter wrappingAdapter = new PagerWrappingAdapter(adapter, 3);
+						return new InfinitePagerAdapter(wrappingAdapter);
+					} catch (Exception e) {
+						e.printStackTrace();
+						return null;
+					}
 				}
 			});
 			loader.load();
 		} else {
+			onLoadPopularMusic();
+		}
+	}
+	
+	private void onLoadPopularMusic() {
+		if (popularMusicAdapter != null) {
 			vpPopularMusic.setAdapter(popularMusicAdapter);
 			cpiPopularMusic.setViewPager(vpPopularMusic);
-			setContentShown(true);
 		}
+		setContentShown(true);
 	}
 	
 	private void loadRecentMusic() {
@@ -275,6 +308,10 @@ public class HomeFragment extends BaseFragment {
 
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			if (!isAdded() || getActivity() == null) {
+				return;
+			}
+			
 			final Music music = (Music) parent.getItemAtPosition(position);
 			Bundle bundle = new Bundle();
 			bundle.putString(SelectRecordModeFragment.EXTRA_MUSIC, music.toString());

@@ -25,9 +25,12 @@ public class LikingUserAdapter extends HolderAdapter<SongLiking, LikingUserAdapt
 	}
 
 	@Override
-	public void onBindViewHolder(Context context, UserHolder viewHolder, int position) {
-		final SongLiking liking = getItem(position);
+	public void onBindViewHolder(Context context, UserHolder viewHolder, SongLiking liking, int position) {
 		final User user = liking.getUser();
+		
+		if (user == null) {
+			return;
+		}
 		
 		viewHolder.tvUserNickname.setText(user.getNickname());
 		viewHolder.view.setOnClickListener(user.getProfileClickListener());

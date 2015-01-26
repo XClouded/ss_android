@@ -6,6 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.net.Uri;
+import android.os.Bundle;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
@@ -16,11 +17,11 @@ import com.android.volley.toolbox.HttpHeaderParser;
 
 public class JSONObjectRequest extends OAuthJSONRequest<JSONObject> {
 
-	public JSONObjectRequest(int method, String segment, JSONObject jsonRequest,
+	public JSONObjectRequest(int method, String segment, Bundle params, JSONObject jsonRequest,
 			Listener<JSONObject> listener, ErrorListener errorListener) {
 		super(
 			method,
-			new UrlBuilder().s(segment).toString(),
+			new UrlBuilder().s(segment).p(params).toString(),
 			jsonRequest == null ? null : jsonRequest.toString(),
 			listener,
 			errorListener
@@ -38,11 +39,12 @@ public class JSONObjectRequest extends OAuthJSONRequest<JSONObject> {
 		);
 	}
 	
-    public JSONObjectRequest(String segment, JSONObject jsonRequest,
+    public JSONObjectRequest(String segment, Bundle params, JSONObject jsonRequest,
     		Listener<JSONObject> listener, ErrorListener errorListener) {
         this(
         	jsonRequest == null ? Method.GET : Method.POST,
         	segment,
+        	params,
         	jsonRequest,
         	listener,
         	errorListener

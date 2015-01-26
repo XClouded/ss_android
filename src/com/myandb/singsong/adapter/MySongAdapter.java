@@ -52,11 +52,13 @@ public class MySongAdapter extends HolderAdapter<Song, MySongAdapter.SongHolder>
 	}
 
 	@Override
-	public void onBindViewHolder(Context context, SongHolder viewHolder, int position) {
-		final Song song = getItem(position);
+	public void onBindViewHolder(Context context, SongHolder viewHolder, final Song song, int position) {
 		final Music music = song.getMusic();
 		final User creator = song.getCreator();
 		final List<Song> children = song.getChildren();
+		if (music == null || creator == null) {
+			return;
+		}
 
 		viewHolder.tvLikeNum.setText(song.getWorkedLikeNum());
 		viewHolder.tvCommentNum.setText(song.getWorkedCommentNum());
@@ -183,14 +185,14 @@ public class MySongAdapter extends HolderAdapter<Song, MySongAdapter.SongHolder>
 	
 	private void deleteSong() {
 		String segment = "songs/" + String.valueOf(selectedSong.getId());
-		JustRequest request = new JustRequest(Method.DELETE, segment, null);
+		JustRequest request = new JustRequest(Method.DELETE, segment, null, null);
 		((App) context.getApplicationContext()).addShortLivedRequest(context, request);
 		removeItem(selectedSong);
 	}
 	
 	private void restoreSong() {
 		String segment = "songs/" + String.valueOf(selectedSong.getId());
-		JustRequest request = new JustRequest(Method.PUT, segment, null);
+		JustRequest request = new JustRequest(Method.PUT, segment, null, null);
 		((App) context.getApplicationContext()).addShortLivedRequest(context, request);
 		removeItem(selectedSong);
 	}

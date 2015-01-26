@@ -288,7 +288,7 @@ public class SettingFragment extends BaseFragment {
 			JSONObject message = new JSONObject();
 			message.put("facebook_token", token);
 			JSONObjectRequest request = new JSONObjectRequest(
-					Method.PUT, "users", message,
+					Method.PUT, "users", null, message,
 					new JSONObjectSuccessListener(this, "onUpdateUserFacebookIdSuccess", User.class),
 					new JSONErrorListener(this, "onUpdateUserFacebookIdError"));
 			addRequest(request);
@@ -337,7 +337,7 @@ public class SettingFragment extends BaseFragment {
 			message.put("push_id", "");
 			
 			JSONObjectRequest request = new JSONObjectRequest(
-					Method.PUT, "users", message,
+					Method.PUT, "users", null, message,
 					new JSONObjectSuccessListener(this, "onRemovePushIdSuccess"),
 					new JSONErrorListener(this, "onRemovePushIdError"));
 			addRequest(request);
@@ -356,7 +356,7 @@ public class SettingFragment extends BaseFragment {
 	
 	public void removeAccessTokenOnServer() {
 		JSONObjectRequest request = new JSONObjectRequest(
-				Method.DELETE, "token", null,
+				Method.DELETE, "token", null, null,
 				new JSONObjectSuccessListener(this, "onRemoveAccessTokenSuccess"),
 				new JSONErrorListener(this, "onRemoveAccessTokenError"));
 		addRequest(request);
@@ -446,7 +446,7 @@ public class SettingFragment extends BaseFragment {
 			message.put("main_photo_url", photoUrl);
 			
 			JSONObjectRequest request = new JSONObjectRequest(
-					Method.PUT, "users", message,
+					Method.PUT, "users", null, message,
 					new JSONObjectSuccessListener(this, "onUpdateSuccess", User.class),
 					new JSONErrorListener(this, "onUploadError"));
 			addRequest(request);

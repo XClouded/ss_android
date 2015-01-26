@@ -92,7 +92,7 @@ public class ChangeEmailDialog extends BaseDialog {
 			message.put("email", email);
 			
 			JSONObjectRequest request = new JSONObjectRequest(
-					Method.PUT, "profile", message,
+					Method.PUT, "profile", null, message,
 					new JSONObjectSuccessListener(this, "onChangedSuccess", Profile.class),
 					new JSONErrorListener(this, "onChangedError"));
 			addRequest(request);

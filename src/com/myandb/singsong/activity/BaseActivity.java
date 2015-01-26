@@ -81,7 +81,9 @@ public abstract class BaseActivity extends ActionBarActivity {
 			e.printStackTrace();
 		}
 		
-		handler.postDelayed(new WeakRunnable<BaseActivity>(this, "setActionBarIconNoDelay"), 2000);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+			handler.postDelayed(new WeakRunnable<BaseActivity>(this, "setActionBarIconNoDelay"), 2000);
+		}
 	}
 	
 	public void setActionBarIconNoDelay() {
@@ -241,6 +243,9 @@ public abstract class BaseActivity extends ActionBarActivity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (simpleFacebook == null) {
+			simpleFacebook = SimpleFacebook.getInstance(this);
+		}
 		simpleFacebook.onActivityResult(this, requestCode, resultCode, data);
 		super.onActivityResult(requestCode, resultCode, data);
 	}

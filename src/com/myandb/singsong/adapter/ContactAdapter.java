@@ -25,9 +25,7 @@ public class ContactAdapter extends HolderAdapter<Contact, ContactAdapter.Contac
 	}
 
 	@Override
-	public void onBindViewHolder(Context context, ContactHolder viewHolder, int position) {
-		final Contact contact = getItem(position);
-		
+	public void onBindViewHolder(Context context, ContactHolder viewHolder, Contact contact, int position) {
 		viewHolder.tvContactName.setText(contact.getName());
 		viewHolder.vInvite.setTag(contact);
 		viewHolder.vInvite.setOnClickListener(inviteClickListener);

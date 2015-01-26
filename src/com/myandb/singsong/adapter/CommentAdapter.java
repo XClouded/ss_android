@@ -51,9 +51,12 @@ public class CommentAdapter extends HolderAdapter<Comment, CommentAdapter.Commen
 	}
 
 	@Override
-	public void onBindViewHolder(Context context, CommentHolder viewHolder, int position) {
-		final Comment<?> comment = getItem(position);
+	public void onBindViewHolder(Context context, CommentHolder viewHolder, Comment comment, int position) {
 		final User writer = comment.getWriter();
+		
+		if (writer == null) {
+			return;
+		}
 		
 		viewHolder.tvNickname.setText(writer.getNickname());
 		viewHolder.tvCreated.setText(comment.getWorkedCreatedTime(getCurrentDate()));

@@ -20,6 +20,7 @@ import com.myandb.singsong.util.Utility;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.Html;
 import android.text.Spanned;
@@ -225,8 +226,10 @@ public class JoinDialog extends BaseDialog {
 	
 	private void checkUsernameDuplication(String username) {
 		lastInputUsername = username;
+		Bundle params = new Bundle();
+		params.putString("username", username);
 		JSONObjectRequest request = new JSONObjectRequest(
-				"users?username=" + username, null,
+				"users", params, null,
 				new JSONObjectSuccessListener(this, "onUsernameFound"),
 				new JSONErrorListener(this, "onUsernameNotFound")
 		);
@@ -255,7 +258,7 @@ public class JoinDialog extends BaseDialog {
 			message.put("device_id", encryption.getDeviceId(getActivity()));
 			
 			JSONObjectRequest request = new JSONObjectRequest(
-					"users", message,
+					"users", null, message,
 					new JSONObjectSuccessListener(this, "onJoinComplete"),
 					new JSONErrorListener(this, "onJoinError")
 			);

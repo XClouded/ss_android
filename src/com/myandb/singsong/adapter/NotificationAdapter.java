@@ -32,10 +32,15 @@ public class NotificationAdapter extends HolderAdapter<Notification, Notificatio
 	}
 
 	@Override
-	public void onBindViewHolder(Context context, NotificationHolder viewHolder, int position) {
-		final Notification notification = getItem(position);
+	public void onBindViewHolder(Context context, NotificationHolder viewHolder, Notification notification, int position) {
 		final Activity activity = notification.getActivity();
+		if (activity == null) {
+			return;
+		}
 		final User activityCreator = activity.getCreator();
+		if (activityCreator == null) {
+			return;
+		}
 		
 		viewHolder.tvNotificationContent.setText("");
 		for (CharSequence charSequence : notification.getContent(currentUser)) {

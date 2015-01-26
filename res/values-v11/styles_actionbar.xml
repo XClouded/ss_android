@@ -11,7 +11,6 @@
     <style name="AppTheme.ActionBarStyle" parent="@style/Widget.AppCompat.ActionBar">
         <item name="android:icon">@android:color/transparent</item>
         <item name="android:background">@drawable/actionbar_background</item>
-        <item name="android:titleTextStyle">@style/AppTheme.ActionBar.TitleTextStyle</item>
     </style>
     
 </resources>

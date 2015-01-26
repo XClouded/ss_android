@@ -105,6 +105,8 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	private TextView tvCommentNumOut;
 	private TextView tvLikingNum;
 	private TextView tvFloatingDescription;
+	private TextView tvRefreshComment;
+	private TextView tvRefreshLiking;
 	private ImageView ivParentUserPhoto;
 	private ImageView ivThisUserPhoto;
 	private ImageView ivFloatingUserPhoto;
@@ -179,6 +181,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 			ivDragPlayControl.setOnClickListener(playControlClickListener);
 			sbPlay.setOnSeekBarChangeListener(seekBarChangeListener);
 			ivShowComment.setOnClickListener(showCommentClickListener);
+			tvCommentNumOut.setOnClickListener(showCommentClickListener);
 			ivCloseComment.setOnClickListener(closeCommentClickListener);
 			ivCloseLiking.setOnClickListener(closeLikingClickListener);
 			btnLikingNumOut.setOnClickListener(showLikingClickListener);
@@ -273,6 +276,8 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		tvFloatingUserNickname = (TextView) findViewById(R.id.tv_floating_user_nickname);
 		tvFloatingUserPart = (TextView) findViewById(R.id.tv_floating_user_part);
 		tvFloatingDescription = (TextView) findViewById(R.id.tv_floating_description);
+		tvRefreshComment = (TextView) findViewById(R.id.tv_refresh_comment);
+		tvRefreshLiking = (TextView) findViewById(R.id.tv_refresh_liking);
 		
 		ivParentUserPhoto = (ImageView) findViewById(R.id.iv_parent_user_photo);
 		ivThisUserPhoto = (ImageView) findViewById(R.id.iv_this_user_photo);
@@ -649,6 +654,20 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		btnSubmitComment.setOnClickListener(submitCommentClickListner);
 		ivShare.setOnClickListener(shareClickListener);
 		ivOtherCollabo.setOnClickListener(song.getChildrenClickListener());
+		tvRefreshComment.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				requestNewComments(song);
+			}
+		});
+		tvRefreshLiking.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				requestNewLikings(song);
+			}
+		});
 		
 		if (song.isRoot()) {
 			vPartnerWrapper.setVisibility(View.GONE);
@@ -875,11 +894,13 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 			String segment = new StringBuilder()
 				.append("songs/")
 				.append(song.getId())
-				.append("/likings?user_id=")
-				.append(user.getId()).toString();
+				.append("/likings")
+				.toString();
+			Bundle params = new Bundle();
+			params.putString("user_id", String.valueOf(user.getId()));
 			
 			JSONObjectRequest request = new JSONObjectRequest(
-					segment, null,
+					segment, params, null,
 					new JSONObjectSuccessListener(this, "onGetUserLikeResponse"), 
 					new JSONErrorListener(this, "onGetUserLikeError")
 			);
@@ -971,7 +992,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 			setUserLikeSong(!like);
 			displayLikeNum(song.getLikeNum());
 			
-			JustRequest request = new JustRequest(method, segment, null);
+			JustRequest request = new JustRequest(method, segment, null, null);
 			((App) getContext().getApplicationContext()).addLongLivedRequest(request);
 		}
 	};
@@ -992,7 +1013,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 				
 				Song song = service.getSong();
 				JSONObjectRequest request = new JSONObjectRequest(
-						"songs/" + song.getId() + "/comments", message,
+						"songs/" + song.getId() + "/comments", null, message,
 						new JSONObjectSuccessListener(SlidingPlayerLayout.this, "onSubmitSuccess", SongComment.class),
 						new JSONErrorListener(SlidingPlayerLayout.this, "onSubmitError")
 				);
@@ -1034,7 +1055,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	}
 	
 	public void deleteComment(Comment<?> comment) {
-		JustRequest request = new JustRequest(Method.DELETE, "comments/" + comment.getId(), null);
+		JustRequest request = new JustRequest(Method.DELETE, "comments/" + comment.getId(), null, null);
 		((App) getContext().getApplicationContext()).addShortLivedRequest(getContext(), request);
 		commentAdapter.removeItem(comment);
 		service.getSong().decrementCommentNum();

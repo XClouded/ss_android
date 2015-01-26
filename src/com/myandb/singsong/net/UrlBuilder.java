@@ -47,8 +47,10 @@ public class UrlBuilder {
 	}
 	
 	public UrlBuilder p(Bundle map) {
-		for (String key : map.keySet()) {
-			p(key, map.getString(key));
+		if (map != null && map.size() > 0) {
+			for (String key : map.keySet()) {
+				p(key, map.getString(key));
+			}
 		}
 		return this;
 	}

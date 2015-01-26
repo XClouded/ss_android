@@ -47,10 +47,8 @@ public class AudioOutput extends AudioIO {
 		public void run() {
 			try {
 				writeToFile();
-			} catch (FileNotFoundException e) {
+			} catch (Exception e) {
 				// This cannot be happened
-			} catch (IOException e) {
-				e.printStackTrace();
 			} finally {
 				release();
 			}

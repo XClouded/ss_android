@@ -25,9 +25,12 @@ public class QnaAdapter extends HolderAdapter<Qna, QnaAdapter.QnaHolder> {
 	}
 
 	@Override
-	public void onBindViewHolder(Context context, QnaHolder viewHolder, int position) {
-		final Qna qna = getItem(position);
+	public void onBindViewHolder(Context context, QnaHolder viewHolder, Qna qna, int position) {
 		final User user = qna.getUser();
+		
+		if (user == null) {
+			return;
+		}
 		
 		viewHolder.tvQuestion.setText("Q. " + qna.getQuestion());
 		viewHolder.tvAnswer.setText("A. " + qna.getAnswer());

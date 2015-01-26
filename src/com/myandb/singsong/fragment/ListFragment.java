@@ -1,8 +1,5 @@
 package com.myandb.singsong.fragment;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.json.JSONArray;
 
 import com.myandb.singsong.App;
@@ -13,22 +10,19 @@ import com.myandb.singsong.net.GradualLoader.OnLoadCompleteListener;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.widget.FadingActionBarHelper;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
-import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.View.MeasureSpec;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
@@ -400,53 +394,17 @@ public class ListFragment extends BaseFragment {
 		}
 	}
 	
-	public void setFadingActionBarIcon(final String description) {
-		if (fadingActionBarHelper == null) {
+	public void setFadingActionBarIcon(Menu menu, int resId) {
+		if (menu == null || fadingActionBarHelper == null) {
 			return;
 		}
-	    final ViewGroup decorView = (ViewGroup) getActivity().getWindow().getDecorView();
-	    final ViewTreeObserver viewTreeObserver = decorView.getViewTreeObserver();
-	    viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-	        @Override
-	        public void onGlobalLayout() {
-	            final ArrayList<View> outViews = new ArrayList<View>();
-	            findViewsWithText(outViews, decorView, description);
-	            if (outViews.isEmpty()) {
-	                return;
-	            }
-	            fadingActionBarHelper.setOverflow((ImageView) outViews.get(0));
-	            removeOnGlobalLayoutListener(decorView, this);
-	        }
-	    });
+		
+		MenuItem menuItem = menu.findItem(resId);
+		if (menuItem != null) {
+			fadingActionBarHelper.setOverflow(menuItem);
+		}
 	}
-	
-	private void findViewsWithText(List<View> outViews, ViewGroup parent, String targetDescription) {
-	    if (parent == null || TextUtils.isEmpty(targetDescription)) {
-	        return;
-	    }
-	    final int count = parent.getChildCount();
-	    for (int i = 0; i < count; i++) {
-	        final View child = parent.getChildAt(i);
-	        final CharSequence desc = child.getContentDescription();
-	        if (!TextUtils.isEmpty(desc) && targetDescription.equals(desc.toString())) {
-	            outViews.add(child);
-	        } else if (child instanceof ViewGroup && child.getVisibility() == View.VISIBLE) {
-	            findViewsWithText(outViews, (ViewGroup) child, targetDescription);
-	        }
-	    }
-	}
-	
-	@SuppressWarnings("deprecation")
-	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-	private void removeOnGlobalLayoutListener(View v, ViewTreeObserver.OnGlobalLayoutListener listener) {
-	    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-	        v.getViewTreeObserver().removeGlobalOnLayoutListener(listener);
-	    }
-	    else {
-	        v.getViewTreeObserver().removeOnGlobalLayoutListener(listener);
-	    }
-	}
-	
+
 	public View getListHeaderView() {
 		return listHeaderView;
 	}
