@@ -188,7 +188,11 @@ public abstract class BaseFragment extends Fragment {
 	}
 	
 	public <T> void addRequest(Request<T> request) {
-		getApplicationContext().addShortLivedRequest(this, request);
+		try {
+			getApplicationContext().addShortLivedRequest(this, request);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void makeToast(String message) {
