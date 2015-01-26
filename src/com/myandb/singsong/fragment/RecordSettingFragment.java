@@ -48,7 +48,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
 public class RecordSettingFragment extends BaseFragment {
@@ -328,7 +327,7 @@ public class RecordSettingFragment extends BaseFragment {
 						uploadImageIfExist();
 					}
 				} else {
-					Toast.makeText(getActivity(), getString(R.string.t_alert_song_length_validation_failed), Toast.LENGTH_SHORT).show();
+					makeToast(R.string.t_alert_song_length_validation_failed);
 				}
 				break;
 			}
@@ -336,6 +335,9 @@ public class RecordSettingFragment extends BaseFragment {
 	};
 	
 	private void uploadImageIfExist() {
+		setProgressDialogMessage(getString(R.string.progress_uploading));
+		showProgressDialog();
+		
 		if (localImageExist) {
 			try {
 				imageName = generateIamgeName();
@@ -384,9 +386,8 @@ public class RecordSettingFragment extends BaseFragment {
 	}
 	
 	public void onUploadError() {
-		if (isAdded()) {
-			Toast.makeText(getActivity(), getString(R.string.t_alert_upload_failed), Toast.LENGTH_SHORT).show();
-		}
+		dismissProgressDialog();
+		makeToast(R.string.t_alert_upload_failed);
 		vUpload.setEnabled(true);
 	}
 	

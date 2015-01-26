@@ -465,9 +465,7 @@ public class SettingFragment extends BaseFragment {
 	
 	public void onUploadError() {
 		dismissProgressDialog();
-		if (isAdded()) {
-			makeToast(getString(R.string.t_alert_upload_failed));
-		}
+		makeToast(getString(R.string.t_alert_upload_failed));
 	}
 
 	@Override

@@ -93,6 +93,7 @@
     <string name="progress_changing">변경 중입니다.</string>
     <string name="progress_joining">회원가입 중입니다.</string>
     <string name="progress_logining">로그인 중입니다.</string>
+    <string name="progress_uploading">업로드 중입니다.</string>
     
     <string name="invitation_message_header">둘이서 부르는 소셜 노래방 어플, 콜라보 노래방!</string>
     <string name="invitation_message_footer">지금 플레이 스토어에서 다운 받아 같이 노래 불러요 :)</string>

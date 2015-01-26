@@ -187,6 +187,10 @@ public abstract class BaseFragment extends Fragment {
 	}
 	
 	public void makeToast(String message) {
+		if (!isAdded()) {
+			return;
+		}
+		
 		if (message != null && message.length() > 0) {
 			if (getApplicationContext() != null) {
 				Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
