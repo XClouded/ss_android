@@ -384,7 +384,9 @@ public class RecordSettingFragment extends BaseFragment {
 	}
 	
 	public void onUploadError() {
-		Toast.makeText(getActivity(), getString(R.string.t_alert_upload_failed), Toast.LENGTH_SHORT).show();
+		if (isAdded()) {
+			Toast.makeText(getActivity(), getString(R.string.t_alert_upload_failed), Toast.LENGTH_SHORT).show();
+		}
 		vUpload.setEnabled(true);
 	}
 	
