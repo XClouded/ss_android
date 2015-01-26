@@ -299,7 +299,6 @@ public class RecordSettingFragment extends BaseFragment {
 						if (getSimpleFacebook().isLogin()) {
 							uploadImageIfExist();
 						} else {
-							showProgressDialog();
 							getSimpleFacebook().login(new OnLoginListener() {
 								
 								@Override

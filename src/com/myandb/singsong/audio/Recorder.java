@@ -225,7 +225,7 @@ public class Recorder extends AudioRecord {
     }
 	
 	public static boolean isValidRecordingTime(int millis) {
-		return millis > 30 * 1000;
+		return millis > 5 * 1000;
 	}
 	
 }
