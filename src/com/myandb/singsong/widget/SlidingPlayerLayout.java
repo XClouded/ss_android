@@ -105,6 +105,8 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	private TextView tvCommentNumOut;
 	private TextView tvLikingNum;
 	private TextView tvFloatingDescription;
+	private TextView tvRefreshComment;
+	private TextView tvRefreshLiking;
 	private ImageView ivParentUserPhoto;
 	private ImageView ivThisUserPhoto;
 	private ImageView ivFloatingUserPhoto;
@@ -273,6 +275,8 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		tvFloatingUserNickname = (TextView) findViewById(R.id.tv_floating_user_nickname);
 		tvFloatingUserPart = (TextView) findViewById(R.id.tv_floating_user_part);
 		tvFloatingDescription = (TextView) findViewById(R.id.tv_floating_description);
+		tvRefreshComment = (TextView) findViewById(R.id.tv_refresh_comment);
+		tvRefreshLiking = (TextView) findViewById(R.id.tv_refresh_liking);
 		
 		ivParentUserPhoto = (ImageView) findViewById(R.id.iv_parent_user_photo);
 		ivThisUserPhoto = (ImageView) findViewById(R.id.iv_this_user_photo);
@@ -649,6 +653,20 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		btnSubmitComment.setOnClickListener(submitCommentClickListner);
 		ivShare.setOnClickListener(shareClickListener);
 		ivOtherCollabo.setOnClickListener(song.getChildrenClickListener());
+		tvRefreshComment.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				requestNewComments(song);
+			}
+		});
+		tvRefreshLiking.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				requestNewLikings(song);
+			}
+		});
 		
 		if (song.isRoot()) {
 			vPartnerWrapper.setVisibility(View.GONE);
