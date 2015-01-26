@@ -79,7 +79,12 @@ public abstract class BaseFragment extends Fragment {
 	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		simpleFacebook.onActivityResult(getActivity(), requestCode, resultCode, data);
+		if (isAdded() && getActivity() != null) {
+			if (simpleFacebook == null) {
+				simpleFacebook = SimpleFacebook.getInstance(getActivity());
+			}
+			simpleFacebook.onActivityResult(getActivity(), requestCode, resultCode, data);
+		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 	
