@@ -499,11 +499,8 @@ public class HomeFragment extends BaseFragment {
 	};
 
 	@Override
-	public void onResume() {
-		super.onResume();
-		getSupportActionBar().setDisplayShowTitleEnabled(false);
-		getSupportActionBar().setDisplayUseLogoEnabled(true);
-		getSupportActionBar().setLogo(R.drawable.logo_actionbar);
+	public boolean isActionBarLogoEnabled() {
+		return true;
 	}
 
 }

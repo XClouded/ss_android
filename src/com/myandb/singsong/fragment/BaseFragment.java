@@ -24,10 +24,8 @@ import android.widget.Toast;
 public abstract class BaseFragment extends Fragment {
 	
 	public static final String EXTRA_FRAGMENT_TITLE = "fragment_title";
-	public static final String EXTRA_FRAGMENT_SUBTITLE = "fragment_subtitle";
 	
 	private String title;
-	private String subtitle;
 	private ProgressDialog progressDialog;
 	private CharSequence progressMessage; 
 	private SimpleFacebook simpleFacebook;
@@ -50,7 +48,6 @@ public abstract class BaseFragment extends Fragment {
 	
 	protected void onArgumentsReceived(Bundle bundle) {
 		title = bundle.getString(EXTRA_FRAGMENT_TITLE);
-		subtitle = bundle.getString(EXTRA_FRAGMENT_SUBTITLE);
 	}
 
 	@Override
@@ -69,7 +66,7 @@ public abstract class BaseFragment extends Fragment {
 		super.onResume();
 		
 		try {
-			setupActionBar();
+			configureActionBar();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -80,25 +77,33 @@ public abstract class BaseFragment extends Fragment {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (isAdded() && getActivity() != null) {
-			if (simpleFacebook == null) {
-				simpleFacebook = SimpleFacebook.getInstance(getActivity());
-			}
-			simpleFacebook.onActivityResult(getActivity(), requestCode, resultCode, data);
+			getSimpleFacebook().onActivityResult(getActivity(), requestCode, resultCode, data);
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 	
 	public SimpleFacebook getSimpleFacebook() {
+		if (simpleFacebook == null) {
+			simpleFacebook = SimpleFacebook.getInstance(getActivity());
+		}
 		return simpleFacebook;
 	}
 
-	private void setupActionBar() {
+	private void configureActionBar() {
+		if (!isActionBarEnabled()) {
+			return;
+		}
+		
 		setActionBarBackground(R.drawable.actionbar_background);
 		setActionBarOverlay(false);
-		getSupportActionBar().setDisplayShowTitleEnabled(true);
-		getSupportActionBar().setDisplayUseLogoEnabled(false);
-		setActionBarTitle(title);
-		setActionBarSubtitle(subtitle);
+		getSupportActionBar().setHomeButtonEnabled(true);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		
+		if (isActionBarLogoEnabled()) {
+			setActionBarLogo(R.drawable.logo_actionbar);
+		} else {
+			setActionBarTitle(title);
+		}
 	}
 
 	public void notifyDataChanged() {
@@ -159,6 +164,8 @@ public abstract class BaseFragment extends Fragment {
 
 	public void setActionBarTitle(String title) throws IllegalStateException {
 		if (title != null) {
+			getSupportActionBar().setDisplayShowTitleEnabled(true);
+			getSupportActionBar().setDisplayUseLogoEnabled(false);
 			getSupportActionBar().setTitle(title);
 		}
 	}
@@ -172,19 +179,10 @@ public abstract class BaseFragment extends Fragment {
 		}
 	}
 	
-	public void setActionBarSubtitle(String subtitle) throws IllegalStateException {
-		if (subtitle != null) {
-			getSupportActionBar().setSubtitle(subtitle);
-		}
-	}
-	
-	public void setActionBarSubtitle(int resId) {
-		try {
-			setActionBarSubtitle(getString(resId));
-		} catch (NotFoundException e) {
-			e.printStackTrace();
-			// It's all right
-		}
+	public void setActionBarLogo(int resId) {
+		getSupportActionBar().setDisplayShowTitleEnabled(false);
+		getSupportActionBar().setDisplayUseLogoEnabled(true);
+		getSupportActionBar().setLogo(resId);
 	}
 	
 	public <T> void addRequest(Request<T> request) {
@@ -268,6 +266,14 @@ public abstract class BaseFragment extends Fragment {
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public boolean isActionBarEnabled() {
+		return true;
+	}
+	
+	public boolean isActionBarLogoEnabled() {
+		return false;
 	}
 	
 	protected abstract int getResourceId();

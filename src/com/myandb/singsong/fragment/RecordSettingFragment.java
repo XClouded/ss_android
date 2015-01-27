@@ -578,6 +578,11 @@ public class RecordSettingFragment extends BaseFragment {
 	public void onBackPressed() {}
 
 	@Override
+	public boolean isActionBarEnabled() {
+		return false;
+	}
+	
+	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		
