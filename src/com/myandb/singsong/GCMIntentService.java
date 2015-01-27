@@ -1,7 +1,6 @@
 package com.myandb.singsong;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,14 +29,13 @@ import com.google.android.gcm.GCMBaseIntentService;
 import com.google.gson.Gson;
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.UpActivity;
-import com.myandb.singsong.event.OnCompleteListener;
 import com.myandb.singsong.fragment.KaraokeFragment;
 import com.myandb.singsong.fragment.NotificationFragment;
 import com.myandb.singsong.image.BitmapBuilder;
 import com.myandb.singsong.image.ImageHelper;
-import com.myandb.singsong.model.Activity;
-import com.myandb.singsong.model.Notification;
+import com.myandb.singsong.model.UserActivity;
 import com.myandb.singsong.model.User;
+import com.myandb.singsong.net.DownloadManager.OnDownloadListener;
 import com.myandb.singsong.net.JustRequest;
 import com.myandb.singsong.net.DownloadManager;
 import com.myandb.singsong.secure.Authenticator;
@@ -50,22 +48,15 @@ public class GCMIntentService extends GCMBaseIntentService {
 	private volatile static Toast previousToast = null;
 	
 	private Handler handler = new Handler();
-	private File tempFile;
 	
 	public GCMIntentService() {
 		super(PROJECT_ID);
-		
-		try {
-			tempFile = File.createTempFile("_user_photo_", ".tmp");
-		} catch (IOException e) {
-			tempFile = null;
-		}
 	}
 	
 	@Override
 	protected void onMessage(Context context, Intent intent) {
 		if (Authenticator.isLoggedIn()) {
-			incrementNotificationCount();
+			increaseNotificationCount();
 			if (isEnabledNotification()) {
 				try {
 					notifyUser(intent);
@@ -76,88 +67,72 @@ public class GCMIntentService extends GCMBaseIntentService {
 		}
 	}
 	
-	private boolean incrementNotificationCount() {
+	private boolean increaseNotificationCount() {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-		String key = getString(R.string.key_notification_count);
-		int currentCount = getCurrentNotificationCount(preferences);
+		final String key = getString(R.string.key_notification_count);
+		final int currentCount = getCurrentNotificationCount(preferences);
 		return preferences.edit().putInt(key, (currentCount + 1)).commit();
 	}
 	
 	private int getCurrentNotificationCount(SharedPreferences preferences) {
 		final int defaultValue = 0;
 		try {
-			String key = getString(R.string.key_notification_count);
+			final String key = getString(R.string.key_notification_count);
 			return preferences.getInt(key, defaultValue);
 		} catch (ClassCastException e) {
 			e.printStackTrace();
-			return defaultValue;
 		}
+		return defaultValue;
 	}
 	
 	private boolean isEnabledNotification() {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 		final boolean defaultValue = true;
 		try {
-			String key = getString(R.string.key_notification);
+			final String key = getString(R.string.key_notification);
 			return preferences.getBoolean(key, defaultValue);
 		} catch (ClassCastException e) {
 			e.printStackTrace();
-			return defaultValue;
 		}
+		return defaultValue;
 	}
 	
-	private void notifyUser(Intent intent) throws NullPointerException {
-		Activity activity = getActivityFromIntent(intent);
-		Notification notification = new Notification(activity);
-		User creator = activity.getCreator();
-		User currentUser = Authenticator.getUser();
-		String message = "";
-		for (CharSequence charSequence : notification.getContent(currentUser)) {
-			message += charSequence;
-		}
-		
-		prepareAndSubmitNotification(creator, message);
-		
-		if (!KaraokeFragment.isRunning()) {
-			showToast(creator, message);
-		}
+	private void notifyUser(Intent intent) {
+		UserActivity activity = getUserActivityFromIntent(intent);
+		prepareAndSubmitNotification(activity);
+		showToast(activity);
 	}
 	
-	private Activity getActivityFromIntent(Intent intent) throws NullPointerException {
+	private UserActivity getUserActivityFromIntent(Intent intent) {
 		Gson gson = Utility.getGsonInstance();
 		String activityJson = intent.getStringExtra("activity");
-		return gson.fromJson(activityJson, Activity.class);
+		return gson.fromJson(activityJson, UserActivity.class);
 	}
 	
-	private void prepareAndSubmitNotification(final User creator, final String message) {
+	private void prepareAndSubmitNotification(UserActivity activity) {
+		final User creator = activity.getCreator();
+		final String message = activity.getMessage();
 		if (creator.hasPhoto()) {
-			downloadPhoto(creator.getPhotoUrl(), new OnCompleteListener() {
-				
+			DownloadManager manager = new DownloadManager();
+			manager.start(creator.getPhotoUrl(), new OnDownloadListener() {
+
 				@Override
-				public void done(Exception e) {
-					if (e == null) {
-						Bitmap bitmap = getIconBitmap(tempFile);
-						submitNotification(bitmap, creator, message);
-					} else {
-						e.printStackTrace();
-					}
+				public void onComplete(File file) {
+					super.onComplete(file);
+					Bitmap bitmap = getIconBitmap(file);
+					submitNotification(bitmap, creator, message);
 				}
+				
 			});
-		} else {
-			Bitmap bitmap = getIconBitmap();
+			Bitmap bitmap = getIconBitmap(R.drawable.user_character);
 			submitNotification(bitmap, creator, message);
 		}
 	}
 	
-	private void downloadPhoto(String url, OnCompleteListener listener) {
-		DownloadManager manager = new DownloadManager();
-		manager.start(url, tempFile, listener);
-	}
-	
-	private Bitmap getIconBitmap() {
+	private Bitmap getIconBitmap(int drawableResId) {
 		BitmapBuilder builder = new BitmapBuilder();
 		int size = getNotificationIconSize();
-		return builder.setSource(getResources(), R.drawable.user_character)
+		return builder.setSource(getResources(), drawableResId)
 				.setOutputSize(size)
 				.enableCrop(true)
 				.build();
@@ -194,7 +169,11 @@ public class GCMIntentService extends GCMBaseIntentService {
 		return (int) res.getDimensionPixelSize(R.dimen.notification_icon_height);
 	}
 	
-	private void showToast(final User user, final String message) {
+	private void showToast(final UserActivity activity) {
+		if (!KaraokeFragment.isRunning()) {
+			return;
+		}
+		
 		handler.post(new Runnable() {
 			
 			@Override
@@ -203,7 +182,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 					previousToast.cancel();
 				}
 				
-				PushToast pushToast = new PushToast(getApplicationContext(), user, message);
+				PushToast pushToast = new PushToast(getApplicationContext(), activity);
 				previousToast = pushToast;
 				pushToast.show();
 			}
@@ -234,7 +213,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 	
 	private static class PushToast extends Toast {
 
-		public PushToast(Context context, User user, String message) {
+		public PushToast(Context context, UserActivity activity) {
 			super(context);
 			
 			View view = View.inflate(context, R.layout.toast_push, null);
@@ -242,8 +221,8 @@ public class GCMIntentService extends GCMBaseIntentService {
 			ImageView ivUserPhoto = (ImageView) view.findViewById(R.id.iv_user_photo);
 			TextView tvMessage = (TextView) view.findViewById(R.id.tv_message);
 			
-			ImageHelper.displayPhoto(user, ivUserPhoto);
-			tvMessage.setText(message);
+			ImageHelper.displayPhoto(activity.getCreator(), ivUserPhoto);
+			tvMessage.setText(activity.getMessage());
 			
 			setGravity(Gravity.TOP|Gravity.FILL_HORIZONTAL, 0, (int) pixelFromDp(context, 100));
 			setDuration(Toast.LENGTH_LONG);

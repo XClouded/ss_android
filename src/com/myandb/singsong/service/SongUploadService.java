@@ -162,7 +162,7 @@ public class SongUploadService extends Service {
 		encoder.setOnProgressListener(new OnProgressListener() {
 			
 			@Override
-			public void done(Integer progress) {
+			public void onProgress(Integer progress) {
 				final int maxProgress = 50;
 				int convertedProgress = maxProgress * progress / 100; 
 				updateNotification(convertedProgress, "진행중 ...");
@@ -191,7 +191,7 @@ public class SongUploadService extends Service {
 		encoder.setOnProgressListener(new OnProgressListener() {
 			
 			@Override
-			public void done(Integer progress) {
+			public void onProgress(Integer progress) {
 				final int maxProgress = 20;
 				int convertedProgress = 50 + maxProgress * progress / 100; 
 				updateNotification(convertedProgress, "진행중 ...");

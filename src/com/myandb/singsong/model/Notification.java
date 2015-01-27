@@ -14,15 +14,15 @@ import com.myandb.singsong.util.Utility;
 
 public class Notification extends Model {
 
-	private Activity activity;
+	private UserActivity activity;
 	private int count;
 	private Date updated_at;
 	
-	public Notification(Activity activity) {
+	public Notification(UserActivity activity) {
 		this.activity = activity;
 	}
 	
-	public Activity getActivity() {
+	public UserActivity getActivity() {
 		return activity;
 	}
 	
@@ -37,7 +37,7 @@ public class Notification extends Model {
 				contents.add(boldSpan);
 				contents.add("님");
 				
-				if (activity.getSourceType() == Activity.TYPE_CREATE_COMMENT) {
+				if (activity.getSourceType() == UserActivity.TYPE_CREATE_COMMENT) {
 					contents.add("이 회원님의 노래에 ");
 					
 					if (count > 0) {
@@ -52,11 +52,11 @@ public class Notification extends Model {
 				}
 				
 				switch (activity.getSourceType()) {
-				case Activity.TYPE_CREATE_FRIENDSHIP:
+				case UserActivity.TYPE_CREATE_FRIENDSHIP:
 					contents.add("회원님을 팔로우 했습니다.");
 					break;
 					
-				case Activity.TYPE_CREATE_ROOT_SONG:
+				case UserActivity.TYPE_CREATE_ROOT_SONG:
 					boldSpan = Utility.getBoldSpan(metadata.getString("music_singer"));
 					contents.add(boldSpan);
 					contents.add("의 ");
@@ -65,7 +65,7 @@ public class Notification extends Model {
 					contents.add("를 불렀습니다.");
 					break;
 					
-				case Activity.TYPE_CREATE_LEAF_SONG:
+				case UserActivity.TYPE_CREATE_LEAF_SONG:
 					if (metadata.getInt("parent_user_id") == currentUser.getId()) {
 						contents.add("회원님이 부른 ");
 					}
@@ -77,20 +77,20 @@ public class Notification extends Model {
 					contents.add("에 콜라보 했습니다.");
 					break;
 					
-				case Activity.TYPE_CREATE_COMMENT:
+				case UserActivity.TYPE_CREATE_COMMENT:
 					contents.add("댓글을 달았습니다.\n\"");
 					contents.add(metadata.getString("comment_content") + "\"");
 					break;
 					
-				case Activity.TYPE_CREATE_LIKING:
+				case UserActivity.TYPE_CREATE_LIKING:
 					contents.add("회원님의 노래를 좋아합니다.");
 					break;
 					
-				case Activity.TYPE_RECOMMEND_ARTIST:
+				case UserActivity.TYPE_RECOMMEND_ARTIST:
 					contents.add("회원님을 콜라보 아티스트에 추천했습니다.");
 					break;
 					
-				case Activity.TYPE_ADMIN_MESSAGE:
+				case UserActivity.TYPE_ADMIN_MESSAGE:
 					contents.add(metadata.getString("body"));
 					break;
 					
@@ -104,6 +104,14 @@ public class Notification extends Model {
 		}
 		
 		return contents;
+	}
+	
+	public String getContents(User currentUser) {
+		String message = "";
+		for (CharSequence charSequence : getContent(currentUser)) {
+			message += charSequence;
+		}
+		return message;
 	}
 	
 	public String getWorkedCreatedTime(Date currentDate) {

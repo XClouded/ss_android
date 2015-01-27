@@ -9,10 +9,10 @@ import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.audio.OnPlayEventListener;
 import com.myandb.singsong.audio.PlayEvent;
 import com.myandb.singsong.audio.StreamPlayer;
-import com.myandb.singsong.event.OnCompleteListener;
 import com.myandb.singsong.image.BitmapBuilder;
 import com.myandb.singsong.model.Song;
 import com.myandb.singsong.net.DownloadManager;
+import com.myandb.singsong.net.DownloadManager.OnDownloadListener;
 import com.myandb.singsong.secure.Authenticator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.DiscCacheUtil;
@@ -222,18 +222,17 @@ public class PlayerService extends Service {
 			Notification noti = makeNotification(bitmap);
 			submitNotification(noti);
 		} else {
-			downloadPhoto(url, new OnCompleteListener() {
-				
+			DownloadManager manager = new DownloadManager();
+			manager.start(url, new OnDownloadListener() {
+
 				@Override
-				public void done(Exception e) {
-					if (e == null) {
-						Bitmap bitmap = getIconBitmap(tempFile);
-						Notification noti = makeNotification(bitmap);
-						submitNotification(noti);
-					} else {
-						e.printStackTrace();
-					}
+				public void onComplete(File file) {
+					super.onComplete(file);
+					Bitmap bitmap = getIconBitmap(tempFile);
+					Notification noti = makeNotification(bitmap);
+					submitNotification(noti);
 				}
+				
 			});
 		}
 	}
@@ -256,11 +255,6 @@ public class PlayerService extends Service {
 			.setContentIntent(pendingIntent);
 		
 		return builder.build();
-	}
-	
-	private void downloadPhoto(String url, OnCompleteListener listener) {
-		DownloadManager manager = new DownloadManager();
-		manager.start(url, tempFile, listener);
 	}
 	
 	private File getFileFromImageDiscCache(String url) {
