@@ -163,9 +163,9 @@ public abstract class BaseFragment extends Fragment {
 	}
 
 	public void setActionBarTitle(String title) throws IllegalStateException {
+		getSupportActionBar().setDisplayShowTitleEnabled(true);
+		getSupportActionBar().setDisplayUseLogoEnabled(false);
 		if (title != null) {
-			getSupportActionBar().setDisplayShowTitleEnabled(true);
-			getSupportActionBar().setDisplayUseLogoEnabled(false);
 			getSupportActionBar().setTitle(title);
 		}
 	}
