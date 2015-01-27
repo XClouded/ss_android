@@ -77,7 +77,7 @@ public class ArtistAdapter extends HolderAdapter<Artist, ArtistAdapter.ArtistHol
 		viewHolder.view.setOnClickListener(artist.getArtistClickListener());
 		
 		if (layoutType.isShowNum() && position < 99) {
-			viewHolder.tvArtistNum.setText(String.valueOf(artist.getId() + 1));
+			viewHolder.tvArtistNum.setText(String.valueOf(artist.getId()));
 		}
 		
 		if (layoutType.isShowIntroduction()) {
