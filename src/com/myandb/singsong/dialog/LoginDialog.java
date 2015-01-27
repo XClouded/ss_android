@@ -4,8 +4,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.facebook.Session;
+import com.google.android.gcm.GCMRegistrar;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.myandb.singsong.GCMIntentService;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.dialog.JoinDialog.OnJoinCompleteListener;
@@ -237,8 +239,25 @@ public class LoginDialog extends BaseDialog {
 		if (activity instanceof RootActivity) {
 			((RootActivity) activity).updateDrawer();
 		}
+		registerGcm();
 		dismissProgressDialog();
 		dismiss();
+	}
+	
+	private void registerGcm() {
+		try {
+			GCMRegistrar.checkDevice(activity);
+			GCMRegistrar.checkManifest(activity);
+			final String registrationId = GCMRegistrar.getRegistrationId(activity);
+			
+			if ("".equals(registrationId)) {
+				GCMRegistrar.register(activity, GCMIntentService.PROJECT_ID);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			// Device does not have package com.google.android.gsf
+			// This will not happened
+		}
 	}
 	
 	public void onLoginError() {
