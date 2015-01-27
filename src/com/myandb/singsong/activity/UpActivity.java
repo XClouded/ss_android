@@ -1,6 +1,7 @@
 package com.myandb.singsong.activity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -34,6 +35,14 @@ public class UpActivity extends BaseActivity {
 		configureActionBar();
 		
 		replaceContentFragmentFromIntent(getIntent());
+		
+		if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
+			try {
+				getSupportActionBar().hide();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	private void setWindowFullScreen() {
