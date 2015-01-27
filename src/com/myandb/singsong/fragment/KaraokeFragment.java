@@ -83,7 +83,8 @@ public class KaraokeFragment extends BaseFragment {
 	private Song parentSong;
 	private Recorder recorder;
 	private PcmPlayer player;
-	private DownloadManager musicDownloader;
+	private DownloadManager audioDownload;
+	private DownloadManager lrcDownload;
 	private Decoder decoder;
 	private HeadsetReceiver receiver;
 	private LrcDisplayer lrcDisplayer;
@@ -286,11 +287,11 @@ public class KaraokeFragment extends BaseFragment {
 	private void downloadDatas() {
 		loadingDialog.show(getChildFragmentManager(), "");
 		
-		DownloadManager lrcDownloader = new DownloadManager();
-		lrcDownloader.start(music.getLrcUrl(), lyricFile, lyricDownloadListener);
+		lrcDownload = new DownloadManager();
+		lrcDownload.start(music.getLrcUrl(), lyricFile, lyricDownloadListener);
 		
-		musicDownloader = new DownloadManager();
-		musicDownloader.start(getAudioUrl(), musicOggFile, audioDownloadListener);
+		audioDownload = new DownloadManager();
+		audioDownload.start(getAudioUrl(), musicOggFile, audioDownloadListener);
 	}
 	
 	private OnDownloadListener lyricDownloadListener = new OnDownloadListener() {
@@ -754,9 +755,14 @@ public class KaraokeFragment extends BaseFragment {
 	public void onDestroy() {
 		super.onDestroy();
 		
-		if (musicDownloader != null) {
-			musicDownloader.stop();
-			musicDownloader = null;
+		if (lrcDownload != null) {
+			lrcDownload.stop();
+			lrcDownload = null;
+		}
+		
+		if (audioDownload != null) {
+			audioDownload.stop();
+			audioDownload = null;
 		}
 		
 		if (decoder != null) {
