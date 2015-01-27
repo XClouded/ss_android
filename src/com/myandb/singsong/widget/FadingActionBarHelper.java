@@ -5,6 +5,7 @@ import com.myandb.singsong.R;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Spannable;
@@ -33,6 +34,22 @@ public class FadingActionBarHelper implements OnScrollListener {
 	private int previousAlpha = -1;
 	private int currentOverflowImageRes;
 	private float visibleThreshold;
+	private boolean containInvalidPayloadItemBug;
+	
+	public FadingActionBarHelper() {
+		containInvalidPayloadItemBug = containInvalidPayloadItemBug();
+	}
+	
+	private boolean containInvalidPayloadItemBug() {
+		return isManufacturer("LG") && (Build.VERSION.SDK_INT == Build.VERSION_CODES.JELLY_BEAN);
+	}
+	
+	private boolean isManufacturer(String company) {
+	    String manufacturer = Build.MANUFACTURER;
+	    String model = Build.MODEL;
+
+	    return (manufacturer.contains(company) || model.contains(company));
+	}
 	
 	public FadingActionBarHelper setBackground(Drawable drawable) {
 		return setBackground(drawable, MAX_ALPHA);
@@ -157,7 +174,7 @@ public class FadingActionBarHelper implements OnScrollListener {
 			return;
 		}
 		
-		if (alpha == MAX_ALPHA) {
+		if (alpha == MAX_ALPHA || containInvalidPayloadItemBug) {
 			actionBar.setTitle(title);
 		} else {
 			SpannableStringBuilder builder = new SpannableStringBuilder(title);
