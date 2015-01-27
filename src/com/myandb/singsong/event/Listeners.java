@@ -14,6 +14,7 @@ import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.RootActivity;
+import com.myandb.singsong.fragment.ListFragment;
 import com.myandb.singsong.fragment.UserHomeFragment;
 import com.myandb.singsong.model.UserActivity;
 import com.myandb.singsong.model.Notification;
@@ -56,6 +57,7 @@ public class Listeners {
 				case UserActivity.TYPE_CREATE_FRIENDSHIP:
 					Bundle bundle = new Bundle();
 					bundle.putString(UserHomeFragment.EXTRA_THIS_USER, response.toString());
+					bundle.putBoolean(ListFragment.EXTRA_VERTICAL_PADDING, true);
 					Intent intent = new Intent(context, RootActivity.class);
 					intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, UserHomeFragment.class.getName());
 					intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
