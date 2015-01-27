@@ -90,6 +90,10 @@ public class FacebookFriendsFragment extends ListFragment {
 		
 		@Override
 		public void onCompleted(List<GraphUser> users, Response response) {
+			if (users == null) {
+				return;
+			}
+			
 			facebookUserMap = new HashMap<String, FacebookUser>();
 			for (GraphUser user : users) {
 				facebookUserMap.put(user.getId(), new FacebookUser(user));
