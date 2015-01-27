@@ -250,7 +250,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 	private void updateRegistrationId(String registrationId) {
 		if (Authenticator.isLoggedIn()) {
 			try {
-				JSONObject message = new JSONObject();
+				final JSONObject message = new JSONObject();
 				message.put("push_id", registrationId);
 				
 				JustRequest request = new JustRequest(Method.PUT, "users", null, message);

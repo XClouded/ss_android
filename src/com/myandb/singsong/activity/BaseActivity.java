@@ -20,6 +20,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -34,7 +35,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnTouchListener;
-import android.widget.FrameLayout;
 
 public abstract class BaseActivity extends ActionBarActivity {
 	
@@ -48,24 +48,13 @@ public abstract class BaseActivity extends ActionBarActivity {
 	private Fragment contentFragment;
 	private Handler handler;
 	private SimpleFacebook simpleFacebook;
+	private Drawable backButtonDrawable;
+	private Drawable homeButtonDrawable;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		handler = new Handler(Looper.getMainLooper());
-	}
-	
-	@SuppressLint("InlinedApi")
-	private void setHomeButtonRightMargin(int pixel) {
-		View home = findViewById(android.R.id.home);
-		if (home != null) {
-			android.view.ViewGroup.LayoutParams layoutParams = home.getLayoutParams();
-			if (layoutParams instanceof FrameLayout.LayoutParams) {
-				FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) layoutParams;
-				lp.rightMargin = pixel;
-				home.setLayoutParams(lp);
-			}
-		}
 	}
 
 	public void changePage(Intent intent) {
@@ -86,13 +75,8 @@ public abstract class BaseActivity extends ActionBarActivity {
 		}
 	}
 	
-	public void setActionBarIconNoDelay() {
-		View actionBarView = getActionBarView();
-		recursiveSetOnTouchListener(actionBarView);				
-	}
-	
 	protected Fragment instantiateFragmentFromIntent(Intent intent) 
-			throws InstantiationException, UnsupportedEncodingException, NullPointerException {
+			throws InstantiationException, UnsupportedEncodingException {
 		String fragmentName = null;
 		Bundle fragmentBundle = null;
 		
@@ -141,65 +125,83 @@ public abstract class BaseActivity extends ActionBarActivity {
 		return contentFragment;
 	}
 	
-	@SuppressLint("ClickableViewAccessibility")
-	private OnTouchListener noDelayOnTouchListener = new OnTouchListener() {
-		
-		@Override
-		public boolean onTouch(View v, MotionEvent event) {
-			if (event.getAction() == MotionEvent.ACTION_DOWN) {
-				v.setPressed(true);
-			}
-			return false;
-		}
-	};
+	public void setActionBarIconNoDelay() {
+		View actionBarView = getActionBarView();
+		recursiveSetOnTouchListener(actionBarView);				
+	}
 	
-	private void recursiveSetOnTouchListener(View v) {
-		if (v != null) {
-			v.setOnTouchListener(noDelayOnTouchListener);
+	private void recursiveSetOnTouchListener(View view) {
+		if (view != null) {
+			view.setOnTouchListener(noDelayOnTouchListener);
 			
-			if (v instanceof ViewGroup) {
-				ViewGroup vg = (ViewGroup) v;
-				for (int i = 0, l = vg.getChildCount(); i < l; i++) {
-					View c = vg.getChildAt(i);
-					recursiveSetOnTouchListener(c);
+			if (view instanceof ViewGroup) {
+				ViewGroup viewGroup = (ViewGroup) view;
+				for (int i = 0, l = viewGroup.getChildCount(); i < l; i++) {
+					View child = viewGroup.getChildAt(i);
+					recursiveSetOnTouchListener(child);
 				}
 			}
 		}
 	}
 	
+	@SuppressLint("ClickableViewAccessibility")
+	private OnTouchListener noDelayOnTouchListener = new OnTouchListener() {
+		
+		@Override
+		public boolean onTouch(View view, MotionEvent event) {
+			if (event.getAction() == MotionEvent.ACTION_DOWN) {
+				view.setPressed(true);
+			}
+			return false;
+		}
+	};
+	
 	public View getActionBarView() {
-	    int actionViewResId = 0;
-	    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-	        actionViewResId = getResources().getIdentifier(
-	                "abc__action_bar_container", "id", getPackageName());
-	    } else {
-	        actionViewResId = Resources.getSystem().getIdentifier(
-	                "action_bar_container", "id", "android");
-	    }
-	    if (actionViewResId > 0) {
-	        return findViewById(actionViewResId);
-	    }
-	    return null;
+		return findViewById(getActionViewResId());
+	}
+	
+	private int getActionViewResId() {
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+			return getResources().getIdentifier("abc__action_bar_container", "id", getPackageName());
+		} else {
+			return Resources.getSystem().getIdentifier("action_bar_container", "id", "android");
+		}
 	}
 
 	@Override
 	public void onBackPressed() {
-		FragmentManager manager = getSupportFragmentManager();
-		int backStackEntryCount = manager.getBackStackEntryCount();
-		boolean isRootFragment = backStackEntryCount < 2;
-		if (isRootFragment) {
+		if (hasNoBackStackedFragment()) {
 			finish();
 		} else {
 			super.onBackPressed();
 		}
 	}
+	
+	public boolean hasNoBackStackedFragment() {
+		return getSupportFragmentManager().getBackStackEntryCount() < 2;
+	}
 
 	protected boolean isComponentOf(Intent intent, Class<?> clazz) {
 		ComponentName component = intent.getComponent();
-		if (component == null) {
-			return false;
+		if (component != null) {
+			return clazz.getName().equals(component.getClassName());
 		}
-		return clazz.getName().equals(component.getClassName());
+		return false;
+	}
+	
+	public Drawable getHomeButtonDrawable() {
+		if (homeButtonDrawable == null) {
+			homeButtonDrawable = getResources().getDrawable(R.drawable.ic_action_drawer);
+		}
+		return homeButtonDrawable;
+	}
+	
+	public Drawable getBackButtonDrawable() {
+		if (backButtonDrawable == null) {
+			backButtonDrawable = getResources().getDrawable(R.drawable.ic_action_back);
+		}
+		backButtonDrawable.setAlpha(255);
+		return backButtonDrawable;
 	}
 	
 	@Override
@@ -243,11 +245,15 @@ public abstract class BaseActivity extends ActionBarActivity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		getSimpleFacebook().onActivityResult(this, requestCode, resultCode, data);
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+	
+	public SimpleFacebook getSimpleFacebook() {
 		if (simpleFacebook == null) {
 			simpleFacebook = SimpleFacebook.getInstance(this);
 		}
-		simpleFacebook.onActivityResult(this, requestCode, resultCode, data);
-		super.onActivityResult(requestCode, resultCode, data);
+		return simpleFacebook;
 	}
 	
 	@Override
