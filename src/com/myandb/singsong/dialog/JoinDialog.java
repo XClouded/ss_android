@@ -5,19 +5,6 @@ import java.util.regex.Matcher;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-import com.myandb.singsong.R;
-import com.myandb.singsong.activity.RootActivity;
-import com.myandb.singsong.model.User;
-import com.myandb.singsong.net.JSONObjectRequest;
-import com.myandb.singsong.net.JSONErrorListener;
-import com.myandb.singsong.net.JSONObjectSuccessListener;
-import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.secure.Authenticator;
-import com.myandb.singsong.secure.Encryption;
-import com.myandb.singsong.util.Utility;
-
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -36,8 +23,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import com.myandb.singsong.R;
+import com.myandb.singsong.model.User;
+import com.myandb.singsong.net.JSONErrorListener;
+import com.myandb.singsong.net.JSONObjectRequest;
+import com.myandb.singsong.net.JSONObjectSuccessListener;
+import com.myandb.singsong.net.UrlBuilder;
+import com.myandb.singsong.secure.Authenticator;
+import com.myandb.singsong.secure.Encryption;
+import com.myandb.singsong.util.Utility;
+
 public class JoinDialog extends BaseDialog {
 	
+	private OnJoinCompleteListener listener;
 	private EditText etUsername;
 	private EditText etPassword;
 	private EditText etRePassword;
@@ -47,17 +47,12 @@ public class JoinDialog extends BaseDialog {
 	private TextView tvValidRePassword;
 	private TextView tvAgreementPolicy;
 	private String lastInputUsername;
-	private RootActivity activity;
 	private int colorGrey;
 	private int colorPrimary;
 
 	@Override
 	protected void initialize(Activity activity) {
 		setProgressDialogMessage(getString(R.string.progress_joining));
-		
-		if (activity instanceof RootActivity) {
-			this.activity = (RootActivity) activity;
-		}
 		
 		colorGrey = getResources().getColor(R.color.font_grey);
 		colorPrimary = getResources().getColor(R.color.primary);
@@ -299,9 +294,11 @@ public class JoinDialog extends BaseDialog {
 	}
 	
 	private void onLoginComplete() {
+		if (listener != null) {
+			listener.onJoin();
+		}
 		dismissProgressDialog();
 		dismiss();
-		activity.restartActivity();
 	}
 	
 	public void onJoinError() {
@@ -316,11 +313,21 @@ public class JoinDialog extends BaseDialog {
 		etPassword.setText("");
 		etRePassword.setText("");
 	}
+	
+	public void setOnJoinCompleteListener(OnJoinCompleteListener listener) {
+		this.listener = listener;
+	}
 
 	@Override
 	public void dismiss() {
 		super.dismiss();
 		clearTextFromAllEditText();
+	}
+	
+	public interface OnJoinCompleteListener {
+		
+		public void onJoin();
+		
 	}
 
 }
