@@ -86,16 +86,18 @@ public class DownloadManager extends AsyncTask<String, Integer, Exception> {
 	protected void onProgressUpdate(Integer... values) {
 		super.onProgressUpdate(values);
 		
-		if (listener != null) {
-			listener.onProgress(values[0]);
+		if (listener == null || interrupt) {
+			return;
 		}
+		
+		listener.onProgress(values[0]);
 	}
 
 	@Override
 	protected void onPostExecute(Exception exception) {
 		super.onPostExecute(exception);
 		
-		if (listener == null) {
+		if (listener == null || interrupt) {
 			return;
 		}
 		
