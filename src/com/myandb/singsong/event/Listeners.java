@@ -15,7 +15,7 @@ import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.fragment.UserHomeFragment;
-import com.myandb.singsong.model.Activity;
+import com.myandb.singsong.model.UserActivity;
 import com.myandb.singsong.model.Notification;
 import com.myandb.singsong.model.Song;
 import com.myandb.singsong.net.JSONObjectRequest;
@@ -30,7 +30,7 @@ public class Listeners {
 	public static OnClickListener getSourceClickListener(final Context context, final Notification notification) {
 		return new OnClickListener() {
 			
-			private Activity activity;
+			private UserActivity activity;
 			private View view;
 			
 			@Override
@@ -38,7 +38,7 @@ public class Listeners {
 				view = v;
 				activity = notification.getActivity();
 				
-				if (activity.getSourceType() == Activity.TYPE_RECOMMEND_ARTIST) {
+				if (activity.getSourceType() == UserActivity.TYPE_RECOMMEND_ARTIST) {
 					((android.app.Activity) view.getContext()).finish();
 				} else {
 					JSONObjectRequest request = new JSONObjectRequest(
@@ -53,7 +53,7 @@ public class Listeners {
 			public void onSuccess(JSONObject response) {
 				
 				switch(activity.getSourceType()) {
-				case Activity.TYPE_CREATE_FRIENDSHIP:
+				case UserActivity.TYPE_CREATE_FRIENDSHIP:
 					Bundle bundle = new Bundle();
 					bundle.putString(UserHomeFragment.EXTRA_THIS_USER, response.toString());
 					Intent intent = new Intent(context, RootActivity.class);
@@ -62,10 +62,10 @@ public class Listeners {
 					((BaseActivity) view.getContext()).changePage(intent);
 					break;
 					
-				case Activity.TYPE_CREATE_COMMENT:
-				case Activity.TYPE_CREATE_LIKING:
-				case Activity.TYPE_CREATE_ROOT_SONG:
-				case Activity.TYPE_CREATE_LEAF_SONG:
+				case UserActivity.TYPE_CREATE_COMMENT:
+				case UserActivity.TYPE_CREATE_LIKING:
+				case UserActivity.TYPE_CREATE_ROOT_SONG:
+				case UserActivity.TYPE_CREATE_LEAF_SONG:
 					if (view != null) {
 						Gson gson = Utility.getGsonInstance();
 						Song song = gson.fromJson(response.toString(), Song.class);
@@ -81,14 +81,14 @@ public class Listeners {
 			
 			public void onFail() {
 				switch(activity.getSourceType()) {
-				case Activity.TYPE_CREATE_FRIENDSHIP:
+				case UserActivity.TYPE_CREATE_FRIENDSHIP:
 					Toast.makeText(context, context.getString(R.string.t_alert_unknown_user), Toast.LENGTH_SHORT).show();
 					break;
 					
-				case Activity.TYPE_CREATE_COMMENT:
-				case Activity.TYPE_CREATE_LIKING:
-				case Activity.TYPE_CREATE_ROOT_SONG:
-				case Activity.TYPE_CREATE_LEAF_SONG:
+				case UserActivity.TYPE_CREATE_COMMENT:
+				case UserActivity.TYPE_CREATE_LIKING:
+				case UserActivity.TYPE_CREATE_ROOT_SONG:
+				case UserActivity.TYPE_CREATE_LEAF_SONG:
 					Toast.makeText(context, context.getString(R.string.t_alert_deleted_song), Toast.LENGTH_SHORT).show();
 					break;
 					
@@ -97,16 +97,16 @@ public class Listeners {
 				}
 			}
 			
-			private String getUrl(Activity activity) {
+			private String getUrl(UserActivity activity) {
 				switch(activity.getSourceType()) {
-				case Activity.TYPE_CREATE_FRIENDSHIP:
+				case UserActivity.TYPE_CREATE_FRIENDSHIP:
 					return "users/" + activity.getUserId() + "?req[]=profile";
 					
-				case Activity.TYPE_CREATE_COMMENT:
-				case Activity.TYPE_CREATE_LIKING:
+				case UserActivity.TYPE_CREATE_COMMENT:
+				case UserActivity.TYPE_CREATE_LIKING:
 					return "songs/" + activity.getParentId() + "?req[]=full";
-				case Activity.TYPE_CREATE_ROOT_SONG:
-				case Activity.TYPE_CREATE_LEAF_SONG:
+				case UserActivity.TYPE_CREATE_ROOT_SONG:
+				case UserActivity.TYPE_CREATE_LEAF_SONG:
 					return "songs/" + activity.getSourceId() + "?req[]=full";
 					
 				default:

@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.myandb.singsong.R;
 import com.myandb.singsong.event.Listeners;
 import com.myandb.singsong.image.ImageHelper;
-import com.myandb.singsong.model.Activity;
+import com.myandb.singsong.model.UserActivity;
 import com.myandb.singsong.model.Notification;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.secure.Authenticator;
@@ -33,7 +33,7 @@ public class NotificationAdapter extends HolderAdapter<Notification, Notificatio
 
 	@Override
 	public void onBindViewHolder(Context context, NotificationHolder viewHolder, Notification notification, int position) {
-		final Activity activity = notification.getActivity();
+		final UserActivity activity = notification.getActivity();
 		if (activity == null) {
 			return;
 		}

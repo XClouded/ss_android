@@ -1,9 +1,7 @@
 package com.myandb.singsong.activity;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.Window;
@@ -31,19 +29,9 @@ public class UpActivity extends BaseActivity {
 		
 		super.onCreate(savedInstanceState);
 		
-		try {
-			ActionBar actionBar = getSupportActionBar();
-			actionBar.setHomeButtonEnabled(true);
-			actionBar.setDisplayHomeAsUpEnabled(true);
-			
-			Drawable drawable = getResources().getDrawable(R.drawable.ic_action_back);
-			drawable.setAlpha(255);
-			actionBar.setHomeAsUpIndicator(drawable);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
 		setContentView(R.layout.content);
+		
+		configureActionBar();
 		
 		replaceContentFragmentFromIntent(getIntent());
 	}
@@ -55,11 +43,25 @@ public class UpActivity extends BaseActivity {
 				WindowManager.LayoutParams.FLAG_FULLSCREEN
 		);
 	}
+	
+	private void configureActionBar() {
+		if (isFullScreen) {
+			return;
+		}
+		
+		try {
+			getSupportActionBar().setHomeAsUpIndicator(getBackButtonDrawable());
+		} catch (Exception e) {
+			// action bar is hidden
+		}
+	}
 
 	@Override
 	public void onBackPressed() {
 		if (getContentFragment() instanceof BaseFragment) {
 			((BaseFragment) getContentFragment()).onBackPressed();
+		} else {
+			super.onBackPressed();
 		}
 	}
 

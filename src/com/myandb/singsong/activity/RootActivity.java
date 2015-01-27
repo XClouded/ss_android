@@ -20,7 +20,6 @@ import com.myandb.singsong.widget.SlidingPlayerLayout;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
@@ -29,7 +28,7 @@ import android.support.v4.app.FragmentManager.OnBackStackChangedListener;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 
-public class RootActivity extends BaseActivity {
+public class RootActivity extends BaseActivity implements OnBackStackChangedListener {
 	
 	public static final String SAVED_STATE_ACTION_BAR_HIDDEN = "saved_state_action_bar_hidden";
 	public static final String EXTRA_NOTICE = "notice";
@@ -38,8 +37,6 @@ public class RootActivity extends BaseActivity {
 	private SlidingMenu drawer;
 	private SlidingPlayerLayout slidingPlayerLayout;
 	private DrawerFragment drawerFragment;
-	private Drawable backDrawable;
-	private Drawable homeDrawable;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +46,7 @@ public class RootActivity extends BaseActivity {
 		
 		initializePreference();
 		
-		configureActionBar();
+		addOnBackStackChangedListener();
 		
 		configureSlidingPlayer();
 		
@@ -61,10 +58,7 @@ public class RootActivity extends BaseActivity {
 		
 		showUnreadLatestNotice(getIntent());
 		
-		Intent intent = getIntent();
-		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, HomeFragment.class.getName());
-		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_ROOT, true);
-		changePage(intent);
+		setHomeFragment(getIntent());
 	}
 
 	private void initializePreference() {
@@ -82,32 +76,19 @@ public class RootActivity extends BaseActivity {
 		return !preferences.contains(newPreferenceKey);
 	}
 	
-	private void configureActionBar() {
-		ActionBar actionBar = getSupportActionBar();
-		actionBar.setHomeButtonEnabled(true);
-		actionBar.setDisplayHomeAsUpEnabled(true);
-		
-		FragmentManager manager = getSupportFragmentManager();
-		manager.addOnBackStackChangedListener(onBackStackChangedListener);
-		
-		homeDrawable = getResources().getDrawable(R.drawable.ic_action_drawer);
-		backDrawable = getResources().getDrawable(R.drawable.ic_action_back);
+	private void addOnBackStackChangedListener() {
+		getSupportFragmentManager().addOnBackStackChangedListener(this);
 	}
-	
-	private OnBackStackChangedListener onBackStackChangedListener = new OnBackStackChangedListener() {
-		
-		@Override
-		public void onBackStackChanged() {
-			ActionBar actionBar = getSupportActionBar();
-			FragmentManager manager = getSupportFragmentManager();
-			if (manager.getBackStackEntryCount() > 1) {
-				backDrawable.setAlpha(255);
-				actionBar.setHomeAsUpIndicator(backDrawable);
-			} else {
-				actionBar.setHomeAsUpIndicator(homeDrawable);
-			}
+
+	@Override
+	public void onBackStackChanged() {
+		ActionBar actionBar = getSupportActionBar();
+		if (hasNoBackStackedFragment()) {
+			actionBar.setHomeAsUpIndicator(getHomeButtonDrawable());
+		} else {
+			actionBar.setHomeAsUpIndicator(getBackButtonDrawable());
 		}
-	};
+	}
 	
 	private void configureSlidingPlayer() {
 		final int panelHeight = getResources().getDimensionPixelSize(R.dimen.player_drag_panel_height);
@@ -149,7 +130,7 @@ public class RootActivity extends BaseActivity {
 		try {
 			GCMRegistrar.checkDevice(this);
 			GCMRegistrar.checkManifest(this);
-			String registrationId = GCMRegistrar.getRegistrationId(this);
+			final String registrationId = GCMRegistrar.getRegistrationId(this);
 			
 			if ("".equals(registrationId)) {
 				GCMRegistrar.register(this, GCMIntentService.PROJECT_ID);
@@ -179,8 +160,8 @@ public class RootActivity extends BaseActivity {
 	
 	private boolean isUnreadLatestNotice(int latestNoticeId) {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-		String key = getString(R.string.key_read_notice_id);
-		int readNoticeId = preferences.getInt(key, 0);
+		final String key = getString(R.string.key_read_notice_id);
+		final int readNoticeId = preferences.getInt(key, 0);
 		return latestNoticeId > readNoticeId;
 	}
 	
@@ -210,14 +191,20 @@ public class RootActivity extends BaseActivity {
 	
 	private void saveLatestNoticeId(int latestNoticeId) {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-		String key = getString(R.string.key_read_notice_id);
+		final String key = getString(R.string.key_read_notice_id);
 		preferences.edit().putInt(key, latestNoticeId).commit();
+	}
+	
+	private void setHomeFragment(Intent intent) {
+		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, HomeFragment.class.getName());
+		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_ROOT, true);
+		changePage(intent);
 	}
 
 	@Override
-	protected void onDestroy() {
-		slidingPlayerLayout.onDestroy();
-		super.onDestroy();
+	protected void onResumeFragments() {
+		super.onResumeFragments();
+		updateDrawer();
 	}
 
 	@Override
@@ -298,18 +285,16 @@ public class RootActivity extends BaseActivity {
 		}
 	}
 	
-	public void restartActivity() {
-		Intent intent = new Intent(this, RootActivity.class);
-		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, HomeFragment.class.getName());
-		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_ROOT, true);
-		startActivity(intent);
-	}
-	
 	public void updateDrawer() {
 		if (drawerFragment != null && drawerFragment.isAdded()) {
 			drawerFragment.notifyDataChanged();
 		}
+	}
+
+	@Override
+	protected void onDestroy() {
+		slidingPlayerLayout.onDestroy();
+		super.onDestroy();
 	}
 
 }

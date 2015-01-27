@@ -106,7 +106,7 @@ public class Encoder extends AsyncTask<Track, Integer, Exception> {
 		super.onProgressUpdate(values);
 		
 		if (!interrupted && progressListener != null) {
-			progressListener.done(values[0]);
+			progressListener.onProgress(values[0]);
 		}
 	}
 
