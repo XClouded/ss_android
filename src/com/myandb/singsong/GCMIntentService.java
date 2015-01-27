@@ -124,6 +124,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 				}
 				
 			});
+		} else {
 			Bitmap bitmap = getIconBitmap(R.drawable.user_character);
 			submitNotification(bitmap, creator, message);
 		}
