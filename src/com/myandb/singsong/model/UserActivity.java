@@ -3,7 +3,9 @@ package com.myandb.singsong.model;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Activity extends Model {
+import com.myandb.singsong.secure.Authenticator;
+
+public class UserActivity extends Model {
 	
 	public static final int TYPE_UPDATE_NICKNAME = 1;
 	public static final int TYPE_UPDATE_PHOTO = 2;
@@ -55,6 +57,12 @@ public class Activity extends Model {
 				return new JSONObject();
 			}
 		}
+	}
+	
+	public String getMessage() {
+		Notification notification = new Notification(this);
+		User currentUser = Authenticator.getUser();
+		return notification.getContents(currentUser);
 	}
 	
 }

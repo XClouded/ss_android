@@ -116,4 +116,8 @@ public class SelectRecordModeFragment extends BaseFragment {
 	@Override
 	protected void onDataChanged() {}
 
+	@Override
+	public boolean isActionBarEnabled() {
+		return false;
+	}
 }

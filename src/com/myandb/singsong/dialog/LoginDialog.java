@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.RootActivity;
+import com.myandb.singsong.dialog.JoinDialog.OnJoinCompleteListener;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.JSONObjectRequest;
 import com.myandb.singsong.net.JSONErrorListener;
@@ -41,17 +42,14 @@ public class LoginDialog extends BaseDialog {
 	private Button btnToJoin;
 	private Button btnFacebook;
 	private TextView tvFindPassword;
-	private RootActivity activity;
 	private JoinDialog joinDialog;
 	private SimpleFacebook simpleFacebook;
+	private Activity activity;
 
 	@Override
 	protected void initialize(Activity activity) {
 		setProgressDialogMessage(getString(R.string.progress_logining));
-		
-		if (activity instanceof RootActivity) {
-			this.activity = (RootActivity) activity;
-		}
+		this.activity = activity;
 	}
 
 	@Override
@@ -145,6 +143,13 @@ public class LoginDialog extends BaseDialog {
 	private void showJoinDialog() {
 		if (joinDialog == null) {
 			joinDialog = new JoinDialog();
+			joinDialog.setOnJoinCompleteListener(new OnJoinCompleteListener() {
+				
+				@Override
+				public void onJoin() {
+					onLoginComplete();
+				}
+			});
 		}
 		joinDialog.show(getChildFragmentManager(), "");
 	}
@@ -229,9 +234,11 @@ public class LoginDialog extends BaseDialog {
 	}
 
 	public void onLoginComplete() {
+		if (activity instanceof RootActivity) {
+			((RootActivity) activity).updateDrawer();
+		}
 		dismissProgressDialog();
 		dismiss();
-		activity.restartActivity();
 	}
 	
 	public void onLoginError() {
@@ -245,17 +252,10 @@ public class LoginDialog extends BaseDialog {
 		etPassword.setText("");
 	}
 	
-	private void dismissJoinDialog() {
-		if (joinDialog != null) {
-			joinDialog.dismiss();
-		}
-	}
-	
 	@Override
 	public void dismiss() {
 		super.dismiss();
 		clearTextFromAllEditText();
-		dismissJoinDialog();
 	}
 
 }

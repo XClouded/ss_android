@@ -21,7 +21,7 @@ public class OnProgressWeakListener<T> implements OnProgressListener {
 	}
 	
 	@Override
-	public void done(Integer progress) {
+	public void onProgress(Integer progress) {
 		T reference = weakReference.get();
 		
 		if (reference != null) {

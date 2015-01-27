@@ -16,9 +16,7 @@ import com.myandb.singsong.audio.Track;
 import com.myandb.singsong.dialog.HeadsetDialog;
 import com.myandb.singsong.dialog.LoadingDialog;
 import com.myandb.singsong.event.OnCompleteListener;
-import com.myandb.singsong.event.OnCompleteWeakListener;
 import com.myandb.singsong.event.OnProgressListener;
-import com.myandb.singsong.event.OnProgressWeakListener;
 import com.myandb.singsong.event.WeakRunnable;
 import com.myandb.singsong.image.BlurAsyncTask;
 import com.myandb.singsong.image.ImageHelper;
@@ -26,6 +24,7 @@ import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Song;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.DownloadManager;
+import com.myandb.singsong.net.DownloadManager.OnDownloadListener;
 import com.myandb.singsong.receiver.HeadsetReceiver;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.service.SongUploadService;
@@ -84,7 +83,8 @@ public class KaraokeFragment extends BaseFragment {
 	private Song parentSong;
 	private Recorder recorder;
 	private PcmPlayer player;
-	private DownloadManager musicDownloader;
+	private DownloadManager audioDownload;
+	private DownloadManager lrcDownload;
 	private Decoder decoder;
 	private HeadsetReceiver receiver;
 	private LrcDisplayer lrcDisplayer;
@@ -287,35 +287,50 @@ public class KaraokeFragment extends BaseFragment {
 	private void downloadDatas() {
 		loadingDialog.show(getChildFragmentManager(), "");
 		
-		DownloadManager lrcDownloader = new DownloadManager();
-		lrcDownloader.start(
-				music.getLrcUrl(), lyricFile,
-				new OnLyricDownloadCompleteListener(this)
-		);
+		lrcDownload = new DownloadManager();
+		lrcDownload.start(music.getLrcUrl(), lyricFile, lyricDownloadListener);
 		
-		musicDownloader = new DownloadManager();
-		musicDownloader.start(
-				getAudioUrl(), musicOggFile, 
-				new OnAudioDownloadCompleteListener(this), 
-				new OnAudioDownloadProgressListener(this)
-		);
+		audioDownload = new DownloadManager();
+		audioDownload.start(getAudioUrl(), musicOggFile, audioDownloadListener);
 	}
 	
-	private static class OnLyricDownloadCompleteListener extends OnCompleteWeakListener<KaraokeFragment> {
+	private OnDownloadListener lyricDownloadListener = new OnDownloadListener() {
 
-		public OnLyricDownloadCompleteListener(KaraokeFragment reference) {
-			super(reference);
+		@Override
+		public void onComplete(File file) {
+			super.onComplete(file);
+			onLyricDownloadSuccess();
 		}
 
 		@Override
-		public void filteredDone(KaraokeFragment reference, Exception e) {
-			if (e == null) {
-				reference.onLyricDownloadSuccess();
-			} else {
-				reference.onLyricDownloadFailed();
-			}
+		public void onError(Exception exception) {
+			super.onError(exception);
+			onLyricDownloadFailed();
 		}
-	}
+		
+	};
+	
+	private OnDownloadListener audioDownloadListener = new OnDownloadListener() {
+
+		@Override
+		public void onComplete(File file) {
+			super.onComplete(file);
+			onAudioDownloadSuccess();
+		}
+
+		@Override
+		public void onProgress(Integer progress) {
+			super.onProgress(progress);
+			updateLoadingDialog(progress);
+		}
+
+		@Override
+		public void onError(Exception exception) {
+			super.onError(exception);
+			onAudioDownloadFailed();
+		}
+		
+	};
 	
 	public void onLyricDownloadSuccess() {
 		try {
@@ -376,23 +391,6 @@ public class KaraokeFragment extends BaseFragment {
 		finish(getActivity(), getString(R.string.t_critical_download_lyric_error));
 	}
 	
-	private static class OnAudioDownloadCompleteListener extends OnCompleteWeakListener<KaraokeFragment> {
-
-		public OnAudioDownloadCompleteListener(KaraokeFragment reference) {
-			super(reference);
-		}
-
-		@Override
-		public void filteredDone(KaraokeFragment reference, Exception e) {
-			if (e == null) {
-				reference.onAudioDownloadSuccess();
-			} else {
-				reference.onAudioDownloadFailed();
-			}
-		}
-		
-	}
-	
 	public void onAudioDownloadSuccess() {
 		setupLoadingDialogForDecode();
 		startDecoding();
@@ -404,19 +402,6 @@ public class KaraokeFragment extends BaseFragment {
 	
 	public void onAudioDownloadFailed() {
 		finish(getActivity(), getString(R.string.t_critical_download_audio_error));
-	}
-	
-	private static class OnAudioDownloadProgressListener extends OnProgressWeakListener<KaraokeFragment> {
-
-		public OnAudioDownloadProgressListener(KaraokeFragment reference) {
-			super(reference);
-		}
-
-		@Override
-		public void filteredDone(KaraokeFragment reference, Integer progress) {
-			reference.updateLoadingDialog(progress);
-		}
-		
 	}
 	
 	public void updateLoadingDialog(Integer progress) {
@@ -450,7 +435,7 @@ public class KaraokeFragment extends BaseFragment {
 		decoder.setOnProgressListener(new OnProgressListener() {
 			
 			@Override
-			public void done(final Integer progress) {
+			public void onProgress(final Integer progress) {
 				if (loadingDialog == null) {
 					return;
 				}
@@ -770,9 +755,14 @@ public class KaraokeFragment extends BaseFragment {
 	public void onDestroy() {
 		super.onDestroy();
 		
-		if (musicDownloader != null) {
-			musicDownloader.stop();
-			musicDownloader = null;
+		if (lrcDownload != null) {
+			lrcDownload.stop();
+			lrcDownload = null;
+		}
+		
+		if (audioDownload != null) {
+			audioDownload.stop();
+			audioDownload = null;
 		}
 		
 		if (decoder != null) {
@@ -820,6 +810,11 @@ public class KaraokeFragment extends BaseFragment {
 	@Override
 	public void onBackPressed() {
 		return;
+	}
+
+	@Override
+	public boolean isActionBarEnabled() {
+		return false;
 	}
 
 }
