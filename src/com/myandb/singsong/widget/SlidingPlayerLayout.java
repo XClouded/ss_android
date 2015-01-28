@@ -8,7 +8,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import android.graphics.Bitmap;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -48,7 +47,6 @@ import com.myandb.singsong.dialog.ShareDialog;
 import com.myandb.singsong.event.ActivateOnlyClickListener;
 import com.myandb.singsong.event.MemberOnlyClickListener;
 import com.myandb.singsong.event.WeakRunnable;
-import com.myandb.singsong.image.BlurAsyncTask;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Comment;
 import com.myandb.singsong.model.Model;
@@ -69,9 +67,7 @@ import com.myandb.singsong.util.PlayCounter;
 import com.myandb.singsong.util.StringFormatter;
 import com.myandb.singsong.util.Utility;
 import com.nineoldandroids.view.ViewHelper;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
+import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 public class SlidingPlayerLayout extends SlidingUpPanelLayout {
@@ -766,32 +762,10 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	}
 	
 	private void displayBackgroundImage(Song song) {
-		String url = song.getMusic().getAlbumPhotoUrl();
-		ImageLoader.getInstance().displayImage(url, ivBackground, imageLoadingListener);
-	}
-	
-	private ImageLoadingListener imageLoadingListener = new ImageLoadingListener() {
-
-		@Override
-		public void onLoadingCancelled(String arg0, View arg1) {}
-
-		@Override
-		public void onLoadingComplete(String url, View imageView, Bitmap bitmap) {
-			setBackgroundBlurImage(bitmap, (ImageView) imageView);
-		}
-
-		@Override
-		public void onLoadingFailed(String arg0, View arg1, FailReason arg2) {}
-
-		@Override
-		public void onLoadingStarted(String arg0, View imageView) {}
-		
-	};
-	
-	private void setBackgroundBlurImage(Bitmap bitmap, ImageView imageView) {
-		BlurAsyncTask blurTask = new BlurAsyncTask();
-		blurTask.setImageView(imageView);
-		blurTask.execute(bitmap);
+		final String url = song.getMusic().getAlbumPhotoUrl();
+		final ImageSize imageSize = new ImageSize(100, 150);
+		final int radius = 5;
+		ImageHelper.displayBlurPhoto(url, ivBackground, imageSize, radius);
 	}
 	
 	private void displaySongMessage(Song song) {

@@ -120,6 +120,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 				public void onComplete(File file) {
 					super.onComplete(file);
 					Bitmap bitmap = getIconBitmap(file);
+					file.delete();
 					submitNotification(bitmap, creator, message);
 				}
 				

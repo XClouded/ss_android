@@ -18,7 +18,6 @@ import com.myandb.singsong.dialog.LoadingDialog;
 import com.myandb.singsong.event.OnCompleteListener;
 import com.myandb.singsong.event.OnProgressListener;
 import com.myandb.singsong.event.WeakRunnable;
-import com.myandb.singsong.image.BlurAsyncTask;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Song;
@@ -39,14 +38,11 @@ import com.myandb.singsong.util.Utility;
 import com.myandb.singsong.util.LrcDisplayer.OnTypeChangeListener;
 import com.myandb.singsong.widget.CountViewFactory;
 import com.myandb.singsong.widget.SlideAnimation;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
+import com.nostra13.universalimageloader.core.assist.ImageSize;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -579,31 +575,10 @@ public class KaraokeFragment extends BaseFragment {
 	}
 
 	private void displayBackgroundImage(Music music) {
-		ImageLoader.getInstance().displayImage(music.getAlbumPhotoUrl(), ivBackground, imageLoadingListener);
-	}
-	
-	private ImageLoadingListener imageLoadingListener = new ImageLoadingListener() {
-
-		@Override
-		public void onLoadingCancelled(String arg0, View arg1) {}
-
-		@Override
-		public void onLoadingComplete(String url, View imageView, Bitmap bitmap) {
-			setBackgroundBlurImage(bitmap, (ImageView) imageView);
-		}
-
-		@Override
-		public void onLoadingFailed(String arg0, View arg1, FailReason arg2) {}
-
-		@Override
-		public void onLoadingStarted(String arg0, View imageView) {}
-		
-	};
-	
-	private void setBackgroundBlurImage(Bitmap bitmap, ImageView imageView) {
-		BlurAsyncTask blurTask = new BlurAsyncTask();
-		blurTask.setImageView(imageView);
-		blurTask.execute(bitmap);
+		final String url = music.getAlbumPhotoUrl();
+		final ImageSize imageSize = new ImageSize(100, 150);
+		final int radius = 5;
+		ImageHelper.displayBlurPhoto(url, ivBackground, imageSize, radius);
 	}
 	
 	private void displayProfile(User user, TextView tvNickname, ImageView ivUserPhoto) {
