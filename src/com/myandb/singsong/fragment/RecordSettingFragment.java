@@ -290,53 +290,60 @@ public class RecordSettingFragment extends BaseFragment {
 				
 			case R.id.ll_upload:
 				Track recordTrack = player.getTrack("record");
-				if (Recorder.isValidRecordingTime(recordTrack.getSourceDuration())) {
-					vRestart.setEnabled(false);
-					vExit.setEnabled(false);
-					v.setEnabled(false);
-					
-					if (isFacebookPosting) {
-						if (getSimpleFacebook().isLogin()) {
-							uploadImageIfExist();
-						} else {
-							getSimpleFacebook().login(new OnLoginListener() {
-								
-								@Override
-								public void onFail(String reason) {
-									uploadImageIfExist();
-								}
-								
-								@Override
-								public void onException(Throwable throwable) {
-									uploadImageIfExist();
-								}
-								
-								@Override
-								public void onThinking() {}
-								
-								@Override
-								public void onNotAcceptingPermissions(Type type) {
-									uploadImageIfExist();
-								}
-								
-								@Override
-								public void onLogin() {
-									uploadImageIfExist();
-								}
-							});
-						}
-					} else {
-						uploadImageIfExist();
-					}
-				} else {
+				if (!Recorder.isValidRecordingTime(recordTrack.getSourceDuration())) {
 					makeToast(R.string.t_alert_song_length_validation_failed);
+					return;
 				}
-				break;
+				
+				vRestart.setEnabled(false);
+				vExit.setEnabled(false);
+				v.setEnabled(false);
+				
+				if (isFacebookPosting && !getSimpleFacebook().isLogin()) {
+					getSimpleFacebook().login(new OnLoginListener() {
+						
+						@Override
+						public void onFail(String reason) {
+							isFacebookPosting = false;
+							uploadImageIfExist();
+						}
+						
+						@Override
+						public void onException(Throwable throwable) {
+							isFacebookPosting = false;
+							uploadImageIfExist();
+						}
+						
+						@Override
+						public void onThinking() {}
+						
+						@Override
+						public void onNotAcceptingPermissions(Type type) {
+							isFacebookPosting = false;
+							uploadImageIfExist();
+						}
+						
+						@Override
+						public void onLogin() {
+							uploadImageIfExist();
+						}
+					});
+					return;
+				}
+				
+				uploadImageIfExist();
+				return;
+				
 			}
 		}
 	};
 	
 	private void uploadImageIfExist() {
+		if (!isAdded()) {
+			reportExceptionOnAnalytics("RecordSettingFragment", "uploadImageIfExist fragment is not added");
+			return;
+		}
+		
 		setProgressDialogMessage(getString(R.string.progress_uploading));
 		showProgressDialog();
 		
