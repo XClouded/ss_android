@@ -8,7 +8,7 @@ import android.graphics.Bitmap.Config;
 import com.myandb.singsong.R;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
-import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
+import com.nostra13.universalimageloader.cache.memory.impl.LRULimitedMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
@@ -42,10 +42,11 @@ public class ImageLoaderConfig {
 		
 		ImageLoaderConfiguration.Builder builder = new ImageLoaderConfiguration.Builder(context);
 		builder.threadPoolSize(threadPoolSize)
-			.memoryCache(new LruMemoryCache(memoryCacheSize))
+			.memoryCache(new LRULimitedMemoryCache(memoryCacheSize))
 			.diskCache(new UnlimitedDiskCache(cacheDir))
 			.diskCacheSize(diskCacheSize)
 			.diskCacheFileNameGenerator(new HashCodeFileNameGenerator())
+			.diskCacheExtraOptions(480, 320, null)
 			.denyCacheImageMultipleSizesInMemory()
 			.tasksProcessingOrder(QueueProcessingType.LIFO)
 			.defaultDisplayImageOptions(optionBuilder.build());
