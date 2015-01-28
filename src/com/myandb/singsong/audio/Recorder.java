@@ -30,7 +30,7 @@ public class Recorder extends AudioRecord {
 	
 	private PcmPlayer player;
 	private AudioContext audioContext;
-//	private UGen autoGainController;
+	private UGen autoGainController;
 	private UGen micInput;
 	private UGen postCompressor;
 	private UGen reverb;
@@ -70,7 +70,7 @@ public class Recorder extends AudioRecord {
 		micInput = instantiateMicInput(context);
 		UGen highPassFilter = instantiateHighPassFilter(context);
 		UGen lowPassFilter = instantiateLowPassFilter(context);
-//		autoGainController = instantiateAutoGainController(context);
+		autoGainController = instantiateAutoGainController(context);
 		UGen preCompressor = instantiatePreCompressor(context);
 		UGen multiplier = instantiateMultiplier(context);
 		postCompressor = instantiatePostCompressor(context);
@@ -78,8 +78,8 @@ public class Recorder extends AudioRecord {
 		
 		highPassFilter.addInput(micInput);
 		lowPassFilter.addInput(highPassFilter);
-//		autoGainController.addInput(lowPassFilter);
-		preCompressor.addInput(lowPassFilter);
+		autoGainController.addInput(lowPassFilter);
+		preCompressor.addInput(autoGainController);
 		multiplier.addInput(preCompressor);
 		postCompressor.addInput(multiplier);
 		reverb.addInput(postCompressor);
@@ -101,9 +101,9 @@ public class Recorder extends AudioRecord {
 		return lowPassFilter;
 	}
 	
-//	private UGen instantiateAutoGainController(AudioContext context) {
-//		return new AutoGainController(context);
-//	}
+	private UGen instantiateAutoGainController(AudioContext context) {
+		return new AutoGainController(context);
+	}
 	
 	private UGen instantiatePreCompressor(AudioContext context) {
 		Compressor preCompressor = new Compressor(context, 1);
@@ -208,12 +208,12 @@ public class Recorder extends AudioRecord {
 		
 		audioContext = null;
 		
-//		if (autoGainController != null) {
-//			if (autoGainController instanceof AutoGainController) {
-//				((AutoGainController) autoGainController).close();
-//			}
-//			autoGainController = null;
-//		}
+		if (autoGainController != null) {
+			if (autoGainController instanceof AutoGainController) {
+				((AutoGainController) autoGainController).close();
+			}
+			autoGainController = null;
+		}
 	}
     
     public boolean isHeadsetPlugged() {

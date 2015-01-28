@@ -6,6 +6,7 @@ import net.beadsproject.beads.core.UGen;
 
 public class AutoGainController extends UGen {
 	
+	private static final int CREATE_FAILED = -1;
 	private static final int ABSOLUTE_GATE = -48;
 	private static final float MAX_NEW_GAIN = 1.4f;
 	private static final int ITERATE_COUNT = 2;
@@ -16,6 +17,7 @@ public class AutoGainController extends UGen {
 	private float gainChunk;
 	private float[] pcm;
 	private float[] out;
+	private boolean createFailed;
 
 	static {
 		System.loadLibrary("r128-stream");
@@ -25,7 +27,12 @@ public class AutoGainController extends UGen {
 		super(context, 1, 1);
 		
 		try {
-			create(1, 16, 44100, 3); 
+			int code = create(1, 16, 44100, 3);
+			if (code == CREATE_FAILED) {
+				createFailed = true;
+			} else {
+				createFailed = false;
+			}
 		} catch (Exception e) {
 			e.printStackTrace(); 
 		}
@@ -41,6 +48,10 @@ public class AutoGainController extends UGen {
 	
 	@Override
 	public void calculateBuffer() {
+		if (createFailed) {
+			return;
+		}
+		
 		pcm = bufIn[0];
 		out = bufOut[0];
 		int length = pcm.length;

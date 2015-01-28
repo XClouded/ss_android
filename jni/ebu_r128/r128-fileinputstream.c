@@ -29,6 +29,7 @@
 typedef enum { false, true } bool;
 static s_ebu_r128 config;
 static short * pcmShorts;
+static bool isCreated;
 static bool isArrayInit;
 
 jint Java_com_myandb_singsong_audio_AutoGainController_create(
@@ -58,11 +59,10 @@ jint Java_com_myandb_singsong_audio_AutoGainController_create(
 	}
 
 	if (!ebu_r128_init(&config, channels, resolution, sample_rate, ebu_mode )) {
-		ebu_r128_destroy(&config);
-
-		return 0;
+		return -1;
 	}
 
+	isCreated = true;
 	isArrayInit = false;
 }
 
@@ -93,7 +93,6 @@ jfloat Java_com_myandb_singsong_audio_AutoGainController_process(
     int r = ebu_r128_process_samples(&config, pcmShorts, length);
 
     if (!r) {
-    	ebu_r128_destroy(&config);
 		return -1;
     }
 
@@ -120,9 +119,13 @@ void Java_com_myandb_singsong_audio_AutoGainController_destroy(
         jobject this
         )
 {
-	ebu_r128_destroy(&config);
+	if (isCreated == true) {
+		ebu_r128_destroy(&config);
 
-	free(pcmShorts);
+		free(pcmShorts);
+
+		isCreated = false;
+	}
 }
 
 
