@@ -1,5 +1,7 @@
 package com.myandb.singsong.audio;
 
+import java.util.Arrays;
+
 import android.media.AudioRecord;
 import net.beadsproject.beads.core.AudioContext;
 import net.beadsproject.beads.core.UGen;
@@ -18,6 +20,8 @@ public class MicInput extends UGen {
 	@Override
 	public void calculateBuffer() {
 		int read = read(bufIn);
+		
+		Arrays.fill(bufOut[0], 0f);
 		
 		for (int i = 0; i < read; i++) { 
 			bufOut[0][i] = bufIn[i] / (float) Short.MAX_VALUE;
