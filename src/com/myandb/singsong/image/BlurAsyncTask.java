@@ -8,8 +8,6 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileChannel.MapMode;
 
-import com.myandb.singsong.util.Logger;
-
 import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -34,7 +32,6 @@ public class BlurAsyncTask extends AsyncTask<Bitmap, Integer, Bitmap> {
 		if (config == null) {
 			bitmap = bitmap.copy(Config.RGB_565, true);
 		} else {
-			Logger.log(bitmap.getAllocationByteCount());
 			bitmap = convertToMutable(bitmap);
 		}
 		
