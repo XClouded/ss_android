@@ -703,7 +703,7 @@ public class KaraokeFragment extends BaseFragment {
 				data.putExtra(SongUploadService.EXTRA_CREATOR_ID, currentUser.getId());
 				data.putExtra(SongUploadService.EXTRA_MUSIC_ID, music.getId());
 				data.putExtra(SongUploadService.EXTRA_LYRIC_PART, lyricPart);
-				data.putExtra(SongUploadService.EXTRA_SAMPLE_SKIP_SECOND, lrcDisplayer.getSampleSkipSecond());
+				data.putExtra(SongUploadService.EXTRA_SAMPLE_SKIP_SECOND, getSampleSkipSecond());
 				
 				if (!isSolo()) {
 					data.putExtra(SongUploadService.EXTRA_PARENT_SONG_ID, parentSong.getId());
@@ -720,6 +720,15 @@ public class KaraokeFragment extends BaseFragment {
 
 		default:
 			break;
+		}
+	}
+	
+	private float getSampleSkipSecond() {
+		if (lrcDisplayer != null) {
+			return lrcDisplayer.getSampleSkipSecond();
+		} else {
+			reportExceptionOnAnalytics("KaraokeFragment", "onActivityReesult lrcDisplayer is null");
+			return 5f;
 		}
 	}
 

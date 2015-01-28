@@ -1,6 +1,10 @@
 package com.myandb.singsong.fragment;
 
+import java.util.HashMap;
+
 import com.android.volley.Request;
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.Fields;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
@@ -266,6 +270,23 @@ public abstract class BaseFragment extends Fragment {
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void reportUIActionOnAnalytics(String action, String label) {
+		reportOnAnalytics("UI Action", action, label);
+	}
+	
+	public void reportExceptionOnAnalytics(String action, String label) {
+		reportOnAnalytics("Exception", action, label);
+	}
+	
+	public void reportOnAnalytics(String category, String action, String label) {
+		HashMap<String, String> hitParameters = new HashMap<String, String>();
+		hitParameters.put(Fields.HIT_TYPE, com.google.analytics.tracking.android.HitTypes.EVENT);
+		hitParameters.put(Fields.EVENT_CATEGORY, category);
+		hitParameters.put(Fields.EVENT_ACTION, action);
+		hitParameters.put(Fields.EVENT_LABEL, label);
+		EasyTracker.getInstance(getActivity()).send(hitParameters);
 	}
 	
 	public boolean isActionBarEnabled() {
