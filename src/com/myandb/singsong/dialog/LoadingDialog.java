@@ -9,6 +9,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.myandb.singsong.R;
+import com.myandb.singsong.util.Reporter;
 import com.nineoldandroids.view.ViewHelper;
 
 public class LoadingDialog extends BaseDialog {
@@ -18,7 +19,9 @@ public class LoadingDialog extends BaseDialog {
 	private Button btnProgressControl;
 	private Button btnCancel;
 	private String titlePrefix;
+	
 	private boolean gaDismissed;
+	private boolean gaInflated;
 
 	@Override
 	protected void initialize(Activity activity) {
@@ -32,6 +35,8 @@ public class LoadingDialog extends BaseDialog {
 		tvProgressTitle = (TextView) view.findViewById(R.id.tv_progress_title);
 		btnProgressControl = (Button) view.findViewById(R.id.btn_progress_control);
 		btnCancel = (Button) view.findViewById(R.id.btn_cancel);
+		
+		gaInflated = true;
 	}
 
 	@Override
@@ -64,7 +69,11 @@ public class LoadingDialog extends BaseDialog {
 	
 	public void setControlButtonShown(boolean shown) {
 		if (btnProgressControl == null) {
-			reportExceptionOnAnalytics("LoadingDialog", "btnProgressControl is null, dismissed" + String.valueOf(gaDismissed));
+			Reporter.getInstance(getActivity()).reportExceptionOnAnalytics("LoadingDialog",
+					"btnProgressControl is null, dismissed: "
+					+ String.valueOf(gaDismissed)
+					+ " inflated: "
+					+ String.valueOf(gaInflated));
 			return;
 		}
 		
