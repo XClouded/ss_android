@@ -18,6 +18,7 @@ public class LoadingDialog extends BaseDialog {
 	private Button btnProgressControl;
 	private Button btnCancel;
 	private String titlePrefix;
+	private boolean gaDismissed;
 
 	@Override
 	protected void initialize(Activity activity) {
@@ -62,6 +63,11 @@ public class LoadingDialog extends BaseDialog {
 	}
 	
 	public void setControlButtonShown(boolean shown) {
+		if (btnProgressControl == null) {
+			reportExceptionOnAnalytics("LoadingDialog", "btnProgressControl is null, dismissed" + String.valueOf(gaDismissed));
+			return;
+		}
+		
 		if (btnProgressControl.isShown() == shown) {
 			return;
 		}
@@ -87,6 +93,7 @@ public class LoadingDialog extends BaseDialog {
 	
 	public void enableControlButton(boolean enabled) {
 		if (btnProgressControl != null) {
+			setControlButtonShown(true);
 			btnProgressControl.setEnabled(enabled);
 			
 			if (enabled) {
@@ -107,6 +114,12 @@ public class LoadingDialog extends BaseDialog {
 			tvProgressTitle.append(String.valueOf(progress));
 			tvProgressTitle.append("%");
 		}
+	}
+
+	@Override
+	public void dismiss() {
+		super.dismiss();
+		gaDismissed = true;
 	}
 	
 }
