@@ -19,12 +19,10 @@ import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.secure.Encryption;
 import com.myandb.singsong.util.Utility;
-import com.sromku.simple.fb.SimpleFacebook;
 import com.sromku.simple.fb.Permission.Type;
 import com.sromku.simple.fb.listeners.OnLoginListener;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
@@ -45,7 +43,6 @@ public class LoginDialog extends BaseDialog {
 	private Button btnFacebook;
 	private TextView tvFindPassword;
 	private JoinDialog joinDialog;
-	private SimpleFacebook simpleFacebook;
 	private Activity activity;
 
 	@Override
@@ -93,24 +90,12 @@ public class LoginDialog extends BaseDialog {
 		findHtml += Utility.getHtmlAnchor(urlBuilder.s("w").s("find_password").toString(), "비밀번호 찾기");
 		return Html.fromHtml(findHtml);
 	}
-	
-	@Override
-	public void onResume() {
-		super.onResume();
-		simpleFacebook = SimpleFacebook.getInstance(getActivity());
-	}
-
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		simpleFacebook.onActivityResult(getActivity(), requestCode, resultCode, data);
-		super.onActivityResult(requestCode, resultCode, data);
-	}
 
 	private View.OnClickListener facebookLoginClickListener = new View.OnClickListener() {
 		
 		@Override
 		public void onClick(View v) {
-			simpleFacebook.login(new OnLoginListener() {
+			getSimpleFacebook().login(new OnLoginListener() {
 				
 				@Override
 				public void onFail(String arg0) {}
@@ -127,7 +112,7 @@ public class LoginDialog extends BaseDialog {
 				@Override
 				public void onLogin() {
 					showProgressDialog();
-					Session session = simpleFacebook.getSession();
+					Session session = getSimpleFacebook().getSession();
 					loginByFacebook(session.getAccessToken());
 				}
 			});
