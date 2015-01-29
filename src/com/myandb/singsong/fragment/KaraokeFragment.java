@@ -32,6 +32,7 @@ import com.myandb.singsong.util.Lrc.Line.Type;
 import com.myandb.singsong.util.DynamicLrcDisplayer;
 import com.myandb.singsong.util.LrcDisplayer;
 import com.myandb.singsong.util.PlayCounter;
+import com.myandb.singsong.util.Reporter;
 import com.myandb.singsong.util.StaticLrcDisplayer;
 import com.myandb.singsong.util.StringFormatter;
 import com.myandb.singsong.util.Utility;
@@ -116,6 +117,8 @@ public class KaraokeFragment extends BaseFragment {
 	private View vUserWrapper;
 	private ProgressBar pbPlayProgress;
 	private TextSwitcher tsLyricStarter;
+	
+	private boolean gaLrcDisplayerCreated;
 
 	@Override
 	protected int getResourceId() {
@@ -340,6 +343,8 @@ public class KaraokeFragment extends BaseFragment {
 				.setWrapper((ViewGroup) vLyricWrapper)
 				.setOnTypeChangeListener(typeChangeListener)
 				.initialize();
+			
+			gaLrcDisplayerCreated = true;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -702,7 +707,9 @@ public class KaraokeFragment extends BaseFragment {
 		if (lrcDisplayer != null) {
 			return lrcDisplayer.getSampleSkipSecond();
 		} else {
-			reportExceptionOnAnalytics("KaraokeFragment", "onActivityReesult lrcDisplayer is null");
+			Reporter.getInstance(getActivity()).reportExceptionOnAnalytics("KaraokeFragment", 
+					"onActivityReesult lrcDisplayer is null, created "
+					+ String.valueOf(gaLrcDisplayerCreated));
 			return 5f;
 		}
 	}
