@@ -1,16 +1,14 @@
 package com.myandb.singsong.dialog;
 
-import java.util.HashMap;
-
 import com.android.volley.Request;
-import com.google.analytics.tracking.android.EasyTracker;
-import com.google.analytics.tracking.android.Fields;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
+import com.sromku.simple.fb.SimpleFacebook;
 
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.res.Resources.NotFoundException;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -26,6 +24,7 @@ public abstract class BaseDialog extends DialogFragment {
 	
 	private ProgressDialog progressDialog;
 	private CharSequence progressMessage;
+	private SimpleFacebook simpleFacebook;
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -161,22 +160,24 @@ public abstract class BaseDialog extends DialogFragment {
 		super.dismiss();
 		dismissProgressDialog();
 	}
-	
-	public void reportUIActionOnAnalytics(String action, String label) {
-		reportOnAnalytics("UI Action", action, label);
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		simpleFacebook = SimpleFacebook.getInstance(getActivity());
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		getSimpleFacebook().onActivityResult(getActivity(), requestCode, resultCode, data);
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 	
-	public void reportExceptionOnAnalytics(String action, String label) {
-		reportOnAnalytics("Exception", action, label);
-	}
-	
-	public void reportOnAnalytics(String category, String action, String label) {
-		HashMap<String, String> hitParameters = new HashMap<String, String>();
-		hitParameters.put(Fields.HIT_TYPE, com.google.analytics.tracking.android.HitTypes.EVENT);
-		hitParameters.put(Fields.EVENT_CATEGORY, category);
-		hitParameters.put(Fields.EVENT_ACTION, action);
-		hitParameters.put(Fields.EVENT_LABEL, label);
-		EasyTracker.getInstance(getActivity()).send(hitParameters);
+	public SimpleFacebook getSimpleFacebook() {
+		if (simpleFacebook == null) {
+			simpleFacebook = SimpleFacebook.getInstance(getActivity());
+		}
+		return simpleFacebook;
 	}
 
 	protected abstract int getResourceId();
