@@ -167,8 +167,10 @@ public class Recorder extends AudioRecord {
     }
 	
 	private void start() {
-		startRecording();
-		audioContext.start();
+		if (getRecordingState() == STATE_INITIALIZED) {
+			startRecording();
+			audioContext.start();
+		}
 	}
 	
 	private void setAudioContextInput() {

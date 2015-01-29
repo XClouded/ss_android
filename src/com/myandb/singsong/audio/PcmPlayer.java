@@ -146,13 +146,19 @@ public class PcmPlayer extends AudioTrack {
 	@Override
 	public void release() {
 		released = true;
-		service.shutdown();
-		service = null;
 		super.release();
+		if (service != null) {
+			service.shutdown();
+			service = null;
+		}
 	}
 
 	public boolean isPlaying() {
 		return getPlayState() == AudioTrack.PLAYSTATE_PLAYING;
+	}
+	
+	public boolean isReleased() {
+		return released;
 	}
 	
 	public long getDuration() {
@@ -241,9 +247,11 @@ public class PcmPlayer extends AudioTrack {
 		
 		private void stopPlayer() {
 			try {
-				player.flush();
-				if (player.isPlaying()) {
-					player.stop();
+				if (!player.isReleased()) {
+					player.flush();
+					if (player.isPlaying()) {
+						player.stop();
+					}
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

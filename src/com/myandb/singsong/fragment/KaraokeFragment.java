@@ -284,7 +284,7 @@ public class KaraokeFragment extends BaseFragment {
 	}
 	
 	private void downloadDatas() {
-		loadingDialog.show(getChildFragmentManager(), "");
+		loadingDialog.show(getChildFragmentManager(), loadingDialog.getClass().getName());
 		
 		lrcDownload = new DownloadManager();
 		lrcDownload.start(music.getLrcUrl(), lyricFile, lyricDownloadListener);
@@ -472,21 +472,31 @@ public class KaraokeFragment extends BaseFragment {
 	}
 	
 	public void prepareRecording() {
+		prepareRecording(true);
+	}
+	
+	private void prepareRecording(boolean dialog) {
 		if (receiver != null) {
 			if (receiver.isPlugged()) {
 				startRecordingWithHeadset();
 			} else {
-				getChildFragmentManager().beginTransaction()
-				.add(headsetDialog, "")
-				.commitAllowingStateLoss();
+				if (dialog) {
+					headsetDialog.show(getChildFragmentManager(), "");
+				} else {
+					startRecordingWithoutHeadset();
+				}
 			}
 		}
 	}
 
 	public void onHeadsetPlugged() {
-		if (headsetDialog.getDialog() != null) {
+		if (headsetDialog.getDialog() != null && headsetDialog.getDialog().isShowing()) {
 			headsetDialog.dismiss();
-			prepareRecording();
+			startRecordingWithHeadset();
+		} else {
+			if (recorder != null && recorder.isRecording()) {
+				stopRecording();
+			}
 		}
 	}
 	
@@ -499,8 +509,8 @@ public class KaraokeFragment extends BaseFragment {
 	private void stopRecording() {
 		if (recorder != null && recorder.isRecording()) {
 			recorder.stop();
+			stopAnimations();
 		}
-		stopAnimations();
 	}
 	
 	private void stopAnimations() {
@@ -692,7 +702,7 @@ public class KaraokeFragment extends BaseFragment {
 				getActivity().startService(data);
 				finish(getActivity(), null);
 			} else if (resultCode == Activity.RESULT_OK) {
-				prepareRecording();
+				prepareRecording(false);
 			} else if (resultCode == Activity.RESULT_CANCELED) {
 				finish(getActivity(), null);
 			}
