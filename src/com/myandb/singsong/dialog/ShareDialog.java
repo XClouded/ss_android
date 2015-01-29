@@ -13,6 +13,8 @@ import com.myandb.singsong.model.Song;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.util.Utility;
+import com.sromku.simple.fb.Permission.Type;
+import com.sromku.simple.fb.listeners.OnLoginListener;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -140,17 +142,35 @@ public class ShareDialog extends BaseDialog {
 	}
 	
 	private void publishFeedDialog() {
-	    Bundle params = new Bundle();
-	    params.putString("name", getString(R.string.app_name));
-	    params.putString("description", getShareContent());
-	    params.putString("link", getShareUrl());
-	    params.putString("picture", getPhotoUrl());
-
-	    WebDialog feedDialog = (
-	            new WebDialog.FeedDialogBuilder(getActivity(),
-	                    Session.getActiveSession(),
-	                    params)).build();
-	    feedDialog.show();
+		getSimpleFacebook().login(new OnLoginListener() {
+			
+			@Override
+			public void onFail(String reason) {}
+			
+			@Override
+			public void onException(Throwable throwable) {}
+			
+			@Override
+			public void onThinking() {}
+			
+			@Override
+			public void onNotAcceptingPermissions(Type type) {}
+			
+			@Override
+			public void onLogin() {
+				Bundle params = new Bundle();
+				params.putString("name", getString(R.string.app_name));
+				params.putString("description", getShareContent());
+				params.putString("link", getShareUrl());
+				params.putString("picture", getPhotoUrl());
+				
+				WebDialog feedDialog = (
+						new WebDialog.FeedDialogBuilder(getActivity(),
+								Session.getActiveSession(),
+								params)).build();
+				feedDialog.show();
+			}
+		});
 	}
 	
 	private void shareOnKakaotalk() {
@@ -175,4 +195,5 @@ public class ShareDialog extends BaseDialog {
 		sendIntent.setType("text/plain");
 		startActivity(sendIntent);
 	}
+	
 }
