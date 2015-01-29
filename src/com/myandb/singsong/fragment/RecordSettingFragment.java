@@ -340,7 +340,9 @@ public class RecordSettingFragment extends BaseFragment {
 	
 	private void uploadImageIfExist() {
 		if (!isAdded()) {
-			reportExceptionOnAnalytics("RecordSettingFragment", "uploadImageIfExist fragment is not added");
+			vRestart.setEnabled(true);
+			vExit.setEnabled(true);
+			vUpload.setEnabled(true);
 			return;
 		}
 		
