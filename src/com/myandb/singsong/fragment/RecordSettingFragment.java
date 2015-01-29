@@ -319,8 +319,10 @@ public class RecordSettingFragment extends BaseFragment {
 						
 						@Override
 						public void onNotAcceptingPermissions(Type type) {
-							isFacebookPosting = false;
-							uploadImageIfExist();
+							if (type.equals(Type.READ)) {
+								isFacebookPosting = false;
+								uploadImageIfExist();
+							}
 						}
 						
 						@Override
