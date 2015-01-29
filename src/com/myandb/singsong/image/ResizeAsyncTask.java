@@ -3,7 +3,6 @@ package com.myandb.singsong.image;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.commons.io.FileUtils;
@@ -80,7 +79,7 @@ public class ResizeAsyncTask extends AsyncTask<InputStream, Integer, Bitmap> {
 				
 				imageStream.close();
 				outputStream.close();
-			} catch (IOException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
 				datas = null;
