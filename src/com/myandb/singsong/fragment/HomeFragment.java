@@ -1,9 +1,6 @@
 package com.myandb.singsong.fragment;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -56,10 +53,10 @@ import android.widget.AdapterView.OnItemClickListener;
 public class HomeFragment extends BaseFragment {
 	
 	private TextView tvNotificationCount;
-	private TextView tvCollaboTop10Time;
 	private TextView tvTop10FirstLikeNum;
 	private TextView tvTop10FirstMusicInfo;
 	private TextView tvTop10FirstUserInfo;
+	private TextView tvSongCollaboratedMore;
 	private TextView tvRecentMusicMore;
 	private TextView tvPopularMusicMore;
 	private TextView tvCollaboArtistMore;
@@ -92,10 +89,10 @@ public class HomeFragment extends BaseFragment {
 
 	@Override
 	protected void onViewInflated(View view, LayoutInflater inflater) {
-		tvCollaboTop10Time = (TextView) view.findViewById(R.id.tv_collabo_top10_time);
 		tvTop10FirstLikeNum = (TextView) view.findViewById(R.id.tv_top10_first_like_num);
 		tvTop10FirstMusicInfo = (TextView) view.findViewById(R.id.tv_top10_first_music_info);
 		tvTop10FirstUserInfo = (TextView) view.findViewById(R.id.tv_top10_first_user_info);
+		tvSongCollaboratedMore = (TextView) view.findViewById(R.id.tv_song_collaborated_more);
 		tvRecentMusicMore = (TextView) view.findViewById(R.id.tv_recent_music_more);
 		tvPopularMusicMore = (TextView) view.findViewById(R.id.tv_popular_music_more);
 		tvCollaboArtistMore = (TextView) view.findViewById(R.id.tv_collabo_artist_more);
@@ -149,13 +146,9 @@ public class HomeFragment extends BaseFragment {
 			}
 		});
 		
+		tvSongCollaboratedMore.setOnClickListener(collaboratedMoreClickListener);
 		tvRecentMusicMore.setOnClickListener(musicMoreClickListener);
 		tvPopularMusicMore.setOnClickListener(musicMoreClickListener); 
-		
-		Date now = new Date();
-		SimpleDateFormat format = new SimpleDateFormat("k:00", Locale.KOREA);
-		String formattedTime = format.format(now);
-		tvCollaboTop10Time.setText(formattedTime + " ±‚¡ÿ");
 	}
 	
 	private void loadCollaboTop10() {
@@ -351,6 +344,19 @@ public class HomeFragment extends BaseFragment {
 			vgCollaboArtistContainer.addView(child);
 		}
 	}
+	
+	private OnClickListener collaboratedMoreClickListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			Bundle bundle = new Bundle();
+			bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_listen_action_title));
+			Intent intent = new Intent(getActivity(), RootActivity.class);
+			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
+			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, ListenHomeFragment.class.getName());
+			startFragment(intent);
+		}
+	};
 	
 	private OnClickListener musicMoreClickListener = new OnClickListener() {
 		

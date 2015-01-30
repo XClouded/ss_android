@@ -621,8 +621,8 @@ public class RecordSettingFragment extends BaseFragment {
 	public void onBackPressed() {}
 
 	@Override
-	public boolean isActionBarEnabled() {
-		return false;
+	public boolean isActionBarDisabled() {
+		return true;
 	}
 	
 	@Override

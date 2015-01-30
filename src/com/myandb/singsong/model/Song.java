@@ -144,8 +144,11 @@ public class Song extends Model {
 		if (isRoot()) {
 			return this;
 		} else {
-			song.setMusic(getMusic());
-			return song;
+			if (song != null) {
+				song.setMusic(getMusic());
+				return song;
+			}
+			return null;
 		}
 	}
 	

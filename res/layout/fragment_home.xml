@@ -30,12 +30,11 @@
                     android:text="@string/home_title_collabo_top10" />
 
                 <TextView
-                    android:id="@+id/tv_collabo_top10_time"
+                    android:id="@+id/tv_song_collaborated_more"
                     style="@style/TextViewLessImportant"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:visibility="gone"
-                    android:text="19:00 dsaf" />
+                    android:text="@string/more" />
             </RelativeLayout>
 
             <ImageView style="@style/DividerHorizontal" />

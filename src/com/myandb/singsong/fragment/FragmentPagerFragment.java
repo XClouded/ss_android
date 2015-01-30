@@ -38,9 +38,12 @@ public class FragmentPagerFragment extends BaseFragment {
 	@Override
 	protected void onArgumentsReceived(Bundle bundle) {
 		super.onArgumentsReceived(bundle);
-		launchItemNum = bundle.getInt(EXTRA_ITEM_NUM);
-		String className = bundle.getString(EXTRA_PAGER_ADAPTER);
-		pagerAdapter = instantiatePagerAdapterFromName(className);
+		
+		if (pagerAdapter == null) {
+			launchItemNum = bundle.getInt(EXTRA_ITEM_NUM);
+			String className = bundle.getString(EXTRA_PAGER_ADAPTER);
+			pagerAdapter = instantiatePagerAdapterFromName(className);
+		}
 	}
 	
 	private FragmentPagerAdapter instantiatePagerAdapterFromName(String className) {
@@ -63,7 +66,7 @@ public class FragmentPagerFragment extends BaseFragment {
 		}
 		return null;
 	}
-
+	
 	@Override
 	protected void initialize(Activity activity) {}
 	

@@ -25,11 +25,13 @@ import android.widget.Toast;
 public abstract class BaseFragment extends Fragment {
 	
 	public static final String EXTRA_FRAGMENT_TITLE = "fragment_title";
+	public static final String EXTRA_ACTIONBAR_DISABLED = "actionbar_disabled";
 	
 	private String title;
 	private ProgressDialog progressDialog;
 	private CharSequence progressMessage; 
 	private SimpleFacebook simpleFacebook;
+	private boolean actionbarDisabled;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -49,6 +51,7 @@ public abstract class BaseFragment extends Fragment {
 	
 	protected void onArgumentsReceived(Bundle bundle) {
 		title = bundle.getString(EXTRA_FRAGMENT_TITLE);
+		actionbarDisabled = bundle.getBoolean(EXTRA_ACTIONBAR_DISABLED);
 	}
 
 	@Override
@@ -91,7 +94,7 @@ public abstract class BaseFragment extends Fragment {
 	}
 
 	private void configureActionBar() {
-		if (!isActionBarEnabled()) {
+		if (isActionBarDisabled()) {
 			return;
 		}
 		
@@ -99,6 +102,7 @@ public abstract class BaseFragment extends Fragment {
 		setActionBarOverlay(false);
 		getSupportActionBar().setHomeButtonEnabled(true);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setDisplayShowCustomEnabled(false);
 		
 		if (isActionBarLogoEnabled()) {
 			setActionBarLogo(R.drawable.logo_actionbar);
@@ -294,8 +298,8 @@ public abstract class BaseFragment extends Fragment {
 		}
 	}
 	
-	public boolean isActionBarEnabled() {
-		return true;
+	public boolean isActionBarDisabled() {
+		return actionbarDisabled;
 	}
 	
 	public boolean isActionBarLogoEnabled() {

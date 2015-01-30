@@ -813,8 +813,8 @@ public class KaraokeFragment extends BaseFragment {
 	}
 
 	@Override
-	public boolean isActionBarEnabled() {
-		return false;
+	public boolean isActionBarDisabled() {
+		return true;
 	}
 
 }

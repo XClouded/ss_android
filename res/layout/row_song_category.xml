@@ -1,46 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="52dp" >
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/margin"
+    android:paddingBottom="@dimen/margin"
+    android:paddingLeft="@dimen/margin_big"
+    android:paddingRight="@dimen/margin_bigger"
+    android:background="@drawable/row_naked_selector" >
     
-    <ImageView
-        android:layout_width="52dp"
-        android:layout_height="match_parent"
-        android:src="@drawable/circle_primary_old"
-        android:layout_alignParentLeft="true" />
-    
-    <ImageView
-        android:layout_width="52dp"
-        android:layout_height="match_parent"
-        android:src="@drawable/circle_primary_old"
-        android:layout_alignParentRight="true" />
-    
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" 
-        android:paddingLeft="26dp"
-        android:paddingRight="26dp" >
-        
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@color/primary_old" />
+    <FrameLayout
+        android:id="@+id/layout_icon"
+        android:layout_width="@dimen/photo"
+        android:layout_height="@dimen/photo"
+        android:padding="@dimen/margin_tiny"
+        android:layout_marginRight="@dimen/margin_big"
+        android:layout_centerVertical="true"
+        android:background="@drawable/circle_primary_old" >
         
         <ImageView
             android:id="@+id/iv_category_image"
-            android:layout_width="70dp"
-            android:layout_height="52dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             style="@style/ImageViewBase" />
         
-        <TextView
-            android:id="@+id/tv_category_text"
-            android:layout_centerVertical="true"
-            android:layout_margin="0dp"
-            android:textColor="@color/white"
-            style="@style/TextViewTitle" />
-        
-    </RelativeLayout>
+    </FrameLayout>
+    
+    <ImageView
+        android:id="@+id/iv_category_selected"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_marginLeft="@dimen/margin"
+        android:visibility="invisible"
+        android:src="@drawable/ic_check"
+        style="@style/ImageViewBase" />
+    
+    <TextView
+        android:id="@+id/tv_category_title"
+        android:textSize="@dimen/text_title"
+        android:layout_toRightOf="@id/layout_icon"
+        android:layout_toLeftOf="@id/iv_category_selected"
+        android:layout_centerVertical="true"
+        style="@style/TextViewBase" />
     
 </RelativeLayout>

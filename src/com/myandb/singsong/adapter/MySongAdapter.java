@@ -1,5 +1,6 @@
 package com.myandb.singsong.adapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -22,6 +23,7 @@ import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Song;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.JustRequest;
+import com.myandb.singsong.widget.RoundedImageView;
 
 public class MySongAdapter extends HolderAdapter<Song, MySongAdapter.SongHolder> {
 	
@@ -32,6 +34,7 @@ public class MySongAdapter extends HolderAdapter<Song, MySongAdapter.SongHolder>
 	private final boolean isDeleted;
 	private Context context;
 	private Song selectedSong;
+	private List<Boolean> cornerRadius;
 	
 	public MySongAdapter() {
 		this(true, true);
@@ -42,6 +45,12 @@ public class MySongAdapter extends HolderAdapter<Song, MySongAdapter.SongHolder>
 		
 		this.isCurrentUser = isCurrentUser;
 		this.isDeleted = isDeleted;
+		
+		cornerRadius = new ArrayList<Boolean>();
+		cornerRadius.add(true);
+		cornerRadius.add(true);
+		cornerRadius.add(true);
+		cornerRadius.add(true);
 	}
 
 	@Override
@@ -71,61 +80,63 @@ public class MySongAdapter extends HolderAdapter<Song, MySongAdapter.SongHolder>
 		viewHolder.tvMusicInfo.append(music.getSingerName());
 		
 		viewHolder.vPrelistenControl.setOnClickListener(song.getSampleClickListener());
+		viewHolder.view.setOnClickListener(song.getPlayClickListener());
 		
 		if (!song.isRoot()) {
 			final Song parentSong = song.getParentSong();
 			final User parentUser = song.getParentUser();
 			
-			if (parentUser != null) {
-				viewHolder.vCollaboNumWrapper.setVisibility(View.GONE);
-				viewHolder.vPartnerPhotoWrapper.setVisibility(View.VISIBLE);
-				viewHolder.vPartnerWrapper.setVisibility(View.VISIBLE);
-				viewHolder.vChildrenWrapper.setVisibility(View.GONE);
-				viewHolder.ivPartnerImage.setLayoutParams(LL_FULL_SIZE_PARAMS);
-				
-				viewHolder.tvCreatorNickname.setText(parentUser.getNickname());
-				viewHolder.tvCreatorMessage.setText(parentSong.getCroppedMessage());
-				viewHolder.tvPartnerNickname.setText(creator.getNickname());
-				viewHolder.tvPartnerMessage.setText(song.getCroppedMessage());
-				
-				ImageHelper.displayPhoto(parentUser.getPhotoUrl(), viewHolder.ivCreatorPhoto);
-				ImageHelper.displayPhoto(parentSong.getPhotoUrl(), viewHolder.ivCreatorImage);
-				ImageHelper.displayPhoto(creator, viewHolder.ivPartnerPhoto);
-				ImageHelper.displayPhoto(song.getPhotoUrl(), viewHolder.ivPartnerImage);
-				
-				viewHolder.view.setOnClickListener(song.getPlayClickListener());
+			if (parentSong == null || parentUser == null) {
+				return;
 			}
+			
+			viewHolder.vCollaboNumWrapper.setVisibility(View.GONE);
+			viewHolder.vThisPhotoWrapper.setVisibility(View.VISIBLE);
+			viewHolder.vThisWrapper.setVisibility(View.VISIBLE);
+			viewHolder.vChildrenWrapper.setVisibility(View.GONE);
+			viewHolder.ivThisSongImage.setLayoutParams(LL_FULL_SIZE_PARAMS);
+			setCornerRadius(viewHolder.ivParentSongImage, false);
+			
+			viewHolder.tvParentUserNickname.setText(parentUser.getNickname());
+			viewHolder.tvParentSongMessage.setText(parentSong.getCroppedMessage());
+			viewHolder.tvThisUserNickname.setText(creator.getNickname());
+			viewHolder.tvThisSongMessage.setText(song.getCroppedMessage());
+			
+			ImageHelper.displayPhoto(parentUser.getPhotoUrl(), viewHolder.ivParentUserPhoto);
+			ImageHelper.displayPhoto(parentSong.getPhotoUrl(), viewHolder.ivParentSongImage);
+			ImageHelper.displayPhoto(creator, viewHolder.ivThisUserPhoto);
+			ImageHelper.displayPhoto(song.getPhotoUrl(), viewHolder.ivThisSongImage);
 		} else if (children != null) {
 			viewHolder.vCollaboNumWrapper.setVisibility(View.VISIBLE);
-			viewHolder.vPartnerPhotoWrapper.setVisibility(View.GONE);
+			viewHolder.vThisPhotoWrapper.setVisibility(View.GONE);
+			setCornerRadius(viewHolder.ivParentSongImage, true);
 			
 			if (children.size() == 0) {
-				viewHolder.vPartnerWrapper.setVisibility(View.GONE);
+				viewHolder.vThisWrapper.setVisibility(View.GONE);
 			} else if (children.size() == 1) {
-				viewHolder.vPartnerWrapper.setVisibility(View.VISIBLE);
+				viewHolder.vThisWrapper.setVisibility(View.VISIBLE);
 				viewHolder.vChildrenWrapper.setVisibility(View.GONE);
-				viewHolder.ivPartnerImage.setLayoutParams(LL_FULL_SIZE_PARAMS);
+				viewHolder.ivThisSongImage.setLayoutParams(LL_FULL_SIZE_PARAMS);
 			} else if (children.size() == 2) {
-				viewHolder.vPartnerWrapper.setVisibility(View.VISIBLE);
+				viewHolder.vThisWrapper.setVisibility(View.VISIBLE);
 				viewHolder.vChildrenWrapper.setVisibility(View.VISIBLE);
 				viewHolder.ivSecondChildrenImage.setVisibility(View.GONE);
 			} else {
-				viewHolder.vPartnerWrapper.setVisibility(View.VISIBLE);
+				viewHolder.vThisWrapper.setVisibility(View.VISIBLE);
 				viewHolder.vChildrenWrapper.setVisibility(View.VISIBLE);
 				viewHolder.ivSecondChildrenImage.setVisibility(View.VISIBLE);
 			}
 			
 			viewHolder.tvCollaboNum.setText(song.getWorkedCollaboNum());
-			viewHolder.tvCreatorNickname.setText(creator.getNickname());
-			viewHolder.tvCreatorMessage.setText(song.getCroppedMessage());
+			viewHolder.tvParentUserNickname.setText(creator.getNickname());
+			viewHolder.tvParentSongMessage.setText(song.getCroppedMessage());
 			
-			ImageHelper.displayPhoto(creator.getPhotoUrl(), viewHolder.ivCreatorPhoto);
-			ImageHelper.displayPhoto(song.getPhotoUrl(), viewHolder.ivCreatorImage);
+			ImageHelper.displayPhoto(creator.getPhotoUrl(), viewHolder.ivParentUserPhoto);
+			ImageHelper.displayPhoto(song.getPhotoUrl(), viewHolder.ivParentSongImage);
 			
 			viewHolder.vCollaboNumWrapper.setOnClickListener(song.getChildrenClickListener());
-			viewHolder.view.setOnClickListener(song.getPlayClickListener());
 			
-			setChildrenImage(children, 0, viewHolder.ivPartnerImage);
+			setChildrenImage(children, 0, viewHolder.ivThisSongImage);
 			setChildrenImage(children, 1, viewHolder.ivFirstChildrenImage);
 			setChildrenImage(children, 2, viewHolder.ivSecondChildrenImage);
 		}
@@ -156,6 +167,15 @@ public class MySongAdapter extends HolderAdapter<Song, MySongAdapter.SongHolder>
 			});
 		} else {
 			viewHolder.ivChangeStateSong.setVisibility(View.GONE);
+		}
+	}
+	
+	private void setCornerRadius(ImageView imageView, boolean topRight) {
+		if (imageView instanceof RoundedImageView) {
+			if (cornerRadius != null && cornerRadius.size() == 4) {
+				cornerRadius.set(1, topRight);
+				((RoundedImageView) imageView).setCornerDirection(cornerRadius);
+			}
 		}
 	}
 	
@@ -209,51 +229,51 @@ public class MySongAdapter extends HolderAdapter<Song, MySongAdapter.SongHolder>
 	
 	public static final class SongHolder extends ViewHolder {
 		
-		public TextView tvCreatorNickname;
-		public TextView tvCreatorMessage;
-		public TextView tvPartnerNickname;
-		public TextView tvPartnerMessage;
+		public TextView tvParentUserNickname;
+		public TextView tvParentSongMessage;
+		public TextView tvThisUserNickname;
+		public TextView tvThisSongMessage;
 		public TextView tvLikeNum;
 		public TextView tvCommentNum;
 		public TextView tvCollaboNum;
 		public TextView tvCreatedTime;
 		public TextView tvMusicInfo;
-		public ImageView ivCreatorPhoto;
-		public ImageView ivCreatorImage;
-		public ImageView ivPartnerPhoto;
-		public ImageView ivPartnerImage;
+		public ImageView ivParentUserPhoto;
+		public ImageView ivParentSongImage;
+		public ImageView ivThisUserPhoto;
+		public ImageView ivThisSongImage;
 		public ImageView ivFirstChildrenImage;
 		public ImageView ivSecondChildrenImage;
 		public ImageView ivChangeStateSong;
 		public View vCollaboNumWrapper;
-		public View vPartnerWrapper;
+		public View vThisWrapper;
 		public View vChildrenWrapper;
-		public View vPartnerPhotoWrapper;
+		public View vThisPhotoWrapper;
 		public View vPrelistenControl;
 		
 		public SongHolder(View view) {
 			super(view);
 			
-			tvCreatorNickname = (TextView) view.findViewById(R.id.tv_parent_user_nickname);
-			tvCreatorMessage = (TextView) view.findViewById(R.id.tv_parent_song_message);
-			tvPartnerNickname = (TextView) view.findViewById(R.id.tv_this_user_nickname);
-			tvPartnerMessage = (TextView) view.findViewById(R.id.tv_this_song_message);
+			tvParentUserNickname = (TextView) view.findViewById(R.id.tv_parent_user_nickname);
+			tvParentSongMessage = (TextView) view.findViewById(R.id.tv_parent_song_message);
+			tvThisUserNickname = (TextView) view.findViewById(R.id.tv_this_user_nickname);
+			tvThisSongMessage = (TextView) view.findViewById(R.id.tv_this_song_message);
 			tvMusicInfo = (TextView) view.findViewById(R.id.tv_music_info);
 			tvLikeNum = (TextView) view.findViewById(R.id.tv_song_like_num);
 			tvCommentNum = (TextView) view.findViewById(R.id.tv_song_comment_num);
 			tvCollaboNum = (TextView) view.findViewById(R.id.tv_song_collabo_num);
 			tvCreatedTime = (TextView) view.findViewById(R.id.tv_song_created_time);
-			ivCreatorPhoto = (ImageView) view.findViewById(R.id.iv_parent_user_photo);
-			ivCreatorImage = (ImageView) view.findViewById(R.id.iv_parent_song_image);
-			ivPartnerPhoto = (ImageView) view.findViewById(R.id.iv_this_user_photo);
-			ivPartnerImage = (ImageView) view.findViewById(R.id.iv_this_song_image);
+			ivParentUserPhoto = (ImageView) view.findViewById(R.id.iv_parent_user_photo);
+			ivParentSongImage = (ImageView) view.findViewById(R.id.iv_parent_song_image);
+			ivThisUserPhoto = (ImageView) view.findViewById(R.id.iv_this_user_photo);
+			ivThisSongImage = (ImageView) view.findViewById(R.id.iv_this_song_image);
 			ivFirstChildrenImage = (ImageView) view.findViewById(R.id.iv_first_children_upload_image);
 			ivSecondChildrenImage = (ImageView) view.findViewById(R.id.iv_second_children_upload_image);
 			ivChangeStateSong = (ImageView) view.findViewById(R.id.iv_change_state_song);
 			vCollaboNumWrapper = view.findViewById(R.id.ll_collabo_num_wrapper);
-			vPartnerWrapper = view.findViewById(R.id.ll_partner_wrapper);
+			vThisWrapper = view.findViewById(R.id.ll_this_wrapper);
 			vChildrenWrapper = view.findViewById(R.id.ll_children_wrapper);
-			vPartnerPhotoWrapper = view.findViewById(R.id.ll_partner_photo_wrapper);
+			vThisPhotoWrapper = view.findViewById(R.id.ll_this_photo_wrapper);
 			vPrelistenControl = view.findViewById(R.id.ll_prelisten_control);
 		}
 		

@@ -27,7 +27,7 @@
 	            style="@style/ImageViewBase" />
 	        
 	        <LinearLayout
-	            android:id="@+id/ll_partner_wrapper"
+	            android:id="@+id/ll_this_wrapper"
 	            android:layout_width="0dp"
 	            android:layout_height="match_parent"
 	            android:layout_weight="1"
@@ -156,7 +156,7 @@
             </LinearLayout>
             
             <LinearLayout
-                android:id="@+id/ll_partner_photo_wrapper"
+                android:id="@+id/ll_this_photo_wrapper"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

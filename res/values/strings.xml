@@ -40,6 +40,9 @@
     <string name="notification">알림</string>
     <string name="more">더보기〉</string>
     <string name="candidate">신청하기</string>
+    <string name="all">전체</string>
+    <string name="song_collaborated">완성된 콜라보</string>
+    <string name="song_waiting">콜라보를 기다려요</string>
     
     <string name="loading_title_audio_downloading">노래 로딩중입니다..</string>
     <string name="loading_title_audio_decompressing">노래 로딩중입니다..</string>
