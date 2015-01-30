@@ -141,6 +141,7 @@ public class HomeFragment extends BaseFragment {
 				Bundle bundle = new Bundle();
 				bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_artist_list_action_title));
 				bundle.putBoolean(ListFragment.EXTRA_HORIZONTAL_PADDING, true);
+				bundle.putBoolean(ListFragment.EXTRA_VERTICAL_PADDING, true);
 				Intent intent = new Intent(getActivity(), RootActivity.class);
 				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, ArtistListFragment.class.getName());
 				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
