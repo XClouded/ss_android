@@ -29,5 +29,17 @@
             android:summary="노래를 클릭했을 시 자동으로 노래를 재생합니다." />
         
     </PreferenceCategory>
+    
+    <PreferenceCategory
+        android:title="Notification">
+        
+        <CheckBoxPreference
+            android:key="@string/key_publish_facebook"
+            android:title="페이스북 포스팅"
+            android:defaultValue="true"
+            android:summaryOn="자동으로 페이스북에 포스팅합니다."
+            android:summaryOff="페이스북에 포스팅하지 않습니다." />
+        
+    </PreferenceCategory>
 
 </PreferenceScreen>

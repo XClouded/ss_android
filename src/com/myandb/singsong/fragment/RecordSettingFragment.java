@@ -35,9 +35,12 @@ import com.sromku.simple.fb.listeners.OnLoginListener;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -219,7 +222,7 @@ public class RecordSettingFragment extends BaseFragment {
 		}
 		
 		if (Authenticator.getUser().isFacebookActivated()) {
-			updateFacebookPostingView(true);
+			registerSharedPreferenceChangeListener();
 			vFacebook.setVisibility(View.VISIBLE);
 			vFacebook.setOnClickListener(facebookPostingClickListener);
 		} else {
@@ -565,6 +568,30 @@ public class RecordSettingFragment extends BaseFragment {
 		}
 	}
 	
+	private void registerSharedPreferenceChangeListener() {
+		final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+		final String keyPublishFacebook = getString(R.string.key_publish_facebook);
+		boolean enabled = preferences.getBoolean(keyPublishFacebook, true);
+		
+		updateFacebookPostingView(enabled);
+		preferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
+	}
+	
+	private OnSharedPreferenceChangeListener preferenceChangeListener = new OnSharedPreferenceChangeListener() {
+		
+		@Override
+		public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+			if (isAdded()) {
+				final String keyPublishFacebook = getString(R.string.key_publish_facebook);
+				
+				if (key.equals(keyPublishFacebook)) {
+					boolean enabled = sharedPreferences.getBoolean(keyPublishFacebook, true);
+					updateFacebookPostingView(enabled);
+				}
+			}
+		}
+	};
+	
 	private void updateFacebookPostingView(boolean isPosting) {
 		isFacebookPosting = isPosting;
 		if (isPosting) {
@@ -578,7 +605,10 @@ public class RecordSettingFragment extends BaseFragment {
 		
 		@Override
 		public void onClick(View v) {
-			updateFacebookPostingView(!isFacebookPosting);
+			final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+			final String key = getString(R.string.key_publish_facebook);
+			boolean enabled = preferences.getBoolean(key, true);
+			preferences.edit().putBoolean(key, !enabled).commit();
 		}
 	};
 

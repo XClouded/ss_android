@@ -64,7 +64,7 @@ public class RootActivity extends BaseActivity implements OnBackStackChangedList
 	}
 	
 	private String getNewPreferenceKey() {
-		return getString(R.string.key_notification);
+		return getString(R.string.key_publish_facebook);
 	}
 	
 	private boolean mustReadPreferenceXmlAgain(String newPreferenceKey) {
