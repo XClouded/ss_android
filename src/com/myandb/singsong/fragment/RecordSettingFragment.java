@@ -204,6 +204,8 @@ public class RecordSettingFragment extends BaseFragment {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		getSupportActionBar().hide();
 	}
 
 	@Override

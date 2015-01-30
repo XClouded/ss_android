@@ -259,7 +259,6 @@ public class KaraokeFragment extends BaseFragment {
 						if (recorder != null) {
 							Intent intent = new Intent(getActivity(), UpActivity.class);
 							intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, RecordSettingFragment.class.getName());
-							intent.putExtra(UpActivity.EXTRA_FULL_SCREEN, true);
 							Bundle bundle = new Bundle();
 							bundle.putBoolean(SongUploadService.EXTRA_HEADSET_PLUGGED, recorder.isHeadsetPlugged());
 							bundle.putString(SongUploadService.EXTRA_MUSIC_PCM_FILE_PATH, musicPcmFile.getAbsolutePath());
