@@ -26,8 +26,11 @@ public class NotificationFragment extends ListFragment {
 
 	@Override
 	protected UrlBuilder instantiateUrlBuilder(Activity activity) {
-		int id = Authenticator.getUser().getId();
-		return new UrlBuilder().s("users").s(id).s("notifications").p("order", "updated_at");
+		if (Authenticator.isLoggedIn()) {
+			int id = Authenticator.getUser().getId();
+			return new UrlBuilder().s("users").s(id).s("notifications").p("order", "updated_at");
+		}
+		return null;
 	}
 
 	@Override
