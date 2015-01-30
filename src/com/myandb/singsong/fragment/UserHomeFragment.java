@@ -489,6 +489,9 @@ public class UserHomeFragment extends ListFragment {
 		case REQUEST_CODE_EDIT_PROFILE:
 			if (resultCode == Activity.RESULT_OK) {
 				currentUser = thisUser = Authenticator.getUser();
+				if (currentUser == null) {
+					return;
+				}
 				tvNickname.setText(currentUser.getNickname());
 				setActionBarTitle(currentUser.getNickname());
 				displayStatusMessage(tvUserStatus, currentUser.getProfile().getStatusMessage());
