@@ -6,6 +6,7 @@
     	<item name="android:windowContentOverlay">@null</item>
         <item name="actionBarStyle">@style/AppTheme.ActionBarStyle</item>
 	    <item name="actionOverflowButtonStyle">@style/AppTheme.ActionBar.Overflow</item>
+	    <item name="actionBarDivider">@android:color/transparent</item>
     </style>
     
     <style name="AppTheme.ActionBarStyle" parent="@style/Widget.AppCompat.ActionBar">

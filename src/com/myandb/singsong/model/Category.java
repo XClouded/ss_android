@@ -12,7 +12,7 @@ public class Category extends Model {
 		switch (id) {
 		case 0:
 			this.title = "ÀüÃ¼";
-			this.imageResourceId = R.drawable.img_ballad;
+			this.imageResourceId = R.drawable.img_all;
 			break;
 		
 		case 1:
