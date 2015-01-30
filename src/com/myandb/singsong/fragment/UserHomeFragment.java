@@ -323,7 +323,11 @@ public class UserHomeFragment extends ListFragment {
 		if (isCurrentUser()) {
 			ivEditProfile.setOnClickListener(editProfileClickListener);
 		} else {
-			checkIsThisUserFriend();
+			if (Authenticator.isLoggedIn()) {
+				checkIsThisUserFriend();
+			} else {
+				btnFollow.setOnClickListener(followClickListener);
+			}
 		}
 	}
 	
