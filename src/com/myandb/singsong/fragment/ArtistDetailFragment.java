@@ -112,6 +112,7 @@ public class ArtistDetailFragment extends ListFragment {
 			tvFollowersNum.setText(String.valueOf(user.getProfile().getFollowersNum()));
 		}
 		ImageHelper.displayPhoto(user, ivArtistPhoto);
+		ivArtistPhoto.setOnClickListener(user.getProfileClickListener());
 		
 		tvArtistSongs.setText(user.getNickname() + getString(R.string.fragment_artist_song_title_suffix));
 		tvArtistCommentNum.setText(user.getNickname() + getString(R.string.fragment_artist_comment_title_suffix));
