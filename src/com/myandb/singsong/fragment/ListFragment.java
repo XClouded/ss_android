@@ -328,6 +328,9 @@ public class ListFragment extends BaseFragment {
 		setListShown(false);
 		loader.setUrlBuilder(urlBuilder);
 		loader.setOnLoadCompleteListener(loadCompleteListener);
+		if (absListView != null) {
+			absListView.smoothScrollToPosition(0);
+		}
 		if (adapter != null) {
 			if (adapter instanceof HolderAdapter) {
 				((HolderAdapter<?, ?>) adapter).clear();
