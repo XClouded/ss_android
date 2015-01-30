@@ -136,7 +136,7 @@ public class ArtistDetailFragment extends ListFragment {
 		if (artistSongAdapter == null) {
 			final SimpleSongAdapter adapter = new SimpleSongAdapter();
 			artistSongAdapter = new PagerWrappingAdapter(adapter);
-			final UrlBuilder urlBuilder = new UrlBuilder().s("users").s(user.getId()).s("songs").s("leaf").p("order", "liking_num").take(5);
+			final UrlBuilder urlBuilder = new UrlBuilder().s("users").s(user.getId()).s("songs").s("all").p("order", "liking_num").take(5);
 			final GradualLoader loader = new GradualLoader(getActivity());
 			loader.setUrlBuilder(urlBuilder);
 			loader.setOnLoadCompleteListener(new OnLoadCompleteListener() {
