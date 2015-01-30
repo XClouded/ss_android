@@ -31,7 +31,7 @@ static s_ebu_r128 config;
 static short * pcmShorts;
 static bool isArrayInit;
 
-jint Java_com_myandb_singsong_audio_AutoGainController_create(
+jint Java_com_myandb_singsong_audio_AutoGainWrapper_create(
         JNIEnv* env,
         jobject this,
         jint channels,
@@ -58,15 +58,13 @@ jint Java_com_myandb_singsong_audio_AutoGainController_create(
 	}
 
 	if (!ebu_r128_init(&config, channels, resolution, sample_rate, ebu_mode )) {
-		ebu_r128_destroy(&config);
-
-		return 0;
+		return -1;
 	}
 
 	isArrayInit = false;
 }
 
-jfloat Java_com_myandb_singsong_audio_AutoGainController_process(
+jfloat Java_com_myandb_singsong_audio_AutoGainWrapper_process(
         JNIEnv* env,
         jobject this,
         jfloatArray pcm,
@@ -93,7 +91,6 @@ jfloat Java_com_myandb_singsong_audio_AutoGainController_process(
     int r = ebu_r128_process_samples(&config, pcmShorts, length);
 
     if (!r) {
-    	ebu_r128_destroy(&config);
 		return -1;
     }
 
@@ -115,7 +112,7 @@ jfloat Java_com_myandb_singsong_audio_AutoGainController_process(
 
 }
 
-void Java_com_myandb_singsong_audio_AutoGainController_destroy(
+jint Java_com_myandb_singsong_audio_AutoGainWrapper_destroy(
         JNIEnv* env,
         jobject this
         )
@@ -123,6 +120,8 @@ void Java_com_myandb_singsong_audio_AutoGainController_destroy(
 	ebu_r128_destroy(&config);
 
 	free(pcmShorts);
+
+	return 1;
 }
 
 

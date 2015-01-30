@@ -32,7 +32,6 @@ import com.myandb.singsong.dialog.GalleryDialog;
 import com.myandb.singsong.dialog.UpdateFriendshipDialog;
 import com.myandb.singsong.event.ActivateOnlyClickListener;
 import com.myandb.singsong.event.MemberOnlyClickListener;
-import com.myandb.singsong.image.BlurAsyncTask;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Friendship;
 import com.myandb.singsong.model.Profile;
@@ -44,8 +43,8 @@ import com.myandb.singsong.net.JSONObjectSuccessListener;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.util.Utility;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
+import com.nostra13.universalimageloader.core.assist.ImageSize;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 public class UserHomeFragment extends ListFragment {
 	
@@ -271,33 +270,21 @@ public class UserHomeFragment extends ListFragment {
 	
 	private void setUserPhoto() {
 		if (thisUser.hasPhoto()) {
-			ImageHelper.displayPhoto(thisUser, ivUserPhoto, imageLoadingListener);
+			ImageHelper.displayPhoto(thisUser, ivUserPhoto, new SimpleImageLoadingListener() {
+
+				@Override
+				public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+					super.onLoadingComplete(imageUri, view, loadedImage);
+					ivUserPhoto.setOnClickListener(photoZoomClickListener);
+				}
+				
+			});
+			
+			final String url = thisUser.getPhotoUrl();
+			final ImageSize imageSize = new ImageSize(150, 100);
+			final int radius = 5;
+			ImageHelper.displayBlurPhoto(url, ivUserPhotoBackground, imageSize, radius);
 		}
-	}
-	
-	private ImageLoadingListener imageLoadingListener = new ImageLoadingListener() {
-
-		@Override
-		public void onLoadingCancelled(String arg0, View arg1) {}
-
-		@Override
-		public void onLoadingComplete(String url, View imageView, Bitmap bitmap) {
-			ivUserPhoto.setOnClickListener(photoZoomClickListener);
-			setBackgroundBlurImage(bitmap);
-		}
-
-		@Override
-		public void onLoadingFailed(String arg0, View arg1, FailReason arg2) {}
-
-		@Override
-		public void onLoadingStarted(String arg0, View arg1) {}
-		
-	};
-	
-	private void setBackgroundBlurImage(Bitmap bitmap) {
-		BlurAsyncTask blurTask = new BlurAsyncTask();
-		blurTask.setImageView(ivUserPhotoBackground);
-		blurTask.execute(bitmap);
 	}
 	
 	private OnClickListener photoZoomClickListener = new OnClickListener() {
@@ -336,7 +323,11 @@ public class UserHomeFragment extends ListFragment {
 		if (isCurrentUser()) {
 			ivEditProfile.setOnClickListener(editProfileClickListener);
 		} else {
-			checkIsThisUserFriend();
+			if (Authenticator.isLoggedIn()) {
+				checkIsThisUserFriend();
+			} else {
+				btnFollow.setOnClickListener(followClickListener);
+			}
 		}
 	}
 	
@@ -502,6 +493,9 @@ public class UserHomeFragment extends ListFragment {
 		case REQUEST_CODE_EDIT_PROFILE:
 			if (resultCode == Activity.RESULT_OK) {
 				currentUser = thisUser = Authenticator.getUser();
+				if (currentUser == null) {
+					return;
+				}
 				tvNickname.setText(currentUser.getNickname());
 				setActionBarTitle(currentUser.getNickname());
 				displayStatusMessage(tvUserStatus, currentUser.getProfile().getStatusMessage());

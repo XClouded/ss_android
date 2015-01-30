@@ -4,10 +4,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import com.google.android.gcm.GCMRegistrar;
 import com.google.gson.Gson;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
-import com.myandb.singsong.GCMIntentService;
 import com.myandb.singsong.R;
 import com.myandb.singsong.dialog.BaseDialog;
 import com.myandb.singsong.dialog.FrontNoticeDialog;
@@ -54,8 +52,6 @@ public class RootActivity extends BaseActivity implements OnBackStackChangedList
 		
 		startPlayerService();
 		
-		registerGcm();
-		
 		showUnreadLatestNotice(getIntent());
 		
 		setHomeFragment(getIntent());
@@ -68,7 +64,7 @@ public class RootActivity extends BaseActivity implements OnBackStackChangedList
 	}
 	
 	private String getNewPreferenceKey() {
-		return getString(R.string.key_notification);
+		return getString(R.string.key_publish_facebook);
 	}
 	
 	private boolean mustReadPreferenceXmlAgain(String newPreferenceKey) {
@@ -124,22 +120,6 @@ public class RootActivity extends BaseActivity implements OnBackStackChangedList
 	private void startPlayerService() {
 		Intent playerIntent = new Intent(this, PlayerService.class);
 		startService(playerIntent);
-	}
-	
-	private void registerGcm() {
-		try {
-			GCMRegistrar.checkDevice(this);
-			GCMRegistrar.checkManifest(this);
-			final String registrationId = GCMRegistrar.getRegistrationId(this);
-			
-			if ("".equals(registrationId)) {
-				GCMRegistrar.register(this, GCMIntentService.PROJECT_ID);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			// Device does not have package com.google.android.gsf
-			// This will not happened
-		}
 	}
 	
 	private void showUnreadLatestNotice(Intent intent) {

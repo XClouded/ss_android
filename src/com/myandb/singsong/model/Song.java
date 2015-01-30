@@ -6,6 +6,7 @@ import java.util.Random;
 
 import org.json.JSONObject;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -143,8 +144,11 @@ public class Song extends Model {
 		if (isRoot()) {
 			return this;
 		} else {
-			song.setMusic(getMusic());
-			return song;
+			if (song != null) {
+				song.setMusic(getMusic());
+				return song;
+			}
+			return null;
 		}
 	}
 	
@@ -369,10 +373,12 @@ public class Song extends Model {
 		return new ActivateOnlyClickListener() {
 			
 			private Context context;
+			private ProgressDialog progressDialog;
 			
 			@Override
 			public void onActivated(View v, User user) {
 				context = v.getContext();
+				showProgressDialog(context);
 				JSONObjectRequest request = new JSONObjectRequest(
 						"songs/" + getParentSong().getId(), null, null,
 						successListener, errorListener);
@@ -391,6 +397,8 @@ public class Song extends Model {
 					intent.putExtra(UpActivity.EXTRA_FULL_SCREEN, true);
 					intent.putExtra(UpActivity.EXTRA_SHOULD_STOP, true);
 					context.startActivity(intent);
+					
+					dismissProgressDialog();
 				}
 			};
 			
@@ -398,9 +406,35 @@ public class Song extends Model {
 
 				@Override
 				public void onErrorResponse(VolleyError error) {
+					dismissProgressDialog();
 					Toast.makeText(context, context.getString(R.string.t_alert_deleted_song), Toast.LENGTH_SHORT).show();
 				}
 			};
+			
+			private void showProgressDialog(Context context) {
+				ProgressDialog dialog = getProgressDialog(context);
+				if (!dialog.isShowing()) {
+					dialog.show();
+				}
+			}
+			
+			private ProgressDialog getProgressDialog(Context context) {
+				if (progressDialog == null) {
+					progressDialog = new ProgressDialog(context);
+					progressDialog.setIndeterminate(true);
+					progressDialog.setCanceledOnTouchOutside(false);
+					progressDialog.setCancelable(false);
+					progressDialog.setMessage("잠시만 기다려주세요");
+				}
+				
+				return progressDialog;
+			}
+			
+			private void dismissProgressDialog() {
+				if (progressDialog != null && progressDialog.isShowing()) {
+					progressDialog.dismiss();
+				}
+			}
 			
 		};
 	}

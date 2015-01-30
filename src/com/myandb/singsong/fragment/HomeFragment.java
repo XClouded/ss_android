@@ -1,9 +1,6 @@
 package com.myandb.singsong.fragment;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,6 +13,7 @@ import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.activity.UpActivity;
 import com.myandb.singsong.adapter.ArtistAdapter;
 import com.myandb.singsong.adapter.MusicAdapter;
+import com.myandb.singsong.adapter.SimpleChildrenSongAdapter;
 import com.myandb.singsong.adapter.SimpleSongNumAdapter;
 import com.myandb.singsong.adapter.MusicAdapter.LayoutType;
 import com.myandb.singsong.event.MemberOnlyClickListener;
@@ -26,7 +24,9 @@ import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.GradualLoader;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.net.GradualLoader.OnLoadCompleteListener;
+import com.myandb.singsong.pager.ListenPagerAdapter.SongType;
 import com.myandb.singsong.pager.PagerWrappingAdapter;
+import com.myandb.singsong.service.PlayerService;
 import com.myandb.singsong.util.StringFormatter;
 import com.myandb.singsong.util.Utility;
 import com.myandb.singsong.widget.HorizontalListView;
@@ -56,17 +56,19 @@ import android.widget.AdapterView.OnItemClickListener;
 public class HomeFragment extends BaseFragment {
 	
 	private TextView tvNotificationCount;
-	private TextView tvCollaboTop10Time;
 	private TextView tvTop10FirstLikeNum;
 	private TextView tvTop10FirstMusicInfo;
 	private TextView tvTop10FirstUserInfo;
+	private TextView tvSongCollaboratedMore;
 	private TextView tvRecentMusicMore;
 	private TextView tvPopularMusicMore;
 	private TextView tvCollaboArtistMore;
+	private TextView tvSongWaitingMore;
 	private ImageView ivTop10FirstAlbumPhoto;
 	private ViewPager vpCollaboTop10;
 	private ViewPager vpPopularMusic;
 	private HorizontalListView hlvRecentMusic;
+	private HorizontalListView hlvWaitingSong;
 	private CirclePageIndicator cpiCollaboTop10;
 	private CirclePageIndicator cpiPopularMusic;
 	private View content;
@@ -76,6 +78,7 @@ public class HomeFragment extends BaseFragment {
 	private PagerAdapter collaboTop10Adapter;
 	private PagerAdapter popularMusicAdapter;
 	private MusicAdapter recentMusicAdapter;
+	private SimpleChildrenSongAdapter waitingSongAdapter;
 	private ArtistAdapter collaboArtistAdapter;
 	private Song top10First;
 	
@@ -92,17 +95,19 @@ public class HomeFragment extends BaseFragment {
 
 	@Override
 	protected void onViewInflated(View view, LayoutInflater inflater) {
-		tvCollaboTop10Time = (TextView) view.findViewById(R.id.tv_collabo_top10_time);
 		tvTop10FirstLikeNum = (TextView) view.findViewById(R.id.tv_top10_first_like_num);
 		tvTop10FirstMusicInfo = (TextView) view.findViewById(R.id.tv_top10_first_music_info);
 		tvTop10FirstUserInfo = (TextView) view.findViewById(R.id.tv_top10_first_user_info);
+		tvSongCollaboratedMore = (TextView) view.findViewById(R.id.tv_song_collaborated_more);
 		tvRecentMusicMore = (TextView) view.findViewById(R.id.tv_recent_music_more);
 		tvPopularMusicMore = (TextView) view.findViewById(R.id.tv_popular_music_more);
 		tvCollaboArtistMore = (TextView) view.findViewById(R.id.tv_collabo_artist_more);
+		tvSongWaitingMore = (TextView) view.findViewById(R.id.tv_song_waiting_more);
 		
 		vpCollaboTop10 = (ViewPager) view.findViewById(R.id.vp_collabo_top10);
 		vpPopularMusic = (ViewPager) view.findViewById(R.id.vp_popular_music);
 		hlvRecentMusic = (HorizontalListView) view.findViewById(R.id.hlv_recent_music);
+		hlvWaitingSong = (HorizontalListView) view.findViewById(R.id.hlv_waiting_song);
 		cpiCollaboTop10 = (CirclePageIndicator) view.findViewById(R.id.cpi_collabo_top10);
 		cpiPopularMusic = (CirclePageIndicator) view.findViewById(R.id.cpi_popular_music);
 		
@@ -117,6 +122,7 @@ public class HomeFragment extends BaseFragment {
 	protected void initialize(Activity activity) {
 		int padding = getResources().getDimensionPixelSize(R.dimen.margin);
 		hlvRecentMusic.setDividerWidth(padding / 2);
+		hlvWaitingSong.setDividerWidth(padding / 2);
 	}
 	
 	@Override
@@ -131,6 +137,8 @@ public class HomeFragment extends BaseFragment {
 		
 		loadCollaboArtist();
 		
+		loadWaitingTop10();
+		
 		stylePageIndicator(cpiCollaboTop10);
 		stylePageIndicator(cpiPopularMusic);
 		
@@ -141,6 +149,7 @@ public class HomeFragment extends BaseFragment {
 				Bundle bundle = new Bundle();
 				bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_artist_list_action_title));
 				bundle.putBoolean(ListFragment.EXTRA_HORIZONTAL_PADDING, true);
+				bundle.putBoolean(ListFragment.EXTRA_VERTICAL_PADDING, true);
 				Intent intent = new Intent(getActivity(), RootActivity.class);
 				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, ArtistListFragment.class.getName());
 				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
@@ -148,13 +157,10 @@ public class HomeFragment extends BaseFragment {
 			}
 		});
 		
+		tvSongCollaboratedMore.setOnClickListener(songMoreClickListener);
+		tvSongWaitingMore.setOnClickListener(songMoreClickListener);
 		tvRecentMusicMore.setOnClickListener(musicMoreClickListener);
 		tvPopularMusicMore.setOnClickListener(musicMoreClickListener); 
-		
-		Date now = new Date();
-		SimpleDateFormat format = new SimpleDateFormat("k:00", Locale.KOREA);
-		String formattedTime = format.format(now);
-		tvCollaboTop10Time.setText(formattedTime + " ±‚¡ÿ");
 	}
 	
 	private void loadCollaboTop10() {
@@ -281,8 +287,6 @@ public class HomeFragment extends BaseFragment {
 	
 	private void loadRecentMusic() {
 		if (recentMusicAdapter == null) {
-			final MusicAdapter adapter = new MusicAdapter(LayoutType.RECENT); 
-			hlvRecentMusic.setAdapter(adapter);
 			final UrlBuilder urlBuilder = new UrlBuilder().s("musics").take(10);
 			GradualLoader loader = new GradualLoader(getActivity());
 			loader.setUrlBuilder(urlBuilder);
@@ -290,7 +294,8 @@ public class HomeFragment extends BaseFragment {
 				
 				@Override
 				public void onComplete(JSONArray response) {
-					adapter.addAll(response);
+					recentMusicAdapter = new MusicAdapter(LayoutType.RECENT);
+					recentMusicAdapter.addAll(response);
 					hlvRecentMusic.setAdapter(recentMusicAdapter);
 					hlvRecentMusic.setOnItemClickListener(musicItemClickListener);
 					setContentShown(true);
@@ -350,6 +355,61 @@ public class HomeFragment extends BaseFragment {
 			vgCollaboArtistContainer.addView(child);
 		}
 	}
+	
+	private void loadWaitingTop10() {
+		if (waitingSongAdapter == null) {
+			final UrlBuilder urlBuilder = new UrlBuilder().s("songs").s("root").p("order", "liking_num").take(10);
+			GradualLoader loader = new GradualLoader(getActivity());
+			loader.setUrlBuilder(urlBuilder);
+			loader.setOnLoadCompleteListener(new OnLoadCompleteListener() {
+				
+				@Override
+				public void onComplete(JSONArray response) {
+					waitingSongAdapter = new SimpleChildrenSongAdapter();
+					waitingSongAdapter.addAll(response);
+					hlvWaitingSong.setAdapter(waitingSongAdapter);
+					hlvWaitingSong.setOnItemClickListener(songItemClickListener);
+					setContentShown(true);
+				}
+			});
+			loader.load();
+		} else {
+			hlvWaitingSong.setAdapter(waitingSongAdapter);
+			hlvWaitingSong.setOnItemClickListener(songItemClickListener);
+			setContentShown(true);
+		}
+	}
+	
+	private OnItemClickListener songItemClickListener = new OnItemClickListener() {
+
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			if (!isAdded() || getActivity() == null) {
+				return;
+			}
+			
+			final Song song = (Song) parent.getItemAtPosition(position);
+			BaseActivity activity = (BaseActivity) getActivity();
+			PlayerService service = activity.getPlayerService();
+			service.startPlaying(song);
+		}
+	};
+	
+	private OnClickListener songMoreClickListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			Bundle bundle = new Bundle();
+			bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_listen_action_title));
+			if (v.getId() == R.id.tv_song_waiting_more) {
+				bundle.putSerializable(ListenHomeFragment.EXTRA_SONG_TYPE, SongType.WAITING);
+			}
+			Intent intent = new Intent(getActivity(), RootActivity.class);
+			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
+			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, ListenHomeFragment.class.getName());
+			startFragment(intent);
+		}
+	};
 	
 	private OnClickListener musicMoreClickListener = new OnClickListener() {
 		

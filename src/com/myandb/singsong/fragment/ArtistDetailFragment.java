@@ -112,6 +112,7 @@ public class ArtistDetailFragment extends ListFragment {
 			tvFollowersNum.setText(String.valueOf(user.getProfile().getFollowersNum()));
 		}
 		ImageHelper.displayPhoto(user, ivArtistPhoto);
+		ivArtistPhoto.setOnClickListener(user.getProfileClickListener());
 		
 		tvArtistSongs.setText(user.getNickname() + getString(R.string.fragment_artist_song_title_suffix));
 		tvArtistCommentNum.setText(user.getNickname() + getString(R.string.fragment_artist_comment_title_suffix));
@@ -135,7 +136,7 @@ public class ArtistDetailFragment extends ListFragment {
 		if (artistSongAdapter == null) {
 			final SimpleSongAdapter adapter = new SimpleSongAdapter();
 			artistSongAdapter = new PagerWrappingAdapter(adapter);
-			final UrlBuilder urlBuilder = new UrlBuilder().s("users").s(user.getId()).s("songs").s("leaf").p("order", "liking_num").take(5);
+			final UrlBuilder urlBuilder = new UrlBuilder().s("users").s(user.getId()).s("songs").s("all").p("order", "liking_num").take(5);
 			final GradualLoader loader = new GradualLoader(getActivity());
 			loader.setUrlBuilder(urlBuilder);
 			loader.setOnLoadCompleteListener(new OnLoadCompleteListener() {

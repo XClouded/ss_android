@@ -39,6 +39,8 @@
     
     <dimen name="drawer_width">220dp</dimen>
     
+    <dimen name="dialog_bottom_max_height">450dp</dimen>
+    
     <dimen name="player_drag_panel_height">58dp</dimen>
     <dimen name="player_drag_panel_icon_min_width">42dp</dimen>
     <dimen name="player_floating_offset">25dp</dimen>

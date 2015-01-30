@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.Arrays;
 
 import net.beadsproject.beads.core.AudioIO;
 import net.beadsproject.beads.core.UGen;
@@ -72,6 +73,8 @@ public class AudioOutput extends AudioIO {
 	}
 	
 	private void readFromContext(short[] buffer) {
+		Arrays.fill(buffer, (short) 0);
+		
 		for (int i = 0, l = buffer.length; i < l; i++) {
 			buffer[i] = (short) ((Short.MAX_VALUE * Math.min(Math.max(context.out.getValue(0, i), -1.0f), 1.0f)));
 		}

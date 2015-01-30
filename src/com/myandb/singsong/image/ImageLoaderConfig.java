@@ -3,13 +3,12 @@ package com.myandb.singsong.image;
 import java.io.File;
 
 import android.content.Context;
-import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Bitmap.Config;
 
 import com.myandb.singsong.R;
-import com.nostra13.universalimageloader.cache.disc.impl.TotalSizeLimitedDiscCache;
-import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
-import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
+import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
+import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
+import com.nostra13.universalimageloader.cache.memory.impl.LRULimitedMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
@@ -22,10 +21,7 @@ public class ImageLoaderConfig {
 	public static ImageLoaderConfiguration createDefault(Context context) {
 		final int threadPoolSize = 2;
 		final int memoryCacheSize = 3 * 1024 * 1024;
-		final int discCacheSize = 500 * 1024 * 1024;
-		final int discCacheImageWidth = 480;
-		final int discCacheImageHeight = 800;
-		final int discCacheImageQuality = 95;
+		final int diskCacheSize = 500 * 1024 * 1024;
 		final int fadeInDuration = 400;
 		
 		DisplayImageOptions.Builder optionBuilder = new DisplayImageOptions.Builder();
@@ -33,7 +29,7 @@ public class ImageLoaderConfig {
 			.showImageForEmptyUri(R.drawable.user_character)
 			.showImageOnFail(R.drawable.user_character)
 			.cacheInMemory(true)
-			.cacheOnDisc(true)
+			.cacheOnDisk(true)
 			.imageScaleType(ImageScaleType.IN_SAMPLE_INT)
 			.bitmapConfig(Config.RGB_565)
 			.displayer(new NoBlinkFadeInBitmapDisplayer(fadeInDuration));
@@ -46,9 +42,11 @@ public class ImageLoaderConfig {
 		
 		ImageLoaderConfiguration.Builder builder = new ImageLoaderConfiguration.Builder(context);
 		builder.threadPoolSize(threadPoolSize)
-			.memoryCache(new LruMemoryCache(memoryCacheSize))
-			.discCache(new TotalSizeLimitedDiscCache(cacheDir, new Md5FileNameGenerator(), discCacheSize))
-			.discCacheExtraOptions(discCacheImageWidth, discCacheImageHeight, CompressFormat.JPEG, discCacheImageQuality, null)
+			.memoryCache(new LRULimitedMemoryCache(memoryCacheSize))
+			.diskCache(new UnlimitedDiskCache(cacheDir))
+			.diskCacheSize(diskCacheSize)
+			.diskCacheFileNameGenerator(new HashCodeFileNameGenerator())
+			.diskCacheExtraOptions(480, 320, null)
 			.denyCacheImageMultipleSizesInMemory()
 			.tasksProcessingOrder(QueueProcessingType.LIFO)
 			.defaultDisplayImageOptions(optionBuilder.build());

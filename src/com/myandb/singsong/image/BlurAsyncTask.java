@@ -1,10 +1,21 @@
 package com.myandb.singsong.image;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileChannel.MapMode;
+
+import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.widget.ImageView;
 
+@TargetApi(Build.VERSION_CODES.KITKAT)
 public class BlurAsyncTask extends AsyncTask<Bitmap, Integer, Bitmap> {
 	
 	private int radius = 5;
@@ -12,22 +23,21 @@ public class BlurAsyncTask extends AsyncTask<Bitmap, Integer, Bitmap> {
 
 	@Override
 	protected Bitmap doInBackground(Bitmap... params) {
-		Bitmap source = params[0];
-		if (source == null || radius < 1) {
+		Bitmap bitmap = params[0];
+		if (bitmap == null || radius < 1) {
 			return null;
 		}
 		
-		Bitmap bitmap = Bitmap.createScaledBitmap(source, 300, 300, true);
-		
-		if (bitmap != null) {
-			Config config = bitmap.getConfig();
-			if (config == null) {
-				bitmap = bitmap.copy(Config.RGB_565, true); 
-			} else {
-				bitmap = bitmap.copy(bitmap.getConfig(), true);
+		if (!bitmap.isMutable()) {
+			Config config = Config.RGB_565;
+			if (bitmap.getConfig() != null) {
+				config = bitmap.getConfig();
 			}
-		} else {
-			return null;
+			bitmap = convertToMutable(bitmap, config);
+		}
+		
+		if (!bitmap.isMutable()) {
+			bitmap = bitmap.copy(bitmap.getConfig(), true);
 		}
 		
 		int w = bitmap.getWidth();
@@ -223,9 +233,43 @@ public class BlurAsyncTask extends AsyncTask<Bitmap, Integer, Bitmap> {
 			}
 		}
 		
-		bitmap.setPixels(pix, 0, w, 0, 0, w, h);
+		try {
+			bitmap.setPixels(pix, 0, w, 0, 0, w, h);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		return (bitmap);
+	}
+	
+	private Bitmap convertToMutable(Bitmap bitmap, Config config) {
+	    try {
+	    	final String filePrefix = String.valueOf(bitmap.hashCode()) + ".bitmap";
+			File file = File.createTempFile(filePrefix, ".tmp");
+	        RandomAccessFile randomAccessFile = new RandomAccessFile(file, "rw");
+	        final int width = bitmap.getWidth();
+	        final int height = bitmap.getHeight();
+	        
+	        FileChannel channel = randomAccessFile.getChannel();
+	        MappedByteBuffer map = channel.map(MapMode.READ_WRITE, 0, bitmap.getRowBytes()*height);
+	        bitmap.copyPixelsToBuffer(map);
+	        bitmap.recycle();
+	        System.gc();
+
+	        bitmap = Bitmap.createBitmap(width, height, config);
+	        map.position(0);
+	        bitmap.copyPixelsFromBuffer(map);
+	        channel.close();
+	        randomAccessFile.close();
+
+	        file.delete();
+	    } catch (FileNotFoundException e) {
+	        e.printStackTrace();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    } 
+
+	    return bitmap;
 	}
 
 	@Override

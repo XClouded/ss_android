@@ -1,7 +1,6 @@
 package com.myandb.singsong.service;
 
 import java.io.File;
-import java.io.IOException;
 
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
@@ -15,7 +14,7 @@ import com.myandb.singsong.net.DownloadManager;
 import com.myandb.singsong.net.DownloadManager.OnDownloadListener;
 import com.myandb.singsong.secure.Authenticator;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.DiscCacheUtil;
+import com.nostra13.universalimageloader.utils.DiskCacheUtils;
 
 import android.annotation.TargetApi;
 import android.app.Notification;
@@ -42,17 +41,10 @@ public class PlayerService extends Service {
 	private StreamPlayer streamPlayer;
 	private StreamPlayer samplePlayer;
 	private Song thisSong;
-	private File tempFile;
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		
-		try {
-			tempFile = File.createTempFile("_music_album_", ".tmp");
-		} catch (IOException e) {
-			tempFile = null;
-		}
 		
 		streamPlayer = new StreamPlayer(this);
 		samplePlayer = new StreamPlayer();
@@ -228,7 +220,8 @@ public class PlayerService extends Service {
 				@Override
 				public void onComplete(File file) {
 					super.onComplete(file);
-					Bitmap bitmap = getIconBitmap(tempFile);
+					Bitmap bitmap = getIconBitmap(file);
+					file.delete();
 					Notification noti = makeNotification(bitmap);
 					submitNotification(noti);
 				}
@@ -258,7 +251,7 @@ public class PlayerService extends Service {
 	}
 	
 	private File getFileFromImageDiscCache(String url) {
-		return DiscCacheUtil.findInCache(url, ImageLoader.getInstance().getDiscCache());
+		return DiskCacheUtils.findInCache(url, ImageLoader.getInstance().getDiskCache());
 	}
 	
 	private Bitmap getIconBitmap(File file) {

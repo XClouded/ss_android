@@ -6,5 +6,6 @@
     <string translatable="false" name="key_player_looping">key_player_looping</string>
     <string translatable="false" name="key_player_autoplay">key_player_autoplay</string>
     <string translatable="false" name="key_read_notice_id">key_read_notice_id</string>
+    <string translatable="false" name="key_publish_facebook">key_publish_facebook</string>
     
 </resources>

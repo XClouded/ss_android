@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="150dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/card_selector"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+    
+    <TextView
+        android:id="@+id/tv_music_title"
+        android:gravity="left"
+        android:textColor="@color/font_grey"
+        android:layout_marginTop="@dimen/margin_small"
+        style="@style/TextViewOverflowableImportant" />
+    
+    <TextView
+        android:id="@+id/tv_singer_name"
+        android:gravity="left"
+        android:textColor="@color/font_grey"
+        style="@style/TextViewOverflowableLessImportant" />
+
+    <com.myandb.singsong.widget.RoundedImageView
+        android:id="@+id/iv_parent_user_photo"
+        style="@style/ImageViewUser"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin" />
+
+    <TextView
+        android:id="@+id/tv_parent_user_nickname"
+        style="@style/TextViewOverflowableImportant"
+        android:textColor="@color/font_default" />
+
+    <TextView
+        android:id="@+id/tv_parent_user_part"
+        style="@style/TextViewOverflowableLessImportant"
+        android:layout_marginBottom="@dimen/margin_small" />
+
+    <ImageView style="@style/DividerHorizontal" />
+
+    <LinearLayout
+        android:id="@+id/ll_prelisten_control"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_small"
+        android:orientation="horizontal" >
+
+        <ImageView
+            style="@style/IconImageView"
+            android:layout_marginTop="2dp"
+            android:src="@drawable/ic_play_sample" />
+
+        <TextView
+            style="@style/TextViewLessImportant"
+            android:text="미리듣기" />
+    </LinearLayout>
+
+</LinearLayout>

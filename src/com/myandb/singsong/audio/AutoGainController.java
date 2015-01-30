@@ -1,6 +1,5 @@
 package com.myandb.singsong.audio;
 
-import android.util.Log;
 import net.beadsproject.beads.core.AudioContext;
 import net.beadsproject.beads.core.UGen;
 
@@ -13,42 +12,32 @@ public class AutoGainController extends UGen {
 	private float lkfs;
 	private float replayGain;
 	private float newGain;
-	private float gainChunk;
 	private float[] pcm;
 	private float[] out;
-
-	static {
-		System.loadLibrary("r128-stream");
-	}
 	
 	public AutoGainController(AudioContext context) {
 		super(context, 1, 1);
-		
-		try {
-			create(1, 16, 44100, 3); 
-		} catch (Exception e) {
-			e.printStackTrace(); 
-		}
+		AutoGainWrapper.getInstance().initialize(1, 16, 44100);
 	}
-	
-	public void close() {
-		this.destroy(); 
-	}
-	
-	private native int create(int channels, int resolution, int sampleRate, int mode) throws Exception;
-	private native float process(float[] buffer, int offset, int length); 
-	private native void destroy();
 	
 	@Override
 	public void calculateBuffer() {
 		pcm = bufIn[0];
 		out = bufOut[0];
+		
+		if (!AutoGainWrapper.getInstance().isAvailable()) {
+			for (int i = 0, l = pcm.length; i < l; i++) {
+				out[i] = pcm[i];
+			}
+			return;
+		}
+		
 		int length = pcm.length;
 		int chunkLength = length / ITERATE_COUNT; 
 		
 		for (int i = 0; i < ITERATE_COUNT; i++) {
 			int startOffset = i * chunkLength;
-			lkfs = this.process(pcm, startOffset, chunkLength);
+			lkfs = AutoGainWrapper.getInstance().processSample(pcm, startOffset, chunkLength);
 			
 			if (lkfs > ABSOLUTE_GATE) { 
 				replayGain = -18 - lkfs;
@@ -69,8 +58,8 @@ public class AutoGainController extends UGen {
 		return newGain;
 	}
 	
-	private void logError(String msg) {
-		Log.e("TAG", msg);
+	public void close() {
+		AutoGainWrapper.getInstance().close();
 	}
 	
 }

@@ -3,13 +3,13 @@ package com.myandb.singsong.widget;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import android.graphics.Bitmap;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -18,6 +18,9 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.method.ScrollingMovementMethod;
 import android.util.AttributeSet;
+import android.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -33,7 +36,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.SeekBar.OnSeekBarChangeListener;
-
 import com.android.volley.Request.Method;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
@@ -48,7 +50,6 @@ import com.myandb.singsong.dialog.ShareDialog;
 import com.myandb.singsong.event.ActivateOnlyClickListener;
 import com.myandb.singsong.event.MemberOnlyClickListener;
 import com.myandb.singsong.event.WeakRunnable;
-import com.myandb.singsong.image.BlurAsyncTask;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Comment;
 import com.myandb.singsong.model.Model;
@@ -69,9 +70,7 @@ import com.myandb.singsong.util.PlayCounter;
 import com.myandb.singsong.util.StringFormatter;
 import com.myandb.singsong.util.Utility;
 import com.nineoldandroids.view.ViewHelper;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
+import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 public class SlidingPlayerLayout extends SlidingUpPanelLayout {
@@ -190,6 +189,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 			tvThisSongMessage.setMovementMethod(new ScrollingMovementMethod());
 			
 			service.getPlayer().setOnPlayEventListener(onPlayEventListener);
+			setCustomSelectionActionModeCallback(etComment);
 			
 			initialized = true;
 		}
@@ -201,7 +201,41 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		}
 	}
 	
-	int k;
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	private void setCustomSelectionActionModeCallback(EditText editText) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+			editText.setCustomSelectionActionModeCallback(new ActionMode.Callback() {
+				
+				@Override
+				public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+					View actionBarContainer = ((BaseActivity) getContext()).getActionBarView();
+					if (actionBarContainer != null) {
+						ViewHelper.setAlpha(actionBarContainer, 1f);
+						actionBarContainer.setVisibility(View.VISIBLE);
+					}
+					return true;
+				}
+				
+				@Override
+				public void onDestroyActionMode(ActionMode mode) {
+					View actionBarContainer = ((BaseActivity) getContext()).getActionBarView();
+					if (actionBarContainer != null && isPanelExpanded()) {
+						actionBarContainer.setVisibility(View.GONE);
+					}
+				}
+				
+				@Override
+				public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+					return true;
+				}
+				
+				@Override
+				public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+					return false;
+				}
+			});
+		}
+	}
 	
 	private int getRelativeLeft(View view) {
 	    if (view.getParent() == view.getRootView()) {
@@ -766,32 +800,10 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	}
 	
 	private void displayBackgroundImage(Song song) {
-		String url = song.getMusic().getAlbumPhotoUrl();
-		ImageLoader.getInstance().displayImage(url, ivBackground, imageLoadingListener);
-	}
-	
-	private ImageLoadingListener imageLoadingListener = new ImageLoadingListener() {
-
-		@Override
-		public void onLoadingCancelled(String arg0, View arg1) {}
-
-		@Override
-		public void onLoadingComplete(String url, View imageView, Bitmap bitmap) {
-			setBackgroundBlurImage(bitmap, (ImageView) imageView);
-		}
-
-		@Override
-		public void onLoadingFailed(String arg0, View arg1, FailReason arg2) {}
-
-		@Override
-		public void onLoadingStarted(String arg0, View imageView) {}
-		
-	};
-	
-	private void setBackgroundBlurImage(Bitmap bitmap, ImageView imageView) {
-		BlurAsyncTask blurTask = new BlurAsyncTask();
-		blurTask.setImageView(imageView);
-		blurTask.execute(bitmap);
+		final String url = song.getMusic().getAlbumPhotoUrl();
+		final ImageSize imageSize = new ImageSize(100, 150);
+		final int radius = 5;
+		ImageHelper.displayBlurPhoto(url, ivBackground, imageSize, radius);
 	}
 	
 	private void displaySongMessage(Song song) {

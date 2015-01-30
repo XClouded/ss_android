@@ -10,6 +10,11 @@ public class Category extends Model {
 	public Category(int id) {
 		this.id = id;
 		switch (id) {
+		case 0:
+			this.title = "ÀüÃ¼";
+			this.imageResourceId = R.drawable.img_all;
+			break;
+		
 		case 1:
 			this.title = "¹ß¶óµå";
 			this.imageResourceId = R.drawable.img_ballad;
@@ -24,7 +29,7 @@ public class Category extends Model {
 			this.title = "·¦/ÈüÇÕ";
 			this.imageResourceId = R.drawable.img_hiphop;
 			break;
-			
+		
 		case 4:
 			this.title = "R&B/Soul";
 			this.imageResourceId = R.drawable.img_rnb;

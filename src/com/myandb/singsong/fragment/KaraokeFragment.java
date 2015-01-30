@@ -18,7 +18,6 @@ import com.myandb.singsong.dialog.LoadingDialog;
 import com.myandb.singsong.event.OnCompleteListener;
 import com.myandb.singsong.event.OnProgressListener;
 import com.myandb.singsong.event.WeakRunnable;
-import com.myandb.singsong.image.BlurAsyncTask;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Song;
@@ -33,20 +32,18 @@ import com.myandb.singsong.util.Lrc.Line.Type;
 import com.myandb.singsong.util.DynamicLrcDisplayer;
 import com.myandb.singsong.util.LrcDisplayer;
 import com.myandb.singsong.util.PlayCounter;
+import com.myandb.singsong.util.Reporter;
 import com.myandb.singsong.util.StaticLrcDisplayer;
 import com.myandb.singsong.util.StringFormatter;
 import com.myandb.singsong.util.Utility;
 import com.myandb.singsong.util.LrcDisplayer.OnTypeChangeListener;
 import com.myandb.singsong.widget.CountViewFactory;
 import com.myandb.singsong.widget.SlideAnimation;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
+import com.nostra13.universalimageloader.core.assist.ImageSize;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -120,6 +117,8 @@ public class KaraokeFragment extends BaseFragment {
 	private View vUserWrapper;
 	private ProgressBar pbPlayProgress;
 	private TextSwitcher tsLyricStarter;
+	
+	private boolean gaLrcDisplayerCreated;
 
 	@Override
 	protected int getResourceId() {
@@ -260,7 +259,6 @@ public class KaraokeFragment extends BaseFragment {
 						if (recorder != null) {
 							Intent intent = new Intent(getActivity(), UpActivity.class);
 							intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, RecordSettingFragment.class.getName());
-							intent.putExtra(UpActivity.EXTRA_FULL_SCREEN, true);
 							Bundle bundle = new Bundle();
 							bundle.putBoolean(SongUploadService.EXTRA_HEADSET_PLUGGED, recorder.isHeadsetPlugged());
 							bundle.putString(SongUploadService.EXTRA_MUSIC_PCM_FILE_PATH, musicPcmFile.getAbsolutePath());
@@ -285,7 +283,7 @@ public class KaraokeFragment extends BaseFragment {
 	}
 	
 	private void downloadDatas() {
-		loadingDialog.show(getChildFragmentManager(), "");
+		loadingDialog.show(getChildFragmentManager(), loadingDialog.getClass().getName());
 		
 		lrcDownload = new DownloadManager();
 		lrcDownload.start(music.getLrcUrl(), lyricFile, lyricDownloadListener);
@@ -344,6 +342,8 @@ public class KaraokeFragment extends BaseFragment {
 				.setWrapper((ViewGroup) vLyricWrapper)
 				.setOnTypeChangeListener(typeChangeListener)
 				.initialize();
+			
+			gaLrcDisplayerCreated = true;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -471,21 +471,31 @@ public class KaraokeFragment extends BaseFragment {
 	}
 	
 	public void prepareRecording() {
+		prepareRecording(true);
+	}
+	
+	private void prepareRecording(boolean dialog) {
 		if (receiver != null) {
 			if (receiver.isPlugged()) {
 				startRecordingWithHeadset();
 			} else {
-				getChildFragmentManager().beginTransaction()
-				.add(headsetDialog, "")
-				.commitAllowingStateLoss();
+				if (dialog) {
+					headsetDialog.show(getChildFragmentManager(), "");
+				} else {
+					startRecordingWithoutHeadset();
+				}
 			}
 		}
 	}
 
 	public void onHeadsetPlugged() {
-		if (headsetDialog.getDialog() != null) {
+		if (headsetDialog.getDialog() != null && headsetDialog.getDialog().isShowing()) {
 			headsetDialog.dismiss();
-			prepareRecording();
+			startRecordingWithHeadset();
+		} else {
+			if (recorder != null && recorder.isRecording()) {
+				stopRecording();
+			}
 		}
 	}
 	
@@ -498,8 +508,8 @@ public class KaraokeFragment extends BaseFragment {
 	private void stopRecording() {
 		if (recorder != null && recorder.isRecording()) {
 			recorder.stop();
+			stopAnimations();
 		}
-		stopAnimations();
 	}
 	
 	private void stopAnimations() {
@@ -579,31 +589,10 @@ public class KaraokeFragment extends BaseFragment {
 	}
 
 	private void displayBackgroundImage(Music music) {
-		ImageLoader.getInstance().displayImage(music.getAlbumPhotoUrl(), ivBackground, imageLoadingListener);
-	}
-	
-	private ImageLoadingListener imageLoadingListener = new ImageLoadingListener() {
-
-		@Override
-		public void onLoadingCancelled(String arg0, View arg1) {}
-
-		@Override
-		public void onLoadingComplete(String url, View imageView, Bitmap bitmap) {
-			setBackgroundBlurImage(bitmap, (ImageView) imageView);
-		}
-
-		@Override
-		public void onLoadingFailed(String arg0, View arg1, FailReason arg2) {}
-
-		@Override
-		public void onLoadingStarted(String arg0, View imageView) {}
-		
-	};
-	
-	private void setBackgroundBlurImage(Bitmap bitmap, ImageView imageView) {
-		BlurAsyncTask blurTask = new BlurAsyncTask();
-		blurTask.setImageView(imageView);
-		blurTask.execute(bitmap);
+		final String url = music.getAlbumPhotoUrl();
+		final ImageSize imageSize = new ImageSize(100, 150);
+		final int radius = 5;
+		ImageHelper.displayBlurPhoto(url, ivBackground, imageSize, radius);
 	}
 	
 	private void displayProfile(User user, TextView tvNickname, ImageView ivUserPhoto) {
@@ -703,7 +692,7 @@ public class KaraokeFragment extends BaseFragment {
 				data.putExtra(SongUploadService.EXTRA_CREATOR_ID, currentUser.getId());
 				data.putExtra(SongUploadService.EXTRA_MUSIC_ID, music.getId());
 				data.putExtra(SongUploadService.EXTRA_LYRIC_PART, lyricPart);
-				data.putExtra(SongUploadService.EXTRA_SAMPLE_SKIP_SECOND, lrcDisplayer.getSampleSkipSecond());
+				data.putExtra(SongUploadService.EXTRA_SAMPLE_SKIP_SECOND, getSampleSkipSecond());
 				
 				if (!isSolo()) {
 					data.putExtra(SongUploadService.EXTRA_PARENT_SONG_ID, parentSong.getId());
@@ -712,7 +701,7 @@ public class KaraokeFragment extends BaseFragment {
 				getActivity().startService(data);
 				finish(getActivity(), null);
 			} else if (resultCode == Activity.RESULT_OK) {
-				prepareRecording();
+				prepareRecording(false);
 			} else if (resultCode == Activity.RESULT_CANCELED) {
 				finish(getActivity(), null);
 			}
@@ -720,6 +709,17 @@ public class KaraokeFragment extends BaseFragment {
 
 		default:
 			break;
+		}
+	}
+	
+	private float getSampleSkipSecond() {
+		if (lrcDisplayer != null) {
+			return lrcDisplayer.getSampleSkipSecond();
+		} else {
+			Reporter.getInstance(getActivity()).reportExceptionOnAnalytics("KaraokeFragment", 
+					"onActivityReesult lrcDisplayer is null, created "
+					+ String.valueOf(gaLrcDisplayerCreated));
+			return 5f;
 		}
 	}
 
@@ -813,8 +813,8 @@ public class KaraokeFragment extends BaseFragment {
 	}
 
 	@Override
-	public boolean isActionBarEnabled() {
-		return false;
+	public boolean isActionBarDisabled() {
+		return true;
 	}
 
 }

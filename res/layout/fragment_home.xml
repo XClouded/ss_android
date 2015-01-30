@@ -30,12 +30,11 @@
                     android:text="@string/home_title_collabo_top10" />
 
                 <TextView
-                    android:id="@+id/tv_collabo_top10_time"
+                    android:id="@+id/tv_song_collaborated_more"
                     style="@style/TextViewLessImportant"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:visibility="gone"
-                    android:text="19:00 dsaf" />
+                    android:text="@string/more" />
             </RelativeLayout>
 
             <ImageView style="@style/DividerHorizontal" />
@@ -179,6 +178,47 @@
                 android:paddingRight="@dimen/margin_small"
                 android:paddingBottom="@dimen/margin_small"
                 android:background="@color/white" />
+
+            <ImageView style="@style/DividerHorizontal" />
+            
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/margin_small"
+                android:paddingLeft="@dimen/margin"
+                android:paddingRight="@dimen/margin"
+                android:paddingTop="@dimen/margin_small" >
+
+                <TextView
+                    style="@style/TextViewSubtitle"
+                    android:text="@string/home_title_waiting_top10" />
+
+                <TextView
+                    android:id="@+id/tv_song_waiting_more"
+                    style="@style/TextViewLessImportant"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="@string/more" />
+            </RelativeLayout>
+
+            <ImageView style="@style/DividerHorizontal" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:paddingBottom="@dimen/margin"
+                android:paddingTop="@dimen/margin" >
+
+                <com.myandb.singsong.widget.HorizontalListView
+                    android:id="@+id/hlv_waiting_song"
+                    android:layout_width="match_parent"
+                    android:layout_height="190dp"
+                    android:clipToPadding="false"
+                    android:paddingLeft="@dimen/margin"
+                    android:paddingRight="@dimen/margin"
+                    android:scrollbars="none" />
+            </FrameLayout>
         </LinearLayout>
     </ScrollView>
     

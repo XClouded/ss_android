@@ -22,7 +22,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
-import android.widget.ListView;
 
 public class ArtistListFragment extends ListFragment {
 	
@@ -63,7 +62,6 @@ public class ArtistListFragment extends ListFragment {
 		super.setupViews(savedInstanceState);
 		enableFadingActionBar(false);
 		loadTodayCollaboArtist();
-		((ListView) getListView()).setDivider(null);
 	}
 	
 	private void loadTodayCollaboArtist() {
