@@ -19,6 +19,7 @@ import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 public abstract class BaseFragment extends Fragment {
@@ -253,6 +254,31 @@ public abstract class BaseFragment extends Fragment {
 		}
 	}
 	
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		cleanUpViewsRecursive(getView());
+	}
+	
+	private void cleanUpViewsRecursive(View view) {
+		if (view == null) {
+			return;
+		}
+		
+		view.setBackgroundResource(0);
+		if (view instanceof ImageView) {
+			((ImageView) view).setImageResource(0);
+		}
+		
+		if (view instanceof ViewGroup) {
+			ViewGroup viewGroup = (ViewGroup) view;
+			for (int i = 0, l = viewGroup.getChildCount(); i < l; i++) {
+				View child = viewGroup.getChildAt(i);
+				cleanUpViewsRecursive(child);
+			}
+		}
+	}
+
 	@Override
 	public void onDestroy() {
 		cancelRequests();
