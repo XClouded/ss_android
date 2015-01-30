@@ -28,11 +28,16 @@ public class BlurAsyncTask extends AsyncTask<Bitmap, Integer, Bitmap> {
 			return null;
 		}
 		
-		Config config = bitmap.getConfig();
-		if (config == null) {
-			bitmap = bitmap.copy(Config.RGB_565, true);
-		} else {
-			bitmap = convertToMutable(bitmap);
+		if (!bitmap.isMutable()) {
+			Config config = Config.RGB_565;
+			if (bitmap.getConfig() != null) {
+				config = bitmap.getConfig();
+			}
+			bitmap = convertToMutable(bitmap, config);
+		}
+		
+		if (!bitmap.isMutable()) {
+			bitmap = bitmap.copy(bitmap.getConfig(), true);
 		}
 		
 		int w = bitmap.getWidth();
@@ -228,19 +233,22 @@ public class BlurAsyncTask extends AsyncTask<Bitmap, Integer, Bitmap> {
 			}
 		}
 		
-		bitmap.setPixels(pix, 0, w, 0, 0, w, h);
+		try {
+			bitmap.setPixels(pix, 0, w, 0, 0, w, h);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		return (bitmap);
 	}
 	
-	private Bitmap convertToMutable(Bitmap bitmap) {
+	private Bitmap convertToMutable(Bitmap bitmap, Config config) {
 	    try {
 	    	final String filePrefix = String.valueOf(bitmap.hashCode()) + ".bitmap";
 			File file = File.createTempFile(filePrefix, ".tmp");
 	        RandomAccessFile randomAccessFile = new RandomAccessFile(file, "rw");
 	        final int width = bitmap.getWidth();
 	        final int height = bitmap.getHeight();
-	        Config type = bitmap.getConfig();
 	        
 	        FileChannel channel = randomAccessFile.getChannel();
 	        MappedByteBuffer map = channel.map(MapMode.READ_WRITE, 0, bitmap.getRowBytes()*height);
@@ -248,7 +256,7 @@ public class BlurAsyncTask extends AsyncTask<Bitmap, Integer, Bitmap> {
 	        bitmap.recycle();
 	        System.gc();
 
-	        bitmap = Bitmap.createBitmap(width, height, type);
+	        bitmap = Bitmap.createBitmap(width, height, config);
 	        map.position(0);
 	        bitmap.copyPixelsFromBuffer(map);
 	        channel.close();
