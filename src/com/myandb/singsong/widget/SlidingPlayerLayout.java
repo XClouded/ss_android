@@ -3,8 +3,7 @@ package com.myandb.singsong.widget;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -37,7 +36,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.SeekBar.OnSeekBarChangeListener;
-
 import com.android.volley.Request.Method;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
@@ -203,44 +201,41 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		}
 	}
 	
-	@SuppressLint("NewApi")
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	private void setCustomSelectionActionModeCallback(EditText editText) {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			editText.setCustomSelectionActionModeCallback(commentSelectionActionMode);
+			editText.setCustomSelectionActionModeCallback(new ActionMode.Callback() {
+				
+				@Override
+				public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+					View actionBarContainer = ((BaseActivity) getContext()).getActionBarView();
+					if (actionBarContainer != null) {
+						ViewHelper.setAlpha(actionBarContainer, 1f);
+						actionBarContainer.setVisibility(View.VISIBLE);
+					}
+					return true;
+				}
+				
+				@Override
+				public void onDestroyActionMode(ActionMode mode) {
+					View actionBarContainer = ((BaseActivity) getContext()).getActionBarView();
+					if (actionBarContainer != null && isPanelExpanded()) {
+						actionBarContainer.setVisibility(View.GONE);
+					}
+				}
+				
+				@Override
+				public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+					return true;
+				}
+				
+				@Override
+				public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+					return false;
+				}
+			});
 		}
 	}
-	
-	@SuppressLint("NewApi")
-	private ActionMode.Callback commentSelectionActionMode = new ActionMode.Callback() {
-		
-		@Override
-		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-			View actionBarContainer = ((BaseActivity) getContext()).getActionBarView();
-			if (actionBarContainer != null) {
-				ViewHelper.setAlpha(actionBarContainer, 1f);
-				actionBarContainer.setVisibility(View.VISIBLE);
-			}
-			return true;
-		}
-		
-		@Override
-		public void onDestroyActionMode(ActionMode mode) {
-			View actionBarContainer = ((BaseActivity) getContext()).getActionBarView();
-			if (actionBarContainer != null && isPanelExpanded()) {
-				actionBarContainer.setVisibility(View.GONE);
-			}
-		}
-		
-		@Override
-		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-			return true;
-		}
-		
-		@Override
-		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-			return false;
-		}
-	};
 	
 	private int getRelativeLeft(View view) {
 	    if (view.getParent() == view.getRootView()) {
