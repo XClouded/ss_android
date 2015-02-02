@@ -27,10 +27,8 @@ import android.widget.Toast;
 import com.android.volley.Request.Method;
 import com.google.android.gcm.GCMBaseIntentService;
 import com.google.gson.Gson;
-import com.myandb.singsong.activity.BaseActivity;
-import com.myandb.singsong.activity.UpActivity;
+import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.fragment.KaraokeFragment;
-import com.myandb.singsong.fragment.NotificationFragment;
 import com.myandb.singsong.image.BitmapBuilder;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.UserActivity;
@@ -192,8 +190,9 @@ public class GCMIntentService extends GCMBaseIntentService {
 	}
 	
 	private void submitNotification(Bitmap largeIcon, User user, String message) {
-		Intent intent = new Intent(this, UpActivity.class);
-		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, NotificationFragment.class.getName());
+		Intent intent = new Intent(this, RootActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+		intent.putExtra(RootActivity.EXTRA_SHOW_NOTIFICATION, true);
 		
 		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(this);

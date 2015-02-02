@@ -56,12 +56,13 @@ public class Listeners {
 
 				@Override
 				public void onResponse(JSONObject response) {
+					Intent intent = new Intent(context, RootActivity.class);
+					
 					switch(activity.getSourceType()) {
 					case UserActivity.TYPE_CREATE_FRIENDSHIP:
 						Bundle bundle = new Bundle();
 						bundle.putString(UserHomeFragment.EXTRA_THIS_USER, response.toString());
 						bundle.putBoolean(ListFragment.EXTRA_VERTICAL_PADDING, true);
-						Intent intent = new Intent(context, RootActivity.class);
 						intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, UserHomeFragment.class.getName());
 						intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
 						((BaseActivity) view.getContext()).changePage(intent);
@@ -75,13 +76,15 @@ public class Listeners {
 							Gson gson = Utility.getGsonInstance();
 							Song song = gson.fromJson(response.toString(), Song.class);
 							song.getPlayClickListener().onClick(view);
-							((android.app.Activity) view.getContext()).finish();
+							intent.putExtra(RootActivity.EXTRA_SHOW_PLAYER, true);
+							((BaseActivity) view.getContext()).changePage(intent);
 						}
 						break;
 						
 					default:
 						return;
 					}
+					
 				}
 			};
 			

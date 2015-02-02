@@ -90,6 +90,13 @@ public class PlayerService extends Service {
 		}
 		
 		OnPlayEventListener listener = streamPlayer.getOnPlayEventListener();
+		if (listener == null) {
+			listener = new OnPlayEventListener() {
+				
+				@Override
+				public void onPlay(PlayEvent event) {}
+			};
+		}
 		
 		try {
 			if (samplePlayer.isPlaying()) {
@@ -108,15 +115,10 @@ public class PlayerService extends Service {
 					return;
 				}
 				
-				try {
-					streamPlayer.pause();
-					streamPlayer.reset();
-					streamPlayer.setDataSource(getCompatDataSource(thisSong.getAudioUrl()));
-					streamPlayer.prepareAsync();
-				} catch (Exception e) {
-					listener.onPlay(PlayEvent.ERROR);
-					e.printStackTrace();
-				}
+				streamPlayer.pause();
+				streamPlayer.reset();
+				streamPlayer.setDataSource(getCompatDataSource(thisSong.getAudioUrl()));
+				streamPlayer.prepareAsync();
 			} else {
 				listener.onPlay(PlayEvent.RESUME);
 			}
