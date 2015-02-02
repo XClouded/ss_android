@@ -66,7 +66,11 @@ public class ListenPagerAdapter extends FragmentPagerAdapter {
 		if (popularFragment != null) {
 			final String startDate = StringFormatter.getDateString(Calendar.DATE, -1);
 			UrlBuilder urlBuilder = new UrlBuilder();
-			urlBuilder.s("songs").s(songType.getSegment()).p("genre_id", categoryId).p("order", "liking_num").p("start", startDate);
+			String order = "liking_num";
+			if (songType.equals(SongType.WAITING)) {
+				order = "collabo_num";
+			}
+			urlBuilder.s("songs").s(songType.getSegment()).p("genre_id", categoryId).p("order", order).p("start", startDate);
 			popularFragment.setUrlBuilder(urlBuilder);
 			popularFragment.load();
 		}
@@ -90,7 +94,11 @@ public class ListenPagerAdapter extends FragmentPagerAdapter {
 		switch (position) {
 		case 0:
 			final String startDate = StringFormatter.getDateString(Calendar.DATE, -1);
-			params.putString("order", "liking_num");
+			if (songType.equals(SongType.WAITING)) {
+				params.putString("order", "collabo_num");
+			} else {
+				params.putString("order", "liking_num");
+			}
 			params.putString("start", startDate);
 			popularFragment = fragment;
 			break;
