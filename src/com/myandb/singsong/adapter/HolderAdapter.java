@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import com.myandb.singsong.util.Utility;
 
 import android.content.Context;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -96,7 +97,9 @@ public abstract class HolderAdapter<T, E extends ViewHolder> extends BaseAdapter
 	
 	public void clear() {
 		items.clear();
-		notifyDataSetChanged();
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+			notifyDataSetChanged();
+		}
 	}
 
 	@SuppressWarnings("unchecked")
