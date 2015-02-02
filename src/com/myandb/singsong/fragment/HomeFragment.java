@@ -523,9 +523,12 @@ public class HomeFragment extends BaseFragment {
 	}
 	
 	private int getCurrentNotificationCount() {
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-		String key = getString(R.string.key_notification_count);
-		return preferences.getInt(key, 0);
+		if (getActivity() != null && isAdded()) {
+			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+			String key = getString(R.string.key_notification_count);
+			return preferences.getInt(key, 0);
+		}
+		return 0;
 	}
 	
 	private void setNotificationNum(int count, TextView textView) {
@@ -541,8 +544,10 @@ public class HomeFragment extends BaseFragment {
 	}
 	
 	private void registerNotificationCountListener() {
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-		preferences.registerOnSharedPreferenceChangeListener(notificationCountChangeListener);
+		if (getActivity() != null && isAdded()) {
+			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+			preferences.registerOnSharedPreferenceChangeListener(notificationCountChangeListener);
+		}
 	}
 	
 	private OnSharedPreferenceChangeListener notificationCountChangeListener = new OnSharedPreferenceChangeListener() {

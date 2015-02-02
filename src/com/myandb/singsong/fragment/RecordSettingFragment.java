@@ -221,6 +221,10 @@ public class RecordSettingFragment extends BaseFragment {
 			vVolume.setVisibility(View.GONE);
 		}
 		
+		if (!Authenticator.isLoggedIn()) {
+			return;
+		}
+		
 		if (Authenticator.getUser().isFacebookActivated()) {
 			registerSharedPreferenceChangeListener();
 			vFacebook.setVisibility(View.VISIBLE);
@@ -569,12 +573,14 @@ public class RecordSettingFragment extends BaseFragment {
 	}
 	
 	private void registerSharedPreferenceChangeListener() {
-		final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-		final String keyPublishFacebook = getString(R.string.key_publish_facebook);
-		boolean enabled = preferences.getBoolean(keyPublishFacebook, true);
-		
-		updateFacebookPostingView(enabled);
-		preferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
+		if (getActivity() != null && isAdded()) {
+			final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+			final String keyPublishFacebook = getString(R.string.key_publish_facebook);
+			boolean enabled = preferences.getBoolean(keyPublishFacebook, true);
+			
+			updateFacebookPostingView(enabled);
+			preferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
+		}
 	}
 	
 	private OnSharedPreferenceChangeListener preferenceChangeListener = new OnSharedPreferenceChangeListener() {
@@ -605,10 +611,12 @@ public class RecordSettingFragment extends BaseFragment {
 		
 		@Override
 		public void onClick(View v) {
-			final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-			final String key = getString(R.string.key_publish_facebook);
-			boolean enabled = preferences.getBoolean(key, true);
-			preferences.edit().putBoolean(key, !enabled).commit();
+			if (getActivity() != null && isAdded()) {
+				final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+				final String key = getString(R.string.key_publish_facebook);
+				boolean enabled = preferences.getBoolean(key, true);
+				preferences.edit().putBoolean(key, !enabled).commit();
+			}
 		}
 	};
 
@@ -639,10 +647,12 @@ public class RecordSettingFragment extends BaseFragment {
 					
 					Uri selectedImage = data != null ? data.getData() : imageUri;
 					ContentResolver resolver = getActivity().getContentResolver();
-					InputStream imageStream = resolver.openInputStream(selectedImage);
-					asyncTask.execute(imageStream);
-					
-					localImageExist = true;
+					if (selectedImage != null) {
+						InputStream imageStream = resolver.openInputStream(selectedImage);
+						asyncTask.execute(imageStream);
+						
+						localImageExist = true;
+					}
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				} catch (Exception e) {

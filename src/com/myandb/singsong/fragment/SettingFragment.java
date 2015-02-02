@@ -510,12 +510,13 @@ public class SettingFragment extends BaseFragment {
 					asyncTask.setOutputFile(scaledImageFile);
 					
 					Uri selectedImage = data != null ? data.getData() : tempUri;
-					InputStream imageStream = getActivity().getContentResolver().openInputStream(selectedImage);
-					asyncTask.execute(imageStream);
-					
-					btnChangePhoto.setOnClickListener(uploadPhotoClickListener);
-					btnChangePhoto.setVisibility(View.VISIBLE);
-				} catch (FileNotFoundException e) {
+					if (selectedImage != null) {
+						InputStream imageStream = getActivity().getContentResolver().openInputStream(selectedImage);
+						asyncTask.execute(imageStream);
+						btnChangePhoto.setOnClickListener(uploadPhotoClickListener);
+						btnChangePhoto.setVisibility(View.VISIBLE);
+					}
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
