@@ -358,7 +358,8 @@ public class HomeFragment extends BaseFragment {
 	
 	private void loadWaitingTop10() {
 		if (waitingSongAdapter == null) {
-			final UrlBuilder urlBuilder = new UrlBuilder().s("songs").s("root").p("order", "liking_num").take(10);
+			final String yesterday = StringFormatter.getDateString(Calendar.DAY_OF_YEAR, -1);
+			final UrlBuilder urlBuilder = new UrlBuilder().s("songs").s("root").start(yesterday).p("order", "collabo_num").take(10);
 			GradualLoader loader = new GradualLoader(getActivity());
 			loader.setUrlBuilder(urlBuilder);
 			loader.setOnLoadCompleteListener(new OnLoadCompleteListener() {
