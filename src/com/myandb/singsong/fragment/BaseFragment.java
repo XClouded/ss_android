@@ -1,6 +1,9 @@
 package com.myandb.singsong.fragment;
 
 import com.android.volley.Request;
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.Fields;
+import com.google.analytics.tracking.android.MapBuilder;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
@@ -31,6 +34,7 @@ public abstract class BaseFragment extends Fragment {
 	private ProgressDialog progressDialog;
 	private CharSequence progressMessage; 
 	private SimpleFacebook simpleFacebook;
+	private EasyTracker tracker;
 	private boolean actionbarDisabled;
 
 	@Override
@@ -63,6 +67,8 @@ public abstract class BaseFragment extends Fragment {
 		setupViews(savedInstanceState);
 		
 		notifyDataChanged();
+		
+		tracker = EasyTracker.getInstance(getActivity());
 	}
 	
 	@Override
@@ -71,6 +77,9 @@ public abstract class BaseFragment extends Fragment {
 		
 		try {
 			configureActionBar();
+			
+			tracker.set(Fields.SCREEN_NAME, getClass().getSimpleName());
+			tracker.send(MapBuilder.createAppView().build());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
