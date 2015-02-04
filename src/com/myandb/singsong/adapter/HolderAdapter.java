@@ -72,18 +72,19 @@ public abstract class HolderAdapter<T, E extends ViewHolder> extends BaseAdapter
 	}
 	
 	public void addAll(JSONArray jsonItems) {
+		List<T> converted = new ArrayList<T>();
 		try {
 			Gson gson = Utility.getGsonInstance();
 			String iItemInJson = null;
 			
 			for (int i = 0, l = jsonItems.length(); i < l; i++) {
 				iItemInJson = jsonItems.getJSONObject(i).toString();
-				items.add(gson.fromJson(iItemInJson, clazz));
+				converted.add(gson.fromJson(iItemInJson, clazz));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			notifyDataSetChanged();
+			addAll(converted);
 		}
 	}
 

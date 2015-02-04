@@ -3,6 +3,8 @@ package com.myandb.singsong.net;
 import org.json.JSONArray;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 
@@ -18,6 +20,7 @@ public class GradualLoader implements OnScrollListener {
 	private OnLoadCompleteListener completeListener;
 	private OnLoadErrorListener errorListener;
 	private UrlBuilder urlBuilder;
+	private Handler handler;
 	private int count;
 	private int requiredTake;
 	private int initialLoadNum;
@@ -27,6 +30,7 @@ public class GradualLoader implements OnScrollListener {
 
 	public GradualLoader(Context context) {
 		this.context = context;
+		handler = new Handler(Looper.getMainLooper());
 	}
 	
 	public void setUrlBuilder(UrlBuilder urlBuilder) {
@@ -73,12 +77,19 @@ public class GradualLoader implements OnScrollListener {
 			urlBuilder.take(take);
 			requiredTake = take;
 			
-			JSONArrayRequest request = new JSONArrayRequest(
+			final JSONArrayRequest request = new JSONArrayRequest(
 				urlBuilder.build(),
 				new JSONArraySuccessListener(this, "onLoadResponse"),
 				new JSONErrorListener(this, "onLoadError")
 			);
-			((App) context.getApplicationContext()).addShortLivedRequest(context, request);
+			
+			handler.postDelayed(new Runnable() {
+				
+				@Override
+				public void run() {
+					((App) context.getApplicationContext()).addShortLivedRequest(context, request);
+				}
+			}, 500);
 		}
 	}
 	
