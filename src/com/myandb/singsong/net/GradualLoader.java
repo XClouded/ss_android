@@ -12,9 +12,9 @@ import com.myandb.singsong.App;
 
 public class GradualLoader implements OnScrollListener {
 	
-	private static final int INITIAL_LOAD_NUM = 25;
-	private static final int ADDITIONAL_LOAD_NUM = 15;
-	private static final int VISIBLE_THRESHOLD = 10; 
+	public static final int INITIAL_LOAD_NUM = 25;
+	public static final int ADDITIONAL_LOAD_NUM = 15;
+	public static final int VISIBLE_THRESHOLD = 10; 
 
 	private Context context;
 	private OnLoadCompleteListener completeListener;
