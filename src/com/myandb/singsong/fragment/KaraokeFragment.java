@@ -474,13 +474,15 @@ public class KaraokeFragment extends BaseFragment {
 		prepareRecording(true);
 	}
 	
-	private void prepareRecording(boolean dialog) {
+	private void prepareRecording(boolean showDialog) {
 		if (receiver != null) {
 			if (receiver.isPlugged()) {
 				startRecordingWithHeadset();
 			} else {
-				if (dialog) {
-					headsetDialog.show(getChildFragmentManager(), "");
+				if (showDialog) {
+					if (headsetDialog.getDialog() == null || !headsetDialog.getDialog().isShowing()) {
+						headsetDialog.show(getChildFragmentManager(), "");
+					}
 				} else {
 					startRecordingWithoutHeadset();
 				}
