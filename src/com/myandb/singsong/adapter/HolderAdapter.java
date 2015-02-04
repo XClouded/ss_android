@@ -113,9 +113,11 @@ public abstract class HolderAdapter<T, E extends ViewHolder> extends BaseAdapter
 			viewHolder = (E) view.getTag();
 		}
 		
-		T item = getItem(position);
-		if (item != null) {
-			onBindViewHolder(view.getContext(), viewHolder, item, position);
+		if (position >= 0 && position < getCount()) {
+			T item = getItem(position);
+			if (item != null) {
+				onBindViewHolder(view.getContext(), viewHolder, item, position);
+			}
 		}
 		
 		return view;
