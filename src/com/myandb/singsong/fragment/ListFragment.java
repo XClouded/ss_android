@@ -11,6 +11,7 @@ import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.widget.FadingActionBarHelper;
 
 import android.app.Activity;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -159,8 +160,10 @@ public class ListFragment extends BaseFragment {
 	
 	private void addFooterView(LayoutInflater inflater, AbsListView listView) {
 		if (listView instanceof ListView) {
-			View footer = inflater.inflate(R.layout.footer, listView, false);
-			((ListView) listView).addFooterView(footer);
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+				View footer = inflater.inflate(R.layout.footer, listView, false);
+				((ListView) listView).addFooterView(footer);
+			}
 		}
 	}
 
