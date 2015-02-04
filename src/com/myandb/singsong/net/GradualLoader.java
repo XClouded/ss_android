@@ -89,7 +89,7 @@ public class GradualLoader implements OnScrollListener {
 				public void run() {
 					((App) context.getApplicationContext()).addShortLivedRequest(context, request);
 				}
-			}, 500);
+			}, 300);
 		}
 	}
 	
