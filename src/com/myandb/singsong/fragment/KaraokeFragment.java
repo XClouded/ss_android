@@ -482,6 +482,8 @@ public class KaraokeFragment extends BaseFragment {
 				if (showDialog) {
 					if (headsetDialog.getDialog() == null || !headsetDialog.getDialog().isShowing()) {
 						headsetDialog.show(getChildFragmentManager(), "");
+					} else {
+						startRecordingWithoutHeadset();
 					}
 				} else {
 					startRecordingWithoutHeadset();
