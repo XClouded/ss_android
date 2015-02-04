@@ -478,6 +478,10 @@ public class SettingFragment extends BaseFragment {
 		tvUserUsername.setText(user.getUsername());
 		tvUserNickname.setText(user.getNickname());
 		
+		if (profile == null) {
+			return;
+		}
+		
 		if (profile.getEmail().length() > 0) {
 			tvUserEmail.setText(profile.getEmail());
 		} else {
