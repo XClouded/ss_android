@@ -4,12 +4,13 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.myandb.singsong.R;
-import com.myandb.singsong.util.Reporter;
+import com.myandb.singsong.fragment.KaraokeFragment;
 import com.nineoldandroids.view.ViewHelper;
 
 public class LoadingDialog extends BaseDialog {
@@ -19,9 +20,6 @@ public class LoadingDialog extends BaseDialog {
 	private Button btnProgressControl;
 	private Button btnCancel;
 	private String titlePrefix;
-	
-	private boolean gaDismissed;
-	private boolean gaInflated;
 
 	@Override
 	protected void initialize(Activity activity) {
@@ -35,8 +33,6 @@ public class LoadingDialog extends BaseDialog {
 		tvProgressTitle = (TextView) view.findViewById(R.id.tv_progress_title);
 		btnProgressControl = (Button) view.findViewById(R.id.btn_progress_control);
 		btnCancel = (Button) view.findViewById(R.id.btn_cancel);
-		
-		gaInflated = true;
 	}
 
 	@Override
@@ -53,6 +49,8 @@ public class LoadingDialog extends BaseDialog {
 	@Override
 	protected void setupViews() {
 		titlePrefix = tvProgressTitle.getText().toString();
+		btnProgressControl.setOnClickListener(controlButtonClickListener);
+		enableControlButton(false);
 		btnCancel.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -61,48 +59,24 @@ public class LoadingDialog extends BaseDialog {
 			}
 		});
 	}
-
-	public void setTitlePrefix(String text) {
-		titlePrefix = text;
-		updateProgressBar(0);
-	}
 	
-	public void setControlButtonShown(boolean shown) {
-		if (btnProgressControl == null) {
-			Reporter.getInstance(getActivity()).reportExceptionOnAnalytics("LoadingDialog",
-					"btnProgressControl is null, dismissed: "
-					+ String.valueOf(gaDismissed)
-					+ " inflated: "
-					+ String.valueOf(gaInflated));
-			return;
-		}
+	private OnClickListener controlButtonClickListener = new OnClickListener() {
 		
-		if (btnProgressControl.isShown() == shown) {
-			return;
+		@Override
+		public void onClick(View v) {
+			if (getParentFragment() == null) {
+				return;
+			}
+			
+			if (getParentFragment() instanceof KaraokeFragment) {
+				dismiss();
+				((KaraokeFragment) getParentFragment()).prepareRecording();
+			}
 		}
-		
-		if (shown) {
-			btnProgressControl.setVisibility(View.VISIBLE);
-		} else {
-			btnProgressControl.setVisibility(View.GONE);
-		}
-	}
-	
-	public void setControlButtonText(String text) {
-		if (btnProgressControl != null) {
-			btnProgressControl.setText(text);
-		}
-	}
-	
-	public void setOnControlButtonClickListener(View.OnClickListener listener) {
-		if (btnProgressControl != null) {
-			btnProgressControl.setOnClickListener(listener);
-		}
-	}
+	};
 	
 	public void enableControlButton(boolean enabled) {
 		if (btnProgressControl != null) {
-			setControlButtonShown(true);
 			btnProgressControl.setEnabled(enabled);
 			
 			if (enabled) {
@@ -123,12 +97,6 @@ public class LoadingDialog extends BaseDialog {
 			tvProgressTitle.append(String.valueOf(progress));
 			tvProgressTitle.append("%");
 		}
-	}
-
-	@Override
-	public void dismiss() {
-		super.dismiss();
-		gaDismissed = true;
 	}
 	
 }

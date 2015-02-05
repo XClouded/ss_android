@@ -45,7 +45,6 @@
     <string name="song_waiting">콜라보를 기다려요</string>
     
     <string name="loading_title_audio_downloading">노래 로딩중입니다..</string>
-    <string name="loading_title_audio_decompressing">노래 로딩중입니다..</string>
     
     <string name="dialog_headset_title">이어폰이나 헤드셋을 끼우세요!</string>
     <string name="dialog_headset_content">콜라보 노래방은 반주와 목소리를 따로 녹음하여 목소리에 보정이 가능합니다. 이어폰이나 헤드셋을 끼워 더 좋은 품질로 녹음하세요!</string>

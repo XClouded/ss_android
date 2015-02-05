@@ -32,7 +32,6 @@ import com.myandb.singsong.util.Lrc.Line.Type;
 import com.myandb.singsong.util.DynamicLrcDisplayer;
 import com.myandb.singsong.util.LrcDisplayer;
 import com.myandb.singsong.util.PlayCounter;
-import com.myandb.singsong.util.Reporter;
 import com.myandb.singsong.util.StaticLrcDisplayer;
 import com.myandb.singsong.util.StringFormatter;
 import com.myandb.singsong.util.Utility;
@@ -117,8 +116,6 @@ public class KaraokeFragment extends BaseFragment {
 	private View vUserWrapper;
 	private ProgressBar pbPlayProgress;
 	private TextSwitcher tsLyricStarter;
-	
-	private boolean gaLrcDisplayerCreated;
 
 	@Override
 	protected int getResourceId() {
@@ -319,7 +316,7 @@ public class KaraokeFragment extends BaseFragment {
 		@Override
 		public void onProgress(Integer progress) {
 			super.onProgress(progress);
-			updateLoadingDialog(progress);
+			updateLoadingDialog(Math.min(50, progress / 2));
 		}
 
 		@Override
@@ -342,8 +339,6 @@ public class KaraokeFragment extends BaseFragment {
 				.setWrapper((ViewGroup) vLyricWrapper)
 				.setOnTypeChangeListener(typeChangeListener)
 				.initialize();
-			
-			gaLrcDisplayerCreated = true;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -392,7 +387,6 @@ public class KaraokeFragment extends BaseFragment {
 	}
 	
 	public void onAudioDownloadSuccess() {
-		setupLoadingDialogForDecode();
 		startDecoding();
 		
 		int duration = (int) StringFormatter.getDuration(musicOggFile);
@@ -423,7 +417,6 @@ public class KaraokeFragment extends BaseFragment {
 				
 				if (e == null) {
 					loadingDialog.enableControlButton(true);
-					loadingDialog.setControlButtonText(getString(R.string.button_start_record));
 				} else {
 					makeToast(R.string.t_critical_recording_error);
 					e.printStackTrace();
@@ -435,13 +428,13 @@ public class KaraokeFragment extends BaseFragment {
 		decoder.setOnProgressListener(new OnProgressListener() {
 			
 			@Override
-			public void onProgress(final Integer progress) {
+			public void onProgress(Integer progress) {
 				if (loadingDialog == null) {
 					return;
 				}
 				
-				loadingDialog.updateProgressBar(progress);
-				if (progress >= 30) {
+				updateLoadingDialog(Math.min(100, 50 + progress / 2));
+				if (progress > 40) {
 					loadingDialog.enableControlButton(true);
 				}
 				
@@ -452,22 +445,6 @@ public class KaraokeFragment extends BaseFragment {
 		});
 		
 		decoder.start(musicOggFile, musicPcmFile);
-	}
-	
-	private void setupLoadingDialogForDecode() {
-		loadingDialog.setTitlePrefix(getString(R.string.loading_title_audio_decompressing));
-		loadingDialog.setControlButtonShown(true);
-		loadingDialog.enableControlButton(false);
-		loadingDialog.setControlButtonText(getString(R.string.button_start_record_no_waiting));
-		loadingDialog.setOnControlButtonClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				loadingDialog.dismiss();
-				prepareRecording();
-			}
-			
-		});
 	}
 	
 	public void prepareRecording() {
@@ -720,9 +697,6 @@ public class KaraokeFragment extends BaseFragment {
 		if (lrcDisplayer != null) {
 			return lrcDisplayer.getSampleSkipSecond();
 		} else {
-			Reporter.getInstance(getActivity()).reportExceptionOnAnalytics("KaraokeFragment", 
-					"onActivityReesult lrcDisplayer is null, created "
-					+ String.valueOf(gaLrcDisplayerCreated));
 			return 5f;
 		}
 	}
