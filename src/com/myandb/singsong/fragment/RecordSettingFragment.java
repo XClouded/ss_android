@@ -29,6 +29,7 @@ import com.myandb.singsong.net.JSONObjectSuccessListener;
 import com.myandb.singsong.net.UploadManager;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.service.SongUploadService;
+import com.myandb.singsong.util.Reporter;
 import com.sromku.simple.fb.Permission.Type;
 import com.sromku.simple.fb.listeners.OnLoginListener;
 
@@ -350,26 +351,29 @@ public class RecordSettingFragment extends BaseFragment {
 	};
 	
 	private void uploadImageIfExist() {
-		if (!isAdded()) {
-			vRestart.setEnabled(true);
-			vExit.setEnabled(true);
-			vUpload.setEnabled(true);
-			return;
-		}
-		
-		setProgressDialogMessage(getString(R.string.progress_uploading));
-		showProgressDialog();
-		
-		if (localImageExist) {
-			try {
+		try {
+			if (isAdded()) {
+				setProgressDialogMessage(getString(R.string.progress_uploading));
+			}
+			
+			showProgressDialog();
+			
+			if (localImageExist) {
 				imageName = generateIamgeName();
 				UploadManager manager = new UploadManager();
 				manager.start(getActivity(), imageFile, "image", imageName, "image/jpeg", imageUploadCompleteListener);
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
+			} else {
+				finishWithUploadInfo();
 			}
-		} else {
-			finishWithUploadInfo();
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+			onUploadError(e);
+		} catch (FileNotFoundException e) { 
+			e.printStackTrace();
+			onUploadError(e);
+		} catch (Exception e) {
+			e.printStackTrace();
+			onUploadError(e);
 		}
 	}
 	
@@ -394,10 +398,10 @@ public class RecordSettingFragment extends BaseFragment {
 					);
 					addRequest(request);
 				} catch (JSONException e1) {
-					onUploadError();
+					onUploadError(e1);
 				}
 			} else {
-				onUploadError();
+				onUploadError(e);
 			}
 		}
 	};
@@ -408,11 +412,22 @@ public class RecordSettingFragment extends BaseFragment {
 	}
 	
 	public void onUploadError() {
+		if (isAdded()) {
+			makeToast(R.string.t_alert_upload_failed);
+		}
 		dismissProgressDialog();
-		makeToast(R.string.t_alert_upload_failed);
 		vUpload.setEnabled(true);
 		vRestart.setEnabled(true);
 		vExit.setEnabled(true);
+	}
+	
+	public void onUploadError(Exception e) {
+		onUploadError();
+		try {
+			Reporter.getInstance(getActivity()).reportExceptionOnAnalytics("Upload", e.getMessage());
+		} catch (Exception e1) {
+			e.printStackTrace();
+		}
 	}
 	
 	private void finishWithUploadInfo() {
