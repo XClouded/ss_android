@@ -32,6 +32,7 @@ import com.myandb.singsong.util.Lrc.Line.Type;
 import com.myandb.singsong.util.DynamicLrcDisplayer;
 import com.myandb.singsong.util.LrcDisplayer;
 import com.myandb.singsong.util.PlayCounter;
+import com.myandb.singsong.util.Reporter;
 import com.myandb.singsong.util.StaticLrcDisplayer;
 import com.myandb.singsong.util.StringFormatter;
 import com.myandb.singsong.util.Utility;
@@ -457,9 +458,11 @@ public class KaraokeFragment extends BaseFragment {
 				startRecordingWithHeadset();
 			} else {
 				if (showDialog) {
-					if (headsetDialog.getDialog() == null || !headsetDialog.getDialog().isShowing()) {
+					try {
 						headsetDialog.show(getChildFragmentManager(), "");
-					} else {
+					} catch (Exception e) {
+						e.printStackTrace();
+						Reporter.getInstance(getActivity()).reportExceptionOnAnalytics("headsetDialog", e.getMessage());
 						startRecordingWithoutHeadset();
 					}
 				} else {
