@@ -44,6 +44,7 @@ import com.nostra13.universalimageloader.core.assist.ImageSize;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -282,6 +283,9 @@ public class KaraokeFragment extends BaseFragment {
 	
 	private void downloadDatas() {
 		loadingDialog.show(getChildFragmentManager(), loadingDialog.getClass().getName());
+		if (Build.VERSION.SDK_INT == Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+			getChildFragmentManager().executePendingTransactions();
+		}
 		
 		lrcDownload = new DownloadManager();
 		lrcDownload.start(music.getLrcUrl(), lyricFile, lyricDownloadListener);
@@ -460,6 +464,9 @@ public class KaraokeFragment extends BaseFragment {
 				if (showDialog) {
 					try {
 						headsetDialog.show(getChildFragmentManager(), "");
+						if (Build.VERSION.SDK_INT == Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+							getChildFragmentManager().executePendingTransactions();
+						}
 					} catch (Exception e) {
 						e.printStackTrace();
 						Reporter.getInstance(getActivity()).reportExceptionOnAnalytics("headsetDialog", e.getMessage());

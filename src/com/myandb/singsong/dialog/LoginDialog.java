@@ -23,6 +23,7 @@ import com.sromku.simple.fb.Permission.Type;
 import com.sromku.simple.fb.listeners.OnLoginListener;
 
 import android.app.Activity;
+import android.os.Build;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
@@ -139,6 +140,9 @@ public class LoginDialog extends BaseDialog {
 			});
 		}
 		joinDialog.show(getChildFragmentManager(), "");
+		if (Build.VERSION.SDK_INT == Build.VERSION_CODES.JELLY_BEAN) {
+			getChildFragmentManager().executePendingTransactions();
+		}
 	}
 
 	private View.OnClickListener loginClickListener = new View.OnClickListener() {
