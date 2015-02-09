@@ -21,15 +21,23 @@ public class AutoGainWrapper {
 	
 	public void initialize(int channels, int resolution, int sampleRate) {
 		if (!created && destroyed) {
-			created = create(channels, resolution, sampleRate, 3) != CREATE_FAILED;
-			destroyed = false;
+			try {
+				created = create(channels, resolution, sampleRate, 3) != CREATE_FAILED;
+				destroyed = false;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
 	public void close() {
 		if (created && !destroyed) {
-			destroyed = destroy() == DESTROY_COMPLETED;
-			created = false;
+			try {
+				destroyed = destroy() == DESTROY_COMPLETED;
+				created = false;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
