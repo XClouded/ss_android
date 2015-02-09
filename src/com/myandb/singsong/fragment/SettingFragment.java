@@ -249,7 +249,13 @@ public class SettingFragment extends BaseFragment {
 			
 			if (dialog != null) {
 				dialog.setArguments(bundle);
-				dialog.show(getChildFragmentManager(), "");
+				try {
+					dialog.show(getChildFragmentManager(), "");
+				} catch (IllegalStateException e) {
+					e.printStackTrace();
+					// Can not perform this action after onSaveInstanceState
+					// Android bug
+				}
 			}
 		}
 	};
