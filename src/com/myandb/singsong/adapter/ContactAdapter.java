@@ -2,6 +2,9 @@ package com.myandb.singsong.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
+import android.provider.Telephony;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -37,15 +40,48 @@ public class ContactAdapter extends HolderAdapter<Contact, ContactAdapter.Contac
 		public void onClick(View v) {
 			final Contact contact = (Contact) v.getTag();
 			if (contact != null) {
-				Intent intent = new Intent(Intent.ACTION_VIEW);
-				String body = v.getContext().getString(R.string.invitation_message_header);
-				body += "\n" + new UrlBuilder().s("w").s("invitation").toString() + "\n";
-				body += v.getContext().getString(R.string.invitation_message_footer);
-				intent.putExtra("sms_body", body);
-				intent.putExtra("address", contact.getPhoneNumber());
-				intent.setType("vnd.android-dir/mms-sms");
-				v.getContext().startActivity(intent);
+				String phoneNumber = contact.getPhoneNumber();
+				String message = getMessage(v.getContext());
+				Intent intent = null;
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+					intent = getSmsIntentPostKitkat(v.getContext(), phoneNumber, message);
+				} else {
+					intent = getSmsIntentPreKitkat(phoneNumber, message);
+				}
+				
+				try {
+					v.getContext().startActivity(intent);
+				} catch (Exception e) {
+					e.printStackTrace();
+					// This will not happened;
+				}
 			}
+		}
+		
+		private String getMessage(Context context) {
+			String message = context.getString(R.string.invitation_message_header);
+			message += "\n" + new UrlBuilder().s("w").s("invitation").toString() + "\n";
+			message += context.getString(R.string.invitation_message_footer);
+			return message;
+		}
+		
+		private Intent getSmsIntentPostKitkat(Context context, String phoneNumber, String message) {
+		    Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + Uri.encode(phoneNumber)));
+		    intent.putExtra("sms_body", message);
+
+		    String defaultSmsPackageName = Telephony.Sms.getDefaultSmsPackage(context);
+		    if (defaultSmsPackageName != null) {
+		        intent.setPackage(defaultSmsPackageName);
+		    }
+		    return intent;
+		}
+		
+		private Intent getSmsIntentPreKitkat(String phoneNumbner, String message) {
+			Intent intent = new Intent(Intent.ACTION_VIEW);
+			intent.setType("vnd.android-dir/mms-sms");
+			intent.putExtra("sms_body", message);
+			intent.putExtra("address", message);
+			return intent;
 		}
 	};
 	
