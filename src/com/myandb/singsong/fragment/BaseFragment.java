@@ -254,8 +254,13 @@ public abstract class BaseFragment extends Fragment {
 	}
 	
 	public void dismissProgressDialog() {
-		if (progressDialog != null && progressDialog.isShowing()) {
-			progressDialog.dismiss();
+		try {
+			if (progressDialog != null && progressDialog.isShowing()) {
+				progressDialog.dismiss();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			// ignore
 		}
 	}
 	

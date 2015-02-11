@@ -431,8 +431,13 @@ public class Song extends Model {
 			}
 			
 			private void dismissProgressDialog() {
-				if (progressDialog != null && progressDialog.isShowing()) {
-					progressDialog.dismiss();
+				try {
+					if (progressDialog != null && progressDialog.isShowing()) {
+						progressDialog.dismiss();
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+					// ignore
 				}
 			}
 			
