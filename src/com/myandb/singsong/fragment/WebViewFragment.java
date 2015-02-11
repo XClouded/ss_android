@@ -16,6 +16,7 @@ import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+@SuppressWarnings("deprecation")
 public class WebViewFragment extends BaseFragment {
 	
 	public static final String EXTRA_WEBVIEW_URL = "webview_url";
