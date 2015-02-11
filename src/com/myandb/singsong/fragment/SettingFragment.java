@@ -211,6 +211,12 @@ public class SettingFragment extends BaseFragment {
 		public void onClick(View v) {
 			User user = Authenticator.getUser();
 			Profile profile = user.getProfile();
+			
+			if (profile == null) {
+				makeToast("프로필 정보를 불러들이는데 실패했습니다. 다시 로그인해주세요 :");
+				return;
+			}
+			
 			BaseDialog dialog = null;
 			Bundle bundle = new Bundle();
 			
@@ -485,6 +491,7 @@ public class SettingFragment extends BaseFragment {
 		tvUserNickname.setText(user.getNickname());
 		
 		if (profile == null) {
+			makeToast("프로필 정보를 불러들이는데 실패했습니다. 다시 로그인해주세요 :");
 			return;
 		}
 		
