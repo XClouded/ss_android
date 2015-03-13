@@ -245,11 +245,6 @@ public class KaraokeFragment extends BaseFragment {
 						updateAudioProgress();
 						
 						ivThisUserBackground.startAnimation(blink);
-						
-						if (music != null) {
-							PlayCounter.countAsync(getActivity(), "musics", music.getId());
-						}
-						
 						break;
 						
 					case STOP:
@@ -656,6 +651,10 @@ public class KaraokeFragment extends BaseFragment {
 	};
 	
 	public void updateAudioProgress() {
+		if (music != null) {
+			PlayCounter.countAsync(getActivity(), "musics", music.getId());
+		}
+		
 		if (player != null && player.isPlaying()) {
 			int position = (int) player.getCurrentPosition();
 			tvStartTime.setText(StringFormatter.getDuration(position));
