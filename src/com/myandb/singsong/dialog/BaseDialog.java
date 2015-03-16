@@ -32,7 +32,7 @@ public abstract class BaseDialog extends DialogFragment {
 		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 		dialog.getWindow().setAttributes(getWindowLayoutParams());
-		dialog.getWindow().setWindowAnimations(R.style.DialogAnimation);
+		dialog.getWindow().setWindowAnimations(R.style.S2_Animation_Dialog);
 		dialog.setCanceledOnTouchOutside(true);
 		
 		return dialog;

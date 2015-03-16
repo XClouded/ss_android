@@ -35,7 +35,7 @@
         style="@style/TextViewOverflowableLessImportant"
         android:layout_marginBottom="@dimen/margin_small" />
 
-    <ImageView style="@style/DividerHorizontal" />
+    <ImageView style="@style/S2.Widget.Divider.Horizontal" />
 
     <LinearLayout
         android:id="@+id/ll_prelisten_control"

@@ -61,7 +61,7 @@
 	    </LinearLayout>
 	    
         <ImageView
-	        style="@style/DividerHorizontal" />
+	        style="@style/S2.Widget.Divider.Horizontal" />
         
 	    <LinearLayout
 	        android:id="@+id/ll_change_nickname"
@@ -83,7 +83,7 @@
 	    </LinearLayout>
 	    
 	    <ImageView
-	        style="@style/DividerHorizontal" />
+	        style="@style/S2.Widget.Divider.Horizontal" />
 	    
 	    <LinearLayout
 	        android:id="@+id/ll_change_email"
@@ -105,7 +105,7 @@
 	    </LinearLayout>
 	    
 	    <ImageView
-	        style="@style/DividerHorizontal" />
+	        style="@style/S2.Widget.Divider.Horizontal" />
 	    
 	    <LinearLayout
 	        android:id="@+id/ll_change_kakao"
@@ -127,7 +127,7 @@
 	    </LinearLayout>
 	    
 	    <ImageView
-	        style="@style/DividerHorizontal" />
+	        style="@style/S2.Widget.Divider.Horizontal" />
 	    
 	    <LinearLayout
 	        android:id="@+id/ll_change_status"
@@ -149,7 +149,7 @@
 	    </LinearLayout>
 	    
 	    <ImageView
-	        style="@style/DividerHorizontal" />
+	        style="@style/S2.Widget.Divider.Horizontal" />
 	    
 	    <LinearLayout
 	        android:id="@+id/ll_change_password"

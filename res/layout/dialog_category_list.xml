@@ -14,7 +14,7 @@
         style="@style/TextViewTitle" />
     
     <ImageView
-        style="@style/DividerHorizontalBold" />
+        style="@style/S2.Widget.Divider.Horizontal.Bold" />
     
     <ListView
         android:id="@+id/lv_full_width"

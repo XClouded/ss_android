@@ -79,7 +79,7 @@
         android:paddingLeft="@dimen/margin"
         android:paddingRight="@dimen/margin"
         android:layout_below="@id/tv_comment_num"
-        style="@style/DividerHorizontal" />
+        style="@style/S2.Widget.Divider.Horizontal" />
     
     <ImageView
         android:id="@+id/lower_divider_comment"
@@ -87,7 +87,7 @@
         android:paddingRight="@dimen/margin"
         android:layout_above="@id/layout_comment_control"
         android:layout_marginBottom="@dimen/margin"
-        style="@style/DividerHorizontal" />
+        style="@style/S2.Widget.Divider.Horizontal" />
     
     <ListView
         android:id="@+id/lv_comment"

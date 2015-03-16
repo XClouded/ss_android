@@ -30,14 +30,14 @@
             style="@style/ButtonBase" />
         
         <ImageView
-        	style="@style/DividerHorizontal" />
+        	style="@style/S2.Widget.Divider.Horizontal" />
         
         <TextView
             android:text="이메일로 로그인"
             style="@style/TextViewSubtitleAlone" />
         
         <ImageView
-        	style="@style/DividerHorizontal" />
+        	style="@style/S2.Widget.Divider.Horizontal" />
         
         <EditText
 	        android:id="@+id/et_user_username"
@@ -46,7 +46,7 @@
 	        style="@style/BaseEditText" />
         
         <ImageView
-        	style="@style/DividerHorizontal" />
+        	style="@style/S2.Widget.Divider.Horizontal" />
         
         <EditText
 	        android:id="@+id/et_user_password"
@@ -58,7 +58,7 @@
     </LinearLayout>
     
     <ImageView
-        style="@style/DividerHorizontal" />
+        style="@style/S2.Widget.Divider.Horizontal" />
     
     <RelativeLayout
         android:layout_width="match_parent"

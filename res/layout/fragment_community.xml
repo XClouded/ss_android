@@ -46,7 +46,7 @@
         </RelativeLayout>
 	    
         <ImageView
-	        style="@style/DividerHorizontal" />
+	        style="@style/S2.Widget.Divider.Horizontal" />
         
         <RelativeLayout
             android:id="@+id/rl_link_mr"
@@ -85,7 +85,7 @@
         </RelativeLayout>
 	    
         <ImageView
-	        style="@style/DividerHorizontal" />
+	        style="@style/S2.Widget.Divider.Horizontal" />
         
         <RelativeLayout
             android:id="@+id/rl_link_notice"
@@ -124,7 +124,7 @@
         </RelativeLayout>
 	    
         <ImageView
-	        style="@style/DividerHorizontal" />
+	        style="@style/S2.Widget.Divider.Horizontal" />
         
         <RelativeLayout
             android:id="@+id/rl_link_faq"
@@ -200,7 +200,7 @@
         </RelativeLayout>
 	    
         <ImageView
-	        style="@style/DividerHorizontal" />
+	        style="@style/S2.Widget.Divider.Horizontal" />
         
         <RelativeLayout
             android:id="@+id/rl_link_review"

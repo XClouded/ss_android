@@ -14,7 +14,7 @@
         style="@style/ButtonBase" />
     
     <ImageView
-        style="@style/DividerHorizontal" />
+        style="@style/S2.Widget.Divider.Horizontal" />
     
     <Button
         android:id="@+id/btn_allow_push"
@@ -24,7 +24,7 @@
         style="@style/ButtonBase" />
     
     <ImageView
-        style="@style/DividerHorizontal" />
+        style="@style/S2.Widget.Divider.Horizontal" />
     
     <Button
         android:id="@+id/btn_unfollow"
@@ -35,6 +35,6 @@
         style="@style/ButtonBase" />
     
     <ImageView
-        style="@style/DividerHorizontal" />
+        style="@style/S2.Widget.Divider.Horizontal" />
 
 </LinearLayout>

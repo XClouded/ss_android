@@ -138,7 +138,7 @@
 
         <ImageView
             android:id="@+id/divider"
-            style="@style/DividerHorizontal"
+            style="@style/S2.Widget.Divider.Horizontal"
             android:layout_below="@id/ll_user_wrapper" />
 
         <RelativeLayout

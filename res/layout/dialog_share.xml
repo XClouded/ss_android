@@ -29,7 +29,7 @@
     </LinearLayout>
     
     <ImageView
-        style="@style/DividerHorizontal" />
+        style="@style/S2.Widget.Divider.Horizontal" />
     
     <LinearLayout
         android:id="@+id/ll_share_kakaotalk"
@@ -55,7 +55,7 @@
     </LinearLayout>
     
     <ImageView
-        style="@style/DividerHorizontal" />
+        style="@style/S2.Widget.Divider.Horizontal" />
     
     <TextView
         android:id="@+id/tv_share_etc"

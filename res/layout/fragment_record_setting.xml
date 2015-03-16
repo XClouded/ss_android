@@ -147,7 +147,7 @@
 		            style="@style/TextViewLessImportant" />
 		        
 		        <ImageView
-		            style="@style/DividerHorizontal" />
+		            style="@style/S2.Widget.Divider.Horizontal" />
 		        
 		        <RelativeLayout
 		            android:layout_width="match_parent"
@@ -197,7 +197,7 @@
 		            style="@style/TextViewLessImportant" />
 		        
 		        <ImageView
-		            style="@style/DividerHorizontal" />
+		            style="@style/S2.Widget.Divider.Horizontal" />
 		        
 		        <RelativeLayout
 				    android:layout_width="match_parent"
@@ -250,7 +250,7 @@
 		            style="@style/TextViewLessImportant" />
 		        
 		        <ImageView
-		            style="@style/DividerHorizontal" />
+		            style="@style/S2.Widget.Divider.Horizontal" />
 		        
 		        <RelativeLayout
 				    android:layout_width="match_parent"
@@ -307,7 +307,7 @@
 		            style="@style/TextViewLessImportant" />
 		        
 		        <ImageView
-		            style="@style/DividerHorizontal" />
+		            style="@style/S2.Widget.Divider.Horizontal" />
 		        
 		        <RelativeLayout
 				    android:layout_width="match_parent"

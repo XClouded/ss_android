@@ -34,7 +34,7 @@
         android:paddingLeft="@dimen/margin"
         android:paddingRight="@dimen/margin"
         android:layout_below="@id/tv_liking_num"
-        style="@style/DividerHorizontal" />
+        style="@style/S2.Widget.Divider.Horizontal" />
     
     <ImageView
         android:id="@+id/lower_divider_liking"
@@ -42,7 +42,7 @@
         android:paddingRight="@dimen/margin"
         android:layout_above="@id/iv_close_liking"
         android:layout_marginBottom="@dimen/margin"
-        style="@style/DividerHorizontal" />
+        style="@style/S2.Widget.Divider.Horizontal" />
     
     <GridView
         android:id="@+id/gv_liking"

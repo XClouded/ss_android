@@ -84,7 +84,7 @@
         </LinearLayout>
     </LinearLayout>
 
-    <ImageView style="@style/DividerHorizontal" />
+    <ImageView style="@style/S2.Widget.Divider.Horizontal" />
 
     <LinearLayout
         android:id="@+id/ll_prelisten_control"

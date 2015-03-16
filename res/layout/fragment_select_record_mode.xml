@@ -53,13 +53,13 @@
 		        <ImageView
 		            android:layout_centerVertical="true"
 		            android:layout_toLeftOf="@id/text_center"
-		            style="@style/DividerHorizontal" />
+		            style="@style/S2.Widget.Divider.Horizontal" />
 		        
 		        <ImageView
 		            android:layout_centerVertical="true"
 		            android:layout_alignParentRight="true"
 		            android:layout_toRightOf="@id/text_center"
-		            style="@style/DividerHorizontal" />
+		            style="@style/S2.Widget.Divider.Horizontal" />
 		        
 		    </RelativeLayout>
 		    
@@ -97,13 +97,13 @@
 		        <ImageView
 		            android:layout_centerVertical="true"
 		            android:layout_toLeftOf="@id/text_center_2"
-		            style="@style/DividerHorizontal" />
+		            style="@style/S2.Widget.Divider.Horizontal" />
 		        
 		        <ImageView
 		            android:layout_centerVertical="true"
 		            android:layout_alignParentRight="true"
 		            android:layout_toRightOf="@id/text_center_2"
-		            style="@style/DividerHorizontal" />
+		            style="@style/S2.Widget.Divider.Horizontal" />
 		        
 		    </RelativeLayout>
 		    

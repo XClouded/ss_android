@@ -23,7 +23,7 @@
             style="@style/TextViewLessImportant" />
         
         <ImageView
-        	style="@style/DividerHorizontal" />
+        	style="@style/S2.Widget.Divider.Horizontal" />
         
         <EditText
 	        android:id="@+id/et_user_username"
@@ -35,7 +35,7 @@
     </LinearLayout>
     
     <ImageView
-        style="@style/DividerHorizontal" />
+        style="@style/S2.Widget.Divider.Horizontal" />
     
     <FrameLayout
         android:layout_width="match_parent"

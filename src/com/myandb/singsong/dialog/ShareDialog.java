@@ -37,7 +37,7 @@ public class ShareDialog extends BaseDialog {
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		Dialog dialog = super.onCreateDialog(savedInstanceState);
-		dialog.getWindow().setWindowAnimations(R.style.DialogNoAnimation);
+		dialog.getWindow().setWindowAnimations(R.style.S2_Animation_Dialog);
 		return dialog;
 	}
 

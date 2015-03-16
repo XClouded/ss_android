@@ -196,7 +196,7 @@
         <ImageView
             android:id="@+id/divider"
             android:layout_below="@id/ll_user_wrapper"
-            style="@style/DividerHorizontal" />
+            style="@style/S2.Widget.Divider.Horizontal" />
         
         <RelativeLayout
             android:layout_width="match_parent"

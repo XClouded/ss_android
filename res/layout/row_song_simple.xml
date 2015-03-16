@@ -27,7 +27,7 @@
             android:textSize="@dimen/text_sub_content" />
     </LinearLayout>
 
-    <ImageView style="@style/DividerHorizontal" />
+    <ImageView style="@style/S2.Widget.Divider.Horizontal" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -110,7 +110,7 @@
         </RelativeLayout>
     </RelativeLayout>
 
-    <ImageView style="@style/DividerHorizontal" />
+    <ImageView style="@style/S2.Widget.Divider.Horizontal" />
 
     <RelativeLayout
         android:layout_width="match_parent"
