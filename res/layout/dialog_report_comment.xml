@@ -14,7 +14,7 @@
         
         <TextView
             android:text="@string/report"
-            style="@style/TextViewSubtitleAlone" />
+            style="@style/S2.Widget.TextView.H1" />
         
         <ImageView
         	style="@style/S2.Widget.Divider.Horizontal" />
@@ -23,7 +23,7 @@
             android:id="@+id/tv_comment_content"
             android:paddingTop="@dimen/margin"
             android:paddingBottom="@dimen/margin"
-            style="@style/TextViewLessImportant" />
+            style="@style/S2.Widget.TextView.H4" />
         
         <ImageView
         	style="@style/S2.Widget.Divider.Horizontal" />

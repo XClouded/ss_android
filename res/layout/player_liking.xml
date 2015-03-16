@@ -18,7 +18,7 @@
         android:layout_marginBottom="@dimen/margin_small"
         android:layout_marginLeft="@dimen/margin"
         android:text="좋아요"
-        style="@style/TextViewBase" />
+        style="@style/S2.Widget.TextView" />
     
     <TextView
         android:id="@+id/tv_refresh_liking"
@@ -27,7 +27,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignBottom="@id/tv_comment_num"
         android:layout_marginRight="@dimen/margin"
-        style="@style/TextViewBase" />
+        style="@style/S2.Widget.TextView" />
     
     <ImageView
         android:id="@+id/upper_divider_liking"

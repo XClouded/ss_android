@@ -26,12 +26,12 @@
                 android:paddingTop="@dimen/margin_small" >
 
                 <TextView
-                    style="@style/TextViewSubtitle"
+                    style="@style/S2.Widget.TextView.H3"
                     android:text="@string/home_title_collabo_top10" />
 
                 <TextView
                     android:id="@+id/tv_song_collaborated_more"
-                    style="@style/TextViewLessImportant"
+                    style="@style/S2.Widget.TextView.H4"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:text="@string/more" />
@@ -74,12 +74,12 @@
                 android:paddingTop="@dimen/margin_small" >
 
                 <TextView
-                    style="@style/TextViewSubtitle"
+                    style="@style/S2.Widget.TextView.H3"
                     android:text="@string/home_title_recent_music" />
 
                 <TextView
                     android:id="@+id/tv_recent_music_more"
-                    style="@style/TextViewLessImportant"
+                    style="@style/S2.Widget.TextView.H4"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:text="@string/more" />
@@ -115,12 +115,12 @@
                 android:paddingTop="@dimen/margin_small" >
 
                 <TextView
-                    style="@style/TextViewSubtitle"
+                    style="@style/S2.Widget.TextView.H3"
                     android:text="@string/home_title_popular_music" />
 
                 <TextView
                     android:id="@+id/tv_popular_music_more"
-                    style="@style/TextViewLessImportant"
+                    style="@style/S2.Widget.TextView.H4"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:text="@string/more" />
@@ -157,12 +157,12 @@
                 android:paddingTop="@dimen/margin_small" >
 
                 <TextView
-                    style="@style/TextViewSubtitle"
+                    style="@style/S2.Widget.TextView.H3"
                     android:text="@string/home_title_collabo_artist" />
 
                 <TextView
                     android:id="@+id/tv_collabo_artist_more"
-                    style="@style/TextViewLessImportant"
+                    style="@style/S2.Widget.TextView.H4"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:text="@string/more" />
@@ -190,12 +190,12 @@
                 android:paddingTop="@dimen/margin_small" >
 
                 <TextView
-                    style="@style/TextViewSubtitle"
+                    style="@style/S2.Widget.TextView.H3"
                     android:text="@string/home_title_waiting_top10" />
 
                 <TextView
                     android:id="@+id/tv_song_waiting_more"
-                    style="@style/TextViewLessImportant"
+                    style="@style/S2.Widget.TextView.H4"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:text="@string/more" />

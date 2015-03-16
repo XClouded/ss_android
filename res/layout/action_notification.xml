@@ -23,6 +23,6 @@
         android:layout_gravity="right"
         android:visibility="gone"
         android:gravity="center"
-        style="@style/TextViewBase" />
+        style="@style/S2.Widget.TextView" />
 
 </FrameLayout>

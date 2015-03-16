@@ -19,7 +19,7 @@
             android:textColor="@color/font_hint"
             android:textSize="@dimen/text_hint"
             android:layout_marginBottom="@dimen/margin_small"
-            style="@style/TextViewBase" />
+            style="@style/S2.Widget.TextView" />
         
         <Button
             android:id="@+id/btn_facebook"
@@ -34,7 +34,7 @@
         
         <TextView
             android:text="이메일로 로그인"
-            style="@style/TextViewSubtitleAlone" />
+            style="@style/S2.Widget.TextView.H1" />
         
         <ImageView
         	style="@style/S2.Widget.Divider.Horizontal" />

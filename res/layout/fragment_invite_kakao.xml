@@ -24,7 +24,7 @@
             android:text="카카오톡 친구들에게\n초대 메세지를 보내고 같이 노래도 불러보세요!"
             android:lineSpacingExtra="8sp"
             android:layout_marginBottom="@dimen/margin"
-            style="@style/TextViewBase" />
+            style="@style/S2.Widget.TextView" />
         
         <LinearLayout
 	        android:id="@+id/ll_invite_kakaotalk"
@@ -47,7 +47,7 @@
 	        
 	        <TextView
 	            android:text="카카오톡 친구 선택하기"
-	            style="@style/TextViewImportant" />
+	            android:textStyle="bold" />
 	        
 	    </LinearLayout>
         

@@ -19,7 +19,6 @@
         android:textColor="@color/white"
         android:textSize="17sp"
         android:textScaleX="0.95"
-        android:layout_marginLeft="@dimen/margin_small"
-        style="@style/TextViewImportant" />
+        android:layout_marginLeft="@dimen/margin_small" />
 
 </LinearLayout>

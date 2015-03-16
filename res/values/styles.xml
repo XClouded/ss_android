@@ -34,6 +34,89 @@
         <item name="android:layout_height">match_parent</item>
     </style>
     
+    <style name="S2.Widget.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">left</item>
+        <item name="android:textSize">@dimen/text_main_content</item>
+        <item name="android:textColor">@color/font_default</item>
+    </style>
+    
+    <style name="S2.Widget.TextView.H1">
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingTop">@dimen/margin_big</item>
+        <item name="android:paddingBottom">@dimen/margin_big</item>
+    </style>
+    
+    <style name="S2.Widget.TextView.H2">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/text_title</item>
+        <item name="android:layout_marginBottom">@dimen/margin_small</item>
+    </style>
+    
+    <style name="S2.Widget.TextView.H2.Inverse">
+        <item name="android:textColor">@color/white</item>
+    </style>
+    
+    <style name="S2.Widget.TextView.H3">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/text_subtitle</item>
+        <item name="android:layout_marginBottom">@dimen/margin_tiny</item>
+    </style>
+    
+    <style name="S2.Widget.TextView.H3.Inverse">
+        <item name="android:textColor">@color/white</item>
+    </style>
+    
+    <style name="S2.Widget.TextView.H4">
+        <item name="android:textSize">@dimen/text_sub_content</item>
+        <item name="android:textColor">@color/font_grey</item>
+    </style>
+    
+    <style name="S2.Widget.TextView.H4.Label">
+        <item name="android:layout_marginTop">@dimen/text_icon_label_inverse_margin</item>
+    </style>
+    
+    <style name="S2.Widget.TextView.Ellipsize">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:layout_marginLeft">@dimen/margin_small</item>
+        <item name="android:layout_marginRight">@dimen/margin_small</item>
+        <item name="android:gravity">center</item>
+    </style>
+    
+    <style name="S2.Widget.TextView.Ellipsize.H3">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/text_subtitle</item>
+    </style>
+    
+    <style name="S2.Widget.TextView.Ellipsize.H4">
+        <item name="android:textSize">@dimen/text_sub_content</item>
+        <item name="android:textColor">@color/font_grey</item>
+    </style>
+    
+    <style name="S2.Widget.TextView.Ellipsize.Marquee">
+        <item name="android:gravity">left</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:marqueeRepeatLimit">marquee_forever</item>
+        <item name="android:scrollHorizontally">true</item>
+    </style>
+    
+    <style name="S2.Widget.TextView.Ellipsize.Marquee.H3">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/text_subtitle</item>
+    </style>
+    
+    <style name="S2.Widget.TextView.Ellipsize.Marquee.H4">
+        <item name="android:textSize">@dimen/text_sub_content</item>
+        <item name="android:textColor">@color/font_grey</item>
+    </style>
+    
+    
     <style name="FormBase" >
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>

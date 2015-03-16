@@ -14,17 +14,17 @@
 
     <TextView
         android:id="@+id/tv_parent_user_nickname"
-        style="@style/TextViewOverflowableImportant"
+        style="@style/S2.Widget.TextView.Ellipsize.H3"
         android:textColor="@color/font_default" />
 
     <TextView
         android:id="@+id/tv_parent_user_part"
-        style="@style/TextViewOverflowableLessImportant"
+        style="@style/S2.Widget.TextView.Ellipsize.H4"
         android:layout_marginBottom="@dimen/margin_small" />
 
     <TextView
         android:id="@+id/tv_parent_song_message"
-        style="@style/TextViewBase"
+        style="@style/S2.Widget.TextView"
         android:layout_marginBottom="@dimen/margin"
         android:layout_marginLeft="@dimen/margin_small"
         android:layout_marginRight="@dimen/margin_small"
@@ -51,7 +51,7 @@
 
             <TextView
                 android:id="@+id/tv_song_like_num"
-                style="@style/TextViewIconLabel" />
+                style="@style/S2.Widget.TextView.H4.Label" />
         </LinearLayout>
 
         <LinearLayout
@@ -66,7 +66,7 @@
 
             <TextView
                 android:id="@+id/tv_song_comment_num"
-                style="@style/TextViewIconLabel" />
+                style="@style/S2.Widget.TextView.H4.Label" />
         </LinearLayout>
 
         <LinearLayout
@@ -80,7 +80,7 @@
 
             <TextView
                 android:id="@+id/tv_song_collabo_num"
-                style="@style/TextViewIconLabel" />
+                style="@style/S2.Widget.TextView.H4.Label" />
         </LinearLayout>
     </LinearLayout>
 
@@ -99,7 +99,7 @@
             android:src="@drawable/ic_play_sample" />
 
         <TextView
-            style="@style/TextViewLessImportant"
+            style="@style/S2.Widget.TextView.H4"
             android:text="미리듣기" />
     </LinearLayout>
 

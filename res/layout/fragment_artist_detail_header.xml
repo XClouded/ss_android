@@ -10,7 +10,7 @@
         android:text="Collabo Artist.25"
         android:textSize="@dimen/text_hint"
         android:paddingLeft="@dimen/margin"
-        style="@style/TextViewLessImportant" />
+        style="@style/S2.Widget.TextView.H4" />
     
     <LinearLayout
         android:layout_width="match_parent"
@@ -33,7 +33,7 @@
 	        android:layout_marginBottom="@dimen/margin_tiny"
 	        android:textStyle="bold"
 	        android:text="nickname"
-	        style="@style/TextViewOverflowableLessImportant" />
+	        style="@style/S2.Widget.TextView.Ellipsize.H4" />
         
         <LinearLayout
             android:layout_width="wrap_content"
@@ -54,7 +54,7 @@
 		        android:id="@+id/tv_artist_followers_num"
 		        android:text="33"
 		        android:layout_marginTop="@dimen/icon_text_inverse_margin"
-		        style="@style/TextViewLessImportant" />
+		        style="@style/S2.Widget.TextView.H4" />
             
         </LinearLayout>
         
@@ -63,7 +63,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:layout_margin="@dimen/margin"
-            style="@style/TextViewImportant" />
+            android:textStyle="bold" />
         
     </LinearLayout>
     
@@ -87,7 +87,7 @@
 	        android:layout_margin="0dp"
 	        android:gravity="left"
 	        android:textColor="@color/font_default"
-	        style="@style/TextViewOverflowableImportant" />
+	        style="@style/S2.Widget.TextView.Ellipsize.H3" />
         
     </RelativeLayout>
     
@@ -100,7 +100,7 @@
     <TextView
         android:id="@+id/tv_artist_comment_num"
         android:layout_marginLeft="@dimen/margin"
-        style="@style/TextViewSubtitle" />
+        style="@style/S2.Widget.TextView.H3" />
     
     <RelativeLayout
         android:layout_width="match_parent"

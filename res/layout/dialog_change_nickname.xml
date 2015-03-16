@@ -14,7 +14,7 @@
         
         <TextView
             android:text="닉네임 변경"
-            style="@style/TextViewSubtitleAlone" />
+            style="@style/S2.Widget.TextView.H1" />
         
         <ImageView
         	style="@style/S2.Widget.Divider.Horizontal" />
@@ -51,7 +51,7 @@
             android:text="2글자 이상 입력해주세요.\n비속어를 사용하지 말아주세요. :)"
             android:textSize="@dimen/text_hint"
             android:linksClickable="true"
-            style="@style/TextViewLessImportant" />
+            style="@style/S2.Widget.TextView.H4" />
         
     </RelativeLayout>
 

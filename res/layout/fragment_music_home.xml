@@ -26,12 +26,12 @@
                 android:paddingTop="@dimen/margin_small" >
 
                 <TextView
-                    style="@style/TextViewSubtitle"
+                    style="@style/S2.Widget.TextView.H3"
                     android:text="@string/home_title_recent_music" />
 
                 <TextView
                     android:id="@+id/tv_recent_music_more"
-                    style="@style/TextViewLessImportant"
+                    style="@style/S2.Widget.TextView.H4"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:text="@string/more" />
@@ -67,12 +67,12 @@
                 android:paddingTop="@dimen/margin_small" >
 
                 <TextView
-                    style="@style/TextViewSubtitle"
+                    style="@style/S2.Widget.TextView.H3"
                     android:text="@string/home_title_popular_music" />
 
                 <TextView
                     android:id="@+id/tv_popular_music_more"
-                    style="@style/TextViewLessImportant"
+                    style="@style/S2.Widget.TextView.H4"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:text="@string/more" />
@@ -106,7 +106,7 @@
 	            android:paddingRight="@dimen/margin"
 	            android:paddingTop="@dimen/margin_small"
 	            android:paddingBottom="@dimen/margin_small"
-	            style="@style/TextViewSubtitle" />
+	            style="@style/S2.Widget.TextView.H3" />
 	        
             <ImageView style="@style/S2.Widget.Divider.Horizontal" />
 	        

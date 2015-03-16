@@ -20,7 +20,7 @@
             android:textColor="@color/red_dark"
             android:textStyle="bold"
             android:text="탈퇴 시 복구가 불가능합니다!\n확인을 위해 아이디를 입력해주세요."
-            style="@style/TextViewLessImportant" />
+            style="@style/S2.Widget.TextView.H4" />
         
         <ImageView
         	style="@style/S2.Widget.Divider.Horizontal" />

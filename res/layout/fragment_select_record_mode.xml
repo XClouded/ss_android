@@ -23,12 +23,12 @@
         <TextView
 		    android:id="@+id/tv_music_title"
 		    android:layout_marginBottom="@dimen/margin_tiny"
-		    style="@style/TextViewOverflowableMarqueeImportant" />
+		    style="@style/S2.Widget.TextView.Ellipsize.Marquee.H3" />
 		
 		<TextView
 		    android:id="@+id/tv_singer_name"
 		    android:textColor="@color/font_white"
-		    style="@style/TextViewOverflowableMarqueeLessImportant" />
+		    style="@style/S2.Widget.TextView.Ellipsize.Marquee.H4" />
 		
 		<LinearLayout
 		    android:layout_width="match_parent"
@@ -48,7 +48,7 @@
 		            android:layout_marginLeft="@dimen/margin_small"
 		            android:layout_marginRight="@dimen/margin_small"
 		            android:layout_centerInParent="true"
-		            style="@style/TextViewImportant" />
+		            android:textStyle="bold" />
 		        
 		        <ImageView
 		            android:layout_centerVertical="true"
@@ -78,7 +78,7 @@
 		        android:gravity="center"
 		        android:lineSpacingExtra="@dimen/margin_small"
 		        android:layout_marginBottom="40dp"
-		        style="@style/TextViewBase" />
+		        style="@style/S2.Widget.TextView" />
 		    
 		    <RelativeLayout
 		        android:layout_width="200dp"
@@ -92,7 +92,7 @@
 		            android:layout_marginLeft="@dimen/margin_small"
 		            android:layout_marginRight="@dimen/margin_small"
 		            android:layout_centerInParent="true"
-		            style="@style/TextViewImportant" />
+		            android:textStyle="bold" />
 		        
 		        <ImageView
 		            android:layout_centerVertical="true"
@@ -129,7 +129,7 @@
 		        android:textColor="@color/font_white"
 		        android:gravity="center"
 		        android:lineSpacingExtra="@dimen/margin_small"
-		        style="@style/TextViewBase" />
+		        style="@style/S2.Widget.TextView" />
 		    
 		</LinearLayout>
         

@@ -24,14 +24,14 @@
 	        android:layout_toLeftOf="@id/iv_album_photo"
 	        android:layout_marginLeft="@dimen/margin_tiny"
 	        android:textColor="@color/font_default"
-	        style="@style/TextViewOverflowableMarqueeImportant" />
+	        style="@style/S2.Widget.TextView.Ellipsize.Marquee.H3" />
 	    
 	    <TextView
 	        android:id="@+id/tv_user_info"
 	        android:layout_toLeftOf="@id/iv_album_photo"
 	        android:layout_below="@id/tv_music_info"
 	        android:layout_marginLeft="@dimen/margin_tiny"
-	        style="@style/TextViewOverflowableMarqueeLessImportant" />
+	        style="@style/S2.Widget.TextView.Ellipsize.Marquee.H4" />
         
     </RelativeLayout>
 
@@ -49,7 +49,7 @@
 	
 	    <TextView
 	        android:id="@+id/tv_comment_created"
-	        style="@style/TextViewBase"
+	        style="@style/S2.Widget.TextView"
 	        android:layout_alignParentRight="true"
 	        android:layout_alignBottom="@+id/tv_comment_content"
 	        android:gravity="bottom"
@@ -57,7 +57,7 @@
 	
 	    <TextView
 	        android:id="@+id/tv_comment_user_nickname"
-	        style="@style/TextViewOverflowableImportant"
+	        style="@style/S2.Widget.TextView.Ellipsize.H3"
 	        android:layout_alignTop="@id/iv_comment_user_photo"
 	        android:layout_marginBottom="@dimen/margin_tiny"
 	        android:layout_toLeftOf="@id/tv_comment_created"
@@ -68,7 +68,7 @@
 	
 	    <TextView
 	        android:id="@+id/tv_comment_content"
-	        style="@style/TextViewBase"
+	        style="@style/S2.Widget.TextView"
 	        android:layout_width="match_parent"
 	        android:layout_below="@id/tv_comment_user_nickname"
 	        android:layout_marginLeft="@dimen/margin_small"

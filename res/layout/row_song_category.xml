@@ -34,6 +34,6 @@
         android:layout_toRightOf="@id/iv_category_image"
         android:layout_toLeftOf="@id/iv_category_selected"
         android:layout_centerVertical="true"
-        style="@style/TextViewBase" />
+        style="@style/S2.Widget.TextView" />
     
 </RelativeLayout>

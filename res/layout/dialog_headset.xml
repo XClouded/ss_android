@@ -14,14 +14,14 @@
     <TextView
         android:text="@string/dialog_headset_title"
         android:textColor="@color/white"
-        style="@style/TextViewSubtitleAlone" />
+        style="@style/S2.Widget.TextView.H1" />
     
     <TextView
         android:text="@string/dialog_headset_content"
         android:layout_width="match_parent"
         android:gravity="center"
         android:layout_marginBottom="@dimen/margin_bigger"
-        style="@style/TextViewLessImportant" />
+        style="@style/S2.Widget.TextView.H4" />
     
     <Button
         android:id="@+id/btn_no_headset"

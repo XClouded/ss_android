@@ -52,7 +52,7 @@
 	            android:lineSpacingExtra="3sp"
 	            android:gravity="center"
 	            android:background="@drawable/tab_selector"
-	            style="@style/TextViewBase" />
+	            style="@style/S2.Widget.TextView" />
 	        
 	        <TextView
 	            android:id="@+id/tv_user_followings"
@@ -67,7 +67,7 @@
 	            android:lineSpacingExtra="3sp"
 	            android:gravity="center"
 	            android:background="@drawable/tab_selector"
-	            style="@style/TextViewBase" />
+	            style="@style/S2.Widget.TextView" />
 	        
 	        <TextView
 	            android:id="@+id/tv_user_followers"
@@ -82,7 +82,7 @@
 	            android:lineSpacingExtra="3sp"
 	            android:gravity="center"
 	            android:background="@drawable/tab_selector"
-	            style="@style/TextViewBase" />
+	            style="@style/S2.Widget.TextView" />
             
         </LinearLayout>
         
@@ -109,7 +109,7 @@
 			    android:textSize="@dimen/text_impact"
 			    android:layout_marginBottom="@dimen/margin_small"
 			    android:gravity="center"
-			    style="@style/TextViewOverflowableImportant" />
+			    style="@style/S2.Widget.TextView.Ellipsize.H3" />
 			
 			<TextView
 			    android:id="@+id/tv_user_status"
@@ -117,7 +117,7 @@
 			    android:gravity="center"
 			    android:text="상태글이 없습니다."
 			    android:textColor="@color/font_white"
-			    style="@style/TextViewLessImportant" />
+			    style="@style/S2.Widget.TextView.H4" />
             
         </LinearLayout>
         

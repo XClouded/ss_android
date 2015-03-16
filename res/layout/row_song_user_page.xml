@@ -91,7 +91,7 @@
             <TextView
                 android:id="@+id/tv_song_collabo_num"
                 android:textColor="@color/white"
-                style="@style/TextViewLessImportant" />
+                style="@style/S2.Widget.TextView.H4" />
             
         </LinearLayout>
         
@@ -102,7 +102,7 @@
             android:layout_marginRight="@dimen/margin"
             android:layout_marginBottom="@dimen/margin_big"
             android:textColor="@color/white"
-            style="@style/TextViewBase" />
+            style="@style/S2.Widget.TextView" />
             
         <ImageView
             android:id="@+id/iv_change_state_song"
@@ -144,14 +144,14 @@
 		            android:id="@+id/tv_parent_user_nickname"
 		            android:textColor="@color/font_default"
 		            android:textSize="@dimen/text_main_content"
-		            style="@style/TextViewOverflowableImportant" />
+		            style="@style/S2.Widget.TextView.Ellipsize.H3" />
 		         
 		        <TextView
 		            android:id="@+id/tv_parent_song_message"
 		            android:layout_marginBottom="@dimen/margin_small"
 		            android:maxLines="3"
 		            android:textColor="@color/font_hint"
-		            style="@style/TextViewEllipsize" />
+		            style="@style/S2.Widget.TextView.Ellipsize" />
                 
             </LinearLayout>
             
@@ -180,14 +180,14 @@
 		            android:id="@+id/tv_this_user_nickname"
 		            android:textColor="@color/font_default"
 		            android:textSize="@dimen/text_main_content"
-		            style="@style/TextViewOverflowableImportant" />
+		            style="@style/S2.Widget.TextView.Ellipsize.H3" />
 		         
 		        <TextView
 		            android:id="@+id/tv_this_song_message"
 		            android:layout_marginBottom="@dimen/margin_small"
 		            android:maxLines="3"
 		            android:textColor="@color/font_hint"
-		            style="@style/TextViewEllipsize" />
+		            style="@style/S2.Widget.TextView.Ellipsize" />
                 
             </LinearLayout>
             
@@ -219,7 +219,7 @@
 
                 <TextView
                     android:id="@+id/tv_song_like_num"
-                    style="@style/TextViewIconLabel"
+                    style="@style/S2.Widget.TextView.H4.Label"
                     android:layout_marginRight="@dimen/margin_big" />
 
                 <ImageView
@@ -228,12 +228,12 @@
 
                 <TextView
                     android:id="@+id/tv_song_comment_num"
-                    style="@style/TextViewIconLabel"
+                    style="@style/S2.Widget.TextView.H4.Label"
                     android:layout_marginRight="@dimen/margin_big" />
 
                 <TextView
                     android:id="@+id/tv_song_created_time"
-                    style="@style/TextViewIconLabel" />
+                    style="@style/S2.Widget.TextView.H4.Label" />
                 
             </LinearLayout>
             
@@ -251,7 +251,7 @@
 		            android:src="@drawable/ic_play_sample" />
 		
 		        <TextView
-		            style="@style/TextViewLessImportant"
+		            style="@style/S2.Widget.TextView.H4"
 		            android:text="미리듣기" />
 		    </LinearLayout>
             

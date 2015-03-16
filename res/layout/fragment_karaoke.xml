@@ -33,7 +33,7 @@
             android:layout_marginLeft="@dimen/margin_small"
             android:layout_marginRight="@dimen/margin_small"
             android:textColor="@color/white"
-            style="@style/TextViewLessImportant" />
+            style="@style/S2.Widget.TextView.H4" />
         
         <TextView
             android:id="@+id/tv_play_end_time"
@@ -43,7 +43,7 @@
             android:layout_marginLeft="@dimen/margin_small"
             android:layout_marginRight="@dimen/margin_small"
             android:textColor="@color/white"
-            style="@style/TextViewLessImportant" />
+            style="@style/S2.Widget.TextView.H4" />
         
         <ProgressBar
             android:id="@+id/pb_playbar"
@@ -76,7 +76,7 @@
 		    android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:text="STOP"
-            style="@style/TextViewTitle" />
+            style="@style/S2.Widget.TextView.H2" />
 		
 		<TextView
 		    android:id="@+id/tv_decode_progress"
@@ -84,7 +84,7 @@
 		    android:layout_centerVertical="true"
 		    android:layout_marginLeft="@dimen/margin_tiny"
 		    android:textColor="@color/font_white"
-		    style="@style/TextViewLessImportant" />
+		    style="@style/S2.Widget.TextView.H4" />
 		
 		<TextView
 		    android:id="@+id/tv_music_title"
@@ -92,14 +92,14 @@
 		    android:layout_alignTop="@id/tv_record_control"
 		    android:layout_toLeftOf="@id/tv_decode_progress"
 		    android:layout_marginBottom="@dimen/margin_tiny"
-		    style="@style/TextViewOverflowableMarqueeImportant" />
+		    style="@style/S2.Widget.TextView.Ellipsize.Marquee.H3" />
 		
 		<TextView
 		    android:id="@+id/tv_singer_name"
 		    android:layout_below="@id/tv_music_title"
 		    android:layout_toLeftOf="@id/tv_decode_progress"
 		    android:textColor="@color/font_white"
-		    style="@style/TextViewOverflowableMarqueeLessImportant" />
+		    style="@style/S2.Widget.TextView.Ellipsize.Marquee.H4" />
         
     </RelativeLayout>
     
@@ -146,12 +146,12 @@
 	        
 	        <TextView
 	            android:id="@+id/tv_this_user_nickname"
-	            style="@style/TextViewOverflowableImportant" />
+	            style="@style/S2.Widget.TextView.Ellipsize.H3" />
 	        
 	        <TextView
 	            android:id="@+id/tv_this_user_part"
 	            android:textColor="@color/font_highlight"
-	            style="@style/TextViewEllipsize" />
+	            style="@style/S2.Widget.TextView.Ellipsize" />
             
         </LinearLayout>
         
@@ -186,12 +186,12 @@
 	        
 	        <TextView
 	            android:id="@+id/tv_parent_user_nickname"
-	            style="@style/TextViewOverflowableImportant" />
+	            style="@style/S2.Widget.TextView.Ellipsize.H3" />
 	        
 	        <TextView
 	            android:id="@+id/tv_parent_user_part"
 	            android:textColor="@color/sub"
-	            style="@style/TextViewEllipsize" />
+	            style="@style/S2.Widget.TextView.Ellipsize" />
             
         </LinearLayout>
         
@@ -206,7 +206,7 @@
         android:textColor="@color/font_white"
         android:textSize="@dimen/text_title"
         android:background="@color/mask_high"
-        style="@style/TextViewBase" />
+        style="@style/S2.Widget.TextView" />
     
     <ScrollView
         android:id="@+id/sv_lyric_scroller"

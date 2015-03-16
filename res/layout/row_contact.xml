@@ -24,7 +24,7 @@
             android:text="초대"
             android:textColor="@color/white"
             android:textStyle="bold"
-            style="@style/TextViewBase" />
+            style="@style/S2.Widget.TextView" />
         
     </LinearLayout>
     
@@ -33,6 +33,6 @@
         android:layout_width="match_parent"
         android:layout_toLeftOf="@id/ll_invite"
         android:layout_centerVertical="true"
-        style="@style/TextViewBase" />
+        style="@style/S2.Widget.TextView" />
 
 </RelativeLayout>

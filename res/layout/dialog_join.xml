@@ -14,7 +14,7 @@
         
         <TextView
             android:text="이메일로 가입"
-            style="@style/TextViewSubtitleAlone" />
+            style="@style/S2.Widget.TextView.H1" />
         
         <ImageView
         	style="@style/S2.Widget.Divider.Horizontal" />
@@ -31,7 +31,7 @@
 	            android:layout_marginRight="@dimen/margin"
 	            android:text="@string/_check"
 	            android:textStyle="bold"
-	            style="@style/TextViewLessImportant" />
+	            style="@style/S2.Widget.TextView.H4" />
 	        
 	        <EditText
 		        android:id="@+id/et_user_username"
@@ -57,7 +57,7 @@
 	            android:layout_marginRight="@dimen/margin"
 	            android:text="@string/_check"
 	            android:textStyle="bold"
-	            style="@style/TextViewLessImportant" />
+	            style="@style/S2.Widget.TextView.H4" />
 	        
 	        <EditText
 		        android:id="@+id/et_user_password"
@@ -84,7 +84,7 @@
 	            android:layout_marginRight="@dimen/margin"
 	            android:text="@string/_check"
 	            android:textStyle="bold"
-	            style="@style/TextViewLessImportant" />
+	            style="@style/S2.Widget.TextView.H4" />
 	        
 	        <EditText
 		        android:id="@+id/et_user_password_re"
@@ -121,7 +121,7 @@
             android:layout_centerVertical="true"
             android:textSize="@dimen/text_hint"
             android:linksClickable="true"
-            style="@style/TextViewLessImportant" />
+            style="@style/S2.Widget.TextView.H4" />
         
     </RelativeLayout>
 

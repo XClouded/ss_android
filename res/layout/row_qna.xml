@@ -7,7 +7,7 @@
     <TextView
         android:id="@+id/tv_question"
         android:layout_marginBottom="@dimen/margin_tiny"
-        style="@style/TextViewSubtitle" />
+        style="@style/S2.Widget.TextView.H3" />
     
     <com.myandb.singsong.widget.RoundedImageView
         android:id="@+id/iv_user_photo"
@@ -20,6 +20,6 @@
         android:layout_toRightOf="@id/iv_user_photo"
         android:layout_alignTop="@id/iv_user_photo"
         android:lineSpacingExtra="@dimen/margin_tiny"
-        style="@style/TextViewLessImportant" />
+        style="@style/S2.Widget.TextView.H4" />
 
 </RelativeLayout>

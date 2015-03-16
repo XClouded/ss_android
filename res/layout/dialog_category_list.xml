@@ -11,7 +11,7 @@
         android:paddingLeft="@dimen/margin_big"
         android:layout_marginBottom="0dp"
         android:text="장르별 듣기"
-        style="@style/TextViewTitle" />
+        style="@style/S2.Widget.TextView.H2" />
     
     <ImageView
         style="@style/S2.Widget.Divider.Horizontal.Bold" />

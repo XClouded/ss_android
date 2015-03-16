@@ -45,7 +45,7 @@
                     android:gravity="center"
                     android:text="다시하기"
                     android:textColor="@color/white"
-                    style="@style/TextViewBase" />
+                    style="@style/S2.Widget.TextView" />
                 
             </LinearLayout>
             
@@ -80,7 +80,7 @@
                     android:gravity="center"
                     android:text="@string/upload"
                     android:textColor="@color/white"
-                    style="@style/TextViewBase" />
+                    style="@style/S2.Widget.TextView" />
                 
             </LinearLayout>
             
@@ -114,7 +114,7 @@
                     android:gravity="center"
                     android:text="@string/exit"
                     android:textColor="@color/white"
-                    style="@style/TextViewBase" />
+                    style="@style/S2.Widget.TextView" />
                 
             </LinearLayout>
             
@@ -144,7 +144,7 @@
 		            android:text="미리듣기"
 		            android:padding="@dimen/margin_small"
 		            android:textColor="@color/font_default"
-		            style="@style/TextViewLessImportant" />
+		            style="@style/S2.Widget.TextView.H4" />
 		        
 		        <ImageView
 		            style="@style/S2.Widget.Divider.Horizontal" />
@@ -194,7 +194,7 @@
 		            android:text="싱크조절"
 		            android:textColor="@color/font_default"
 		            android:padding="@dimen/margin_small"
-		            style="@style/TextViewLessImportant" />
+		            style="@style/S2.Widget.TextView.H4" />
 		        
 		        <ImageView
 		            style="@style/S2.Widget.Divider.Horizontal" />
@@ -215,13 +215,13 @@
 				        android:id="@+id/tv_sync_value"
 				        android:text="0.0"
 				        android:layout_centerInParent="true"
-				        style="@style/TextViewBase" />
+				        style="@style/S2.Widget.TextView" />
 				    
 				    <TextView
 				        android:text="초"
 				        android:layout_toRightOf="@id/tv_sync_value"
 				        android:layout_centerVertical="true"
-				        style="@style/TextViewBase" />
+				        style="@style/S2.Widget.TextView" />
 				    
 				    <ImageView
 				        android:id="@+id/iv_sync_forward"
@@ -247,7 +247,7 @@
 		            android:text="목소리 볼륨조절"
 		            android:textColor="@color/font_default"
 		            android:padding="@dimen/margin_small"
-		            style="@style/TextViewLessImportant" />
+		            style="@style/S2.Widget.TextView.H4" />
 		        
 		        <ImageView
 		            style="@style/S2.Widget.Divider.Horizontal" />
@@ -271,7 +271,7 @@
 				        android:text="100%"
 				        android:layout_centerVertical="true"
 				        android:layout_marginLeft="@dimen/margin_small"
-				        style="@style/TextViewBase" />
+				        style="@style/S2.Widget.TextView" />
 				    
 				    <SeekBar
 			            android:id="@+id/sb_volume"
@@ -304,7 +304,7 @@
 		            android:text="한마디&amp;커버사진 등록"
 		            android:textColor="@color/font_default"
 		            android:padding="@dimen/margin_small"
-		            style="@style/TextViewLessImportant" />
+		            style="@style/S2.Widget.TextView.H4" />
 		        
 		        <ImageView
 		            style="@style/S2.Widget.Divider.Horizontal" />
@@ -411,7 +411,7 @@
 		            android:layout_toRightOf="@id/icon_facebook"
 		            android:text="페이스북에 함께 포스팅"
 		            android:textSize="@dimen/text_sub_content"
-		            style="@style/TextViewBase" />
+		            style="@style/S2.Widget.TextView" />
 		        
 		    </RelativeLayout>
 	        

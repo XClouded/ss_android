@@ -17,6 +17,6 @@
     
     <TextView
     	android:id="@+id/tv_user_nickname"
-        style="@style/TextViewOverflowableImportant" />
+        style="@style/S2.Widget.TextView.Ellipsize.H3" />
 
 </LinearLayout>

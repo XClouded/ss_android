@@ -91,12 +91,12 @@
 	            android:id="@+id/tv_floating_user_nickname"
 	            android:layout_marginBottom="@dimen/margin_tiny"
 	            android:textSize="@dimen/text_title"
-	            style="@style/TextViewOverflowableImportant" />
+	            style="@style/S2.Widget.TextView.Ellipsize.H3" />
 	        
 	        <TextView
 	            android:id="@+id/tv_floating_user_part"
 	            android:textSize="@dimen/text_subtitle"
-	            style="@style/TextViewImportant" />
+	            android:textStyle="bold" />
             
         </LinearLayout>
         
@@ -118,7 +118,7 @@
 	            android:layout_marginTop="@dimen/margin"
 	            android:lineSpacingExtra="@dimen/margin_small"
 	            android:gravity="center"
-	            style="@style/TextViewBase" />
+	            style="@style/S2.Widget.TextView" />
             
         </LinearLayout>
         

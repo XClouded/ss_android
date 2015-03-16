@@ -33,7 +33,7 @@
 	        android:id="@+id/tv_collabo_num"
 	        android:layout_centerVertical="true"
 	        android:layout_toRightOf="@id/icon_mixed"
-	        style="@style/TextViewIconLabel" />
+	        style="@style/S2.Widget.TextView.H4.Label" />
         
     </RelativeLayout>
  
@@ -45,14 +45,14 @@
 	    android:layout_marginTop="@dimen/margin_small"
 	    android:textColor="@color/font_default"
 	    android:gravity="left"
-        style="@style/TextViewOverflowableImportant" />
+        style="@style/S2.Widget.TextView.Ellipsize.H3" />
  
 	<TextView
 	    android:id="@+id/tv_user_part"
 	    android:layout_alignLeft="@id/tv_user_nickname"
 	    android:layout_below="@id/tv_user_nickname"
 	    android:layout_marginBottom="@dimen/margin_small"
-	    style="@style/TextViewLessImportant" />
+	    style="@style/S2.Widget.TextView.H4" />
  
 	<TextView
 	    android:id="@+id/tv_song_message"
@@ -61,6 +61,6 @@
 	    android:layout_toLeftOf="@id/header"
 	    android:ellipsize="end"
 	    android:maxLines="3"
-	    style="@style/TextViewBase" />
+	    style="@style/S2.Widget.TextView" />
 
 </RelativeLayout>

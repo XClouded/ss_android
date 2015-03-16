@@ -31,7 +31,7 @@
 	        android:layout_toLeftOf="@id/iv_menu"
 	        android:layout_marginTop="@dimen/margin_small"
 	        android:layout_marginLeft="@dimen/margin"
-	        style="@style/TextViewLessImportant" />
+	        style="@style/S2.Widget.TextView.H4" />
         
 	    <TextView
 	        android:id="@+id/tv_comment_user_nickname"
@@ -41,14 +41,14 @@
 	        android:gravity="left"
 	        android:textColor="@color/font_white"
 	        android:textStyle="bold"
-	        style="@style/TextViewOverflowableLessImportant" />
+	        style="@style/S2.Widget.TextView.Ellipsize.H4" />
 	    
 	    <TextView
 	        android:id="@+id/tv_comment_content"
 	        android:layout_below="@id/tv_comment_user_nickname"
 	        android:layout_marginLeft="@dimen/margin_small"
 	        android:textColor="@color/white"
-	        style="@style/TextViewBase" />
+	        style="@style/S2.Widget.TextView" />
         
     </RelativeLayout>
     

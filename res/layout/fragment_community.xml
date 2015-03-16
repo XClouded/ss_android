@@ -33,7 +33,7 @@
 	            android:textStyle="bold"
 	            android:layout_toRightOf="@id/icon_free"
 	            android:layout_centerVertical="true"
-	            style="@style/TextViewBase" />
+	            style="@style/S2.Widget.TextView" />
             
             <ImageView
                 android:layout_width="15dp"
@@ -72,7 +72,7 @@
 	            android:textStyle="bold"
 	            android:layout_toRightOf="@id/icon_mr"
 	            android:layout_centerVertical="true"
-	            style="@style/TextViewBase" />
+	            style="@style/S2.Widget.TextView" />
             
             <ImageView
                 android:layout_width="15dp"
@@ -111,7 +111,7 @@
 	            android:textStyle="bold"
 	            android:layout_toRightOf="@id/icon_notice"
 	            android:layout_centerVertical="true"
-	            style="@style/TextViewBase" />
+	            style="@style/S2.Widget.TextView" />
             
             <ImageView
                 android:layout_width="15dp"
@@ -151,7 +151,7 @@
 	            android:textStyle="bold"
 	            android:layout_toRightOf="@id/icon_faq"
 	            android:layout_centerVertical="true"
-	            style="@style/TextViewBase" />
+	            style="@style/S2.Widget.TextView" />
             
             <ImageView
                 android:layout_width="15dp"
@@ -187,7 +187,7 @@
 	            android:textStyle="bold"
 	            android:layout_toRightOf="@id/icon_facebook"
 	            android:layout_centerVertical="true"
-	            style="@style/TextViewBase" />
+	            style="@style/S2.Widget.TextView" />
             
             <ImageView
                 android:layout_width="15dp"
@@ -226,7 +226,7 @@
 	            android:textStyle="bold"
 	            android:layout_toRightOf="@id/icon_review"
 	            android:layout_centerVertical="true"
-	            style="@style/TextViewBase" />
+	            style="@style/S2.Widget.TextView" />
             
             <ImageView
                 android:layout_width="15dp"

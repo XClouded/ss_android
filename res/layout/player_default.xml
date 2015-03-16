@@ -27,7 +27,7 @@
         android:lineSpacingExtra="@dimen/margin_small"
         android:visibility="visible"
         android:text="\n"
-        style="@style/TextViewBase" />
+        style="@style/S2.Widget.TextView" />
     
     <FrameLayout
         android:id="@+id/layout_collabo_wrapper"
@@ -72,7 +72,7 @@
 	            android:layout_marginBottom="@dimen/margin_tiny"
 	            android:textSize="@dimen/text_title"
 	            android:text="nickname"
-	            style="@style/TextViewOverflowableImportant" />
+	            style="@style/S2.Widget.TextView.Ellipsize.H3" />
 	        
 	        <TextView
 	            android:id="@+id/tv_parent_user_part"
@@ -80,7 +80,7 @@
 	            android:textColor="@color/font_male_active"
 	            android:textSize="@dimen/text_subtitle"
 	            android:text="part"
-	            style="@style/TextViewImportant" />
+	            android:textStyle="bold" />
 	        
 	        <TextView
 	            android:id="@+id/tv_parent_song_message"
@@ -88,7 +88,7 @@
 	            android:ellipsize="end"
 	            android:gravity="center_horizontal"
 	            android:text="messagelkaj dhflk ajsdhf lkjasdh kjasd alkdsj fhsadlk fjhasdlkf jhdaslkjf has ldkj fhdkasj"
-	            style="@style/TextViewBase" />
+	            style="@style/S2.Widget.TextView" />
             
         </LinearLayout>
         
@@ -126,21 +126,21 @@
 	            android:id="@+id/tv_this_user_nickname"
 	            android:layout_marginBottom="@dimen/margin_tiny"
 	            android:textSize="@dimen/text_title"
-	            style="@style/TextViewOverflowableImportant" />
+	            style="@style/S2.Widget.TextView.Ellipsize.H3" />
 	        
 	        <TextView
 	            android:id="@+id/tv_this_user_part"
 	            android:layout_marginBottom="@dimen/margin"
 	            android:textColor="@color/font_female_active"
 	            android:textSize="@dimen/text_subtitle"
-	            style="@style/TextViewImportant" />
+	            android:textStyle="bold" />
 	        
 	        <TextView
 	            android:id="@+id/tv_this_song_message"
 	            android:textColor="@color/font_white"
 	            android:ellipsize="end"
 	            android:gravity="center_horizontal"
-	            style="@style/TextViewBase" />
+	            style="@style/S2.Widget.TextView" />
             
         </LinearLayout>
         

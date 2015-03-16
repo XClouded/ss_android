@@ -8,7 +8,7 @@
         android:textSize="@dimen/abc_action_bar_title_text_size"
         android:text="@string/song_collaborated"
         android:layout_centerVertical="true"
-        style="@style/TextViewBase" />
+        style="@style/S2.Widget.TextView" />
     
     <ImageView
         android:layout_width="6dp"

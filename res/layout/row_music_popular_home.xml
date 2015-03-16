@@ -39,14 +39,14 @@
 		        android:textColor="@color/white"
 		        android:textSize="@dimen/text_main_content"
 		        android:gravity="left"
-		        style="@style/TextViewOverflowableLessImportant" />
+		        style="@style/S2.Widget.TextView.Ellipsize.H4" />
 		    
 		    <TextView
 		        android:id="@+id/tv_music_title"
 		        android:layout_above="@id/tv_singer_name"
 		        android:textSize="@dimen/text_title"
 		        android:gravity="left"
-		        style="@style/TextViewOverflowableImportant" />
+		        style="@style/S2.Widget.TextView.Ellipsize.H3" />
 		    
 		    <TextView
 		        android:id="@+id/tv_sing_num"
@@ -54,7 +54,7 @@
 		        android:layout_alignParentRight="true"
 		        android:layout_marginTop="@dimen/margin"
 		        android:layout_marginRight="@dimen/margin_small"
-		        style="@style/TextViewBase" />
+		        style="@style/S2.Widget.TextView" />
 		    
 		    <ImageView
 		        android:layout_width="15dp"
@@ -72,7 +72,7 @@
 	        android:padding="@dimen/margin_small"
 	        android:layout_width="match_parent"
 	        android:gravity="center"
-	        style="@style/TextViewLessImportant" />
+	        style="@style/S2.Widget.TextView.H4" />
 	    
 	    <LinearLayout
 	        android:baselineAligned="false"
@@ -94,7 +94,7 @@
 	            
 	            <TextView
 	                android:id="@+id/tv_first_user_nickname"
-	                style="@style/TextViewOverflowableLessImportant" />
+	                style="@style/S2.Widget.TextView.Ellipsize.H4" />
 	            
 	        </LinearLayout>
 	        
@@ -112,7 +112,7 @@
 	            
 	            <TextView
 	                android:id="@+id/tv_second_user_nickname"
-	                style="@style/TextViewOverflowableLessImportant" />
+	                style="@style/S2.Widget.TextView.Ellipsize.H4" />
 	            
 	        </LinearLayout>
 	        
@@ -130,7 +130,7 @@
 	            
 	            <TextView
 	                android:id="@+id/tv_third_user_nickname"
-	                style="@style/TextViewOverflowableLessImportant" />
+	                style="@style/S2.Widget.TextView.Ellipsize.H4" />
 	            
 	        </LinearLayout>
 	        
