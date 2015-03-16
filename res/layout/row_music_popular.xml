@@ -6,12 +6,12 @@
 
     <com.myandb.singsong.widget.RoundedImageView
         android:id="@+id/iv_album_photo"
-        style="@style/ImageViewSquare"
+        style="@style/S2.Widget.ImageView.Square"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <com.myandb.singsong.widget.RoundedImageView
-        style="@style/ImageViewSquare"
+        style="@style/S2.Widget.ImageView.Square"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/mask_profile" />
@@ -42,7 +42,7 @@
         android:textSize="@dimen/text_subtitle" />
 
     <ImageView
-        style="@style/ImageViewBase"
+        style="@style/S2.Widget.ImageView"
         android:layout_width="18dp"
         android:layout_height="18dp"
         android:layout_alignTop="@id/tv_sing_num"

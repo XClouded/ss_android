@@ -13,7 +13,7 @@
         android:layout_width="@dimen/photo_big"
         android:layout_height="@dimen/photo_big"
         android:layout_marginBottom="@dimen/margin_small"
-	    style="@style/ImageViewUserWithBorder" />
+	    style="@style/S2.Widget.ImageView.User.Border" />
     
     <TextView
     	android:id="@+id/tv_user_nickname"

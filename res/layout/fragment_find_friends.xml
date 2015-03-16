@@ -24,7 +24,7 @@
 	            android:layout_height="28dp"
 	            android:src="@drawable/ic_magnifier"
 	            android:layout_marginRight="@dimen/margin"
-	            style="@style/ImageViewBase" />
+	            style="@style/S2.Widget.ImageView" />
 	        
 	        <TextView
 	            android:text="@string/hint_search_user"
@@ -46,7 +46,7 @@
 	            android:layout_height="28dp"
 	            android:src="@drawable/ic_facebook"
 	            android:layout_marginRight="@dimen/margin"
-	            style="@style/ImageViewBase" />
+	            style="@style/S2.Widget.ImageView" />
 	        
 	        <TextView
 	            android:text="페이스북 친구 추가"

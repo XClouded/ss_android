@@ -10,7 +10,7 @@
         android:id="@+id/iv_user_photo"
 	    android:layout_width="@dimen/photo_big"
 	    android:layout_height="@dimen/photo_big"
-	    style="@style/ImageViewUser" />
+	    style="@style/S2.Widget.ImageView.User" />
     
     <RelativeLayout
         android:id="@+id/header"
@@ -27,7 +27,7 @@
 	        android:layout_alignParentLeft="true"
 	        android:layout_centerVertical="true"
 	        android:src="@drawable/ic_collabo_grey"
-	        style="@style/IconImageView" />
+	        style="@style/S2.Widget.ImageView.Icon" />
         
         <TextView
 	        android:id="@+id/tv_collabo_num"

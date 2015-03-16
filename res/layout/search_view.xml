@@ -14,14 +14,14 @@
         android:layout_alignParentLeft="true"
         android:layout_width="22dp"
         android:layout_height="22dp"
-        style="@style/ImageViewBase" />
+        style="@style/S2.Widget.ImageView" />
     
     <ImageView
         android:id="@+id/iv_clear"
         android:src="@drawable/ic_x"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
-        style="@style/ImageViewBase" />
+        style="@style/S2.Widget.ImageView" />
     
     <EditText
         android:id="@+id/et_search"

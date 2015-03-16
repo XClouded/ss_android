@@ -13,7 +13,7 @@
         android:src="@drawable/ic_share"
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/margin_small"
-        style="@style/ImageViewBase" />
+        style="@style/S2.Widget.ImageView" />
     
     <include
         android:id="@+id/layout_player_play_control"
@@ -65,7 +65,7 @@
 	            android:layout_width="@dimen/photo_player"
 	            android:layout_height="@dimen/photo_player"
                 android:layout_marginBottom="@dimen/margin_small"
-	            style="@style/ImageViewUserWithBorder" />
+	            style="@style/S2.Widget.ImageView.User.Border" />
             
 	        <TextView
 	            android:id="@+id/tv_parent_user_nickname"
@@ -109,7 +109,7 @@
 		            android:id="@+id/iv_this_user_photo"
 		            android:layout_width="match_parent"
 		            android:layout_height="match_parent"
-		            style="@style/ImageViewUserWithBorder" />
+		            style="@style/S2.Widget.ImageView.User.Border" />
 	            
 	            <ImageView
 	                android:id="@+id/iv_other_collabo"
@@ -118,7 +118,7 @@
 	                android:layout_gravity="right|bottom"
 	                android:background="@drawable/circle_sub_selector"
 	                android:src="@drawable/ic_overflow_white"
-	                style="@style/ImageViewBase" />
+	                style="@style/S2.Widget.ImageView" />
                 
             </FrameLayout>
 	        

@@ -10,7 +10,7 @@
         android:layout_height="70dp"
         android:layout_marginLeft="@dimen/margin"
         android:layout_marginRight="@dimen/margin_small"
-        style="@style/ImageViewSquare" />
+        style="@style/S2.Widget.ImageView.Square" />
     
     <TextView
         android:id="@+id/tv_created_time"

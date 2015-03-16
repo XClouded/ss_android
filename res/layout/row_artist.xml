@@ -7,7 +7,7 @@
 
     <com.myandb.singsong.widget.RoundedImageView
         android:id="@+id/iv_artist_photo"
-        style="@style/ImageViewUser"
+        style="@style/S2.Widget.ImageView.User"
         android:layout_marginBottom="@dimen/margin_small"
         android:layout_marginLeft="@dimen/margin_small"
         android:layout_marginTop="@dimen/margin_tiny" />
@@ -24,7 +24,7 @@
 
     <ImageView
         android:id="@+id/icon_follower"
-        style="@style/ImageViewBase"
+        style="@style/S2.Widget.ImageView"
         android:layout_width="12dp"
         android:layout_height="12dp"
         android:layout_alignLeft="@id/tv_artist_user_nickname"
@@ -47,7 +47,7 @@
 
         <ImageView
             android:id="@+id/banner"
-            style="@style/ImageViewBase"
+            style="@style/S2.Widget.ImageView"
             android:layout_width="62dp"
             android:layout_height="51dp"
             android:layout_alignParentRight="true"

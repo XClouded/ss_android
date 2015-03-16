@@ -9,6 +9,6 @@
         android:layout_height="69dp"
         android:layout_gravity="center"
         android:src="@drawable/logo_footer"
-        style="@style/ImageViewBase" />
+        style="@style/S2.Widget.ImageView" />
 
 </FrameLayout>

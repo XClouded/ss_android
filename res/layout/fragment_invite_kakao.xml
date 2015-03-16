@@ -17,7 +17,7 @@
             android:layout_height="40dp"
             android:src="@drawable/ic_kakaotalk"
             android:layout_marginBottom="@dimen/margin_bigger"
-            style="@style/ImageViewBase" />
+            style="@style/S2.Widget.ImageView" />
         
         <TextView
             android:gravity="center"
@@ -43,7 +43,7 @@
 	            android:layout_height="22dp"
 	            android:layout_marginRight="@dimen/margin_tiny"
 	            android:src="@drawable/ic_menu_friend"
-	            style="@style/ImageViewBase" />
+	            style="@style/S2.Widget.ImageView" />
 	        
 	        <TextView
 	            android:text="카카오톡 친구 선택하기"

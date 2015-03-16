@@ -7,7 +7,7 @@
     <com.myandb.singsong.widget.RoundedImageView
         android:id="@+id/iv_user_photo"
         android:layout_marginRight="@dimen/margin_small"
-        style="@style/ImageViewUserSmall" />
+        style="@style/S2.Widget.ImageView.User.Small" />
     
     <TextView
 	    android:id="@+id/tv_created_time"

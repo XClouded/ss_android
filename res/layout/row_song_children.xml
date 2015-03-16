@@ -8,7 +8,7 @@
 
     <com.myandb.singsong.widget.RoundedImageView
         android:id="@+id/iv_parent_user_photo"
-        style="@style/ImageViewUser"
+        style="@style/S2.Widget.ImageView.User"
         android:layout_marginBottom="@dimen/margin_small"
         android:layout_marginTop="@dimen/margin" />
 
@@ -46,7 +46,7 @@
             android:orientation="horizontal" >
 
             <ImageView
-                style="@style/IconImageView"
+                style="@style/S2.Widget.ImageView.Icon"
                 android:src="@drawable/ic_like_mini" />
 
             <TextView
@@ -61,7 +61,7 @@
             android:orientation="horizontal" >
 
             <ImageView
-                style="@style/IconImageView"
+                style="@style/S2.Widget.ImageView.Icon"
                 android:src="@drawable/ic_comment_mini" />
 
             <TextView
@@ -75,7 +75,7 @@
             android:orientation="horizontal" >
 
             <ImageView
-                style="@style/IconImageView"
+                style="@style/S2.Widget.ImageView.Icon"
                 android:src="@drawable/ic_collabo_grey" />
 
             <TextView
@@ -94,7 +94,7 @@
         android:orientation="horizontal" >
 
         <ImageView
-            style="@style/IconImageView"
+            style="@style/S2.Widget.ImageView.Icon"
             android:layout_marginTop="2dp"
             android:src="@drawable/ic_play_sample" />
 

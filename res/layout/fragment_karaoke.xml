@@ -7,7 +7,7 @@
         android:id="@+id/iv_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        style="@style/ImageViewBase" />
+        style="@style/S2.Widget.ImageView" />
     
     <ImageView
         android:layout_width="match_parent"
@@ -140,7 +140,7 @@
 	                android:layout_width="match_parent"
 	                android:layout_height="match_parent"
 	                android:layout_margin="@dimen/border_width_big"
-	                style="@style/ImageViewUser" />
+	                style="@style/S2.Widget.ImageView.User" />
 	            
 	        </FrameLayout>
 	        
@@ -180,7 +180,7 @@
 	                android:layout_width="match_parent"
 	                android:layout_height="match_parent"
 	                android:layout_margin="@dimen/border_width_big"
-	                style="@style/ImageViewUser" />
+	                style="@style/S2.Widget.ImageView.User" />
 	            
 	        </FrameLayout>
 	        

@@ -19,7 +19,7 @@
 
             <com.myandb.singsong.widget.RoundedImageView
                 android:id="@+id/iv_parent_song_image"
-                style="@style/ImageViewBase"
+                style="@style/S2.Widget.ImageView"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -28,7 +28,7 @@
 
             <com.myandb.singsong.widget.RoundedImageView
                 android:id="@+id/iv_this_song_image"
-                style="@style/ImageViewBase"
+                style="@style/S2.Widget.ImageView"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -55,7 +55,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:src="@drawable/ic_collabo_inverse"
-                style="@style/ImageViewBase" />
+                style="@style/S2.Widget.ImageView" />
             
             <TextView
                 android:id="@+id/tv_song_collabo_num"
@@ -90,7 +90,7 @@
 
                 <com.myandb.singsong.widget.RoundedImageView
                     android:id="@+id/iv_parent_user_photo"
-                    style="@style/ImageViewUserWithBorder"
+                    style="@style/S2.Widget.ImageView.User.Border"
                     android:layout_gravity="center"
                     android:layout_marginBottom="@dimen/margin_small" />
 
@@ -117,7 +117,7 @@
 
                 <com.myandb.singsong.widget.RoundedImageView
                     android:id="@+id/iv_this_user_photo"
-                    style="@style/ImageViewUserWithBorder"
+                    style="@style/S2.Widget.ImageView.User.Border"
                     android:layout_gravity="center"
                     android:layout_marginBottom="@dimen/margin_small" />
 
@@ -157,7 +157,7 @@
                 android:orientation="horizontal" >
 
                 <ImageView
-                    style="@style/IconImageView"
+                    style="@style/S2.Widget.ImageView.Icon"
                     android:src="@drawable/ic_like_mini" />
 
                 <TextView
@@ -166,7 +166,7 @@
                     android:layout_marginRight="@dimen/margin_big" />
 
                 <ImageView
-                    style="@style/IconImageView"
+                    style="@style/S2.Widget.ImageView.Icon"
                     android:src="@drawable/ic_comment_mini" />
 
                 <TextView
@@ -189,7 +189,7 @@
 		        android:orientation="horizontal" >
 		
 		        <ImageView
-		            style="@style/IconImageView"
+		            style="@style/S2.Widget.ImageView.Icon"
 		            android:layout_marginTop="2dp"
 		            android:src="@drawable/ic_play_sample" />
 		

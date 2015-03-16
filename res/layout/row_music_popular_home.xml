@@ -21,7 +21,7 @@
 		        app:corner_radius="@dimen/corner_radius"
 		        app:corner_top_left="true"
 		        app:corner_top_right="true"
-		        style="@style/ImageViewBase" />
+		        style="@style/S2.Widget.ImageView" />
 		    
 		    <com.myandb.singsong.widget.RoundedImageView
 		        android:layout_width="match_parent"
@@ -30,7 +30,7 @@
 		        app:corner_radius="@dimen/corner_radius"
 		        app:corner_top_left="true"
 		        app:corner_top_right="true"
-		        style="@style/ImageViewBase" />
+		        style="@style/S2.Widget.ImageView" />
 		    
 		    <TextView
 		        android:id="@+id/tv_singer_name"
@@ -63,7 +63,7 @@
 		        android:layout_marginRight="@dimen/margin_tiny"
 		        android:layout_toLeftOf="@id/tv_sing_num"
 		        android:layout_alignTop="@id/tv_sing_num"
-		        style="@style/ImageViewBase" />
+		        style="@style/S2.Widget.ImageView" />
 	        
 	    </RelativeLayout>
 	    
@@ -90,7 +90,7 @@
 	            <com.myandb.singsong.widget.RoundedImageView
 	                android:id="@+id/iv_first_user_photo"
 	                android:layout_marginBottom="@dimen/margin_small"
-	                style="@style/ImageViewUser" />
+	                style="@style/S2.Widget.ImageView.User" />
 	            
 	            <TextView
 	                android:id="@+id/tv_first_user_nickname"
@@ -108,7 +108,7 @@
 	            <com.myandb.singsong.widget.RoundedImageView
 	                android:id="@+id/iv_second_user_photo"
 	                android:layout_marginBottom="@dimen/margin_small"
-	                style="@style/ImageViewUser" />
+	                style="@style/S2.Widget.ImageView.User" />
 	            
 	            <TextView
 	                android:id="@+id/tv_second_user_nickname"
@@ -126,7 +126,7 @@
 	            <com.myandb.singsong.widget.RoundedImageView
 	                android:id="@+id/iv_third_user_photo"
 	                android:layout_marginBottom="@dimen/margin_small"
-	                style="@style/ImageViewUser" />
+	                style="@style/S2.Widget.ImageView.User" />
 	            
 	            <TextView
 	                android:id="@+id/tv_third_user_nickname"

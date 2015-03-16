@@ -9,7 +9,7 @@
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:src="@drawable/ic_menu_listen"
-        style="@style/ImageViewBase" />
+        style="@style/S2.Widget.ImageView" />
     
     <TextView
         android:text="@string/dialog_headset_title"

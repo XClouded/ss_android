@@ -24,7 +24,7 @@
 	            android:layout_weight="1"
 	            app:corner_radius="@dimen/corner_radius"
 	            app:corner_top_left="true"
-	            style="@style/ImageViewBase" />
+	            style="@style/S2.Widget.ImageView" />
 	        
 	        <LinearLayout
 	            android:id="@+id/ll_this_wrapper"
@@ -39,7 +39,7 @@
 		            android:layout_height="@dimen/compat_song_image_height_half"
 		            app:corner_radius="@dimen/corner_radius"
 		            app:corner_top_right="true"
-		            style="@style/ImageViewBase" />    
+		            style="@style/S2.Widget.ImageView" />    
 		            
 	        	<LinearLayout
 	        	    android:id="@+id/ll_children_wrapper"
@@ -52,14 +52,14 @@
 			            android:layout_width="0dp"
 			            android:layout_height="match_parent"
 			            android:layout_weight="1"
-			            style="@style/ImageViewBase" />
+			            style="@style/S2.Widget.ImageView" />
 	        		
 	        		<ImageView
 			            android:id="@+id/iv_second_children_upload_image"
 			            android:layout_width="0dp"
 			            android:layout_height="match_parent"
 			            android:layout_weight="1"
-			            style="@style/ImageViewBase" />
+			            style="@style/S2.Widget.ImageView" />
 	        	    
 	        	</LinearLayout>
 	            
@@ -86,7 +86,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:src="@drawable/ic_collabo_inverse"
-                style="@style/ImageViewBase" />
+                style="@style/S2.Widget.ImageView" />
             
             <TextView
                 android:id="@+id/tv_song_collabo_num"
@@ -109,7 +109,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/margin"
             android:layout_marginTop="@dimen/margin"
-            style="@style/ImageViewBase" />
+            style="@style/S2.Widget.ImageView" />
         
         <LinearLayout
             android:id="@+id/ll_user_wrapper"
@@ -136,7 +136,7 @@
 				      
 					<com.myandb.singsong.widget.RoundedImageView
 					    android:id="@+id/iv_parent_user_photo"
-					    style="@style/ImageViewUser" />
+					    style="@style/S2.Widget.ImageView.User" />
 				      
 		      	</FrameLayout>
 		         
@@ -172,7 +172,7 @@
 				      
 					<com.myandb.singsong.widget.RoundedImageView
 					    android:id="@+id/iv_this_user_photo"
-					    style="@style/ImageViewUser" />
+					    style="@style/S2.Widget.ImageView.User" />
 				      
 		      	</FrameLayout>
 		         
@@ -214,7 +214,7 @@
                 android:orientation="horizontal" >
 
                 <ImageView
-                    style="@style/IconImageView"
+                    style="@style/S2.Widget.ImageView.Icon"
                     android:src="@drawable/ic_like_mini" />
 
                 <TextView
@@ -223,7 +223,7 @@
                     android:layout_marginRight="@dimen/margin_big" />
 
                 <ImageView
-                    style="@style/IconImageView"
+                    style="@style/S2.Widget.ImageView.Icon"
                     android:src="@drawable/ic_comment_mini" />
 
                 <TextView
@@ -246,7 +246,7 @@
 		        android:orientation="horizontal" >
 		
 		        <ImageView
-		            style="@style/IconImageView"
+		            style="@style/S2.Widget.ImageView.Icon"
 		            android:layout_marginTop="2dp"
 		            android:src="@drawable/ic_play_sample" />
 		

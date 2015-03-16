@@ -26,7 +26,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/margin_small"
                 android:src="@drawable/ic_community_free"
-                style="@style/ImageViewBase" />
+                style="@style/S2.Widget.ImageView" />
 	        
 	        <TextView
 	            android:text="콜라보 게시판"
@@ -41,7 +41,7 @@
                 android:layout_centerVertical="true"
                 android:src="@drawable/ic_arrow_right_dark"
                 android:layout_alignParentRight="true"
-                style="@style/ImageViewBase" />
+                style="@style/S2.Widget.ImageView" />
             
         </RelativeLayout>
 	    
@@ -65,7 +65,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/margin_small"
                 android:src="@drawable/ic_community_mr"
-                style="@style/ImageViewBase" />
+                style="@style/S2.Widget.ImageView" />
 	        
 	        <TextView
 	            android:text="MR 요청 게시판"
@@ -80,7 +80,7 @@
                 android:layout_centerVertical="true"
                 android:src="@drawable/ic_arrow_right_dark"
                 android:layout_alignParentRight="true"
-                style="@style/ImageViewBase" />
+                style="@style/S2.Widget.ImageView" />
             
         </RelativeLayout>
 	    
@@ -104,7 +104,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/margin_small"
                 android:src="@drawable/ic_community_notice"
-                style="@style/ImageViewBase" />
+                style="@style/S2.Widget.ImageView" />
 	        
 	        <TextView
 	            android:text="공지사항"
@@ -119,7 +119,7 @@
                 android:layout_centerVertical="true"
                 android:src="@drawable/ic_arrow_right_dark"
                 android:layout_alignParentRight="true"
-                style="@style/ImageViewBase" />
+                style="@style/S2.Widget.ImageView" />
             
         </RelativeLayout>
 	    
@@ -144,7 +144,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/margin_small"
                 android:src="@drawable/ic_community_faq"
-                style="@style/ImageViewBase" />
+                style="@style/S2.Widget.ImageView" />
 	        
 	        <TextView
 	            android:text="FAQ"
@@ -159,7 +159,7 @@
                 android:layout_centerVertical="true"
                 android:src="@drawable/ic_arrow_right_dark"
                 android:layout_alignParentRight="true"
-                style="@style/ImageViewBase" />
+                style="@style/S2.Widget.ImageView" />
             
         </RelativeLayout>
         
@@ -180,7 +180,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/margin_small"
                 android:src="@drawable/ic_community_facebook"
-                style="@style/ImageViewBase" />
+                style="@style/S2.Widget.ImageView" />
 	        
 	        <TextView
 	            android:text="콜라보 노래방 페이스북 페이지"
@@ -195,7 +195,7 @@
                 android:layout_centerVertical="true"
                 android:src="@drawable/ic_arrow_right_dark"
                 android:layout_alignParentRight="true"
-                style="@style/ImageViewBase" />
+                style="@style/S2.Widget.ImageView" />
             
         </RelativeLayout>
 	    
@@ -219,7 +219,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/margin_small"
                 android:src="@drawable/ic_community_review"
-                style="@style/ImageViewBase" />
+                style="@style/S2.Widget.ImageView" />
 	        
 	        <TextView
 	            android:text="플레이 스토어에 리뷰 남기기"
@@ -234,7 +234,7 @@
                 android:layout_centerVertical="true"
                 android:src="@drawable/ic_arrow_right_dark"
                 android:layout_alignParentRight="true"
-                style="@style/ImageViewBase" />
+                style="@style/S2.Widget.ImageView" />
             
         </RelativeLayout>
 	    

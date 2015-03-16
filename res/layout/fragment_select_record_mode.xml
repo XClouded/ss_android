@@ -7,7 +7,7 @@
         android:id="@+id/iv_album_photo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        style="@style/ImageViewBase" />
+        style="@style/S2.Widget.ImageView" />
     
     <ImageView
         android:layout_width="match_parent"

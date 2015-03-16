@@ -8,7 +8,7 @@
     
     <com.myandb.singsong.widget.RoundedImageView
         android:id="@+id/iv_user_photo"
-        style="@style/ImageViewUserSmall" />
+        style="@style/S2.Widget.ImageView.User.Small" />
     
     <Button
 	    android:id="@+id/btn_follow"

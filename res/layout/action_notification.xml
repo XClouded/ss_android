@@ -13,7 +13,7 @@
         android:layout_height="32dp"
         android:layout_gravity="center"
         android:src="@drawable/ic_action_notification"
-        style="@style/ImageViewBase" />
+        style="@style/S2.Widget.ImageView" />
     
     <TextView
         android:id="@+id/tv_action_notification_count"

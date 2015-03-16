@@ -26,7 +26,7 @@
             android:id="@+id/iv_artist_photo"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="@dimen/margin_tiny"
-	       	style="@style/ImageViewUser" />
+	       	style="@style/S2.Widget.ImageView.User" />
         
         <TextView
 	        android:id="@+id/tv_artist_user_nickname"
@@ -48,7 +48,7 @@
 	            android:layout_height="12dp"
 		        android:layout_marginRight="@dimen/margin_tiny"
 	            android:src="@drawable/ic_user_mini"
-	            style="@style/ImageViewBase" />
+	            style="@style/S2.Widget.ImageView" />
 	        
 	        <TextView
 		        android:id="@+id/tv_artist_followers_num"

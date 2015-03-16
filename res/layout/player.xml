@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@color/black"
-        style="@style/ImageViewBase" />
+        style="@style/S2.Widget.ImageView" />
     
     <ImageView
         android:id="@+id/iv_background_gradient"
@@ -85,7 +85,7 @@
 	            android:layout_width="@dimen/photo_player"
 	            android:layout_height="@dimen/photo_player"
                 android:layout_marginBottom="@dimen/margin_small"
-	            style="@style/ImageViewUserWithBorder" />
+	            style="@style/S2.Widget.ImageView.User.Border" />
 	        
 	        <TextView
 	            android:id="@+id/tv_floating_user_nickname"

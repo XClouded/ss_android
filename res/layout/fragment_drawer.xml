@@ -28,7 +28,7 @@
 		        android:layout_width="@dimen/photo_big"
 		        android:layout_height="@dimen/photo_big"
 	            android:layout_marginBottom="@dimen/margin"
-		        style="@style/ImageViewUser" />
+		        style="@style/S2.Widget.ImageView.User" />
 	        
 	        <TextView
 	            android:id="@+id/tv_drawer_user_nickname"
@@ -55,7 +55,7 @@
 	            android:layout_height="@dimen/photo_big"
 	            android:layout_marginBottom="@dimen/margin_big"
 	            android:src="@drawable/user_character"
-	            style="@style/ImageViewBase" />
+	            style="@style/S2.Widget.ImageView" />
 	        
 	        <Button
 	            android:id="@+id/btn_drawer_login"

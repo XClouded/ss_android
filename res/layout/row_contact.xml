@@ -18,7 +18,7 @@
             android:layout_height="16dp"
             android:src="@drawable/ic_letter"
             android:layout_marginRight="@dimen/margin_small"
-            style="@style/ImageViewBase" />
+            style="@style/S2.Widget.ImageView" />
         
         <TextView
             android:text="초대"

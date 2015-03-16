@@ -44,7 +44,7 @@
 
             <com.myandb.singsong.widget.RoundedImageView
                 android:id="@+id/iv_album_photo"
-                style="@style/ImageViewSquare"
+                style="@style/S2.Widget.ImageView.Square"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
             
@@ -59,7 +59,7 @@
 
             <com.myandb.singsong.widget.RoundedImageView
                 android:id="@+id/iv_parent_user_photo"
-                style="@style/ImageViewUserSmall" />
+                style="@style/S2.Widget.ImageView.User.Small" />
 
             <TextView
                 android:id="@+id/tv_parent_user_nickname"
@@ -89,7 +89,7 @@
 
             <com.myandb.singsong.widget.RoundedImageView
                 android:id="@+id/iv_this_user_photo"
-                style="@style/ImageViewUserSmall" />
+                style="@style/S2.Widget.ImageView.User.Small" />
 
             <TextView
                 android:id="@+id/tv_this_user_nickname"
@@ -127,7 +127,7 @@
             android:orientation="horizontal" >
 
             <ImageView
-                style="@style/IconImageView"
+                style="@style/S2.Widget.ImageView.Icon"
                 android:src="@drawable/ic_like_mini" />
 
             <TextView
@@ -136,7 +136,7 @@
                 android:layout_marginRight="@dimen/margin_big" />
 
             <ImageView
-                style="@style/IconImageView"
+                style="@style/S2.Widget.ImageView.Icon"
                 android:src="@drawable/ic_comment_mini" />
 
             <TextView
@@ -158,7 +158,7 @@
             android:orientation="horizontal" >
 
             <ImageView
-                style="@style/IconImageView"
+                style="@style/S2.Widget.ImageView.Icon"
                 android:layout_marginTop="2dp"
                 android:src="@drawable/ic_play_sample" />
 

@@ -10,7 +10,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:paddingRight="@dimen/margin"
-        style="@style/ImageViewBase" />
+        style="@style/S2.Widget.ImageView" />
     
     <RelativeLayout
         android:id="@+id/layout_comment_control"

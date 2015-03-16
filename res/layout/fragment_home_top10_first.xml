@@ -8,13 +8,13 @@
 
     <ImageView
         android:id="@+id/iv_top10_first_album_photo"
-        style="@style/ImageViewBase"
+        style="@style/S2.Widget.ImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@color/grey" />
 
     <ImageView
-        style="@style/ImageViewBase"
+        style="@style/S2.Widget.ImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/mask_no_rounded" />
@@ -40,7 +40,7 @@
             android:textColor="@color/white" />
 
         <ImageView
-            style="@style/ImageViewBase"
+            style="@style/S2.Widget.ImageView"
             android:layout_width="13dp"
             android:layout_height="13dp"
             android:layout_marginRight="@dimen/margin_tiny"

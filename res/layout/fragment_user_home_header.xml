@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@color/grey_dark"
-            style="@style/ImageViewBase" />
+            style="@style/S2.Widget.ImageView" />
         
         <ImageView
             android:layout_width="match_parent"
@@ -93,7 +93,7 @@
             android:layout_marginBottom="@dimen/margin_small"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="60dp"
-        	style="@style/ImageViewUserWithBorder" />
+        	style="@style/S2.Widget.ImageView.User.Border" />
         
         <LinearLayout
             android:layout_width="match_parent"
@@ -144,7 +144,7 @@
 	            android:layout_height="30dp"
 	            android:layout_marginRight="@dimen/margin"
 	            android:src="@drawable/ic_wheel"
-	            style="@style/ImageViewBase" />
+	            style="@style/S2.Widget.ImageView" />
             
         </FrameLayout>
         

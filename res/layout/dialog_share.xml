@@ -19,7 +19,7 @@
             android:layout_height="28dp"
             android:src="@drawable/ic_facebook"
             android:layout_marginRight="@dimen/margin"
-            style="@style/ImageViewBase" />
+            style="@style/S2.Widget.ImageView" />
         
         <TextView
             android:text="페이스북으로 공유하기"
@@ -45,7 +45,7 @@
             android:layout_height="28dp"
             android:src="@drawable/ic_kakaotalk"
             android:layout_marginRight="@dimen/margin"
-            style="@style/ImageViewBase" />
+            style="@style/S2.Widget.ImageView" />
         
         <TextView
             android:text="카카오톡으로 공유하기"
