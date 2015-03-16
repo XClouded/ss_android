@@ -96,7 +96,7 @@
 	            android:textSize="@dimen/text_sub_content"
 	            android:textStyle="normal"
 	            android:background="@drawable/button_transparent_light_selector"
-	            style="@style/ButtonMini" />
+	            style="@style/S2.Widget.Button.Mini" />
             
         </LinearLayout>
         

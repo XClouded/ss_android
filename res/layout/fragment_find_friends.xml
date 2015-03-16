@@ -17,7 +17,7 @@
 	        android:layout_width="match_parent"
 	        android:orientation="horizontal"
 	        android:layout_marginBottom="@dimen/margin"
-	        style="@style/ButtonDrawable" >
+	        style="@style/S2.Widget.Button.Drawable" >
 	        
 	        <ImageView
 	            android:layout_width="28dp"
@@ -39,7 +39,7 @@
 	        android:layout_width="match_parent"
 	        android:orientation="horizontal"
 	        android:layout_marginBottom="@dimen/margin"
-	        style="@style/ButtonDrawable" >
+	        style="@style/S2.Widget.Button.Drawable" >
 	        
 	        <ImageView
 	            android:layout_width="28dp"

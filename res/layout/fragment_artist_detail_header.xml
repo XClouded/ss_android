@@ -129,7 +129,7 @@
 		        android:paddingRight="@dimen/margin"
 		        android:paddingTop="@dimen/margin_small"
 		        android:paddingBottom="@dimen/margin_small"
-		        style="@style/ButtonBase" />
+		        style="@style/S2.Widget.Button" />
             
         </FrameLayout>
 	    

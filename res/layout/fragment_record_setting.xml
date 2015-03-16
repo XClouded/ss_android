@@ -350,7 +350,7 @@
 		                android:padding="@dimen/margin_tiny"
 		                android:textSize="@dimen/text_hint"
 		                android:text="@string/delete"
-		                style="@style/ButtonBase" />
+		                style="@style/S2.Widget.Button" />
 		            
 		            <EditText
 		                android:id="@+id/et_song_message"
@@ -373,7 +373,7 @@
 		                android:padding="@dimen/margin_tiny"
 		                android:textSize="@dimen/text_hint"
 		                android:text="업로드 했던 사진"
-		                style="@style/ButtonDark" />
+		                style="@style/S2.Widget.Button.Dark" />
 				    
 				</RelativeLayout>
 		        

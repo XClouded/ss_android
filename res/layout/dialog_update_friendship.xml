@@ -11,7 +11,7 @@
         android:text="콜라보 아티스트로 추천하기"
         android:textColor="@color/font_default"
         android:background="@null"
-        style="@style/ButtonBase" />
+        style="@style/S2.Widget.Button" />
     
     <ImageView
         style="@style/S2.Widget.Divider.Horizontal" />
@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:textColor="@color/font_default"
         android:background="@null"
-        style="@style/ButtonBase" />
+        style="@style/S2.Widget.Button" />
     
     <ImageView
         style="@style/S2.Widget.Divider.Horizontal" />
@@ -32,7 +32,7 @@
         android:text="@string/cancel_follow"
         android:textColor="@color/font_default"
         android:background="@null"
-        style="@style/ButtonBase" />
+        style="@style/S2.Widget.Button" />
     
     <ImageView
         style="@style/S2.Widget.Divider.Horizontal" />

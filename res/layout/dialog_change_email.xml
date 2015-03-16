@@ -40,7 +40,7 @@
 		    android:layout_alignParentRight="true"
 		    android:text="@string/change"
 		    android:background="@drawable/button_primary_selector"
-		    style="@style/ButtonBase" />
+		    style="@style/S2.Widget.Button" />
         
     </RelativeLayout>
 

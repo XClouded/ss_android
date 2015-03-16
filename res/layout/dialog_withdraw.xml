@@ -47,7 +47,7 @@
 		    android:layout_width="match_parent"
 		    android:text="@string/withdraw"
 		    android:background="@drawable/button_alert_selector"
-		    style="@style/ButtonBase" />
+		    style="@style/S2.Widget.Button" />
         
     </FrameLayout>
 

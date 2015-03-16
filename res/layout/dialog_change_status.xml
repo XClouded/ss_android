@@ -43,7 +43,7 @@
 		    android:layout_marginLeft="@dimen/margin"
 		    android:text="@string/change"
 		    android:background="@drawable/button_primary_selector"
-		    style="@style/ButtonBase" />
+		    style="@style/S2.Widget.Button" />
         
         <TextView
             android:layout_width="match_parent"

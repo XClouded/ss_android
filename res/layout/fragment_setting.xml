@@ -38,7 +38,7 @@
 		        android:layout_alignParentRight="true"
 		        android:background="@drawable/button_primary_selector"
 		        android:visibility="gone"
-		        style="@style/ButtonMini" />
+		        style="@style/S2.Widget.Button.Mini" />
             
         </RelativeLayout>
         
@@ -227,7 +227,7 @@
 	        android:text="@string/logout"
 	        android:textColor="@color/white"
 	        android:background="@drawable/button_transparent_selector"
-	        style="@style/ButtonBase" />
+	        style="@style/S2.Widget.Button" />
 	    
 	    <Button
 	        android:id="@+id/btn_withdraw"
@@ -238,7 +238,7 @@
 	        android:text="@string/withdraw"
 	        android:textColor="@color/white"
 	        android:background="@drawable/button_transparent_selector"
-	        style="@style/ButtonBase" />
+	        style="@style/S2.Widget.Button" />
 	    
 	    <include
 	        layout="@layout/footer" />
