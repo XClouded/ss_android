@@ -25,7 +25,7 @@
 	        android:inputType="textShortMessage"
 	        android:maxLines="1"
 	        android:maxLength="40"
-	        style="@style/BaseEditText" />
+	        style="@style/S2.Widget.EditText" />
         
     </LinearLayout>
     

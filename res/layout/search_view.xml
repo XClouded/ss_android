@@ -30,6 +30,6 @@
         android:imeOptions="actionSearch"
         android:inputType="text"
         android:background="@null"
-        style="@style/BaseEditText" />
+        style="@style/S2.Widget.EditText" />
     
 </com.myandb.singsong.widget.SearchView>

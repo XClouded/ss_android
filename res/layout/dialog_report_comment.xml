@@ -33,7 +33,7 @@
 	        android:hint="@string/hint_report_comment"
 	        android:inputType="textShortMessage"
 	        android:maxLines="3"
-	        style="@style/BaseEditText" />
+	        style="@style/S2.Widget.EditText" />
         
     </LinearLayout>
     

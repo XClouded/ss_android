@@ -21,6 +21,6 @@
         android:divider="@color/divider"
         android:dividerHeight="0.1dp"
         android:scrollbars="none"
-        style="@style/CommonListView" />
+        style="@style/S2.Widget.ListView" />
 
 </LinearLayout>

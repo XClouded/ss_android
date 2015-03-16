@@ -23,7 +23,7 @@
 	        android:id="@+id/et_user_email"
 	        android:hint="@string/hint_email"
 	        android:inputType="textEmailAddress"
-	        style="@style/BaseEditText" />
+	        style="@style/S2.Widget.EditText" />
         
     </LinearLayout>
     

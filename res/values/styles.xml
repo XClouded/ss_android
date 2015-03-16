@@ -189,19 +189,7 @@
         <item name="android:background">@drawable/card_selector</item>
     </style>
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <style name="BaseEditText">
+    <style name="S2.Widget.EditText">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingLeft">@dimen/margin</item>
@@ -213,25 +201,23 @@
         <item name="android:textColorHint">@color/font_hint</item>
     </style>
     
-    <style name="CommentEditText" parent="@style/BaseEditText">
+    <style name="S2.Widget.EditText.Comment">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingLeft">@dimen/margin_big</item>
         <item name="android:paddingTop">@dimen/margin_tiny</item>
         <item name="android:minHeight">@dimen/photo</item>
     </style>
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    <style name="S2.Widget.ListView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:divider">@null</item>
+        <item name="android:dividerHeight">0dp</item>
+        <item name="android:listSelector">@android:color/transparent</item>
+        <item name="android:choiceMode">singleChoice</item>
+        <item name="android:clipToPadding">false</item>
+        <item name="android:cacheColorHint">#00000000</item>
+    </style>
     
     <style name="FormBase" >
         <item name="android:layout_width">match_parent</item>
@@ -245,17 +231,6 @@
     <style name="FormBaseTwoLine" parent="FormBase">
         <item name="android:paddingTop">@dimen/margin</item>
         <item name="android:paddingBottom">@dimen/margin</item>
-    </style>
-
-    <style name="CommonListView">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:divider">@null</item>
-        <item name="android:dividerHeight">0dp</item>
-        <item name="android:listSelector">@android:color/transparent</item>
-        <item name="android:choiceMode">singleChoice</item>
-        <item name="android:clipToPadding">false</item>
-        <item name="android:cacheColorHint">#00000000</item>
     </style>
 
 </resources>

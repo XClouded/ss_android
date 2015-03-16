@@ -24,7 +24,7 @@
 	        android:hint="@string/hint_kakao"
 	        android:inputType="textPersonName"
 	        android:maxLength="32"
-	        style="@style/BaseEditText" />
+	        style="@style/S2.Widget.EditText" />
         
     </LinearLayout>
     
