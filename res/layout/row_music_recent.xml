@@ -6,7 +6,7 @@
     
     <com.myandb.singsong.widget.RoundedImageView
         android:id="@+id/iv_album_photo"
-        style="@style/ImageViewSquare"
+        style="@style/S2.Widget.ImageView.Square"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
     
@@ -17,7 +17,7 @@
 
     <TextView
         android:id="@+id/tv_singer_name"
-        style="@style/TextViewOverflowableLessImportant"
+        style="@style/S2.Widget.TextView.Ellipsize.H4"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/margin"
         android:layout_marginLeft="@dimen/margin"
@@ -27,7 +27,7 @@
 
     <TextView
         android:id="@+id/tv_music_title"
-        style="@style/TextViewOverflowableImportant"
+        style="@style/S2.Widget.TextView.Ellipsize.H3"
         android:layout_above="@id/tv_singer_name"
         android:layout_marginLeft="@dimen/margin"
         android:gravity="left"
@@ -35,7 +35,7 @@
 
     <TextView
         android:id="@+id/tv_sing_num"
-        style="@style/TextViewBase"
+        style="@style/S2.Widget.TextView"
         android:visibility="gone" />
 
 </RelativeLayout>

@@ -6,19 +6,19 @@
 
     <com.myandb.singsong.widget.RoundedImageView
         android:id="@+id/iv_album_photo"
-        style="@style/ImageViewSquare"
+        style="@style/S2.Widget.ImageView.Square"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <com.myandb.singsong.widget.RoundedImageView
-        style="@style/ImageViewSquare"
+        style="@style/S2.Widget.ImageView.Square"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/mask_profile" />
 
     <TextView
         android:id="@+id/tv_singer_name"
-        style="@style/TextViewOverflowableLessImportant"
+        style="@style/S2.Widget.TextView.Ellipsize.H4"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/margin"
         android:gravity="left"
@@ -27,14 +27,14 @@
 
     <TextView
         android:id="@+id/tv_music_title"
-        style="@style/TextViewOverflowableImportant"
+        style="@style/S2.Widget.TextView.Ellipsize.H3"
         android:layout_above="@id/tv_singer_name"
         android:gravity="left"
         android:textSize="@dimen/text_title" />
 
     <TextView
         android:id="@+id/tv_sing_num"
-        style="@style/TextViewBase"
+        style="@style/S2.Widget.TextView"
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/margin_small"
         android:layout_marginTop="@dimen/margin"
@@ -42,7 +42,7 @@
         android:textSize="@dimen/text_subtitle" />
 
     <ImageView
-        style="@style/ImageViewBase"
+        style="@style/S2.Widget.ImageView"
         android:layout_width="18dp"
         android:layout_height="18dp"
         android:layout_alignTop="@id/tv_sing_num"

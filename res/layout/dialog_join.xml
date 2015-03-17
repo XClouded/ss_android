@@ -14,10 +14,10 @@
         
         <TextView
             android:text="이메일로 가입"
-            style="@style/TextViewSubtitleAlone" />
+            style="@style/S2.Widget.TextView.H1" />
         
         <ImageView
-        	style="@style/DividerHorizontal" />
+        	style="@style/S2.Widget.Divider.Horizontal" />
         
         <RelativeLayout
             android:layout_width="match_parent"
@@ -31,19 +31,19 @@
 	            android:layout_marginRight="@dimen/margin"
 	            android:text="@string/_check"
 	            android:textStyle="bold"
-	            style="@style/TextViewLessImportant" />
+	            style="@style/S2.Widget.TextView.H4" />
 	        
 	        <EditText
 		        android:id="@+id/et_user_username"
 		        android:hint="@string/hint_username"
 		        android:inputType="textPersonName"
 		        android:layout_toLeftOf="@id/tv_valid_username"
-		        style="@style/BaseEditText" />
+		        style="@style/S2.Widget.EditText" />
             
         </RelativeLayout>
         
         <ImageView
-        	style="@style/DividerHorizontal" />
+        	style="@style/S2.Widget.Divider.Horizontal" />
         
         <RelativeLayout
             android:layout_width="match_parent"
@@ -57,7 +57,7 @@
 	            android:layout_marginRight="@dimen/margin"
 	            android:text="@string/_check"
 	            android:textStyle="bold"
-	            style="@style/TextViewLessImportant" />
+	            style="@style/S2.Widget.TextView.H4" />
 	        
 	        <EditText
 		        android:id="@+id/et_user_password"
@@ -65,12 +65,12 @@
 		        android:maxLength="32"
 		        android:inputType="textPassword"
 		        android:layout_toLeftOf="@id/tv_valid_password"
-		        style="@style/BaseEditText" />
+		        style="@style/S2.Widget.EditText" />
             
         </RelativeLayout>
         
         <ImageView
-        	style="@style/DividerHorizontal" />
+        	style="@style/S2.Widget.Divider.Horizontal" />
         
         <RelativeLayout
             android:layout_width="match_parent"
@@ -84,7 +84,7 @@
 	            android:layout_marginRight="@dimen/margin"
 	            android:text="@string/_check"
 	            android:textStyle="bold"
-	            style="@style/TextViewLessImportant" />
+	            style="@style/S2.Widget.TextView.H4" />
 	        
 	        <EditText
 		        android:id="@+id/et_user_password_re"
@@ -92,14 +92,14 @@
 		        android:maxLength="32"
 		        android:inputType="textPassword"
 		        android:layout_toLeftOf="@id/tv_valid_password_re"
-		        style="@style/BaseEditText" />
+		        style="@style/S2.Widget.EditText" />
 	        
         </RelativeLayout>
         
     </LinearLayout>
     
     <ImageView
-        style="@style/DividerHorizontal" />
+        style="@style/S2.Widget.Divider.Horizontal" />
     
     <RelativeLayout
         android:layout_width="match_parent"
@@ -112,16 +112,15 @@
 		    android:layout_marginLeft="@dimen/margin"
 		    android:text="@string/join"
 		    android:background="@drawable/button_primary_selector"
-		    style="@style/ButtonBase" />
+		    style="@style/S2.Widget.Button" />
         
         <TextView
             android:id="@+id/tv_agreement_policy"
             android:layout_width="match_parent"
             android:layout_toLeftOf="@id/btn_join_complete"
             android:layout_centerVertical="true"
-            android:textSize="@dimen/text_hint"
             android:linksClickable="true"
-            style="@style/TextViewLessImportant" />
+            style="@style/S2.Widget.TextView.H5" />
         
     </RelativeLayout>
 

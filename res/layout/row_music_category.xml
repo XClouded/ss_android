@@ -6,4 +6,4 @@
     android:background="@drawable/card_selector"
     android:textColor="@color/font_grey"
     android:textStyle="normal"
-    style="@style/ButtonBase" />
+    style="@style/S2.Widget.Button" />

@@ -10,7 +10,7 @@
         android:gravity="center"
         android:textColor="@color/font_white"
         android:layout_marginBottom="@dimen/margin_bigger"
-        style="@style/TextViewLessImportant" />
+        style="@style/S2.Widget.TextView.H4" />
     
     <Button
         android:id="@+id/btn_ok"
@@ -19,7 +19,7 @@
         android:paddingLeft="50dp"
         android:paddingRight="50dp"
         android:text="@string/yes"
-        style="@style/ButtonBase" />
+        style="@style/S2.Widget.Button" />
     
     <Button
         android:id="@+id/btn_cancel"
@@ -28,6 +28,6 @@
         android:paddingLeft="50dp"
         android:paddingRight="50dp"
         android:text="@string/no"
-        style="@style/ButtonBase" />
+        style="@style/S2.Widget.Button" />
 
 </LinearLayout>

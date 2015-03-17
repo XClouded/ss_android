@@ -25,21 +25,20 @@
 	        
 	        <com.myandb.singsong.widget.RoundedImageView
 		        android:id="@+id/iv_drawer_user_photo"
-		        android:layout_width="@dimen/photo_big"
-		        android:layout_height="@dimen/photo_big"
 	            android:layout_marginBottom="@dimen/margin"
-		        style="@style/ImageViewUser" />
+		        style="@style/S2.Widget.ImageView.User.Big" />
 	        
 	        <TextView
 	            android:id="@+id/tv_drawer_user_nickname"
-	            android:textColor="@color/font_default"
 	            android:layout_marginBottom="@dimen/margin_small"
-	            style="@style/TextViewOverflowableImportant" />
+	            android:text="nickname"
+	            android:textColor="@color/font_default"
+	            style="@style/S2.Widget.TextView.Ellipsize.H3" />
 	        
 	        <TextView
 	            android:id="@+id/tv_drawer_user_username"
-	            android:textColor="@color/font_hint"
-	            style="@style/TextViewOverflowableLessImportant" />
+	            android:text="username"
+	            style="@style/S2.Widget.TextView.Ellipsize.H4" />
 	        
 	    </LinearLayout>
 	    
@@ -51,11 +50,8 @@
 	        android:orientation="vertical" >
 	        
 	        <ImageView
-	            android:layout_width="@dimen/photo_big"
-	            android:layout_height="@dimen/photo_big"
 	            android:layout_marginBottom="@dimen/margin_big"
-	            android:src="@drawable/user_character"
-	            style="@style/ImageViewBase" />
+	            style="@style/S2.Widget.ImageView.User.Big" />
 	        
 	        <Button
 	            android:id="@+id/btn_drawer_login"
@@ -63,7 +59,7 @@
 	            android:layout_height="wrap_content"
 	            android:text="로그인이 필요합니다"
 	            android:background="@drawable/button_grey_selector"
-	            style="@style/ButtonBase" />
+	            style="@style/S2.Widget.Button" />
 	        
 	    </LinearLayout>
         

@@ -14,21 +14,21 @@
         
         <TextView
             android:text="이메일 변경"
-            style="@style/TextViewSubtitleAlone" />
+            style="@style/S2.Widget.TextView.H1" />
         
         <ImageView
-        	style="@style/DividerHorizontal" />
+        	style="@style/S2.Widget.Divider.Horizontal" />
         
         <EditText
 	        android:id="@+id/et_user_email"
 	        android:hint="@string/hint_email"
 	        android:inputType="textEmailAddress"
-	        style="@style/BaseEditText" />
+	        style="@style/S2.Widget.EditText" />
         
     </LinearLayout>
     
     <ImageView
-        style="@style/DividerHorizontal" />
+        style="@style/S2.Widget.Divider.Horizontal" />
     
     <RelativeLayout
         android:layout_width="match_parent"
@@ -40,7 +40,7 @@
 		    android:layout_alignParentRight="true"
 		    android:text="@string/change"
 		    android:background="@drawable/button_primary_selector"
-		    style="@style/ButtonBase" />
+		    style="@style/S2.Widget.Button" />
         
     </RelativeLayout>
 

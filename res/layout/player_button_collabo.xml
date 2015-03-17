@@ -10,7 +10,7 @@
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:src="@drawable/ic_collabo_inverse"
-        style="@style/ImageViewBase" />
+        style="@style/S2.Widget.ImageView" />
     
     <TextView
         android:tag="@string/tag_button_collabo_text"
@@ -20,6 +20,6 @@
         android:textSize="17sp"
         android:textScaleX="0.95"
         android:layout_marginLeft="@dimen/margin_small"
-        style="@style/TextViewImportant" />
+        style="@style/S2.Widget.TextView" />
 
 </LinearLayout>

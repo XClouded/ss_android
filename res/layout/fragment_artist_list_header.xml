@@ -7,8 +7,7 @@
     
     <TextView
         android:text="@string/home_title_collabo_artist"
-        android:layout_marginRight="@dimen/margin"
-        style="@style/TextViewSubtitle" />
+        style="@style/S2.Widget.TextView.H3" />
     
     <FrameLayout
         android:id="@+id/fl_today_collabo_artist_container"
@@ -18,7 +17,6 @@
     
     <TextView
         android:text="역대 콜라보 아티스트"
-        android:layout_marginRight="@dimen/margin"
-        style="@style/TextViewSubtitle" />
+        style="@style/S2.Widget.TextView.H3" />
 
 </LinearLayout>

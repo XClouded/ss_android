@@ -9,19 +9,18 @@
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:src="@drawable/ic_menu_listen"
-        style="@style/ImageViewBase" />
+        style="@style/S2.Widget.ImageView" />
     
     <TextView
         android:text="@string/dialog_headset_title"
-        android:textColor="@color/white"
-        style="@style/TextViewSubtitleAlone" />
+        style="@style/S2.Widget.TextView.H1.Inverse" />
     
     <TextView
         android:text="@string/dialog_headset_content"
         android:layout_width="match_parent"
         android:gravity="center"
         android:layout_marginBottom="@dimen/margin_bigger"
-        style="@style/TextViewLessImportant" />
+        style="@style/S2.Widget.TextView.H4" />
     
     <Button
         android:id="@+id/btn_no_headset"
@@ -29,6 +28,6 @@
         android:background="@drawable/button_transparent_selector"
         android:paddingLeft="50dp"
         android:paddingRight="50dp"
-        style="@style/ButtonBase" />
+        style="@style/S2.Widget.Button" />
 
 </LinearLayout>

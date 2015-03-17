@@ -7,7 +7,7 @@
         android:id="@+id/iv_album_photo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        style="@style/ImageViewBase" />
+        style="@style/S2.Widget.ImageView" />
     
     <ImageView
         android:layout_width="match_parent"
@@ -23,12 +23,12 @@
         <TextView
 		    android:id="@+id/tv_music_title"
 		    android:layout_marginBottom="@dimen/margin_tiny"
-		    style="@style/TextViewOverflowableMarqueeImportant" />
+		    style="@style/S2.Widget.TextView.Ellipsize.Marquee.H3" />
 		
 		<TextView
 		    android:id="@+id/tv_singer_name"
 		    android:textColor="@color/font_white"
-		    style="@style/TextViewOverflowableMarqueeLessImportant" />
+		    style="@style/S2.Widget.TextView.Ellipsize.Marquee.H4" />
 		
 		<LinearLayout
 		    android:layout_width="match_parent"
@@ -44,22 +44,21 @@
 		        <TextView
 		            android:id="@+id/text_center"
 		            android:text="콜라보 하기"
-		            android:textColor="@color/white"
 		            android:layout_marginLeft="@dimen/margin_small"
 		            android:layout_marginRight="@dimen/margin_small"
 		            android:layout_centerInParent="true"
-		            style="@style/TextViewImportant" />
+		            style="@style/S2.Widget.TextView.H3.Inverse" />
 		        
 		        <ImageView
 		            android:layout_centerVertical="true"
 		            android:layout_toLeftOf="@id/text_center"
-		            style="@style/DividerHorizontal" />
+		            style="@style/S2.Widget.Divider.Horizontal" />
 		        
 		        <ImageView
 		            android:layout_centerVertical="true"
 		            android:layout_alignParentRight="true"
 		            android:layout_toRightOf="@id/text_center"
-		            style="@style/DividerHorizontal" />
+		            style="@style/S2.Widget.Divider.Horizontal" />
 		        
 		    </RelativeLayout>
 		    
@@ -69,7 +68,7 @@
 		        android:layout_marginBottom="@dimen/margin"
 		        android:text="콜라보 상대 선택"
 		        android:textSize="@dimen/text_title"
-		        style="@style/ButtonBase" />
+		        style="@style/S2.Widget.Button" />
 		    
 		    <TextView
 		        android:text="다른 사람이 부른 노래의\n나머지 파트를 불러 완성하세요."
@@ -78,7 +77,7 @@
 		        android:gravity="center"
 		        android:lineSpacingExtra="@dimen/margin_small"
 		        android:layout_marginBottom="40dp"
-		        style="@style/TextViewBase" />
+		        style="@style/S2.Widget.TextView" />
 		    
 		    <RelativeLayout
 		        android:layout_width="200dp"
@@ -88,22 +87,21 @@
 		        <TextView
 		            android:id="@+id/text_center_2"
 		            android:text="먼저 부르기"
-		            android:textColor="@color/white"
 		            android:layout_marginLeft="@dimen/margin_small"
 		            android:layout_marginRight="@dimen/margin_small"
 		            android:layout_centerInParent="true"
-		            style="@style/TextViewImportant" />
+		            style="@style/S2.Widget.TextView.H3.Inverse" />
 		        
 		        <ImageView
 		            android:layout_centerVertical="true"
 		            android:layout_toLeftOf="@id/text_center_2"
-		            style="@style/DividerHorizontal" />
+		            style="@style/S2.Widget.Divider.Horizontal" />
 		        
 		        <ImageView
 		            android:layout_centerVertical="true"
 		            android:layout_alignParentRight="true"
 		            android:layout_toRightOf="@id/text_center_2"
-		            style="@style/DividerHorizontal" />
+		            style="@style/S2.Widget.Divider.Horizontal" />
 		        
 		    </RelativeLayout>
 		    
@@ -113,7 +111,7 @@
 		        android:background="@drawable/button_transparent_primary_selector"
 		        android:textSize="@dimen/text_title"
 		        android:layout_marginBottom="@dimen/margin_small"
-		        style="@style/ButtonBase" />
+		        style="@style/S2.Widget.Button" />
 		    
 		    <Button
 		        android:id="@+id/btn_part_female"
@@ -121,7 +119,7 @@
 		        android:background="@drawable/button_transparent_sub_selector"
 		        android:textSize="@dimen/text_title"
 		        android:layout_marginBottom="@dimen/margin"
-		        style="@style/ButtonBase" />
+		        style="@style/S2.Widget.Button" />
 		    
 		    <TextView
 		        android:text="자기 파트 색의 가사를 부르고\n다른 사람의 콜라보를 기다려 보세요.\n흰색 가사는 같이 부르세요."
@@ -129,7 +127,7 @@
 		        android:textColor="@color/font_white"
 		        android:gravity="center"
 		        android:lineSpacingExtra="@dimen/margin_small"
-		        style="@style/TextViewBase" />
+		        style="@style/S2.Widget.TextView" />
 		    
 		</LinearLayout>
         

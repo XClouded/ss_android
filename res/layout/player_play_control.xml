@@ -14,7 +14,7 @@
 
         <ImageView
             android:id="@+id/iv_autoplay_control"
-            style="@style/ImageViewBase"
+            style="@style/S2.Widget.ImageView"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_marginRight="@dimen/margin"
@@ -22,7 +22,7 @@
 
         <ImageView
             android:id="@+id/iv_loop_control"
-            style="@style/ImageViewBase"
+            style="@style/S2.Widget.ImageView"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_alignParentRight="true"
@@ -31,7 +31,7 @@
 
         <TextView
             android:id="@+id/tv_play_start_time"
-            style="@style/TextViewLessImportant"
+            style="@style/S2.Widget.TextView.H4"
             android:layout_toRightOf="@id/iv_autoplay_control"
             android:layout_centerVertical="true"
             android:text="@string/time_default"
@@ -40,7 +40,7 @@
 
         <TextView
             android:id="@+id/tv_play_end_time"
-            style="@style/TextViewLessImportant"
+            style="@style/S2.Widget.TextView.H4"
             android:layout_toLeftOf="@id/iv_loop_control"
             android:layout_centerVertical="true"
             android:text="@string/time_default"
@@ -80,7 +80,7 @@
 	
 	        <ImageView
 	            android:id="@+id/iv_like_song"
-	            style="@style/ImageViewBase"
+	            style="@style/S2.Widget.ImageView"
 	            android:layout_width="25dp"
 	            android:layout_height="25dp"
 	            android:layout_marginBottom="2dp"
@@ -96,7 +96,7 @@
 	            android:textSize="@dimen/text_sub_content"
 	            android:textStyle="normal"
 	            android:background="@drawable/button_transparent_light_selector"
-	            style="@style/ButtonMini" />
+	            style="@style/S2.Widget.Button.Mini" />
             
         </LinearLayout>
         
@@ -110,7 +110,7 @@
 	
 	        <ImageView
 	            android:id="@+id/iv_show_comment"
-	            style="@style/ImageViewBase"
+	            style="@style/S2.Widget.ImageView"
 	            android:layout_width="25dp"
 	            android:layout_height="25dp"
 	            android:src="@drawable/ic_comment" />
@@ -121,7 +121,7 @@
 	            android:text="615"
 	            android:textSize="@dimen/text_sub_content"
 	            android:textColor="@color/white"
-	            style="@style/TextViewBase" />
+	            style="@style/S2.Widget.TextView" />
             
         </LinearLayout>
         
@@ -131,7 +131,7 @@
             android:layout_centerInParent="true"
             android:layout_width="28dp"
             android:layout_height="40dp"
-            style="@style/ImageViewBase" />
+            style="@style/S2.Widget.ImageView" />
     </RelativeLayout>
 
 </LinearLayout>

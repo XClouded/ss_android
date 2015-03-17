@@ -11,7 +11,7 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_gravity="center"
-        style="@style/ImageViewBase" />
+        style="@style/S2.Widget.ImageView" />
 	    
 	<TextView 
 	    android:id="@+id/tv_gnb_title"
@@ -21,6 +21,6 @@
 	    android:textSize="@dimen/text_subtitle"
 	    android:textStyle="bold"
 	    android:maxLines="1"
-	    style="@style/TextViewBase" />
+	    style="@style/S2.Widget.TextView" />
         
 </com.myandb.singsong.widget.SquareFrameLayout>

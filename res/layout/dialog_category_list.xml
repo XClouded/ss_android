@@ -6,21 +6,17 @@
     android:background="@drawable/container_dialog" >
     
     <TextView
-        android:paddingTop="@dimen/margin"
-        android:paddingBottom="@dimen/margin"
         android:paddingLeft="@dimen/margin_big"
-        android:layout_marginBottom="0dp"
+        android:textSize="@dimen/text_title"
         android:text="장르별 듣기"
-        style="@style/TextViewTitle" />
+        style="@style/S2.Widget.TextView.H1" />
     
     <ImageView
-        style="@style/DividerHorizontalBold" />
+        style="@style/S2.Widget.Divider.Horizontal.Bold" />
     
     <ListView
         android:id="@+id/lv_full_width"
-        android:divider="@color/divider"
-        android:dividerHeight="0.1dp"
         android:scrollbars="none"
-        style="@style/CommonListView" />
+        style="@style/S2.Widget.ListView.Divider" />
 
 </LinearLayout>

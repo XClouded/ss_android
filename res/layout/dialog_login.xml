@@ -16,10 +16,8 @@
         <TextView
             android:layout_gravity="center_horizontal"
             android:text="페이스북으로 가입했다면 이 버튼을 누르세요."
-            android:textColor="@color/font_hint"
-            android:textSize="@dimen/text_hint"
             android:layout_marginBottom="@dimen/margin_small"
-            style="@style/TextViewBase" />
+            style="@style/S2.Widget.TextView.H5" />
         
         <Button
             android:id="@+id/btn_facebook"
@@ -27,38 +25,38 @@
             android:layout_marginBottom="@dimen/margin"
             android:text="@string/login_with_facebook"
             android:background="@drawable/button_facebook_selector"
-            style="@style/ButtonBase" />
+            style="@style/S2.Widget.Button" />
         
         <ImageView
-        	style="@style/DividerHorizontal" />
+        	style="@style/S2.Widget.Divider.Horizontal" />
         
         <TextView
             android:text="이메일로 로그인"
-            style="@style/TextViewSubtitleAlone" />
+            style="@style/S2.Widget.TextView.H1" />
         
         <ImageView
-        	style="@style/DividerHorizontal" />
+        	style="@style/S2.Widget.Divider.Horizontal" />
         
         <EditText
 	        android:id="@+id/et_user_username"
 	        android:hint="@string/hint_username_compat"
 	        android:inputType="textPersonName"
-	        style="@style/BaseEditText" />
+	        style="@style/S2.Widget.EditText" />
         
         <ImageView
-        	style="@style/DividerHorizontal" />
+        	style="@style/S2.Widget.Divider.Horizontal" />
         
         <EditText
 	        android:id="@+id/et_user_password"
 	        android:hint="@string/hint_password"
 	        android:maxLength="32"
 	        android:inputType="textPassword"
-	        style="@style/BaseEditText" />
+	        style="@style/S2.Widget.EditText" />
         
     </LinearLayout>
     
     <ImageView
-        style="@style/DividerHorizontal" />
+        style="@style/S2.Widget.Divider.Horizontal" />
     
     <RelativeLayout
         android:layout_width="match_parent"
@@ -71,7 +69,7 @@
 		    android:layout_marginLeft="@dimen/margin"
 		    android:text="@string/to_join"
 		    android:background="@drawable/button_primary_selector"
-		    style="@style/ButtonBase" />
+		    style="@style/S2.Widget.Button" />
         
         <Button
 		    android:id="@+id/btn_login"
@@ -79,17 +77,15 @@
 		    android:layout_marginLeft="@dimen/margin"
 		    android:text="@string/login"
 		    android:background="@drawable/button_primary_selector"
-		    style="@style/ButtonBase" />
+		    style="@style/S2.Widget.Button" />
         
         <TextView
             android:id="@+id/tv_find_password"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_toLeftOf="@id/btn_login"
             android:layout_centerVertical="true"
-            android:textSize="@dimen/text_hint"
-            android:textColor="@color/font_hint"
-            android:linksClickable="true" />
+            android:linksClickable="true"
+            style="@style/S2.Widget.TextView.H5" />
         
     </RelativeLayout>
 

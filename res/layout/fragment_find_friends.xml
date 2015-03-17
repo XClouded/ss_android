@@ -17,20 +17,16 @@
 	        android:layout_width="match_parent"
 	        android:orientation="horizontal"
 	        android:layout_marginBottom="@dimen/margin"
-	        style="@style/ButtonDrawable" >
+	        style="@style/S2.Widget.Button.Drawable" >
 	        
 	        <ImageView
-	            android:layout_width="28dp"
-	            android:layout_height="28dp"
 	            android:src="@drawable/ic_magnifier"
-	            android:layout_marginRight="@dimen/margin"
-	            style="@style/ImageViewBase" />
+	            style="@style/S2.Widget.ImageView.Icon.Big" />
 	        
 	        <TextView
 	            android:text="@string/hint_search_user"
-	            android:textColor="@color/font_hint"
 	            android:textSize="@dimen/text_subtitle"
-	            style="@style/TextViewBase" />
+	            style="@style/S2.Widget.TextView.H4" />
 	        
 	    </LinearLayout>
 	    
@@ -39,19 +35,16 @@
 	        android:layout_width="match_parent"
 	        android:orientation="horizontal"
 	        android:layout_marginBottom="@dimen/margin"
-	        style="@style/ButtonDrawable" >
+	        style="@style/S2.Widget.Button.Drawable" >
 	        
 	        <ImageView
-	            android:layout_width="28dp"
-	            android:layout_height="28dp"
 	            android:src="@drawable/ic_facebook"
-	            android:layout_marginRight="@dimen/margin"
-	            style="@style/ImageViewBase" />
+	            style="@style/S2.Widget.ImageView.Icon.Big" />
 	        
 	        <TextView
 	            android:text="페이스북 친구 추가"
 	            android:textSize="@dimen/text_subtitle"
-	            style="@style/TextViewBase" />
+	            style="@style/S2.Widget.TextView" />
 	        
 	    </LinearLayout>
 	    
@@ -62,7 +55,7 @@
 	        android:padding="@dimen/margin"
 	        android:background="@drawable/card_rounded_top"
 	        android:layout_margin="0dp"
-	        style="@style/TextViewSubtitle" />
+	        style="@style/S2.Widget.TextView.H3" />
 	    
 	    <com.myandb.singsong.widget.LinearGridView
 	        android:id="@+id/linear_grid_view"

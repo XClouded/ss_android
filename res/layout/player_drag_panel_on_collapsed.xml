@@ -11,7 +11,7 @@
 	    android:layout_centerVertical="true"
 	    android:layout_marginRight="@dimen/margin"
 	    android:layout_marginLeft="@dimen/margin"
-	    style="@style/ImageViewBase" />
+	    style="@style/S2.Widget.ImageView" />
 	
 	<TextView
 	    android:id="@+id/tv_no_song_on_collapsed"
@@ -19,7 +19,7 @@
 	    android:layout_centerVertical="true"
 	    android:layout_toRightOf="@id/iv_drag_play_control"
 	    android:text="재생중인 곡이 없습니다."
-	    style="@style/TextViewOverflowableImportant" />
+	    style="@style/S2.Widget.TextView.Ellipsize.H3" />
 	
 	<LinearLayout
 	    android:layout_width="match_parent"
@@ -32,13 +32,13 @@
 		    android:id="@+id/tv_music_info_on_collapsed"
 		    android:gravity="left"
 		    android:layout_marginBottom="@dimen/margin_tiny"
-		    style="@style/TextViewOverflowableMarqueeImportant" />
+		    style="@style/S2.Widget.TextView.Ellipsize.Marquee.H3" />
 		
 		<TextView
 		    android:id="@+id/tv_users_info_on_collapsed"
 		    android:textColor="@color/font_white"
 		    android:gravity="left"
-		    style="@style/TextViewOverflowableMarqueeLessImportant" />
+		    style="@style/S2.Widget.TextView.Ellipsize.Marquee.H4" />
 	    
 	</LinearLayout>
             

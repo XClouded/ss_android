@@ -10,7 +10,7 @@
 	    android:src="@drawable/ic_arrow_down"
 	    android:layout_alignParentRight="true"
 	    android:layout_centerVertical="true"
-	    style="@style/ImageViewBase" />
+	    style="@style/S2.Widget.ImageView" />
 	
 	<TextView
 	    android:id="@+id/tv_music_title_on_expanded"
@@ -18,7 +18,7 @@
 	    android:layout_toLeftOf="@id/iv_collapse_drag_panel"
 	    android:layout_marginTop="@dimen/margin_big"
 	    android:textSize="@dimen/text_title"
-	    style="@style/TextViewOverflowableMarqueeImportant" />
+	    style="@style/S2.Widget.TextView.Ellipsize.Marquee.H3" />
 	
 	<TextView
 	    android:id="@+id/tv_singer_name_on_expanded"
@@ -26,6 +26,6 @@
 	    android:layout_toLeftOf="@id/iv_collapse_drag_panel"
 	    android:layout_below="@id/tv_music_title_on_expanded"
 	    android:textColor="@color/font_white"
-	    style="@style/TextViewOverflowableMarqueeLessImportant" />
+	    style="@style/S2.Widget.TextView.Ellipsize.Marquee.H4" />
             
 </RelativeLayout>

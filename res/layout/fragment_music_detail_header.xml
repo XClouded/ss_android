@@ -9,7 +9,7 @@
         android:layout_width="@dimen/photo"
         android:layout_height="@dimen/photo"
         android:layout_marginRight="@dimen/margin_small"
-        style="@style/ImageViewSquare" />
+        style="@style/S2.Widget.ImageView.Square" />
     
     <RelativeLayout
         android:id="@+id/header"
@@ -25,13 +25,13 @@
 	        android:layout_alignParentLeft="true"
 	        android:layout_centerVertical="true"
 	        android:src="@drawable/ic_collabo_grey"
-	        style="@style/IconImageView" />
+	        style="@style/S2.Widget.ImageView.Icon" />
         
         <TextView
 	        android:id="@+id/tv_sing_num"
 	        android:layout_centerVertical="true"
 	        android:layout_toRightOf="@id/icon_mixed"
-	        style="@style/TextViewIconLabel" />
+	        style="@style/S2.Widget.TextView.H4.Label" />
         
     </RelativeLayout>
     
@@ -42,7 +42,7 @@
         android:layout_marginTop="@dimen/margin_tiny"
         android:textColor="@color/font_default"
         android:gravity="left"
-        style="@style/TextViewOverflowableImportant" />
+        style="@style/S2.Widget.TextView.Ellipsize.H3" />
     
     <TextView
         android:id="@+id/tv_singer_name"
@@ -51,6 +51,6 @@
         android:layout_marginTop="@dimen/margin_tiny"
         android:layout_below="@id/tv_music_title"
         android:gravity="left"
-        style="@style/TextViewOverflowableLessImportant" />
+        style="@style/S2.Widget.TextView.Ellipsize.H4" />
      
 </RelativeLayout>

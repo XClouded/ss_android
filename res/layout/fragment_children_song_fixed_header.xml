@@ -8,9 +8,7 @@
     
     <com.myandb.singsong.widget.RoundedImageView
         android:id="@+id/iv_user_photo"
-	    android:layout_width="@dimen/photo_big"
-	    android:layout_height="@dimen/photo_big"
-	    style="@style/ImageViewUser" />
+	    style="@style/S2.Widget.ImageView.User.Big" />
     
     <RelativeLayout
         android:id="@+id/header"
@@ -22,18 +20,17 @@
 	    
 	    <ImageView
 	        android:id="@+id/icon_mixed"
-	        android:layout_width="12dp"
-	        android:layout_height="12dp"
 	        android:layout_alignParentLeft="true"
 	        android:layout_centerVertical="true"
 	        android:src="@drawable/ic_collabo_grey"
-	        style="@style/IconImageView" />
+	        style="@style/S2.Widget.ImageView.Icon" />
         
         <TextView
 	        android:id="@+id/tv_collabo_num"
 	        android:layout_centerVertical="true"
 	        android:layout_toRightOf="@id/icon_mixed"
-	        style="@style/TextViewIconLabel" />
+	        android:text="0"
+	        style="@style/S2.Widget.TextView.H4.Label" />
         
     </RelativeLayout>
  
@@ -43,16 +40,18 @@
 	    android:layout_toLeftOf="@id/header"
 	    android:layout_alignTop="@id/iv_user_photo"
 	    android:layout_marginTop="@dimen/margin_small"
-	    android:textColor="@color/font_default"
 	    android:gravity="left"
-        style="@style/TextViewOverflowableImportant" />
+	    android:text="nickname"
+	    android:textColor="@color/font_default"
+        style="@style/S2.Widget.TextView.Ellipsize.H3" />
  
 	<TextView
 	    android:id="@+id/tv_user_part"
 	    android:layout_alignLeft="@id/tv_user_nickname"
 	    android:layout_below="@id/tv_user_nickname"
 	    android:layout_marginBottom="@dimen/margin_small"
-	    style="@style/TextViewLessImportant" />
+	    android:text="part"
+	    style="@style/S2.Widget.TextView.H4" />
  
 	<TextView
 	    android:id="@+id/tv_song_message"
@@ -61,6 +60,7 @@
 	    android:layout_toLeftOf="@id/header"
 	    android:ellipsize="end"
 	    android:maxLines="3"
-	    style="@style/TextViewBase" />
+	    android:text="message"
+	    style="@style/S2.Widget.TextView" />
 
 </RelativeLayout>

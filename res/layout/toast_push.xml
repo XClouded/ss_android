@@ -12,12 +12,12 @@
 
         <com.myandb.singsong.widget.RoundedImageView
             android:id="@+id/iv_user_photo"
-            style="@style/ImageViewUser"
+            style="@style/S2.Widget.ImageView.User"
             android:layout_marginRight="@dimen/margin_small" />
 
         <ImageView
             android:id="@+id/logo"
-            style="@style/ImageViewBase"
+            style="@style/S2.Widget.ImageView"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginRight="@dimen/margin_tiny"
@@ -25,7 +25,7 @@
             android:src="@drawable/ic_launcher" />
 
         <TextView
-            style="@style/TextViewImportant"
+            android:textStyle="bold"
             android:layout_alignBottom="@id/logo"
             android:layout_alignTop="@id/logo"
             android:layout_toRightOf="@id/logo"
@@ -35,7 +35,7 @@
 
         <TextView
             android:id="@+id/tv_message"
-            style="@style/TextViewBase"
+            style="@style/S2.Widget.TextView"
             android:layout_below="@id/logo"
             android:layout_marginLeft="@dimen/margin_tiny"
             android:layout_marginTop="@dimen/margin_small"

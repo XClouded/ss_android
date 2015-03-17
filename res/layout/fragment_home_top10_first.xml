@@ -8,13 +8,13 @@
 
     <ImageView
         android:id="@+id/iv_top10_first_album_photo"
-        style="@style/ImageViewBase"
+        style="@style/S2.Widget.ImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@color/grey" />
 
     <ImageView
-        style="@style/ImageViewBase"
+        style="@style/S2.Widget.ImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/mask_no_rounded" />
@@ -25,25 +25,22 @@
         android:padding="@dimen/margin_small" >
 
         <TextView
-            style="@style/TextViewImportant"
             android:layout_marginLeft="@dimen/margin_small"
+            android:textSize="35sp"
             android:text="1"
-            android:textColor="@color/white"
-            android:textSize="35sp" />
+            style="@style/S2.Widget.TextView.H2.Inverse" />
 
         <TextView
             android:id="@+id/tv_top10_first_like_num"
-            style="@style/TextViewBase"
+            style="@style/S2.Widget.TextView"
             android:layout_marginRight="@dimen/margin_small"
             android:layout_marginTop="@dimen/margin_small"
             android:layout_alignParentRight="true"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:text="0" />
 
         <ImageView
-            style="@style/ImageViewBase"
-            android:layout_width="13dp"
-            android:layout_height="13dp"
-            android:layout_marginRight="@dimen/margin_tiny"
+            style="@style/S2.Widget.ImageView.Icon"
             android:layout_marginTop="1dp"
             android:layout_toLeftOf="@id/tv_top10_first_like_num"
             android:layout_alignTop="@id/tv_top10_first_like_num"
@@ -51,7 +48,7 @@
 
         <TextView
             android:id="@+id/tv_top10_first_user_info"
-            style="@style/TextViewOverflowableLessImportant"
+            style="@style/S2.Widget.TextView.Ellipsize.H4"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="@dimen/margin_small"
             android:gravity="left"
@@ -59,10 +56,11 @@
 
         <TextView
             android:id="@+id/tv_top10_first_music_info"
-            style="@style/TextViewOverflowableImportant"
+            style="@style/S2.Widget.TextView.Ellipsize.H3"
             android:layout_above="@id/tv_top10_first_user_info"
             android:layout_marginBottom="@dimen/margin_tiny"
             android:gravity="left" />
+        
     </RelativeLayout>
 
 </FrameLayout>

@@ -10,7 +10,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:paddingRight="@dimen/margin"
-        style="@style/ImageViewBase" />
+        style="@style/S2.Widget.ImageView" />
     
     <RelativeLayout
         android:id="@+id/layout_comment_control"
@@ -41,7 +41,7 @@
 		        android:paddingRight="@dimen/margin"
 		        android:paddingTop="@dimen/margin_small"
 		        android:paddingBottom="@dimen/margin_small"
-		        style="@style/ButtonBase" />
+		        style="@style/S2.Widget.Button" />
             
         </FrameLayout>
 	    
@@ -53,7 +53,7 @@
 	        android:background="@null"
 	        android:hint="@string/hint_write_comment"
 	        android:maxLines="3"
-	        style="@style/BaseEditText" />
+	        style="@style/S2.Widget.EditText" />
         
     </RelativeLayout>
     
@@ -63,7 +63,7 @@
         android:layout_marginBottom="@dimen/margin_small"
         android:layout_marginLeft="@dimen/margin"
         android:text="댓글"
-        style="@style/TextViewBase" />
+        style="@style/S2.Widget.TextView" />
     
     <TextView
         android:id="@+id/tv_refresh_comment"
@@ -72,14 +72,14 @@
         android:layout_alignParentRight="true"
         android:layout_alignBottom="@id/tv_comment_num"
         android:layout_marginRight="@dimen/margin"
-        style="@style/TextViewBase" />
+        style="@style/S2.Widget.TextView" />
     
     <ImageView
         android:id="@+id/upper_divider_comment"
         android:paddingLeft="@dimen/margin"
         android:paddingRight="@dimen/margin"
         android:layout_below="@id/tv_comment_num"
-        style="@style/DividerHorizontal" />
+        style="@style/S2.Widget.Divider.Horizontal" />
     
     <ImageView
         android:id="@+id/lower_divider_comment"
@@ -87,7 +87,7 @@
         android:paddingRight="@dimen/margin"
         android:layout_above="@id/layout_comment_control"
         android:layout_marginBottom="@dimen/margin"
-        style="@style/DividerHorizontal" />
+        style="@style/S2.Widget.Divider.Horizontal" />
     
     <ListView
         android:id="@+id/lv_comment"

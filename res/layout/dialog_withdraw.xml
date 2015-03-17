@@ -20,22 +20,22 @@
             android:textColor="@color/red_dark"
             android:textStyle="bold"
             android:text="탈퇴 시 복구가 불가능합니다!\n확인을 위해 아이디를 입력해주세요."
-            style="@style/TextViewLessImportant" />
+            style="@style/S2.Widget.TextView.H4" />
         
         <ImageView
-        	style="@style/DividerHorizontal" />
+        	style="@style/S2.Widget.Divider.Horizontal" />
         
         <EditText
 	        android:id="@+id/et_user_username"
 	        android:hint="@string/hint_id"
 	        android:inputType="textPersonName"
 	        android:maxLength="32"
-	        style="@style/BaseEditText" />
+	        style="@style/S2.Widget.EditText" />
         
     </LinearLayout>
     
     <ImageView
-        style="@style/DividerHorizontal" />
+        style="@style/S2.Widget.Divider.Horizontal" />
     
     <FrameLayout
         android:layout_width="match_parent"
@@ -47,7 +47,7 @@
 		    android:layout_width="match_parent"
 		    android:text="@string/withdraw"
 		    android:background="@drawable/button_alert_selector"
-		    style="@style/ButtonBase" />
+		    style="@style/S2.Widget.Button" />
         
     </FrameLayout>
 

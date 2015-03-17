@@ -15,21 +15,18 @@
         android:background="@drawable/button_app_bg_selector" >
         
         <ImageView
-            android:layout_width="28dp"
-            android:layout_height="28dp"
             android:src="@drawable/ic_facebook"
-            android:layout_marginRight="@dimen/margin"
-            style="@style/ImageViewBase" />
+            style="@style/S2.Widget.ImageView.Icon.Big" />
         
         <TextView
             android:text="페이스북으로 공유하기"
             android:textSize="@dimen/text_subtitle"
-            style="@style/TextViewBase" />
+            style="@style/S2.Widget.TextView" />
         
     </LinearLayout>
     
     <ImageView
-        style="@style/DividerHorizontal" />
+        style="@style/S2.Widget.Divider.Horizontal" />
     
     <LinearLayout
         android:id="@+id/ll_share_kakaotalk"
@@ -41,21 +38,18 @@
         android:background="@drawable/button_app_bg_selector" >
         
         <ImageView
-            android:layout_width="28dp"
-            android:layout_height="28dp"
             android:src="@drawable/ic_kakaotalk"
-            android:layout_marginRight="@dimen/margin"
-            style="@style/ImageViewBase" />
+            style="@style/S2.Widget.ImageView.Icon.Big" />
         
         <TextView
             android:text="카카오톡으로 공유하기"
             android:textSize="@dimen/text_subtitle"
-            style="@style/TextViewBase" />
+            style="@style/S2.Widget.TextView" />
         
     </LinearLayout>
     
     <ImageView
-        style="@style/DividerHorizontal" />
+        style="@style/S2.Widget.Divider.Horizontal" />
     
     <TextView
         android:id="@+id/tv_share_etc"
@@ -65,6 +59,6 @@
         android:gravity="center"
         android:text="기타"
         android:background="@drawable/button_app_bg_selector"
-        style="@style/TextViewBase" />
+        style="@style/S2.Widget.TextView" />
 
 </LinearLayout>

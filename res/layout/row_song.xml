@@ -19,7 +19,7 @@
 
             <com.myandb.singsong.widget.RoundedImageView
                 android:id="@+id/iv_parent_song_image"
-                style="@style/ImageViewBase"
+                style="@style/S2.Widget.ImageView"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -28,7 +28,7 @@
 
             <com.myandb.singsong.widget.RoundedImageView
                 android:id="@+id/iv_this_song_image"
-                style="@style/ImageViewBase"
+                style="@style/S2.Widget.ImageView"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -55,18 +55,18 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:src="@drawable/ic_collabo_inverse"
-                style="@style/ImageViewBase" />
+                style="@style/S2.Widget.ImageView" />
             
             <TextView
                 android:id="@+id/tv_song_collabo_num"
                 android:textColor="@color/white"
-                style="@style/TextViewLessImportant" />
+                style="@style/S2.Widget.TextView.H4" />
             
         </LinearLayout>
 
         <TextView
             android:id="@+id/tv_music_info"
-            style="@style/TextViewBase"
+            style="@style/S2.Widget.TextView"
             android:layout_alignBottom="@id/wrapper"
             android:layout_marginBottom="@dimen/margin_big"
             android:layout_marginLeft="@dimen/margin"
@@ -90,19 +90,19 @@
 
                 <com.myandb.singsong.widget.RoundedImageView
                     android:id="@+id/iv_parent_user_photo"
-                    style="@style/ImageViewUserWithBorder"
+                    style="@style/S2.Widget.ImageView.User.Border"
                     android:layout_gravity="center"
                     android:layout_marginBottom="@dimen/margin_small" />
 
                 <TextView
                     android:id="@+id/tv_parent_user_nickname"
-                    style="@style/TextViewEllipsize"
+                    style="@style/S2.Widget.TextView.Ellipsize"
                     android:layout_marginBottom="@dimen/margin_small"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tv_parent_song_message"
-                    style="@style/TextViewEllipsize"
+                    style="@style/S2.Widget.TextView.Ellipsize"
                     android:layout_marginBottom="@dimen/margin_small"
                     android:maxLines="3"
                     android:textColor="@color/font_hint" />
@@ -117,19 +117,19 @@
 
                 <com.myandb.singsong.widget.RoundedImageView
                     android:id="@+id/iv_this_user_photo"
-                    style="@style/ImageViewUserWithBorder"
+                    style="@style/S2.Widget.ImageView.User.Border"
                     android:layout_gravity="center"
                     android:layout_marginBottom="@dimen/margin_small" />
 
                 <TextView
                     android:id="@+id/tv_this_user_nickname"
-                    style="@style/TextViewEllipsize"
+                    style="@style/S2.Widget.TextView.Ellipsize"
                     android:layout_marginBottom="@dimen/margin_small"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tv_this_song_message"
-                    style="@style/TextViewEllipsize"
+                    style="@style/S2.Widget.TextView.Ellipsize"
                     android:layout_marginBottom="@dimen/margin_small"
                     android:maxLines="3"
                     android:textColor="@color/font_hint" />
@@ -138,7 +138,7 @@
 
         <ImageView
             android:id="@+id/divider"
-            style="@style/DividerHorizontal"
+            style="@style/S2.Widget.Divider.Horizontal"
             android:layout_below="@id/ll_user_wrapper" />
 
         <RelativeLayout
@@ -157,26 +157,26 @@
                 android:orientation="horizontal" >
 
                 <ImageView
-                    style="@style/IconImageView"
+                    style="@style/S2.Widget.ImageView.Icon"
                     android:src="@drawable/ic_like_mini" />
 
                 <TextView
                     android:id="@+id/tv_song_like_num"
-                    style="@style/TextViewIconLabel"
+                    style="@style/S2.Widget.TextView.H4.Label"
                     android:layout_marginRight="@dimen/margin_big" />
 
                 <ImageView
-                    style="@style/IconImageView"
+                    style="@style/S2.Widget.ImageView.Icon"
                     android:src="@drawable/ic_comment_mini" />
 
                 <TextView
                     android:id="@+id/tv_song_comment_num"
-                    style="@style/TextViewIconLabel"
+                    style="@style/S2.Widget.TextView.H4.Label"
                     android:layout_marginRight="@dimen/margin_big" />
 
                 <TextView
                     android:id="@+id/tv_song_created_time"
-                    style="@style/TextViewIconLabel" />
+                    style="@style/S2.Widget.TextView.H4.Label" />
                 
             </LinearLayout>
             
@@ -189,12 +189,12 @@
 		        android:orientation="horizontal" >
 		
 		        <ImageView
-		            style="@style/IconImageView"
+		            style="@style/S2.Widget.ImageView.Icon"
 		            android:layout_marginTop="2dp"
 		            android:src="@drawable/ic_play_sample" />
 		
 		        <TextView
-		            style="@style/TextViewLessImportant"
+		            style="@style/S2.Widget.TextView.H4"
 		            android:text="미리듣기" />
 		    </LinearLayout>
             

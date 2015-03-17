@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@color/grey_dark"
-            style="@style/ImageViewBase" />
+            style="@style/S2.Widget.ImageView" />
         
         <ImageView
             android:layout_width="match_parent"
@@ -52,7 +52,7 @@
 	            android:lineSpacingExtra="3sp"
 	            android:gravity="center"
 	            android:background="@drawable/tab_selector"
-	            style="@style/TextViewBase" />
+	            style="@style/S2.Widget.TextView" />
 	        
 	        <TextView
 	            android:id="@+id/tv_user_followings"
@@ -67,7 +67,7 @@
 	            android:lineSpacingExtra="3sp"
 	            android:gravity="center"
 	            android:background="@drawable/tab_selector"
-	            style="@style/TextViewBase" />
+	            style="@style/S2.Widget.TextView" />
 	        
 	        <TextView
 	            android:id="@+id/tv_user_followers"
@@ -82,7 +82,7 @@
 	            android:lineSpacingExtra="3sp"
 	            android:gravity="center"
 	            android:background="@drawable/tab_selector"
-	            style="@style/TextViewBase" />
+	            style="@style/S2.Widget.TextView" />
             
         </LinearLayout>
         
@@ -93,7 +93,7 @@
             android:layout_marginBottom="@dimen/margin_small"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="60dp"
-        	style="@style/ImageViewUserWithBorder" />
+        	style="@style/S2.Widget.ImageView.User.Border" />
         
         <LinearLayout
             android:layout_width="match_parent"
@@ -109,7 +109,7 @@
 			    android:textSize="@dimen/text_impact"
 			    android:layout_marginBottom="@dimen/margin_small"
 			    android:gravity="center"
-			    style="@style/TextViewOverflowableImportant" />
+			    style="@style/S2.Widget.TextView.Ellipsize.H3" />
 			
 			<TextView
 			    android:id="@+id/tv_user_status"
@@ -117,7 +117,7 @@
 			    android:gravity="center"
 			    android:text="상태글이 없습니다."
 			    android:textColor="@color/font_white"
-			    style="@style/TextViewLessImportant" />
+			    style="@style/S2.Widget.TextView.H4" />
             
         </LinearLayout>
         
@@ -136,7 +136,7 @@
 	            android:text="+팔로우"
 	            android:paddingLeft="0dp"
 	    		android:paddingRight="0dp"
-	            style="@style/ButtonMini" />
+	            style="@style/S2.Widget.Button.Mini" />
 	        
 	        <ImageView
 	            android:id="@+id/iv_edit_profile"
@@ -144,7 +144,7 @@
 	            android:layout_height="30dp"
 	            android:layout_marginRight="@dimen/margin"
 	            android:src="@drawable/ic_wheel"
-	            style="@style/ImageViewBase" />
+	            style="@style/S2.Widget.ImageView" />
             
         </FrameLayout>
         

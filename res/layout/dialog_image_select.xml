@@ -10,13 +10,13 @@
         android:paddingBottom="@dimen/margin_small"
         android:paddingLeft="@dimen/margin"
         android:text="이미지 선택"
-        style="@style/TextViewTitle" />
+        style="@style/S2.Widget.TextView.H2" />
     
     <ListView
         android:id="@+id/lv_full_width"
         android:divider="@color/white"
         android:dividerHeight="@dimen/margin"
         android:paddingBottom="@dimen/margin"
-        style="@style/CommonListView" />
+        style="@style/S2.Widget.ListView" />
 
 </LinearLayout>

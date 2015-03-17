@@ -10,13 +10,13 @@
         android:layout_height="70dp"
         android:layout_marginLeft="@dimen/margin"
         android:layout_marginRight="@dimen/margin_small"
-        style="@style/ImageViewSquare" />
+        style="@style/S2.Widget.ImageView.Square" />
     
     <TextView
         android:id="@+id/tv_created_time"
         android:layout_toRightOf="@id/iv_image"
         android:layout_centerVertical="true"
-        style="@style/TextViewLessImportant" />
+        style="@style/S2.Widget.TextView.H4" />
     
 </RelativeLayout>
 

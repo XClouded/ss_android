@@ -8,7 +8,7 @@
 
     <TextView
         android:id="@+id/tv_artist_num"
-        style="@style/TextViewSubtitle"
+        style="@style/S2.Widget.TextView.H3"
         android:layout_width="20dp"
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/margin_small"
@@ -18,14 +18,14 @@
 
     <com.myandb.singsong.widget.RoundedImageView
         android:id="@+id/iv_artist_photo"
-        style="@style/ImageViewUser"
+        style="@style/S2.Widget.ImageView.User"
         android:layout_marginBottom="@dimen/margin_small"
         android:layout_marginTop="@dimen/margin_tiny"
         android:layout_toRightOf="@id/tv_artist_num" />
 
     <TextView
         android:id="@+id/tv_artist_user_nickname"
-        style="@style/TextViewOverflowableLessImportant"
+        style="@style/S2.Widget.TextView.Ellipsize.H4"
         android:layout_alignTop="@id/iv_artist_photo"
         android:layout_marginTop="@dimen/margin_small"
         android:layout_marginBottom="@dimen/margin_tiny"
@@ -35,7 +35,7 @@
 
     <ImageView
         android:id="@+id/icon_follower"
-        style="@style/ImageViewBase"
+        style="@style/S2.Widget.ImageView"
         android:layout_width="12dp"
         android:layout_height="12dp"
         android:layout_alignLeft="@id/tv_artist_user_nickname"
@@ -45,7 +45,7 @@
 
     <TextView
         android:id="@+id/tv_artist_followers_num"
-        style="@style/TextViewLessImportant"
+        style="@style/S2.Widget.TextView.H4"
         android:layout_below="@id/tv_artist_user_nickname"
         android:layout_toRightOf="@id/icon_follower"
         android:textSize="@dimen/text_hint" />

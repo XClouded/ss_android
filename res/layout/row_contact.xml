@@ -11,20 +11,20 @@
         android:background="@drawable/button_grey_selector"
         android:layout_alignParentRight="true"
         android:padding="@dimen/margin_small"
-        style="@style/ButtonDrawable" >
+        style="@style/S2.Widget.Button.Drawable" >
         
         <ImageView
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:src="@drawable/ic_letter"
             android:layout_marginRight="@dimen/margin_small"
-            style="@style/ImageViewBase" />
+            style="@style/S2.Widget.ImageView" />
         
         <TextView
             android:text="초대"
             android:textColor="@color/white"
             android:textStyle="bold"
-            style="@style/TextViewBase" />
+            style="@style/S2.Widget.TextView" />
         
     </LinearLayout>
     
@@ -33,6 +33,6 @@
         android:layout_width="match_parent"
         android:layout_toLeftOf="@id/ll_invite"
         android:layout_centerVertical="true"
-        style="@style/TextViewBase" />
+        style="@style/S2.Widget.TextView" />
 
 </RelativeLayout>

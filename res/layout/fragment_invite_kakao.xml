@@ -17,14 +17,14 @@
             android:layout_height="40dp"
             android:src="@drawable/ic_kakaotalk"
             android:layout_marginBottom="@dimen/margin_bigger"
-            style="@style/ImageViewBase" />
+            style="@style/S2.Widget.ImageView" />
         
         <TextView
             android:gravity="center"
             android:text="카카오톡 친구들에게\n초대 메세지를 보내고 같이 노래도 불러보세요!"
             android:lineSpacingExtra="8sp"
             android:layout_marginBottom="@dimen/margin"
-            style="@style/TextViewBase" />
+            style="@style/S2.Widget.TextView" />
         
         <LinearLayout
 	        android:id="@+id/ll_invite_kakaotalk"
@@ -43,11 +43,12 @@
 	            android:layout_height="22dp"
 	            android:layout_marginRight="@dimen/margin_tiny"
 	            android:src="@drawable/ic_menu_friend"
-	            style="@style/ImageViewBase" />
+	            style="@style/S2.Widget.ImageView" />
 	        
 	        <TextView
 	            android:text="카카오톡 친구 선택하기"
-	            style="@style/TextViewImportant" />
+	            android:textStyle="bold"
+	            style="@style/S2.Widget.TextView" />
 	        
 	    </LinearLayout>
         

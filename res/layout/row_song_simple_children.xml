@@ -11,31 +11,31 @@
         android:gravity="left"
         android:textColor="@color/font_grey"
         android:layout_marginTop="@dimen/margin_small"
-        style="@style/TextViewOverflowableImportant" />
+        style="@style/S2.Widget.TextView.Ellipsize.H3" />
     
     <TextView
         android:id="@+id/tv_singer_name"
         android:gravity="left"
         android:textColor="@color/font_grey"
-        style="@style/TextViewOverflowableLessImportant" />
+        style="@style/S2.Widget.TextView.Ellipsize.H4" />
 
     <com.myandb.singsong.widget.RoundedImageView
         android:id="@+id/iv_parent_user_photo"
-        style="@style/ImageViewUser"
+        style="@style/S2.Widget.ImageView.User"
         android:layout_marginBottom="@dimen/margin_small"
         android:layout_marginTop="@dimen/margin" />
 
     <TextView
         android:id="@+id/tv_parent_user_nickname"
-        style="@style/TextViewOverflowableImportant"
+        style="@style/S2.Widget.TextView.Ellipsize.H3"
         android:textColor="@color/font_default" />
 
     <TextView
         android:id="@+id/tv_parent_user_part"
-        style="@style/TextViewOverflowableLessImportant"
+        style="@style/S2.Widget.TextView.Ellipsize.H4"
         android:layout_marginBottom="@dimen/margin_small" />
 
-    <ImageView style="@style/DividerHorizontal" />
+    <ImageView style="@style/S2.Widget.Divider.Horizontal" />
 
     <LinearLayout
         android:id="@+id/ll_prelisten_control"
@@ -45,12 +45,12 @@
         android:orientation="horizontal" >
 
         <ImageView
-            style="@style/IconImageView"
+            style="@style/S2.Widget.ImageView.Icon"
             android:layout_marginTop="2dp"
             android:src="@drawable/ic_play_sample" />
 
         <TextView
-            style="@style/TextViewLessImportant"
+            style="@style/S2.Widget.TextView.H4"
             android:text="미리듣기" />
     </LinearLayout>
 

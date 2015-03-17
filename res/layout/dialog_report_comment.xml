@@ -14,31 +14,31 @@
         
         <TextView
             android:text="@string/report"
-            style="@style/TextViewSubtitleAlone" />
+            style="@style/S2.Widget.TextView.H1" />
         
         <ImageView
-        	style="@style/DividerHorizontal" />
+        	style="@style/S2.Widget.Divider.Horizontal" />
         
         <TextView
             android:id="@+id/tv_comment_content"
             android:paddingTop="@dimen/margin"
             android:paddingBottom="@dimen/margin"
-            style="@style/TextViewLessImportant" />
+            style="@style/S2.Widget.TextView.H4" />
         
         <ImageView
-        	style="@style/DividerHorizontal" />
+        	style="@style/S2.Widget.Divider.Horizontal" />
         
         <EditText
 	        android:id="@+id/et_report_content"
 	        android:hint="@string/hint_report_comment"
 	        android:inputType="textShortMessage"
 	        android:maxLines="3"
-	        style="@style/BaseEditText" />
+	        style="@style/S2.Widget.EditText" />
         
     </LinearLayout>
     
     <ImageView
-        style="@style/DividerHorizontal" />
+        style="@style/S2.Widget.Divider.Horizontal" />
     
     <RelativeLayout
         android:layout_width="match_parent"
@@ -50,7 +50,7 @@
 		    android:layout_alignParentRight="true"
 		    android:text="@string/submit"
 		    android:background="@drawable/button_primary_selector"
-		    style="@style/ButtonBase" />
+		    style="@style/S2.Widget.Button" />
         
     </RelativeLayout>
 

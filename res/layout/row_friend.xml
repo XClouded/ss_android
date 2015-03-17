@@ -8,7 +8,7 @@
     
     <com.myandb.singsong.widget.RoundedImageView
         android:id="@+id/iv_user_photo"
-        style="@style/ImageViewUserSmall" />
+        style="@style/S2.Widget.ImageView.User.Small" />
     
     <Button
 	    android:id="@+id/btn_follow"
@@ -21,7 +21,7 @@
 	    android:text="+팔로우"
 	    android:paddingLeft="0dp"
 	    android:paddingRight="0dp"
-	    style="@style/ButtonMini" />
+	    style="@style/S2.Widget.Button.Mini" />
     
     <TextView
         android:id="@+id/tv_user_nickname"
@@ -31,7 +31,7 @@
         android:layout_alignTop="@id/iv_user_photo"
         android:textColor="@color/font_default"
         android:gravity="left"
-        style="@style/TextViewOverflowableImportant" />
+        style="@style/S2.Widget.TextView.Ellipsize.H3" />
     
     <TextView
         android:id="@+id/tv_user_status"
@@ -39,7 +39,7 @@
         android:layout_toLeftOf="@id/btn_follow"
         android:layout_below="@id/tv_user_nickname"
         android:gravity="left"
-        style="@style/TextViewOverflowableLessImportant" />
+        style="@style/S2.Widget.TextView.Ellipsize.H4" />
     
 </RelativeLayout>
 

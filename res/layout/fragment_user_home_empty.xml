@@ -12,7 +12,7 @@
         android:text="좋아하는 노래를 불러보세요!\n다른 사람 노래에 콜라보도 할 수 있어요 :)"
         android:gravity="center"
         android:layout_marginBottom="@dimen/margin_big"
-        style="@style/TextViewBase" />
+        style="@style/S2.Widget.TextView" />
     
     <LinearLayout
         android:id="@+id/ll_sing"
@@ -31,11 +31,12 @@
             android:layout_height="22dp"
             android:layout_marginRight="@dimen/margin_tiny"
             android:src="@drawable/ic_menu_sing"
-            style="@style/ImageViewBase" />
+            style="@style/S2.Widget.ImageView" />
         
         <TextView
             android:text="노래 부르기"
-            style="@style/TextViewImportant" />
+            android:textStyle="bold"
+            style="@style/S2.Widget.TextView" />
         
     </LinearLayout>
 

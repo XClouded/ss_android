@@ -17,6 +17,6 @@
         android:paddingLeft="50dp"
         android:paddingRight="50dp"
         android:background="@drawable/button_transparent_selector"
-        style="@style/ButtonBase" />
+        style="@style/S2.Widget.Button" />
 
 </LinearLayout>

@@ -8,9 +8,8 @@
     <TextView
         android:id="@+id/tv_artist_num"
         android:text="Collabo Artist.25"
-        android:textSize="@dimen/text_hint"
         android:paddingLeft="@dimen/margin"
-        style="@style/TextViewLessImportant" />
+        style="@style/S2.Widget.TextView.H5" />
     
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,14 +25,14 @@
             android:id="@+id/iv_artist_photo"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="@dimen/margin_tiny"
-	       	style="@style/ImageViewUser" />
+	       	style="@style/S2.Widget.ImageView.User" />
         
         <TextView
 	        android:id="@+id/tv_artist_user_nickname"
 	        android:layout_marginBottom="@dimen/margin_tiny"
 	        android:textStyle="bold"
 	        android:text="nickname"
-	        style="@style/TextViewOverflowableLessImportant" />
+	        style="@style/S2.Widget.TextView.Ellipsize.H4" />
         
         <LinearLayout
             android:layout_width="wrap_content"
@@ -44,17 +43,13 @@
             
             <ImageView
 	            android:id="@+id/icon_follower"
-	            android:layout_width="12dp"
-	            android:layout_height="12dp"
-		        android:layout_marginRight="@dimen/margin_tiny"
 	            android:src="@drawable/ic_user_mini"
-	            style="@style/ImageViewBase" />
+	            style="@style/S2.Widget.ImageView.Icon" />
 	        
 	        <TextView
 		        android:id="@+id/tv_artist_followers_num"
-		        android:text="33"
-		        android:layout_marginTop="@dimen/icon_text_inverse_margin"
-		        style="@style/TextViewLessImportant" />
+		        android:text="0"
+		        style="@style/S2.Widget.TextView.H4.Label" />
             
         </LinearLayout>
         
@@ -63,7 +58,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:layout_margin="@dimen/margin"
-            style="@style/TextViewImportant" />
+            style="@style/S2.Widget.TextView.H3" />
         
     </LinearLayout>
     
@@ -87,7 +82,7 @@
 	        android:layout_margin="0dp"
 	        android:gravity="left"
 	        android:textColor="@color/font_default"
-	        style="@style/TextViewOverflowableImportant" />
+	        style="@style/S2.Widget.TextView.Ellipsize.H3" />
         
     </RelativeLayout>
     
@@ -100,7 +95,7 @@
     <TextView
         android:id="@+id/tv_artist_comment_num"
         android:layout_marginLeft="@dimen/margin"
-        style="@style/TextViewSubtitle" />
+        style="@style/S2.Widget.TextView.H3" />
     
     <RelativeLayout
         android:layout_width="match_parent"
@@ -122,26 +117,17 @@
 		    <Button
 		        android:id="@+id/btn_submit_comment"
 		        android:text="@string/submit"
-		        android:textSize="@dimen/text_sub_content"
 		        android:background="@drawable/button_primary_selector"
 		        android:layout_gravity="bottom"
-		        android:paddingLeft="@dimen/margin"
-		        android:paddingRight="@dimen/margin"
-		        android:paddingTop="@dimen/margin_small"
-		        android:paddingBottom="@dimen/margin_small"
-		        style="@style/ButtonBase" />
+		        style="@style/S2.Widget.Button.Mini" />
             
         </FrameLayout>
 	    
 	    <EditText
 	        android:id="@+id/et_comment"
 	        android:layout_toLeftOf="@id/layout_submit_container"
-	        android:paddingTop="@dimen/margin_small"
-	        android:paddingBottom="@dimen/margin_small"
-	        android:background="@null"
 	        android:hint="@string/hint_write_comment"
-	        android:maxLines="3"
-	        style="@style/BaseEditText" />
+	        style="@style/S2.Widget.EditText.Comment" />
         
     </RelativeLayout>
 

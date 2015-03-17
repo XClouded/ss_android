@@ -8,6 +8,6 @@
         android:id="@+id/tv_title"
         android:textSize="@dimen/abc_action_bar_title_text_size"
         android:layout_gravity="center_vertical"
-        style="@style/TextViewBase" />
+        style="@style/S2.Widget.TextView" />
 
 </FrameLayout>
