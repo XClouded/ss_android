@@ -96,7 +96,8 @@
 	        <TextView
 	            android:id="@+id/tv_floating_user_part"
 	            android:textSize="@dimen/text_subtitle"
-	            android:textStyle="bold" />
+	            android:textStyle="bold"
+	            style="@style/S2.Widget.TextView" />
             
         </LinearLayout>
         

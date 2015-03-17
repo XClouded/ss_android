@@ -48,6 +48,10 @@
         <item name="android:paddingBottom">@dimen/margin_big</item>
     </style>
     
+    <style name="S2.Widget.TextView.H1.Inverse">
+        <item name="android:textColor">@color/white</item>
+    </style>
+    
     <style name="S2.Widget.TextView.H2">
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">@dimen/text_title</item>
@@ -77,6 +81,11 @@
         <item name="android:layout_marginTop">@dimen/text_icon_label_inverse_margin</item>
     </style>
     
+    <style name="S2.Widget.TextView.H5">
+        <item name="android:textSize">@dimen/text_hint</item>
+        <item name="android:textColor">@color/font_grey</item>
+    </style>
+    
     <style name="S2.Widget.TextView.Ellipsize">
         <item name="android:layout_width">match_parent</item>
         <item name="android:maxLines">1</item>
@@ -88,6 +97,7 @@
     
     <style name="S2.Widget.TextView.Ellipsize.H3">
         <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/white</item>
         <item name="android:textSize">@dimen/text_subtitle</item>
     </style>
     
@@ -108,6 +118,7 @@
     
     <style name="S2.Widget.TextView.Ellipsize.Marquee.H3">
         <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/white</item>
         <item name="android:textSize">@dimen/text_subtitle</item>
     </style>
     
@@ -141,6 +152,11 @@
         <item name="android:layout_height">@dimen/photo_small</item>
     </style>
     
+    <style name="S2.Widget.ImageView.User.Big">
+        <item name="android:layout_width">@dimen/photo_big</item>
+        <item name="android:layout_height">@dimen/photo_big</item>
+    </style>
+    
     <style name="S2.Widget.ImageView.Square">
         <item name="corner_radius">@dimen/corner_radius</item>
         <item name="corner_top_left">true</item>
@@ -153,6 +169,18 @@
         <item name="android:layout_width">@dimen/icon</item>
         <item name="android:layout_height">@dimen/icon</item>
         <item name="android:layout_marginRight">@dimen/margin_tiny</item>
+    </style>
+    
+    <style name="S2.Widget.ImageView.Icon.Middle">
+        <item name="android:layout_width">@dimen/icon_middle</item>
+        <item name="android:layout_height">@dimen/icon_middle</item>
+        <item name="android:layout_marginRight">@dimen/margin_small</item>
+    </style>
+    
+    <style name="S2.Widget.ImageView.Icon.Big">
+        <item name="android:layout_width">@dimen/icon_big</item>
+        <item name="android:layout_height">@dimen/icon_big</item>
+        <item name="android:layout_marginRight">@dimen/margin</item>
     </style>
     
     <style name="S2.Widget.Button">
@@ -171,6 +199,8 @@
     </style>
     
     <style name="S2.Widget.Button.Mini">
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">@dimen/text_sub_content</item>
         <item name="android:paddingTop">@dimen/margin_small</item>
         <item name="android:paddingBottom">@dimen/margin_small</item>
         <item name="android:paddingLeft">@dimen/margin_small</item>
@@ -178,9 +208,14 @@
     </style>
     
     <style name="S2.Widget.Button.Dark">
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textStyle">bold</item>
         <item name="android:background">@drawable/button_grey_selector</item>
+    </style>
+    
+    <style name="S2.Widget.Button.Dialog">
+        <item name="android:textColor">@color/font_default</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@null</item>
     </style>
     
     <style name="S2.Widget.Button.Drawable">
@@ -202,10 +237,12 @@
     </style>
     
     <style name="S2.Widget.EditText.Comment">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingLeft">@dimen/margin_big</item>
-        <item name="android:paddingTop">@dimen/margin_tiny</item>
-        <item name="android:minHeight">@dimen/photo</item>
+        <item name="android:paddingTop">@dimen/margin_small</item>
+        <item name="android:paddingBottom">@dimen/margin_small</item>
+        <item name="android:paddingLeft">@dimen/margin_small</item>
+        <item name="android:paddingRight">@dimen/margin_small</item>
+        <item name="android:background">@null</item>
+        <item name="android:maxLines">3</item>
     </style>
     
     <style name="S2.Widget.ListView">
@@ -217,6 +254,11 @@
         <item name="android:choiceMode">singleChoice</item>
         <item name="android:clipToPadding">false</item>
         <item name="android:cacheColorHint">#00000000</item>
+    </style>
+    
+    <style name="S2.Widget.ListView.Divider">
+        <item name="android:divider">@color/divider</item>
+        <item name="android:dividerHeight">0.1dp</item>
     </style>
     
     <style name="FormBase" >

@@ -21,12 +21,9 @@
             
             <ImageView
                 android:id="@+id/icon_free"
-                android:layout_width="22dp"
-                android:layout_height="22dp"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/margin_small"
                 android:src="@drawable/ic_community_free"
-                style="@style/S2.Widget.ImageView" />
+                style="@style/S2.Widget.ImageView.Icon.Middle" />
 	        
 	        <TextView
 	            android:text="콜라보 게시판"
@@ -60,12 +57,9 @@
             
             <ImageView
                 android:id="@+id/icon_mr"
-                android:layout_width="22dp"
-                android:layout_height="22dp"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/margin_small"
                 android:src="@drawable/ic_community_mr"
-                style="@style/S2.Widget.ImageView" />
+                style="@style/S2.Widget.ImageView.Icon.Middle" />
 	        
 	        <TextView
 	            android:text="MR 요청 게시판"
@@ -99,12 +93,9 @@
             
             <ImageView
                 android:id="@+id/icon_notice"
-                android:layout_width="22dp"
-                android:layout_height="22dp"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/margin_small"
                 android:src="@drawable/ic_community_notice"
-                style="@style/S2.Widget.ImageView" />
+                style="@style/S2.Widget.ImageView.Icon.Middle" />
 	        
 	        <TextView
 	            android:text="공지사항"
@@ -139,12 +130,9 @@
             
             <ImageView
                 android:id="@+id/icon_faq"
-                android:layout_width="22dp"
-                android:layout_height="22dp"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/margin_small"
                 android:src="@drawable/ic_community_faq"
-                style="@style/S2.Widget.ImageView" />
+                style="@style/S2.Widget.ImageView.Icon.Middle" />
 	        
 	        <TextView
 	            android:text="FAQ"
@@ -175,12 +163,9 @@
             
             <ImageView
                 android:id="@+id/icon_facebook"
-                android:layout_width="22dp"
-                android:layout_height="22dp"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/margin_small"
                 android:src="@drawable/ic_community_facebook"
-                style="@style/S2.Widget.ImageView" />
+                style="@style/S2.Widget.ImageView.Icon.Middle" />
 	        
 	        <TextView
 	            android:text="콜라보 노래방 페이스북 페이지"
@@ -214,12 +199,9 @@
             
             <ImageView
                 android:id="@+id/icon_review"
-                android:layout_width="22dp"
-                android:layout_height="22dp"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/margin_small"
                 android:src="@drawable/ic_community_review"
-                style="@style/S2.Widget.ImageView" />
+                style="@style/S2.Widget.ImageView.Icon.Middle" />
 	        
 	        <TextView
 	            android:text="플레이 스토어에 리뷰 남기기"

@@ -8,8 +8,7 @@
     <TextView
         android:id="@+id/tv_progress_title"
         android:text="@string/loading_title_audio_downloading"
-        android:textColor="@color/white"
-        style="@style/S2.Widget.TextView.H1" />
+        style="@style/S2.Widget.TextView.H1.Inverse" />
 
     <ProgressBar
         android:id="@+id/pb_loading"

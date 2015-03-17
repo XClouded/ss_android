@@ -80,7 +80,8 @@
 	            android:textColor="@color/font_male_active"
 	            android:textSize="@dimen/text_subtitle"
 	            android:text="part"
-	            android:textStyle="bold" />
+	            android:textStyle="bold"
+	            style="@style/S2.Widget.TextView" />
 	        
 	        <TextView
 	            android:id="@+id/tv_parent_song_message"
@@ -133,7 +134,8 @@
 	            android:layout_marginBottom="@dimen/margin"
 	            android:textColor="@color/font_female_active"
 	            android:textSize="@dimen/text_subtitle"
-	            android:textStyle="bold" />
+	            android:textStyle="bold"
+	            style="@style/S2.Widget.TextView" />
 	        
 	        <TextView
 	            android:id="@+id/tv_this_song_message"

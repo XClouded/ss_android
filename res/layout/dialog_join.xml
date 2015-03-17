@@ -119,9 +119,8 @@
             android:layout_width="match_parent"
             android:layout_toLeftOf="@id/btn_join_complete"
             android:layout_centerVertical="true"
-            android:textSize="@dimen/text_hint"
             android:linksClickable="true"
-            style="@style/S2.Widget.TextView.H4" />
+            style="@style/S2.Widget.TextView.H5" />
         
     </RelativeLayout>
 

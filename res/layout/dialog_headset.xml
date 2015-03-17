@@ -13,8 +13,7 @@
     
     <TextView
         android:text="@string/dialog_headset_title"
-        android:textColor="@color/white"
-        style="@style/S2.Widget.TextView.H1" />
+        style="@style/S2.Widget.TextView.H1.Inverse" />
     
     <TextView
         android:text="@string/dialog_headset_content"

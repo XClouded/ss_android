@@ -47,7 +47,8 @@
 	        
 	        <TextView
 	            android:text="페이스북 친구 초대"
-	            android:textStyle="bold" />
+	            android:textStyle="bold"
+	            style="@style/S2.Widget.TextView" />
 	        
 	    </LinearLayout>
         

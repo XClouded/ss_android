@@ -8,9 +8,7 @@
     
     <com.myandb.singsong.widget.RoundedImageView
         android:id="@+id/iv_user_photo"
-	    android:layout_width="@dimen/photo_big"
-	    android:layout_height="@dimen/photo_big"
-	    style="@style/S2.Widget.ImageView.User" />
+	    style="@style/S2.Widget.ImageView.User.Big" />
     
     <RelativeLayout
         android:id="@+id/header"
@@ -22,8 +20,6 @@
 	    
 	    <ImageView
 	        android:id="@+id/icon_mixed"
-	        android:layout_width="12dp"
-	        android:layout_height="12dp"
 	        android:layout_alignParentLeft="true"
 	        android:layout_centerVertical="true"
 	        android:src="@drawable/ic_collabo_grey"
@@ -33,6 +29,7 @@
 	        android:id="@+id/tv_collabo_num"
 	        android:layout_centerVertical="true"
 	        android:layout_toRightOf="@id/icon_mixed"
+	        android:text="0"
 	        style="@style/S2.Widget.TextView.H4.Label" />
         
     </RelativeLayout>
@@ -43,8 +40,9 @@
 	    android:layout_toLeftOf="@id/header"
 	    android:layout_alignTop="@id/iv_user_photo"
 	    android:layout_marginTop="@dimen/margin_small"
-	    android:textColor="@color/font_default"
 	    android:gravity="left"
+	    android:text="nickname"
+	    android:textColor="@color/font_default"
         style="@style/S2.Widget.TextView.Ellipsize.H3" />
  
 	<TextView
@@ -52,6 +50,7 @@
 	    android:layout_alignLeft="@id/tv_user_nickname"
 	    android:layout_below="@id/tv_user_nickname"
 	    android:layout_marginBottom="@dimen/margin_small"
+	    android:text="part"
 	    style="@style/S2.Widget.TextView.H4" />
  
 	<TextView
@@ -61,6 +60,7 @@
 	    android:layout_toLeftOf="@id/header"
 	    android:ellipsize="end"
 	    android:maxLines="3"
+	    android:text="message"
 	    style="@style/S2.Widget.TextView" />
 
 </RelativeLayout>

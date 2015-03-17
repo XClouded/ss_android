@@ -36,6 +36,8 @@
     
     <dimen name="icon">12dp</dimen>
     <dimen name="icon_text_inverse_margin">-3sp</dimen>
+    <dimen name="icon_middle">22dp</dimen>
+    <dimen name="icon_big">28dp</dimen>
     
     <dimen name="drawer_width">220dp</dimen>
     

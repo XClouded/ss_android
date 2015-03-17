@@ -35,7 +35,8 @@
         
         <TextView
             android:text="노래 부르기"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            style="@style/S2.Widget.TextView" />
         
     </LinearLayout>
 

@@ -47,7 +47,8 @@
 	        
 	        <TextView
 	            android:text="카카오톡 친구 선택하기"
-	            android:textStyle="bold" />
+	            android:textStyle="bold"
+	            style="@style/S2.Widget.TextView" />
 	        
 	    </LinearLayout>
         

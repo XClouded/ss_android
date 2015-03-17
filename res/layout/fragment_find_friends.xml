@@ -20,17 +20,13 @@
 	        style="@style/S2.Widget.Button.Drawable" >
 	        
 	        <ImageView
-	            android:layout_width="28dp"
-	            android:layout_height="28dp"
 	            android:src="@drawable/ic_magnifier"
-	            android:layout_marginRight="@dimen/margin"
-	            style="@style/S2.Widget.ImageView" />
+	            style="@style/S2.Widget.ImageView.Icon.Big" />
 	        
 	        <TextView
 	            android:text="@string/hint_search_user"
-	            android:textColor="@color/font_hint"
 	            android:textSize="@dimen/text_subtitle"
-	            style="@style/S2.Widget.TextView" />
+	            style="@style/S2.Widget.TextView.H4" />
 	        
 	    </LinearLayout>
 	    
@@ -42,11 +38,8 @@
 	        style="@style/S2.Widget.Button.Drawable" >
 	        
 	        <ImageView
-	            android:layout_width="28dp"
-	            android:layout_height="28dp"
 	            android:src="@drawable/ic_facebook"
-	            android:layout_marginRight="@dimen/margin"
-	            style="@style/S2.Widget.ImageView" />
+	            style="@style/S2.Widget.ImageView.Icon.Big" />
 	        
 	        <TextView
 	            android:text="페이스북 친구 추가"

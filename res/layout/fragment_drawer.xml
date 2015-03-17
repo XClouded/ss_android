@@ -25,20 +25,19 @@
 	        
 	        <com.myandb.singsong.widget.RoundedImageView
 		        android:id="@+id/iv_drawer_user_photo"
-		        android:layout_width="@dimen/photo_big"
-		        android:layout_height="@dimen/photo_big"
 	            android:layout_marginBottom="@dimen/margin"
-		        style="@style/S2.Widget.ImageView.User" />
+		        style="@style/S2.Widget.ImageView.User.Big" />
 	        
 	        <TextView
 	            android:id="@+id/tv_drawer_user_nickname"
-	            android:textColor="@color/font_default"
 	            android:layout_marginBottom="@dimen/margin_small"
+	            android:text="nickname"
+	            android:textColor="@color/font_default"
 	            style="@style/S2.Widget.TextView.Ellipsize.H3" />
 	        
 	        <TextView
 	            android:id="@+id/tv_drawer_user_username"
-	            android:textColor="@color/font_hint"
+	            android:text="username"
 	            style="@style/S2.Widget.TextView.Ellipsize.H4" />
 	        
 	    </LinearLayout>
@@ -51,11 +50,8 @@
 	        android:orientation="vertical" >
 	        
 	        <ImageView
-	            android:layout_width="@dimen/photo_big"
-	            android:layout_height="@dimen/photo_big"
 	            android:layout_marginBottom="@dimen/margin_big"
-	            android:src="@drawable/user_character"
-	            style="@style/S2.Widget.ImageView" />
+	            style="@style/S2.Widget.ImageView.User.Big" />
 	        
 	        <Button
 	            android:id="@+id/btn_drawer_login"
