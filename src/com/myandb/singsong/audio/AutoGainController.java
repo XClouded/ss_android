@@ -17,7 +17,7 @@ public class AutoGainController extends UGen {
 	
 	public AutoGainController(AudioContext context) {
 		super(context, 1, 1);
-		AutoGainWrapper.getInstance().initialize(1, 16, 44100);
+		AutoGainWrapper.getInstance().initialize(1, 16, PcmPlayer.SAMPLERATE);
 	}
 	
 	@Override
