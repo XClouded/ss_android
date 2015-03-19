@@ -74,5 +74,9 @@ public class Category extends Model {
 	public int getImageResourceId() {
 		return imageResourceId;
 	}
+	
+	public boolean canRepresentTeam() {
+		return id > 0 && id < 10;
+	}
 
 }

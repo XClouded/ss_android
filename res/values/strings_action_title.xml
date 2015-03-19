@@ -20,5 +20,6 @@
     <string name="fragment_facebook_friends_action_title">페이스북 친구 추가</string>
     <string name="fragment_music_detail_action_title">콜라보 상대 선택</string>
     <string name="fragment_notification_action_title">새로운 소식</string>
+    <string name="fragment_create_team_title">팀 만들기</string>
     
 </resources>
