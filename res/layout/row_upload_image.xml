@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="60dp"
+    android:layout_height="60dp" >
+    
+    <ImageView
+        android:id="@+id/iv_upload_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        style="@style/S2.Widget.ImageView" />
+    
+    <ImageView
+        android:id="@+id/iv_remove_image"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/ic_action_back"
+        android:layout_gravity="right"
+        style="@style/S2.Widget.ImageView" />
+
+</FrameLayout>
