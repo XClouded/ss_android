@@ -76,8 +76,13 @@ public class FloatableLayout extends RelativeLayout {
 		for (int i = 0, l = adapter.getCount(); i < l; i++) {
 			View child = adapter.getView(i, null, this);
 			child.setId(i + 1);
-			child.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
+			
 			LayoutParams lp = (LayoutParams) child.getLayoutParams();
+			if (lp.width > 0) {
+				child.measure(MeasureSpec.makeMeasureSpec(lp.width, MeasureSpec.EXACTLY), MeasureSpec.UNSPECIFIED);
+			} else {
+				child.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
+			}
 			
 			int totalHorizontalSpacing = countAtLine * horizontalSpacing;
 			int expectedWith = rowWidthSum + totalHorizontalSpacing + child.getMeasuredWidth();
