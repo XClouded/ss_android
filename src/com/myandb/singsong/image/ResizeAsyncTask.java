@@ -4,37 +4,53 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
+import com.myandb.singsong.util.ExternalStorage;
+
+import android.content.ContentResolver;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.Bitmap.CompressFormat;
 import android.media.ExifInterface;
+import android.net.Uri;
 import android.os.AsyncTask;
-import android.widget.ImageView;
 
-public class ResizeAsyncTask extends AsyncTask<InputStream, Integer, Bitmap> {
+public class ResizeAsyncTask extends AsyncTask<Uri, Integer, Exception> {
 
-	private ImageView imageView;
-	private File outputFile;
+	private List<File> resizedFiles;
+	private OnCompleteListener listener;
+	private ContentResolver contentResolver;
 	private int outputSize = 256;
 	
 	@Override
-	protected Bitmap doInBackground(InputStream... params) {
-		if (params != null && params.length > 0) {
-			InputStream imageStream = params[0];
-			FileOutputStream outputStream = null;
-			Bitmap mayRotatedBitmap = null;
-			Bitmap correctedBitmap = null;
-			byte[] datas = null; 
-			
+	protected Exception doInBackground(Uri... params) {
+		if (params == null || params.length == 0) {
+			return new IllegalArgumentException();
+		}
+		
+		if (resizedFiles != null) {
+			resizedFiles.clear();
+		}
+		resizedFiles = new ArrayList<File>();
+		
+		for (Uri uri : params) {
 			try {
-				outputStream = FileUtils.openOutputStream(outputFile);
-				IOUtils.copy(imageStream, outputStream);
+				File originalFile = new File(uri.toString());
+				File resizedFile = new File(ExternalStorage.getRootDirectory(), originalFile.getName() + ".resized");
+				InputStream inputStream = contentResolver.openInputStream(uri);
+				FileOutputStream outputStream = FileUtils.openOutputStream(resizedFile);
+				Bitmap mayRotatedBitmap = null;
+				Bitmap correctedBitmap = null;
+				byte[] datas = null;
 				
-				ExifInterface exif = new ExifInterface(outputFile.getAbsolutePath());
+				IOUtils.copy(inputStream, outputStream);
+				
+				ExifInterface exif = new ExifInterface(resizedFile.getAbsolutePath());
 				int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
 				int rotate = 0;
 				
@@ -56,10 +72,10 @@ public class ResizeAsyncTask extends AsyncTask<InputStream, Integer, Bitmap> {
 				matrix.postRotate(rotate);
 				
 				BitmapBuilder builder = new BitmapBuilder();
-				mayRotatedBitmap = builder.setSource(outputFile)
-										  .enableCrop(false)
-										  .setOutputSize(outputSize)
-										  .build();
+				mayRotatedBitmap = builder.setSource(resizedFile)
+						.enableCrop(false)
+						.setOutputSize(outputSize)
+						.build();
 				
 				correctedBitmap = Bitmap.createBitmap(
 						mayRotatedBitmap,
@@ -74,18 +90,17 @@ public class ResizeAsyncTask extends AsyncTask<InputStream, Integer, Bitmap> {
 				datas = bitmapToByteArray(correctedBitmap);
 				
 				if (datas != null) {
-					FileUtils.writeByteArrayToFile(outputFile, datas);
+					FileUtils.writeByteArrayToFile(resizedFile, datas);
 				}
 				
-				imageStream.close();
+				inputStream.close();
 				outputStream.close();
+				
+				originalFile.delete();
+				resizedFiles.add(resizedFile);
 			} catch (Exception e) {
-				e.printStackTrace();
-			} finally {
-				datas = null;
+				return e;
 			}
-			
-			return correctedBitmap;
 		}
 		
 		return null;
@@ -104,24 +119,36 @@ public class ResizeAsyncTask extends AsyncTask<InputStream, Integer, Bitmap> {
     } 
 
 	@Override
-	protected void onPostExecute(Bitmap result) {
-		super.onPostExecute(result);
+	protected void onPostExecute(Exception exception) {
+		super.onPostExecute(exception);
 		
-		if (imageView != null && result != null) {
-			imageView.setImageBitmap(result);
+		if (listener != null) {
+			if (exception == null) {
+				listener.onComplete(resizedFiles);
+			} else {
+				listener.onError(exception);
+			}
 		}
-	}	
-	
-	public void setOutputFile(File file) {
-		this.outputFile = file;
 	}
 	
-	public void setImageView(ImageView profile) {
-		this.imageView = profile;
+	public void setContentResolver(ContentResolver resolver) {
+		this.contentResolver = resolver;
+	}
+	
+	public void setOnCompleteListener(OnCompleteListener listener) {
+		this.listener = listener;
 	}
 	
 	public void setOutputSize(int size) {
 		this.outputSize = size;
+	}
+	
+	public interface OnCompleteListener {
+		
+		public void onComplete(List<File> files);
+		
+		public void onError(Exception exception);
+		
 	}
 	
 }

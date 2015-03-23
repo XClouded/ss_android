@@ -1,9 +1,6 @@
 package com.myandb.singsong.fragment;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,15 +20,16 @@ import com.myandb.singsong.dialog.ChangeStatusDialog;
 import com.myandb.singsong.dialog.WithdrawDialog;
 import com.myandb.singsong.event.OnCompleteListener;
 import com.myandb.singsong.image.ImageHelper;
-import com.myandb.singsong.image.ResizeAsyncTask;
 import com.myandb.singsong.model.Model;
 import com.myandb.singsong.model.Profile;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.JSONObjectRequest;
 import com.myandb.singsong.net.JSONObjectSuccessListener;
 import com.myandb.singsong.net.JSONErrorListener;
-import com.myandb.singsong.net.UploadManager;
+import com.myandb.singsong.net.PhotoUploadHelper;
+import com.myandb.singsong.net.PhotoUploadHelper.Photo;
 import com.myandb.singsong.secure.Authenticator;
+import com.myandb.singsong.util.PhotoIntentHelper;
 import com.sromku.simple.fb.SimpleFacebook;
 import com.sromku.simple.fb.Permission.Type;
 import com.sromku.simple.fb.listeners.OnLoginListener;
@@ -44,7 +42,6 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -53,11 +50,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class SettingFragment extends BaseFragment {
-	
-	public static final int REQUEST_CODE_PHOTO_PICKER = 200;
-	
-	private Uri tempUri;
-	private File scaledImageFile;
 	
 	private ImageView ivUserPhoto;
 	private TextView tvUserUsername;
@@ -106,15 +98,7 @@ public class SettingFragment extends BaseFragment {
 	}
 
 	@Override
-	protected void initialize(Activity activity) {
-		try {
-			scaledImageFile = File.createTempFile("scaled_image", null, activity.getCacheDir());
-			File file = File.createTempFile("user_selected", null, activity.getCacheDir());
-			tempUri = Uri.fromFile(file);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+	protected void initialize(Activity activity) {}
 
 	@Override
 	protected void setupViews(Bundle savedInstanceState) {
@@ -192,16 +176,7 @@ public class SettingFragment extends BaseFragment {
 		
 		@Override
 		public void onClick(View v) {
-			Intent photoPickerIntent = new Intent();
-			photoPickerIntent.setType("image/*");
-			photoPickerIntent.setAction(Intent.ACTION_GET_CONTENT);
-			
-			Intent takePickerIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-			takePickerIntent.putExtra(MediaStore.EXTRA_OUTPUT, tempUri);
-			Intent chooserIntent = Intent.createChooser(photoPickerIntent, "Select or take a new Picture");
-			chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] { takePickerIntent });
-			
-			startActivityForResult(chooserIntent, REQUEST_CODE_PHOTO_PICKER);
+			PhotoIntentHelper.getInstance().showPicker(SettingFragment.this);
 		}
 	};
 	
@@ -429,13 +404,15 @@ public class SettingFragment extends BaseFragment {
 	};
 	
 	private void uploadPhotoFile() throws FileNotFoundException {
-		UploadManager manager = new UploadManager();
+		PhotoUploadHelper helper = new PhotoUploadHelper();
 		User user = Authenticator.getUser();
-		manager.start(
-				getActivity(), scaledImageFile,
-				"user_photo", user.getUsername() + Model.SUFFIX_JPG, "image/jpeg",
-				photoUploadCompleteListener
-		);
+		Uri uri = PhotoIntentHelper.getInstance().getPhotoUri();
+		String bucket = "user_photo";
+		String fileName = user.getUsername() + Model.SUFFIX_JPG;
+		Photo photo = new Photo(uri, bucket, fileName);
+		helper.addPhoto(photo);
+		helper.setOnCompleteListener(photoUploadCompleteListener);
+		helper.upload(getActivity());
 	}
 	
 	private OnCompleteListener photoUploadCompleteListener = new OnCompleteListener() {
@@ -445,6 +422,7 @@ public class SettingFragment extends BaseFragment {
 			if (e == null) {
 				updatePhotoMetaData();
 			} else {
+				e.printStackTrace();
 				onUploadError();
 			}
 		}
@@ -518,26 +496,13 @@ public class SettingFragment extends BaseFragment {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		
-		switch (requestCode) {
-		case REQUEST_CODE_PHOTO_PICKER:
-			if (resultCode == Activity.RESULT_OK) {
-				try {
-					ResizeAsyncTask asyncTask = new ResizeAsyncTask();
-					asyncTask.setImageView(ivUserPhoto);
-					asyncTask.setOutputFile(scaledImageFile);
-					
-					Uri selectedImage = data != null ? data.getData() : tempUri;
-					if (selectedImage != null) {
-						InputStream imageStream = getActivity().getContentResolver().openInputStream(selectedImage);
-						asyncTask.execute(imageStream);
-						btnChangePhoto.setOnClickListener(uploadPhotoClickListener);
-						btnChangePhoto.setVisibility(View.VISIBLE);
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-			break;
+		PhotoIntentHelper helper = PhotoIntentHelper.getInstance();
+		helper.onActivityResult(requestCode, resultCode, data);
+		Uri uri = helper.getPhotoUri();
+		if (uri != null) {
+			ImageHelper.displayPhoto(uri.toString(), ivUserPhoto);
+			btnChangePhoto.setOnClickListener(uploadPhotoClickListener);
+			btnChangePhoto.setVisibility(View.VISIBLE);
 		}
 	}
 

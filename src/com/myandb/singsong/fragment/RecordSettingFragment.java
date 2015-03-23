@@ -1,9 +1,6 @@
 package com.myandb.singsong.fragment;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.text.DecimalFormat;
 
 import org.json.JSONException;
@@ -19,22 +16,22 @@ import com.myandb.singsong.dialog.ImageSelectDialog;
 import com.myandb.singsong.event.OnCompleteListener;
 import com.myandb.singsong.event.WeakRunnable;
 import com.myandb.singsong.image.ImageHelper;
-import com.myandb.singsong.image.ResizeAsyncTask;
 import com.myandb.singsong.model.Image;
 import com.myandb.singsong.model.Model;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.JSONObjectRequest;
 import com.myandb.singsong.net.JSONErrorListener;
 import com.myandb.singsong.net.JSONObjectSuccessListener;
-import com.myandb.singsong.net.UploadManager;
+import com.myandb.singsong.net.PhotoUploadHelper;
+import com.myandb.singsong.net.PhotoUploadHelper.Photo;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.service.SongUploadService;
+import com.myandb.singsong.util.PhotoIntentHelper;
 import com.myandb.singsong.util.Reporter;
 import com.sromku.simple.fb.Permission.Type;
 import com.sromku.simple.fb.listeners.OnLoginListener;
 
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -42,7 +39,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -64,8 +60,6 @@ public class RecordSettingFragment extends BaseFragment {
 	private PcmPlayer player;
 	private ImageSelectDialog dialog;
 	private Handler handler;
-	private Uri imageUri;
-	private File imageFile;
 	private Image image;
 	private String imageName;
 	private boolean localImageExist;
@@ -201,13 +195,6 @@ public class RecordSettingFragment extends BaseFragment {
 		dialog = new ImageSelectDialog();
 		
 		handler = new Handler();
-		
-		try {
-			imageFile = File.createTempFile("scaled_image", null, activity.getCacheDir());
-			imageUri = Uri.fromFile(imageFile);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		
 		getSupportActionBar().hide();
 	}
@@ -359,16 +346,18 @@ public class RecordSettingFragment extends BaseFragment {
 			showProgressDialog();
 			
 			if (localImageExist) {
-				imageName = generateIamgeName();
-				UploadManager manager = new UploadManager();
-				manager.start(getActivity(), imageFile, "image", imageName, "image/jpeg", imageUploadCompleteListener);
+				PhotoUploadHelper helper = new PhotoUploadHelper();
+				Uri uri = PhotoIntentHelper.getInstance().getPhotoUri();
+				String bucket = "image";
+				imageName = generateImageName();
+				Photo photo = new Photo(uri, bucket, imageName);
+				helper.addPhoto(photo);
+				helper.setOnCompleteListener(imageUploadCompleteListener);
+				helper.upload(getActivity());
 			} else {
 				finishWithUploadInfo();
 			}
 		} catch (IllegalStateException e) {
-			e.printStackTrace();
-			onUploadError(e);
-		} catch (FileNotFoundException e) { 
 			e.printStackTrace();
 			onUploadError(e);
 		} catch (Exception e) {
@@ -377,7 +366,7 @@ public class RecordSettingFragment extends BaseFragment {
 		}
 	}
 	
-	private String generateIamgeName() {
+	private String generateImageName() {
 		User user = Authenticator.getUser();
 		return Image.generateName(user);
 	}
@@ -508,16 +497,7 @@ public class RecordSettingFragment extends BaseFragment {
 		public void onClick(View v) {
 			switch (v.getId()) {
 			case R.id.iv_song_image:
-				Intent intent = new Intent();
-				intent.setType("image/*");
-				intent.setAction(Intent.ACTION_GET_CONTENT);
-				
-				Intent takePickerIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-				takePickerIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-				Intent chooserIntent = Intent.createChooser(intent, "Select or take a new Picture");
-				chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] { takePickerIntent });
-				
-				startActivityForResult(chooserIntent, REQUEST_CODE_PHOTO_PICKER);
+				PhotoIntentHelper.getInstance().showPicker(RecordSettingFragment.this);
 				break;
 				
 			case R.id.btn_delete_image:
@@ -652,29 +632,12 @@ public class RecordSettingFragment extends BaseFragment {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		
-		switch (requestCode) {
-		case REQUEST_CODE_PHOTO_PICKER:
-			if (resultCode == Activity.RESULT_OK) {
-				try {
-					ResizeAsyncTask asyncTask = new ResizeAsyncTask();
-					asyncTask.setOutputFile(imageFile);
-					asyncTask.setImageView(ivSongImage);
-					
-					Uri selectedImage = data != null ? data.getData() : imageUri;
-					ContentResolver resolver = getActivity().getContentResolver();
-					if (selectedImage != null) {
-						InputStream imageStream = resolver.openInputStream(selectedImage);
-						asyncTask.execute(imageStream);
-						
-						localImageExist = true;
-					}
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-			break;
+		PhotoIntentHelper helper = PhotoIntentHelper.getInstance();
+		helper.onActivityResult(requestCode, resultCode, data);
+		Uri uri = helper.getPhotoUri();
+		if (uri != null) {
+			ImageHelper.displayPhoto(uri.toString(), ivSongImage);
+			localImageExist = true;
 		}
 	}
 	
