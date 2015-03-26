@@ -29,17 +29,17 @@ public class SearchFragment extends ListFragment {
 		ALL_SONG(R.string.hint_search_music, SimpleSongAdapter.class, "songs/all");
 		
 		private int hintResId;
+		private String segment;
 		private Class<?> adapterClass;
-		private UrlBuilder builder;
 		
 		SearchType(int hintResId, Class<?> adapterClass, String segment) {
 			this.hintResId = hintResId;
 			this.adapterClass = adapterClass;
-			this.builder = new UrlBuilder().s(segment);
+			this.segment = segment;
 		}
 		
-		public UrlBuilder getUrlBuilder() {
-			return builder;
+		public String getSegment() {
+			return segment;
 		}
 		
 		public HolderAdapter<?, ?> newAdapterInstance() 
@@ -120,7 +120,7 @@ public class SearchFragment extends ListFragment {
 	private void search(String keyword) {
 		if (keyword != null && keyword.length() > 0) {
 			searchView.hideSoftKeyboard();
-			UrlBuilder urlBuilder = searchType.getUrlBuilder();
+			UrlBuilder urlBuilder = new UrlBuilder().s(searchType.getSegment());
 			urlBuilder.keyword(keyword);
 			urlBuilder.skip(0);
 			urlBuilder.take(GradualLoader.INITIAL_LOAD_NUM);
