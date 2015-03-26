@@ -20,6 +20,7 @@ import com.myandb.singsong.audio.Recorder;
 import com.myandb.singsong.audio.Track;
 import com.myandb.singsong.event.OnCompleteListener;
 import com.myandb.singsong.event.OnProgressListener;
+import com.myandb.singsong.fragment.KaraokeFragment;
 import com.myandb.singsong.model.Model;
 import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Song;
@@ -69,6 +70,7 @@ public class SongUploadService extends Service {
 	private int creatorId;
 	private int imageId;
 	private boolean isFacebookPosting;
+	private boolean teamCollabo;
 	private float sampleSkipSecond;
 	private String message;
 	private String audioName;
@@ -113,6 +115,7 @@ public class SongUploadService extends Service {
 		final File musicPcmFile = new File(musicPcmFilePath);
 		final float recordVolume = intent.getFloatExtra(EXTRA_RECORD_VOLUME, 1f);
 		
+		teamCollabo = intent.getBooleanExtra(KaraokeFragment.EXTRA_TEAM_COLLABO, false);
 		creatorId = intent.getIntExtra(EXTRA_CREATOR_ID, 0);
 		musicId = intent.getIntExtra(EXTRA_MUSIC_ID, 0);
 		parentSongId = intent.getIntExtra(EXTRA_PARENT_SONG_ID, 0);

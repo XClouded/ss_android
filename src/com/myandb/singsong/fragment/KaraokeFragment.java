@@ -62,6 +62,7 @@ import android.widget.TextView;
 
 public class KaraokeFragment extends BaseFragment {
 	
+	public static final String EXTRA_TEAM_COLLABO = "team_collabo";
 	public static final String EXTRA_MUSIC = "music";
 	public static final String EXTRA_PARENT_SONG = "parent_song";
 	public static final String EXTRA_PART = "part";
@@ -92,6 +93,7 @@ public class KaraokeFragment extends BaseFragment {
 	private File recordPcmFile;
 	private File lyricFile;
 	private int lyricPart;
+	private boolean teamCollabo;
 	
 	private HeadsetDialog headsetDialog;
 	private LoadingDialog loadingDialog;
@@ -129,6 +131,7 @@ public class KaraokeFragment extends BaseFragment {
 		super.onArgumentsReceived(bundle);
 		Gson gson = Utility.getGsonInstance();
 		
+		teamCollabo = bundle.getBoolean(EXTRA_TEAM_COLLABO, false);
 		String musicInJson = bundle.getString(EXTRA_MUSIC);
 		String songInJson = bundle.getString(EXTRA_PARENT_SONG);
 		
@@ -254,6 +257,7 @@ public class KaraokeFragment extends BaseFragment {
 							Intent intent = new Intent(getActivity(), UpActivity.class);
 							intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, RecordSettingFragment.class.getName());
 							Bundle bundle = new Bundle();
+							bundle.putBoolean(KaraokeFragment.EXTRA_TEAM_COLLABO, teamCollabo);
 							bundle.putBoolean(SongUploadService.EXTRA_HEADSET_PLUGGED, recorder.isHeadsetPlugged());
 							bundle.putString(SongUploadService.EXTRA_MUSIC_PCM_FILE_PATH, musicPcmFile.getAbsolutePath());
 							bundle.putString(SongUploadService.EXTRA_RECORD_PCM_FILE_PATH, recordPcmFile.getAbsolutePath());
@@ -683,6 +687,7 @@ public class KaraokeFragment extends BaseFragment {
 				data.putExtra(SongUploadService.EXTRA_MUSIC_ID, music.getId());
 				data.putExtra(SongUploadService.EXTRA_LYRIC_PART, lyricPart);
 				data.putExtra(SongUploadService.EXTRA_SAMPLE_SKIP_SECOND, getSampleSkipSecond());
+				data.putExtra(KaraokeFragment.EXTRA_TEAM_COLLABO, teamCollabo);
 				
 				if (!isSolo()) {
 					data.putExtra(SongUploadService.EXTRA_PARENT_SONG_ID, parentSong.getId());

@@ -100,6 +100,10 @@ public class Music extends Model {
 		};
 	}
 	
+	public OnClickListener getTeamCollaboClickListener() {
+		return new RecordClickListener(PART_MALE, true);
+	}
+	
 	public OnClickListener getMaleRecordClickListener() {
 		return new RecordClickListener(PART_MALE);
 	}
@@ -111,9 +115,15 @@ public class Music extends Model {
 	private class RecordClickListener extends ActivateOnlyClickListener {
 		
 		private int part;
+		private boolean teamCollabo;
 		
 		public RecordClickListener(int part) {
+			this(part, false);
+		}
+		
+		public RecordClickListener(int part, boolean teamCollabo) {
 			this.part = part;
+			this.teamCollabo = teamCollabo;
 		}
 
 		@Override
@@ -121,6 +131,7 @@ public class Music extends Model {
 			Bundle bundle = new Bundle();
 			bundle.putString(KaraokeFragment.EXTRA_MUSIC, Music.this.toString());
 			bundle.putInt(KaraokeFragment.EXTRA_PART, part);
+			bundle.putBoolean(KaraokeFragment.EXTRA_TEAM_COLLABO, teamCollabo);
 			Intent intent = new Intent(v.getContext(), UpActivity.class);
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, KaraokeFragment.class.getName());
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);

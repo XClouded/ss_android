@@ -65,6 +65,7 @@ public class RecordSettingFragment extends BaseFragment {
 	private boolean localImageExist;
 	private boolean headsetPlugged;
 	private boolean isFacebookPosting;
+	private boolean teamCollabo;
 	
 	private TextView tvSyncValue;
 	private TextView tvVolumeValue;
@@ -84,6 +85,7 @@ public class RecordSettingFragment extends BaseFragment {
 	private View vMixer;
 	private View vVolume;
 	private View vFacebook;
+	private View vMessagePhoto;
 
 	@Override
 	protected int getResourceId() {
@@ -94,6 +96,7 @@ public class RecordSettingFragment extends BaseFragment {
 	protected void onArgumentsReceived(Bundle bundle) {
 		super.onArgumentsReceived(bundle);
 		headsetPlugged = bundle.getBoolean(SongUploadService.EXTRA_HEADSET_PLUGGED);
+		teamCollabo = bundle.getBoolean(KaraokeFragment.EXTRA_TEAM_COLLABO, false);
 		
 		try {
 			player = new PcmPlayer();
@@ -186,6 +189,7 @@ public class RecordSettingFragment extends BaseFragment {
 		vMixer = view.findViewById(R.id.ll_mixer);
 		vVolume = view.findViewById(R.id.ll_volume);
 		vFacebook = view.findViewById(R.id.rl_facebook);
+		vMessagePhoto = view.findViewById(R.id.ll_message_photo_wrapper);
 	}
 
 	@Override
@@ -213,13 +217,22 @@ public class RecordSettingFragment extends BaseFragment {
 			return;
 		}
 		
-		if (Authenticator.getUser().isFacebookActivated()) {
-			registerSharedPreferenceChangeListener();
-			vFacebook.setVisibility(View.VISIBLE);
-			vFacebook.setOnClickListener(facebookPostingClickListener);
-		} else {
-			updateFacebookPostingView(false);
+		if (teamCollabo) {
 			vFacebook.setVisibility(View.GONE);
+			vMessagePhoto.setVisibility(View.GONE);
+		} else {
+			if (Authenticator.getUser().isFacebookActivated()) {
+				registerSharedPreferenceChangeListener();
+				vFacebook.setVisibility(View.VISIBLE);
+				vFacebook.setOnClickListener(facebookPostingClickListener);
+			} else {
+				updateFacebookPostingView(false);
+				vFacebook.setVisibility(View.GONE);
+			}
+			
+			btnDeletePhoto.setOnClickListener(imageClickListener);
+			ivSongImage.setOnClickListener(imageClickListener);
+			btnOtherImages.setOnClickListener(imageClickListener);
 		}
 		
 		ivPlayControl.setOnClickListener(playClickListener);
@@ -228,9 +241,6 @@ public class RecordSettingFragment extends BaseFragment {
 		vExit.setOnClickListener(finishClickListener);
 		ivSyncBack.setOnClickListener(syncChangeClickListener);
 		ivSyncforward.setOnClickListener(syncChangeClickListener);
-		btnDeletePhoto.setOnClickListener(imageClickListener);
-		ivSongImage.setOnClickListener(imageClickListener);
-		btnOtherImages.setOnClickListener(imageClickListener);
 		
 		tvSyncValue.setText("0.0");
 		sbPlay.setMax((int) player.getDuration());

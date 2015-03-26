@@ -9,6 +9,7 @@ import com.myandb.singsong.adapter.FriendsAdapter;
 import com.myandb.singsong.adapter.HolderAdapter;
 import com.myandb.singsong.adapter.MusicAdapter;
 import com.myandb.singsong.adapter.SimpleSongAdapter;
+import com.myandb.singsong.adapter.TeamCollaboMusicAdapter;
 import com.myandb.singsong.net.GradualLoader;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.widget.SearchView;
@@ -21,6 +22,8 @@ public class SearchFragment extends ListFragment {
 		USER(R.string.hint_search_user, FriendsAdapter.class, "users"),
 		
 		MUSIC(R.string.hint_search_music, MusicAdapter.class, "musics"),
+		
+		TEAM_COLLABO(R.string.hint_search_music, TeamCollaboMusicAdapter.class, "musics"),
 		
 		WAITING(R.string.hint_search_music, SimpleSongAdapter.class, "songs/root"),
 		
