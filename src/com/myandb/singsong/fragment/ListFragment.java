@@ -11,6 +11,7 @@ import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.widget.FadingActionBarHelper;
 
 import android.app.Activity;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -68,11 +69,10 @@ public class ListFragment extends BaseFragment {
 		if (isFragmentCreated()) {
 			urlBuilder = extractUrlBuilderFromBundle(bundle);
 			adapter = extractAdapterFromBundle(bundle);
+			columnNum = bundle.getInt(EXTRA_COLUMN_NUM, 1);
+			horizontalPadding = bundle.getBoolean(EXTRA_HORIZONTAL_PADDING, false);
+			verticalPadding = bundle.getBoolean(EXTRA_VERTICAL_PADDING, false);
 		}
-		
-		columnNum = bundle.getInt(EXTRA_COLUMN_NUM, 1);
-		horizontalPadding = bundle.getBoolean(EXTRA_HORIZONTAL_PADDING, false);
-		verticalPadding = bundle.getBoolean(EXTRA_VERTICAL_PADDING, false);
 	}
 	
 	private boolean isFragmentCreated() {
@@ -124,6 +124,8 @@ public class ListFragment extends BaseFragment {
 		listContainer = (ViewGroup) view.findViewById(R.id.fl_list_container);
 		progressContainer = view.findViewById(R.id.fl_progress_container);
 		absListView = makeAbsListView(inflater, columnNum);
+		horizontalPadding = absListView instanceof GridView ? true : horizontalPadding;
+		verticalPadding = absListView instanceof GridView ? true : verticalPadding;
 		listContainer.addView(absListView);
 		addHeaderView(inflater, absListView);
 		addFixedHeaderView(inflater, fixedHeaderContainer);
@@ -196,36 +198,53 @@ public class ListFragment extends BaseFragment {
 	
 	@Override
 	protected void setupViews(Bundle savedInstanceState) {
-		if (absListView instanceof GridView) {
-			((GridView) absListView).setAdapter(adapter);
-		} else if (absListView instanceof ListView) {
-			((ListView) absListView).setAdapter(adapter);
-		}
+		setAdapter(adapter);
 		absListView.setOnScrollListener(onScrollListener);
-		setListViewHorizontalPadding(absListView);
-		setListViewVerticalPadding(absListView);
+		setListViewHorizontalPadding(horizontalPadding);
+		setListViewVerticalPadding(verticalPadding);
 	}
 	
-	private void setListViewHorizontalPadding(AbsListView listView) {
-		int padding = getResources().getDimensionPixelSize(R.dimen.margin);
-		if (listView instanceof GridView || horizontalPadding) {
-			listView.setPadding(padding, 0, padding, 0);
-			listView.setVerticalScrollBarEnabled(false);
+	public void setListViewHorizontalPadding(boolean enable) {
+		horizontalPadding = enable;
+		int paddingTop = absListView.getPaddingTop();
+		int paddingBottom = absListView.getPaddingBottom();
+		
+		if (enable) {
+			int padding = getResources().getDimensionPixelSize(R.dimen.margin);
+			absListView.setPadding(padding, paddingTop, padding, paddingBottom);
+			absListView.setVerticalScrollBarEnabled(false);
+		} else {
+			absListView.setPadding(0, paddingTop, 0, paddingBottom);
 		}
 	}
 	
-	private void setListViewVerticalPadding(AbsListView listView) {
-		int padding = getResources().getDimensionPixelSize(R.dimen.margin);
-		if (listView instanceof GridView) {
-			listView.setPadding(listView.getPaddingLeft(), padding, listView.getPaddingRight(), padding);
-		}
-		if (listView instanceof ListView && verticalPadding) {
-			if (listHeaderView == null && fixedHeaderView == null) {
-				listView.setPadding(listView.getPaddingLeft(), padding, listView.getPaddingRight(), padding);
+	public void setListViewVerticalPadding(boolean enable) {
+		verticalPadding = enable;
+		int paddingLeft = absListView.getPaddingLeft();
+		int paddingRight = absListView.getPaddingRight();
+		
+		if (enable) {
+			int padding = getResources().getDimensionPixelSize(R.dimen.margin);
+			
+			if (absListView instanceof GridView) {
+				absListView.setPadding(paddingLeft, padding, paddingRight, padding);
 			}
-			int height = padding;
-			((ListView) listView).setDivider(null);
-			((ListView) listView).setDividerHeight(height);
+			
+			if (absListView instanceof ListView) {
+				if (listHeaderView == null && fixedHeaderView == null) {
+					absListView.setPadding(paddingLeft, padding, paddingRight, padding);
+				}
+				int height = padding;
+				((ListView) absListView).setDivider(null);
+				((ListView) absListView).setDividerHeight(height);
+			}
+		} else {
+			absListView.setPadding(paddingLeft, 0, paddingRight, 0);
+			if (absListView instanceof ListView) {
+				ColorDrawable divider = new ColorDrawable(getResources().getColor(R.color.divider));
+				((ListView) absListView).setDivider(divider);
+				((ListView) absListView).setDividerHeight(1);
+			}
 		}
 	}
 	
@@ -324,20 +343,46 @@ public class ListFragment extends BaseFragment {
 	}
 	
 	public void setUrlBuilder(UrlBuilder urlBuilder) {
+		setUrlBuilder(urlBuilder, true);
+	}
+	
+	public void setUrlBuilder(UrlBuilder urlBuilder, boolean clearAdapter) {
 		if (urlBuilder == null) {
 			return;
 		}
 		
-		setListShown(false);
+		if (clearAdapter) {
+			setListShown(false);
+		} else {
+			showProgressDialog();
+		}
+		
 		loader.setUrlBuilder(urlBuilder);
 		loader.setOnLoadCompleteListener(loadCompleteListener);
 		if (absListView != null) {
 			absListView.smoothScrollToPosition(0);
 		}
-		if (adapter != null) {
-			if (adapter instanceof HolderAdapter) {
-				((HolderAdapter<?, ?>) adapter).clear();
+		
+		if (clearAdapter) {
+			if (adapter != null) {
+				if (adapter instanceof HolderAdapter) {
+					((HolderAdapter<?, ?>) adapter).clear();
+				}
 			}
+		}
+	}
+	
+	public void setAdapter(ListAdapter adapter) {
+		if (adapter == null) {
+			return;
+		}
+		
+		this.adapter = adapter;
+		
+		if (absListView instanceof GridView) {
+			((GridView) absListView).setAdapter(adapter);
+		} else if (absListView instanceof ListView) {
+			((ListView) absListView).setAdapter(adapter);
 		}
 	}
 	
@@ -350,6 +395,7 @@ public class ListFragment extends BaseFragment {
 			}
 			
 			if (adapter instanceof HolderAdapter) {
+				dismissProgressDialog();
 				setListShown(true);
 				((HolderAdapter<?, ?>) adapter).addAll(response);
 			}
