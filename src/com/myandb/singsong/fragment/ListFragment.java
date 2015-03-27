@@ -58,7 +58,7 @@ public class ListFragment extends BaseFragment {
 	protected boolean verticalPadding = false;
 
 	@Override
-	protected final int getResourceId() {
+	protected int getResourceId() {
 		return R.layout.fragment_list;
 	}
 

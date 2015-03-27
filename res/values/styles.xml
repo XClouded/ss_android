@@ -157,6 +157,19 @@
         <item name="android:layout_height">@dimen/photo_big</item>
     </style>
     
+    <style name="S2.Widget.ImageView.Team">
+        <item name="android:layout_width">@dimen/photo</item>
+        <item name="android:layout_height">@dimen/photo</item>
+        <item name="siBorderWidth">@dimen/border_width</item>
+        <item name="siBorderColor">@color/white</item>
+        <item name="android:src">@drawable/user_character</item>
+    </style>
+    
+    <style name="S2.Widget.ImageView.Team.Big">
+        <item name="android:layout_width">@dimen/photo_big</item>
+        <item name="android:layout_height">@dimen/photo_big</item>
+    </style>
+    
     <style name="S2.Widget.ImageView.Square">
         <item name="corner_radius">@dimen/corner_radius</item>
         <item name="corner_top_left">true</item>

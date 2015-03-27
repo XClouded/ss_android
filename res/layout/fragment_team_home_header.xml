@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="280dp" >
+
+    <ImageView
+        android:id="@+id/iv_team_background_photo"
+        style="@style/S2.Widget.ImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@color/grey_dark" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@color/mask_middle" />
+
+    <LinearLayout
+        android:id="@+id/layout_tab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/tv_team_collabos"
+            style="@style/S2.Widget.TextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/tab_selector"
+            android:gravity="center"
+            android:lineSpacingExtra="3sp"
+            android:paddingBottom="@dimen/margin_small"
+            android:paddingTop="@dimen/margin_small"
+            android:textColor="@color/font_highlight"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_team_members"
+            style="@style/S2.Widget.TextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/tab_selector"
+            android:gravity="center"
+            android:lineSpacingExtra="3sp"
+            android:paddingBottom="@dimen/margin_small"
+            android:paddingTop="@dimen/margin_small"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_team_followers"
+            style="@style/S2.Widget.TextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/tab_selector"
+            android:gravity="center"
+            android:lineSpacingExtra="3sp"
+            android:paddingBottom="@dimen/margin_small"
+            android:paddingTop="@dimen/margin_small"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <com.github.siyamed.shapeimageview.HexagonImageView
+        android:id="@+id/iv_team_emblem"
+        style="@style/S2.Widget.ImageView.Team.Big"
+        android:src="@drawable/ic_action_back"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:layout_marginTop="60dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/iv_team_emblem"
+        android:layout_marginLeft="@dimen/margin"
+        android:layout_marginRight="@dimen/margin"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/tv_team_title"
+            style="@style/S2.Widget.TextView.Ellipsize.H3"
+            android:layout_width="match_parent"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:gravity="center"
+            android:textSize="@dimen/text_impact"
+            android:text="team title" />
+
+        <TextView
+            android:id="@+id/tv_team_description"
+            style="@style/S2.Widget.TextView.H4"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:text="7인조 댄스 남성그룹"
+            android:textColor="@color/font_white" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/layout_button_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@id/iv_team_emblem"
+        android:layout_marginRight="@dimen/margin" >
+
+        <Button
+            android:id="@+id/btn_follow"
+            style="@style/S2.Widget.Button.Mini"
+            android:layout_width="75dp"
+            android:background="@drawable/button_transparent_selector"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp"
+            android:text="+팔로우" />
+
+        <ImageView
+            android:id="@+id/iv_edit_profile"
+            style="@style/S2.Widget.ImageView"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="@dimen/margin"
+            android:src="@drawable/ic_wheel" />
+    </FrameLayout>
+
+</RelativeLayout>
