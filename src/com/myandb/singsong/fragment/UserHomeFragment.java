@@ -135,10 +135,10 @@ public class UserHomeFragment extends ListFragment {
 			}
 		}
 		
-		setOnEmptyListener(emptyListener);
+		setOnItemNumChangedListener(itemNumChangedListener);
 	}
 	
-	private OnEmptyListener emptyListener = new OnEmptyListener() {
+	private OnItemNumChangedListener itemNumChangedListener = new OnItemNumChangedListener() {
 		
 		@Override
 		public void onEmpty() {
@@ -148,6 +148,11 @@ public class UserHomeFragment extends ListFragment {
 			} else {
 				vEmptyView.setVisibility(View.GONE);
 			}
+		}
+		
+		@Override
+		public void onExist() {
+			vEmptyView.setVisibility(View.GONE);
 		}
 	};
 	
