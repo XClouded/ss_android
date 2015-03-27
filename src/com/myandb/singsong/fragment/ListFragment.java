@@ -49,7 +49,7 @@ public class ListFragment extends BaseFragment {
 	private FadingActionBarHelper fadingActionBarHelper;
 	private UrlBuilder urlBuilder;
 	private ListAdapter adapter;
-	private OnEmptyListener emptyListener;
+	private OnItemNumChangedListener itemNumChangeListener;
 	private int listViewIndex;
 	private int listViewTop;
 	private int columnNum = 1;
@@ -294,13 +294,19 @@ public class ListFragment extends BaseFragment {
 	}
 	
 	private void restoreListViewState() {
-		dispatchEmptyListener();
+		dispatchItemNumChanged();
 		restoreListViewPosition();
 	}
 	
-	private void dispatchEmptyListener() {
-		if (adapter.getCount() == 0 && emptyListener != null) {
-			emptyListener.onEmpty();
+	private void dispatchItemNumChanged() {
+		if (itemNumChangeListener == null) {
+			return;
+		}
+		
+		if (adapter.getCount() == 0) {
+			itemNumChangeListener.onEmpty();
+		} else {
+			itemNumChangeListener.onExist();
 		}
 	}
 	
@@ -409,12 +415,12 @@ public class ListFragment extends BaseFragment {
 				((HolderAdapter<?, ?>) adapter).addAll(response);
 			}
 			
-			dispatchEmptyListener();
+			dispatchItemNumChanged();
 		}
 	};
 	
-	public void setOnEmptyListener(OnEmptyListener listener) {
-		this.emptyListener = listener;
+	public void setOnItemNumChangedListener(OnItemNumChangedListener listener) {
+		this.itemNumChangeListener = listener;
 	}
 	
 	public void load() {
@@ -482,9 +488,11 @@ public class ListFragment extends BaseFragment {
 		return App.INVALID_RESOURCE_ID;
 	}
 	
-	public interface OnEmptyListener {
+	public interface OnItemNumChangedListener {
 		
 		public void onEmpty();
+		
+		public void onExist();
 		
 	}
 
