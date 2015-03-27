@@ -278,13 +278,14 @@ public class ListFragment extends BaseFragment {
 			load();
 		}
 		
-		if (enableFadingActionBar && listHeaderView != null) {
+		if (enableFadingActionBar) {
 			setActionBarOverlay(true);
-			listHeaderView.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
-			fadingActionBarHelper = new FadingActionBarHelper();
-			fadingActionBarHelper.setBackground(R.drawable.actionbar_background)
-			.setFullyVisiblePosition(listHeaderView.getMeasuredHeight())
-			.initialize(getActivity());
+			if (fadingActionBarHelper == null) {
+				fadingActionBarHelper = new FadingActionBarHelper();
+				fadingActionBarHelper.setBackground(R.drawable.actionbar_background)
+				.setFullyVisiblePosition(getActionBarFullyVisiblePosition());
+			}
+			fadingActionBarHelper.initialize(getActivity());
 		}
 	}
 	
@@ -308,6 +309,14 @@ public class ListFragment extends BaseFragment {
 			((ListView) absListView).setSelectionFromTop(listViewIndex, listViewTop);
 		}
 		setListShown(true, false);
+	}
+	
+	private int getActionBarFullyVisiblePosition() {
+		if (listHeaderView != null) {
+			listHeaderView.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
+			return listHeaderView.getMeasuredHeight();
+		}
+		return 0;
 	}
 
 	@Override

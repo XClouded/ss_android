@@ -1,5 +1,6 @@
 package com.myandb.singsong.widget;
 
+import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 
 import android.app.Activity;
@@ -21,6 +22,7 @@ public class FadingActionBarHelper implements OnScrollListener {
 	private static final int DEFAULT_VISIBLE_POSITION = 4000;
 	private static final int MAX_ALPHA = 255;
 	private static final int ICON_TRANSITION_ALPHA = 130;
+	private static final int INVALID_ALPHA = -1;
 	
 	private Drawable backgroundDrawable;
 	private Drawable homeDrawable;
@@ -31,7 +33,7 @@ public class FadingActionBarHelper implements OnScrollListener {
 	private int backgroundResId;
 	private int fullyVisiblePosition;
 	private int maxAlpha;
-	private int previousAlpha = -1;
+	private int previousAlpha;
 	private int currentOverflowImageRes;
 	private float visibleThreshold;
 	private boolean containInvalidPayloadItemBug;
@@ -104,6 +106,8 @@ public class FadingActionBarHelper implements OnScrollListener {
 			
 			fullyVisiblePosition = fullyVisiblePosition > 0 ? fullyVisiblePosition : DEFAULT_VISIBLE_POSITION;
 			visibleThreshold = (float) (fullyVisiblePosition * maxAlpha / MAX_ALPHA);
+			currentOverflowImageRes = App.INVALID_RESOURCE_ID;
+			previousAlpha = INVALID_ALPHA;
 		}
 	}
 	
