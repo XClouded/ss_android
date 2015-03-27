@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.android.volley.Request.Method;
@@ -46,7 +45,7 @@ import com.myandb.singsong.util.Utility;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
-public class UserHomeFragment extends ListFragment {
+public class UserHomeFragment extends TabListFragment {
 	
 	public static final String EXTRA_THIS_USER = "this_user";
 	public static final int REQUEST_CODE_EDIT_PROFILE = 101; 
@@ -108,13 +107,31 @@ public class UserHomeFragment extends ListFragment {
 	}
 
 	@Override
-	protected ListAdapter instantiateAdapter(Activity activity) {
-		return new MySongAdapter(isCurrentUser(), false);
-	}
+	protected void initialize(Activity activity) {
+		super.initialize(activity);
+		setOnTabChangedListener(new OnTabChangedListener() {
 
-	@Override
-	protected UrlBuilder instantiateUrlBuilder(Activity activity) {
-		return new UrlBuilder().s("users").s(thisUser.getId()).s("songs").s("all");
+			@Override
+			public void onSelected(View view) {
+				if (view.getId() == R.id.tv_user_songs) {
+					setListViewVerticalPadding(true);
+				} else {
+					setListViewVerticalPadding(false);
+				}
+				
+				if (view instanceof TextView) {
+					TextView textView = (TextView) view;
+					textView.setTextColor(getResources().getColor(R.color.font_highlight));
+				}
+			}
+
+			@Override
+			public void onUnselected(View view) {
+				TextView textView = (TextView) view;
+				textView.setTextColor(getResources().getColor(R.color.white));
+			}
+		});
+		selectTab(tvUserSongs);
 	}
 
 	@Override
@@ -182,15 +199,16 @@ public class UserHomeFragment extends ListFragment {
 	}
 	
 	private void setOnToListClickListener() {
-		tvUserFollowings.setOnClickListener(toUserItemListClickListener);
-		tvUserFollowers.setOnClickListener(toUserItemListClickListener);
+		tvUserSongs.setOnClickListener(selectTabClickListener);
+		tvUserFollowings.setOnClickListener(selectTabClickListener);
+		tvUserFollowers.setOnClickListener(selectTabClickListener);
 	}
 	
-	private OnClickListener toUserItemListClickListener = new OnClickListener() {
+	private OnClickListener selectTabClickListener = new OnClickListener() {
 		
 		@Override
 		public void onClick(View view) {
-			onToUserItemListClick(view.getId());
+			selectTab(view);
 		}
 	};
 	
@@ -204,24 +222,6 @@ public class UserHomeFragment extends ListFragment {
 		Bundle params = new Bundle();
 		
 		switch (id) {
-		case R.id.action_user_followings:
-		case R.id.tv_user_followings:
-			title += getString(R.string.following);
-			segment += "followings";
-			params.putString("req[]", "profile");
-			params.putString("order", "friendships.created_at");
-			adapterName = FriendsAdapter.class.getName();
-			break;
-			
-		case R.id.action_user_followers:	
-		case R.id.tv_user_followers:
-			title += getString(R.string.follower);
-			segment += "followers";
-			params.putString("req[]", "profile");
-			params.putString("order", "friendships.created_at");
-			adapterName = FriendsAdapter.class.getName();
-			break;
-			
 		case R.id.action_user_likings:
 			title += getString(R.string.user_liking_songs);
 			segment += "songs/likings";
@@ -539,6 +539,21 @@ public class UserHomeFragment extends ListFragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		onToUserItemListClick(item.getItemId());
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	protected void defineTabs(TabHost tabHost) {
+		tabHost.putTab(tvUserSongs, new Tab(
+				new UrlBuilder().s("users").s(thisUser.getId()).s("songs").s("all"), 
+				new MySongAdapter(isCurrentUser(), false)));
+		
+		tabHost.putTab(tvUserFollowings, new Tab(
+				new UrlBuilder().s("users").s(thisUser.getId()).s("followings").p("req[]", "profile").p("order", "friendships.created_at"),
+				new FriendsAdapter()));
+		
+		tabHost.putTab(tvUserFollowers, new Tab(
+				new UrlBuilder().s("users").s(thisUser.getId()).s("followers").p("req[]", "profile").p("order", "friendships.created_at"),
+				new FriendsAdapter()));
 	}
 	
 }

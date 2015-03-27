@@ -34,6 +34,9 @@ public class GradualLoader implements OnScrollListener {
 	}
 	
 	public void setUrlBuilder(UrlBuilder urlBuilder) {
+		if (this.urlBuilder != null) {
+			this.urlBuilder.skip(count);
+		}
 		this.urlBuilder = urlBuilder;
 		this.nothingToLoad = false;
 		this.loading = false;

@@ -368,8 +368,6 @@ public class ListFragment extends BaseFragment {
 		
 		if (clearAdapter) {
 			setListShown(false);
-		} else {
-			showProgressDialog();
 		}
 		
 		loader.setUrlBuilder(urlBuilder);
