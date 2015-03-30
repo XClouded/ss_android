@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.android.volley.Request.Method;
 import com.google.android.gcm.GCMBaseIntentService;
+import com.google.android.gcm.GCMRegistrar;
 import com.google.gson.Gson;
 import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.fragment.KaraokeFragment;
@@ -49,6 +50,22 @@ public class GCMIntentService extends GCMBaseIntentService {
 	
 	public GCMIntentService() {
 		super(PROJECT_ID);
+	}
+	
+	public static void register(Context context) {
+		try {
+			GCMRegistrar.checkDevice(context);
+			GCMRegistrar.checkManifest(context);
+			final String registrationId = GCMRegistrar.getRegistrationId(context);
+			
+			if ("".equals(registrationId)) {
+				GCMRegistrar.register(context, GCMIntentService.PROJECT_ID);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			// Device does not have package com.google.android.gsf
+			// This will not happened
+		}
 	}
 	
 	@Override

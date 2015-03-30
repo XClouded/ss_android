@@ -82,13 +82,11 @@
 	        
 	    </LinearLayout>
 	    
-	    <ImageView
-	        style="@style/DividerHorizontal" />
-	    
 	    <LinearLayout
 	        android:id="@+id/ll_change_email"
 	        android:orientation="vertical"
 	        android:background="@drawable/row_naked_selector"
+	        android:visibility="gone"
 	        style="@style/FormBaseTwoLine" >
 	        
 	        <TextView
@@ -104,13 +102,11 @@
 	        
 	    </LinearLayout>
 	    
-	    <ImageView
-	        style="@style/DividerHorizontal" />
-	    
 	    <LinearLayout
 	        android:id="@+id/ll_change_kakao"
 	        android:orientation="vertical"
 	        android:background="@drawable/row_naked_selector"
+	        android:visibility="gone"
 	        style="@style/FormBaseTwoLine" >
 	        
 	        <TextView

@@ -10,9 +10,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.Html;
-import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Patterns;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -45,7 +45,10 @@ public class JoinDialog extends BaseDialog {
 	private TextView tvValidUsername;
 	private TextView tvValidPassword;
 	private TextView tvValidRePassword;
-	private TextView tvAgreementPolicy;
+	private TextView tvImportantTerms;
+	private TextView tvPrivacyPurpose;
+	private TextView tvShowAllTerms;
+	private TextView tvShowAllPrivacy;
 	private String lastInputUsername;
 	private int colorGrey;
 	private int colorPrimary;
@@ -67,7 +70,10 @@ public class JoinDialog extends BaseDialog {
 		tvValidUsername = (TextView) view.findViewById(R.id.tv_valid_username);
 		tvValidPassword = (TextView) view.findViewById(R.id.tv_valid_password);
 		tvValidRePassword = (TextView) view.findViewById(R.id.tv_valid_password_re);
-		tvAgreementPolicy = (TextView) view.findViewById(R.id.tv_agreement_policy);
+		tvImportantTerms = (TextView) view.findViewById(R.id.tv_important_terms);
+		tvPrivacyPurpose = (TextView) view.findViewById(R.id.tv_privacy_purpose);
+		tvShowAllTerms = (TextView) view.findViewById(R.id.tv_show_all_terms);
+		tvShowAllPrivacy = (TextView) view.findViewById(R.id.tv_show_all_privacy);
 	}
 	
 	@Override
@@ -96,18 +102,13 @@ public class JoinDialog extends BaseDialog {
 		btnJoinComplete.setEnabled(false);
 		btnJoinComplete.setOnClickListener(joinClickListener);
 		
-		tvAgreementPolicy.setMovementMethod(LinkMovementMethod.getInstance());
-		tvAgreementPolicy.setText(getPolicyHtml());
-	}
-	
-	private Spanned getPolicyHtml() {
-		String policyHtml = "가입과 함께 인증 메일이 발송됩니다.<br/>";
-		policyHtml += "가입과 함께 ";
-		policyHtml += Utility.getHtmlAnchor(getTermsUrl(), "이용 약관");
-		policyHtml += "과 ";
-		policyHtml += Utility.getHtmlAnchor(getPrivacyUrl(), "개인정보 보호정책");
-		policyHtml += "에 동의하는 것으로 간주합니다.";
-		return Html.fromHtml(policyHtml);
+		tvImportantTerms.setMovementMethod(new ScrollingMovementMethod());
+		tvPrivacyPurpose.setMovementMethod(new ScrollingMovementMethod());
+		
+		tvShowAllTerms.setMovementMethod(new LinkMovementMethod());
+		tvShowAllPrivacy.setMovementMethod(new LinkMovementMethod());
+		tvShowAllTerms.setText(Html.fromHtml(Utility.getHtmlAnchor(getTermsUrl(), "전문보기")));
+		tvShowAllPrivacy.setText(Html.fromHtml(Utility.getHtmlAnchor(getPrivacyUrl(), "전문보기")));
 	}
 	
 	private String getTermsUrl() {
@@ -117,7 +118,7 @@ public class JoinDialog extends BaseDialog {
 	
 	private String getPrivacyUrl() {
 		UrlBuilder urlBuilder = new UrlBuilder();
-		return urlBuilder.s("w").s("privacy").toString();
+		return urlBuilder.s("w").s("privacy-20150401").toString();
 	}
 	
 	private TextWatcher usernameChangedListener = new TextWatcher() {

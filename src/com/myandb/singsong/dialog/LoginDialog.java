@@ -3,8 +3,6 @@ package com.myandb.singsong.dialog;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.facebook.Session;
-import com.google.android.gcm.GCMRegistrar;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.myandb.singsong.GCMIntentService;
@@ -20,10 +18,14 @@ import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.secure.Encryption;
 import com.myandb.singsong.util.Utility;
 import com.sromku.simple.fb.Permission.Type;
+import com.sromku.simple.fb.entities.Profile;
+import com.sromku.simple.fb.entities.Profile.Properties;
 import com.sromku.simple.fb.listeners.OnLoginListener;
+import com.sromku.simple.fb.listeners.OnProfileListener;
 
 import android.app.Activity;
 import android.os.Build;
+import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
@@ -44,6 +46,7 @@ public class LoginDialog extends BaseDialog {
 	private Button btnFacebook;
 	private TextView tvFindPassword;
 	private JoinDialog joinDialog;
+	private FacebookJoinDialog facebookJoinDialog;
 	private Activity activity;
 
 	@Override
@@ -113,12 +116,74 @@ public class LoginDialog extends BaseDialog {
 				@Override
 				public void onLogin() {
 					showProgressDialog();
-					Session session = getSimpleFacebook().getSession();
-					loginByFacebook(session.getAccessToken());
+					getFacebookProfile();
 				}
 			});
 		}
 	};
+	
+	private void getFacebookProfile() {
+		Profile.Properties properties = new Profile.Properties.Builder().add(Properties.ID).build();
+		getSimpleFacebook().getProfile(properties, new OnProfileListener() {
+
+			@Override
+			public void onComplete(Profile response) {
+				super.onComplete(response);
+				checkFacebookIdDuplication(response.getId());
+			}
+
+			@Override
+			public void onException(Throwable throwable) {
+				super.onException(throwable);
+				onLoginError();
+			}
+
+			@Override
+			public void onFail(String reason) {
+				super.onFail(reason);
+				onLoginError();
+			}
+			
+		});
+	}
+	
+	private void checkFacebookIdDuplication(String facebookId) {
+		Bundle params = new Bundle();
+		params.putString("facebook_id", facebookId);
+		JSONObjectRequest request = new JSONObjectRequest(
+				"users", params, null,
+				new JSONObjectSuccessListener(this, "onFacebookIdFound"),
+				new JSONErrorListener(this, "onFacebookIdNotFound")
+		);
+		addRequest(request);
+	}
+	
+	public void onFacebookIdFound(JSONObject response) {
+		dismissProgressDialog();
+		String accessToken = getSimpleFacebook().getSession().getAccessToken();
+		loginByFacebook(accessToken);
+	}
+	
+	public void onFacebookIdNotFound() {
+		dismissProgressDialog();
+		if (facebookJoinDialog == null) {
+			facebookJoinDialog = new FacebookJoinDialog();
+			facebookJoinDialog.setOnJoinCompleteListener(new OnJoinCompleteListener() {
+				
+				@Override
+				public void onJoin() {
+					onLoginComplete();
+				}
+			});
+		}
+		String accessToken = getSimpleFacebook().getSession().getAccessToken();
+		Bundle bundle = new Bundle();
+		bundle.putString(FacebookJoinDialog.EXTRA_FACEBOOK_TOKEN, accessToken);
+		facebookJoinDialog.show(getChildFragmentManager(), "");
+		if (Build.VERSION.SDK_INT == Build.VERSION_CODES.JELLY_BEAN) {
+			getChildFragmentManager().executePendingTransactions();
+		}
+	}
 	
 	private View.OnClickListener toJoinClickListener = new View.OnClickListener() {
 		
@@ -228,25 +293,9 @@ public class LoginDialog extends BaseDialog {
 		if (activity instanceof RootActivity) {
 			((RootActivity) activity).updateDrawer();
 		}
-		registerGcm();
+		GCMIntentService.register(activity);
 		dismissProgressDialog();
 		dismiss();
-	}
-	
-	private void registerGcm() {
-		try {
-			GCMRegistrar.checkDevice(activity);
-			GCMRegistrar.checkManifest(activity);
-			final String registrationId = GCMRegistrar.getRegistrationId(activity);
-			
-			if ("".equals(registrationId)) {
-				GCMRegistrar.register(activity, GCMIntentService.PROJECT_ID);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			// Device does not have package com.google.android.gsf
-			// This will not happened
-		}
 	}
 	
 	public void onLoginError() {
