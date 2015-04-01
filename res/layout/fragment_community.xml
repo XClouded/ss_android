@@ -164,6 +164,80 @@
         </RelativeLayout>
         
         <RelativeLayout
+            android:id="@+id/rl_link_terms"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/margin_big"
+            android:paddingBottom="@dimen/margin_big"
+            android:paddingLeft="@dimen/margin"
+            android:paddingRight="@dimen/margin"
+            android:background="@drawable/row_naked_selector" >
+            
+            <ImageView
+                android:id="@+id/icon_terms"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/margin_small"
+                style="@style/ImageViewBase" />
+	        
+	        <TextView
+	            android:text="이용약관"
+	            android:textStyle="bold"
+	            android:layout_toRightOf="@id/icon_terms"
+	            android:layout_centerVertical="true"
+	            style="@style/TextViewBase" />
+            
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_arrow_right_dark"
+                android:layout_alignParentRight="true"
+                style="@style/ImageViewBase" />
+            
+        </RelativeLayout>
+        
+        <ImageView
+	        style="@style/DividerHorizontal" />
+        
+        <RelativeLayout
+            android:id="@+id/rl_link_privacy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/margin_big"
+            android:paddingBottom="@dimen/margin_big"
+            android:paddingLeft="@dimen/margin"
+            android:paddingRight="@dimen/margin"
+            android:layout_marginBottom="@dimen/margin"
+            android:background="@drawable/row_naked_selector" >
+            
+            <ImageView
+                android:id="@+id/icon_privacy"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/margin_small"
+                style="@style/ImageViewBase" />
+	        
+	        <TextView
+	            android:text="개인정보 취급방침"
+	            android:textStyle="bold"
+	            android:layout_toRightOf="@id/icon_privacy"
+	            android:layout_centerVertical="true"
+	            style="@style/TextViewBase" />
+            
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_arrow_right_dark"
+                android:layout_alignParentRight="true"
+                style="@style/ImageViewBase" />
+            
+        </RelativeLayout>
+        
+        <RelativeLayout
             android:id="@+id/rl_link_facebook"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

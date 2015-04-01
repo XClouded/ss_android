@@ -126,7 +126,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
                 android:maxLines="4"
-                android:text="①회원제서비스 운영 및 관리(가입 및 탈퇴 처리 등)\n②중요사항 고지 등 의사소통 경로\n③서비스 민원사항∙고충 처리, 결과 안내\n④서비스 부정이용행위 제재 등\n⑤회원의 정보 열람, 정정권 이행\n⑥정보통신망법 등 관련 법령에 따른 보유 및 보존의무 이행"
+                android:text="①회원제서비스 운영 및 관리(가입 및 탈퇴 처리 등)\n②중요사항 고지 등 의사소통 경로\n③서비스 민원사항∙고충 처리, 결과 안내
+                ④서비스 부정이용행위 제재 등\n⑤회원의 정보 열람, 정정권 이행\n⑥정보통신망법 등 관련 법령에 따른 보유 및 보존의무 이행"
                 android:textSize="@dimen/text_sub_content"
                 style="@style/TextViewBase" />
             
