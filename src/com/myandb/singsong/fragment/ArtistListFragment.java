@@ -87,7 +87,9 @@ public class ArtistListFragment extends ListFragment {
 	private void addArtistView() {
 		if (todayArtistAdapter != null) {
 			View child = todayArtistAdapter.getView(0, null, vgTodayCollaboArtistContainer);
-			vgTodayCollaboArtistContainer.addView(child);
+			if (child != null) {
+				vgTodayCollaboArtistContainer.addView(child);
+			}
 		}
 	}
 

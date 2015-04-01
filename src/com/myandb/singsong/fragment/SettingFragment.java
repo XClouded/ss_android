@@ -211,6 +211,12 @@ public class SettingFragment extends BaseFragment {
 		public void onClick(View v) {
 			User user = Authenticator.getUser();
 			Profile profile = user.getProfile();
+			
+			if (profile == null) {
+				makeToast("프로필 정보를 불러들이는데 실패했습니다. 다시 로그인해주세요 :");
+				return;
+			}
+			
 			BaseDialog dialog = null;
 			Bundle bundle = new Bundle();
 			
@@ -249,7 +255,13 @@ public class SettingFragment extends BaseFragment {
 			
 			if (dialog != null) {
 				dialog.setArguments(bundle);
-				dialog.show(getChildFragmentManager(), "");
+				try {
+					dialog.show(getChildFragmentManager(), "");
+				} catch (IllegalStateException e) {
+					e.printStackTrace();
+					// Can not perform this action after onSaveInstanceState
+					// Android bug
+				}
 			}
 		}
 	};
@@ -478,6 +490,11 @@ public class SettingFragment extends BaseFragment {
 		tvUserUsername.setText(user.getUsername());
 		tvUserNickname.setText(user.getNickname());
 		
+		if (profile == null) {
+			makeToast("프로필 정보를 불러들이는데 실패했습니다. 다시 로그인해주세요 :");
+			return;
+		}
+		
 		if (profile.getEmail().length() > 0) {
 			tvUserEmail.setText(profile.getEmail());
 		} else {
@@ -510,12 +527,13 @@ public class SettingFragment extends BaseFragment {
 					asyncTask.setOutputFile(scaledImageFile);
 					
 					Uri selectedImage = data != null ? data.getData() : tempUri;
-					InputStream imageStream = getActivity().getContentResolver().openInputStream(selectedImage);
-					asyncTask.execute(imageStream);
-					
-					btnChangePhoto.setOnClickListener(uploadPhotoClickListener);
-					btnChangePhoto.setVisibility(View.VISIBLE);
-				} catch (FileNotFoundException e) {
+					if (selectedImage != null) {
+						InputStream imageStream = getActivity().getContentResolver().openInputStream(selectedImage);
+						asyncTask.execute(imageStream);
+						btnChangePhoto.setOnClickListener(uploadPhotoClickListener);
+						btnChangePhoto.setVisibility(View.VISIBLE);
+					}
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}

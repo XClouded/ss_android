@@ -493,9 +493,6 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 					break;
 					
 				case PLAY:
-					if (service != null && service.getSong() != null) {
-						PlayCounter.countAsync(getContext(), "songs", service.getSong().getId());
-					}
 					onProgressUpdate();
 					ivPlayControl.setImageResource(R.drawable.ic_pause);
 					ivDragPlayControl.setImageResource(R.drawable.ic_pause);
@@ -628,6 +625,10 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 				Runnable r = new WeakRunnable<SlidingPlayerLayout>(this, "onProgressUpdate");
 				handler.postDelayed(r, 1000);
 			}
+		}
+
+		if (service != null && service.getSong() != null) {
+			PlayCounter.countAsync(getContext(), "songs", service.getSong().getId());
 		}
 	}
 	

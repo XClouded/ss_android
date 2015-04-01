@@ -3,6 +3,8 @@ package com.myandb.singsong.net;
 import org.json.JSONArray;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 
@@ -10,14 +12,15 @@ import com.myandb.singsong.App;
 
 public class GradualLoader implements OnScrollListener {
 	
-	private static final int INITIAL_LOAD_NUM = 25;
-	private static final int ADDITIONAL_LOAD_NUM = 15;
-	private static final int VISIBLE_THRESHOLD = 10; 
+	public static final int INITIAL_LOAD_NUM = 25;
+	public static final int ADDITIONAL_LOAD_NUM = 15;
+	public static final int VISIBLE_THRESHOLD = 10; 
 
 	private Context context;
 	private OnLoadCompleteListener completeListener;
 	private OnLoadErrorListener errorListener;
 	private UrlBuilder urlBuilder;
+	private Handler handler;
 	private int count;
 	private int requiredTake;
 	private int initialLoadNum;
@@ -27,6 +30,7 @@ public class GradualLoader implements OnScrollListener {
 
 	public GradualLoader(Context context) {
 		this.context = context;
+		handler = new Handler(Looper.getMainLooper());
 	}
 	
 	public void setUrlBuilder(UrlBuilder urlBuilder) {
@@ -73,12 +77,19 @@ public class GradualLoader implements OnScrollListener {
 			urlBuilder.take(take);
 			requiredTake = take;
 			
-			JSONArrayRequest request = new JSONArrayRequest(
+			final JSONArrayRequest request = new JSONArrayRequest(
 				urlBuilder.build(),
 				new JSONArraySuccessListener(this, "onLoadResponse"),
 				new JSONErrorListener(this, "onLoadError")
 			);
-			((App) context.getApplicationContext()).addShortLivedRequest(context, request);
+			
+			handler.postDelayed(new Runnable() {
+				
+				@Override
+				public void run() {
+					((App) context.getApplicationContext()).addShortLivedRequest(context, request);
+				}
+			}, 300);
 		}
 	}
 	

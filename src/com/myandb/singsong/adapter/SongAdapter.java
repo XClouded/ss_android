@@ -66,6 +66,7 @@ public class SongAdapter extends HolderAdapter<Song, SongAdapter.SongHolder> {
 				return;
 			}
 			
+			viewHolder.vCollaboNumWrapper.setVisibility(View.GONE);
 			viewHolder.vThisPhotoWrapper.setVisibility(View.VISIBLE);
 			viewHolder.ivThisSongImage.setVisibility(View.VISIBLE);
 			setCornerRadius(viewHolder.ivParentSongImage, false);
@@ -83,16 +84,19 @@ public class SongAdapter extends HolderAdapter<Song, SongAdapter.SongHolder> {
 			viewHolder.ivParentUserPhoto.setOnClickListener(parentUser.getProfileClickListener());
 			viewHolder.ivThisUserPhoto.setOnClickListener(thisUser.getProfileClickListener());
 		} else {
+			viewHolder.vCollaboNumWrapper.setVisibility(View.VISIBLE);
 			viewHolder.vThisPhotoWrapper.setVisibility(View.GONE);
 			viewHolder.ivThisSongImage.setVisibility(View.GONE);
 			setCornerRadius(viewHolder.ivParentSongImage, true);
 			
 			viewHolder.tvParentUserNickname.setText(thisUser.getNickname());
 			viewHolder.tvParentSongMessage.setText(song.getCroppedMessage());
+			viewHolder.tvCollaboNum.setText(song.getWorkedCollaboNum());
 			
 			ImageHelper.displayPhoto(thisUser, viewHolder.ivParentUserPhoto);
 			ImageHelper.displayPhoto(song.getPhotoUrl(), viewHolder.ivParentSongImage);
 			
+			viewHolder.vCollaboNumWrapper.setOnClickListener(song.getChildrenClickListener());
 			viewHolder.ivParentUserPhoto.setOnClickListener(thisUser.getProfileClickListener());
 		}
 	}
@@ -110,6 +114,7 @@ public class SongAdapter extends HolderAdapter<Song, SongAdapter.SongHolder> {
 		
 		public TextView tvSongLikeNum;
 		public TextView tvSongCommentNum;
+		public TextView tvCollaboNum;
 		public TextView tvSongCreatedTime;
 		public TextView tvParentUserNickname;
 		public TextView tvParentSongMessage;
@@ -122,6 +127,7 @@ public class SongAdapter extends HolderAdapter<Song, SongAdapter.SongHolder> {
 		public ImageView ivThisSongImage;
 		public View vPrelistenControl;
 		public View vThisPhotoWrapper;
+		public View vCollaboNumWrapper;
 		
 		public SongHolder(View view) {
 			super(view);
@@ -131,6 +137,7 @@ public class SongAdapter extends HolderAdapter<Song, SongAdapter.SongHolder> {
 			tvParentSongMessage = (TextView) view.findViewById(R.id.tv_parent_song_message);
 			tvThisSongMessage = (TextView) view.findViewById(R.id.tv_this_song_message);
 			tvMusicInfo = (TextView) view.findViewById(R.id.tv_music_info);
+			tvCollaboNum = (TextView) view.findViewById(R.id.tv_song_collabo_num);
 			tvSongLikeNum = (TextView) view.findViewById(R.id.tv_song_like_num);
 			tvSongCommentNum = (TextView) view.findViewById(R.id.tv_song_comment_num);
 			tvSongCreatedTime = (TextView) view.findViewById(R.id.tv_song_created_time);
@@ -140,6 +147,7 @@ public class SongAdapter extends HolderAdapter<Song, SongAdapter.SongHolder> {
 			ivThisSongImage = (ImageView) view.findViewById(R.id.iv_this_song_image);
 			vPrelistenControl = view.findViewById(R.id.ll_prelisten_control);
 			vThisPhotoWrapper = view.findViewById(R.id.ll_this_photo_wrapper);
+			vCollaboNumWrapper = view.findViewById(R.id.ll_collabo_num_wrapper);
 		}
 		
 	}

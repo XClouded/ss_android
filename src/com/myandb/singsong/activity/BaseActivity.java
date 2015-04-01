@@ -65,7 +65,9 @@ public abstract class BaseActivity extends ActionBarActivity {
 		try {
 			Fragment fragment = instantiateFragmentFromIntent(intent);
 			boolean isRootFragment = intent.getBooleanExtra(EXTRA_FRAGMENT_ROOT, false);
-			replaceContentFragment(fragment, isRootFragment);
+			if (fragment != null) {
+				replaceContentFragment(fragment, isRootFragment);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -84,9 +86,11 @@ public abstract class BaseActivity extends ActionBarActivity {
 			Uri uri = intent.getData();
 			fragmentName = uri.getFragment();
 			fragmentBundle = getBundleFromQuery(uri.getQuery());
-		} else {
+		} else if (intent.hasExtra(EXTRA_FRAGMENT_NAME)) {
 			fragmentName = intent.getStringExtra(EXTRA_FRAGMENT_NAME);
 			fragmentBundle = intent.getBundleExtra(EXTRA_FRAGMENT_BUNDLE);
+		} else {
+			return null;
 		}
 		
 		return Fragment.instantiate(this, fragmentName, fragmentBundle);
@@ -303,6 +307,10 @@ public abstract class BaseActivity extends ActionBarActivity {
 	
 	public PlayerService getPlayerService() {
 		return service;
+	}
+	
+	public Handler getHandler() {
+		return handler;
 	}
 	
 	public abstract void onPageChanged(Intent intent);

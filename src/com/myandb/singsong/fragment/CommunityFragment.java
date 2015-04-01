@@ -23,6 +23,8 @@ public class CommunityFragment extends BaseFragment {
 	private View vLinkMr;
 	private View vLinkFacebook;
 	private View vLinkReview;
+	private View vLinkTerms;
+	private View vLinkPrivacy;
 
 	@Override
 	protected int getResourceId() {
@@ -37,6 +39,8 @@ public class CommunityFragment extends BaseFragment {
 		vLinkMr = view.findViewById(R.id.rl_link_mr);
 		vLinkFacebook = view.findViewById(R.id.rl_link_facebook);
 		vLinkReview = view.findViewById(R.id.rl_link_review);
+		vLinkTerms = view.findViewById(R.id.rl_link_terms);
+		vLinkPrivacy = view.findViewById(R.id.rl_link_privacy);
 	}
 
 	@Override
@@ -50,6 +54,8 @@ public class CommunityFragment extends BaseFragment {
 		vLinkMr.setOnClickListener(webLinkClickListener);
 		vLinkFacebook.setOnClickListener(facebookClickListener);
 		vLinkReview.setOnClickListener(storeClickListener);
+		vLinkTerms.setOnClickListener(webLinkClickListener);
+		vLinkPrivacy.setOnClickListener(webLinkClickListener);
 	}
 	
 	private OnClickListener webLinkClickListener = new OnClickListener() {
@@ -81,6 +87,16 @@ public class CommunityFragment extends BaseFragment {
 			case R.id.rl_link_mr:
 				builder.s("4");
 				bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_community_mr_action_title));
+				break;
+				
+			case R.id.rl_link_terms:
+				builder = new UrlBuilder().s("w").s("terms");
+				bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_community_terms_action_title));
+				break;
+				
+			case R.id.rl_link_privacy:
+				builder = new UrlBuilder().s("w").s("privacy-20150401");
+				bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_community_privacy_action_title));
 				break;
 
 			default:

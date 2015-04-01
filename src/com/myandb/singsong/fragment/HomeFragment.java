@@ -358,7 +358,8 @@ public class HomeFragment extends BaseFragment {
 	
 	private void loadWaitingTop10() {
 		if (waitingSongAdapter == null) {
-			final UrlBuilder urlBuilder = new UrlBuilder().s("songs").s("root").p("order", "liking_num").take(10);
+			final String yesterday = StringFormatter.getDateString(Calendar.DAY_OF_YEAR, -1);
+			final UrlBuilder urlBuilder = new UrlBuilder().s("songs").s("root").start(yesterday).p("order", "collabo_num").take(10);
 			GradualLoader loader = new GradualLoader(getActivity());
 			loader.setUrlBuilder(urlBuilder);
 			loader.setOnLoadCompleteListener(new OnLoadCompleteListener() {
@@ -523,9 +524,12 @@ public class HomeFragment extends BaseFragment {
 	}
 	
 	private int getCurrentNotificationCount() {
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-		String key = getString(R.string.key_notification_count);
-		return preferences.getInt(key, 0);
+		if (getActivity() != null && isAdded()) {
+			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+			String key = getString(R.string.key_notification_count);
+			return preferences.getInt(key, 0);
+		}
+		return 0;
 	}
 	
 	private void setNotificationNum(int count, TextView textView) {
@@ -541,8 +545,10 @@ public class HomeFragment extends BaseFragment {
 	}
 	
 	private void registerNotificationCountListener() {
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-		preferences.registerOnSharedPreferenceChangeListener(notificationCountChangeListener);
+		if (getActivity() != null && isAdded()) {
+			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+			preferences.registerOnSharedPreferenceChangeListener(notificationCountChangeListener);
+		}
 	}
 	
 	private OnSharedPreferenceChangeListener notificationCountChangeListener = new OnSharedPreferenceChangeListener() {

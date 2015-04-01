@@ -11,22 +11,27 @@ public class PlayCounter {
 	
 	private static String savedEntityName = "";
 	private static int savedEntityId = 0;
+	private static int second = 0;
 	
 	public static void countAsync(Context context, String entityName, int entityId) {
 		if (savedEntityName.equals(entityName) && savedEntityId == entityId) {
-			return;
+			second++;
+		} else {
+			second = 0;
 		}
 		
 		savedEntityName = entityName;
 		savedEntityId = entityId;
 		
-		String segment = new StringBuilder()
-				.append(entityName)
-				.append("/")
-				.append(entityId)
-				.append("/logs").toString();
-		JustRequest request = new JustRequest(segment, null, new JSONObject());
-		((App) context.getApplicationContext()).addShortLivedRequest(context, request);
+		if (second == 60) {
+			String segment = new StringBuilder()
+			.append(entityName)
+			.append("/")
+			.append(entityId)
+			.append("/logs").toString();
+			JustRequest request = new JustRequest(segment, null, new JSONObject());
+			((App) context.getApplicationContext()).addShortLivedRequest(context, request);
+		}
 	}
 	
 }

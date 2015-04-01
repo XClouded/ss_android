@@ -14,6 +14,8 @@
     <string name="fragment_community_faq_action_title">FAQ</string>
     <string name="fragment_community_free_action_title">콜라보 게시판</string>
     <string name="fragment_community_mr_action_title">MR 요청 게시판</string>
+    <string name="fragment_community_terms_action_title">이용약관</string>
+    <string name="fragment_community_privacy_action_title">개인정보 취급방침</string>
     <string name="fragment_search_user_action_title">유저 검색</string>
     <string name="fragment_search_song_action_title">노래 검색</string>
     <string name="fragment_search_music_action_title">MR 검색</string>

@@ -11,6 +11,7 @@ import com.myandb.singsong.dialog.BaseDialog;
 import com.myandb.singsong.dialog.FrontNoticeDialog;
 import com.myandb.singsong.fragment.DrawerFragment;
 import com.myandb.singsong.fragment.HomeFragment;
+import com.myandb.singsong.fragment.NotificationFragment;
 import com.myandb.singsong.model.Notice;
 import com.myandb.singsong.service.PlayerService;
 import com.myandb.singsong.util.Utility;
@@ -31,6 +32,7 @@ public class RootActivity extends BaseActivity implements OnBackStackChangedList
 	public static final String SAVED_STATE_ACTION_BAR_HIDDEN = "saved_state_action_bar_hidden";
 	public static final String EXTRA_NOTICE = "notice";
 	public static final String EXTRA_SHOW_PLAYER = "show_player";
+	public static final String EXTRA_SHOW_NOTIFICATION = "show_notification";
 	
 	private SlidingMenu drawer;
 	private SlidingPlayerLayout slidingPlayerLayout;
@@ -263,6 +265,23 @@ public class RootActivity extends BaseActivity implements OnBackStackChangedList
 		} else if (isComponentOf(intent, RootActivity.class)) {
 			replaceContentFragmentFromIntent(intent);
 		}
+		
+		boolean showNotification = intent.getBooleanExtra(EXTRA_SHOW_NOTIFICATION, false);
+		if (showNotification) {
+			showNotificationFragment();
+		}
+	}
+	
+	private void showNotificationFragment() {
+		getHandler().postDelayed(new Runnable() {
+			
+			@Override
+			public void run() {
+				Intent intent = new Intent(RootActivity.this, UpActivity.class);
+				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, NotificationFragment.class.getName());
+				changePage(intent);
+			}
+		}, 1000);
 	}
 	
 	public void updateDrawer() {

@@ -9,6 +9,7 @@ import com.myandb.singsong.adapter.FriendsAdapter;
 import com.myandb.singsong.adapter.HolderAdapter;
 import com.myandb.singsong.adapter.MusicAdapter;
 import com.myandb.singsong.adapter.SimpleSongAdapter;
+import com.myandb.singsong.net.GradualLoader;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.widget.SearchView;
 import com.myandb.singsong.widget.SearchView.OnActionSearchListener;
@@ -121,6 +122,8 @@ public class SearchFragment extends ListFragment {
 			searchView.hideSoftKeyboard();
 			UrlBuilder urlBuilder = searchType.getUrlBuilder();
 			urlBuilder.keyword(keyword);
+			urlBuilder.skip(0);
+			urlBuilder.take(GradualLoader.INITIAL_LOAD_NUM);
 			if (searchType.equals(SearchType.USER)) {
 				urlBuilder.p("req[]", "profile");
 			}

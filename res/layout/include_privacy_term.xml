@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/margin" >
+    
+    <TextView
+        android:id="@+id/terms_title"
+        android:text="이용약관"
+        android:textStyle="bold"
+        style="@style/TextViewSubtitle" />
+    
+    <TextView
+        android:id="@+id/tv_show_all_terms"
+        android:layout_alignParentRight="true"
+        android:layout_alignBottom="@id/terms_title"
+        android:text="전문보기"
+        android:textSize="@dimen/text_subtitle"
+        android:textColor="@color/primary_dark"
+        android:linksClickable="true"
+        style="@style/TextViewBase" />
+    
+    <TextView
+        android:id="@+id/tv_important_terms"
+        android:layout_width="match_parent"
+        android:padding="@dimen/margin_tiny"
+        android:maxLines="4"
+        android:layout_below="@id/terms_title"
+        android:layout_marginBottom="@dimen/margin"
+        android:text="콜라보노래방은 스마트폰 노래방, SNS, 게시판, 모바일 콘텐츠 제공 서비스 등 인터넷과 모바일로 즐길 수 있는 다양한 서비스를 제공합니다. 
+콜라보노래방의 더 나은 서비스를 위해서 소프트웨어의 업데이트 버전을 제공할 수 있습니다. 
+또한 더 나은 서비스의 제공을 위해서 서비스의 이용과 관련된 각종 고지, 관리 메시지 및 기타 광고를 비롯한 이벤트 등 다양한 정보를 콜라보노래방 서비스에 표시하거나 직접 전송할 수 있습니다. 
+콜라보노래방 서비스 이용 중 시스템 오류 등 문제점을 발견하신다면 언제든지 고객센터(www.facebook.com/collabokaraoke)로 알려주시기 바랍니다. 
+여러분께서는 콜라보노래방 서비스를 마음껏 이용하실 수 있습니다. 
+콜라보노래방이 제공하는 스마트폰 노래방, SNS, 게시판 등 즐거운 서비스들을 사용자의 계정을 통하여 올바르게 접근하여 마음껏 이용하십시오. 
+하지만 콜라보노래방을 잘못된 방향으로 이용할 수 없습니다. 
+예를들어 콜라보노래방에서 제공하지 않는 방법으로의 우회 접근, 다른 서비스 이용자 정보의 무단 수집, 또 수집한 정보를 제공, 콜라보 노래방을 영리 목적으로 이용, 음란 정보나 저작권 침해 등 법령에 위반되는 행위를 하거나 관련된 게시물을 전송하는 것은 금지된다는 것을 이해하여 주시기 바랍니다. 
+또한 콜라보노래방의 동의없이 콜라보노래방 소프트웨어 일부를 복사, 수정, 배포, 판매, 대여, 담보제공하거나 타인에게 그 이용을 허락하거나, 소프트웨어를 역설계하거나 소스 코드 추출을 시도하는 등 서비스를 복제, 분해 또는 모방하거나 변형하는 행위도 금지됩니다. 
+여러분의 개인정보를 보호합니다. 여러분의 소중한 개인정보를 보호하기 위해서 최선을 다하고 있습니다. 
+개인정보 보호 규정과 관련하여서는 개인정보 취급 방침을 확인하여주시기 바랍니다. 
+콜라보 노래방은 여러분이 마음껏 서비스를 이용할 수 있도록 합리적인 수준의 주의를 기울여서 서비스를 제공합니다. 
+콜라보 노래방은 법령상 허용되는 한도 내에서 콜라보 노래방 서비스와 관련하여 본 약관에 명시되어 있지 않은 어떠한 구체적인 사항에 대한 약정이나 보증을 하지 않습니다. 
+가끔은 장애나 업데이트를 위해서 중단될 수도 있지만 예상 가능한 중단의 경우는 미리 서비스 제공화면에 공지하겠으며, 예측할 수 없는 이유일 경우 상황을 파악하는 대로 즉시 통지하도록 하겠습니다. 
+약관은 수정될 수 있습니다. 변경된 약관은 서비스 초기화면에 게시되며, 게시한 날로부터 15일 후 효력이 발생합니다. 본 약관 또는 콜라보 노래방 서비스와 관련해서는 대한민국의 법률이 적용됩니다. 
+
+공고일자 : 2014년 1월 9일 
+
+시행일자: 2014년 1월 24일 
+
+콜라보 노래방 관련 문의사항이 있으시면 언제든지 서비스 담당자(myandb@myandb.com)에게 연락해 주시기 바랍니다. 
+"
+        android:background="@drawable/container_border"
+        style="@style/TextViewBase" />
+    
+    <TextView
+        android:id="@+id/privacy_title"
+        android:layout_below="@id/tv_important_terms"
+        android:text="개인정보 수집 및 이용 동의"
+        android:textStyle="bold"
+        style="@style/TextViewSubtitle" />
+    
+    <TextView
+        android:id="@+id/tv_show_all_privacy"
+        android:layout_alignParentRight="true"
+        android:layout_alignBottom="@id/privacy_title"
+        android:text="전문보기"
+        android:textSize="@dimen/text_subtitle"
+        android:textColor="@color/primary_dark"
+        android:linksClickable="true"
+        style="@style/TextViewBase" />
+    
+    <TableLayout
+        android:id="@+id/table"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/privacy_title"
+        android:stretchColumns="*" >
+        
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_small"
+            android:background="@color/grey_dark" >
+            
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="목적"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:gravity="center"
+                style="@style/TextViewBase" />
+            
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="항목"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:gravity="center"
+                style="@style/TextViewBase" />
+            
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="보유기간"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:gravity="center"
+                style="@style/TextViewBase" />
+            
+        </TableRow>
+        
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:padding="@dimen/margin_small"
+            android:background="@color/grey_light_trans" >
+            
+            <TextView
+                android:id="@+id/tv_privacy_purpose"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:maxLines="4"
+                android:text="①회원제서비스 운영 및 관리(가입 및 탈퇴 처리 등)\n②중요사항 고지 등 의사소통 경로\n③서비스 민원사항∙고충 처리, 결과 안내
+                ④서비스 부정이용행위 제재 등\n⑤회원의 정보 열람, 정정권 이행\n⑥정보통신망법 등 관련 법령에 따른 보유 및 보존의무 이행"
+                android:textSize="@dimen/text_sub_content"
+                style="@style/TextViewBase" />
+            
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:text="이메일(아이디), 비밀번호, 닉네임"
+                android:textSize="@dimen/text_sub_content"
+                android:gravity="center"
+                style="@style/TextViewBase" />
+            
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:text="회원탈퇴 후 6개월간"
+                android:textSize="@dimen/text_sub_content"
+                android:gravity="center"
+                style="@style/TextViewBase" />
+            
+        </TableRow>
+        
+    </TableLayout>
+    
+    <TextView
+        android:id="@+id/agreement"
+        android:layout_width="match_parent"
+        android:paddingLeft="@dimen/margin"
+        android:paddingRight="@dimen/margin"
+        android:layout_marginTop="@dimen/margin"
+        android:layout_marginBottom="@dimen/margin"
+        android:layout_below="@id/table"
+        android:textStyle="bold"
+        android:text="이용약관 및 개인정보 동의 내용을 확인하였으며 위 내용에 동의합니다."
+        android:gravity="center"
+        style="@style/TextViewSubtitle" />
+    
+    <Button
+	    android:id="@+id/btn_join_complete"
+	    android:layout_alignParentRight="true"
+	    android:layout_below="@id/agreement"
+	    android:text="@string/join"
+	    android:background="@drawable/button_primary_selector"
+	    style="@style/ButtonBase" />
+
+</RelativeLayout>

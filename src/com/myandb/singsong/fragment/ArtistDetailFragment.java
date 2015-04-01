@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.mhdjang.infiniteviewpager.InfinitePagerAdapter;
 import com.myandb.singsong.R;
 import com.myandb.singsong.adapter.CommentAdapter;
 import com.myandb.singsong.adapter.SimpleSongAdapter;
@@ -35,6 +37,7 @@ import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.net.GradualLoader.OnLoadCompleteListener;
 import com.myandb.singsong.pager.PagerWrappingAdapter;
 import com.myandb.singsong.util.Utility;
+import com.viewpagerindicator.CirclePageIndicator;
 
 public class ArtistDetailFragment extends ListFragment {
 	
@@ -51,7 +54,8 @@ public class ArtistDetailFragment extends ListFragment {
 	private EditText etComment;
 	private ViewPager vpArtistSongs;
 	private Artist artist;
-	private PagerWrappingAdapter artistSongAdapter;
+	private PagerAdapter artistSongAdapter;
+	private CirclePageIndicator cpiArtistSongs;
 
 	@Override
 	protected int getListHeaderViewResId() {
@@ -82,6 +86,7 @@ public class ArtistDetailFragment extends ListFragment {
 		btnSubmitComment = (Button) view.findViewById(R.id.btn_submit_comment);
 		etComment = (EditText) view.findViewById(R.id.et_comment);
 		vpArtistSongs = (ViewPager) view.findViewById(R.id.vp_artist_songs);
+		cpiArtistSongs = (CirclePageIndicator) view.findViewById(R.id.cpi_artist_songs);
 	}
 
 	@Override
@@ -103,6 +108,8 @@ public class ArtistDetailFragment extends ListFragment {
 	@Override
 	protected void setupViews(Bundle savedInstanceState) {
 		super.setupViews(savedInstanceState);
+		
+		stylePageIndicator(cpiArtistSongs);
 		
 		User user = artist.getUser();
 		tvArtistNum.setText(getString(R.string.fragment_artist_num_prefix) + String.valueOf(artist.getId()));
@@ -134,8 +141,6 @@ public class ArtistDetailFragment extends ListFragment {
 	
 	private void loadUserSongs(User user) {
 		if (artistSongAdapter == null) {
-			final SimpleSongAdapter adapter = new SimpleSongAdapter();
-			artistSongAdapter = new PagerWrappingAdapter(adapter);
 			final UrlBuilder urlBuilder = new UrlBuilder().s("users").s(user.getId()).s("songs").s("all").p("order", "liking_num").take(5);
 			final GradualLoader loader = new GradualLoader(getActivity());
 			loader.setUrlBuilder(urlBuilder);
@@ -143,14 +148,39 @@ public class ArtistDetailFragment extends ListFragment {
 				
 				@Override
 				public void onComplete(JSONArray response) {
-					adapter.addAll(response);
-					vpArtistSongs.setAdapter(artistSongAdapter);
+					artistSongAdapter = getArtistSongAdapter(response);
+					onLoadUserSongs();
+				}
+				
+				private PagerAdapter getArtistSongAdapter(JSONArray response) {
+					try {
+						SimpleSongAdapter adapter = new SimpleSongAdapter();
+						adapter.addAll(response);
+						PagerWrappingAdapter wrappingAdapter = new PagerWrappingAdapter(adapter);
+						return new InfinitePagerAdapter(wrappingAdapter);
+					} catch (Exception e) {
+						e.printStackTrace();
+						return null;
+					}
 				}
 			});
 			loader.load();
 		} else {
-			vpArtistSongs.setAdapter(artistSongAdapter);
+			onLoadUserSongs();
 		}
+	}
+	
+	private void onLoadUserSongs() {
+		if (artistSongAdapter != null) {
+			vpArtistSongs.setAdapter(artistSongAdapter);
+			cpiArtistSongs.setViewPager(vpArtistSongs);
+		}
+	}
+	
+	private void stylePageIndicator(CirclePageIndicator indicator) {
+		indicator.setStrokeWidth(0f);
+		indicator.setPageColor(getResources().getColor(R.color.grey_light));
+		indicator.setFillColor(getResources().getColor(R.color.sub));
 	}
 	
 	private OnClickListener submitCommentClickListner = new ActivateOnlyClickListener() {

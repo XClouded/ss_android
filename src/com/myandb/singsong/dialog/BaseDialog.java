@@ -150,8 +150,13 @@ public abstract class BaseDialog extends DialogFragment {
 	}
 	
 	public void dismissProgressDialog() {
-		if (progressDialog != null && progressDialog.isShowing()) {
-			progressDialog.dismiss();
+		try {
+			if (progressDialog != null && progressDialog.isShowing()) {
+				progressDialog.dismiss();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			// ignore
 		}
 	}
 	
