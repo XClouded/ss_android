@@ -159,30 +159,17 @@
         android:paddingLeft="@dimen/margin"
         android:paddingRight="@dimen/margin"
         android:layout_marginTop="@dimen/margin"
-        android:layout_marginBottom="0dp"
+        android:layout_marginBottom="@dimen/margin"
         android:layout_below="@id/table"
         android:textStyle="bold"
         android:text="이용약관 및 개인정보 동의 내용을 확인하였으며 위 내용에 동의합니다."
         android:gravity="center"
         style="@style/TextViewSubtitle" />
     
-    <TextView
-        android:id="@+id/age"
-        android:layout_width="match_parent"
-        android:layout_below="@id/agreement"
-        android:paddingLeft="@dimen/margin"
-        android:paddingRight="@dimen/margin"
-        android:layout_marginBottom="@dimen/margin"
-        android:gravity="center"
-        android:textColor="@color/font_grey"
-        android:textSize="@dimen/text_hint"
-        android:text="(만 14세 미만 아동은 회원가입이 제한됩니다.)"
-        style="@style/TextViewBase" />
-    
     <Button
 	    android:id="@+id/btn_join_complete"
 	    android:layout_alignParentRight="true"
-	    android:layout_below="@id/age"
+	    android:layout_below="@id/agreement"
 	    android:text="@string/join"
 	    android:background="@drawable/button_primary_selector"
 	    style="@style/ButtonBase" />
