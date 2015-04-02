@@ -12,11 +12,8 @@ import android.os.Bundle;
 
 public class UrlBuilder {
 
-	private static final String API_SCHEME = "http";
-	private static final String API_DOMAIN = "www.myandb.com:8880";
-	private static final String API_DOMAIN_TEST = "14.63.164.15";
 	private static final String API_PATH = "/ss_api/public";
-	private static final String API_AUTHORITY = (App.TESTING ? API_DOMAIN_TEST : API_DOMAIN) + API_PATH;
+	private static final String API_AUTHORITY = App.MODE.getDomain() + API_PATH;
 	
 	private List<String> segments;
 	private Map<String, String> parameters;
@@ -86,7 +83,7 @@ public class UrlBuilder {
 	
 	public Uri build() {
 		Uri.Builder builder = new Uri.Builder();
-		builder.scheme(API_SCHEME);
+		builder.scheme(App.MODE.getScheme());
 		builder.encodedAuthority(API_AUTHORITY);
 		for (String segment : segments) {
 			builder.appendEncodedPath(segment);

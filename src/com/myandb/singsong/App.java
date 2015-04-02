@@ -16,9 +16,9 @@ import android.app.Application;
 import android.content.Context;
 
 public class App extends Application {
-
-	public static final boolean TESTING = false;
 	
+	public static final ApplicationMode MODE = ApplicationMode.MASTER;
+
 	public static final int INVALID_RESOURCE_ID = 0; 
 	
 	public static final String FACEBOOK_NAMESPACE = "collabokaraoke_";
