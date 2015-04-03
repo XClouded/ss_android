@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <TextView
+        android:text="멤버 수를 선택하세요!"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/margin"
+        style="@style/S2.Widget.TextView.H2" />
+    
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+        
+        <ImageView
+            android:id="@+id/iv_decrease_num"
+            android:src="@drawable/ic_arrow_left"
+            style="@style/S2.Widget.ImageView.Icon.Big" />
+        
+        <TextView
+            android:id="@+id/tv_member_num"
+            android:textSize="@dimen/text_impact"
+            android:text="8"
+            style="@style/S2.Widget.TextView.H1" />
+        
+        <ImageView
+            android:id="@+id/iv_increase_num"
+            android:src="@drawable/ic_arrow_right"
+            android:layout_marginRight="0dp"
+            android:layout_marginLeft="@dimen/margin"
+            style="@style/S2.Widget.ImageView.Icon.Big" />
+        
+    </LinearLayout>
+
+</LinearLayout>

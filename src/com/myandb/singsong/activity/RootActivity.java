@@ -9,6 +9,7 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.myandb.singsong.R;
 import com.myandb.singsong.dialog.BaseDialog;
 import com.myandb.singsong.dialog.FrontNoticeDialog;
+import com.myandb.singsong.fragment.CreateTeamFragment;
 import com.myandb.singsong.fragment.DrawerFragment;
 import com.myandb.singsong.fragment.HomeFragment;
 import com.myandb.singsong.fragment.NotificationFragment;
@@ -178,7 +179,7 @@ public class RootActivity extends BaseActivity implements OnBackStackChangedList
 	}
 	
 	private void setHomeFragment(Intent intent) {
-		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, HomeFragment.class.getName());
+		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, CreateTeamFragment.class.getName());
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_ROOT, true);
 		changePage(intent);
 	}

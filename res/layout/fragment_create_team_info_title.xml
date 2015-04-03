@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <TextView
+        android:text="팀명을 정하세요!"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/margin"
+        style="@style/S2.Widget.TextView.H2" />
+    
+    <EditText
+        android:id="@+id/et_title"
+        android:background="@drawable/card_idle"
+        android:layout_marginBottom="@dimen/margin"
+        android:maxLines="1"
+        android:maxLength="32"
+        style="@style/S2.Widget.EditText" />
+    
+    <Button
+        android:id="@+id/btn_check_unique"
+        android:layout_gravity="right"
+        android:text="중복확인"
+        style="@style/S2.Widget.Button.Mini" />
+
+</LinearLayout>

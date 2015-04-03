@@ -1,5 +1,8 @@
 package com.myandb.singsong.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.myandb.singsong.R;
 
 public class Category extends Model {
@@ -65,6 +68,18 @@ public class Category extends Model {
 			this.imageResourceId = R.drawable.img_ballad;
 			break;
 		}
+	}
+	
+	public static List<Category> getCategories() {
+		return getCategories(0, 10);
+	}
+	
+	public static List<Category> getCategories(int start, int end) {
+		List<Category> categories = new ArrayList<Category>();
+		for (int i = start; i < end; i++) {
+			categories.add(new Category(i));
+		}
+		return categories;
 	}
 	
 	public String getTitle() {
