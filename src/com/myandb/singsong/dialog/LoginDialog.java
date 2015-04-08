@@ -179,6 +179,7 @@ public class LoginDialog extends BaseDialog {
 		String accessToken = getSimpleFacebook().getSession().getAccessToken();
 		Bundle bundle = new Bundle();
 		bundle.putString(FacebookJoinDialog.EXTRA_FACEBOOK_TOKEN, accessToken);
+		facebookJoinDialog.setArguments(bundle);
 		facebookJoinDialog.show(getChildFragmentManager(), "");
 		if (Build.VERSION.SDK_INT == Build.VERSION_CODES.JELLY_BEAN) {
 			getChildFragmentManager().executePendingTransactions();
