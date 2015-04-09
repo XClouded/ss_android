@@ -37,6 +37,7 @@ public class FacebookJoinDialog extends BaseDialog {
 	private TextView tvPrivacyPurpose;
 	private TextView tvShowAllTerms;
 	private TextView tvShowAllPrivacy;
+	private TextView tvCollections;
 	private Button btnJoinComplete;
 
 	@Override
@@ -64,6 +65,7 @@ public class FacebookJoinDialog extends BaseDialog {
 		btnJoinComplete = (Button) view.findViewById(R.id.btn_join_complete);
 		tvImportantTerms = (TextView) view.findViewById(R.id.tv_important_terms);
 		tvPrivacyPurpose = (TextView) view.findViewById(R.id.tv_privacy_purpose);
+		tvCollections = (TextView) view.findViewById(R.id.tv_collections);
 		tvShowAllTerms = (TextView) view.findViewById(R.id.tv_show_all_terms);
 		tvShowAllPrivacy = (TextView) view.findViewById(R.id.tv_show_all_privacy);
 	}
@@ -77,6 +79,7 @@ public class FacebookJoinDialog extends BaseDialog {
 		
 		tvImportantTerms.setMovementMethod(new ScrollingMovementMethod());
 		tvPrivacyPurpose.setMovementMethod(new ScrollingMovementMethod());
+		tvCollections.setMovementMethod(new ScrollingMovementMethod());
 		
 		tvShowAllTerms.setMovementMethod(new LinkMovementMethod());
 		tvShowAllPrivacy.setMovementMethod(new LinkMovementMethod());

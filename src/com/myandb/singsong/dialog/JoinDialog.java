@@ -47,6 +47,7 @@ public class JoinDialog extends BaseDialog {
 	private TextView tvValidRePassword;
 	private TextView tvImportantTerms;
 	private TextView tvPrivacyPurpose;
+	private TextView tvCollections;
 	private TextView tvShowAllTerms;
 	private TextView tvShowAllPrivacy;
 	private String lastInputUsername;
@@ -72,6 +73,7 @@ public class JoinDialog extends BaseDialog {
 		tvValidRePassword = (TextView) view.findViewById(R.id.tv_valid_password_re);
 		tvImportantTerms = (TextView) view.findViewById(R.id.tv_important_terms);
 		tvPrivacyPurpose = (TextView) view.findViewById(R.id.tv_privacy_purpose);
+		tvCollections = (TextView) view.findViewById(R.id.tv_collections);
 		tvShowAllTerms = (TextView) view.findViewById(R.id.tv_show_all_terms);
 		tvShowAllPrivacy = (TextView) view.findViewById(R.id.tv_show_all_privacy);
 	}
@@ -104,6 +106,7 @@ public class JoinDialog extends BaseDialog {
 		
 		tvImportantTerms.setMovementMethod(new ScrollingMovementMethod());
 		tvPrivacyPurpose.setMovementMethod(new ScrollingMovementMethod());
+		tvCollections.setMovementMethod(new ScrollingMovementMethod());
 		
 		tvShowAllTerms.setMovementMethod(new LinkMovementMethod());
 		tvShowAllPrivacy.setMovementMethod(new LinkMovementMethod());

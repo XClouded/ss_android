@@ -145,10 +145,11 @@
                 style="@style/TextViewBase" />
             
             <TextView
+                android:id="@+id/tv_collections"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
-                android:text="이메일(아이디), 비밀번호, 닉네임"
+                android:text="아이디(이메일 또는 페이스북 아이디), 비밀번호, 닉네임"
                 android:textSize="@dimen/text_sub_content"
                 android:gravity="center"
                 style="@style/TextViewBase" />
