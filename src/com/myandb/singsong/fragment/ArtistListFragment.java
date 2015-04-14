@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 
+@Deprecated
 public class ArtistListFragment extends ListFragment {
 	
 	private ViewGroup vgTodayCollaboArtistContainer;

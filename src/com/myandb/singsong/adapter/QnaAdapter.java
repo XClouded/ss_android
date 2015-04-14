@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+@Deprecated
 public class QnaAdapter extends HolderAdapter<Qna, QnaAdapter.QnaHolder> {
 	
 	public QnaAdapter() {

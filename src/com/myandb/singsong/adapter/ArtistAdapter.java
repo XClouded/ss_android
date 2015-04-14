@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+@Deprecated
 public class ArtistAdapter extends HolderAdapter<Artist, ArtistAdapter.ArtistHolder> {
 	
 	public enum LayoutType {

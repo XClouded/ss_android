@@ -39,6 +39,7 @@ import com.myandb.singsong.pager.PagerWrappingAdapter;
 import com.myandb.singsong.util.Utility;
 import com.viewpagerindicator.CirclePageIndicator;
 
+@Deprecated
 public class ArtistDetailFragment extends ListFragment {
 	
 	public static final String EXTRA_ARTIST = "artist";
