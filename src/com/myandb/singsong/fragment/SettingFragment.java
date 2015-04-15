@@ -15,12 +15,8 @@ import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.dialog.BaseDialog;
-import com.myandb.singsong.dialog.ChangeEmailDialog;
-import com.myandb.singsong.dialog.ChangeKakaoDialog;
 import com.myandb.singsong.dialog.ChangeNicknameDialog;
-import com.myandb.singsong.dialog.ChangePasswordDialog;
 import com.myandb.singsong.dialog.ChangeStatusDialog;
-import com.myandb.singsong.dialog.WithdrawDialog;
 import com.myandb.singsong.event.OnCompleteListener;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.image.ResizeAsyncTask;
@@ -62,19 +58,13 @@ public class SettingFragment extends BaseFragment {
 	private ImageView ivUserPhoto;
 	private TextView tvUserUsername;
 	private TextView tvUserNickname;
-	private TextView tvUserEmail;
-	private TextView tvUserKakao;
 	private TextView tvUserStatus;
 	private ImageView ivIsFacebookActivated;
 	private ImageView ivIsNotificationEnabled;
-	private Button btnLogout;
-	private Button btnWithdraw;
 	private Button btnChangePhoto;
+	private View vUsername;
 	private View vChangeNickname;
-	private View vChangeEmail;
-	private View vChangeKakao;
 	private View vChangeStatus;
-	private View vChangePassword;
 	private View vConnectFacebook;
 	private View vEnableNotification;
 
@@ -88,19 +78,13 @@ public class SettingFragment extends BaseFragment {
 		ivUserPhoto = (ImageView) view.findViewById(R.id.iv_user_photo);
 		tvUserUsername = (TextView) view.findViewById(R.id.tv_user_username);
 		tvUserNickname = (TextView) view.findViewById(R.id.tv_user_nickname);
-		tvUserEmail = (TextView) view.findViewById(R.id.tv_user_email);
-		tvUserKakao = (TextView) view.findViewById(R.id.tv_user_kakao);
 		tvUserStatus = (TextView) view.findViewById(R.id.tv_user_status);
 		ivIsFacebookActivated = (ImageView) view.findViewById(R.id.iv_is_facebook_activated);
 		ivIsNotificationEnabled = (ImageView) view.findViewById(R.id.iv_is_notification_enabled);
-		btnLogout = (Button) view.findViewById(R.id.btn_logout);
-		btnWithdraw = (Button) view.findViewById(R.id.btn_withdraw);
 		btnChangePhoto = (Button) view.findViewById(R.id.btn_change_photo);
+		vUsername = view.findViewById(R.id.ll_username);
 		vChangeNickname = view.findViewById(R.id.ll_change_nickname);
-		vChangeEmail = view.findViewById(R.id.ll_change_email);
-		vChangeKakao = view.findViewById(R.id.ll_change_kakao);
 		vChangeStatus = view.findViewById(R.id.ll_change_status);
-		vChangePassword = view.findViewById(R.id.ll_change_password);
 		vConnectFacebook = view.findViewById(R.id.rl_connect_facebook);
 		vEnableNotification = view.findViewById(R.id.rl_enable_notification);
 	}
@@ -122,13 +106,9 @@ public class SettingFragment extends BaseFragment {
 		
 		ivUserPhoto.setOnClickListener(pickPhotoClickListener);
 		vEnableNotification.setOnClickListener(enableNotificationClickListener);
+		vUsername.setOnClickListener(logoutClickListener);
 		vChangeNickname.setOnClickListener(showDialogClickListener);
-		vChangeEmail.setOnClickListener(showDialogClickListener);
-		vChangeKakao.setOnClickListener(showDialogClickListener);
 		vChangeStatus.setOnClickListener(showDialogClickListener);
-		vChangePassword.setOnClickListener(showDialogClickListener);
-		btnWithdraw.setOnClickListener(showDialogClickListener);
-		btnLogout.setOnClickListener(logoutClickListener);
 		
 		ImageHelper.displayPhoto(Authenticator.getUser(), ivUserPhoto);
 	}
@@ -226,27 +206,9 @@ public class SettingFragment extends BaseFragment {
 				dialog = new ChangeNicknameDialog();
 				break;
 				
-			case R.id.ll_change_email:
-				bundle.putString(ChangeEmailDialog.EXTRA_USER_EMAIL, profile.getEmail());
-				dialog = new ChangeEmailDialog();
-				break;
-				
-			case R.id.ll_change_kakao:
-				bundle.putString(ChangeKakaoDialog.EXTRA_USER_KAKAO, profile.getKakaotalk());
-				dialog = new ChangeKakaoDialog();
-				break;
-				
 			case R.id.ll_change_status:
 				bundle.putString(ChangeStatusDialog.EXTRA_USER_STATUS, profile.getStatusMessage());
 				dialog = new ChangeStatusDialog();
-				break;
-				
-			case R.id.ll_change_password:
-				dialog = new ChangePasswordDialog();
-				break;
-				
-			case R.id.btn_withdraw:
-				dialog = new WithdrawDialog();
 				break;
 
 			default:
@@ -483,28 +445,15 @@ public class SettingFragment extends BaseFragment {
 	@Override
 	protected void onDataChanged() {
 		User user = Authenticator.getUser();
-		Profile profile = user.getProfile();
-		
-		updateFacebookActivatedView(user.isFacebookActivated());
-		
 		tvUserUsername.setText(user.getUsername());
 		tvUserNickname.setText(user.getNickname());
 		
+		updateFacebookActivatedView(user.isFacebookActivated());
+		
+		Profile profile = user.getProfile();
 		if (profile == null) {
 			makeToast("프로필 정보를 불러들이는데 실패했습니다. 다시 로그인해주세요 :");
 			return;
-		}
-		
-		if (profile.getEmail().length() > 0) {
-			tvUserEmail.setText(profile.getEmail());
-		} else {
-			tvUserEmail.setText(getString(R.string.hint_email));
-		}
-		
-		if (profile.getKakaotalk().length() > 0) {
-			tvUserKakao.setText(profile.getKakaotalk());
-		} else {
-			tvUserKakao.setText(getString(R.string.hint_kakao));
 		}
 		
 		if (profile.getStatusMessage().length() > 0) {
