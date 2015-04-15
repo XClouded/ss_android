@@ -35,7 +35,7 @@ import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.secure.Encryption;
 import com.myandb.singsong.util.Utility;
 
-public class JoinDialog extends BaseDialog {
+public class SingSongAuthenticationDialog extends BaseDialog {
 	
 	private OnJoinCompleteListener listener;
 	private EditText etUsername;
@@ -86,7 +86,7 @@ public class JoinDialog extends BaseDialog {
 
 	@Override
 	protected int getResourceId() {
-		return R.layout.dialog_join;
+		return R.layout.dialog_singsong_authentication;
 	}
 
 	@Override

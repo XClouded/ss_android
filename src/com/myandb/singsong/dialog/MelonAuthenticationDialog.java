@@ -8,7 +8,7 @@ import com.google.gson.JsonSyntaxException;
 import com.myandb.singsong.GCMIntentService;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.RootActivity;
-import com.myandb.singsong.dialog.JoinDialog.OnJoinCompleteListener;
+import com.myandb.singsong.dialog.SingSongAuthenticationDialog.OnJoinCompleteListener;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.JSONObjectRequest;
 import com.myandb.singsong.net.JSONErrorListener;
@@ -37,7 +37,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class LoginDialog extends BaseDialog {
+public class MelonAuthenticationDialog extends BaseDialog {
 	
 	private EditText etUsername;
 	private EditText etPassword;
@@ -45,8 +45,7 @@ public class LoginDialog extends BaseDialog {
 	private Button btnToJoin;
 	private Button btnFacebook;
 	private TextView tvFindPassword;
-	private JoinDialog joinDialog;
-	private FacebookJoinDialog facebookJoinDialog;
+	private SingSongAuthenticationDialog joinDialog;
 	private Activity activity;
 
 	@Override
@@ -75,7 +74,7 @@ public class LoginDialog extends BaseDialog {
 
 	@Override
 	protected int getResourceId() {
-		return R.layout.dialog_login;
+		return R.layout.dialog_melon_authentication;
 	}
 
 	@Override
@@ -166,24 +165,7 @@ public class LoginDialog extends BaseDialog {
 	
 	public void onFacebookIdNotFound() {
 		dismissProgressDialog();
-		if (facebookJoinDialog == null) {
-			facebookJoinDialog = new FacebookJoinDialog();
-			facebookJoinDialog.setOnJoinCompleteListener(new OnJoinCompleteListener() {
-				
-				@Override
-				public void onJoin() {
-					onLoginComplete();
-				}
-			});
-		}
-		String accessToken = getSimpleFacebook().getSession().getAccessToken();
-		Bundle bundle = new Bundle();
-		bundle.putString(FacebookJoinDialog.EXTRA_FACEBOOK_TOKEN, accessToken);
-		facebookJoinDialog.setArguments(bundle);
-		facebookJoinDialog.show(getChildFragmentManager(), "");
-		if (Build.VERSION.SDK_INT == Build.VERSION_CODES.JELLY_BEAN) {
-			getChildFragmentManager().executePendingTransactions();
-		}
+		
 	}
 	
 	private View.OnClickListener toJoinClickListener = new View.OnClickListener() {
@@ -196,7 +178,7 @@ public class LoginDialog extends BaseDialog {
 	
 	private void showJoinDialog() {
 		if (joinDialog == null) {
-			joinDialog = new JoinDialog();
+			joinDialog = new SingSongAuthenticationDialog();
 			joinDialog.setOnJoinCompleteListener(new OnJoinCompleteListener() {
 				
 				@Override
