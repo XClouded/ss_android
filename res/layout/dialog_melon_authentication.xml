@@ -13,6 +13,58 @@
         android:paddingRight="@dimen/margin"
         android:orientation="vertical" >
         
+        <LinearLayout
+            android:id="@+id/ll_title_on_easy_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+            
+            <TextView
+                android:text="콜라보 노래방과 멜론이 하나가 됩니다."
+                style="@style/TextViewBase" />
+            
+            <TextView
+                android:text="이제 MelOn 아이디로 간편하게 로그인하세요!"
+                style="@style/TextViewBase" />
+            
+        </LinearLayout>
+        
+        <LinearLayout
+            android:id="@+id/ll_title_on_melon_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+            
+            <TextView
+                android:text="멜론 아이디/비밀번호를 입력해주세요."
+                style="@style/TextViewBase" />
+            
+        </LinearLayout>
+        
+        <LinearLayout
+            android:id="@+id/ll_title_on_merge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+            
+            <TextView
+                android:text="멜론 ♡ 콜라보 하나되기"
+                style="@style/TextViewBase" />
+            
+            <TextView
+                android:text="콜라보 노래방과 멜론이 하나가 됩니다."
+                style="@style/TextViewBase" />
+            
+            <TextView
+                android:text="콜라보 노래방이 멜론 패밀리앱이 됩니다.\n이제 멜론 아이디 하나로 콜라보/멜론/아지톡 서비스를 모두 이용 할 수 있습니다.\n기존 콜라보 노래방 게시물은 모두 멜론 아이디로 이전됩니다."
+                style="@style/TextViewBase" />
+            
+            <TextView
+                android:id="@+id/tv_collabo_username"
+                style="@style/TextViewBase" />
+            
+        </LinearLayout>
+        
         <TextView
             android:layout_gravity="center_horizontal"
             android:text="페이스북으로 가입했다면 이 버튼을 누르세요."
