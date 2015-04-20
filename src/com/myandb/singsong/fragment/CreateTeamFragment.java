@@ -4,26 +4,30 @@ import com.myandb.singsong.R;
 import com.myandb.singsong.model.Category;
 import com.myandb.singsong.model.Gender;
 import com.myandb.singsong.pager.CreateTeamPagerAdapter;
+import com.myandb.singsong.util.Logger;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class CreateTeamFragment extends BaseFragment {
 	
 	private ViewPager viewPager;
-	private Button btnPrevious;
-	private Button btnNext;
-	private TextView tvTeamDescription;
 	private TeamInformation information;
 	private CreateTeamPagerAdapter adapter;
+	private Menu optionsMenu;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
+	}
 
 	@Override
 	protected int getResourceId() {
@@ -33,120 +37,126 @@ public class CreateTeamFragment extends BaseFragment {
 	@Override
 	protected void onViewInflated(View view, LayoutInflater inflater) {
 		viewPager = (ViewPager) view.findViewById(R.id.viewpager);
-		btnPrevious = (Button) view.findViewById(R.id.btn_previous);
-		btnNext = (Button) view.findViewById(R.id.btn_next);
-		tvTeamDescription = (TextView) view.findViewById(R.id.tv_team_description);
 	}
 
 	@Override
 	protected void initialize(Activity activity) {
 		information = new TeamInformation();
-		information.setOnValueChangedListener(new OnValueChangedListener() {
-			
-			@Override
-			public void OnChanged() {
-				updateDescription();
-			}
-		});
 		adapter = new CreateTeamPagerAdapter(getChildFragmentManager());
-		adapter.setTeamInformation(information);
 	}
 
 	@Override
 	protected void setupViews(Bundle savedInstanceState) {
 		viewPager.setAdapter(adapter);
 		viewPager.setOnPageChangeListener(pageChangeListener);
-		
-		btnPrevious.setOnClickListener(previousClickListener);
-		btnNext.setOnClickListener(nextClickListener);
 	}
-	
-	private OnClickListener previousClickListener = new OnClickListener() {
-
-		@Override
-		public void onClick(View v) {
-			int currentItem = viewPager.getCurrentItem();
-			if (currentItem == 0) {
-				Toast.makeText(getActivity(), "page 0", Toast.LENGTH_SHORT).show();
-				// finish
-			} else {
-				viewPager.setCurrentItem(currentItem - 1, true);
-			}
-		}
-		
-	};
-	
-	private OnClickListener nextClickListener = new OnClickListener() {
-		
-		@Override
-		public void onClick(View v) {
-			int currentItem = viewPager.getCurrentItem();
-			if (currentItem == viewPager.getAdapter().getCount() - 1) {
-				Toast.makeText(getActivity(), "page last", Toast.LENGTH_SHORT).show();
-				// make
-			} else {
-				if (adapter.isValidated(currentItem)) {
-					viewPager.setCurrentItem(currentItem + 1, true);
-				}
-			}
-		}
-	};
 	
 	private OnPageChangeListener pageChangeListener = new OnPageChangeListener() {
 		
 		@Override
 		public void onPageSelected(int page) {
-			updateDescription(page);
+			resetOptionsMenu();
+			if (page > 0) {
+				addPreviousOptionMenu();
+			}
+			
+			if (isLastPage(page, viewPager)) {
+				addCreateOptionMenu();
+			} else {
+				addNextOptionMenu();
+			}
+		}
+		
+		private boolean isLastPage(int page, ViewPager viewPager) {
+			return page == viewPager.getAdapter().getCount() - 1;
 		}
 		
 		@Override
-		public void onPageScrolled(int page, float arg1, int arg2) {}
+		public void onPageScrolled(int arg0, float arg1, int arg2) {}
 		
 		@Override
-		public void onPageScrollStateChanged(int page) {}
+		public void onPageScrollStateChanged(int arg0) {}
 	};
 	
-	private void updateDescription() {
-		int currentItem = viewPager.getCurrentItem();
-		updateDescription(currentItem);
+	private void resetOptionsMenu() {
+		setOptionMenuVisible(R.id.action_previous, false);
+		setOptionMenuVisible(R.id.action_next, false);
+		setOptionMenuVisible(R.id.action_create, false);
 	}
 	
-	private void updateDescription(int page) {
-		if (page == 0) {
-			// update action bar
+	private void setOptionMenuVisible(int id, boolean visible) {
+		if (optionsMenu != null) {
+			MenuItem item = optionsMenu.findItem(id);
+			if (item != null) {
+				item.setVisible(visible);
+			}
 		}
-		
-		tvTeamDescription.setText(getDescription(page, ""));
 	}
 	
-	private String getDescription(int page, String root) {
-		String added = "";
-		
-		switch (page) {
-		case 1:
-			added = String.valueOf(information.getMemberMaxNum()) + "인조";
-			break;
-			
-		case 2:
-			added += " ";
-			added += information.getGender().getTitle();
-			break;
-			
-		case 3:
-			added += " ";
-			added += information.getCategory().getTitle();
-			added += "그룹";
-			break;
-			
-		default:
-			return root;
-		}
-		
-		return getDescription(page - 1, added + root);
+	private void addPreviousOptionMenu() {
+		setOptionMenuVisible(R.id.action_previous, true);
+	}
+	
+	private void addNextOptionMenu() {
+		setOptionMenuVisible(R.id.action_next, true);
+	}
+	
+	private void addCreateOptionMenu() {
+		setOptionMenuVisible(R.id.action_create, true);
 	}
 
 	@Override
 	protected void onDataChanged() {}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		setActionBarTitle("팀 만들기");
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		super.onCreateOptionsMenu(menu, inflater);
+		inflater.inflate(R.menu.create_team, menu);
+		optionsMenu = menu;
+		pageChangeListener.onPageSelected(0);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		int currentItem = viewPager.getCurrentItem();
+		int targetItem = currentItem;
+		
+		switch (item.getItemId()) {
+		case R.id.action_previous:
+			targetItem -= 1;
+			break;
+			
+		case R.id.action_next:
+		case R.id.action_create:
+			targetItem += 1;
+			
+			OnTeamInformationUpdated updating = (OnTeamInformationUpdated) adapter.getCurrentItem(currentItem);
+			if (updating != null) {
+				updating.onUpdated(information);
+			}
+			break;
+			
+		default:
+			return false;
+		}
+		
+		if (targetItem > 0 || targetItem < viewPager.getAdapter().getCount()) {
+			viewPager.setCurrentItem(targetItem, true);
+		}
+		return true;
+	}
+
+	public interface OnTeamInformationUpdated {
+		
+		public boolean onUpdated(TeamInformation information);
+		
+	}
 	
 	public static class TeamInformation {
 		
@@ -158,12 +168,10 @@ public class CreateTeamFragment extends BaseFragment {
 		private int memberMaxNum = DEFAULT_MEMBER_MAX_NUM;
 		private Category category = DEFAULT_CATEGORY; 
 		private Gender gender = DEFAULT_GENDER;
-		private OnValueChangedListener listener;
 		
 		public void setTitle(String title) {
 			if (isProperTitle(title)) {
 				this.title = title;
-				dispatchListener();
 			}
 		}
 		
@@ -174,7 +182,6 @@ public class CreateTeamFragment extends BaseFragment {
 		public void setMemberMaxNum(int num) {
 			if (isProperMemberMaxNum(num)) {
 				this.memberMaxNum = num;
-				dispatchListener();
 			}
 		}
 		
@@ -185,7 +192,6 @@ public class CreateTeamFragment extends BaseFragment {
 		public void setCategory(Category category) {
 			if (isProperCategory(category)) {
 				this.category = category;
-				dispatchListener();
 			}
 		}
 		
@@ -196,7 +202,6 @@ public class CreateTeamFragment extends BaseFragment {
 		public void setGender(Gender gender) {
 			if (isProperGender(gender)) {
 				this.gender = gender;
-				dispatchListener();
 			}
 		}
 		
@@ -219,22 +224,6 @@ public class CreateTeamFragment extends BaseFragment {
 		private boolean isProperGender(Gender gender) {
 			return gender != null && !gender.equals(Gender.NULL);
 		}
-		
-		public void setOnValueChangedListener(OnValueChangedListener listener) {
-			this.listener = listener;
-		}
-		
-		private void dispatchListener() {
-			if (listener != null) {
-				listener.OnChanged();
-			}
-		}
-		
-	}
-	
-	public interface OnValueChangedListener {
-		
-		public void OnChanged();
 		
 	}
 	

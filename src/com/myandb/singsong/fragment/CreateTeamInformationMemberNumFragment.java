@@ -1,5 +1,6 @@
 package com.myandb.singsong.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,9 +9,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.myandb.singsong.R;
+import com.myandb.singsong.fragment.CreateTeamFragment.OnTeamInformationUpdated;
 import com.myandb.singsong.fragment.CreateTeamFragment.TeamInformation;
 
-public class CreateTeamInformationMemberNumFragment extends CreateTeamInformationFragment {
+public class CreateTeamInformationMemberNumFragment extends BaseFragment implements OnTeamInformationUpdated {
 	
 	private static final int MEMBER_MIN_NUM = 3;
 	private static final int MEMBER_MAX_NUM = 20;
@@ -22,14 +24,18 @@ public class CreateTeamInformationMemberNumFragment extends CreateTeamInformatio
 	private int currentMemberNum;
 	
 	@Override
-	protected void updateInformation(TeamInformation information) {
+	public boolean onUpdated(TeamInformation information) {
 		information.setMemberMaxNum(currentMemberNum);
+		return true;
 	}
 
 	@Override
 	protected int getResourceId() {
 		return R.layout.fragment_create_team_info_member_num;
 	}
+	
+	@Override
+	protected void initialize(Activity activity) {}
 
 	@Override
 	protected void onViewInflated(View view, LayoutInflater inflater) {
@@ -60,7 +66,6 @@ public class CreateTeamInformationMemberNumFragment extends CreateTeamInformatio
 	private void setMemberNum(int num) {
 		currentMemberNum = Math.max(Math.min(num, MEMBER_MAX_NUM), MEMBER_MIN_NUM);
 		tvMemberNum.setText(String.valueOf(currentMemberNum));
-		updateInformation();
 	}
 	
 	private int getMemberNum() {
@@ -69,9 +74,4 @@ public class CreateTeamInformationMemberNumFragment extends CreateTeamInformatio
 
 	@Override
 	protected void onDataChanged() {}
-	
-	@Override
-	public boolean isValidated() {
-		return currentMemberNum >= MEMBER_MIN_NUM && currentMemberNum <= MEMBER_MAX_NUM;
-	}
 }

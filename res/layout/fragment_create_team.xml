@@ -1,48 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.myandb.singsong.widget.FreezableViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/viewpager"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-    
-    <LinearLayout
-        android:id="@+id/ll_paging"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/margin"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal" >
-        
-        <Button
-            android:id="@+id/btn_previous"
-            android:text="previous"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_marginRight="@dimen/margin"
-            style="@style/S2.Widget.Button" />
-        
-        <Button
-            android:id="@+id/btn_next"
-            android:text="next"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            style="@style/S2.Widget.Button" />
-        
-    </LinearLayout>
-    
-    <TextView
-        android:id="@+id/tv_team_description"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@id/ll_paging"
-        android:paddingLeft="@dimen/margin"
-        android:paddingRight="@dimen/margin"
-        android:textSize="@dimen/text_impact"
-        android:textStyle="italic"
-        android:text="description"
-        style="@style/S2.Widget.TextView.H1" />
-    
-	<com.myandb.singsong.widget.FreezableViewPager 
-	    android:id="@+id/viewpager"
-	    android:layout_width="match_parent"
-	    android:layout_height="match_parent"
-	    android:layout_above="@id/tv_team_description" />
-    
-</RelativeLayout>
+    android:layout_height="match_parent" />

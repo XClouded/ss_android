@@ -1,65 +1,41 @@
 package com.myandb.singsong.fragment;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.Spinner;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.myandb.singsong.R;
+import com.myandb.singsong.fragment.CreateTeamFragment.OnTeamInformationUpdated;
 import com.myandb.singsong.fragment.CreateTeamFragment.TeamInformation;
 import com.myandb.singsong.model.Gender;
 
-public class CreateTeamInformationGenderFragment extends CreateTeamInformationFragment {
+public class CreateTeamInformationGenderFragment extends ListFragment implements OnTeamInformationUpdated {
 	
-	private Spinner spGender;
 	private Gender currentGender;
-
+	
 	@Override
-	protected void updateInformation(TeamInformation information) {
-		information.setGender(currentGender);
-	}
-
-	@Override
-	public boolean isValidated() {
-		return currentGender != null && !currentGender.equals(Gender.NULL);
-	}
-
-	@Override
-	protected int getResourceId() {
-		return R.layout.fragment_create_team_info_gender;
-	}
-
-	@Override
-	protected void onViewInflated(View view, LayoutInflater inflater) {
-		spGender = (Spinner) view.findViewById(R.id.sp_gender);
+	protected ListAdapter instantiateAdapter(Activity activity) {
+		return new GenderAdapter(activity, R.layout.row_gender);
 	}
 
 	@Override
 	protected void setupViews(Bundle savedInstanceState) {
-		spGender.setAdapter(new GenderAdapter(getActivity(), R.layout.row_gender));
-		spGender.setOnItemSelectedListener(new OnItemSelectedListener() {
-
-			@Override
-			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				Gender gender = (Gender) parent.getItemAtPosition(position);
-				currentGender = gender;
-				updateInformation();
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> parent) {}
-		});
+		super.setupViews(savedInstanceState);
+		setListShown(true);
 	}
 
 	@Override
-	protected void onDataChanged() {}
+	public boolean onUpdated(TeamInformation information) {
+		information.setGender(currentGender);
+		return true;
+	}
 	
 	private static class GenderAdapter extends ArrayAdapter<Gender> {
 		

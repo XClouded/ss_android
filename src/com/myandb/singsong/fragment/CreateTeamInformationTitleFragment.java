@@ -2,9 +2,8 @@ package com.myandb.singsong.fragment;
 
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -12,12 +11,13 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.myandb.singsong.R;
+import com.myandb.singsong.fragment.CreateTeamFragment.OnTeamInformationUpdated;
 import com.myandb.singsong.fragment.CreateTeamFragment.TeamInformation;
 import com.myandb.singsong.net.JSONErrorListener;
 import com.myandb.singsong.net.JSONObjectRequest;
 import com.myandb.singsong.net.JSONObjectSuccessListener;
 
-public class CreateTeamInformationTitleFragment extends CreateTeamInformationFragment {
+public class CreateTeamInformationTitleFragment extends BaseFragment implements OnTeamInformationUpdated {
 	
 	private EditText etTitle;
 	private Button btnCheckUnique;
@@ -25,11 +25,16 @@ public class CreateTeamInformationTitleFragment extends CreateTeamInformationFra
 	private String requestTitle;
 
 	@Override
-	protected void updateInformation(TeamInformation information) {
+	public boolean onUpdated(TeamInformation information) {
 		if (isLongEnoughTitle()) {
 			information.setTitle(etTitle.getText().toString());
+			return true;
 		}
+		return false;
 	}
+	
+	@Override
+	protected void initialize(Activity activity) {}
 
 	@Override
 	protected int getResourceId() {
@@ -59,19 +64,6 @@ public class CreateTeamInformationTitleFragment extends CreateTeamInformationFra
 						new JSONObjectSuccessListener(CreateTeamInformationTitleFragment.this, "onTitleFound"),
 						new JSONErrorListener(CreateTeamInformationTitleFragment.this, "onTitleNotFound"));
 				addRequest(request);
-			}
-		});
-		etTitle.addTextChangedListener(new TextWatcher() {
-			
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {}
-			
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-			
-			@Override
-			public void afterTextChanged(Editable s) {
-				updateInformation();
 			}
 		});
 	}
@@ -105,11 +97,6 @@ public class CreateTeamInformationTitleFragment extends CreateTeamInformationFra
 	
 	private boolean isLongEnoughTitle() {
 		return etTitle.getText().length() > 0;
-	}
-	
-	@Override
-	public boolean isValidated() {
-		return isUniqueTitle() && isLongEnoughTitle();
 	}
 
 }
