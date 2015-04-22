@@ -20,7 +20,6 @@ import com.myandb.singsong.fragment.CreateTeamFragment.TeamInformation;
 import com.myandb.singsong.net.JSONErrorListener;
 import com.myandb.singsong.net.JSONObjectRequest;
 import com.myandb.singsong.net.JSONObjectSuccessListener;
-import com.myandb.singsong.util.Logger;
 
 public class CreateTeamInformationTitleFragment extends BaseFragment implements OnTeamInformationUpdated {
 	
@@ -70,22 +69,38 @@ public class CreateTeamInformationTitleFragment extends BaseFragment implements 
 		
 		@Override
 		public void onClick(View v) {
+			PhotoIntentDialog dialog = new PhotoIntentDialog();
 			int requestCode = 0;
 			
 			switch (v.getId()) {
 			case R.id.iv_team_background_photo:
 				requestCode = REQUEST_CODE_BACKGROUND;
+				dialog.setOnDefaultImageClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						//
+					}
+				});
 				break;
 				
 			case R.id.iv_team_emblem:
 				requestCode = REQUEST_CODE_EMBLEM;
+				dialog.setOnDefaultImageClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						if (information != null) {
+							ivTeamEmblem.setImageResource(information.getCategory().getImageResourceId());
+						}
+					}
+				});
 				break;
 
 			default:
 				return;
 			}
 			
-			PhotoIntentDialog dialog = new PhotoIntentDialog();
 			Bundle bundle = new Bundle();
 			bundle.putInt(PhotoIntentDialog.EXTRA_REQUEST_CODE, requestCode);
 			dialog.setArguments(bundle);
