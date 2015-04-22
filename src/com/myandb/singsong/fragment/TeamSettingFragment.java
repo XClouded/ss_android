@@ -52,7 +52,7 @@ public class TeamSettingFragment extends BaseFragment {
 		tvTeamDescription = (TextView) view.findViewById(R.id.tv_team_description);
 		tvTeamStatus = (TextView) view.findViewById(R.id.tv_team_status);
 		vChangeStatus = view.findViewById(R.id.ll_change_status);
-		vChangeStatus = view.findViewById(R.id.ll_change_master);
+		vChangeMaster = view.findViewById(R.id.ll_change_master);
 	}
 
 	@Override
