@@ -338,14 +338,18 @@ public class ListFragment extends BaseFragment {
 	}
 
 	public void setFixedHeaderShown(boolean shown) {
-		if (fixedHeaderContainer.isShown() == shown) {
+		setViewShown(fixedHeaderContainer, shown);
+	}
+	
+	private void setViewShown(View view, boolean shown) {
+		if (view.isShown() == shown) {
 			return;
 		}
 		
 		if (shown) {
-			fixedHeaderContainer.setVisibility(View.VISIBLE);
+			view.setVisibility(View.VISIBLE);
 		} else {
-			fixedHeaderContainer.setVisibility(View.GONE);
+			view.setVisibility(View.GONE);
 		}
 	}
 	

@@ -1,12 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.myandb.singsong.widget.CheckableRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:myandb="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:padding="@dimen/margin_small"
+    myandb:checkable="@+id/rb_gender" >
     
     <TextView
-        android:id="@+id/tv_gender"
-        android:layout_gravity="center_horizontal"
+        android:id="@+id/tv_title"
+        style="@style/S2.Widget.TextView.H2" />
+    
+    <RadioButton
+        android:id="@id/rb_gender"
+        android:layout_width="@dimen/icon_middle"
+        android:layout_height="@dimen/icon_middle"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:focusable="false"
+        android:clickable="false"
+        android:button="@drawable/checkable_selector" />
+    
+    <TextView
+        android:id="@+id/tv_description"
+        android:layout_width="match_parent"
+        android:layout_below="@id/tv_title"
+        android:layout_toLeftOf="@id/rb_gender"
         style="@style/S2.Widget.TextView" />
 
-</LinearLayout>
+</com.myandb.singsong.widget.CheckableRelativeLayout>

@@ -1,67 +1,50 @@
 package com.myandb.singsong.fragment;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
-import android.widget.TextView;
+import android.widget.ListView;
 
 import com.myandb.singsong.R;
+import com.myandb.singsong.adapter.GenderSelectAdapter;
 import com.myandb.singsong.fragment.CreateTeamFragment.OnTeamInformationUpdated;
 import com.myandb.singsong.fragment.CreateTeamFragment.TeamInformation;
 import com.myandb.singsong.model.Gender;
 
 public class CreateTeamInformationGenderFragment extends ListFragment implements OnTeamInformationUpdated {
 	
-	private Gender currentGender;
-	
 	@Override
 	protected ListAdapter instantiateAdapter(Activity activity) {
-		return new GenderAdapter(activity, R.layout.row_gender);
+		GenderSelectAdapter adapter = new GenderSelectAdapter();
+		adapter.addAll(Gender.values());
+		return adapter;
+	}
+
+	@Override
+	protected int getFixedHeaderViewResId() {
+		return R.layout.fragment_create_team_info_gender_fixed_header;
 	}
 
 	@Override
 	protected void setupViews(Bundle savedInstanceState) {
 		super.setupViews(savedInstanceState);
+		if (getListView() instanceof ListView) {
+			((ListView) getListView()).setItemsCanFocus(false);
+			((ListView) getListView()).setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+			((ListView) getListView()).setItemChecked(0, true);
+		}
 		setListShown(true);
 	}
 
 	@Override
 	public boolean onUpdated(TeamInformation information) {
-		information.setGender(currentGender);
-		return true;
-	}
-	
-	private static class GenderAdapter extends ArrayAdapter<Gender> {
-		
-		private int layoutResourceId;
-		
-		public GenderAdapter(Context context, int layoutResourceId) {
-			super(context, layoutResourceId, Gender.values());
-			this.layoutResourceId = layoutResourceId;
+		if (getListView() instanceof ListView) {
+			int position = ((ListView) getListView()).getCheckedItemPosition();
+			Gender checked = (Gender) getListView().getItemAtPosition(position);
+			information.setGender(checked);
+			return true;
 		}
-
-		@SuppressLint("ViewHolder")
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			LayoutInflater inflater = LayoutInflater.from(getContext());
-			View row = inflater.inflate(layoutResourceId, parent, false);
-			TextView tvGender = (TextView) row.findViewById(R.id.tv_gender);
-			Gender gender = getItem(position);
-			tvGender.setText(gender.getTitle());
-			return row;
-		}
-
-		@Override
-		public View getDropDownView(int position, View convertView, ViewGroup parent) {
-			return getView(position, convertView, parent);
-		}
-		
+		return false;
 	}
 
 }

@@ -1,39 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.myandb.singsong.widget.CheckableRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:myandb="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="@dimen/margin"
+    android:background="@drawable/row_naked_selector"
     android:paddingBottom="@dimen/margin"
     android:paddingLeft="@dimen/margin_big"
     android:paddingRight="@dimen/margin_bigger"
-    android:background="@drawable/row_naked_selector" >
-    
-    
+    android:paddingTop="@dimen/margin"
+    myandb:checkable="@+id/rb_category" >
+
     <ImageView
         android:id="@+id/iv_category_image"
+        style="@style/S2.Widget.ImageView"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginRight="@dimen/margin_big"
         android:layout_centerVertical="true"
-        style="@style/S2.Widget.ImageView" />
-    
-    <ImageView
-        android:id="@+id/iv_category_selected"
-        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/margin_big" />
+
+    <RadioButton
+        android:id="@id/rb_category"
+        android:layout_width="@dimen/icon_middle"
+        android:layout_height="@dimen/icon_middle"
         android:layout_alignParentRight="true"
-        android:layout_width="18dp"
-        android:layout_height="18dp"
+        android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/margin"
-        android:visibility="invisible"
-        android:src="@drawable/ic_check"
-        style="@style/S2.Widget.ImageView" />
-    
+        android:button="@drawable/checkable_selector"
+        android:clickable="false"
+        android:focusable="false" />
+
     <TextView
         android:id="@+id/tv_category_title"
-        android:textSize="@dimen/text_title"
-        android:layout_toRightOf="@id/iv_category_image"
-        android:layout_toLeftOf="@id/iv_category_selected"
+        style="@style/S2.Widget.TextView"
         android:layout_centerVertical="true"
-        style="@style/S2.Widget.TextView" />
-    
-</RelativeLayout>
+        android:layout_toLeftOf="@id/rb_category"
+        android:layout_toRightOf="@id/iv_category_image"
+        android:textSize="@dimen/text_title" />
+
+</com.myandb.singsong.widget.CheckableRelativeLayout>

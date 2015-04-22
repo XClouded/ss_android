@@ -20,5 +20,9 @@
         <attr name="android:requiresFadingEdge" />
         <attr name="android:fadingEdgeLength" />
     </declare-styleable>
+    
+    <declare-styleable name="CheckableRelativeLayout">
+        <attr name="checkable" format="reference" />
+    </declare-styleable>
 
 </resources>

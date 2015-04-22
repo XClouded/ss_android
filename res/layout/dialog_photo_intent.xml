@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/container_dialog" >
+    
+    <Button
+        android:id="@+id/btn_gallery"
+        android:layout_width="match_parent"
+        android:text="사진 앨범"
+        android:background="@drawable/button_app_bg_selector"
+        style="@style/S2.Widget.Button.Dialog" />
+    
+    <ImageView
+        style="@style/S2.Widget.Divider.Horizontal" />
+    
+    <Button
+        android:id="@+id/btn_camera"
+        android:text="카메라"
+        android:background="@drawable/button_app_bg_selector"
+        style="@style/S2.Widget.Button.Dialog" />
+    
+    <ImageView
+        style="@style/S2.Widget.Divider.Horizontal" />
+    
+    <Button
+        android:id="@+id/btn_default"
+        android:text="기본 이미지"
+        android:background="@drawable/button_app_bg_selector"
+        style="@style/S2.Widget.Button.Dialog" />
+
+</LinearLayout>

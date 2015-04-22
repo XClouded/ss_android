@@ -1,13 +1,16 @@
 package com.myandb.singsong.fragment;
 
+import java.util.List;
+
 import com.myandb.singsong.R;
 import com.myandb.singsong.model.Category;
 import com.myandb.singsong.model.Gender;
 import com.myandb.singsong.pager.CreateTeamPagerAdapter;
-import com.myandb.singsong.util.Logger;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
@@ -61,6 +64,11 @@ public class CreateTeamFragment extends BaseFragment {
 			}
 			
 			if (isLastPage(page, viewPager)) {
+				Fragment lastFragment = adapter.getCurrentItem(page);
+				if (lastFragment instanceof CreateTeamInformationTitleFragment) {
+					((CreateTeamInformationTitleFragment) lastFragment).setTeamInformation(information);
+					((CreateTeamInformationTitleFragment) lastFragment).notifyDataChanged();
+				}
 				addCreateOptionMenu();
 			} else {
 				addNextOptionMenu();
@@ -138,7 +146,10 @@ public class CreateTeamFragment extends BaseFragment {
 			
 			OnTeamInformationUpdated updating = (OnTeamInformationUpdated) adapter.getCurrentItem(currentItem);
 			if (updating != null) {
-				updating.onUpdated(information);
+				boolean success = updating.onUpdated(information);
+				if (!success) {
+					return false;
+				}
 			}
 			break;
 			
@@ -151,6 +162,20 @@ public class CreateTeamFragment extends BaseFragment {
 		}
 		return true;
 	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        
+        List<Fragment> fragments = getChildFragmentManager().getFragments();
+        if (fragments != null) {
+            for (Fragment fragment : fragments) {
+            	if (fragment != null) {
+            		fragment.onActivityResult(requestCode, resultCode, data);
+            	}
+            }
+        }
+    }
 
 	public interface OnTeamInformationUpdated {
 		
@@ -222,7 +247,7 @@ public class CreateTeamFragment extends BaseFragment {
 		}
 		
 		private boolean isProperGender(Gender gender) {
-			return gender != null && !gender.equals(Gender.NULL);
+			return gender != null;
 		}
 		
 	}

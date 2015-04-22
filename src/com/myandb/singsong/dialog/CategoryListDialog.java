@@ -51,10 +51,13 @@ public class CategoryListDialog extends BaseDialog {
 			cgs.add(new Category(i));
 		}
 		
-		SongCategoryAdapter adapter = new SongCategoryAdapter(currentCategoryId);
+		SongCategoryAdapter adapter = new SongCategoryAdapter();
 		adapter.addAll(cgs);
 		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(categoryClickListener);
+		listView.setItemsCanFocus(false);
+		listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+		listView.setItemChecked(currentCategoryId, true);
 	}
 	
 	private OnItemClickListener categoryClickListener = new OnItemClickListener() {

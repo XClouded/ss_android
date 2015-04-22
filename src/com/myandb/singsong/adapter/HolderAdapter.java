@@ -1,6 +1,7 @@
 package com.myandb.singsong.adapter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -69,6 +70,12 @@ public abstract class HolderAdapter<T, E extends ViewHolder> extends BaseAdapter
 	public void addAll(List<T> items) {
 		this.items.addAll(items);
 		notifyDataSetChanged();
+	}
+	
+	public void addAll(T[] items) {
+		List<T> datas = new ArrayList<T>();
+		Collections.addAll(datas, items);
+		addAll(datas);
 	}
 	
 	public void addAll(JSONArray jsonItems) {
