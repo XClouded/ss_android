@@ -8,7 +8,7 @@ public class Team extends Model {
 
 	private User leader;
 	private String name;
-	private String description;
+	private String status_message;
 	private String main_photo_url;
 	private String emblem_url;
 	private Date main_photo_updated_at;
@@ -32,8 +32,19 @@ public class Team extends Model {
 		return safeString(name);
 	}
 	
+	public String getStatusMessage() {
+		return safeString(status_message);
+	}
+	
 	public String getDescription() {
-		return safeString(description);
+		String description = "";
+		description += getMaxMemberNum();
+		description += "인조 ";
+		description += getGender().getTitle();
+		description += " ";
+		description += getCategory().getTitle();
+		description += "그룹";
+		return description;
 	}
 	
 	public String getBackgroundPhotoUrl() {

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#eee" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginBottom="@dimen/margin" >
+
+            <ImageView
+                android:id="@+id/iv_team_background_photo"
+                style="@style/S2.Widget.ImageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <com.github.siyamed.shapeimageview.HexagonImageView
+                android:id="@+id/iv_team_emblem"
+                style="@style/S2.Widget.ImageView.Team.Big"
+                android:layout_gravity="center" />
+        </FrameLayout>
+
+        <LinearLayout
+            style="@style/FormBaseTwoLine"
+            android:background="@drawable/row_naked_selector"
+            android:orientation="vertical" >
+
+            <TextView
+                style="@style/S2.Widget.TextView.H1"
+                android:layout_marginBottom="@dimen/margin_tiny"
+                android:padding="0dp"
+                android:text="팀 이름" />
+
+            <TextView
+                android:id="@+id/tv_team_title"
+                style="@style/S2.Widget.TextView.H4"
+                android:maxLines="1" />
+        </LinearLayout>
+
+        <ImageView style="@style/S2.Widget.Divider.Horizontal" />
+
+        <LinearLayout
+            style="@style/FormBaseTwoLine"
+            android:background="@drawable/row_naked_selector"
+            android:orientation="vertical" >
+
+            <TextView
+                style="@style/S2.Widget.TextView.H1"
+                android:layout_marginBottom="@dimen/margin_tiny"
+                android:padding="0dp"
+                android:text="팀 정보" />
+
+            <TextView
+                android:id="@+id/tv_team_description"
+                style="@style/S2.Widget.TextView.H4"
+                android:maxLines="1" />
+        </LinearLayout>
+
+        <ImageView style="@style/S2.Widget.Divider.Horizontal" />
+
+        <LinearLayout
+            android:id="@+id/ll_change_status"
+            style="@style/FormBaseTwoLine"
+            android:background="@drawable/row_naked_selector"
+            android:orientation="vertical" >
+
+            <TextView
+                style="@style/S2.Widget.TextView.H1"
+                android:layout_marginBottom="@dimen/margin_tiny"
+                android:padding="0dp"
+                android:text="상태 메세지 변경" />
+
+            <TextView
+                android:id="@+id/tv_team_status"
+                style="@style/S2.Widget.TextView.H4"
+                android:maxLines="1" />
+        </LinearLayout>
+
+        <ImageView style="@style/S2.Widget.Divider.Horizontal" />
+
+        <LinearLayout
+            android:id="@+id/ll_change_master"
+            style="@style/FormBase"
+            android:layout_marginBottom="@dimen/margin_bigger"
+            android:background="@drawable/row_naked_selector"
+            android:orientation="vertical" >
+
+            <TextView
+                style="@style/S2.Widget.TextView.H1"
+                android:layout_marginBottom="@dimen/margin_tiny"
+                android:padding="0dp"
+                android:text="리더 지정" />
+        </LinearLayout>
+
+        <include layout="@layout/footer" />
+    </LinearLayout>
+
+</ScrollView>

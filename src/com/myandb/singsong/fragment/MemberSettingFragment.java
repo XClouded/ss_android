@@ -1,20 +1,19 @@
 package com.myandb.singsong.fragment;
 
 import com.myandb.singsong.R;
-import com.myandb.singsong.widget.HorizontalListView;
+import com.myandb.singsong.adapter.RoleAdapter;
+import com.myandb.singsong.model.Member;
+import com.myandb.singsong.model.Role;
+import com.myandb.singsong.util.Utility;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.Spinner;
-import android.widget.TextView;
+import android.widget.ListView;
 
 public class MemberSettingFragment extends BaseFragment {
 	
@@ -22,15 +21,8 @@ public class MemberSettingFragment extends BaseFragment {
 	
 	private Button btnSubmit;
 	private EditText etRolePrefix;
-	private Spinner spRole;
-	private ImageView ivMemberPhoto;
-	private ImageView ivMemberRoleIcon;
-	private TextView tvMemberNickname;
-	private TextView tvMemberFollowersNum;
-	private TextView tvMemberRolePrefix;
-	private TextView tvMemberRole;
-	private View vMemberWrapper;
-	private HorizontalListView hlvSkin;
+	private ListView lvRoles;
+	private Member member;
 
 	@Override
 	protected int getResourceId() {
@@ -38,49 +30,48 @@ public class MemberSettingFragment extends BaseFragment {
 	}
 
 	@Override
-	protected void onViewInflated(View view, LayoutInflater inflater) {
-		btnSubmit = (Button) view.findViewById(R.id.btn_submit);
-		etRolePrefix = (EditText) view.findViewById(R.id.et_role_prefix);
-		spRole = (Spinner) view.findViewById(R.id.sp_role);
-		ivMemberPhoto = (ImageView) view.findViewById(R.id.iv_member_photo);
-		ivMemberRoleIcon = (ImageView) view.findViewById(R.id.iv_member_role_icon);
-		tvMemberNickname = (TextView) view.findViewById(R.id.tv_member_nickname);
-		tvMemberFollowersNum = (TextView) view.findViewById(R.id.tv_member_followers_num);
-		tvMemberRolePrefix = (TextView) view.findViewById(R.id.tv_member_role_prefix);
-		tvMemberRole = (TextView) view.findViewById(R.id.tv_member_role);
-		vMemberWrapper = view.findViewById(R.id.ll_member_wrapper);
-		hlvSkin = (HorizontalListView) view.findViewById(R.id.hlv_skin);
+	protected void onArgumentsReceived(Bundle bundle) {
+		super.onArgumentsReceived(bundle);
+		
+		String memberInString = bundle.getString(EXTRA_MEMBER);
+		member = Utility.getGsonInstance().fromJson(memberInString, Member.class);
 	}
 
 	@Override
-	protected void initialize(Activity activity) {}
+	protected void onViewInflated(View view, LayoutInflater inflater) {
+		btnSubmit = (Button) view.findViewById(R.id.btn_submit);
+		etRolePrefix = (EditText) view.findViewById(R.id.et_role_prefix);
+		lvRoles = (ListView) view.findViewById(R.id.lv_roles);
+	}
+
+	@Override
+	protected void initialize(Activity activity) {
+		RoleAdapter adapter = new RoleAdapter();
+		adapter.addAll(Role.values());
+		lvRoles.setAdapter(adapter);
+	}
 
 	@Override
 	protected void setupViews(Bundle savedInstanceState) {
+		if (member == null) {
+			return;
+		}
+		
+		lvRoles.setItemsCanFocus(false);
+		lvRoles.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+		lvRoles.setItemChecked(member.getRole().ordinal(), true);
+		
 		btnSubmit.setOnClickListener(submitClickListener);
-		etRolePrefix.addTextChangedListener(rolePrefixWatcher);
+		
+		etRolePrefix.setText(member.getRolePrefix());
 	}
 	
 	private OnClickListener submitClickListener = new OnClickListener() {
 		
 		@Override
 		public void onClick(View v) {
-			
+			String prefix = etRolePrefix.getText().toString();
 		}
-	};
-	
-	private TextWatcher rolePrefixWatcher = new TextWatcher() {
-		
-		@Override
-		public void onTextChanged(CharSequence s, int start, int before, int count) {
-			tvMemberRolePrefix.setText(s);
-		}
-		
-		@Override
-		public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-		
-		@Override
-		public void afterTextChanged(Editable s) {}
 	};
 
 	@Override

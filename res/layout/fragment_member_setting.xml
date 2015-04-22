@@ -2,59 +2,36 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/margin"
-    android:background="@color/app_bg" >
-    
+    android:background="@color/app_bg"
+    android:padding="@dimen/margin" >
+
     <Button
         android:id="@+id/btn_submit"
+        style="@style/S2.Widget.Button.Dark"
         android:layout_width="match_parent"
-        android:text="@string/update"
         android:layout_alignParentBottom="true"
-        style="@style/S2.Widget.Button.Dark" />
-    
-    <ScrollView
+        android:text="@string/update" />
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/btn_submit"
-        android:layout_marginBottom="@dimen/margin" >
-        
-        <LinearLayout
+        android:orientation="vertical" >
+
+        <EditText
+            android:id="@+id/et_role_prefix"
+            style="@style/S2.Widget.EditText"
+            android:layout_marginBottom="@dimen/margin_small" />
+
+        <ListView
+            android:id="@+id/lv_roles"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-            
-            <TextView
-                android:text="역할 수정"
-                style="@style/S2.Widget.TextView.H2" />
-            
-            <EditText
-                android:id="@+id/et_role_prefix"
-                android:layout_marginBottom="@dimen/margin_small"
-                style="@style/S2.Widget.EditText" />
-            
-            <Spinner
-                android:id="@+id/sp_role"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin" />
-            
-            <TextView
-                android:text="스킨 수정"
-                style="@style/S2.Widget.TextView.H2" />
-                
-            <include layout="@layout/row_member_big_include" />
-            
-            <com.myandb.singsong.widget.HorizontalListView
-                android:id="@+id/hlv_skin"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:clipToPadding="false"
-                android:paddingLeft="@dimen/margin"
-                android:paddingRight="@dimen/margin"
-                android:scrollbars="none" />
-            
-        </LinearLayout>
-        
-    </ScrollView>
+            android:layout_height="match_parent"
+            android:cacheColorHint="@android:color/transparent"
+            android:divider="@color/divider"
+            android:dividerHeight="0.1dp"
+            android:footerDividersEnabled="false"
+            android:listSelector="@android:color/transparent" />
+    </LinearLayout>
 
 </RelativeLayout>
