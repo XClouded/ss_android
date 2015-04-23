@@ -85,6 +85,7 @@ public class Song extends Model {
 	private int liking_num;
 	private int song_id;
 	private int genre_id;
+	private int is_nxing_api;
 	
 	public String getAudioUrl() {
 		return STORAGE_HOST + STORAGE_SONG + file;
@@ -262,6 +263,10 @@ public class Song extends Model {
 	
 	public void decrementLikeNum() {
 		liking_num--;
+	}
+	
+	public boolean isNxing() {
+		return is_nxing_api == 1;
 	}
 	
 	public Category getCategory() {

@@ -283,10 +283,26 @@ public class KaraokeFragment extends BaseFragment {
 		}
 		
 		lrcDownload = new DownloadManager();
-		lrcDownload.start(music.getLrcUrl(), lyricFile, lyricDownloadListener);
+		lrcDownload.start(getLrcUrl(), lyricFile, lyricDownloadListener);
 		
 		audioDownload = new DownloadManager();
 		audioDownload.start(getAudioUrl(), musicOggFile, audioDownloadListener);
+	}
+	
+	private String getLrcUrl() {
+		if (isSolo()) {
+			if (music.isNxing()) {
+				return music.getNxingLrcUrl();
+			}
+		}
+		
+		if (isCollabo()) {
+			if (parentSong.isNxing()) {
+				return music.getNxingLrcUrl();
+			}
+		}
+		
+		return music.getMuseOnlineLrcUrl();
 	}
 	
 	private OnDownloadListener lyricDownloadListener = new OnDownloadListener() {
@@ -329,7 +345,7 @@ public class KaraokeFragment extends BaseFragment {
 	
 	public void onLyricDownloadSuccess() {
 		try {
-			Lrc lrc = new Lrc(lyricFile);
+			Lrc lrc = new Lrc(lyricFile, getLrcCharset());
 			if (music.isLyricDynamic()) {
 				lrcDisplayer = new DynamicLrcDisplayer(getActivity());
 			} else {
@@ -342,6 +358,22 @@ public class KaraokeFragment extends BaseFragment {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private String getLrcCharset() {
+		if (isSolo()) {
+			if (music.isNxing()) {
+				return "UTF-8";
+			}
+		}
+		
+		if (isCollabo()) {
+			if (parentSong.isNxing()) {
+				return "UTF-8";
+			}
+		}
+		
+		return "MS949"; 
 	}
 	
 	private OnTypeChangeListener typeChangeListener = new OnTypeChangeListener() {
