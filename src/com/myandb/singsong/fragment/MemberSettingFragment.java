@@ -17,8 +17,6 @@ import android.widget.ListView;
 
 public class MemberSettingFragment extends BaseFragment {
 	
-	public static final String EXTRA_MEMBER = "member";
-	
 	private Button btnSubmit;
 	private EditText etRolePrefix;
 	private ListView lvRoles;
@@ -33,7 +31,7 @@ public class MemberSettingFragment extends BaseFragment {
 	protected void onArgumentsReceived(Bundle bundle) {
 		super.onArgumentsReceived(bundle);
 		
-		String memberInString = bundle.getString(EXTRA_MEMBER);
+		String memberInString = bundle.getString(Member.class.getName());
 		member = Utility.getGsonInstance().fromJson(memberInString, Member.class);
 	}
 

@@ -20,8 +20,6 @@ public class TeamSettingFragment extends BaseFragment {
 	private static final int REQUEST_CODE_EMBLEM = 300;
 	private static final int REQUEST_CODE_BACKGROUND = 400;
 	
-	public static final String EXTRA_TEAM = "team";
-	
 	private ImageView ivTeamBackgroundPhoto;
 	private ImageView ivTeamEmblem;
 	private TextView tvTeamTitle;
@@ -40,7 +38,7 @@ public class TeamSettingFragment extends BaseFragment {
 	protected void onArgumentsReceived(Bundle bundle) {
 		super.onArgumentsReceived(bundle);
 		
-		String teamInString = bundle.getString(EXTRA_TEAM);
+		String teamInString = bundle.getString(Team.class.getName());
 		team = Utility.getGsonInstance().fromJson(teamInString, Team.class);
 	}
 

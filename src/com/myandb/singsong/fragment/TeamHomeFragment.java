@@ -4,20 +4,15 @@ import com.android.volley.Request.Method;
 import com.google.gson.Gson;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
-import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.activity.UpActivity;
 import com.myandb.singsong.adapter.CommentAdapter;
-import com.myandb.singsong.adapter.FriendsAdapter;
-import com.myandb.singsong.adapter.MyCommentAdapter;
-import com.myandb.singsong.adapter.MyLikeSongAdapter;
-import com.myandb.singsong.adapter.MySongAdapter;
 import com.myandb.singsong.dialog.BaseDialog;
 import com.myandb.singsong.dialog.GalleryDialog;
 import com.myandb.singsong.dialog.UpdateFriendshipDialog;
 import com.myandb.singsong.event.ActivateOnlyClickListener;
-import com.myandb.singsong.fragment.TabListFragment.Tab;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Friendship;
+import com.myandb.singsong.model.Member;
 import com.myandb.singsong.model.Team;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.JSONErrorListener;
@@ -36,14 +31,10 @@ import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 
 public class TeamHomeFragment extends TabListFragment {
@@ -165,6 +156,7 @@ public class TeamHomeFragment extends TabListFragment {
 		setViewsVisible(btnApply, btnFollow);
 		btnApply.setOnClickListener(applyClickListener);
 		btnFollow.setOnClickListener(followClickListener);
+		checkUserFollowThisTeam();
 	}
 	
 	private void displayTeamInformations() {
@@ -215,8 +207,23 @@ public class TeamHomeFragment extends TabListFragment {
 		
 		@Override
 		public void onClick(View v) {
+			String photoUrl = "";
+			
+			switch (v.getId()) {
+			case R.id.iv_team_emblem:
+				photoUrl = team.getEmblemPhotoUrl();
+				break;
+				
+			case R.id.iv_team_background_photo:
+				photoUrl = team.getBackgroundPhotoUrl();
+				break;
+
+			default:
+				return;
+			}
+			
 			Bundle bundle = new Bundle();
-			bundle.putString(GalleryDialog.EXTRA_PHOTO_URL, "");
+			bundle.putString(GalleryDialog.EXTRA_PHOTO_URL, photoUrl);
 			GalleryDialog dialog = new GalleryDialog();
 			dialog.setArguments(bundle);
 			dialog.show(getChildFragmentManager(), "");
@@ -308,10 +315,11 @@ public class TeamHomeFragment extends TabListFragment {
 		public void onActivated(View v, User user) {
 			Bundle bundle = new Bundle();
 			bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, team.getName());
-			
+			bundle.putString(Team.class.getName(), team.toString());
 			Intent intent = new Intent(getActivity(), UpActivity.class);
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, TeamSettingFragment.class.getName());
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
+			startFragment(intent);
 			getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.hold);
 		}
 	};
@@ -320,7 +328,14 @@ public class TeamHomeFragment extends TabListFragment {
 		
 		@Override
 		public void onActivated(View v, User user) {
-			
+			Bundle bundle = new Bundle();
+			bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, "역할 변경");
+			bundle.putString(Member.class.getName(), team.toString());
+			Intent intent = new Intent(getActivity(), UpActivity.class);
+			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, MemberSettingFragment.class.getName());
+			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
+			startFragment(intent);
+			getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.hold);
 		}
 	};
 
