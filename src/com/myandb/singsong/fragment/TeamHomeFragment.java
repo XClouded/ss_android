@@ -15,9 +15,10 @@ import com.myandb.singsong.dialog.BaseDialog;
 import com.myandb.singsong.dialog.GalleryDialog;
 import com.myandb.singsong.dialog.UpdateFriendshipDialog;
 import com.myandb.singsong.event.ActivateOnlyClickListener;
-import com.myandb.singsong.event.MemberOnlyClickListener;
+import com.myandb.singsong.fragment.TabListFragment.Tab;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Friendship;
+import com.myandb.singsong.model.Team;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.JSONErrorListener;
 import com.myandb.singsong.net.JSONObjectRequest;
@@ -45,25 +46,28 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
-public class TeamHomeFragment extends ListFragment {
+public class TeamHomeFragment extends TabListFragment {
 	
 	private User currentUser;
+	private Team team;
 	private Friendship friendship;
 	
 	private ImageView ivTeamBackgroundPhoto;
 	private ImageView ivTeamEmblem;
-	private ImageView ivEditProfile;
-	private TextView tvTeamCollabos;
-	private TextView tvTeamMembers;
-	private TextView tvTeamFollowers;
 	private TextView tvTeamTitle;
 	private TextView tvTeamDescription;
+	private TextView tvTeamStatus;
+	private TextView tvFollowers;
+	private TextView tvTeamMembers;
+	private TextView tvTeamCollabos;
+	private Button btnApply;
 	private Button btnFollow;
-
-	@Override
-	protected int getResourceId() {
-		return R.layout.fragment_team_home;
-	}
+	private Button btnEditTeam;
+	private Button btnEditRole;
+	private View vMemberMenus;
+	private View vTeamCollaboWorkspace;
+	private View vTeamCommunity;
+	private View vTeamCandidates;
 
 	@Override
 	protected int getListHeaderViewResId() {
@@ -71,13 +75,12 @@ public class TeamHomeFragment extends ListFragment {
 	}
 
 	@Override
-	protected ListAdapter instantiateAdapter(Activity activity) {
-		return new CommentAdapter();
-	}
-
-	@Override
-	protected UrlBuilder instantiateUrlBuilder(Activity activity) {
-		return new UrlBuilder().s("songs").s(1189491).s("comments");
+	protected void onArgumentsReceived(Bundle bundle) {
+		super.onArgumentsReceived(bundle);
+		Gson gson = Utility.getGsonInstance();
+		String teamInJson = bundle.getString(Team.class.getName());
+		team = gson.fromJson(teamInJson, Team.class);
+		currentUser = Authenticator.getUser();
 	}
 
 	@Override
@@ -87,36 +90,16 @@ public class TeamHomeFragment extends ListFragment {
 		view = getListHeaderView();
 		ivTeamBackgroundPhoto = (ImageView) view.findViewById(R.id.iv_team_background_photo);
 		ivTeamEmblem = (ImageView) view.findViewById(R.id.iv_team_emblem);
-		ivEditProfile = (ImageView) view.findViewById(R.id.iv_edit_profile);
-		tvTeamCollabos = (TextView) view.findViewById(R.id.tv_team_collabos);
-		tvTeamMembers = (TextView) view.findViewById(R.id.tv_team_members);
-		tvTeamFollowers = (TextView) view.findViewById(R.id.tv_team_followers);
 		tvTeamTitle = (TextView) view.findViewById(R.id.tv_team_title);
 		tvTeamDescription = (TextView) view.findViewById(R.id.tv_team_description);
+		tvTeamStatus = (TextView) view.findViewById(R.id.tv_team_status);
+		tvFollowers = (TextView) view.findViewById(R.id.tv_followers);
+		tvTeamMembers = (TextView) view.findViewById(R.id.tv_team_members);
+		tvTeamCollabos = (TextView) view.findViewById(R.id.tv_team_collabos);
+		btnApply = (Button) view.findViewById(R.id.btn_apply);
 		btnFollow = (Button) view.findViewById(R.id.btn_follow);
-	}
-
-	@Override
-	protected void initialize(Activity activity) {
-		super.initialize(activity);
-		currentUser = Authenticator.getUser();
-	}
-
-	@Override
-	protected void setupViews(Bundle savedInstanceState) {
-		super.setupViews(savedInstanceState);
-		
-		displayTeamSpecificViews();
-
-		displayTextOnMainTab(tvTeamCollabos, "5", "¶¼Ã¢");
-		
-		displayTextOnMainTab(tvTeamMembers, "4/7", "¸â¹ö");
-		
-		displayTextOnMainTab(tvTeamFollowers, "23", getString(R.string.follower));
-		
-		setOnToListClickListener();
-		
-		setTeamPhoto();
+		btnEditTeam = (Button) view.findViewById(R.id.btn_edit_team);
+		btnEditRole = (Button) view.findViewById(R.id.btn_edit_role);
 	}
 	
 	private boolean isTeamMember() {
@@ -126,15 +109,69 @@ public class TeamHomeFragment extends ListFragment {
 	private boolean isTeamLeader() {
 		return true;
 	}
-	
-	private void displayTeamSpecificViews() {
-		tvTeamTitle.setText("team title");
+
+	@Override
+	protected void initialize(Activity activity) {
+		super.initialize(activity);
+		Gson gson = Utility.getGsonInstance();
+		String teamInJson = "{\"id\":\"5\",\"name\":\"asdfegege\",\"leader_id\":\"24\",\"status_message\":\"\",\"max_member_num\":\"0\",\"member_num\":\"1\",\"genre_id\":\"0\",\"gender_type\":\"0\",\"published_song_num\":\"0\",\"follower_num\":\"0\",\"song_in_progress_num\":\"0\",\"main_photo_url\":\"\",\"main_photo_updated_at\":\"0000-00-00 00:00:00\",\"emblem_url\":\"\",\"emblem_updated_at\":\"0000-00-00 00:00:00\",\"created_at\":\"2015-03-25 11:39:04\",\"updated_at\":\"2015-03-25 11:39:04\",\"deleted_at\":null\"}";
+		team = gson.fromJson(teamInJson, Team.class);
+		currentUser = Authenticator.getUser();
+	}
+
+	@Override
+	protected void setupViews(Bundle savedInstanceState) {
+		super.setupViews(savedInstanceState);
 		
-		if (isTeamMember()) {
-			btnFollow.setVisibility(View.GONE);
-		} else {
-			btnFollow.setVisibility(View.VISIBLE);
+		if (team == null) {
+			return;
 		}
+		
+		dispatchAuthorizationRelatedViews();
+		
+		displayTeamInformations();
+		
+		displayTextOnMainTab(tvTeamMembers, team.getCurrentMemberNumState(), "¸â¹ö");
+		
+		displayTextOnMainTab(tvTeamCollabos, team.getWorkedPublishedSongNum(), "¶¼Ã¢");
+		
+		displayPhotos();
+	}
+	
+	private void dispatchAuthorizationRelatedViews() {
+		if (isTeamMember()) {
+			onTeamMember();
+			if (isTeamLeader()) {
+				onTeamLeader();
+			}
+		} else {
+			onGuest();
+		}
+	}
+	
+	private void onTeamMember() {
+		setViewsGone(btnApply, btnFollow, btnEditTeam);
+		setViewsVisible(vMemberMenus, btnEditRole);
+		btnEditRole.setOnClickListener(editRoleClickListener);
+	}
+	
+	private void onTeamLeader() {
+		setViewsVisible(btnEditTeam);
+		btnEditTeam.setOnClickListener(editTeamClickListener);
+	}
+	
+	private void onGuest() {
+		setViewsGone(vMemberMenus, btnEditRole, btnEditTeam);
+		setViewsVisible(btnApply, btnFollow);
+		btnApply.setOnClickListener(applyClickListener);
+		btnFollow.setOnClickListener(followClickListener);
+	}
+	
+	private void displayTeamInformations() {
+		tvTeamTitle.setText(team.getName());
+		tvTeamStatus.setText(team.getStatusMessage());
+		tvTeamDescription.setText(team.getDescription());
+		tvFollowers.setText("ÆÈ·Î¿ö " + team.getFollowersNum());
 	}
 	
 	private void displayTextOnMainTab(TextView textView, String num, String name) {
@@ -146,81 +183,7 @@ public class TeamHomeFragment extends ListFragment {
 		textView.append(spannable);
 	}
 	
-	private void setOnToListClickListener() {
-		tvTeamCollabos.setOnClickListener(toUserItemListClickListener);
-		tvTeamMembers.setOnClickListener(toUserItemListClickListener);
-		tvTeamFollowers.setOnClickListener(toUserItemListClickListener);
-	}
-	
-	private OnClickListener toUserItemListClickListener = new OnClickListener() {
-		
-		@Override
-		public void onClick(View view) {
-			onToUserItemListClick(view.getId());
-		}
-	};
-	
-	private void onToUserItemListClick(int id) {
-		String userId = String.valueOf(0);
-		String segment = "users/" + userId + "/";
-		String adapterName = "";
-		Bundle bundle = new Bundle();
-		Bundle params = new Bundle();
-		
-		switch (id) {
-		case R.id.action_user_followings:
-		case R.id.tv_user_followings:
-			segment += "followings";
-			params.putString("req[]", "profile");
-			params.putString("order", "friendships.created_at");
-			adapterName = FriendsAdapter.class.getName();
-			break;
-			
-		case R.id.action_user_followers:	
-		case R.id.tv_user_followers:
-			segment += "followers";
-			params.putString("req[]", "profile");
-			params.putString("order", "friendships.created_at");
-			adapterName = FriendsAdapter.class.getName();
-			break;
-			
-		case R.id.action_user_likings:
-			segment += "songs/likings";
-			params.putString("order", "created_at");
-			adapterName = MyLikeSongAdapter.class.getName();
-			bundle.putBoolean(ListFragment.EXTRA_HORIZONTAL_PADDING, true);
-			bundle.putBoolean(ListFragment.EXTRA_VERTICAL_PADDING, true);
-			break;
-			
-		case R.id.action_user_comments:
-			segment += "songs/comments";
-			params.putString("order", "created_at");
-			adapterName = MyCommentAdapter.class.getName();
-			bundle.putBoolean(ListFragment.EXTRA_HORIZONTAL_PADDING, true);
-			bundle.putBoolean(ListFragment.EXTRA_VERTICAL_PADDING, true);
-			break;
-			
-		case R.id.action_user_trash:
-			segment += "songs/trash";
-			params.putString("order", "deleted_at");
-			adapterName = MySongAdapter.class.getName();
-			bundle.putBoolean(ListFragment.EXTRA_VERTICAL_PADDING, true);
-			break;
-			
-		default:
-			return;
-		}
-		
-		bundle.putString(ListFragment.EXTRA_URL_SEGMENT, segment);
-		bundle.putString(ListFragment.EXTRA_ADAPTER_NAME, adapterName);
-		bundle.putBundle(ListFragment.EXTRA_QUERY_PARAMS, params);
-		Intent intent = new Intent(getActivity(), RootActivity.class);
-		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
-		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, ListFragment.class.getName());
-		startFragment(intent);
-	}
-	
-	private void setTeamPhoto() {
+	private void displayPhotos() {
 		boolean teamHasPhoto = true;
 		if (teamHasPhoto) {
 			ImageHelper.displayPhoto(null, ivTeamEmblem, new SimpleImageLoadingListener() {
@@ -316,6 +279,14 @@ public class TeamHomeFragment extends ListFragment {
 		}
 	};
 	
+	private OnClickListener applyClickListener = new ActivateOnlyClickListener() {
+		
+		@Override
+		public void onActivated(View v, User user) {
+			
+		}
+	};
+	
 	private OnClickListener updateFriendshipClickListener = new ActivateOnlyClickListener() {
 		
 		@Override
@@ -331,36 +302,43 @@ public class TeamHomeFragment extends ListFragment {
 		}
 	};
 	
-	private OnClickListener editProfileClickListener = new MemberOnlyClickListener() {
+	private OnClickListener editTeamClickListener = new ActivateOnlyClickListener() {
 		
 		@Override
-		public void onLoggedIn(View v, User user) {
+		public void onActivated(View v, User user) {
 			Bundle bundle = new Bundle();
-			bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_setting_action_title));
+			bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, team.getName());
+			
 			Intent intent = new Intent(getActivity(), UpActivity.class);
-			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, SettingFragment.class.getName());
+			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, TeamSettingFragment.class.getName());
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
 			getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.hold);
+		}
+	};
+	
+	private OnClickListener editRoleClickListener = new ActivateOnlyClickListener() {
+		
+		@Override
+		public void onActivated(View v, User user) {
+			
 		}
 	};
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		String title = "team fragment";
-		setFadingActionBarTitle(title);
+		setFadingActionBarTitle(team.getName());
 	}
-	
+
 	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		inflater.inflate(R.menu.user_home, menu);
-		setFadingActionBarIcon(menu, R.id.action_overflow);
-	}
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		onToUserItemListClick(item.getItemId());
-		return super.onOptionsItemSelected(item);
+	protected void defineTabs() {
+		addTab(tvTeamMembers, new Tab(
+				new UrlBuilder().s("songs").s(1257871).s("comments"), 
+				new CommentAdapter()));
+		
+		addTab(tvTeamCollabos, new Tab(
+				new UrlBuilder().s("songs").s(1257871).s("comments"), 
+				new CommentAdapter()));
 	}
 
 }

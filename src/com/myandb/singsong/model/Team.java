@@ -127,4 +127,12 @@ public class Team extends Model {
 		}
 		return members;
 	}
+	
+	public String getCurrentMemberNumState() {
+		String memberNumState = "";
+		memberNumState += getMemberNum();
+		memberNumState += "/";
+		memberNumState += getMaxMemberNum();
+		return memberNumState;
+	}
 }

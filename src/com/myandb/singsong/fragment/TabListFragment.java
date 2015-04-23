@@ -3,6 +3,7 @@ package com.myandb.singsong.fragment;
 import android.app.Activity;
 import android.util.SparseArray;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ListAdapter;
 
 import com.myandb.singsong.App;
@@ -10,21 +11,41 @@ import com.myandb.singsong.net.UrlBuilder;
 
 public abstract class TabListFragment extends ListFragment {
 	
-	private int selectedViewId = App.INVALID_RESOURCE_ID;
-	private TabHost tabHost;
+	private SparseArray<Tab> tabs;
 	private OnTabChangedListener listener;
+	private int selectedTabViewId = App.INVALID_RESOURCE_ID;
+	private int initialDisplayTabViewId = App.INVALID_RESOURCE_ID;
 	
 	@Override
 	protected void initialize(Activity activity) {
-		super.initialize(activity);
 		initializeTabs();
+		super.initialize(activity);
 	}
 
 	private void initializeTabs() {
-		if (hasNoTabs()) {
-			tabHost = new TabHost();
-			defineTabs(tabHost);
+		if (tabs == null) {
+			tabs = new SparseArray<Tab>();
+			defineTabs();
 		}
+	}
+	
+	protected void addTab(View view, Tab tab) {
+		if (tabs.get(view.getId()) != null) {
+			return;
+		}
+		
+		if (initialDisplayTabViewId == App.INVALID_RESOURCE_ID) {
+			initialDisplayTabViewId = view.getId();
+		}
+		
+		tabs.put(view.getId(), tab);
+		view.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				selectTab(v);
+			}
+		});
 	}
 
 	public void selectTab(View view) {
@@ -32,21 +53,20 @@ public abstract class TabListFragment extends ListFragment {
 			return;
 		}
 		
-		if (hasNoTabs()) {
+		if (selectedTabViewId == view.getId()) {
 			return;
 		}
 		
-		Tab tab = tabHost.getTab(view);
-		if (tab != null) {
-			if (selectedViewId == view.getId()) {
-				return;
-			}
-			
-			changeList(view, tab);
-			dispatchTabChangedListener(view, getView().findViewById(selectedViewId));
-			
-			selectedViewId = view.getId();
+		Tab tab = tabs.get(view.getId());
+		
+		if (tab == null) {
+			return;
 		}
+		
+		changeList(view, tab);
+		dispatchTabChangedListener(view, getView().findViewById(selectedTabViewId));
+		
+		selectedTabViewId = view.getId();
 	}
 	
 	private void changeList(View tabView, Tab tab) {
@@ -65,15 +85,29 @@ public abstract class TabListFragment extends ListFragment {
 		}
 	}
 	
-	private boolean hasNoTabs() {
-		return tabHost == null;
-	}
-	
 	public void setOnTabChangedListener(OnTabChangedListener listener) {
 		this.listener = listener;
 	}
 	
-	protected abstract void defineTabs(TabHost tabHost);
+	@Override
+	protected ListAdapter instantiateAdapter(Activity activity) {
+		if (tabs != null) {
+			Tab tab = tabs.get(initialDisplayTabViewId);
+			return tab.getAdapter();
+		}
+		return null;
+	}
+
+	@Override
+	protected UrlBuilder instantiateUrlBuilder(Activity activity) {
+		if (tabs != null) {
+			Tab tab = tabs.get(initialDisplayTabViewId);
+			return tab.getUrlBuilder();
+		}
+		return null;
+	}
+
+	protected abstract void defineTabs();
 	
 	public static final class Tab {
 		
@@ -91,22 +125,6 @@ public abstract class TabListFragment extends ListFragment {
 		
 		public ListAdapter getAdapter() {
 			return adapter;
-		}
-		
-	}
-	
-	public static final class TabHost {
-		
-		private SparseArray<Tab> tabs = new SparseArray<Tab>();
-		
-		public void putTab(View view, Tab tab) {
-			if (getTab(view) == null) {
-				tabs.put(view.getId(), tab);
-			}
-		}
-		
-		private Tab getTab(View view) {
-			return tabs.get(view.getId());
 		}
 		
 	}

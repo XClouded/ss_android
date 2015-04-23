@@ -101,6 +101,22 @@ public abstract class BaseFragment extends Fragment {
 		}
 		return simpleFacebook;
 	}
+	
+	public void setViewsGone(View... views) {
+		for (View view : views) {
+			if (view != null) {
+				view.setVisibility(View.GONE);
+			}
+		}
+	}
+	
+	public void setViewsVisible(View... views) {
+		for (View view : views) {
+			if (view != null) {
+				view.setVisibility(View.VISIBLE);
+			}
+		}
+	}
 
 	private void configureActionBar() {
 		if (isActionBarDisabled()) {

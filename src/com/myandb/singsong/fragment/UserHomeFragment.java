@@ -140,8 +140,6 @@ public class UserHomeFragment extends TabListFragment {
 		
 		displayUserSpecificViews();
 
-		setOnToListClickListener();
-		
 		setUserPhoto();
 		
 		loadProfileData();
@@ -197,20 +195,6 @@ public class UserHomeFragment extends TabListFragment {
 			btnFollow.setVisibility(View.VISIBLE);
 		}
 	}
-	
-	private void setOnToListClickListener() {
-		tvUserSongs.setOnClickListener(selectTabClickListener);
-		tvUserFollowings.setOnClickListener(selectTabClickListener);
-		tvUserFollowers.setOnClickListener(selectTabClickListener);
-	}
-	
-	private OnClickListener selectTabClickListener = new OnClickListener() {
-		
-		@Override
-		public void onClick(View view) {
-			selectTab(view);
-		}
-	};
 	
 	private void onToUserItemListClick(int id) {
 		String userId = String.valueOf(thisUser.getId());
@@ -542,18 +526,19 @@ public class UserHomeFragment extends TabListFragment {
 	}
 
 	@Override
-	protected void defineTabs(TabHost tabHost) {
-		tabHost.putTab(tvUserSongs, new Tab(
+	protected void defineTabs() {
+		addTab(tvUserSongs, new Tab(
 				new UrlBuilder().s("users").s(thisUser.getId()).s("songs").s("all"), 
 				new MySongAdapter(isCurrentUser(), false)));
 		
-		tabHost.putTab(tvUserFollowings, new Tab(
+		addTab(tvUserFollowings, new Tab(
 				new UrlBuilder().s("users").s(thisUser.getId()).s("followings").p("req[]", "profile").p("order", "friendships.created_at"),
 				new FriendsAdapter()));
 		
-		tabHost.putTab(tvUserFollowers, new Tab(
+		addTab(tvUserFollowers, new Tab(
 				new UrlBuilder().s("users").s(thisUser.getId()).s("followers").p("req[]", "profile").p("order", "friendships.created_at"),
 				new FriendsAdapter()));
+		
 	}
 	
 }
