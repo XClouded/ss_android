@@ -236,10 +236,11 @@ public class PlayerService extends Service {
 		Intent intent = new Intent(this, RootActivity.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		intent.putExtra(RootActivity.EXTRA_SHOW_PLAYER, true);
+		intent.putExtra(RootActivity.EXTRA_SHOW_NOTIFICATION, false);
 		
 		String singerName = thisSong.getMusic().getSingerName();
 		String albumTitle = thisSong.getMusic().getTitle();
-		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
 		builder.setSmallIcon(R.drawable.ic_launcher)
 			.setContentTitle(singerName)
