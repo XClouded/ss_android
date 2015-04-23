@@ -485,11 +485,15 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 					expandPanel();
 					ivPlayControl.setEnabled(false);
 					ivDragPlayControl.setEnabled(false);
+					vStartCollabo.setEnabled(false);
+					vFloatingCollabo.setEnabled(false);
 					break;
 					
 				case PREPARED:
 					ivDragPlayControl.setEnabled(true);
 					ivPlayControl.setEnabled(true);
+					vStartCollabo.setEnabled(true);
+					vFloatingCollabo.setEnabled(true);
 					break;
 					
 				case PLAY:
