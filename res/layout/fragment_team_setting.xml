@@ -20,7 +20,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
-            <com.github.siyamed.shapeimageview.HexagonImageView
+            <com.github.siyamed.shapeimageview.RoundedHexagonImageView
                 android:id="@+id/iv_team_emblem"
                 style="@style/S2.Widget.ImageView.Team.Big"
                 android:layout_gravity="center" />
