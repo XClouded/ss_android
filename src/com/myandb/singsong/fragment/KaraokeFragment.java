@@ -346,7 +346,7 @@ public class KaraokeFragment extends BaseFragment {
 	public void onLyricDownloadSuccess() {
 		try {
 			Lrc lrc = new Lrc(lyricFile, getLrcCharset());
-			if (music.isLyricDynamic()) {
+			if (isLyricDynamic()) {
 				lrcDisplayer = new DynamicLrcDisplayer(getActivity());
 			} else {
 				lrcDisplayer = new StaticLrcDisplayer(getActivity());
@@ -374,6 +374,22 @@ public class KaraokeFragment extends BaseFragment {
 		}
 		
 		return "MS949"; 
+	}
+	
+	private boolean isLyricDynamic() {
+		if (isSolo()) {
+			if (music.isNxing()) {
+				return true;
+			}
+		}
+		
+		if (isCollabo()) {
+			if (parentSong.isNxing()) {
+				return true;
+			}
+		}
+		
+		return music.isLyricDynamic();
 	}
 	
 	private OnTypeChangeListener typeChangeListener = new OnTypeChangeListener() {
