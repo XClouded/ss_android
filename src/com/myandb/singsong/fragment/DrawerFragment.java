@@ -19,7 +19,7 @@ import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.adapter.MenuAdapter;
 import com.myandb.singsong.event.MemberOnlyClickListener;
 import com.myandb.singsong.image.ImageHelper;
-import com.myandb.singsong.model.GlobalMenu;
+import com.myandb.singsong.model.Menu;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.widget.LinearGridView;
@@ -33,7 +33,7 @@ public class DrawerFragment extends BaseFragment {
 	private Button btnDrawerLogin;
 	private View llDrawerUserWrapper;
 	private View llDrawerLoginWrapper;
-	private List<GlobalMenu> menus;
+	private List<Menu> menus;
 
 	@Override
 	protected int getResourceId() {
@@ -57,7 +57,7 @@ public class DrawerFragment extends BaseFragment {
 	}
 	
 	private void makeMenus() {
-		menus = new ArrayList<GlobalMenu>();
+		menus = new ArrayList<Menu>();
 		menus.add(makeHomeMenu());
 		menus.add(makeArtistMenu());
 		menus.add(makeSingMenu());
@@ -66,14 +66,14 @@ public class DrawerFragment extends BaseFragment {
 		menus.add(makeSettingMenu());
 	}
 	
-	private GlobalMenu makeHomeMenu() {
+	private Menu makeHomeMenu() {
 		Intent intent = new Intent(getActivity(), RootActivity.class);
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, HomeFragment.class.getName());
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_ROOT, true);
-		return new GlobalMenu(R.string.fragment_home_action_title, intent, R.drawable.ic_menu_home);
+		return new Menu(R.string.fragment_home_action_title, intent, R.drawable.ic_menu_home);
 	}
 	
-	private GlobalMenu makeArtistMenu() {
+	private Menu makeArtistMenu() {
 		Bundle bundle = new Bundle();
 		bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_artist_list_action_title));
 		bundle.putBoolean(ListFragment.EXTRA_HORIZONTAL_PADDING, true);
@@ -81,19 +81,19 @@ public class DrawerFragment extends BaseFragment {
 		Intent intent = new Intent(getActivity(), RootActivity.class);
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, ArtistListFragment.class.getName());
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
-		return new GlobalMenu(R.string.fragment_artist_list_action_title, intent, R.drawable.ic_menu_artist);
+		return new Menu(R.string.fragment_artist_list_action_title, intent, R.drawable.ic_menu_artist);
 	}
 	
-	private GlobalMenu makeSingMenu() {
+	private Menu makeSingMenu() {
 		Bundle bundle = new Bundle();
 		bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_sing_action_title));
 		Intent intent = new Intent(getActivity(), RootActivity.class);
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, MusicHomeFragment.class.getName());
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
-		return new GlobalMenu(R.string.fragment_sing_action_title, intent, R.drawable.ic_menu_sing);
+		return new Menu(R.string.fragment_sing_action_title, intent, R.drawable.ic_menu_sing);
 	}
 	
-	private GlobalMenu makeListenMenu() {
+	private Menu makeListenMenu() {
 		Bundle bundle = new Bundle();
 		bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_listen_action_title));
 		bundle.putBoolean(ListFragment.EXTRA_HORIZONTAL_PADDING, true);
@@ -101,25 +101,25 @@ public class DrawerFragment extends BaseFragment {
 		Intent intent = new Intent(getActivity(), RootActivity.class);
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, ListenHomeFragment.class.getName());
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
-		return new GlobalMenu(R.string.fragment_listen_action_title, intent, R.drawable.ic_menu_listen);
+		return new Menu(R.string.fragment_listen_action_title, intent, R.drawable.ic_menu_listen);
 	}
 	
-	private GlobalMenu makeFindFriendMenu() {
+	private Menu makeFindFriendMenu() {
 		Bundle bundle = new Bundle();
 		bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_find_friends_action_title));
 		Intent intent = new Intent(getActivity(), RootActivity.class);
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, FindFriendsFragment.class.getName());
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
-		return new GlobalMenu(R.string.fragment_find_friends_action_title, intent, R.drawable.ic_menu_friend, true);
+		return new Menu(R.string.fragment_find_friends_action_title, intent, R.drawable.ic_menu_friend, true);
 	}
 	
-	private GlobalMenu makeSettingMenu() {
+	private Menu makeSettingMenu() {
 		Bundle bundle = new Bundle();
 		bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_community_action_title));
 		Intent intent = new Intent(getActivity(), RootActivity.class);
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, CommunityFragment.class.getName());
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
-		return new GlobalMenu(R.string.fragment_community_action_title, intent, R.drawable.ic_menu_community);
+		return new Menu(R.string.fragment_community_action_title, intent, R.drawable.ic_menu_community);
 	}
 	
 	@Override

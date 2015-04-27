@@ -3,7 +3,7 @@ package com.myandb.singsong.adapter;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.event.MemberOnlyClickListener;
-import com.myandb.singsong.model.GlobalMenu;
+import com.myandb.singsong.model.Menu;
 import com.myandb.singsong.model.User;
 
 import android.content.Context;
@@ -15,10 +15,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class MenuAdapter extends HolderAdapter<GlobalMenu, MenuAdapter.MenuHolder> {
+public class MenuAdapter extends HolderAdapter<Menu, MenuAdapter.MenuHolder> {
 	
 	public MenuAdapter() {
-		super(GlobalMenu.class);
+		super(Menu.class);
 	}
 
 	@Override
@@ -28,7 +28,7 @@ public class MenuAdapter extends HolderAdapter<GlobalMenu, MenuAdapter.MenuHolde
 	}
 
 	@Override
-	public void onBindViewHolder(Context context, MenuHolder viewHolder, final GlobalMenu menu, int position) {
+	public void onBindViewHolder(Context context, MenuHolder viewHolder, final Menu menu, int position) {
 		viewHolder.ivMenuIcon.setImageResource(menu.getIconResId());
 		viewHolder.tvMenuTitle.setText(menu.getTitleResId());
 		
