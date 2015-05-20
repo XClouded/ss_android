@@ -85,7 +85,9 @@ public abstract class BaseActivity extends ActionBarActivity {
 		if (Intent.ACTION_VIEW.equals(intent.getAction())) {
 			Uri uri = intent.getData();
 			fragmentName = uri.getFragment();
-			fragmentBundle = getBundleFromQuery(uri.getQuery());
+			if (uri.getQuery() != null) {
+				fragmentBundle = getBundleFromQuery(uri.getQuery());
+			}
 		} else if (intent.hasExtra(EXTRA_FRAGMENT_NAME)) {
 			fragmentName = intent.getStringExtra(EXTRA_FRAGMENT_NAME);
 			fragmentBundle = intent.getBundleExtra(EXTRA_FRAGMENT_BUNDLE);
