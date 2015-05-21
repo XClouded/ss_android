@@ -1,7 +1,6 @@
 package com.myandb.singsong.activity;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
@@ -13,6 +12,7 @@ import com.myandb.singsong.R;
 import com.myandb.singsong.event.WeakRunnable;
 import com.myandb.singsong.service.PlayerService;
 import com.myandb.singsong.service.PlayerServiceConnection;
+import com.myandb.singsong.util.Logger;
 import com.sromku.simple.fb.SimpleFacebook;
 
 import android.annotation.SuppressLint;
@@ -21,7 +21,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -42,6 +41,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 	public static final String EXTRA_FRAGMENT_NAME = "fragment_name";
 	public static final String EXTRA_FRAGMENT_BUNDLE = "fragment_bundle";
 	public static final String EXTRA_FRAGMENT_ROOT = "fragment_root";
+	public static final String PARAM_FRAGMENT_ROOT = "_root";
 	
 	private PlayerServiceConnection serviceConnection;
 	private PlayerService service;
@@ -79,37 +79,10 @@ public abstract class BaseActivity extends ActionBarActivity {
 	
 	protected Fragment instantiateFragmentFromIntent(Intent intent) 
 			throws InstantiationException, UnsupportedEncodingException {
-		String fragmentName = null;
-		Bundle fragmentBundle = null;
-		
-		if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-			Uri uri = intent.getData();
-			fragmentName = uri.getFragment();
-			if (uri.getQuery() != null) {
-				fragmentBundle = getBundleFromQuery(uri.getQuery());
-			}
-		} else if (intent.hasExtra(EXTRA_FRAGMENT_NAME)) {
-			fragmentName = intent.getStringExtra(EXTRA_FRAGMENT_NAME);
-			fragmentBundle = intent.getBundleExtra(EXTRA_FRAGMENT_BUNDLE);
-		} else {
-			return null;
-		}
+		String fragmentName = intent.getStringExtra(EXTRA_FRAGMENT_NAME);
+		Bundle fragmentBundle = intent.getBundleExtra(EXTRA_FRAGMENT_BUNDLE);
 		
 		return Fragment.instantiate(this, fragmentName, fragmentBundle);
-	}
-	
-	private Bundle getBundleFromQuery(String query) throws UnsupportedEncodingException {
-		final String charset = "UTF-8";
-		
-		Bundle bundle = new Bundle();
-		String[] pairs = query.split("&");
-		for (String pair : pairs) {
-			final int index = pair.indexOf("=");
-			final String key = URLDecoder.decode(pair.substring(0, index), charset);
-			final String value = URLDecoder.decode(pair.substring(index + 1), charset);
-			bundle.putString(key, value);
-		}
-		return bundle;
 	}
 	
 	protected void replaceContentFragment(Fragment fragment, boolean isRootFragment) {
@@ -188,26 +161,12 @@ public abstract class BaseActivity extends ActionBarActivity {
 	}
 
 	protected boolean isComponentOf(Intent intent, Class<?> clazz) {
-		String className = "";
-		
-		if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-			Uri uri = intent.getData();
-			if (uri != null) {
-				String host = uri.getHost();
-				if (host.equals("root")) {
-					className = RootActivity.class.getName();
-				} else if (host.equals("up")) {
-					className = UpActivity.class.getName();
-				}
-			}
-		} else {
-			ComponentName component = intent.getComponent();
-			if (component != null) {
-				className = component.getClassName();
-			}
+		ComponentName component = intent.getComponent();
+		if (component != null) {
+			Logger.log(component.getClassName());
+			return component.getClassName().equals(clazz.getName());
 		}
-		
-		return clazz.getName().equals(className);
+		return false;
 	}
 	
 	public Drawable getHomeButtonDrawable() {

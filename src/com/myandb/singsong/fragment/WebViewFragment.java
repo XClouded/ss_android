@@ -4,12 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.myandb.singsong.R;
+import com.myandb.singsong.Router;
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.secure.Authenticator;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -80,15 +80,18 @@ public class WebViewFragment extends BaseFragment {
 		
 		@Override
 		public boolean shouldOverrideUrlLoading(WebView view, String url) {
-			if (url != null && url.startsWith("singsong://")) {
-				BaseActivity context = (BaseActivity) view.getContext();
-				if (context != null) {
-					context.changePage(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+			if (url != null) {
+				if (url.startsWith("singsong://")) {
+					BaseActivity context = (BaseActivity) view.getContext();
+					if (context != null) {
+						Router router = new Router(context, Uri.parse(url));
+						context.changePage(router.getIntent());
+						return true;
+					}
+				} else {
+					view.loadUrl(url);
 					return true;
 				}
-			} else {
-				view.loadUrl(url);
-				return true;
 			}
 			
 			return false;
