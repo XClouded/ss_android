@@ -46,7 +46,7 @@ public class MusicCategoryAdapter extends HolderAdapter<Category, MusicCategoryA
 			Bundle bundle = new Bundle();
 			Bundle params = new Bundle();
 			params.putString("genre_id", String.valueOf(category.getId()));
-			bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, category.getTitle());
+			bundle.putString(BaseFragment.EXTRA_TITLE, category.getTitle());
 			bundle.putString(ListFragment.EXTRA_URL_SEGMENT, segment);
 			bundle.putBundle(ListFragment.EXTRA_QUERY_PARAMS, params);
 			Intent intent = new Intent(v.getContext(), RootActivity.class);

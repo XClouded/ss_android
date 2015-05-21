@@ -239,7 +239,7 @@ public class MusicHomeFragment extends BaseFragment {
 				return;
 			}
 			
-			bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, title);
+			bundle.putString(BaseFragment.EXTRA_TITLE, title);
 			bundle.putString(ListFragment.EXTRA_URL_SEGMENT, segment);
 			bundle.putBundle(ListFragment.EXTRA_QUERY_PARAMS, params);
 			Intent intent = new Intent(getActivity(), RootActivity.class);
@@ -261,7 +261,7 @@ public class MusicHomeFragment extends BaseFragment {
 		case R.id.action_search:
 			Bundle bundle = new Bundle();
 			bundle.putSerializable(SearchFragment.EXTRA_SEARCH_TYPE, SearchType.MUSIC);
-			bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_search_music_action_title));
+			bundle.putString(BaseFragment.EXTRA_TITLE, getString(R.string.fragment_search_music_action_title));
 			Intent intent = new Intent(getActivity(), RootActivity.class);
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, SearchFragment.class.getName());
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);

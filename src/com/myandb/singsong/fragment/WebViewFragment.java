@@ -22,7 +22,8 @@ import android.webkit.WebViewClient;
 @SuppressWarnings("deprecation")
 public class WebViewFragment extends BaseFragment {
 	
-	public static final String EXTRA_WEBVIEW_URL = "webview_url";
+	public static final String EXTRA_TYPE = "type";
+	public static final String EXTRA_URL = "url";
 	
 	private WebView webView;
 	private String url;
@@ -36,7 +37,7 @@ public class WebViewFragment extends BaseFragment {
 	@Override
 	protected void onArgumentsReceived(Bundle bundle) {
 		super.onArgumentsReceived(bundle);
-		url = bundle.getString(EXTRA_WEBVIEW_URL);
+		url = bundle.getString(EXTRA_URL);
 	}
 	
 	@Override

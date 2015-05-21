@@ -63,7 +63,7 @@ public class Artist extends Model {
 				BaseActivity activity = (BaseActivity) v.getContext();
 				Bundle bundle = new Bundle();
 				bundle.putString(ArtistDetailFragment.EXTRA_ARTIST, Artist.this.toString());
-				bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getNickname());
+				bundle.putString(BaseFragment.EXTRA_TITLE, getNickname());
 				Intent intent = new Intent(activity, RootActivity.class);
 				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, ArtistDetailFragment.class.getName());
 				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
