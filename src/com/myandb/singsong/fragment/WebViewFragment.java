@@ -1,12 +1,13 @@
 package com.myandb.singsong.fragment;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import com.myandb.singsong.R;
 import com.myandb.singsong.Router;
 import com.myandb.singsong.activity.BaseActivity;
-import com.myandb.singsong.secure.Authenticator;
+import com.myandb.singsong.net.HttpHeaderScheme;
+import com.myandb.singsong.net.MelonHttpHeaderScheme;
+import com.myandb.singsong.net.SingSongHttpHeaderScheme;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -39,7 +40,7 @@ public class WebViewFragment extends BaseFragment {
 	private WebView webView;
 	private String url;
 	private WebViewType type = WebViewType.IA;
-	private Map<String, String> header;
+	private Map<String, String> headers;
 
 	@Override
 	protected int getResourceId() {
@@ -70,9 +71,10 @@ public class WebViewFragment extends BaseFragment {
 		CookieSyncManager.createInstance(activity);
 		CookieManager.getInstance().removeAllCookie();
 		
-		String tokenHeaderKey = "oauth-token";
-		header = new HashMap<String, String>();
-		header.put(tokenHeaderKey, Authenticator.getAccessToken());
+		HttpHeaderScheme melonHttpHeaderScheme = new MelonHttpHeaderScheme();
+		headers = melonHttpHeaderScheme.getHeaders();
+		HttpHeaderScheme singSongHttpHeaderScheme = new SingSongHttpHeaderScheme();
+		headers = singSongHttpHeaderScheme.getHeaders(headers);
 	}
 
 	@SuppressLint("SetJavaScriptEnabled")
@@ -83,8 +85,9 @@ public class WebViewFragment extends BaseFragment {
 		case PA:
 		case IA:
 			webView.getSettings().setJavaScriptEnabled(true); 
-			webView.loadUrl(url, header);
 			webView.setWebViewClient(new WebViewClientClass());
+			webView.loadUrl(url, headers);
+			
 			break;
 			
 		case OA:
@@ -107,7 +110,7 @@ public class WebViewFragment extends BaseFragment {
         }
 	}
 	
-	private static class WebViewClientClass extends WebViewClient {
+	private class WebViewClientClass extends WebViewClient {
 		
 		@Override
 		public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -120,7 +123,7 @@ public class WebViewFragment extends BaseFragment {
 						return true;
 					}
 				} else {
-					view.loadUrl(url);
+					view.loadUrl(url, headers);
 					return true;
 				}
 			}
