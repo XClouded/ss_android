@@ -10,6 +10,7 @@ import com.myandb.singsong.secure.Authenticator;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -22,11 +23,22 @@ import android.webkit.WebViewClient;
 @SuppressWarnings("deprecation")
 public class WebViewFragment extends BaseFragment {
 	
+	public enum WebViewType {
+		
+		IA,
+		
+		PA,
+		
+		OA
+		
+	}
+	
 	public static final String EXTRA_TYPE = "type";
 	public static final String EXTRA_URL = "url";
 	
 	private WebView webView;
 	private String url;
+	private WebViewType type = WebViewType.IA;
 	private Map<String, String> header;
 
 	@Override
@@ -38,6 +50,14 @@ public class WebViewFragment extends BaseFragment {
 	protected void onArgumentsReceived(Bundle bundle) {
 		super.onArgumentsReceived(bundle);
 		url = bundle.getString(EXTRA_URL);
+		String typeInString = bundle.getString(EXTRA_TYPE);
+		if (typeInString != null) {
+			try {
+				type = WebViewType.valueOf(bundle.getString(EXTRA_TYPE));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	@Override
@@ -58,15 +78,25 @@ public class WebViewFragment extends BaseFragment {
 	@SuppressLint("SetJavaScriptEnabled")
 	@Override
 	protected void setupViews(Bundle savedInstanceState) {
-		webView.getSettings().setJavaScriptEnabled(true); 
-		webView.loadUrl(url, header);
-		webView.setWebViewClient(new WebViewClientClass());
+		switch (type) {
+		default:
+		case PA:
+		case IA:
+			webView.getSettings().setJavaScriptEnabled(true); 
+			webView.loadUrl(url, header);
+			webView.setWebViewClient(new WebViewClientClass());
+			break;
+			
+		case OA:
+			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+			startActivity(intent);
+			getActivity().finish();
+			break;
+		}
 	}
 
 	@Override
-	protected void onDataChanged() {
-		// Nothing to run
-	}
+	protected void onDataChanged() {}
 
 	@Override
 	public void onBackPressed() {
