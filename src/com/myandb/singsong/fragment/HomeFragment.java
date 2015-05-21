@@ -16,6 +16,8 @@ import com.myandb.singsong.adapter.MusicAdapter;
 import com.myandb.singsong.adapter.SimpleChildrenSongAdapter;
 import com.myandb.singsong.adapter.SimpleSongNumAdapter;
 import com.myandb.singsong.adapter.MusicAdapter.LayoutType;
+import com.myandb.singsong.dialog.BaseDialog;
+import com.myandb.singsong.dialog.MelonAuthenticationDialog;
 import com.myandb.singsong.event.MemberOnlyClickListener;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Music;
@@ -55,6 +57,8 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class HomeFragment extends BaseFragment {
 	
+	public static final String EXTRA_DIALOG = "dialog";
+	
 	private TextView tvNotificationCount;
 	private TextView tvTop10FirstLikeNum;
 	private TextView tvTop10FirstMusicInfo;
@@ -81,6 +85,7 @@ public class HomeFragment extends BaseFragment {
 	private SimpleChildrenSongAdapter waitingSongAdapter;
 	private ArtistAdapter collaboArtistAdapter;
 	private Song top10First;
+	private boolean needToShowLoginDialog;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -91,6 +96,13 @@ public class HomeFragment extends BaseFragment {
 	@Override
 	protected int getResourceId() {
 		return R.layout.fragment_home;
+	}
+
+	@Override
+	protected void onArgumentsReceived(Bundle bundle) {
+		super.onArgumentsReceived(bundle);
+		String dialog = bundle.getString(EXTRA_DIALOG);
+		needToShowLoginDialog = dialog != null && dialog.equals("login");
 	}
 
 	@Override
@@ -160,7 +172,16 @@ public class HomeFragment extends BaseFragment {
 		tvSongCollaboratedMore.setOnClickListener(songMoreClickListener);
 		tvSongWaitingMore.setOnClickListener(songMoreClickListener);
 		tvRecentMusicMore.setOnClickListener(musicMoreClickListener);
-		tvPopularMusicMore.setOnClickListener(musicMoreClickListener); 
+		tvPopularMusicMore.setOnClickListener(musicMoreClickListener);
+		
+		if (needToShowLoginDialog) {
+			showLoginDialog();
+		}
+	}
+	
+	private void showLoginDialog() {
+		BaseDialog dialog = new MelonAuthenticationDialog();
+		dialog.show(getChildFragmentManager(), "");
 	}
 	
 	private void loadCollaboTop10() {
