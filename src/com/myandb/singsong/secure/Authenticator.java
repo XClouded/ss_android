@@ -1,5 +1,7 @@
 package com.myandb.singsong.secure;
 
+import java.util.UUID;
+
 import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
@@ -11,6 +13,7 @@ public class Authenticator {
 	
 	private static final String KEY_USER = "_useru_";
 	private static final String KEY_ACCESS_TOKEN = "_token_";
+	private static final String KEY_DEVICE_UUID = "_uuid_";
 	
 	private static SharedPreferences preferences;
 
@@ -56,6 +59,20 @@ public class Authenticator {
 	
 	public static void initialize(SharedPreferences preferences) {
 		Authenticator.preferences = preferences;
+		
+		initializeUuid();
+	}
+	
+	private static void initializeUuid() {
+		if (preferences != null) {
+			if (!preferences.contains(KEY_DEVICE_UUID)) {
+				preferences.edit().putString(KEY_DEVICE_UUID, UUID.randomUUID().toString());
+			}
+		}
+	}
+	
+	public static String getDeviceUuid() {
+		return preferences.getString(KEY_DEVICE_UUID, "");
 	}
 	
 	public static boolean isLoggedIn() {

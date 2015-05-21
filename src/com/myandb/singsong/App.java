@@ -30,6 +30,8 @@ public class App extends Application {
 	public static final int NOTI_ID_PHOTO_UPLOAD = 1002;
 	public static final int NOTI_ID_PLAY_SONG = 1003;
 	
+	public static String APP_VERSION = "";
+	
 	private RequestQueue requestQueue;
 	
 	@Override
@@ -43,6 +45,16 @@ public class App extends Application {
 		StringFormatter.initialize(getResources());
 		
 		initializeSimpleFacebook();
+		
+		initializeAppVersion();
+	}
+	
+	private void initializeAppVersion() {
+		try {
+			APP_VERSION = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private void initializeSimpleFacebook() {
