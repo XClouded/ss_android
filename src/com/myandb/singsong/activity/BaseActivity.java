@@ -188,11 +188,26 @@ public abstract class BaseActivity extends ActionBarActivity {
 	}
 
 	protected boolean isComponentOf(Intent intent, Class<?> clazz) {
-		ComponentName component = intent.getComponent();
-		if (component != null) {
-			return clazz.getName().equals(component.getClassName());
+		String className = "";
+		
+		if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+			Uri uri = intent.getData();
+			if (uri != null) {
+				String host = uri.getHost();
+				if (host.equals("root")) {
+					className = RootActivity.class.getName();
+				} else if (host.equals("up")) {
+					className = UpActivity.class.getName();
+				}
+			}
+		} else {
+			ComponentName component = intent.getComponent();
+			if (component != null) {
+				className = component.getClassName();
+			}
 		}
-		return false;
+		
+		return clazz.getName().equals(className);
 	}
 	
 	public Drawable getHomeButtonDrawable() {
