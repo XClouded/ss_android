@@ -17,7 +17,7 @@ import com.myandb.singsong.adapter.SimpleChildrenSongAdapter;
 import com.myandb.singsong.adapter.SimpleSongNumAdapter;
 import com.myandb.singsong.adapter.MusicAdapter.LayoutType;
 import com.myandb.singsong.dialog.BaseDialog;
-import com.myandb.singsong.dialog.MelonAuthenticationDialog;
+import com.myandb.singsong.dialog.AuthenticationDialog;
 import com.myandb.singsong.event.MemberOnlyClickListener;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Music;
@@ -180,7 +180,7 @@ public class HomeFragment extends BaseFragment {
 	}
 	
 	private void showLoginDialog() {
-		BaseDialog dialog = new MelonAuthenticationDialog();
+		BaseDialog dialog = new AuthenticationDialog();
 		dialog.show(getChildFragmentManager(), "");
 	}
 	

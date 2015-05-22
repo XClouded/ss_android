@@ -8,7 +8,6 @@ import com.google.gson.JsonSyntaxException;
 import com.myandb.singsong.GCMIntentService;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.RootActivity;
-import com.myandb.singsong.dialog.SingSongAuthenticationDialog.OnJoinCompleteListener;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.JSONObjectRequest;
 import com.myandb.singsong.net.JSONErrorListener;
@@ -24,7 +23,6 @@ import com.sromku.simple.fb.listeners.OnLoginListener;
 import com.sromku.simple.fb.listeners.OnProfileListener;
 
 import android.app.Activity;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
@@ -37,7 +35,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class MelonAuthenticationDialog extends BaseDialog {
+public class AuthenticationDialog extends BaseDialog {
 	
 	private EditText etUsername;
 	private EditText etPassword;
@@ -45,7 +43,6 @@ public class MelonAuthenticationDialog extends BaseDialog {
 	private Button btnToJoin;
 	private Button btnFacebook;
 	private TextView tvFindPassword;
-	private SingSongAuthenticationDialog joinDialog;
 	private Activity activity;
 
 	@Override
@@ -74,7 +71,7 @@ public class MelonAuthenticationDialog extends BaseDialog {
 
 	@Override
 	protected int getResourceId() {
-		return R.layout.dialog_melon_authentication;
+		return R.layout.dialog_authentication;
 	}
 
 	@Override
@@ -172,26 +169,9 @@ public class MelonAuthenticationDialog extends BaseDialog {
 		
 		@Override
 		public void onClick(View v) {
-			showJoinDialog();
+			
 		}
 	};
-	
-	private void showJoinDialog() {
-		if (joinDialog == null) {
-			joinDialog = new SingSongAuthenticationDialog();
-			joinDialog.setOnJoinCompleteListener(new OnJoinCompleteListener() {
-				
-				@Override
-				public void onJoin() {
-					onLoginComplete();
-				}
-			});
-		}
-		joinDialog.show(getChildFragmentManager(), "");
-		if (Build.VERSION.SDK_INT == Build.VERSION_CODES.JELLY_BEAN) {
-			getChildFragmentManager().executePendingTransactions();
-		}
-	}
 
 	private View.OnClickListener loginClickListener = new View.OnClickListener() {
 		
