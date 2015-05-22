@@ -7,6 +7,7 @@ import com.myandb.singsong.activity.UpActivity;
 import com.myandb.singsong.fragment.BaseFragment;
 import com.myandb.singsong.fragment.WebViewFragment;
 import com.myandb.singsong.net.MelonMemberResponse.AlertInfo;
+import com.myandb.singsong.util.Logger;
 import com.myandb.singsong.util.Utility;
 
 import android.app.Activity;
@@ -52,21 +53,23 @@ public class MelonAlertDialog extends BaseDialog {
 	protected void setupViews() {
 		tvMessage.setText(alertInfo.MESSAGE);
 		
-		if (alertInfo.POPUPTYPE.equals("alert")) {
-			btnCancel.setVisibility(View.GONE);
-		} else {
+		if ("confirm".equals(alertInfo.POPUPTYPE)) {
 			btnCancel.setVisibility(View.VISIBLE);
 			btnCancel.setOnClickListener(dismissClickListener);
+		} else {
+			btnCancel.setVisibility(View.GONE);
 		}
 		
-		if ("".equals(alertInfo.PAGEURL)) {
-			btnOk.setOnClickListener(dismissClickListener);
-		} else {
+		if (!"".equals(alertInfo.PAGEURL)) {
 			btnOk.setOnClickListener(gotoWebViewClickListener);
+		} else {
+			btnOk.setOnClickListener(dismissClickListener);
 		}
 		
 		if (!"".equals(alertInfo.OKTITLE)) {
 			btnOk.setText(alertInfo.OKTITLE);
+		} else {
+			btnOk.setText("»Æ¿Œ");
 		}
 	}
 	

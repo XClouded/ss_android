@@ -200,7 +200,7 @@ public class AuthenticationDialog extends BaseDialog {
 			setViewsVisible(tvDescription, vIntegratedAuthenticationWrapper, vFacebookWrapper,
 					tvFindSingSongPassword);
 			setViewsGone(tvSubtitle, tvSingSongUsernameGuide, vEasyLoginWrapper, vEasyLoginGuideWrapper,
-					tvFindMelonUsername, tvFindMelonPassword);
+					tvFindMelonUsername, tvFindMelonPassword, vSingSongAuthenticationWrapper);
 			tvInputAuthenticationTitle.setText("콜라보 노래방 아이디/비밀번호를 입력해주세요.");
 			btnAuthentication.setText("콜라보 회원인증");
 			etUsername.setHint("이메일 또는 콜라보 아이디");
@@ -222,7 +222,7 @@ public class AuthenticationDialog extends BaseDialog {
 			setViewsVisible(tvDescription, tvSingSongUsernameGuide, vIntegratedAuthenticationWrapper, 
 					tvFindMelonUsername, tvFindMelonPassword);
 			setViewsGone(tvSubtitle, vEasyLoginWrapper, vEasyLoginGuideWrapper,
-					tvFindSingSongPassword, vSingSongAuthenticationWrapper);
+					tvFindSingSongPassword, vSingSongAuthenticationWrapper, vFacebookWrapper);
 			tvInputAuthenticationTitle.setText("멜론 아이디/비밀번호를 입력해주세요.");
 			btnAuthentication.setText("멜론 회원인증");
 			etUsername.setHint("멜론 아이디");
@@ -419,6 +419,7 @@ public class AuthenticationDialog extends BaseDialog {
 			onLoginComplete();
 		} catch (MelonResponseException e) {
 			e.printStackTrace();
+			dismissProgressDialog();
 		} catch (JSONException e) {
 			onLoginError();
 		} catch (JsonSyntaxException e) {
@@ -525,6 +526,7 @@ public class AuthenticationDialog extends BaseDialog {
 			onLoginError();
 		} catch (MelonResponseException e) {
 			e.printStackTrace();
+			dismissProgressDialog();
 		}
 	}
 	
@@ -611,6 +613,7 @@ public class AuthenticationDialog extends BaseDialog {
 			showIntegrateSuccessDialog();
 		} catch (MelonResponseException e) {
 			e.printStackTrace();
+			dismissProgressDialog();
 		}
 	}
 	

@@ -36,6 +36,8 @@ public class MelonResponseHooker {
 				if (resultCode.equals("-1")) {
 					AlertInfo info = new AlertInfo();
 					info.MESSAGE = response.getString("errorCode") + response.getString("errorMesg");
+					info.PAGEURL = "";
+					info.OKTITLE = "»Æ¿Œ";
 					
 					Bundle bundle = new Bundle();
 					bundle.putString(AlertInfo.class.getName(), Utility.getGsonInstance().toJson(info));
