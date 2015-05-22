@@ -41,7 +41,13 @@ public class MelonResponse {
 			
 			NOFREE,
 			
-			WRONGPARAMS
+			WRONGPARAMS,
+			
+			VALERROR,
+			
+			ETC,
+			
+			LOGINTOKEN
 			
 		}
 		
