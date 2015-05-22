@@ -3,6 +3,7 @@ package com.myandb.singsong.dialog;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.facebook.Session;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.myandb.singsong.GCMIntentService;
@@ -16,15 +17,13 @@ import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.JSONObjectRequest;
 import com.myandb.singsong.net.JSONErrorListener;
 import com.myandb.singsong.net.JSONObjectSuccessListener;
+import com.myandb.singsong.net.MelonResponseHooker;
+import com.myandb.singsong.net.MelonResponseHooker.MelonResponseException;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
-import com.myandb.singsong.secure.Encryption;
 import com.myandb.singsong.util.Utility;
 import com.sromku.simple.fb.Permission.Type;
-import com.sromku.simple.fb.entities.Profile;
-import com.sromku.simple.fb.entities.Profile.Properties;
 import com.sromku.simple.fb.listeners.OnLoginListener;
-import com.sromku.simple.fb.listeners.OnProfileListener;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -44,13 +43,13 @@ public class AuthenticationDialog extends BaseDialog {
 		
 		MELON_EASY_LOGIN,
 		
-		MELON_USERNAME_LOGIN,
+		MELON_PASSWORD_LOGIN,
 		
 		MELON_LOGIN_SINGSONG_INTEGRATION,
 		
-		SINGSONG_LOGIN,
+		SINGSONG_AUTHENTICATE,
 		
-		SINGSONG_LOGIN_MELON_INTEGRATION
+		SINGSONG_AUTHENTICATE_MELON_INTEGRATION
 		
 	}
 	
@@ -66,7 +65,7 @@ public class AuthenticationDialog extends BaseDialog {
 	private TextView tvFindSingSongPassword;
 	private TextView tvJoinMelon;
 	
-	private Button btnLoginWithMelonUsername;
+	private Button btnLoginUsingPassword;
 	private Button btnFacebook;
 	private Button btnAuthentication;
 	private Button btnAuthenticateSingSong;
@@ -83,6 +82,7 @@ public class AuthenticationDialog extends BaseDialog {
 	
 	private Activity activity;
 	private AuthenticationType type;
+	private User authenticatedSingSongUser;
 
 	@Override
 	protected void onArgumentsReceived(Bundle bundle) {
@@ -110,7 +110,7 @@ public class AuthenticationDialog extends BaseDialog {
 		tvFindSingSongPassword = (TextView) view.findViewById(R.id.tv_find_singsong_password);
 		tvJoinMelon = (TextView) view.findViewById(R.id.tv_join_melon);
 		
-		btnLoginWithMelonUsername = (Button) view.findViewById(R.id.btn_login_with_melon_username);
+		btnLoginUsingPassword = (Button) view.findViewById(R.id.btn_login_using_password);
 		btnFacebook = (Button) view.findViewById(R.id.btn_facebook);
 		btnAuthentication = (Button) view.findViewById(R.id.btn_authentication);
 		btnAuthenticateSingSong = (Button) view.findViewById(R.id.btn_authenticate_singsong);
@@ -147,17 +147,19 @@ public class AuthenticationDialog extends BaseDialog {
 		tvFindMelonPassword.setOnClickListener(webLinkClickListener);
 		tvFindSingSongPassword.setOnClickListener(webLinkClickListener);
 		tvJoinMelon.setOnClickListener(webLinkClickListener);
-		btnLoginWithMelonUsername.setOnClickListener(loginWithMelonUsernameClickListener);
-		btnAuthenticateSingSong.setOnClickListener(loginWithSingSongClickListener);
+		btnLoginUsingPassword.setOnClickListener(showLoginFormUsingPasswordClickListener);
+		btnAuthenticateSingSong.setOnClickListener(showSingSongAuthenticationFormClickListener);
+		btnAuthentication.setOnClickListener(authenticateClickListener);
+		btnFacebook.setOnClickListener(facebookClickListener);
 		
 		if (type == null) {
 			if (hasEasyLogin()) {
-				displayViewsByType(AuthenticationType.MELON_EASY_LOGIN);
+				setupViewsByType(AuthenticationType.MELON_EASY_LOGIN);
 			} else {
-				displayViewsByType(AuthenticationType.MELON_USERNAME_LOGIN);
+				setupViewsByType(AuthenticationType.MELON_PASSWORD_LOGIN);
 			}
 		} else {
-			displayViewsByType(type);
+			setupViewsByType(type);
 		}
 	}
 	
@@ -169,10 +171,12 @@ public class AuthenticationDialog extends BaseDialog {
 		return true;
 	}
 	
-	private void displayViewsByType(AuthenticationType type) {
+	private void setupViewsByType(AuthenticationType type) {
 		if (type == null) {
 			return;
 		}
+		
+		clearTextFromAllEditText();
 		
 		this.type = type;
 		switch (type) {
@@ -181,13 +185,15 @@ public class AuthenticationDialog extends BaseDialog {
 			setViewsGone(tvSubtitle, tvDescription, tvSingSongUsernameGuide, vIntegratedAuthenticationWrapper);
 			break;
 			
-		case MELON_USERNAME_LOGIN:
+		case MELON_PASSWORD_LOGIN:
 			setViewsVisible(vIntegratedAuthenticationWrapper, vEasyLoginGuideWrapper,
 					tvFindMelonUsername, tvFindMelonPassword, vSingSongAuthenticationWrapper);
 			setViewsGone(tvSubtitle, tvDescription, tvSingSongUsernameGuide, vEasyLoginWrapper, vFacebookWrapper,
 					tvFindSingSongPassword);
 			tvInputAuthenticationTitle.setText("멜론 아이디/비밀번호를 입력해주세요.");
 			btnAuthentication.setText("로그인");
+			etUsername.setHint("멜론 아이디");
+			etPassword.setHint("멜론 비밀번호");
 			break;
 			
 		case MELON_LOGIN_SINGSONG_INTEGRATION:
@@ -197,29 +203,37 @@ public class AuthenticationDialog extends BaseDialog {
 					tvFindMelonUsername, tvFindMelonPassword);
 			tvInputAuthenticationTitle.setText("콜라보 노래방 아이디/비밀번호를 입력해주세요.");
 			btnAuthentication.setText("콜라보 회원인증");
+			etUsername.setHint("이메일 또는 콜라보 아이디");
+			etPassword.setHint("콜라보 비밀번호");
 			break;
 			
-		case SINGSONG_LOGIN:
+		case SINGSONG_AUTHENTICATE:
 			setViewsVisible(tvSubtitle, tvDescription, vIntegratedAuthenticationWrapper, vFacebookWrapper,
 					tvFindSingSongPassword);
 			setViewsGone(tvSingSongUsernameGuide, vEasyLoginWrapper, vEasyLoginGuideWrapper,
 					tvFindMelonUsername, tvFindMelonPassword, vSingSongAuthenticationWrapper);
 			tvInputAuthenticationTitle.setText("콜라보 노래방 아이디/비밀번호를 입력해주세요.");
 			btnAuthentication.setText("콜라보 회원인증");
+			etUsername.setHint("이메일 또는 콜라보 아이디");
+			etPassword.setHint("콜라보 비밀번호");
 			break;
 			
-		case SINGSONG_LOGIN_MELON_INTEGRATION:
+		case SINGSONG_AUTHENTICATE_MELON_INTEGRATION:
 			setViewsVisible(tvDescription, tvSingSongUsernameGuide, vIntegratedAuthenticationWrapper, 
 					tvFindMelonUsername, tvFindMelonPassword);
 			setViewsGone(tvSubtitle, vEasyLoginWrapper, vEasyLoginGuideWrapper,
 					tvFindSingSongPassword, vSingSongAuthenticationWrapper);
 			tvInputAuthenticationTitle.setText("멜론 아이디/비밀번호를 입력해주세요.");
 			btnAuthentication.setText("멜론 회원인증");
+			etUsername.setHint("멜론 아이디");
+			etPassword.setHint("멜론 비밀번호");
 			break;
 
 		default:
 			break;
 		}
+		
+		dismissProgressDialog();
 	}
 	
 	private void setViewsVisible(View... views) {
@@ -238,19 +252,19 @@ public class AuthenticationDialog extends BaseDialog {
 		}
 	}
 	
-	private OnClickListener loginWithSingSongClickListener = new OnClickListener() {
+	private OnClickListener showSingSongAuthenticationFormClickListener = new OnClickListener() {
 		
 		@Override
 		public void onClick(View v) {
-			displayViewsByType(AuthenticationType.SINGSONG_LOGIN);
+			setupViewsByType(AuthenticationType.SINGSONG_AUTHENTICATE);
 		}
 	};
 	
-	private OnClickListener loginWithMelonUsernameClickListener = new OnClickListener() {
+	private OnClickListener showLoginFormUsingPasswordClickListener = new OnClickListener() {
 		
 		@Override
 		public void onClick(View v) {
-			displayViewsByType(AuthenticationType.MELON_USERNAME_LOGIN);
+			setupViewsByType(AuthenticationType.MELON_PASSWORD_LOGIN);
 		}
 	};
 	
@@ -297,144 +311,114 @@ public class AuthenticationDialog extends BaseDialog {
 			startActivity(intent);
 		}
 	};
-
-	private View.OnClickListener facebookLoginClickListener = new View.OnClickListener() {
-		
-		@Override
-		public void onClick(View v) {
-			getSimpleFacebook().login(new OnLoginListener() {
-				
-				@Override
-				public void onFail(String arg0) {}
-				
-				@Override
-				public void onException(Throwable arg0) {}
-				
-				@Override
-				public void onThinking() {}
-				
-				@Override
-				public void onNotAcceptingPermissions(Type arg0) {}
-				
-				@Override
-				public void onLogin() {
-					showProgressDialog();
-					getFacebookProfile();
-				}
-			});
-		}
-	};
 	
-	private void getFacebookProfile() {
-		Profile.Properties properties = new Profile.Properties.Builder().add(Properties.ID).build();
-		getSimpleFacebook().getProfile(properties, new OnProfileListener() {
-
-			@Override
-			public void onComplete(Profile response) {
-				super.onComplete(response);
-				checkFacebookIdDuplication(response.getId());
-			}
-
-			@Override
-			public void onException(Throwable throwable) {
-				super.onException(throwable);
-				onLoginError();
-			}
-
-			@Override
-			public void onFail(String reason) {
-				super.onFail(reason);
-				onLoginError();
-			}
-			
-		});
-	}
-	
-	private void checkFacebookIdDuplication(String facebookId) {
-		Bundle params = new Bundle();
-		params.putString("facebook_id", facebookId);
-		JSONObjectRequest request = new JSONObjectRequest(
-				"users", params, null,
-				new JSONObjectSuccessListener(this, "onFacebookIdFound"),
-				new JSONErrorListener(this, "onFacebookIdNotFound")
-		);
-		addRequest(request);
-	}
-	
-	public void onFacebookIdFound(JSONObject response) {
-		dismissProgressDialog();
-		String accessToken = getSimpleFacebook().getSession().getAccessToken();
-		loginByFacebook(accessToken);
-	}
-	
-	public void onFacebookIdNotFound() {
-		dismissProgressDialog();
-		
-	}
-	
-	private View.OnClickListener toJoinClickListener = new View.OnClickListener() {
-		
-		@Override
-		public void onClick(View v) {
-			
-		}
-	};
-
-	private View.OnClickListener loginClickListener = new View.OnClickListener() {
+	private OnClickListener authenticateClickListener = new OnClickListener() {
 		
 		@Override
 		public void onClick(View v) {
 			showProgressDialog();
 			
-			String username = etUsername.getText().toString();
-			String password = etPassword.getText().toString();
-			loginByEmail(username, password);
+			String username = etUsername.toString();
+			String password = etPassword.toString();
+			
+			switch (type) {
+			default:
+			case MELON_EASY_LOGIN:
+				dismissProgressDialog();
+				return;
+
+			case MELON_PASSWORD_LOGIN:
+				loginUsingPassword(username, password, enabledEasyLogin());
+				break;
+				
+			case MELON_LOGIN_SINGSONG_INTEGRATION:
+				mergeSingSongAccountIntoMelonAccount(username, password);
+				break;
+				
+			case SINGSONG_AUTHENTICATE:
+				authenticateSingSong(username, password);
+				break;
+				
+			case SINGSONG_AUTHENTICATE_MELON_INTEGRATION:
+				integrateSingSongAccountWithMelonAccount(username, password);
+				break;
+			}
 		}
 	};
 	
-	private void loginByEmail(String username, String password) {
+	private boolean enabledEasyLogin() {
+		return true;
+	}
+	
+	private OnClickListener easyLoginClickListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			showProgressDialog();
+			
+			String username = "";
+			String token = "";
+			
+			loginUsingToken(username, token);
+		}
+	};
+	
+	private void loginUsingPassword(String username, String password, boolean enabledEasyLogin) {
 		try {
-			Encryption encryption = new Encryption();
+			int loginType = Authenticator.LOGIN_TYPE_PASSWORD;
+			if (enabledEasyLogin) {
+				loginType = Authenticator.LOGIN_TYPE_PASSWORD_EASY_LOGIN;
+			}
+			
 			JSONObject message = new JSONObject();
-			message.put("username", username);
-			message.put("password", encryption.getSha512Convert(password));
-			requestLogin(message);
-		} catch (JSONException e) {
-			onLoginError();
-		} catch (NullPointerException e) {
+			message.put("memberId", username);
+			message.put("memberPwd", password);
+			message.put("loginType", loginType);
+			login(message);
+		} catch (Exception e) {
+			e.printStackTrace();
 			onLoginError();
 		}
 	}
 	
-	private void loginByFacebook(String token) {
+	private void loginUsingToken(String username, String token) {
 		try {
-			Encryption encryption = new Encryption();
 			JSONObject message = new JSONObject();
-			message.put("facebook_token", token);
-			message.put("device_id", encryption.getDeviceId(getActivity()));
-			requestLogin(message);		
-		} catch (JSONException e) {
-			onLoginError();
-		} catch (NullPointerException e) {
+			message.put("memberId", username);
+			message.put("token", token);
+			message.put("loginType", Authenticator.LOGIN_TYPE_TOKEN);
+			login(message);
+		} catch (Exception e) {
+			e.printStackTrace();
 			onLoginError();
 		}
 	}
 	
-	private void requestLogin(JSONObject message) {
-		JSONObjectRequest request = new JSONObjectRequest(
-				"token", null, message,
-				new JSONObjectSuccessListener(this, "onLoginSuccess"),
-				new JSONErrorListener(this, "onLoginError")
-		);
-		addRequest(request);
+	private void login(JSONObject loginData) {
+		try {
+			loginData.put("purpose", Authenticator.LOGIN_PURPOSE_LOGIN);
+			JSONObjectRequest request = new JSONObjectRequest(
+					"melon/login/melon", null, loginData,
+					new JSONObjectSuccessListener(this, "onLoginSuccess"), 
+					new JSONErrorListener(this, "onLoginError"));
+			addRequest(request);
+		} catch (Exception e) {
+			e.printStackTrace();
+			onLoginError();
+		}
 	}
 	
 	public void onLoginSuccess(JSONObject response) {
 		try {
+			MelonResponseHooker.hook(getActivity(), getChildFragmentManager(), response);
+			
 			User user = extractUserFromResponse(response);
 			String token = extractTokenFromResponse(response);
+			
 			saveUserOnLocal(user, token);
 			onLoginComplete();
+		} catch (MelonResponseException e) {
+			e.printStackTrace();
 		} catch (JSONException e) {
 			onLoginError();
 		} catch (JsonSyntaxException e) {
@@ -463,9 +447,15 @@ public class AuthenticationDialog extends BaseDialog {
 		if (activity instanceof RootActivity) {
 			((RootActivity) activity).updateDrawer();
 		}
+		
 		GCMIntentService.register(activity);
-		dismissProgressDialog();
-		dismiss();
+		
+		if (Authenticator.getUser().isSingSongIntegrated()) {
+			dismissProgressDialog();
+			dismiss();
+		} else {
+			setupViewsByType(AuthenticationType.MELON_LOGIN_SINGSONG_INTEGRATION);
+		}
 	}
 	
 	public void onLoginError() {
@@ -478,6 +468,197 @@ public class AuthenticationDialog extends BaseDialog {
 		etUsername.setText("");
 		etPassword.setText("");
 	}
+	
+	private void authenticateSingSong(String username, String password) {
+		try {
+			JSONObject message = new JSONObject();
+			message.put("memberId", username);
+			message.put("memberPwd", password);
+			message.put("loginType", Authenticator.SINGSONG_LOGIN_TYPE_PASSWORD);
+			authenticateSingSong(message);
+		} catch (Exception e) {
+			e.printStackTrace();
+			onAuthenticateError();
+		}
+	}
+	
+	private void authenticateSingSong(String facebookAccessToken) {
+		try {
+			JSONObject message = new JSONObject();
+			message.put("facebook_token", facebookAccessToken);
+			authenticateSingSong(message);
+		} catch (Exception e) {
+			e.printStackTrace();
+			onAuthenticateError();
+		}
+	}
+	
+	private void authenticateSingSong(JSONObject authenticateData) {
+		try {
+			authenticateData.put("purpose", Authenticator.LOGIN_PURPOSE_LOGIN);
+			JSONObjectRequest request = new JSONObjectRequest(
+					"melon/login/collabo", null, authenticateData,
+					new JSONObjectSuccessListener(this, "onAuthenticateSuccess"), 
+					new JSONErrorListener(this, "onAuthenticateError"));
+			addRequest(request);
+		} catch (Exception e) {
+			e.printStackTrace();
+			onAuthenticateError();
+		}
+	}
+	
+	public void onAuthenticateSuccess(JSONObject response) {
+		try {
+			MelonResponseHooker.hook(getActivity(), getChildFragmentManager(), response);
+			
+			User user = extractUserFromResponse(response);
+			if (user.isSingSongIntegrated()) {
+				dismissProgressDialog();
+				makeToast("이미 통합된 아이디입니다.");
+			} else {
+				authenticatedSingSongUser = user;
+				setupViewsByType(AuthenticationType.SINGSONG_AUTHENTICATE_MELON_INTEGRATION);
+			}
+		} catch (JSONException e) {
+			onLoginError();
+		} catch (JsonSyntaxException e) {
+			onLoginError();
+		} catch (MelonResponseException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void onAuthenticateError() {
+		dismissProgressDialog();
+		makeToast(R.string.t_alert_login_failed);
+	}
+	
+	public void onIntegrateError() {
+		onAuthenticateError();
+	}
+	
+	private void mergeSingSongAccountIntoMelonAccount(String username, String password) {
+		String melonMemberKey = Authenticator.getUser().getMelonId();
+		
+		try {
+			JSONObject message = new JSONObject();
+			message.put("memberId", username);
+			message.put("memberPwd", password);
+			message.put("memberKey", melonMemberKey);
+			message.put("loginType", Authenticator.SINGSONG_LOGIN_TYPE_PASSWORD);
+			message.put("purpose", Authenticator.LOGIN_PURPOSE_INTEGRATE);
+			
+			JSONObjectRequest request = new JSONObjectRequest(
+					"melon/login/collabo", null, message,
+					new JSONObjectSuccessListener(this, "onIntegrateSuccess"), 
+					new JSONErrorListener(this, "onIntegrateError"));
+			addRequest(request);
+		} catch (Exception e) {
+			e.printStackTrace();
+			onIntegrateError();
+		}
+	}
+	
+	private void mergeSingSongAccountIntoMelonAccount(String facebookAccessToken) {
+		String melonUsername = Authenticator.getUser().getMelonUsername();
+		String melonToken = Authenticator.getAccessToken();
+		
+		try {
+			JSONObject message = new JSONObject();
+			message.put("memberId", melonUsername);
+			message.put("token", melonToken);
+			message.put("facebook_token", facebookAccessToken);
+			message.put("loginType", Authenticator.LOGIN_TYPE_TOKEN);
+			message.put("purpose", Authenticator.LOGIN_PURPOSE_INTEGRATE);
+			
+			JSONObjectRequest request = new JSONObjectRequest(
+					"melon/login/melon", null, message,
+					new JSONObjectSuccessListener(this, "onIntegrateSuccess"), 
+					new JSONErrorListener(this, "onIntegrateError"));
+			addRequest(request);
+		} catch (Exception e) {
+			e.printStackTrace();
+			onIntegrateError();
+		}
+	}
+	
+	private void integrateSingSongAccountWithMelonAccount(String username, String password) {
+		try {
+			JSONObject message = new JSONObject();
+			message.put("memberId", username);
+			message.put("memberPwd", password);
+			message.put("collaboKey", authenticatedSingSongUser.getId());
+			message.put("loginType", Authenticator.LOGIN_TYPE_PASSWORD);
+			message.put("purpose", Authenticator.LOGIN_PURPOSE_INTEGRATE);
+			
+			JSONObjectRequest request = new JSONObjectRequest(
+					"melon/login/melon", null, message,
+					new JSONObjectSuccessListener(this, "onIntegrateSuccess"), 
+					new JSONErrorListener(this, "onIntegrateError"));
+			addRequest(request);
+		} catch (Exception e) {
+			e.printStackTrace();
+			onIntegrateError();
+		}
+	}
+	
+	public void onIntegrateSuccess(JSONObject response) {
+		try {
+			dismissProgressDialog();
+			
+			MelonResponseHooker.hook(getActivity(), getChildFragmentManager(), response);
+			
+			showIntegrateSuccessDialog();
+		} catch (MelonResponseException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void showIntegrateSuccessDialog() {
+		dismiss();
+	}
+
+	private View.OnClickListener facebookClickListener = new View.OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			getSimpleFacebook().login(new OnLoginListener() {
+				
+				@Override
+				public void onFail(String arg0) {}
+				
+				@Override
+				public void onException(Throwable arg0) {}
+				
+				@Override
+				public void onThinking() {}
+				
+				@Override
+				public void onNotAcceptingPermissions(Type arg0) {}
+				
+				@Override
+				public void onLogin() {
+					showProgressDialog();
+					
+					Session session = getSimpleFacebook().getSession();
+					if (session != null) {
+						switch (type) {
+						case MELON_LOGIN_SINGSONG_INTEGRATION:
+							mergeSingSongAccountIntoMelonAccount(session.getAccessToken());
+							break;
+							
+						case SINGSONG_AUTHENTICATE:
+							authenticateSingSong(session.getAccessToken());
+							break;
+							
+						default:
+							return;
+						}
+					}
+				}
+			});
+		}
+	};
 	
 	@Override
 	public void dismiss() {

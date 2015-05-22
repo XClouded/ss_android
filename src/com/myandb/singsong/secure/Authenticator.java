@@ -11,6 +11,16 @@ import com.myandb.singsong.util.Utility;
 
 public class Authenticator {
 	
+	public static final int LOGIN_TYPE_PASSWORD = 1;
+	public static final int LOGIN_TYPE_PASSWORD_EASY_LOGIN = 2;
+	public static final int LOGIN_TYPE_TOKEN_APP_RESTART = 3;
+	public static final int LOGIN_TYPE_TOKEN = 4;
+	
+	public static final int SINGSONG_LOGIN_TYPE_PASSWORD = 1;
+	
+	public static final int LOGIN_PURPOSE_LOGIN = 1;
+	public static final int LOGIN_PURPOSE_INTEGRATE = 2;
+	
 	private static final String KEY_USER = "_useru_";
 	private static final String KEY_ACCESS_TOKEN = "_token_";
 	private static final String KEY_DEVICE_UUID = "_uuid_";

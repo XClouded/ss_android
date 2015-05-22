@@ -6,7 +6,7 @@ import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.UpActivity;
 import com.myandb.singsong.fragment.BaseFragment;
 import com.myandb.singsong.fragment.WebViewFragment;
-import com.myandb.singsong.net.MelonResponse.MelonAlertInfo;
+import com.myandb.singsong.net.MelonMemberResponse.AlertInfo;
 import com.myandb.singsong.util.Utility;
 
 import android.app.Activity;
@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 public class MelonAlertDialog extends BaseDialog {
 	
-	private MelonAlertInfo alertInfo;
+	private AlertInfo alertInfo;
 	private TextView tvMessage;
 	private Button btnOk;
 	private Button btnCancel;
@@ -35,7 +35,7 @@ public class MelonAlertDialog extends BaseDialog {
 		super.onArgumentsReceived(bundle);
 		
 		Gson gson = Utility.getGsonInstance();
-		alertInfo = gson.fromJson(bundle.getString(MelonAlertInfo.class.getName()), MelonAlertInfo.class);
+		alertInfo = gson.fromJson(bundle.getString(AlertInfo.class.getName()), AlertInfo.class);
 	}
 
 	@Override

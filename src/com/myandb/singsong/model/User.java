@@ -21,9 +21,12 @@ public class User extends Model {
 	private Date main_photo_updated_at;
 	private Profile profile;
 	private String facebook_id;
+	private String melon_id;
+	private String melon_username;
 	private FacebookUser facebookUser;
 	private int is_activated;
 	private int is_following;
+	private int is_integrated;
 	
 	public String getUsername() {
 		return safeString(username);
@@ -96,12 +99,24 @@ public class User extends Model {
 		return is_following == 1;
 	}
 	
+	public boolean isSingSongIntegrated() {
+		return is_integrated == 1;
+	}
+	
 	public boolean isLoggedInUser() {
 		User loggedIn = Authenticator.getUser();
 		if (loggedIn != null) {
 			return loggedIn.equals(getId());
 		}
 		return false;
+	}
+	
+	public String getMelonId() {
+		return safeString(melon_id);
+	}
+	
+	public String getMelonUsername() {
+		return safeString(melon_username);
 	}
 	
 	public OnClickListener getProfileClickListener() {
