@@ -13,7 +13,7 @@ import android.view.View.OnClickListener;
 
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.UpActivity;
-import com.myandb.singsong.event.ActivateOnlyClickListener;
+import com.myandb.singsong.event.StreamAuthCheckClickListener;
 import com.myandb.singsong.fragment.KaraokeFragment;
 import com.myandb.singsong.fragment.SelectRecordModeFragment;
 import com.myandb.singsong.util.Utility;
@@ -31,6 +31,7 @@ public class Music extends Model {
 	private List<Song> songs;
 	private int is_dynamic;
 	private int sing_num;
+	private int melon_contents_id;
 	
 	public String getSingerName() {
 		return safeString(singer);
@@ -84,6 +85,10 @@ public class Music extends Model {
 		return is_dynamic == 1;
 	}
 	
+	public int getMelonContentsId() {
+		return melon_contents_id;
+	}
+	
 	public OnClickListener getMusicClickListener() {
 		return new OnClickListener() {
 			
@@ -101,23 +106,24 @@ public class Music extends Model {
 	}
 	
 	public OnClickListener getMaleRecordClickListener() {
-		return new RecordClickListener(PART_MALE);
+		return new RecordClickListener(this, PART_MALE);
 	}
 	
 	public OnClickListener getFemaleRecordClickListener() {
-		return new RecordClickListener(PART_FEMALE);
+		return new RecordClickListener(this, PART_FEMALE);
 	}
 	
-	private class RecordClickListener extends ActivateOnlyClickListener {
+	private class RecordClickListener extends StreamAuthCheckClickListener {
 		
 		private int part;
 		
-		public RecordClickListener(int part) {
+		public RecordClickListener(Music music, int part) {
+			super(music);
 			this.part = part;
 		}
 
 		@Override
-		public void onActivated(View v, User user) {
+		public void onPassed(View v) {
 			Bundle bundle = new Bundle();
 			bundle.putString(KaraokeFragment.EXTRA_MUSIC, Music.this.toString());
 			bundle.putInt(KaraokeFragment.EXTRA_PART, part);
