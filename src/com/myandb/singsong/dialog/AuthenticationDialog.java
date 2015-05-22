@@ -7,7 +7,11 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.myandb.singsong.GCMIntentService;
 import com.myandb.singsong.R;
+import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.RootActivity;
+import com.myandb.singsong.activity.UpActivity;
+import com.myandb.singsong.fragment.BaseFragment;
+import com.myandb.singsong.fragment.WebViewFragment;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.JSONObjectRequest;
 import com.myandb.singsong.net.JSONErrorListener;
@@ -23,13 +27,12 @@ import com.sromku.simple.fb.listeners.OnLoginListener;
 import com.sromku.simple.fb.listeners.OnProfileListener;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.text.Html;
-import android.text.Spanned;
-import android.text.method.LinkMovementMethod;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,13 +40,55 @@ import android.widget.TextView;
 
 public class AuthenticationDialog extends BaseDialog {
 	
+	public enum AuthenticationType {
+		
+		MELON_EASY_LOGIN,
+		
+		MELON_USERNAME_LOGIN,
+		
+		MELON_LOGIN_SINGSONG_INTEGRATION,
+		
+		SINGSONG_LOGIN,
+		
+		SINGSONG_LOGIN_MELON_INTEGRATION
+		
+	}
+	
+	private TextView tvTitle;
+	private TextView tvSubtitle;
+	private TextView tvDescription;
+	private TextView tvSingSongUsernameGuide;
+	private TextView tvInputAuthenticationTitle;
+	private TextView tvWhetherAddEasyLogin;
+	private TextView tvEasyLoginGuide;
+	private TextView tvFindMelonUsername;
+	private TextView tvFindMelonPassword;
+	private TextView tvFindSingSongPassword;
+	private TextView tvJoinMelon;
+	
+	private Button btnLoginWithMelonUsername;
+	private Button btnFacebook;
+	private Button btnAuthentication;
+	private Button btnAuthenticateSingSong;
+	
 	private EditText etUsername;
 	private EditText etPassword;
-	private Button btnLogin;
-	private Button btnToJoin;
-	private Button btnFacebook;
-	private TextView tvFindPassword;
+	
+	private View vEasyLoginWrapper;
+	private View vEasyLoginList;
+	private View vEasyLoginGuideWrapper;
+	private View vIntegratedAuthenticationWrapper;
+	private View vFacebookWrapper;
+	private View vSingSongAuthenticationWrapper;
+	
 	private Activity activity;
+	private AuthenticationType type;
+
+	@Override
+	protected void onArgumentsReceived(Bundle bundle) {
+		super.onArgumentsReceived(bundle);
+		type = (AuthenticationType) bundle.getSerializable(AuthenticationType.class.getName());
+	}
 
 	@Override
 	protected void initialize(Activity activity) {
@@ -53,12 +98,32 @@ public class AuthenticationDialog extends BaseDialog {
 
 	@Override
 	protected void onViewInflated(View view, LayoutInflater inflater) {
-		btnLogin = (Button) view.findViewById(R.id.btn_login);
-		btnToJoin = (Button) view.findViewById(R.id.btn_to_join);
+		tvTitle = (TextView) view.findViewById(R.id.tv_title);
+		tvSubtitle = (TextView) view.findViewById(R.id.tv_subtitle);
+		tvDescription = (TextView) view.findViewById(R.id.tv_description);
+		tvSingSongUsernameGuide = (TextView) view.findViewById(R.id.tv_singsong_username_guide);
+		tvInputAuthenticationTitle = (TextView) view.findViewById(R.id.tv_input_authentication_title);
+		tvWhetherAddEasyLogin = (TextView) view.findViewById(R.id.tv_whether_add_easy_login);
+		tvEasyLoginGuide = (TextView) view.findViewById(R.id.tv_easy_login_guide);
+		tvFindMelonUsername = (TextView) view.findViewById(R.id.tv_find_melon_username);
+		tvFindMelonPassword = (TextView) view.findViewById(R.id.tv_find_melon_password);
+		tvFindSingSongPassword = (TextView) view.findViewById(R.id.tv_find_singsong_password);
+		tvJoinMelon = (TextView) view.findViewById(R.id.tv_join_melon);
+		
+		btnLoginWithMelonUsername = (Button) view.findViewById(R.id.btn_login_with_melon_username);
 		btnFacebook = (Button) view.findViewById(R.id.btn_facebook);
-		etUsername = (EditText) view.findViewById(R.id.et_user_username);
-		etPassword = (EditText) view.findViewById(R.id.et_user_password);
-		tvFindPassword = (TextView) view.findViewById(R.id.tv_find_password);
+		btnAuthentication = (Button) view.findViewById(R.id.btn_authentication);
+		btnAuthenticateSingSong = (Button) view.findViewById(R.id.btn_authenticate_singsong);
+		
+		etUsername = (EditText) view.findViewById(R.id.et_username);
+		etPassword = (EditText) view.findViewById(R.id.et_password);
+		
+		vEasyLoginWrapper = view.findViewById(R.id.ll_easy_login_wrapper);
+		vEasyLoginList = view.findViewById(R.id.ll_easy_login_list);
+		vEasyLoginGuideWrapper = view.findViewById(R.id.rl_easy_login_guide_wrapper);
+		vIntegratedAuthenticationWrapper = view.findViewById(R.id.ll_integrated_authentication_wrapper);
+		vFacebookWrapper = view.findViewById(R.id.ll_facebook_wrapper);
+		vSingSongAuthenticationWrapper = view.findViewById(R.id.rl_singsong_authentication_wrapper);
 	}
 
 	@Override
@@ -76,20 +141,162 @@ public class AuthenticationDialog extends BaseDialog {
 
 	@Override
 	protected void setupViews() {
-		btnLogin.setOnClickListener(loginClickListener);
-		btnFacebook.setOnClickListener(facebookLoginClickListener);
-		btnToJoin.setOnClickListener(toJoinClickListener);
+		listEasyLoginAccounts();
 		
-		tvFindPassword.setMovementMethod(LinkMovementMethod.getInstance());
-		tvFindPassword.setText(getFindPasswordHtml());
+		tvFindMelonUsername.setOnClickListener(webLinkClickListener);
+		tvFindMelonPassword.setOnClickListener(webLinkClickListener);
+		tvFindSingSongPassword.setOnClickListener(webLinkClickListener);
+		tvJoinMelon.setOnClickListener(webLinkClickListener);
+		btnLoginWithMelonUsername.setOnClickListener(loginWithMelonUsernameClickListener);
+		btnAuthenticateSingSong.setOnClickListener(loginWithSingSongClickListener);
+		
+		if (type == null) {
+			if (hasEasyLogin()) {
+				displayViewsByType(AuthenticationType.MELON_EASY_LOGIN);
+			} else {
+				displayViewsByType(AuthenticationType.MELON_USERNAME_LOGIN);
+			}
+		} else {
+			displayViewsByType(type);
+		}
 	}
 	
-	private Spanned getFindPasswordHtml() {
-		UrlBuilder urlBuilder = new UrlBuilder();
-		String findHtml = "비밀번호가 기억이 안나시나요?<br/>";
-		findHtml += Utility.getHtmlAnchor(urlBuilder.s("w").s("find_password").toString(), "비밀번호 찾기");
-		return Html.fromHtml(findHtml);
+	private void listEasyLoginAccounts() {
+		
 	}
+	
+	private boolean hasEasyLogin() {
+		return true;
+	}
+	
+	private void displayViewsByType(AuthenticationType type) {
+		if (type == null) {
+			return;
+		}
+		
+		this.type = type;
+		switch (type) {
+		case MELON_EASY_LOGIN:
+			setViewsVisible(vEasyLoginWrapper, vSingSongAuthenticationWrapper);
+			setViewsGone(tvSubtitle, tvDescription, tvSingSongUsernameGuide, vIntegratedAuthenticationWrapper);
+			break;
+			
+		case MELON_USERNAME_LOGIN:
+			setViewsVisible(vIntegratedAuthenticationWrapper, vEasyLoginGuideWrapper,
+					tvFindMelonUsername, tvFindMelonPassword, vSingSongAuthenticationWrapper);
+			setViewsGone(tvSubtitle, tvDescription, tvSingSongUsernameGuide, vEasyLoginWrapper, vFacebookWrapper,
+					tvFindSingSongPassword);
+			tvInputAuthenticationTitle.setText("멜론 아이디/비밀번호를 입력해주세요.");
+			btnAuthentication.setText("로그인");
+			break;
+			
+		case MELON_LOGIN_SINGSONG_INTEGRATION:
+			setViewsVisible(tvDescription, vIntegratedAuthenticationWrapper, vFacebookWrapper,
+					tvFindSingSongPassword);
+			setViewsGone(tvSubtitle, tvSingSongUsernameGuide, vEasyLoginWrapper, vEasyLoginGuideWrapper,
+					tvFindMelonUsername, tvFindMelonPassword);
+			tvInputAuthenticationTitle.setText("콜라보 노래방 아이디/비밀번호를 입력해주세요.");
+			btnAuthentication.setText("콜라보 회원인증");
+			break;
+			
+		case SINGSONG_LOGIN:
+			setViewsVisible(tvSubtitle, tvDescription, vIntegratedAuthenticationWrapper, vFacebookWrapper,
+					tvFindSingSongPassword);
+			setViewsGone(tvSingSongUsernameGuide, vEasyLoginWrapper, vEasyLoginGuideWrapper,
+					tvFindMelonUsername, tvFindMelonPassword, vSingSongAuthenticationWrapper);
+			tvInputAuthenticationTitle.setText("콜라보 노래방 아이디/비밀번호를 입력해주세요.");
+			btnAuthentication.setText("콜라보 회원인증");
+			break;
+			
+		case SINGSONG_LOGIN_MELON_INTEGRATION:
+			setViewsVisible(tvDescription, tvSingSongUsernameGuide, vIntegratedAuthenticationWrapper, 
+					tvFindMelonUsername, tvFindMelonPassword);
+			setViewsGone(tvSubtitle, vEasyLoginWrapper, vEasyLoginGuideWrapper,
+					tvFindSingSongPassword, vSingSongAuthenticationWrapper);
+			tvInputAuthenticationTitle.setText("멜론 아이디/비밀번호를 입력해주세요.");
+			btnAuthentication.setText("멜론 회원인증");
+			break;
+
+		default:
+			break;
+		}
+	}
+	
+	private void setViewsVisible(View... views) {
+		if (views != null) {
+			for (View view : views) {
+				view.setVisibility(View.VISIBLE);
+			}
+		}
+	}
+	
+	private void setViewsGone(View... views) {
+		if (views != null) {
+			for (View view : views) {
+				view.setVisibility(View.GONE);
+			}
+		}
+	}
+	
+	private OnClickListener loginWithSingSongClickListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			displayViewsByType(AuthenticationType.SINGSONG_LOGIN);
+		}
+	};
+	
+	private OnClickListener loginWithMelonUsernameClickListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			displayViewsByType(AuthenticationType.MELON_USERNAME_LOGIN);
+		}
+	};
+	
+	private OnClickListener webLinkClickListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			String url = "";
+			String title = "";
+			
+			switch (v.getId()) {
+			case R.id.tv_find_melon_username:
+				url = "https://m.melon.com:4554/muid/search/android2/idsearch_inform.htm";
+				title = "아이디 찾기";
+				break;
+				
+			case R.id.tv_find_melon_password:
+				url = "https://m.melon.com:4554/muid/search/android2/passwordsearch_inform.htm";
+				title = "비밀번호 찾기";
+				break;
+				
+			case R.id.tv_find_singsong_password:
+				url = new UrlBuilder().s("w").s("find_password").toString();
+				title = "비밀번호 찾기";
+				break;
+				
+			case R.id.tv_join_melon:
+				url = "https://m.melon.com:4554/muid/join/android2/stipulationagreement_inform.htm";
+				title = "회원가입";
+				break;
+
+			default:
+				return;
+			}
+			
+			Bundle bundle = new Bundle();
+			bundle.putString(BaseFragment.EXTRA_TITLE, title);
+			bundle.putString(WebViewFragment.EXTRA_URL, url);
+			
+			Intent intent = new Intent(getActivity(), UpActivity.class);
+			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, WebViewFragment.class.getName());
+			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
+			
+			startActivity(intent);
+		}
+	};
 
 	private View.OnClickListener facebookLoginClickListener = new View.OnClickListener() {
 		
