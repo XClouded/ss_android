@@ -1,5 +1,7 @@
 package com.myandb.singsong.dialog;
 
+import java.util.List;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,16 +23,23 @@ import com.myandb.singsong.net.MelonResponseHooker;
 import com.myandb.singsong.net.MelonResponseHooker.MelonResponseException;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
+import com.myandb.singsong.secure.MelOnAccountManager;
+import com.myandb.singsong.secure.MelOnAccountManager.EasyLoginAccount;
 import com.myandb.singsong.util.Utility;
 import com.sromku.simple.fb.Permission.Type;
 import com.sromku.simple.fb.listeners.OnLoginListener;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
@@ -83,6 +92,7 @@ public class AuthenticationDialog extends BaseDialog {
 	private Activity activity;
 	private AuthenticationType type;
 	private User authenticatedSingSongUser;
+	private MelOnAccountManager accountManger;
 
 	@Override
 	protected void onArgumentsReceived(Bundle bundle) {
@@ -93,7 +103,10 @@ public class AuthenticationDialog extends BaseDialog {
 	@Override
 	protected void initialize(Activity activity) {
 		setProgressDialogMessage(getString(R.string.progress_logining));
+		
 		this.activity = activity;
+		
+		accountManger = new MelOnAccountManager(activity);
 	}
 
 	@Override
@@ -153,7 +166,7 @@ public class AuthenticationDialog extends BaseDialog {
 		btnFacebook.setOnClickListener(facebookClickListener);
 		
 		if (type == null) {
-			if (hasEasyLogin()) {
+			if (accountManger.hasMelOnAccounts()) {
 				setupViewsByType(AuthenticationType.MELON_EASY_LOGIN);
 			} else {
 				setupViewsByType(AuthenticationType.MELON_PASSWORD_LOGIN);
@@ -164,11 +177,35 @@ public class AuthenticationDialog extends BaseDialog {
 	}
 	
 	private void listEasyLoginAccounts() {
-		
+		new ListEasyLoginTask().execute(accountManger);
 	}
 	
-	private boolean hasEasyLogin() {
-		return true;
+	private class ListEasyLoginTask extends AsyncTask<MelOnAccountManager, Integer, List<EasyLoginAccount>> {
+
+		@Override
+		protected List<EasyLoginAccount> doInBackground(MelOnAccountManager... params) {
+			MelOnAccountManager manager = params[0];
+			if (manager == null) {
+				return null;
+			}
+			return manager.getEasyLoginAccounts();
+		}
+
+		@Override
+		protected void onPostExecute(List<EasyLoginAccount> result) {
+			super.onPostExecute(result);
+			
+			if (result != null) {
+				for (EasyLoginAccount account : result) {
+					Button button = new Button(getActivity());
+					button.setText(account.getUsername());
+					button.setTag(account);
+					button.setOnClickListener(easyLoginClickListener);
+					((ViewGroup) vEasyLoginList).addView(button);
+				}
+			}
+		}
+		
 	}
 	
 	private void setupViewsByType(AuthenticationType type) {
@@ -356,10 +393,13 @@ public class AuthenticationDialog extends BaseDialog {
 		public void onClick(View v) {
 			showProgressDialog();
 			
-			String username = "";
-			String token = "";
-			
-			loginUsingToken(username, token);
+			EasyLoginAccount account = (EasyLoginAccount) v.getTag();
+			if (account != null) {
+				String username = account.getUsername();
+				String token = account.getAuthToken();
+				
+				loginUsingToken(username, token);
+			}
 		}
 	};
 	

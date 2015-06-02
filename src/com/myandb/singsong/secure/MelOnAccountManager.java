@@ -1,6 +1,8 @@
 package com.myandb.singsong.secure;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -8,6 +10,7 @@ import android.accounts.AccountManagerFuture;
 import android.accounts.AuthenticatorException;
 import android.accounts.OperationCanceledException;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 /**
@@ -16,6 +19,26 @@ import android.os.Bundle;
  *
  */
 public class MelOnAccountManager  {
+	
+	public static final class EasyLoginAccount {
+		
+		private final Account account;
+		private final String authToken;
+		
+		public EasyLoginAccount(Account account, String authToken) {
+			this.account = account;
+			this.authToken = authToken;
+		}
+		
+		public String getUsername() {
+			return account.name;
+		}
+		
+		public String getAuthToken() {
+			return authToken;
+		}
+	}
+	
 	/**
 	 * Account type string.
 	 */
@@ -25,8 +48,12 @@ public class MelOnAccountManager  {
 	 * Authtoken type string.
 	 */
 	private static final String AUTHTOKEN_TYPE = "com.iloen.auth.login";
+	
+	private static final int MAX_ACCOUNT_STORE_NUM = 3;
 
 	private final AccountManager mAccountManager;
+	
+	private Account[] accounts;
 
 	/**
 	 * Melon Account Manager Constructor
@@ -50,8 +77,33 @@ public class MelOnAccountManager  {
 	 * @return
 	 */
 	public Account[] getMelOnAccounts(){
-		Account[] accounts = mAccountManager.getAccountsByType(ACCOUNT_TYPE);
+		if (accounts == null) {
+			accounts = mAccountManager.getAccountsByType(ACCOUNT_TYPE);
+		}
 		return accounts;
+	}
+	
+	public boolean hasMelOnAccounts() {
+		return getMelOnAccounts().length > 0;
+	}
+	
+	public boolean hasMelOnAccount(final String userId) {
+		return getMelOnAccount(userId) != null;
+	}
+	
+	public List<EasyLoginAccount> getEasyLoginAccounts() {
+		List<EasyLoginAccount> easyLoginAccounts = new ArrayList<EasyLoginAccount>();
+		Account[] accounts = getMelOnAccounts();
+		for (Account account : accounts) {
+			try {
+				String authToken = getAuthToken(account, false);
+				EasyLoginAccount easyLoginAccount = new EasyLoginAccount(account, authToken);
+				easyLoginAccounts.add(easyLoginAccount);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return easyLoginAccounts;
 	}
 	
 	/**
@@ -80,14 +132,24 @@ public class MelOnAccountManager  {
 	 * @return result of add account
 	 */
 	public boolean addMelOnAccount(String userId, String authToken){
-		Account account = new Account(userId, ACCOUNT_TYPE);
-		Bundle userdata = new Bundle();
-		userdata.putString(AccountManager.KEY_ACCOUNT_NAME, userId);
-		userdata.putString(AccountManager.KEY_ACCOUNT_TYPE, ACCOUNT_TYPE);
-		userdata.putString(AccountManager.KEY_AUTHTOKEN, authToken);
-		boolean isAdded = mAccountManager.addAccountExplicitly(account, "", userdata);
-		mAccountManager.setAuthToken(account, AUTHTOKEN_TYPE, authToken);
-		return isAdded;
+		if (getMelOnAccounts().length < MAX_ACCOUNT_STORE_NUM) {
+			Account account = new Account(userId, ACCOUNT_TYPE);
+			Bundle userdata = new Bundle();
+			userdata.putString(AccountManager.KEY_ACCOUNT_NAME, userId);
+			userdata.putString(AccountManager.KEY_ACCOUNT_TYPE, ACCOUNT_TYPE);
+			userdata.putString(AccountManager.KEY_AUTHTOKEN, authToken);
+			boolean isAdded = mAccountManager.addAccountExplicitly(account, "", userdata);
+			mAccountManager.setAuthToken(account, AUTHTOKEN_TYPE, authToken);
+			return isAdded;
+		} else {
+			Account account = getMelOnAccount(userId);
+			if (account != null) {
+				mAccountManager.setAuthToken(account, AUTHTOKEN_TYPE, authToken);
+				return true;
+			} else {
+				throw new IllegalStateException();
+			}
+		}
 	}
 	
 	/**

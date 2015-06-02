@@ -7,7 +7,6 @@ import com.myandb.singsong.activity.UpActivity;
 import com.myandb.singsong.fragment.BaseFragment;
 import com.myandb.singsong.fragment.WebViewFragment;
 import com.myandb.singsong.net.MelonMemberResponse.AlertInfo;
-import com.myandb.singsong.util.Logger;
 import com.myandb.singsong.util.Utility;
 
 import android.app.Activity;
