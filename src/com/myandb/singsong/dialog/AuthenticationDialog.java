@@ -318,8 +318,8 @@ public class AuthenticationDialog extends BaseDialog {
 		public void onClick(View v) {
 			showProgressDialog();
 			
-			String username = etUsername.toString();
-			String password = etPassword.toString();
+			String username = etUsername.getText().toString();
+			String password = etPassword.getText().toString();
 			
 			switch (type) {
 			default:
