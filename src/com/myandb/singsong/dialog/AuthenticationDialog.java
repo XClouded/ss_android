@@ -1,5 +1,6 @@
 package com.myandb.singsong.dialog;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.json.JSONException;
@@ -29,13 +30,13 @@ import com.myandb.singsong.util.Utility;
 import com.sromku.simple.fb.Permission.Type;
 import com.sromku.simple.fb.listeners.OnLoginListener;
 
-import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.accounts.AuthenticatorException;
+import android.accounts.OperationCanceledException;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,7 +45,9 @@ import android.view.View.OnClickListener;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class AuthenticationDialog extends BaseDialog {
 	
@@ -82,6 +85,8 @@ public class AuthenticationDialog extends BaseDialog {
 	private EditText etUsername;
 	private EditText etPassword;
 	
+	private ImageView ivWhetherAddEasyLogin; 
+	
 	private View vEasyLoginWrapper;
 	private View vEasyLoginList;
 	private View vEasyLoginGuideWrapper;
@@ -93,6 +98,9 @@ public class AuthenticationDialog extends BaseDialog {
 	private AuthenticationType type;
 	private User authenticatedSingSongUser;
 	private MelOnAccountManager accountManger;
+	private boolean addEasyLogin;
+	private boolean loggedInUsingPassword;
+	private String loggedInUsername;
 
 	@Override
 	protected void onArgumentsReceived(Bundle bundle) {
@@ -131,6 +139,8 @@ public class AuthenticationDialog extends BaseDialog {
 		etUsername = (EditText) view.findViewById(R.id.et_username);
 		etPassword = (EditText) view.findViewById(R.id.et_password);
 		
+		ivWhetherAddEasyLogin = (ImageView) view.findViewById(R.id.iv_whether_add_easy_login);
+		
 		vEasyLoginWrapper = view.findViewById(R.id.ll_easy_login_wrapper);
 		vEasyLoginList = view.findViewById(R.id.ll_easy_login_list);
 		vEasyLoginGuideWrapper = view.findViewById(R.id.rl_easy_login_guide_wrapper);
@@ -156,6 +166,8 @@ public class AuthenticationDialog extends BaseDialog {
 	protected void setupViews() {
 		listEasyLoginAccounts();
 		
+		enableAddEasyLogin(true);
+		
 		tvFindMelonUsername.setOnClickListener(webLinkClickListener);
 		tvFindMelonPassword.setOnClickListener(webLinkClickListener);
 		tvFindSingSongPassword.setOnClickListener(webLinkClickListener);
@@ -164,6 +176,8 @@ public class AuthenticationDialog extends BaseDialog {
 		btnAuthenticateSingSong.setOnClickListener(showSingSongAuthenticationFormClickListener);
 		btnAuthentication.setOnClickListener(authenticateClickListener);
 		btnFacebook.setOnClickListener(facebookClickListener);
+		tvWhetherAddEasyLogin.setOnClickListener(enableAddEasyLoginClickListener);
+		ivWhetherAddEasyLogin.setOnClickListener(enableAddEasyLoginClickListener);
 		
 		if (type == null) {
 			if (accountManger.hasMelOnAccounts()) {
@@ -365,7 +379,7 @@ public class AuthenticationDialog extends BaseDialog {
 				return;
 
 			case MELON_PASSWORD_LOGIN:
-				loginUsingPassword(username, password, enabledEasyLogin());
+				loginUsingPassword(username, password);
 				break;
 				
 			case MELON_LOGIN_SINGSONG_INTEGRATION:
@@ -383,9 +397,26 @@ public class AuthenticationDialog extends BaseDialog {
 		}
 	};
 	
-	private boolean enabledEasyLogin() {
-		return true;
+	private boolean isEnabledAddEasyLogin() {
+		return addEasyLogin;
 	}
+	
+	private void enableAddEasyLogin(boolean enable) {
+		this.addEasyLogin = enable;
+		if (enable) {
+			ivWhetherAddEasyLogin.setImageResource(R.drawable.ic_check);
+		} else {
+			ivWhetherAddEasyLogin.setImageDrawable(null);
+		}
+	}
+	
+	private OnClickListener enableAddEasyLoginClickListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			enableAddEasyLogin(!addEasyLogin);
+		}
+	};
 	
 	private OnClickListener easyLoginClickListener = new OnClickListener() {
 		
@@ -403,10 +434,13 @@ public class AuthenticationDialog extends BaseDialog {
 		}
 	};
 	
-	private void loginUsingPassword(String username, String password, boolean enabledEasyLogin) {
+	private void loginUsingPassword(String username, String password) {
 		try {
+			loggedInUsingPassword = true;
+			loggedInUsername = username;
+			
 			int loginType = Authenticator.LOGIN_TYPE_PASSWORD;
-			if (enabledEasyLogin) {
+			if (isEnabledAddEasyLogin()) {
 				loginType = Authenticator.LOGIN_TYPE_PASSWORD_EASY_LOGIN;
 			}
 			
@@ -423,6 +457,9 @@ public class AuthenticationDialog extends BaseDialog {
 	
 	private void loginUsingToken(String username, String token) {
 		try {
+			loggedInUsingPassword = false;
+			loggedInUsername = username;
+			
 			JSONObject message = new JSONObject();
 			message.put("memberId", username);
 			message.put("token", token);
@@ -459,6 +496,7 @@ public class AuthenticationDialog extends BaseDialog {
 			onLoginComplete();
 		} catch (MelonResponseException e) {
 			e.printStackTrace();
+			removeUserOnLocal();
 			dismissProgressDialog();
 		} catch (JSONException e) {
 			onLoginError();
@@ -478,10 +516,54 @@ public class AuthenticationDialog extends BaseDialog {
 	
 	private void saveUserOnLocal(User user, String token) {
 		new Authenticator().login(user, token);
+		if (isEnabledAddEasyLogin() && loggedInUsingPassword) {
+			try {
+				accountManger.addMelOnAccount(loggedInUsername, token);
+			} catch (Exception e) {
+				Toast.makeText(getActivity(), "간편로그인은 3개까지 지원됩니다", Toast.LENGTH_SHORT).show();
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	private void removeUserOnLocal() {
 		new Authenticator().logout();
+		if (!loggedInUsingPassword) {
+			new RemoveEasyLoginTask().execute(loggedInUsername);
+		}
+	}
+	
+	private class RemoveEasyLoginTask extends AsyncTask<String, Integer, String> {
+
+		@Override
+		protected String doInBackground(String... params) {
+			String userId = params[0];
+			try {
+				accountManger.removeMelOnAccount(userId);
+				return userId;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(String userId) {
+			super.onPostExecute(userId);
+			
+			if (userId != null) {
+				int childCount = ((ViewGroup) vEasyLoginList).getChildCount();
+				for (int i = 0; i < childCount; i++) {
+					View child = ((ViewGroup) vEasyLoginList).getChildAt(i);
+					EasyLoginAccount account = (EasyLoginAccount) child.getTag();
+					if (account != null && account.getUsername().equalsIgnoreCase(userId)) {
+						((ViewGroup) vEasyLoginList).removeView(child);
+						break;
+					}
+				}
+			}
+		}
+		
 	}
 
 	public void onLoginComplete() {
@@ -500,9 +582,9 @@ public class AuthenticationDialog extends BaseDialog {
 	}
 	
 	public void onLoginError() {
+		removeUserOnLocal();
 		dismissProgressDialog();
 		makeToast(R.string.t_alert_login_failed);
-		removeUserOnLocal();
 	}
 	
 	private void clearTextFromAllEditText() {
@@ -527,6 +609,7 @@ public class AuthenticationDialog extends BaseDialog {
 		try {
 			JSONObject message = new JSONObject();
 			message.put("facebook_token", facebookAccessToken);
+			message.put("loginType", Authenticator.SINGSONG_LOGIN_TYPE_FACEBOOK);
 			authenticateSingSong(message);
 		} catch (Exception e) {
 			e.printStackTrace();
