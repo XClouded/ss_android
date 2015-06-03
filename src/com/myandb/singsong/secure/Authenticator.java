@@ -17,6 +17,7 @@ public class Authenticator {
 	public static final int LOGIN_TYPE_TOKEN = 4;
 	
 	public static final int SINGSONG_LOGIN_TYPE_PASSWORD = 1;
+	public static final int SINGSONG_LOGIN_TYPE_FACEBOOK = 2;
 	
 	public static final int LOGIN_PURPOSE_LOGIN = 1;
 	public static final int LOGIN_PURPOSE_INTEGRATE = 2;
