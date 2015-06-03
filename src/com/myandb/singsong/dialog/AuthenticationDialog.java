@@ -685,12 +685,11 @@ public class AuthenticationDialog extends BaseDialog {
 	}
 	
 	private void mergeSingSongAccountIntoMelonAccount(String facebookAccessToken) {
-		String melonUsername = Authenticator.getUser().getMelonUsername();
 		String melonToken = Authenticator.getAccessToken();
 		
 		try {
 			JSONObject message = new JSONObject();
-			message.put("memberId", melonUsername);
+			message.put("memberId", Authenticator.getUser().getId());
 			message.put("token", melonToken);
 			message.put("facebook_token", facebookAccessToken);
 			message.put("loginType", Authenticator.LOGIN_TYPE_TOKEN);
