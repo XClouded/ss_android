@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Calendar;
+import java.util.Locale;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,9 +16,11 @@ import com.google.android.gcm.GCMRegistrar;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.RootActivity;
+import com.myandb.singsong.dialog.AuthenticationDialog;
 import com.myandb.singsong.dialog.BaseDialog;
 import com.myandb.singsong.dialog.ChangeNicknameDialog;
 import com.myandb.singsong.dialog.ChangeStatusDialog;
+import com.myandb.singsong.dialog.AuthenticationDialog.AuthenticationType;
 import com.myandb.singsong.event.OnCompleteListener;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.image.ResizeAsyncTask;
@@ -67,6 +71,8 @@ public class SettingFragment extends BaseFragment {
 	private View vChangeStatus;
 	private View vConnectFacebook;
 	private View vEnableNotification;
+	private View vMergeSingSongAccount;
+	private View vMergeSingSongAccountBanner;
 
 	@Override
 	protected int getResourceId() {
@@ -87,6 +93,8 @@ public class SettingFragment extends BaseFragment {
 		vChangeStatus = view.findViewById(R.id.ll_change_status);
 		vConnectFacebook = view.findViewById(R.id.rl_connect_facebook);
 		vEnableNotification = view.findViewById(R.id.rl_enable_notification);
+		vMergeSingSongAccount = view.findViewById(R.id.rl_merge_singsong_account);
+		vMergeSingSongAccountBanner = view.findViewById(R.id.rl_merge_singsong_account_banner);
 	}
 
 	@Override
@@ -110,7 +118,40 @@ public class SettingFragment extends BaseFragment {
 		vChangeNickname.setOnClickListener(showDialogClickListener);
 		vChangeStatus.setOnClickListener(showDialogClickListener);
 		
+		if (Authenticator.getUser().isSingSongIntegrated()) {
+			vMergeSingSongAccount.setVisibility(View.GONE);
+			vMergeSingSongAccountBanner.setVisibility(View.GONE);
+		} else {
+			Calendar today = Calendar.getInstance(Locale.KOREA);
+			
+			if (today.before(getMergeBannerDueDate())) {
+				vMergeSingSongAccountBanner.setVisibility(View.VISIBLE);
+				vMergeSingSongAccountBanner.setOnClickListener(mergeSingSongAccountClickListener);
+			} else {
+				vMergeSingSongAccountBanner.setVisibility(View.GONE);
+			}
+			
+			if (today.before(getMergeMenuDueDate())) {
+				vMergeSingSongAccount.setVisibility(View.VISIBLE);
+				vMergeSingSongAccount.setOnClickListener(mergeSingSongAccountClickListener);
+			} else {
+				vMergeSingSongAccount.setVisibility(View.GONE);
+			}
+		}
+		
 		ImageHelper.displayPhoto(Authenticator.getUser(), ivUserPhoto);
+	}
+	
+	private Calendar getMergeBannerDueDate() {
+		Calendar date = Calendar.getInstance(Locale.KOREA);
+		date.set(2015, 12, 31);
+		return date;
+	}
+	
+	private Calendar getMergeMenuDueDate() {
+		Calendar date = Calendar.getInstance(Locale.KOREA);
+		date.set(2016, 8, 1);
+		return date;
 	}
 	
 	private void registerSharedPreferenceChangeListener() {
@@ -441,6 +482,19 @@ public class SettingFragment extends BaseFragment {
 		dismissProgressDialog();
 		makeToast(getString(R.string.t_alert_upload_failed));
 	}
+	
+	private OnClickListener mergeSingSongAccountClickListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			Bundle bundle = new Bundle();
+			bundle.putSerializable(AuthenticationType.class.getName(), AuthenticationType.MELON_LOGIN_SINGSONG_INTEGRATION);
+			
+			AuthenticationDialog dialog = new AuthenticationDialog();
+			dialog.setArguments(bundle);
+			dialog.show(getFragmentManager(), "");
+		}
+	};
 
 	@Override
 	protected void onDataChanged() {

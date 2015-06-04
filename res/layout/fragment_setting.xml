@@ -10,6 +10,20 @@
         android:orientation="vertical" >
         
         <RelativeLayout
+	        android:id="@+id/rl_merge_singsong_account_banner"
+	        android:layout_marginBottom="@dimen/margin_bigger"
+	        android:background="@drawable/row_naked_selector"
+	        style="@style/FormBase" >
+	        
+	        <TextView
+	            android:padding="0dp"
+	            android:layout_centerInParent="true"
+	            android:text="기존에 쓰시던 콜라보 아이디가 있으신가요?"
+	            style="@style/TextViewSubtitleAlone" />
+	        
+	    </RelativeLayout>
+        
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/margin_big" >
@@ -137,7 +151,6 @@
 	    
 	    <RelativeLayout
 	        android:id="@+id/rl_connect_facebook"
-	        android:layout_marginBottom="@dimen/margin_bigger"
 	        android:background="@drawable/row_naked_selector"
 	        style="@style/FormBase" >
 	        
@@ -157,6 +170,23 @@
 	            android:layout_marginBottom="@dimen/margin_tiny"
 	            android:layout_centerVertical="true"
 	            android:text="페이스북 연동하기"
+	            style="@style/TextViewSubtitleAlone" />
+	        
+	    </RelativeLayout>
+	    
+	    <ImageView
+	        style="@style/DividerHorizontal" />
+	    
+	    <RelativeLayout
+	        android:id="@+id/rl_merge_singsong_account"
+	        android:layout_marginBottom="@dimen/margin_bigger"
+	        android:background="@drawable/row_naked_selector"
+	        style="@style/FormBase" >
+	        
+	        <TextView
+	            android:padding="0dp"
+	            android:layout_centerVertical="true"
+	            android:text="기존 콜라보 노래방 ID 연결하기"
 	            style="@style/TextViewSubtitleAlone" />
 	        
 	    </RelativeLayout>
