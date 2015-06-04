@@ -12,6 +12,7 @@ import com.myandb.singsong.util.Utility;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,6 +25,15 @@ public class MelonAlertDialog extends BaseDialog {
 	private TextView tvMessage;
 	private Button btnOk;
 	private Button btnCancel;
+	
+	public static void show(FragmentManager fm, AlertInfo info) {
+		Bundle bundle = new Bundle();
+		bundle.putString(AlertInfo.class.getName(), Utility.getGsonInstance().toJson(info));
+		
+		BaseDialog dialog = new MelonAlertDialog();
+		dialog.setArguments(bundle);
+		dialog.show(fm, "");
+	}
 	
 	@Override
 	protected int getResourceId() {

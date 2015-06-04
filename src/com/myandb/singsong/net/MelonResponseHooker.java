@@ -6,7 +6,6 @@ import org.json.JSONObject;
 import com.myandb.singsong.dialog.BaseDialog;
 import com.myandb.singsong.dialog.MelonAlertDialog;
 import com.myandb.singsong.net.MelonMemberResponse.AlertInfo;
-import com.myandb.singsong.util.Utility;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -39,12 +38,7 @@ public class MelonResponseHooker {
 					info.PAGEURL = "";
 					info.OKTITLE = "»Æ¿Œ";
 					
-					Bundle bundle = new Bundle();
-					bundle.putString(AlertInfo.class.getName(), Utility.getGsonInstance().toJson(info));
-					
-					BaseDialog dialog = new MelonAlertDialog();
-					dialog.setArguments(bundle);
-					dialog.show(fm, "");
+					MelonAlertDialog.show(fm, info);
 					
 					throw new MelonResponseException();
 				}

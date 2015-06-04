@@ -100,5 +100,7 @@
     
     <string name="invitation_message_header">둘이서 부르는 소셜 노래방 어플, 콜라보 노래방!</string>
     <string name="invitation_message_footer">지금 플레이 스토어에서 다운 받아 같이 노래 불러요 :)</string>
+    
+    <string name="easy_login_guide">아이디 정보 기능과 다르게 로그인 정보를 한번만 입력하면 멜론이 제공하는 다른 서비스 앱에서 한번의 터치로 간편하게 바로 로그인할 수 있는 기능입니다.\n\n또한, 로그인 정보의 유효기간(180일) 만료나 비밀번호 변경, 스마트폰 분실 시 간편 로그인 정보를 무력화 시키는 보안이 강화된 기능입니다.</string>
 
 </resources>

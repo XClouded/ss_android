@@ -20,6 +20,7 @@ import com.myandb.singsong.net.JSONObjectRequest;
 import com.myandb.singsong.net.JSONErrorListener;
 import com.myandb.singsong.net.JSONObjectSuccessListener;
 import com.myandb.singsong.net.MelonResponseHooker;
+import com.myandb.singsong.net.MelonMemberResponse.AlertInfo;
 import com.myandb.singsong.net.MelonResponseHooker.MelonResponseException;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
@@ -174,6 +175,7 @@ public class AuthenticationDialog extends BaseDialog {
 		btnFacebook.setOnClickListener(facebookClickListener);
 		tvWhetherAddEasyLogin.setOnClickListener(enableAddEasyLoginClickListener);
 		ivWhetherAddEasyLogin.setOnClickListener(enableAddEasyLoginClickListener);
+		tvEasyLoginGuide.setOnClickListener(easyLoginGuideClickListener);
 		
 		if (type == null) {
 			if (accountManger.hasMelOnAccounts()) {
@@ -247,7 +249,7 @@ public class AuthenticationDialog extends BaseDialog {
 			setViewsVisible(tvDescription, vIntegratedAuthenticationWrapper, vFacebookWrapper,
 					tvFindSingSongPassword);
 			setViewsGone(tvSubtitle, tvSingSongUsernameGuide, vEasyLoginWrapper, vEasyLoginGuideWrapper,
-					tvFindMelonUsername, tvFindMelonPassword, vSingSongAuthenticationWrapper);
+					tvFindMelonUsername, tvFindMelonPassword, tvJoinMelon, vSingSongAuthenticationWrapper);
 			tvInputAuthenticationTitle.setText("콜라보 노래방 아이디/비밀번호를 입력해주세요.");
 			btnAuthentication.setText("콜라보 회원인증");
 			etUsername.setHint("이메일 또는 콜라보 아이디");
@@ -780,6 +782,45 @@ public class AuthenticationDialog extends BaseDialog {
 			});
 		}
 	};
+	
+	private OnClickListener easyLoginGuideClickListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			requestEasyLoginGuide();
+		}
+	};
+	
+	private void requestEasyLoginGuide() {
+		JSONObjectRequest request = new JSONObjectRequest(
+				"melon/easy", null, null,
+				new JSONObjectSuccessListener(this, "onGetGuideSuccess"),
+				new JSONErrorListener(this, "onGetGuideError"));
+		addRequest(request);
+	}
+	
+	public void onGetGuideSuccess(JSONObject response) {
+		try {
+			AlertInfo info = new AlertInfo();
+			info.MESSAGE = response.getString("content");
+			info.PAGEURL = "";
+			info.OKTITLE = "확인";
+			
+			MelonAlertDialog.show(getFragmentManager(), info);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void onGetGuideError() {
+		try {
+			JSONObject message = new JSONObject();
+			message.put("content", getString(R.string.easy_login_guide));
+			onGetGuideSuccess(message);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	@Override
 	public void dismiss() {
