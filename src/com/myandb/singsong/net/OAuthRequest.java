@@ -25,11 +25,11 @@ public abstract class OAuthRequest<T> extends Request<T> {
 
 	@Override
 	public Map<String, String> getHeaders() throws AuthFailureError {
-		HttpHeaderScheme melonHttpHeaderScheme = new MelonHttpHeaderScheme();
+		HttpScheme melonHttpHeaderScheme = new MelonHttpScheme();
 		Map<String, String> headers = melonHttpHeaderScheme.getHeaders();
 		
 		if (requireAccessToken) {
-			HttpHeaderScheme singSongHttpHeaderScheme = new SingSongHttpHeaderScheme();
+			HttpScheme singSongHttpHeaderScheme = new SingSongHttpScheme();
 			headers = singSongHttpHeaderScheme.getHeaders(headers);
 		}
 		

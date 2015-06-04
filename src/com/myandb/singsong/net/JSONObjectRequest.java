@@ -22,7 +22,7 @@ public class JSONObjectRequest extends OAuthJSONRequest<JSONObject> {
 		super(
 			method,
 			new UrlBuilder().s(segment).p(params).toString(),
-			jsonRequest == null ? null : jsonRequest.toString(),
+			jsonRequest,
 			listener,
 			errorListener
 		);
@@ -33,7 +33,7 @@ public class JSONObjectRequest extends OAuthJSONRequest<JSONObject> {
 		super(
 			method,
 			uri.toString(),
-			jsonRequest == null ? null : jsonRequest.toString(),
+			jsonRequest,
 			listener,
 			errorListener
 		);

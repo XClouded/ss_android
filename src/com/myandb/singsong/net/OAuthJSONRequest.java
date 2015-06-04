@@ -2,6 +2,9 @@ package com.myandb.singsong.net;
 
 import java.io.UnsupportedEncodingException;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.android.volley.VolleyLog;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
@@ -17,22 +20,26 @@ public abstract class OAuthJSONRequest<T> extends OAuthRequest<T> {
     private final Listener<T> mListener;
     private final String mRequestBody;
 
-    /**
-     * Deprecated constructor for a JsonRequest which defaults to GET unless {@link #getPostBody()}
-     * or {@link #getPostParams()} is overridden (which defaults to POST).
-     *
-     * @deprecated Use {@link #JsonRequest(int, String, String, Listener, ErrorListener)}.
-     */
-    public OAuthJSONRequest(String url, String requestBody, Listener<T> listener,
-            ErrorListener errorListener) {
-        this(Method.DEPRECATED_GET_OR_POST, url, requestBody, listener, errorListener);
-    }
-
-    public OAuthJSONRequest(int method, String url, String requestBody, Listener<T> listener,
+    public OAuthJSONRequest(int method, String url, JSONObject requestBody, Listener<T> listener,
             ErrorListener errorListener) {
         super(method, url, errorListener);
         mListener = listener;
-        mRequestBody = requestBody;
+        
+        if (requestBody == null && method == Method.POST) {
+        	requestBody = new JSONObject();
+        }
+        
+        if (requestBody != null) {
+        	try {
+        		requestBody.put("cpId", MelonHttpScheme.CP_ID);
+        		requestBody.put("cpKey", MelonHttpScheme.CP_KEY);
+        	} catch (JSONException e) {
+        		e.printStackTrace();
+        	}
+        	mRequestBody = requestBody.toString();
+        } else {
+        	mRequestBody = "";
+        }
     }
 
     @Override

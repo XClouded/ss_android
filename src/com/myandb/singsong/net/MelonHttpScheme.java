@@ -7,9 +7,11 @@ import android.os.Build;
 import com.myandb.singsong.App;
 import com.myandb.singsong.secure.Authenticator;
 
-public class MelonHttpHeaderScheme extends HttpHeaderScheme {
+public class MelonHttpScheme extends HttpScheme {
 	
 	public static final String POC_CODE = "AS45";
+	public static final String CP_ID = POC_CODE;
+	public static final String CP_KEY = "15CSM06";
 	
 	private static final String BUILD_VERSION = "Android " + android.os.Build.VERSION.RELEASE;
 
@@ -29,6 +31,6 @@ public class MelonHttpHeaderScheme extends HttpHeaderScheme {
 				+ App.APP_VERSION + "; "
 				+ Build.MODEL;
 	}
-
+	
 
 }

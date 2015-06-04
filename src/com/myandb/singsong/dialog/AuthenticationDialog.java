@@ -1,6 +1,5 @@
 package com.myandb.singsong.dialog;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.json.JSONException;
@@ -30,9 +29,6 @@ import com.myandb.singsong.util.Utility;
 import com.sromku.simple.fb.Permission.Type;
 import com.sromku.simple.fb.listeners.OnLoginListener;
 
-import android.accounts.AccountManager;
-import android.accounts.AuthenticatorException;
-import android.accounts.OperationCanceledException;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;

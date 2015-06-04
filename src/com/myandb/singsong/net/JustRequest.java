@@ -15,7 +15,7 @@ public class JustRequest extends OAuthJSONRequest<String> {
 		super(
 			method,
 			new UrlBuilder().s(segment).p(params).toString(),
-			jsonRequest == null ? null : jsonRequest.toString(),
+			jsonRequest,
 			null,
 			null
 		);
@@ -25,7 +25,7 @@ public class JustRequest extends OAuthJSONRequest<String> {
 		super(
 			method,
 			uri.toString(),
-			jsonRequest == null ? null : jsonRequest.toString(),
+			jsonRequest,
 			null,
 			null
 		);

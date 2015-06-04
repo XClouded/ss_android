@@ -16,7 +16,7 @@ import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Song;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.JSONObjectRequest;
-import com.myandb.singsong.net.MelonHttpHeaderScheme;
+import com.myandb.singsong.net.MelonHttpScheme;
 import com.myandb.singsong.net.MelonResponseHooker;
 import com.myandb.singsong.net.MelonResponseHooker.MelonResponseException;
 import com.myandb.singsong.secure.Authenticator;
@@ -53,7 +53,7 @@ public abstract class StreamAuthCheckClickListener extends MemberOnlyClickListen
 			message.put("MRID", music.getId());
 			message.put("USERMKEY", user.getMelonId());
 			message.put("CONTSTYPE", "3C0007");
-			message.put("POCID", MelonHttpHeaderScheme.POC_CODE);
+			message.put("POCID", MelonHttpScheme.POC_CODE);
 			message.put("TIME", System.currentTimeMillis());
 			message.put("TOKEN", Authenticator.getAccessToken());
 			message.put("USERID", user.getMelonUsername());

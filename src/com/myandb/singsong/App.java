@@ -4,7 +4,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.myandb.singsong.image.ImageLoaderConfig;
-import com.myandb.singsong.net.MelonHttpHeaderScheme;
 import com.myandb.singsong.net.SelectAllRequestFilter;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.util.StringFormatter;
@@ -18,10 +17,7 @@ import android.content.Context;
 
 public class App extends Application {
 	
-	public static final String CP_ID = MelonHttpHeaderScheme.POC_CODE;
-	public static final String CP_KEY = "15CSM06";
-	
-	public static final ApplicationMode MODE = ApplicationMode.MASTER;
+	public static final ApplicationMode MODE = ApplicationMode.DEBUGGING;
 
 	public static final int INVALID_RESOURCE_ID = 0; 
 	
