@@ -726,9 +726,14 @@ public class AuthenticationDialog extends BaseDialog {
 	
 	public void onIntegrateSuccess(JSONObject response) {
 		try {
-			dismissProgressDialog();
-			
 			MelonResponseHooker.hook(getActivity(), getChildFragmentManager(), response);
+			
+			User user = Authenticator.getUser();
+			user.setIsSingSongIntegrated(true);
+			Authenticator authenticator = new Authenticator();
+			authenticator.update(user);
+			
+			dismissProgressDialog();
 			
 			showIntegrateSuccessDialog();
 		} catch (MelonResponseException e) {

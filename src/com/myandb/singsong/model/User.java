@@ -103,6 +103,14 @@ public class User extends Model {
 		return is_integrated == 1;
 	}
 	
+	public void setIsSingSongIntegrated(boolean integrated) {
+		if (integrated) {
+			this.is_integrated = 1;
+		} else {
+			this.is_integrated = 0;
+		}
+	}
+	
 	public boolean isLoggedInUser() {
 		User loggedIn = Authenticator.getUser();
 		if (loggedIn != null) {
