@@ -34,9 +34,16 @@ public class MelonResponseHooker {
 				String resultCode = response.getString(MelonMemberResponse.KEY_RESULT_CODE);
 				if (resultCode.equals("-1")) {
 					AlertInfo info = new AlertInfo();
-					info.MESSAGE = response.getString("errorCode") + response.getString("errorMesg");
-					info.PAGEURL = "";
-					info.OKTITLE = "확인";
+					info.MESSAGE = response.getString("errorMesg");
+					
+					String errorCode = response.getString("errorCode");
+					if (errorCode.equals("ERL003")) {
+						info.PAGEURL = "https://m.melon.com:4554/muid/search/android2/passwordsearch_inform.htm";
+						info.OKTITLE = "비밀번호찾기";
+					} else {
+						info.PAGEURL = "";
+						info.OKTITLE = "확인";
+					}
 					
 					MelonAlertDialog.show(fm, info);
 					
