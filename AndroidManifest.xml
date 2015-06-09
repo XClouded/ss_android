@@ -90,7 +90,16 @@
 
         <service android:name=".service.PlayerService" />
         <service android:name=".service.SongUploadService" />
+        <service android:name=".service.TokenValidationService" />
         <service android:name=".GCMIntentService" />
+        
+        <receiver
+            android:name=".receiver.RestartReceiver"
+            android:process=".remote" >
+            <intent-filter>
+                <action android:name="RestartReceiver.Restart"/>
+            </intent-filter>
+        </receiver>
 
         <receiver
             android:name="com.google.android.gcm.GCMBroadcastReceiver"

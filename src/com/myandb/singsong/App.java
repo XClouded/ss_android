@@ -6,6 +6,7 @@ import com.android.volley.toolbox.Volley;
 import com.myandb.singsong.image.ImageLoaderConfig;
 import com.myandb.singsong.net.SelectAllRequestFilter;
 import com.myandb.singsong.secure.Authenticator;
+import com.myandb.singsong.service.TokenValidationService;
 import com.myandb.singsong.util.StringFormatter;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.sromku.simple.fb.Permission;
@@ -14,6 +15,7 @@ import com.sromku.simple.fb.SimpleFacebookConfiguration;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 
 public class App extends Application {
 	
@@ -47,6 +49,8 @@ public class App extends Application {
 		initializeSimpleFacebook();
 		
 		initializeAppVersion();
+		
+		startTokenValidationService();
 	}
 	
 	private void initializeAppVersion() {
@@ -102,6 +106,11 @@ public class App extends Application {
 	
 	public void cancelAllRequests() {
 		getQueueInstance().cancelAll(new SelectAllRequestFilter());
+	}
+	
+	private void startTokenValidationService() {
+		Intent intent = new Intent(this, TokenValidationService.class);
+		startService(intent);
 	}
 
 }
