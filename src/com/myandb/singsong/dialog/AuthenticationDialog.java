@@ -743,6 +743,7 @@ public class AuthenticationDialog extends BaseDialog {
 	}
 	
 	private void showIntegrateSuccessDialog() {
+		Toast.makeText(getActivity(), "통합 성공", Toast.LENGTH_SHORT).show();
 		dismiss();
 	}
 
