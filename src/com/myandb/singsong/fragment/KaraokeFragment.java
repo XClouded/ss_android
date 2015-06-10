@@ -652,7 +652,7 @@ public class KaraokeFragment extends BaseFragment {
 	
 	public void updateAudioProgress() {
 		if (music != null) {
-			PlayCounter.countAsync(getActivity(), "musics", music.getId());
+			PlayCounter.countAsync(getActivity(), music);
 		}
 		
 		if (player != null && player.isPlaying()) {

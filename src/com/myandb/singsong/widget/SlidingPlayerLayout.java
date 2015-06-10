@@ -628,7 +628,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		}
 
 		if (service != null && service.getSong() != null) {
-			PlayCounter.countAsync(getContext(), "songs", service.getSong().getId());
+			PlayCounter.countAsync(getContext(), service.getSong());
 		}
 	}
 	
