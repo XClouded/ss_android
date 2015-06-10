@@ -7,17 +7,17 @@ import android.content.Context;
 import android.view.View;
 import android.widget.Toast;
 
-import com.android.volley.VolleyError;
-import com.android.volley.Response.ErrorListener;
-import com.android.volley.Response.Listener;
 import com.myandb.singsong.App;
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Song;
 import com.myandb.singsong.model.User;
+import com.myandb.singsong.net.JSONErrorListener;
 import com.myandb.singsong.net.JSONObjectRequest;
+import com.myandb.singsong.net.JSONObjectSuccessListener;
 import com.myandb.singsong.net.MelonHttpScheme;
 import com.myandb.singsong.net.MelonResponseHooker;
+import com.myandb.singsong.net.MelonResponseHooker.MelonAuthorizationException;
 import com.myandb.singsong.net.MelonResponseHooker.MelonResponseException;
 import com.myandb.singsong.secure.Authenticator;
 
@@ -64,38 +64,67 @@ public abstract class StreamAuthCheckClickListener extends MemberOnlyClickListen
 			
 			JSONObjectRequest request = new JSONObjectRequest(
 					"check/token", null, message,
-					successListener,
-					errorListener);
+					new JSONObjectSuccessListener(this, "onCheckStreamAuthSuccess"),
+					new JSONErrorListener(this, "onSystemError"));
 			((App) context.getApplicationContext()).addShortLivedRequest(context, request);
+		} catch (Exception e) {
+			e.printStackTrace();
+			onSystemError();
+		}
+	}
+	
+	public void onCheckStreamAuthSuccess(JSONObject response) {
+		try {
+			MelonResponseHooker.hook(context, ((BaseActivity) context).getSupportFragmentManager(), response);
+			onPassed(view);
+			dismissProgressDialog();
+		} catch (MelonAuthorizationException e) {
+			e.printStackTrace();
+			checkRealNameAuthorization();
+		} catch (MelonResponseException e) {
+			e.printStackTrace();
+			dismissProgressDialog();
 		} catch (Exception e) {
 			e.printStackTrace();
 			dismissProgressDialog();
 		}
 	}
 	
-	private Listener<JSONObject> successListener = new Listener<JSONObject>() {
-
-		@Override
-		public void onResponse(JSONObject response) {
-			dismissProgressDialog();
-			
-			try {
-				MelonResponseHooker.hook(context, ((BaseActivity) context).getSupportFragmentManager(), response);
-				onPassed(view);
-			} catch (MelonResponseException e) {
-				e.printStackTrace();
-			}
-		}
-	};
+	private void onSystemError() {
+		dismissProgressDialog();
+		Toast.makeText(context, "시스템 오류", Toast.LENGTH_SHORT).show();
+	}
 	
-	private ErrorListener errorListener = new ErrorListener() {
-
-		@Override
-		public void onErrorResponse(VolleyError error) {
-			dismissProgressDialog();
-			Toast.makeText(context, "권한 에러", Toast.LENGTH_SHORT).show();
+	private void checkRealNameAuthorization() {
+		try {
+			JSONObject message = new JSONObject();
+			message.put("memberKey", Authenticator.getUser().getMelonId());
+			message.put("authType", "nineteen");
+			
+			JSONObjectRequest request = new JSONObjectRequest(
+					"melon/check/auth", null, message,
+					new JSONObjectSuccessListener(this, "onCheckRealNameSuccess"),
+					new JSONErrorListener(this, "onSystemError"));
+			((App) context.getApplicationContext()).addShortLivedRequest(context, request);
+		} catch (Exception e) {
+			e.printStackTrace();
+			onSystemError();
 		}
-	};
+	}
+	
+	public void onCheckRealNameSuccess(JSONObject response) {
+		try {
+			MelonResponseHooker.hook(context, ((BaseActivity) context).getSupportFragmentManager(), response);
+			onPassed(view);
+			dismissProgressDialog();
+		} catch (MelonResponseException e) {
+			e.printStackTrace();
+			dismissProgressDialog();
+		} catch (Exception e) {
+			e.printStackTrace();
+			onSystemError();
+		}
+	}
 	
 	private void showProgressDialog(Context context) {
 		ProgressDialog dialog = getProgressDialog(context);

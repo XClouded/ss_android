@@ -17,6 +17,11 @@ public class MelonMemberResponse {
 		public String LINKTITLE;
 		public String OKTITLE;
 		
+		public AlertInfo() {
+			this.PAGEURL = "";
+			this.OKTITLE = "»Æ¿Œ";
+		}
+		
 	}
 
 }

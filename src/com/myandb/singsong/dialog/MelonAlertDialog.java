@@ -27,12 +27,14 @@ public class MelonAlertDialog extends BaseDialog {
 	private Button btnCancel;
 	
 	public static void show(FragmentManager fm, AlertInfo info) {
-		Bundle bundle = new Bundle();
-		bundle.putString(AlertInfo.class.getName(), Utility.getGsonInstance().toJson(info));
-		
-		BaseDialog dialog = new MelonAlertDialog();
-		dialog.setArguments(bundle);
-		dialog.show(fm, "");
+		if (fm != null) {
+			Bundle bundle = new Bundle();
+			bundle.putString(AlertInfo.class.getName(), Utility.getGsonInstance().toJson(info));
+			
+			BaseDialog dialog = new MelonAlertDialog();
+			dialog.setArguments(bundle);
+			dialog.show(fm, "");
+		}
 	}
 	
 	@Override

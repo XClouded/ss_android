@@ -821,8 +821,6 @@ public class AuthenticationDialog extends BaseDialog {
 		try {
 			AlertInfo info = new AlertInfo();
 			info.MESSAGE = response.getString("tokenNotiMsg");
-			info.PAGEURL = "";
-			info.OKTITLE = "»Æ¿Œ";
 			
 			MelonAlertDialog.show(getFragmentManager(), info);
 		} catch (Exception e) {
