@@ -26,6 +26,7 @@ import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.secure.MelOnAccountManager;
 import com.myandb.singsong.secure.MelOnAccountManager.EasyLoginAccount;
+import com.myandb.singsong.util.Logger;
 import com.myandb.singsong.util.Utility;
 import com.sromku.simple.fb.Permission.Type;
 import com.sromku.simple.fb.listeners.OnLoginListener;
@@ -97,6 +98,7 @@ public class AuthenticationDialog extends BaseDialog {
 	private MelOnAccountManager accountManger;
 	private boolean addEasyLogin;
 	private boolean loggedInUsingPassword;
+	private boolean loggedInUsingToken;
 	private String loggedInUsername;
 
 	@Override
@@ -225,16 +227,23 @@ public class AuthenticationDialog extends BaseDialog {
 			return;
 		}
 		
+		loggedInUsingPassword = false;
+		loggedInUsingToken = false;
+		
 		clearTextFromAllEditText();
 		
 		this.type = type;
 		switch (type) {
 		case MELON_EASY_LOGIN:
+			loggedInUsingToken = true;
+			
 			setViewsVisible(vEasyLoginWrapper, vSingSongAuthenticationWrapper);
 			setViewsGone(tvSubtitle, tvDescription, tvSingSongUsernameGuide, vIntegratedAuthenticationWrapper);
 			break;
 			
 		case MELON_PASSWORD_LOGIN:
+			loggedInUsingPassword = true;
+			
 			setViewsVisible(vIntegratedAuthenticationWrapper, vEasyLoginGuideWrapper,
 					tvFindMelonUsername, tvFindMelonPassword, vSingSongAuthenticationWrapper);
 			setViewsGone(tvSubtitle, tvDescription, tvSingSongUsernameGuide, vEasyLoginWrapper, vFacebookWrapper,
@@ -434,7 +443,6 @@ public class AuthenticationDialog extends BaseDialog {
 	
 	private void loginUsingPassword(String username, String password) {
 		try {
-			loggedInUsingPassword = true;
 			loggedInUsername = username;
 			
 			int loginType = Authenticator.LOGIN_TYPE_PASSWORD;
@@ -455,7 +463,6 @@ public class AuthenticationDialog extends BaseDialog {
 	
 	private void loginUsingToken(String username, String token) {
 		try {
-			loggedInUsingPassword = false;
 			loggedInUsername = username;
 			
 			JSONObject message = new JSONObject();
@@ -494,11 +501,13 @@ public class AuthenticationDialog extends BaseDialog {
 			onLoginComplete();
 		} catch (MelonResponseException e) {
 			e.printStackTrace();
-			removeUserOnLocal();
+			removeCachedUser();
 			dismissProgressDialog();
 		} catch (JSONException e) {
+			e.printStackTrace();
 			onLoginError();
 		} catch (JsonSyntaxException e) {
+			e.printStackTrace();
 			onLoginError();
 		}
 	}
@@ -513,6 +522,7 @@ public class AuthenticationDialog extends BaseDialog {
 	}
 	
 	private void saveUserOnLocal(User user, String token) {
+		user.setMelonUsername(loggedInUsername);
 		new Authenticator().login(user, token);
 		if (isEnabledAddEasyLogin() && loggedInUsingPassword) {
 			try {
@@ -524,9 +534,9 @@ public class AuthenticationDialog extends BaseDialog {
 		}
 	}
 	
-	private void removeUserOnLocal() {
+	private void removeCachedUser() {
 		new Authenticator().logout();
-		if (!loggedInUsingPassword) {
+		if (loggedInUsingToken) {
 			new RemoveEasyLoginTask().execute(loggedInUsername);
 		}
 	}
@@ -580,7 +590,7 @@ public class AuthenticationDialog extends BaseDialog {
 	}
 	
 	public void onLoginError() {
-		removeUserOnLocal();
+		removeCachedUser();
 		dismissProgressDialog();
 		makeToast(R.string.t_alert_login_failed);
 	}
@@ -661,13 +671,11 @@ public class AuthenticationDialog extends BaseDialog {
 	}
 	
 	private void mergeSingSongAccountIntoMelonAccount(String username, String password) {
-		String melonMemberKey = Authenticator.getUser().getMelonId();
-		
 		try {
 			JSONObject message = new JSONObject();
 			message.put("memberId", username);
 			message.put("memberPwd", password);
-			message.put("memberKey", melonMemberKey);
+			message.put("memberKey", Authenticator.getUser().getMelonId());
 			message.put("loginType", Authenticator.SINGSONG_LOGIN_TYPE_PASSWORD);
 			message.put("purpose", Authenticator.LOGIN_PURPOSE_INTEGRATE);
 			
@@ -683,18 +691,18 @@ public class AuthenticationDialog extends BaseDialog {
 	}
 	
 	private void mergeSingSongAccountIntoMelonAccount(String facebookAccessToken) {
-		String melonToken = Authenticator.getAccessToken();
-		
 		try {
 			JSONObject message = new JSONObject();
-			message.put("memberId", Authenticator.getUser().getId());
-			message.put("token", melonToken);
+			message.put("memberId", Authenticator.getUser().getMelonUsername());
+			message.put("token", Authenticator.getAccessToken());
 			message.put("facebook_token", facebookAccessToken);
 			message.put("loginType", Authenticator.LOGIN_TYPE_TOKEN);
 			message.put("purpose", Authenticator.LOGIN_PURPOSE_INTEGRATE);
 			
+			Logger.log(message.toString());
+			
 			JSONObjectRequest request = new JSONObjectRequest(
-					"melon/login/melon", null, message,
+					"melon/login/collabo", null, message,
 					new JSONObjectSuccessListener(this, "onIntegrateSuccess"), 
 					new JSONErrorListener(this, "onIntegrateError"));
 			addRequest(request);
@@ -729,15 +737,19 @@ public class AuthenticationDialog extends BaseDialog {
 			MelonResponseHooker.hook(getActivity(), getChildFragmentManager(), response);
 			
 			User user = Authenticator.getUser();
-			user.setIsSingSongIntegrated(true);
-			Authenticator authenticator = new Authenticator();
-			authenticator.update(user);
+			if (user != null) {
+				user.setIsSingSongIntegrated(true);
+				Authenticator authenticator = new Authenticator();
+				authenticator.update(user);
+			}
 			
 			dismissProgressDialog();
-			
 			showIntegrateSuccessDialog();
 		} catch (MelonResponseException e) {
 			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
 			dismissProgressDialog();
 		}
 	}
@@ -799,7 +811,7 @@ public class AuthenticationDialog extends BaseDialog {
 	
 	private void requestEasyLoginGuide() {
 		JSONObjectRequest request = new JSONObjectRequest(
-				"melon/easy", null, null,
+				"melon/simpleLoginMsg", null, null,
 				new JSONObjectSuccessListener(this, "onGetGuideSuccess"),
 				new JSONErrorListener(this, "onGetGuideError"));
 		addRequest(request);
@@ -808,7 +820,7 @@ public class AuthenticationDialog extends BaseDialog {
 	public void onGetGuideSuccess(JSONObject response) {
 		try {
 			AlertInfo info = new AlertInfo();
-			info.MESSAGE = response.getString("content");
+			info.MESSAGE = response.getString("tokenNotiMsg");
 			info.PAGEURL = "";
 			info.OKTITLE = "»Æ¿Œ";
 			
