@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import android.content.SharedPreferences;
 
+import com.facebook.Session;
 import com.google.gson.Gson;
 import com.myandb.singsong.model.Profile;
 import com.myandb.singsong.model.User;
@@ -38,6 +39,14 @@ public class Authenticator {
 	
 	public void logout() {
 		preferences.edit().clear().commit();
+		logoutFacebookSession();
+	}
+	
+	private void logoutFacebookSession() {
+		Session session = Session.getActiveSession();
+		if (session != null) {
+			session.closeAndClearTokenInformation();
+		}
 	}
 	
 	public void update(Profile profile) {
