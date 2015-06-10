@@ -23,7 +23,7 @@ public class PlayCounter {
 		savedEntityName = entityName;
 		savedEntityId = entityId;
 		
-		if (second == 60) {
+		if (second == 0 || second == 60) {
 			String segment = new StringBuilder()
 			.append(entityName)
 			.append("/")
