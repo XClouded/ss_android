@@ -49,7 +49,7 @@ public abstract class StreamAuthCheckClickListener extends MemberOnlyClickListen
 			}
 			
 			JSONObject message = new JSONObject();
-			message.put("MCONSTID", music.getMelonContentsId());
+			message.put("MCONTSID", music.getMelonContentsId());
 			message.put("MRID", music.getId());
 			message.put("USERMKEY", user.getMelonId());
 			message.put("CONTSTYPE", "3C0007");
