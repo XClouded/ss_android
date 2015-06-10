@@ -63,7 +63,7 @@ public abstract class StreamAuthCheckClickListener extends MemberOnlyClickListen
 			}
 			
 			JSONObjectRequest request = new JSONObjectRequest(
-					"check/token", null, message,
+					"melon/check/auth/stream", null, message,
 					new JSONObjectSuccessListener(this, "onCheckStreamAuthSuccess"),
 					new JSONErrorListener(this, "onSystemError"));
 			((App) context.getApplicationContext()).addShortLivedRequest(context, request);
@@ -90,7 +90,7 @@ public abstract class StreamAuthCheckClickListener extends MemberOnlyClickListen
 		}
 	}
 	
-	private void onSystemError() {
+	public void onSystemError() {
 		dismissProgressDialog();
 		Toast.makeText(context, "시스템 오류", Toast.LENGTH_SHORT).show();
 	}
@@ -102,7 +102,7 @@ public abstract class StreamAuthCheckClickListener extends MemberOnlyClickListen
 			message.put("authType", "nineteen");
 			
 			JSONObjectRequest request = new JSONObjectRequest(
-					"melon/check/auth", null, message,
+					"melon/check/auth/nineteen", null, message,
 					new JSONObjectSuccessListener(this, "onCheckRealNameSuccess"),
 					new JSONErrorListener(this, "onSystemError"));
 			((App) context.getApplicationContext()).addShortLivedRequest(context, request);
