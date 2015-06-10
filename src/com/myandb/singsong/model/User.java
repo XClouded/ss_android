@@ -127,6 +127,10 @@ public class User extends Model {
 		return safeString(melon_username);
 	}
 	
+	public void setMelonUsername(String username) {
+		this.melon_username = username;
+	}
+	
 	public OnClickListener getProfileClickListener() {
 		return new OnClickListener() {
 			
