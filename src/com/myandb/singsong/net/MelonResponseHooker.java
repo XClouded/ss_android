@@ -49,8 +49,8 @@ public class MelonResponseHooker {
 						info.MESSAGE = FailCode.ADULTONLY.getMessage();
 					} else if (failCodeList.contains(FailCode.NOPRODUCT)) {
 						info.MESSAGE = FailCode.NOPRODUCT.getMessage();
-						info.POPUPTYPE = "confirm"; 
 						info.PAGEURL = "";
+						info.OKTITLE = "이용권 구매";
 					} else {
 						if (failCodeList.size() > 0) {
 							info.MESSAGE = failCodeList.get(0).getMessage();
