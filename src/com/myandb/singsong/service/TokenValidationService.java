@@ -19,7 +19,6 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.os.SystemClock;
-import android.preference.PreferenceManager;
 
 public class TokenValidationService extends Service {
 	
@@ -64,7 +63,7 @@ public class TokenValidationService extends Service {
 			message.put("token", Authenticator.getAccessToken());
 			
 			JSONObjectRequest request = new JSONObjectRequest(
-					"melon/token", null, message,
+					"melon/check/token", null, message,
 					new JSONObjectSuccessListener(this, "onValidationSuccess"), 
 					new JSONErrorListener(this, "onValidationError"));
 			
@@ -90,14 +89,13 @@ public class TokenValidationService extends Service {
 	}
 	
 	public void onValidationError() {
-//		logout();
+		logout();
 		
 		Logger.log("token validation error");
 	}
 	
 	private void logout() {
 		new Authenticator().logout();
-		PreferenceManager.getDefaultSharedPreferences(this).edit().clear().commit();
 	}
 
 }
