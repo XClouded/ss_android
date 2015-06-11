@@ -86,7 +86,7 @@ public class Authenticator {
 	private static void initializeUuid() {
 		if (preferences != null) {
 			if (!preferences.contains(KEY_DEVICE_UUID)) {
-				preferences.edit().putString(KEY_DEVICE_UUID, UUID.randomUUID().toString());
+				preferences.edit().putString(KEY_DEVICE_UUID, UUID.randomUUID().toString()).commit();
 			}
 		}
 	}
