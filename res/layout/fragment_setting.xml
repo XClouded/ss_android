@@ -10,6 +10,20 @@
         android:orientation="vertical" >
         
         <RelativeLayout
+	        android:id="@+id/rl_merge_singsong_account_banner"
+	        android:layout_marginBottom="@dimen/margin_bigger"
+	        android:background="@drawable/row_naked_selector"
+	        style="@style/FormBase" >
+	        
+	        <TextView
+	            android:padding="0dp"
+	            android:layout_centerInParent="true"
+	            android:text="기존에 쓰시던 콜라보 아이디가 있으신가요?"
+	            style="@style/TextViewSubtitleAlone" />
+	        
+	    </RelativeLayout>
+        
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/margin_big" >
@@ -43,19 +57,19 @@
         </RelativeLayout>
         
         <LinearLayout
+            android:id="@+id/ll_username"
 	        android:orientation="vertical"
 	        android:background="@drawable/row_naked_selector"
 	        style="@style/FormBaseTwoLine" >
 	        
 	        <TextView
+	            android:id="@+id/tv_user_username"
 	            android:padding="0dp"
 	            android:layout_marginBottom="@dimen/margin_tiny"
-	            android:text="아이디"
 	            style="@style/TextViewSubtitleAlone" />
 	        
 	        <TextView
-	            android:id="@+id/tv_user_username"
-	            android:maxLines="1"
+	            android:text="로그인관리는 Melon>설정>로그인관리에서 할 수 있습니다."
 	            style="@style/TextViewLessImportant" />
 	        
 	    </LinearLayout>
@@ -77,46 +91,6 @@
 	        
 	        <TextView
 	            android:id="@+id/tv_user_nickname"
-	            android:maxLines="1"
-	            style="@style/TextViewLessImportant" />
-	        
-	    </LinearLayout>
-	    
-	    <LinearLayout
-	        android:id="@+id/ll_change_email"
-	        android:orientation="vertical"
-	        android:background="@drawable/row_naked_selector"
-	        android:visibility="gone"
-	        style="@style/FormBaseTwoLine" >
-	        
-	        <TextView
-	            android:padding="0dp"
-	            android:layout_marginBottom="@dimen/margin_tiny"
-	            android:text="이메일 변경"
-	            style="@style/TextViewSubtitleAlone" />
-	        
-	        <TextView
-	            android:id="@+id/tv_user_email"
-	            android:maxLines="1"
-	            style="@style/TextViewLessImportant" />
-	        
-	    </LinearLayout>
-	    
-	    <LinearLayout
-	        android:id="@+id/ll_change_kakao"
-	        android:orientation="vertical"
-	        android:background="@drawable/row_naked_selector"
-	        android:visibility="gone"
-	        style="@style/FormBaseTwoLine" >
-	        
-	        <TextView
-	            android:padding="0dp"
-	            android:layout_marginBottom="@dimen/margin_tiny"
-	            android:text="카카오톡 아이디 변경"
-	            style="@style/TextViewSubtitleAlone" />
-	        
-	        <TextView
-	            android:id="@+id/tv_user_kakao"
 	            android:maxLines="1"
 	            style="@style/TextViewLessImportant" />
 	        
@@ -147,50 +121,8 @@
 	    <ImageView
 	        style="@style/DividerHorizontal" />
 	    
-	    <LinearLayout
-	        android:id="@+id/ll_change_password"
-	        android:orientation="vertical"
-	        android:background="@drawable/row_naked_selector"
-	        android:layout_marginBottom="@dimen/margin_bigger"
-	        style="@style/FormBase" >
-	        
-	        <TextView
-	            android:padding="0dp"
-	            android:layout_marginBottom="@dimen/margin_tiny"
-	            android:text="비밀번호 변경"
-	            style="@style/TextViewSubtitleAlone" />
-	        
-	    </LinearLayout>
-	    
-	    <RelativeLayout
-	        android:id="@+id/rl_connect_facebook"
-	        android:layout_marginBottom="@dimen/margin_bigger"
-	        android:background="@drawable/row_naked_selector"
-	        style="@style/FormBase" >
-	        
-	        <ImageView
-	            android:id="@+id/iv_is_facebook_activated"
-	            android:layout_width="25dp"
-	            android:layout_height="25dp"
-	            android:padding="@dimen/margin_tiny"
-	            android:background="@drawable/button_transparent_primary_selector"
-	            android:layout_centerVertical="true"
-	            android:layout_alignParentRight="true"
-	            android:src="@drawable/ic_check"
-	            style="@style/ImageViewBase" />
-	        
-	        <TextView
-	            android:padding="0dp"
-	            android:layout_marginBottom="@dimen/margin_tiny"
-	            android:layout_centerVertical="true"
-	            android:text="페이스북 연동하기"
-	            style="@style/TextViewSubtitleAlone" />
-	        
-	    </RelativeLayout>
-	    
 	    <RelativeLayout
 	        android:id="@+id/rl_enable_notification"
-	        android:layout_marginBottom="40dp"
 	        android:background="@drawable/row_naked_selector"
 	        style="@style/FormBase" >
 	        
@@ -214,27 +146,50 @@
 	        
 	    </RelativeLayout>
 	    
-	    <Button
-	        android:id="@+id/btn_logout"
-	        android:layout_width="match_parent"
-	        android:layout_marginLeft="@dimen/margin"
-	        android:layout_marginRight="@dimen/margin"
-	        android:layout_marginBottom="30dp"
-	        android:text="@string/logout"
-	        android:textColor="@color/white"
-	        android:background="@drawable/button_transparent_selector"
-	        style="@style/ButtonBase" />
+	    <ImageView
+	        style="@style/DividerHorizontal" />
 	    
-	    <Button
-	        android:id="@+id/btn_withdraw"
-	        android:layout_width="match_parent"
-	        android:layout_marginLeft="@dimen/margin"
-	        android:layout_marginRight="@dimen/margin"
-	        android:layout_marginBottom="@dimen/margin_big"
-	        android:text="@string/withdraw"
-	        android:textColor="@color/white"
-	        android:background="@drawable/button_transparent_selector"
-	        style="@style/ButtonBase" />
+	    <RelativeLayout
+	        android:id="@+id/rl_connect_facebook"
+	        android:background="@drawable/row_naked_selector"
+	        style="@style/FormBase" >
+	        
+	        <ImageView
+	            android:id="@+id/iv_is_facebook_activated"
+	            android:layout_width="25dp"
+	            android:layout_height="25dp"
+	            android:padding="@dimen/margin_tiny"
+	            android:background="@drawable/button_transparent_primary_selector"
+	            android:layout_centerVertical="true"
+	            android:layout_alignParentRight="true"
+	            android:src="@drawable/ic_check"
+	            style="@style/ImageViewBase" />
+	        
+	        <TextView
+	            android:padding="0dp"
+	            android:layout_marginBottom="@dimen/margin_tiny"
+	            android:layout_centerVertical="true"
+	            android:text="페이스북 연동하기"
+	            style="@style/TextViewSubtitleAlone" />
+	        
+	    </RelativeLayout>
+	    
+	    <ImageView
+	        style="@style/DividerHorizontal" />
+	    
+	    <RelativeLayout
+	        android:id="@+id/rl_merge_singsong_account"
+	        android:layout_marginBottom="@dimen/margin_bigger"
+	        android:background="@drawable/row_naked_selector"
+	        style="@style/FormBase" >
+	        
+	        <TextView
+	            android:padding="0dp"
+	            android:layout_centerVertical="true"
+	            android:text="기존 콜라보 노래방 ID 연결하기"
+	            style="@style/TextViewSubtitleAlone" />
+	        
+	    </RelativeLayout>
 	    
 	    <include
 	        layout="@layout/footer" />

@@ -106,8 +106,8 @@ public class ArtistListFragment extends ListFragment {
 		case R.id.action_candidate_artist:
 			String url = new UrlBuilder().s("w").s("apply-candidate").toString();
 			Bundle bundle = new Bundle();
-			bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_artist_request_action_title));
-			bundle.putString(WebViewFragment.EXTRA_WEBVIEW_URL, url);
+			bundle.putString(BaseFragment.EXTRA_TITLE, getString(R.string.fragment_artist_request_action_title));
+			bundle.putString(WebViewFragment.EXTRA_URL, url);
 			Intent intent = new Intent(getActivity(), UpActivity.class);
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, WebViewFragment.class.getName());
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);

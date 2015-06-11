@@ -27,7 +27,7 @@ import android.widget.Toast;
 
 public abstract class BaseFragment extends Fragment {
 	
-	public static final String EXTRA_FRAGMENT_TITLE = "fragment_title";
+	public static final String EXTRA_TITLE = "title";
 	public static final String EXTRA_ACTIONBAR_DISABLED = "actionbar_disabled";
 	
 	private String title;
@@ -54,7 +54,7 @@ public abstract class BaseFragment extends Fragment {
 	}
 	
 	protected void onArgumentsReceived(Bundle bundle) {
-		title = bundle.getString(EXTRA_FRAGMENT_TITLE);
+		title = bundle.getString(EXTRA_TITLE);
 		actionbarDisabled = bundle.getBoolean(EXTRA_ACTIONBAR_DISABLED);
 	}
 

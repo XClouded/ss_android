@@ -1,6 +1,6 @@
 package com.myandb.singsong.event;
 
-import com.myandb.singsong.dialog.LoginDialog;
+import com.myandb.singsong.dialog.AuthenticationDialog;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.secure.Authenticator;
 
@@ -25,7 +25,7 @@ public abstract class MemberOnlyClickListener implements OnClickListener {
 		Context context = v.getContext();
 		if (context instanceof FragmentActivity) {
 			FragmentManager manager = ((FragmentActivity) context).getSupportFragmentManager();
-			LoginDialog dialog = new LoginDialog();
+			AuthenticationDialog dialog = new AuthenticationDialog();
 			dialog.show(manager, "login");
 		}
 	}

@@ -156,7 +156,7 @@ public class UserHomeFragment extends ListFragment {
 		@Override
 		public void onActivated(View v, User user) {
 			Bundle bundle = new Bundle();
-			bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_sing_action_title));
+			bundle.putString(BaseFragment.EXTRA_TITLE, getString(R.string.fragment_sing_action_title));
 			Intent intent = new Intent(getActivity(), RootActivity.class);
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, MusicHomeFragment.class.getName());
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
@@ -247,7 +247,7 @@ public class UserHomeFragment extends ListFragment {
 			return;
 		}
 		
-		bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, title);
+		bundle.putString(BaseFragment.EXTRA_TITLE, title);
 		bundle.putString(ListFragment.EXTRA_URL_SEGMENT, segment);
 		bundle.putString(ListFragment.EXTRA_ADAPTER_NAME, adapterName);
 		bundle.putBundle(ListFragment.EXTRA_QUERY_PARAMS, params);
@@ -449,7 +449,7 @@ public class UserHomeFragment extends ListFragment {
 		@Override
 		public void onLoggedIn(View v, User user) {
 			Bundle bundle = new Bundle();
-			bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_setting_action_title));
+			bundle.putString(BaseFragment.EXTRA_TITLE, getString(R.string.fragment_setting_action_title));
 			Intent intent = new Intent(getActivity(), UpActivity.class);
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, SettingFragment.class.getName());
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);

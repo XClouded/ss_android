@@ -28,7 +28,7 @@ import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.activity.UpActivity;
 import com.myandb.singsong.audio.OnPlayEventListener;
 import com.myandb.singsong.audio.PlayEvent;
-import com.myandb.singsong.event.ActivateOnlyClickListener;
+import com.myandb.singsong.event.StreamAuthCheckClickListener;
 import com.myandb.singsong.fragment.ChildrenSongFragment;
 import com.myandb.singsong.fragment.KaraokeFragment;
 import com.myandb.singsong.fragment.ListFragment;
@@ -277,10 +277,10 @@ public class Song extends Model {
 	}
 
 	public OnClickListener getPlayClickListener() {
-		return new OnClickListener() {
-			
+		return new StreamAuthCheckClickListener(Song.this) {
+
 			@Override
-			public void onClick(View v) {
+			public void onPassed(View v) {
 				BaseActivity activity = (BaseActivity) v.getContext();
 				PlayerService service = activity.getPlayerService();
 				service.startPlaying(Song.this);
@@ -375,13 +375,13 @@ public class Song extends Model {
 	}
 	
 	public OnClickListener getCollaboClickListner() {
-		return new ActivateOnlyClickListener() {
+		return new StreamAuthCheckClickListener(Song.this) {
 			
 			private Context context;
 			private ProgressDialog progressDialog;
 			
 			@Override
-			public void onActivated(View v, User user) {
+			public void onPassed(View v) {
 				context = v.getContext();
 				showProgressDialog(context);
 				JSONObjectRequest request = new JSONObjectRequest(
@@ -445,7 +445,6 @@ public class Song extends Model {
 					// ignore
 				}
 			}
-			
 		};
 	}
 	

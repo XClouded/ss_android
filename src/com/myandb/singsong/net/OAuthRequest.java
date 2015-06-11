@@ -1,6 +1,5 @@
 package com.myandb.singsong.net;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.http.HttpStatus;
@@ -10,7 +9,6 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.VolleyError;
-import com.myandb.singsong.secure.Authenticator;
 
 public abstract class OAuthRequest<T> extends Request<T> {
 	
@@ -27,10 +25,12 @@ public abstract class OAuthRequest<T> extends Request<T> {
 
 	@Override
 	public Map<String, String> getHeaders() throws AuthFailureError {
-		Map<String, String> headers = new HashMap<String, String>();
+		HttpScheme melonHttpHeaderScheme = new MelonHttpScheme();
+		Map<String, String> headers = melonHttpHeaderScheme.getHeaders();
 		
 		if (requireAccessToken) {
-			headers.put("oauth-token", Authenticator.getAccessToken());
+			HttpScheme singSongHttpHeaderScheme = new SingSongHttpScheme();
+			headers = singSongHttpHeaderScheme.getHeaders(headers);
 		}
 		
 		return headers;

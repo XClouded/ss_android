@@ -71,39 +71,39 @@ public class CommunityFragment extends BaseFragment {
 			switch (v.getId()) {
 			case R.id.rl_link_notice:
 				builder.s("1");
-				bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_community_notice_action_title));
+				bundle.putString(BaseFragment.EXTRA_TITLE, getString(R.string.fragment_community_notice_action_title));
 				break;
 				
 			case R.id.rl_link_faq:
 				builder.s("2");
-				bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_community_faq_action_title));
+				bundle.putString(BaseFragment.EXTRA_TITLE, getString(R.string.fragment_community_faq_action_title));
 				break;
 				
 			case R.id.rl_link_free:
 				builder.s("3");
-				bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_community_free_action_title));
+				bundle.putString(BaseFragment.EXTRA_TITLE, getString(R.string.fragment_community_free_action_title));
 				break;
 				
 			case R.id.rl_link_mr:
 				builder.s("4");
-				bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_community_mr_action_title));
+				bundle.putString(BaseFragment.EXTRA_TITLE, getString(R.string.fragment_community_mr_action_title));
 				break;
 				
 			case R.id.rl_link_terms:
 				builder = new UrlBuilder().s("w").s("terms");
-				bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_community_terms_action_title));
+				bundle.putString(BaseFragment.EXTRA_TITLE, getString(R.string.fragment_community_terms_action_title));
 				break;
 				
 			case R.id.rl_link_privacy:
 				builder = new UrlBuilder().s("w").s("privacy-20150401");
-				bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_community_privacy_action_title));
+				bundle.putString(BaseFragment.EXTRA_TITLE, getString(R.string.fragment_community_privacy_action_title));
 				break;
 
 			default:
 				return;
 			}
 			
-			bundle.putString(WebViewFragment.EXTRA_WEBVIEW_URL, builder.toString());
+			bundle.putString(WebViewFragment.EXTRA_URL, builder.toString());
 			startFragment(intent);
 		}
 	};

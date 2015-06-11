@@ -16,6 +16,8 @@ import com.myandb.singsong.adapter.MusicAdapter;
 import com.myandb.singsong.adapter.SimpleChildrenSongAdapter;
 import com.myandb.singsong.adapter.SimpleSongNumAdapter;
 import com.myandb.singsong.adapter.MusicAdapter.LayoutType;
+import com.myandb.singsong.dialog.BaseDialog;
+import com.myandb.singsong.dialog.AuthenticationDialog;
 import com.myandb.singsong.event.MemberOnlyClickListener;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Music;
@@ -55,6 +57,8 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class HomeFragment extends BaseFragment {
 	
+	public static final String EXTRA_DIALOG = "dialog";
+	
 	private TextView tvNotificationCount;
 	private TextView tvTop10FirstLikeNum;
 	private TextView tvTop10FirstMusicInfo;
@@ -81,6 +85,7 @@ public class HomeFragment extends BaseFragment {
 	private SimpleChildrenSongAdapter waitingSongAdapter;
 	private ArtistAdapter collaboArtistAdapter;
 	private Song top10First;
+	private boolean needToShowLoginDialog;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -91,6 +96,13 @@ public class HomeFragment extends BaseFragment {
 	@Override
 	protected int getResourceId() {
 		return R.layout.fragment_home;
+	}
+
+	@Override
+	protected void onArgumentsReceived(Bundle bundle) {
+		super.onArgumentsReceived(bundle);
+		String dialog = bundle.getString(EXTRA_DIALOG);
+		needToShowLoginDialog = dialog != null && dialog.equals("login");
 	}
 
 	@Override
@@ -147,7 +159,7 @@ public class HomeFragment extends BaseFragment {
 			@Override
 			public void onClick(View v) {
 				Bundle bundle = new Bundle();
-				bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_artist_list_action_title));
+				bundle.putString(BaseFragment.EXTRA_TITLE, getString(R.string.fragment_artist_list_action_title));
 				bundle.putBoolean(ListFragment.EXTRA_HORIZONTAL_PADDING, true);
 				bundle.putBoolean(ListFragment.EXTRA_VERTICAL_PADDING, true);
 				Intent intent = new Intent(getActivity(), RootActivity.class);
@@ -160,7 +172,16 @@ public class HomeFragment extends BaseFragment {
 		tvSongCollaboratedMore.setOnClickListener(songMoreClickListener);
 		tvSongWaitingMore.setOnClickListener(songMoreClickListener);
 		tvRecentMusicMore.setOnClickListener(musicMoreClickListener);
-		tvPopularMusicMore.setOnClickListener(musicMoreClickListener); 
+		tvPopularMusicMore.setOnClickListener(musicMoreClickListener);
+		
+		if (needToShowLoginDialog) {
+			showLoginDialog();
+		}
+	}
+	
+	private void showLoginDialog() {
+		BaseDialog dialog = new AuthenticationDialog();
+		dialog.show(getChildFragmentManager(), "");
 	}
 	
 	private void loadCollaboTop10() {
@@ -401,7 +422,7 @@ public class HomeFragment extends BaseFragment {
 		@Override
 		public void onClick(View v) {
 			Bundle bundle = new Bundle();
-			bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_listen_action_title));
+			bundle.putString(BaseFragment.EXTRA_TITLE, getString(R.string.fragment_listen_action_title));
 			if (v.getId() == R.id.tv_song_waiting_more) {
 				bundle.putSerializable(ListenHomeFragment.EXTRA_SONG_TYPE, SongType.WAITING);
 			}
@@ -437,7 +458,7 @@ public class HomeFragment extends BaseFragment {
 				return;
 			}
 			
-			bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, title);
+			bundle.putString(BaseFragment.EXTRA_TITLE, title);
 			bundle.putString(ListFragment.EXTRA_URL_SEGMENT, segment);
 			bundle.putBundle(ListFragment.EXTRA_QUERY_PARAMS, params);
 			Intent intent = new Intent(getActivity(), RootActivity.class);
@@ -492,7 +513,7 @@ public class HomeFragment extends BaseFragment {
 		switch (item.getItemId()) {
 		case R.id.action_sing:
 			Bundle bundle = new Bundle();
-			bundle.putString(BaseFragment.EXTRA_FRAGMENT_TITLE, getString(R.string.fragment_sing_action_title));
+			bundle.putString(BaseFragment.EXTRA_TITLE, getString(R.string.fragment_sing_action_title));
 			Intent intent = new Intent(getActivity(), RootActivity.class);
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, MusicHomeFragment.class.getName());
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);

@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/container_dialog"
+        android:padding="@dimen/margin"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/tv_title"
+            style="@style/TextViewTitle"
+            android:text="콜라보 노래방과 멜론이 하나가 됩니다." />
+
+        <TextView
+            android:id="@+id/tv_subtitle"
+            style="@style/TextViewTitle"
+            android:text="콜라보 아이디로 로그인 후 멜론 아이디를 등록해주세요." />
+
+        <TextView
+            android:id="@+id/tv_description"
+            style="@style/TextViewBase"
+            android:text="· 콜라보 노래방이 멜론 패밀리앱이 됩니다.\n· 이제 멜론 아이디 하나로 콜라보/멜론/아지톡 서비스를 모두 이용 할 수 있습니다.\n· 기존 콜라보 노래방 게시물은 모두 멜론 아이디로 이전됩니다." />
+
+        <TextView
+            android:id="@+id/tv_singsong_username_guide"
+            style="@style/TextViewBase" />
+
+        <LinearLayout
+            android:id="@+id/ll_easy_login_wrapper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                style="@style/TextViewTitle"
+                android:text="이제 MelOn 아이디로 간편하게 로그인하세요!" />
+
+            <TextView
+                style="@style/TextViewTitle"
+                android:text="간편로그인" />
+
+            <LinearLayout
+                android:id="@+id/ll_easy_login_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <TextView
+                style="@style/TextViewBase"
+                android:text="간편로그인 관리는 MelOn>설정>로그인관리에서 할 수 있습니다." />
+
+            <Button
+                android:id="@+id/btn_login_using_password"
+                style="@style/ButtonBase"
+                android:layout_width="match_parent"
+                android:text="다른 아이디로 로그인" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_integrated_authentication_wrapper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:id="@+id/ll_facebook_wrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin"
+                android:orientation="vertical" >
+
+                <TextView
+                    style="@style/TextViewBase"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="@dimen/margin_small"
+                    android:text="페이스북으로 가입했다면 이 버튼을 누르세요."
+                    android:textColor="@color/font_hint"
+                    android:textSize="@dimen/text_hint" />
+
+                <Button
+                    android:id="@+id/btn_facebook"
+                    style="@style/ButtonBase"
+                    android:layout_width="match_parent"
+                    android:layout_marginBottom="@dimen/margin"
+                    android:background="@drawable/button_facebook_selector"
+                    android:text="@string/login_with_facebook" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_input_authentication_title"
+                style="@style/TextViewBase"
+                android:text="멜론 아이디/비밀번호를 입력해주세요." />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin" >
+
+                <Button
+                    android:id="@+id/btn_authentication"
+                    style="@style/ButtonBase"
+                    android:layout_width="85dp"
+                    android:layout_height="85dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="@dimen/margin_small"
+                    android:layout_marginBottom="@dimen/margin_small"
+                    android:text="로그인" />
+                
+                <com.myandb.singsong.widget.ClearableEditText
+                    android:id="@+id/et_username"
+                    android:layout_toLeftOf="@id/btn_authentication"
+                    android:padding="@dimen/margin_small"
+                    android:background="@drawable/card_idle"
+                    android:inputType="textPersonName"
+                    android:maxLength="50"
+                    style="@style/BaseEditText" />
+                
+                <com.myandb.singsong.widget.ClearableEditText
+                    android:id="@+id/et_password"
+                    android:layout_toLeftOf="@id/btn_authentication"
+                    android:layout_alignBottom="@id/btn_authentication"
+                    android:padding="@dimen/margin_small"
+                    android:background="@drawable/card_idle"
+                    android:inputType="textPassword"
+                    android:maxLength="32"
+                    style="@style/BaseEditText" />
+                
+                <RelativeLayout
+                    android:id="@+id/rl_easy_login_guide_wrapper"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_authentication" >
+	                
+	                <TextView
+	                    android:id="@+id/tv_easy_login_guide"
+	                    android:layout_alignParentRight="true"
+	                    android:text="간편로그인이란?"
+	                    style="@style/TextViewBase" />
+	                
+	                <ImageView
+			            android:id="@+id/iv_whether_add_easy_login"
+			            android:layout_width="20dp"
+			            android:layout_height="20dp"
+			            android:padding="@dimen/margin_tiny"
+			            android:background="@drawable/button_transparent_primary_selector"
+			            android:src="@drawable/ic_check"
+			            style="@style/ImageViewBase" />
+	                
+	                <TextView
+	                    android:id="@+id/tv_whether_add_easy_login"
+	                    android:layout_toRightOf="@id/iv_whether_add_easy_login"
+	                    android:text="간편로그인"
+	                    style="@style/TextViewBase" />
+                    
+                </RelativeLayout>
+                
+            </RelativeLayout>
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+                
+                <TextView
+                    android:id="@+id/tv_find_melon_username"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="아이디 찾기"
+                    style="@style/TextViewBase" />
+                
+                <TextView
+                    android:id="@+id/tv_find_melon_password"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="비밀번호 찾기"
+                    style="@style/TextViewBase" />
+                
+                <TextView
+                    android:id="@+id/tv_find_singsong_password"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="비밀번호 찾기"
+                    style="@style/TextViewBase" />
+                
+                <TextView
+                    android:id="@+id/tv_join_melon"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="멜론 회원가입"
+                    style="@style/TextViewBase" />
+                
+            </LinearLayout>
+            
+        </LinearLayout>
+        
+        <RelativeLayout
+            android:id="@+id/rl_singsong_authentication_wrapper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin" >
+            
+            <Button
+                android:id="@+id/btn_authenticate_singsong"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="@dimen/margin"
+                android:text="콜라보\n회원인증"
+                style="@style/ButtonBase" />
+            
+            <TextView
+                android:layout_toLeftOf="@id/btn_authenticate_singsong"
+                android:text="이미 사용중인 콜라보 노래방 계정이 있으신가요?"
+                style="@style/TextViewBase" />
+            
+        </RelativeLayout>
+    </LinearLayout>
+
+</ScrollView>

@@ -6,6 +6,7 @@ import com.android.volley.toolbox.Volley;
 import com.myandb.singsong.image.ImageLoaderConfig;
 import com.myandb.singsong.net.SelectAllRequestFilter;
 import com.myandb.singsong.secure.Authenticator;
+import com.myandb.singsong.service.TokenValidationService;
 import com.myandb.singsong.util.StringFormatter;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.sromku.simple.fb.Permission;
@@ -14,11 +15,12 @@ import com.sromku.simple.fb.SimpleFacebookConfiguration;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 
 public class App extends Application {
-
-	public static final boolean TESTING = false;
 	
+	public static final ApplicationMode MODE = ApplicationMode.DEBUGGING;
+
 	public static final int INVALID_RESOURCE_ID = 0; 
 	
 	public static final String FACEBOOK_NAMESPACE = "collabokaraoke_";
@@ -29,6 +31,8 @@ public class App extends Application {
 	public static final int NOTI_ID_SONG_UPLOAD = 1001;
 	public static final int NOTI_ID_PHOTO_UPLOAD = 1002;
 	public static final int NOTI_ID_PLAY_SONG = 1003;
+	
+	public static String APP_VERSION = "";
 	
 	private RequestQueue requestQueue;
 	
@@ -43,6 +47,18 @@ public class App extends Application {
 		StringFormatter.initialize(getResources());
 		
 		initializeSimpleFacebook();
+		
+		initializeAppVersion();
+		
+		startTokenValidationService();
+	}
+	
+	private void initializeAppVersion() {
+		try {
+			APP_VERSION = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private void initializeSimpleFacebook() {
@@ -90,6 +106,11 @@ public class App extends Application {
 	
 	public void cancelAllRequests() {
 		getQueueInstance().cancelAll(new SelectAllRequestFilter());
+	}
+	
+	private void startTokenValidationService() {
+		Intent intent = new Intent(this, TokenValidationService.class);
+		startService(intent);
 	}
 
 }
