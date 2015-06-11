@@ -31,6 +31,7 @@ public class Music extends Model {
 	private List<Song> songs;
 	private int is_dynamic;
 	private int sing_num;
+	private int is_nxing_api;
 	private int melon_contents_id;
 	
 	public String getSingerName() {
@@ -57,8 +58,12 @@ public class Music extends Model {
 		return STORAGE_HOST + STORAGE_MUSIC + getId() + SUFFIX_OGG;
 	}
 	
-	public String getLrcUrl() {
-		return STORAGE_HOST + STORAGE_LRC + getId() + SUFFIX_LRC;
+	public String getMuseOnlineLrcUrl() {
+		return STORAGE_HOST + STORAGE_MUSEONLINE_LRC + getId() + SUFFIX_LRC;
+	}
+	
+	public String getNxingLrcUrl() {
+		return STORAGE_HOST + STORAGE_NXING_LRC + getId() + SUFFIX_LRC;
 	}
 	
 	public String getMalePart() {
@@ -83,6 +88,10 @@ public class Music extends Model {
 	
 	public boolean isLyricDynamic() {
 		return is_dynamic == 1;
+	}
+	
+	public boolean isNxing() {
+		return is_nxing_api == 1;
 	}
 	
 	public int getMelonContentsId() {

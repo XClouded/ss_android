@@ -13,11 +13,17 @@ import java.util.regex.Pattern;
 
 public class Lrc {
 	
-	public static final String FILE_CHARSET = "MS949";
+	public static final String DEFAULT_FILE_CHARSET = "UTF-8";
 	
 	private List<Line> timeLines;
+	private String fileCharset;
 	
 	public Lrc(File file) throws IOException {
+		this(file, DEFAULT_FILE_CHARSET);
+	}
+	
+	public Lrc(File file, String fileCharset) throws IOException {
+		this.fileCharset = fileCharset;
 		this.timeLines = readLines(file);
 	}
 	
@@ -25,7 +31,7 @@ public class Lrc {
 		List<Line> lines = new ArrayList<Line>();
 		
 		InputStream stream = new FileInputStream(file);
-		InputStreamReader streamReader = new InputStreamReader(stream, FILE_CHARSET);
+		InputStreamReader streamReader = new InputStreamReader(stream, fileCharset);
 		BufferedReader reader = new BufferedReader(streamReader);
 		
 		try {

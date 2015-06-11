@@ -276,6 +276,7 @@ public class SongUploadService extends Service {
 			data.put("duration", duration);
 			data.put("lyric_part", lyricPart);
 			data.put("message", message);
+			data.put("is_nxing_api", true);
 			
 			if (parentSongId > 0) {
 				data.put("song_id", parentSongId);

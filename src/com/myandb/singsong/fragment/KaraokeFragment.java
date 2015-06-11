@@ -283,10 +283,26 @@ public class KaraokeFragment extends BaseFragment {
 		}
 		
 		lrcDownload = new DownloadManager();
-		lrcDownload.start(music.getLrcUrl(), lyricFile, lyricDownloadListener);
+		lrcDownload.start(getLrcUrl(), lyricFile, lyricDownloadListener);
 		
 		audioDownload = new DownloadManager();
 		audioDownload.start(getAudioUrl(), musicOggFile, audioDownloadListener);
+	}
+	
+	private String getLrcUrl() {
+		if (isSolo()) {
+			if (music.isNxing()) {
+				return music.getNxingLrcUrl();
+			}
+		}
+		
+		if (isCollabo()) {
+			if (parentSong.isNxing()) {
+				return music.getNxingLrcUrl();
+			}
+		}
+		
+		return music.getMuseOnlineLrcUrl();
 	}
 	
 	private OnDownloadListener lyricDownloadListener = new OnDownloadListener() {
@@ -329,8 +345,8 @@ public class KaraokeFragment extends BaseFragment {
 	
 	public void onLyricDownloadSuccess() {
 		try {
-			Lrc lrc = new Lrc(lyricFile);
-			if (music.isLyricDynamic()) {
+			Lrc lrc = new Lrc(lyricFile, getLrcCharset());
+			if (isLyricDynamic()) {
 				lrcDisplayer = new DynamicLrcDisplayer(getActivity());
 			} else {
 				lrcDisplayer = new StaticLrcDisplayer(getActivity());
@@ -342,6 +358,38 @@ public class KaraokeFragment extends BaseFragment {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private String getLrcCharset() {
+		if (isSolo()) {
+			if (music.isNxing()) {
+				return "UTF-8";
+			}
+		}
+		
+		if (isCollabo()) {
+			if (parentSong.isNxing()) {
+				return "UTF-8";
+			}
+		}
+		
+		return "MS949"; 
+	}
+	
+	private boolean isLyricDynamic() {
+		if (isSolo()) {
+			if (music.isNxing()) {
+				return true;
+			}
+		}
+		
+		if (isCollabo()) {
+			if (parentSong.isNxing()) {
+				return true;
+			}
+		}
+		
+		return music.isLyricDynamic();
 	}
 	
 	private OnTypeChangeListener typeChangeListener = new OnTypeChangeListener() {

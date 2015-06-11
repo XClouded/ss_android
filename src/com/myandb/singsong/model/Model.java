@@ -9,8 +9,9 @@ public abstract class Model {
 	
 	public static final String STORAGE_HOST = "https://ssproxy.ucloudbiz.olleh.com/v1/AUTH_ddf209b4-06d2-4076-a550-1cd504b084a2/";
 	public static final String STORAGE_ALBUM = "album_photo/";
-	public static final String STORAGE_LRC = "lrc/";
-	public static final String STORAGE_MUSIC = "music/";
+	public static final String STORAGE_MUSEONLINE_LRC = "lrc/";
+	public static final String STORAGE_NXING_LRC = "nxing_lrc/";
+	public static final String STORAGE_MUSIC = "nxing_music/";
 	public static final String STORAGE_SONG = "song/";
 	public static final String STORAGE_USER = "user_photo/";
 	public static final String STORAGE_IMAGE = "image/";

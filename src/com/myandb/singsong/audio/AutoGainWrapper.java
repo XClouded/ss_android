@@ -8,7 +8,6 @@ public class AutoGainWrapper {
 	private static AutoGainWrapper singleton;
 	
 	private boolean created;
-	private boolean destroyed;
 	
 	static {
 		System.loadLibrary("r128-stream");
@@ -16,29 +15,20 @@ public class AutoGainWrapper {
 	
 	private AutoGainWrapper() {
 		created = false;
-		destroyed = true; 
 	}
 	
-	public void initialize(int channels, int resolution, int sampleRate) {
-		if (!created && destroyed) {
+	public synchronized void initialize(int channels, int resolution, int sampleRate) {
+		if (!created) {
 			try {
 				created = create(channels, resolution, sampleRate, 3) != CREATE_FAILED;
-				destroyed = false;
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 	}
 	
-	public void close() {
-		if (created && !destroyed) {
-			try {
-				destroyed = destroy() == DESTROY_COMPLETED;
-				created = false;
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+	public synchronized void close() {
+		// due to native memory error
 	}
 	
 	public float processSample(float[] buffer, int offset, int length) {
