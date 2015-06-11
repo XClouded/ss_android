@@ -18,7 +18,6 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.android.volley.Request.Method;
-import com.google.gson.Gson;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.RootActivity;
@@ -42,7 +41,7 @@ import com.myandb.singsong.net.JSONErrorListener;
 import com.myandb.singsong.net.JSONObjectSuccessListener;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
-import com.myandb.singsong.util.Utility;
+import com.myandb.singsong.util.GsonUtils;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
@@ -77,9 +76,9 @@ public class UserHomeFragment extends ListFragment {
 	@Override
 	protected void onArgumentsReceived(Bundle bundle) {
 		super.onArgumentsReceived(bundle);
-		Gson gson = Utility.getGsonInstance();
+		
 		String userInJson = bundle.getString(EXTRA_THIS_USER);
-		thisUser = gson.fromJson(userInJson, User.class);
+		thisUser = GsonUtils.fromJson(userInJson, User.class);
 		currentUser = Authenticator.getUser();
 	}
 
@@ -434,9 +433,8 @@ public class UserHomeFragment extends ListFragment {
 		@Override
 		public void onActivated(View v, User user) {
 			if (friendship != null) {
-				Gson gson = Utility.getGsonInstance();
 				Bundle bundle = new Bundle();
-				bundle.putString(UpdateFriendshipDialog.EXTRA_FRIENDSHIP, gson.toJson(friendship));
+				bundle.putString(UpdateFriendshipDialog.EXTRA_FRIENDSHIP, friendship.toString());
 				BaseDialog dialog = new UpdateFriendshipDialog();
 				dialog.setArguments(bundle);
 				dialog.show(getChildFragmentManager(), "");

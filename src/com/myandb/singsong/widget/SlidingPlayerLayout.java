@@ -67,8 +67,7 @@ import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.service.PlayerService;
 import com.myandb.singsong.util.PlayCounter;
-import com.myandb.singsong.util.StringFormatter;
-import com.myandb.singsong.util.Utility;
+import com.myandb.singsong.util.Utils;
 import com.nineoldandroids.view.ViewHelper;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
@@ -622,7 +621,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	public void onProgressUpdate() {
 		StreamPlayer player = service.getPlayer();
 		if (player != null && player.isPlaying()) {
-			tvPlayStartTime.setText(StringFormatter.getDuration(player.getCurrentPosition()));
+			tvPlayStartTime.setText(Utils.getColonFormatDuration(player.getCurrentPosition()));
 			sbPlay.setProgress(player.getCurrentPosition());
 			
 			if (handler != null) {
@@ -874,8 +873,8 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		} else {
 			croppedNickname += nickname;
 		}
-		Spannable spannableNickname = Utility.getBoldSpan(croppedNickname);
-		Utility.getColorSpan(spannableNickname, getResources().getColor(R.color.white));
+		Spannable spannableNickname = Utils.getBoldSpan(croppedNickname);
+		Utils.getColorSpan(spannableNickname, getResources().getColor(R.color.white));
 		
 		tvFloatingDescription.setText(spannableNickname);
 		tvFloatingDescription.append("¥‘¿Ã ∫Œ∏•\n");
@@ -883,9 +882,9 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		String partName = song.getParentPartName();
 		Spannable spannablePartName = new SpannableString(partName);
 		if (song.getPartnerLyricPart() == Music.PART_MALE) {
-			Utility.getColorSpan(spannablePartName, getResources().getColor(R.color.primary));
+			Utils.getColorSpan(spannablePartName, getResources().getColor(R.color.primary));
 		} else {
-			Utility.getColorSpan(spannablePartName, getResources().getColor(R.color.sub));
+			Utils.getColorSpan(spannablePartName, getResources().getColor(R.color.sub));
 		}
 		
 		tvFloatingDescription.append(spannablePartName);
@@ -947,8 +946,8 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	private void initializeSeekBar(Song song) {
 		int duration = song.getDuration();
 		
-		tvPlayStartTime.setText(StringFormatter.getDuration(0));
-		tvPlayEndTime.setText(StringFormatter.getDuration(duration));
+		tvPlayStartTime.setText(Utils.getColonFormatDuration(0));
+		tvPlayEndTime.setText(Utils.getColonFormatDuration(duration));
 		sbPlay.setMax(duration);
 		sbPlay.setProgress(0);
 	}

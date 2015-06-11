@@ -1,13 +1,12 @@
 package com.myandb.singsong.dialog;
 
-import com.google.gson.Gson;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.UpActivity;
 import com.myandb.singsong.fragment.BaseFragment;
 import com.myandb.singsong.fragment.WebViewFragment;
 import com.myandb.singsong.net.MelonMemberResponse.AlertInfo;
-import com.myandb.singsong.util.Utility;
+import com.myandb.singsong.util.GsonUtils;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -29,7 +28,7 @@ public class MelonAlertDialog extends BaseDialog {
 	public static void show(FragmentManager fm, AlertInfo info) {
 		if (fm != null) {
 			Bundle bundle = new Bundle();
-			bundle.putString(AlertInfo.class.getName(), Utility.getGsonInstance().toJson(info));
+			bundle.putString(AlertInfo.class.getName(), GsonUtils.toJson(info));
 			
 			BaseDialog dialog = new MelonAlertDialog();
 			dialog.setArguments(bundle);
@@ -46,8 +45,7 @@ public class MelonAlertDialog extends BaseDialog {
 	protected void onArgumentsReceived(Bundle bundle) {
 		super.onArgumentsReceived(bundle);
 		
-		Gson gson = Utility.getGsonInstance();
-		alertInfo = gson.fromJson(bundle.getString(AlertInfo.class.getName()), AlertInfo.class);
+		alertInfo = GsonUtils.fromJson(bundle.getString(AlertInfo.class.getName()), AlertInfo.class);
 	}
 
 	@Override

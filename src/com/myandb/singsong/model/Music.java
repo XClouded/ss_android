@@ -16,7 +16,7 @@ import com.myandb.singsong.activity.UpActivity;
 import com.myandb.singsong.event.StreamAuthCheckClickListener;
 import com.myandb.singsong.fragment.KaraokeFragment;
 import com.myandb.singsong.fragment.SelectRecordModeFragment;
-import com.myandb.singsong.util.Utility;
+import com.myandb.singsong.util.Utils;
 
 public class Music extends Model {
 	
@@ -40,8 +40,8 @@ public class Music extends Model {
 	
 	public Spannable getWorkedTitle() {
 		final Spannable titleSpannable = new SpannableString(getTitle());
-		Utility.getRelativeSizeSpan(titleSpannable, 1.3f);
-		Utility.getStyleSpan(titleSpannable, Typeface.BOLD);
+		Utils.getRelativeSizeSpan(titleSpannable, 1.3f);
+		Utils.getStyleSpan(titleSpannable, Typeface.BOLD);
 		
 		return titleSpannable;
 	}

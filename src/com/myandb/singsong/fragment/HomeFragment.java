@@ -5,7 +5,6 @@ import java.util.Calendar;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import com.google.gson.Gson;
 import com.mhdjang.infiniteviewpager.InfinitePagerAdapter;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
@@ -29,8 +28,8 @@ import com.myandb.singsong.net.GradualLoader.OnLoadCompleteListener;
 import com.myandb.singsong.pager.ListenPagerAdapter.SongType;
 import com.myandb.singsong.pager.PagerWrappingAdapter;
 import com.myandb.singsong.service.PlayerService;
-import com.myandb.singsong.util.StringFormatter;
-import com.myandb.singsong.util.Utility;
+import com.myandb.singsong.util.GsonUtils;
+import com.myandb.singsong.util.Utils;
 import com.myandb.singsong.widget.HorizontalListView;
 import com.viewpagerindicator.CirclePageIndicator;
 
@@ -186,7 +185,7 @@ public class HomeFragment extends BaseFragment {
 	
 	private void loadCollaboTop10() {
 		if (collaboTop10Adapter == null) {
-			final String yesterday = StringFormatter.getDateString(Calendar.DAY_OF_YEAR, -1);
+			final String yesterday = Utils.getDateString(Calendar.DAY_OF_YEAR, -1);
 			final UrlBuilder urlBuilder = new UrlBuilder().s("songs").s("leaf").start(yesterday).p("order", "liking_num").take(10);
 			final GradualLoader loader = new GradualLoader(getActivity());  
 			loader.setUrlBuilder(urlBuilder);
@@ -205,8 +204,7 @@ public class HomeFragment extends BaseFragment {
 				
 				private Song getTop10First(JSONArray response) {
 					try {
-						Gson gson = Utility.getGsonInstance();
-						return gson.fromJson(response.getJSONObject(0).toString(), Song.class);
+						return GsonUtils.fromJson(response.getJSONObject(0), Song.class);
 					} catch (Exception e) {
 						return null;
 					}
@@ -379,7 +377,7 @@ public class HomeFragment extends BaseFragment {
 	
 	private void loadWaitingTop10() {
 		if (waitingSongAdapter == null) {
-			final String yesterday = StringFormatter.getDateString(Calendar.DAY_OF_YEAR, -1);
+			final String yesterday = Utils.getDateString(Calendar.DAY_OF_YEAR, -1);
 			final UrlBuilder urlBuilder = new UrlBuilder().s("songs").s("root").start(yesterday).p("order", "collabo_num").take(10);
 			GradualLoader loader = new GradualLoader(getActivity());
 			loader.setUrlBuilder(urlBuilder);

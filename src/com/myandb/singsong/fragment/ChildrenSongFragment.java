@@ -1,6 +1,5 @@
 package com.myandb.singsong.fragment;
 
-import com.google.gson.Gson;
 import com.myandb.singsong.R;
 import com.myandb.singsong.adapter.ChildrenSongAdapter;
 import com.myandb.singsong.image.ImageHelper;
@@ -8,7 +7,7 @@ import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Song;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.util.Utility;
+import com.myandb.singsong.util.GsonUtils;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -37,9 +36,9 @@ public class ChildrenSongFragment extends ListFragment {
 	@Override
 	protected void onArgumentsReceived(Bundle bundle) {
 		super.onArgumentsReceived(bundle);
+		
 		String songInJson = bundle.getString(EXTRA_ROOT_SONG);
-		Gson gson = Utility.getGsonInstance();
-		thisSong = gson.fromJson(songInJson, Song.class);
+		thisSong = GsonUtils.fromJson(songInJson, Song.class);
 	}
 
 	@Override

@@ -9,8 +9,7 @@ import org.json.JSONObject;
 
 import android.text.Spannable;
 
-import com.myandb.singsong.util.StringFormatter;
-import com.myandb.singsong.util.Utility;
+import com.myandb.singsong.util.Utils;
 
 public class Notification extends Model {
 
@@ -33,7 +32,7 @@ public class Notification extends Model {
 			try {
 				final JSONObject metadata = activity.getMetadata();
 				final User activityCreator = activity.getCreator();
-				Spannable boldSpan = Utility.getBoldSpan(activityCreator.getNickname());
+				Spannable boldSpan = Utils.getBoldSpan(activityCreator.getNickname());
 				contents.add(boldSpan);
 				contents.add("님");
 				
@@ -57,10 +56,10 @@ public class Notification extends Model {
 					break;
 					
 				case UserActivity.TYPE_CREATE_ROOT_SONG:
-					boldSpan = Utility.getBoldSpan(metadata.getString("music_singer"));
+					boldSpan = Utils.getBoldSpan(metadata.getString("music_singer"));
 					contents.add(boldSpan);
 					contents.add("의 ");
-					boldSpan = Utility.getBoldSpan(metadata.getString("music_title"));
+					boldSpan = Utils.getBoldSpan(metadata.getString("music_title"));
 					contents.add(boldSpan);
 					contents.add("를 불렀습니다.");
 					break;
@@ -69,10 +68,10 @@ public class Notification extends Model {
 					if (metadata.getInt("parent_user_id") == currentUser.getId()) {
 						contents.add("회원님이 부른 ");
 					}
-					boldSpan = Utility.getBoldSpan(metadata.getString("music_singer"));
+					boldSpan = Utils.getBoldSpan(metadata.getString("music_singer"));
 					contents.add(boldSpan);
 					contents.add("의 ");
-					boldSpan = Utility.getBoldSpan(metadata.getString("music_title"));
+					boldSpan = Utils.getBoldSpan(metadata.getString("music_title"));
 					contents.add(boldSpan);
 					contents.add("에 콜라보 했습니다.");
 					break;
@@ -115,7 +114,7 @@ public class Notification extends Model {
 	}
 	
 	public String getWorkedCreatedTime(Date currentDate) {
-		return StringFormatter.getTimeLag(currentDate, updated_at);
+		return Utils.getTimeLag(currentDate, updated_at);
 	}
 	
 }

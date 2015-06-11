@@ -4,7 +4,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import com.google.gson.Gson;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.myandb.singsong.R;
 import com.myandb.singsong.dialog.BaseDialog;
@@ -14,7 +13,7 @@ import com.myandb.singsong.fragment.HomeFragment;
 import com.myandb.singsong.fragment.NotificationFragment;
 import com.myandb.singsong.model.Notice;
 import com.myandb.singsong.service.PlayerService;
-import com.myandb.singsong.util.Utility;
+import com.myandb.singsong.util.GsonUtils;
 import com.myandb.singsong.widget.SlidingPlayerLayout;
 
 import android.content.Intent;
@@ -125,9 +124,8 @@ public class RootActivity extends BaseActivity implements OnBackStackChangedList
 	}
 	
 	private void showUnreadLatestNotice(Intent intent) {
-		Gson gson = Utility.getGsonInstance();
 		String noticeInJson = intent.getStringExtra(EXTRA_NOTICE);
-		Notice notice = gson.fromJson(noticeInJson, Notice.class);
+		Notice notice = GsonUtils.fromJson(noticeInJson, Notice.class);
 		if (notice != null && isUnreadLatestNotice(notice.getId())) {
 			saveLatestNoticeId(notice.getId());
 			if (isNoticePoppable(notice)) {

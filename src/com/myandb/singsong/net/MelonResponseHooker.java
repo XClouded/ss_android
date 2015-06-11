@@ -9,12 +9,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.google.gson.Gson;
 import com.myandb.singsong.dialog.MelonAlertDialog;
 import com.myandb.singsong.net.MelonMemberResponse.AlertInfo;
 import com.myandb.singsong.net.MelonStreamingResponse.FailCode;
 import com.myandb.singsong.secure.Authenticator;
-import com.myandb.singsong.util.Utility;
+import com.myandb.singsong.util.GsonUtils;
 
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
@@ -106,9 +105,8 @@ public class MelonResponseHooker {
 			}
 		} else if (response.has(MelonMemberResponse.KEY_OPTION)) {
 			if (fm != null) {
-				Gson gson = Utility.getGsonInstance();
 				JSONObject option = response.getJSONObject(MelonMemberResponse.KEY_OPTION);
-				AlertInfo info = gson.fromJson(option.toString(), AlertInfo.class);
+				AlertInfo info = GsonUtils.fromJson(option, AlertInfo.class);
 				MelonAlertDialog.show(fm, info);
 			}
 		}

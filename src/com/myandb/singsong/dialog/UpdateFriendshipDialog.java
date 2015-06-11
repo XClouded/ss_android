@@ -10,12 +10,11 @@ import android.view.View;
 import android.widget.Button;
 
 import com.android.volley.Request.Method;
-import com.google.gson.Gson;
 import com.myandb.singsong.R;
 import com.myandb.singsong.fragment.UserHomeFragment;
 import com.myandb.singsong.model.Friendship;
 import com.myandb.singsong.net.JustRequest;
-import com.myandb.singsong.util.Utility;
+import com.myandb.singsong.util.GsonUtils;
 
 public class UpdateFriendshipDialog extends BaseDialog {
 	
@@ -35,9 +34,9 @@ public class UpdateFriendshipDialog extends BaseDialog {
 	@Override
 	protected void onArgumentsReceived(Bundle bundle) {
 		super.onArgumentsReceived(bundle);
-		Gson gson = Utility.getGsonInstance();
+		
 		String friendshipInJson = bundle.getString(EXTRA_FRIENDSHIP);
-		friendship = gson.fromJson(friendshipInJson, Friendship.class);
+		friendship = GsonUtils.fromJson(friendshipInJson, Friendship.class);
 	}
 
 	@Override

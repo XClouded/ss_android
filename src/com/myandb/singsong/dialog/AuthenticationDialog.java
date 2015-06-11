@@ -6,7 +6,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.facebook.Session;
-import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
@@ -25,8 +24,8 @@ import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.secure.MelOnAccountManager;
 import com.myandb.singsong.secure.MelOnAccountManager.EasyLoginAccount;
+import com.myandb.singsong.util.GsonUtils;
 import com.myandb.singsong.util.Logger;
-import com.myandb.singsong.util.Utility;
 import com.sromku.simple.fb.Permission.Type;
 import com.sromku.simple.fb.listeners.OnLoginListener;
 
@@ -523,8 +522,7 @@ public class AuthenticationDialog extends BaseDialog {
 	}
 	
 	private User extractUserFromResponse(JSONObject response) throws JSONException {
-		Gson gson = Utility.getGsonInstance();
-		return gson.fromJson(response.getJSONObject("user").toString(), User.class);
+		return GsonUtils.fromJson(response.getJSONObject("user"), User.class);
 	}
 	
 	private String extractTokenFromResponse(JSONObject response) throws JSONException {

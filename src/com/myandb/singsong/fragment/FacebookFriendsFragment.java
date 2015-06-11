@@ -19,14 +19,13 @@ import com.facebook.SessionState;
 import com.facebook.Request.GraphUserListCallback;
 import com.facebook.Session.OpenRequest;
 import com.facebook.model.GraphUser;
-import com.google.gson.Gson;
 import com.myandb.singsong.adapter.FriendsAdapter;
 import com.myandb.singsong.model.FacebookUser;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.JSONArrayRequest;
 import com.myandb.singsong.net.JSONArraySuccessListener;
 import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.util.Utility;
+import com.myandb.singsong.util.GsonUtils;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -140,11 +139,10 @@ public class FacebookFriendsFragment extends ListFragment {
 	
 	private List<User> makeUsersFromResponse(JSONArray response) {
 		List<User> users = new ArrayList<User>();
-		Gson gson = Utility.getGsonInstance();
 		try {
 			for (int i = 0, l = response.length(); i < l; i++) {
-				JSONObject userJSON = response.getJSONObject(i);
-				User user = gson.fromJson(userJSON.toString(), User.class);
+				JSONObject userJson = response.getJSONObject(i);
+				User user = GsonUtils.fromJson(userJson, User.class);
 				users.add(user);
 			}
 		} catch (JSONException e) {

@@ -11,10 +11,9 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import com.google.gson.Gson;
 import com.myandb.singsong.R;
 import com.myandb.singsong.model.Notice;
-import com.myandb.singsong.util.Utility;
+import com.myandb.singsong.util.GsonUtils;
 
 public class FrontNoticeDialog extends BaseDialog {
 	
@@ -32,9 +31,9 @@ public class FrontNoticeDialog extends BaseDialog {
 	@Override
 	protected void onArgumentsReceived(Bundle bundle) {
 		super.onArgumentsReceived(bundle);
-		Gson gson = Utility.getGsonInstance();
+		
 		String noticeInJson = bundle.getString(EXTRA_NOTICE);
-		notice = gson.fromJson(noticeInJson, Notice.class);
+		notice = GsonUtils.fromJson(noticeInJson, Notice.class);
 	}
 
 	@Override

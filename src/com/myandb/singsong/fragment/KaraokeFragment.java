@@ -3,7 +3,6 @@ package com.myandb.singsong.fragment;
 import java.io.File;
 import java.io.IOException;
 
-import com.google.gson.Gson;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.UpActivity;
@@ -30,12 +29,12 @@ import com.myandb.singsong.service.SongUploadService;
 import com.myandb.singsong.util.Lrc;
 import com.myandb.singsong.util.Lrc.Line.Type;
 import com.myandb.singsong.util.DynamicLrcDisplayer;
+import com.myandb.singsong.util.GsonUtils;
 import com.myandb.singsong.util.LrcDisplayer;
 import com.myandb.singsong.util.PlayCounter;
 import com.myandb.singsong.util.Reporter;
 import com.myandb.singsong.util.StaticLrcDisplayer;
-import com.myandb.singsong.util.StringFormatter;
-import com.myandb.singsong.util.Utility;
+import com.myandb.singsong.util.Utils;
 import com.myandb.singsong.util.LrcDisplayer.OnTypeChangeListener;
 import com.myandb.singsong.widget.CountViewFactory;
 import com.myandb.singsong.widget.SlideAnimation;
@@ -127,16 +126,15 @@ public class KaraokeFragment extends BaseFragment {
 	@Override
 	protected void onArgumentsReceived(Bundle bundle) {
 		super.onArgumentsReceived(bundle);
-		Gson gson = Utility.getGsonInstance();
 		
 		String musicInJson = bundle.getString(EXTRA_MUSIC);
 		String songInJson = bundle.getString(EXTRA_PARENT_SONG);
 		
 		if (musicInJson != null) {
-			music = gson.fromJson(musicInJson, Music.class);
+			music = GsonUtils.fromJson(musicInJson, Music.class);
 			lyricPart = bundle.getInt(EXTRA_PART);
 		} else if (songInJson != null) {
-			parentSong = gson.fromJson(songInJson, Song.class);
+			parentSong = GsonUtils.fromJson(songInJson, Song.class);
 			music = parentSong.getMusic();
 		}
 	}
@@ -437,8 +435,8 @@ public class KaraokeFragment extends BaseFragment {
 	public void onAudioDownloadSuccess() {
 		startDecoding();
 		
-		int duration = (int) StringFormatter.getDuration(musicOggFile);
-		tvEndTime.setText(StringFormatter.getDuration(duration));
+		int duration = (int) Utils.getDuration(musicOggFile);
+		tvEndTime.setText(Utils.getColonFormatDuration(duration));
 		pbPlayProgress.setMax(duration);
 	}
 	
@@ -705,7 +703,7 @@ public class KaraokeFragment extends BaseFragment {
 		
 		if (player != null && player.isPlaying()) {
 			int position = (int) player.getCurrentPosition();
-			tvStartTime.setText(StringFormatter.getDuration(position));
+			tvStartTime.setText(Utils.getColonFormatDuration(position));
 			pbPlayProgress.setProgress(position);
 			
 			Runnable r = new WeakRunnable<KaraokeFragment>(this, "updateAudioProgress");

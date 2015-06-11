@@ -27,7 +27,6 @@ import android.widget.Toast;
 import com.android.volley.Request.Method;
 import com.google.android.gcm.GCMBaseIntentService;
 import com.google.android.gcm.GCMRegistrar;
-import com.google.gson.Gson;
 import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.fragment.KaraokeFragment;
 import com.myandb.singsong.image.BitmapBuilder;
@@ -38,7 +37,7 @@ import com.myandb.singsong.net.DownloadManager.OnDownloadListener;
 import com.myandb.singsong.net.JustRequest;
 import com.myandb.singsong.net.DownloadManager;
 import com.myandb.singsong.secure.Authenticator;
-import com.myandb.singsong.util.Utility;
+import com.myandb.singsong.util.GsonUtils;
 
 public class GCMIntentService extends GCMBaseIntentService {
 	
@@ -125,9 +124,8 @@ public class GCMIntentService extends GCMBaseIntentService {
 	}
 	
 	private UserActivity getUserActivityFromIntent(Intent intent) {
-		Gson gson = Utility.getGsonInstance();
 		String activityJson = intent.getStringExtra("activity");
-		return gson.fromJson(activityJson, UserActivity.class);
+		return GsonUtils.fromJson(activityJson, UserActivity.class);
 	}
 	
 	private void prepareAndSubmitNotification(UserActivity activity) {

@@ -1,11 +1,10 @@
 package com.myandb.singsong.fragment;
 
-import com.google.gson.Gson;
 import com.myandb.singsong.R;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Music;
 import com.myandb.singsong.pager.MusicDetailPagerAdapter;
-import com.myandb.singsong.util.Utility;
+import com.myandb.singsong.util.GsonUtils;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -32,9 +31,9 @@ public class MusicDetailFragment extends FragmentPagerFragment {
 	@Override
 	protected void onArgumentsReceived(Bundle bundle) {
 		super.onArgumentsReceived(bundle);
-		Gson gson = Utility.getGsonInstance();
+		
 		String musicInJson = bundle.getString(EXTRA_MUSIC);
-		music = gson.fromJson(musicInJson, Music.class);
+		music = GsonUtils.fromJson(musicInJson, Music.class);
 	}
 
 	@Override

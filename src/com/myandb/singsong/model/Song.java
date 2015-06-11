@@ -34,7 +34,7 @@ import com.myandb.singsong.fragment.KaraokeFragment;
 import com.myandb.singsong.fragment.ListFragment;
 import com.myandb.singsong.net.JSONObjectRequest;
 import com.myandb.singsong.service.PlayerService;
-import com.myandb.singsong.util.StringFormatter;
+import com.myandb.singsong.util.Utils;
 
 public class Song extends Model {
 	
@@ -214,7 +214,7 @@ public class Song extends Model {
 	}
 	
 	public String getWorkedDuration() {
-		return StringFormatter.getDuration(duration);
+		return Utils.getColonFormatDuration(duration);
 	}
 	
 	public List<Image> getPhotos() {

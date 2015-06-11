@@ -5,9 +5,9 @@ import java.util.Date;
 import java.util.List;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
-import com.google.gson.Gson;
-import com.myandb.singsong.util.Utility;
+import com.myandb.singsong.util.GsonUtils;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -74,12 +74,9 @@ public abstract class HolderAdapter<T, E extends ViewHolder> extends BaseAdapter
 	public void addAll(JSONArray jsonItems) {
 		List<T> converted = new ArrayList<T>();
 		try {
-			Gson gson = Utility.getGsonInstance();
-			String iItemInJson = null;
-			
 			for (int i = 0, l = jsonItems.length(); i < l; i++) {
-				iItemInJson = jsonItems.getJSONObject(i).toString();
-				converted.add(gson.fromJson(iItemInJson, clazz));
+				JSONObject item = jsonItems.getJSONObject(i);
+				converted.add(GsonUtils.fromJson(item, clazz));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

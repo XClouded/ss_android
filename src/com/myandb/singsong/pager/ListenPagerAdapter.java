@@ -8,7 +8,7 @@ import com.myandb.singsong.adapter.SimpleSongAdapter;
 import com.myandb.singsong.fragment.BaseFragment;
 import com.myandb.singsong.fragment.ListFragment;
 import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.util.StringFormatter;
+import com.myandb.singsong.util.Utils;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -64,7 +64,7 @@ public class ListenPagerAdapter extends FragmentPagerAdapter {
 	
 	public void refresh() {
 		if (popularFragment != null) {
-			final String startDate = StringFormatter.getDateString(Calendar.DATE, -1);
+			final String startDate = Utils.getDateString(Calendar.DATE, -1);
 			UrlBuilder urlBuilder = new UrlBuilder();
 			String order = "liking_num";
 			if (songType.equals(SongType.WAITING)) {
@@ -93,7 +93,7 @@ public class ListenPagerAdapter extends FragmentPagerAdapter {
 		
 		switch (position) {
 		case 0:
-			final String startDate = StringFormatter.getDateString(Calendar.DATE, -1);
+			final String startDate = Utils.getDateString(Calendar.DATE, -1);
 			if (songType.equals(SongType.WAITING)) {
 				params.putString("order", "collabo_num");
 			} else {

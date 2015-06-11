@@ -19,7 +19,6 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.mhdjang.infiniteviewpager.InfinitePagerAdapter;
 import com.myandb.singsong.R;
 import com.myandb.singsong.adapter.CommentAdapter;
@@ -36,7 +35,7 @@ import com.myandb.singsong.net.JSONObjectSuccessListener;
 import com.myandb.singsong.net.UrlBuilder;
 import com.myandb.singsong.net.GradualLoader.OnLoadCompleteListener;
 import com.myandb.singsong.pager.PagerWrappingAdapter;
-import com.myandb.singsong.util.Utility;
+import com.myandb.singsong.util.GsonUtils;
 import com.viewpagerindicator.CirclePageIndicator;
 
 public class ArtistDetailFragment extends ListFragment {
@@ -65,9 +64,9 @@ public class ArtistDetailFragment extends ListFragment {
 	@Override
 	protected void onArgumentsReceived(Bundle bundle) {
 		super.onArgumentsReceived(bundle);
-		Gson gson = Utility.getGsonInstance();
+		
 		String artistInJson = bundle.getString(EXTRA_ARTIST);
-		artist = gson.fromJson(artistInJson, Artist.class);
+		artist = GsonUtils.fromJson(artistInJson, Artist.class);
 	}
 
 	@Override

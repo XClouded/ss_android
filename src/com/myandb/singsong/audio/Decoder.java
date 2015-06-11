@@ -12,7 +12,7 @@ import android.os.AsyncTask;
 import com.myandb.singsong.event.OnCompleteListener;
 import com.myandb.singsong.event.OnProgressListener;
 import com.myandb.singsong.libogg.VorbisFileInputStream;
-import com.myandb.singsong.util.StringFormatter;
+import com.myandb.singsong.util.Utils;
 
 public class Decoder extends AsyncTask<File, Integer, Exception> {
 	
@@ -36,7 +36,7 @@ public class Decoder extends AsyncTask<File, Integer, Exception> {
 			
 			int read = 0;
 			int totalRead = 0;
-			int durationInMilli = StringFormatter.getDuration(inputFile);
+			int durationInMilli = Utils.getDuration(inputFile);
 			int durationInSec = durationInMilli / 1000;
 			int estimateLength = durationInSec * PcmPlayer.SAMPLERATE * PcmPlayer.CHANNELS;
 			int estimateLengthInPercent = estimateLength / 100;

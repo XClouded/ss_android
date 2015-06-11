@@ -2,10 +2,8 @@ package com.myandb.singsong.model;
 
 import java.util.Date;
 
-import org.apache.commons.lang3.StringUtils;
-
-import com.myandb.singsong.util.StringFormatter;
-import com.myandb.singsong.util.Utility;
+import com.myandb.singsong.util.GsonUtils;
+import com.myandb.singsong.util.Utils;
 
 public abstract class Model {
 	
@@ -33,7 +31,7 @@ public abstract class Model {
 	}
 	
 	public String getWorkedCreatedTime(Date currentDate) {
-		return StringFormatter.getTimeLag(currentDate, created_at);
+		return Utils.getTimeLag(currentDate, created_at);
 	}
 	
 	public static final String safeString(String string) {
@@ -62,14 +60,7 @@ public abstract class Model {
 
 	@Override
 	public String toString() {
-		return Utility.getGsonInstance().toJson(this, getClass());
-	}
-	
-	public static final <T> T fromJson(String json, Class<T> clazz) {
-		if (!StringUtils.EMPTY.equals(json)) {
-			return Utility.getGsonInstance().fromJson(json, clazz);
-		}
-		return null;
+		return GsonUtils.getGsonInstance().toJson(this, getClass());
 	}
 
 }

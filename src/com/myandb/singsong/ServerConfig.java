@@ -1,5 +1,7 @@
 package com.myandb.singsong;
 
+import com.myandb.singsong.util.Utils;
+
 public enum ServerConfig {
 	
 	PRODUCT_HTTP("http", "www.myandb.com:8880", "/ss_api/public"),
@@ -13,7 +15,7 @@ public enum ServerConfig {
 	private String relativeDocumentRoot;
 	
 	ServerConfig(String scheme, String domain) {
-		this(scheme, domain, "");
+		this(scheme, domain, Utils.EMPTY);
 	}
 	
 	ServerConfig(String scheme, String domain, String root) {

@@ -3,7 +3,6 @@ package com.myandb.singsong.dialog;
 import com.facebook.Session;
 import com.facebook.widget.FacebookDialog;
 import com.facebook.widget.WebDialog;
-import com.google.gson.Gson;
 import com.kakao.KakaoLink;
 import com.kakao.KakaoParameterException;
 import com.kakao.KakaoTalkLinkMessageBuilder;
@@ -12,7 +11,7 @@ import com.myandb.singsong.model.Music;
 import com.myandb.singsong.model.Song;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.util.Utility;
+import com.myandb.singsong.util.GsonUtils;
 import com.sromku.simple.fb.Permission.Type;
 import com.sromku.simple.fb.listeners.OnLoginListener;
 
@@ -49,9 +48,9 @@ public class ShareDialog extends BaseDialog {
 	@Override
 	protected void onArgumentsReceived(Bundle bundle) {
 		super.onArgumentsReceived(bundle);
-		Gson gson = Utility.getGsonInstance();
+		
 		String songInJson = bundle.getString(EXTRA_SONG);
-		song = gson.fromJson(songInJson, Song.class);
+		song = GsonUtils.fromJson(songInJson, Song.class);
 	}
 	
 	private String getShareContent() {

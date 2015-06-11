@@ -1,14 +1,12 @@
 package com.myandb.singsong;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.myandb.singsong.image.ImageLoaderConfig;
 import com.myandb.singsong.net.SelectAllRequestFilter;
 import com.myandb.singsong.secure.Authenticator;
-import com.myandb.singsong.util.StringFormatter;
+import com.myandb.singsong.util.Utils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.sromku.simple.fb.SimpleFacebook;
 
@@ -31,8 +29,6 @@ public class App extends Application {
 		Authenticator.initialize(this);
 		
 		ImageLoader.getInstance().init(ImageLoaderConfig.getConfig(this));
-		
-		StringFormatter.initialize(getResources());
 		
 		SimpleFacebook.setConfiguration(FacebookConfig.getConfig());
 	}
@@ -77,7 +73,7 @@ public class App extends Application {
 	
 	public static String getVersionName() {
 		if (versionName == null) {
-			versionName = StringUtils.EMPTY;
+			versionName = Utils.EMPTY;
 		}
 		return versionName;
 	}

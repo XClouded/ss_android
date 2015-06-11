@@ -5,8 +5,7 @@ import java.lang.reflect.Method;
 import org.json.JSONObject;
 
 import com.android.volley.Response.Listener;
-import com.google.gson.Gson;
-import com.myandb.singsong.util.Utility;
+import com.myandb.singsong.util.GsonUtils;
 
 public class JSONObjectSuccessListener implements Listener<JSONObject> {
 	
@@ -39,8 +38,7 @@ public class JSONObjectSuccessListener implements Listener<JSONObject> {
 			if (responseType == null) {
 				method.invoke(receiver, response);
 			} else {
-				Gson gson = Utility.getGsonInstance();
-				method.invoke(receiver, gson.fromJson(response.toString(), responseType));
+				method.invoke(receiver, GsonUtils.fromJson(response, responseType));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

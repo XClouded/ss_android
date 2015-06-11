@@ -2,18 +2,17 @@ package com.myandb.singsong.secure;
 
 import java.util.UUID;
 
-import org.apache.commons.lang3.StringUtils;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
 import com.facebook.Session;
 import com.myandb.singsong.GCMIntentService;
-import com.myandb.singsong.model.Model;
 import com.myandb.singsong.model.Profile;
 import com.myandb.singsong.model.User;
 import com.myandb.singsong.service.TokenValidationService;
+import com.myandb.singsong.util.GsonUtils;
+import com.myandb.singsong.util.Utils;
 
 public class Authenticator {
 	
@@ -106,7 +105,7 @@ public class Authenticator {
 	}
 	
 	public static User getUser() {
-		return Model.fromJson(getUserInJson(), User.class);
+		return GsonUtils.fromJson(getUserInJson(), User.class);
 	}
 	
 	public static String getUserInJson() {
@@ -127,10 +126,10 @@ public class Authenticator {
 	
 	private static String getString(String key) {
 		try {
-			return preferences.getString(key, StringUtils.EMPTY);
+			return preferences.getString(key, Utils.EMPTY);
 		} catch (ClassCastException e) {
 			e.printStackTrace();
-			return StringUtils.EMPTY;
+			return Utils.EMPTY;
 		}
 	}
 	

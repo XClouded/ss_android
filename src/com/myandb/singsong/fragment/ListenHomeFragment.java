@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.RootActivity;
@@ -24,7 +23,7 @@ import com.myandb.singsong.fragment.SearchFragment.SearchType;
 import com.myandb.singsong.model.Category;
 import com.myandb.singsong.pager.ListenPagerAdapter;
 import com.myandb.singsong.pager.ListenPagerAdapter.SongType;
-import com.myandb.singsong.util.Utility;
+import com.myandb.singsong.util.GsonUtils;
 
 public class ListenHomeFragment extends FragmentPagerFragment {
 	
@@ -48,9 +47,8 @@ public class ListenHomeFragment extends FragmentPagerFragment {
 		super.onArgumentsReceived(bundle);
 		
 		if (category == null) {
-			Gson gson = Utility.getGsonInstance();
 			String categoryInJson = bundle.getString(EXTRA_CATEGORY);
-			category = gson.fromJson(categoryInJson, Category.class);
+			category = GsonUtils.fromJson(categoryInJson, Category.class);
 		}
 		
 		if (songType == null) {

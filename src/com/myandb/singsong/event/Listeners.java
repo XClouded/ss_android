@@ -13,7 +13,6 @@ import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
-import com.google.gson.Gson;
 import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
@@ -24,7 +23,7 @@ import com.myandb.singsong.model.UserActivity;
 import com.myandb.singsong.model.Notification;
 import com.myandb.singsong.model.Song;
 import com.myandb.singsong.net.JSONObjectRequest;
-import com.myandb.singsong.util.Utility;
+import com.myandb.singsong.util.GsonUtils;
 
 public class Listeners {
 
@@ -73,8 +72,7 @@ public class Listeners {
 					case UserActivity.TYPE_CREATE_ROOT_SONG:
 					case UserActivity.TYPE_CREATE_LEAF_SONG:
 						if (view != null) {
-							Gson gson = Utility.getGsonInstance();
-							Song song = gson.fromJson(response.toString(), Song.class);
+							Song song = GsonUtils.fromJson(response, Song.class);
 							song.getPlayClickListener().onClick(view);
 							intent.putExtra(RootActivity.EXTRA_SHOW_PLAYER, true);
 							((BaseActivity) view.getContext()).changePage(intent);

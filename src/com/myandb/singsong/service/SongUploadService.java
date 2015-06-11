@@ -10,7 +10,6 @@ import org.json.JSONObject;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.Response.ErrorListener;
-import com.google.gson.Gson;
 import com.myandb.singsong.App;
 import com.myandb.singsong.NotificationType;
 import com.myandb.singsong.R;
@@ -27,8 +26,8 @@ import com.myandb.singsong.model.Song;
 import com.myandb.singsong.net.JSONObjectRequest;
 import com.myandb.singsong.net.UploadManager;
 import com.myandb.singsong.net.UrlBuilder;
-import com.myandb.singsong.util.StringFormatter;
-import com.myandb.singsong.util.Utility;
+import com.myandb.singsong.util.GsonUtils;
+import com.myandb.singsong.util.Utils;
 import com.sromku.simple.fb.SimpleFacebook;
 import com.sromku.simple.fb.entities.Feed;
 import com.sromku.simple.fb.listeners.OnPublishListener;
@@ -267,7 +266,7 @@ public class SongUploadService extends Service {
 	public void onFileUploadComplete() {
 		updateNotification(90, "노래정보를 갱신하고 있습니다.");
 
-		final int duration = StringFormatter.getDuration(songOggFile);
+		final int duration = Utils.getDuration(songOggFile);
 		
 		try {
 			JSONObject data = new JSONObject();
@@ -294,8 +293,7 @@ public class SongUploadService extends Service {
 						@Override
 						public void onResponse(JSONObject response) {
 							try {
-								Gson gson = Utility.getGsonInstance();
-								Song song = gson.fromJson(response.toString(), Song.class);
+								Song song = GsonUtils.fromJson(response, Song.class);
 								if (isFacebookPosting) {
 									postOnFacebook(song);
 								}

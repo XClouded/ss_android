@@ -1,12 +1,11 @@
 package com.myandb.singsong.fragment;
 
-import com.google.gson.Gson;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.image.ImageHelper;
 import com.myandb.singsong.model.Music;
-import com.myandb.singsong.util.Utility;
+import com.myandb.singsong.util.GsonUtils;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -40,9 +39,9 @@ public class SelectRecordModeFragment extends BaseFragment {
 	@Override
 	protected void onArgumentsReceived(Bundle bundle) {
 		super.onArgumentsReceived(bundle);
-		Gson gson = Utility.getGsonInstance();
+		
 		String musicInJson = bundle.getString(EXTRA_MUSIC);
-		music = gson.fromJson(musicInJson, Music.class);
+		music = GsonUtils.fromJson(musicInJson, Music.class);
 	}
 
 	@Override
@@ -102,9 +101,8 @@ public class SelectRecordModeFragment extends BaseFragment {
 
 		@Override
 		public void onClick(View v) {
-			Gson gson = Utility.getGsonInstance();
 			Bundle bundle = new Bundle();
-			bundle.putString(MusicDetailFragment.EXTRA_MUSIC, gson.toJson(music));
+			bundle.putString(MusicDetailFragment.EXTRA_MUSIC, music.toString());
 			Intent intent = new Intent(v.getContext(), RootActivity.class);
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, MusicDetailFragment.class.getName());
 			intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
