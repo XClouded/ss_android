@@ -4,7 +4,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 import com.astuetz.PagerSlidingTabStrip;
-import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 
 import android.app.Activity;
@@ -77,7 +76,7 @@ public class FragmentPagerFragment extends BaseFragment {
 		tabStrip = (PagerSlidingTabStrip) view.findViewById(R.id.tab_strip);
 		headerContainer = (ViewGroup) view.findViewById(R.id.fl_pager_header);
 		
-		if (getHeaderViewResId() != App.INVALID_RESOURCE_ID) {
+		if (getHeaderViewResId() != View.NO_ID) {
 			headerContainer.setVisibility(View.VISIBLE);
 			headerView = inflater.inflate(getHeaderViewResId(), headerContainer, false);
 			headerContainer.addView(headerView);
@@ -136,7 +135,7 @@ public class FragmentPagerFragment extends BaseFragment {
 	}
 	
 	protected int getHeaderViewResId() {
-		return App.INVALID_RESOURCE_ID;
+		return View.NO_ID;
 	}
 
 }

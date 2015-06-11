@@ -2,7 +2,6 @@ package com.myandb.singsong.fragment;
 
 import org.json.JSONArray;
 
-import com.myandb.singsong.App;
 import com.myandb.singsong.R;
 import com.myandb.singsong.adapter.HolderAdapter;
 import com.myandb.singsong.net.GradualLoader;
@@ -140,7 +139,7 @@ public class ListFragment extends BaseFragment {
 	}
 	
 	private void addHeaderView(LayoutInflater inflater, AbsListView listView) {
-		if (listView instanceof ListView && getListHeaderViewResId() != App.INVALID_RESOURCE_ID) {
+		if (listView instanceof ListView && getListHeaderViewResId() != View.NO_ID) {
 			listHeaderView = inflater.inflate(getListHeaderViewResId(), listView, false);
 			((ListView) listView).addHeaderView(listHeaderView);
 			enableFadingActionBar = true;
@@ -148,7 +147,7 @@ public class ListFragment extends BaseFragment {
 	}
 	
 	private void addFixedHeaderView(LayoutInflater inflater, ViewGroup container) {
-		if (getFixedHeaderViewResId() != App.INVALID_RESOURCE_ID) {
+		if (getFixedHeaderViewResId() != View.NO_ID) {
 			container.setVisibility(View.VISIBLE);
 			fixedHeaderView = inflater.inflate(getFixedHeaderViewResId(), container, false);
 			container.addView(fixedHeaderView);
@@ -420,11 +419,11 @@ public class ListFragment extends BaseFragment {
 	}
 	
 	protected int getListHeaderViewResId() {
-		return App.INVALID_RESOURCE_ID;
+		return View.NO_ID;
 	}
 	
 	protected int getFixedHeaderViewResId() {
-		return App.INVALID_RESOURCE_ID;
+		return View.NO_ID;
 	}
 	
 	public interface OnEmptyListener {
