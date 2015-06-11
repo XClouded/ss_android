@@ -36,7 +36,7 @@ public class App extends Application {
 		
 		initializeVersionName();
 		
-		ImageLoader.getInstance().init(ImageLoaderConfig.createDefault(this));
+		ImageLoader.getInstance().init(ImageLoaderConfig.getConfig(this));
 		
 		Authenticator.initialize(getSharedPreferences(AUTH_PREFERENCE_FILE, Context.MODE_PRIVATE));
 		

@@ -18,7 +18,7 @@ public class ImageLoaderConfig {
 	
 	public static final String CACHE_DIRECTORY = "_IMG_CACHE_";
 	
-	public static ImageLoaderConfiguration createDefault(Context context) {
+	public static ImageLoaderConfiguration getConfig(Context context) {
 		final int threadPoolSize = 2;
 		final int memoryCacheSize = 3 * 1024 * 1024;
 		final int diskCacheSize = 500 * 1024 * 1024;
