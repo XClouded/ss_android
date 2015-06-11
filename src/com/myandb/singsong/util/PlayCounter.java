@@ -52,6 +52,8 @@ public class PlayCounter {
 				message.put("POCID", MelonHttpScheme.POC_CODE);
 				message.put("DLYN", "N");
 				message.put("TIME", System.currentTimeMillis());
+				message.put("TOKEN", Authenticator.getAccessToken());
+				message.put("USERID", Authenticator.getUser().getMelonUsername());
 				message.put("DEVICEID", Authenticator.getDeviceUuid());
 				
 				if (savedEntity instanceof Song) {
