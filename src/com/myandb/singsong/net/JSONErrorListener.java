@@ -4,12 +4,12 @@ import java.lang.reflect.Method;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
+import android.view.View;
 import android.widget.Toast;
 
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.AuthFailureError;
 import com.android.volley.VolleyError;
-import com.facebook.Session;
 import com.myandb.singsong.R;
 import com.myandb.singsong.secure.Authenticator;
 
@@ -39,12 +39,7 @@ public class JSONErrorListener implements ErrorListener {
 		error.printStackTrace();
 		
 		if (error instanceof AuthFailureError) {
-			Authenticator auth = new Authenticator();
-			auth.logout();
-			Session session = Session.getActiveSession();
-			if (session != null) {
-				session.closeAndClearTokenInformation();
-			}
+			new Authenticator().logout(getContext());
 			
 			if (getContext() != null) {
 				Toast.makeText(getContext(), getContext().getString(R.string.t_critical_invalid_token), Toast.LENGTH_SHORT).show();
@@ -67,6 +62,10 @@ public class JSONErrorListener implements ErrorListener {
 		
 		if (receiver instanceof Context) {
 			return (Context) receiver;
+		}
+		
+		if (receiver instanceof View) {
+			return ((View) receiver).getContext();
 		}
 		
 		return null;

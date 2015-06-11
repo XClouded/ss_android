@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 
 import com.facebook.Session;
+import com.myandb.singsong.GCMIntentService;
 import com.myandb.singsong.model.Model;
 import com.myandb.singsong.model.Profile;
 import com.myandb.singsong.model.User;
@@ -45,15 +46,24 @@ public class Authenticator {
 		context.startService(service);
 	}
 
-	public void login(User user, String token) {
+	public void login(Context context, User user, String token) {
 		preferences.edit()
 			.putString(KEY_USER, user.toString())
 			.putString(KEY_ACCESS_TOKEN, token)
 			.commit();
+		
+		if (context != null) {
+			GCMIntentService.register(context);
+		}
 	}
 	
-	public void logout() {
+	public void logout(Context context) {
+		if (context != null) {
+			GCMIntentService.unregister(context);
+		}
+		
 		preferences.edit().clear().commit();
+		
 		closeAndClearFacebookSession();
 	}
 	

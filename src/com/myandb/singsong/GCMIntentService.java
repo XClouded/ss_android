@@ -68,6 +68,12 @@ public class GCMIntentService extends GCMBaseIntentService {
 		}
 	}
 	
+	public static void unregister(Context context) {
+		if (GCMRegistrar.isRegistered(context)) {
+			GCMRegistrar.unregister(context);
+		}
+	}
+	
 	@Override
 	protected void onMessage(Context context, Intent intent) {
 		if (Authenticator.isLoggedIn()) {

@@ -12,7 +12,6 @@ import org.json.JSONObject;
 
 import com.android.volley.Request.Method;
 import com.facebook.Session;
-import com.google.android.gcm.GCMRegistrar;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.RootActivity;
@@ -35,7 +34,6 @@ import com.myandb.singsong.secure.Authenticator;
 import com.sromku.simple.fb.SimpleFacebook;
 import com.sromku.simple.fb.Permission.Type;
 import com.sromku.simple.fb.listeners.OnLoginListener;
-import com.sromku.simple.fb.listeners.OnLogoutListener;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -335,79 +333,11 @@ public class SettingFragment extends BaseFragment {
 				e.printStackTrace();
 			}
 			
-			unregisterGcm();
-			removePushIdOnServer();
+			new Authenticator().logout(getActivity());
+			
+			restartApplication();
 		}
 	};
-	
-	private void unregisterGcm() {
-		if (GCMRegistrar.isRegistered(getActivity())) {
-			GCMRegistrar.unregister(getActivity());
-		}
-	}
-	
-	private void removePushIdOnServer() {
-		try {
-			JSONObject message = new JSONObject();
-			message.put("push_id", "");
-			
-			JSONObjectRequest request = new JSONObjectRequest(
-					Method.PUT, "users", null, message,
-					new JSONObjectSuccessListener(this, "onRemovePushIdSuccess"),
-					new JSONErrorListener(this, "onRemovePushIdError"));
-			addRequest(request);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void onRemovePushIdSuccess(JSONObject response) {
-		removeAccessTokenOnServer();
-	}
-	
-	public void onRemovePushIdError() {
-		removeAccessTokenOnServer();
-	}
-	
-	public void removeAccessTokenOnServer() {
-		JSONObjectRequest request = new JSONObjectRequest(
-				Method.DELETE, "token", null, null,
-				new JSONObjectSuccessListener(this, "onRemoveAccessTokenSuccess"),
-				new JSONErrorListener(this, "onRemoveAccessTokenError"));
-		addRequest(request);
-	}
-	
-	public void onRemoveAccessTokenSuccess(JSONObject response) {
-		clearSharedPreferences();
-	}
-	
-	public void onRemoveAccessTokenError() {
-		clearSharedPreferences();
-	}
-	
-	public void clearSharedPreferences() {
-		new Authenticator().logout();
-		PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().clear().commit();
-		logoutFacebook();
-		restartApplication();
-	}
-	
-	private void logoutFacebook() {
-		getSimpleFacebook().logout(new OnLogoutListener() {
-			
-			@Override
-			public void onFail(String arg0) {}
-			
-			@Override
-			public void onException(Throwable arg0) {}
-			
-			@Override
-			public void onThinking() {}
-			
-			@Override
-			public void onLogout() {}
-		});
-	}
 	
 	private void restartApplication() {
 		Intent intent = new Intent(getActivity(), RootActivity.class);

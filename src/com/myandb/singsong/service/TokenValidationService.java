@@ -84,18 +84,13 @@ public class TokenValidationService extends Service {
 			onValidationError();
 		} catch (Exception e) {
 			e.printStackTrace();
-			onValidationError();
 		}
 	}
 	
 	public void onValidationError() {
-		logout();
+		new Authenticator().logout(this);
 		
 		Logger.log("token validation error");
-	}
-	
-	private void logout() {
-		new Authenticator().logout();
 	}
 
 }

@@ -8,7 +8,6 @@ import org.json.JSONObject;
 import com.facebook.Session;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import com.myandb.singsong.GCMIntentService;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.RootActivity;
@@ -534,7 +533,7 @@ public class AuthenticationDialog extends BaseDialog {
 	
 	private void saveUserOnLocal(User user, String token) {
 		user.setMelonUsername(loggedInUsername);
-		new Authenticator().login(user, token);
+		new Authenticator().login(activity, user, token);
 		if (isEnabledAddEasyLogin() && loggedInUsingPassword) {
 			try {
 				accountManger.addMelOnAccount(loggedInUsername, token);
@@ -546,7 +545,7 @@ public class AuthenticationDialog extends BaseDialog {
 	}
 	
 	private void removeCachedUser() {
-		new Authenticator().logout();
+		new Authenticator().logout(getActivity());
 		if (loggedInUsingToken) {
 			new RemoveEasyLoginTask().execute(loggedInUsername);
 		}
@@ -589,8 +588,6 @@ public class AuthenticationDialog extends BaseDialog {
 		if (activity instanceof RootActivity) {
 			((RootActivity) activity).updateDrawer();
 		}
-		
-		GCMIntentService.register(activity);
 		
 		if (Authenticator.getUser().isSingSongIntegrated()) {
 			dismissProgressDialog();
