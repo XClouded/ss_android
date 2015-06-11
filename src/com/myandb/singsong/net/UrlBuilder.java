@@ -6,21 +6,28 @@ import java.util.List;
 import java.util.Map;
 
 import com.myandb.singsong.App;
+import com.myandb.singsong.ServerConfig;
 
 import android.net.Uri;
 import android.os.Bundle;
 
 public class UrlBuilder {
-
-	private static final String API_PATH = "/ss_api/public";
-	private static final String API_AUTHORITY = App.MODE.getDomain() + API_PATH;
 	
 	private List<String> segments;
 	private Map<String, String> parameters;
+	private ServerConfig config;
 	
 	public UrlBuilder() {
-		segments = new ArrayList<String>();
-		parameters = new HashMap<String, String>();
+		this(App.SERVER_CONFIG);
+	}
+	
+	public UrlBuilder(ServerConfig config) {
+		if (config == null) {
+			this.config = App.SERVER_CONFIG;
+		}
+		
+		this.segments = new ArrayList<String>();
+		this.parameters = new HashMap<String, String>();
 	}
 	
 	public UrlBuilder s(String segment) {
@@ -83,14 +90,17 @@ public class UrlBuilder {
 	
 	public Uri build() {
 		Uri.Builder builder = new Uri.Builder();
-		builder.scheme(App.MODE.getScheme());
-		builder.encodedAuthority(API_AUTHORITY);
+		builder.scheme(config.getScheme());
+		builder.encodedAuthority(config.getDocumentRoot());
+		
 		for (String segment : segments) {
 			builder.appendEncodedPath(segment);
 		}
+		
 		for (String key : parameters.keySet()) {
 			builder.appendQueryParameter(key, parameters.get(key));
 		}
+		
 		return builder.build();
 	}
 	

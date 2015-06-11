@@ -19,9 +19,7 @@ import android.content.Intent;
 
 public class App extends Application {
 	
-	public static final ApplicationMode MODE = ApplicationMode.DEBUGGING;
-
-	public static final int INVALID_RESOURCE_ID = 0; 
+	public static final ServerConfig SERVER_CONFIG = ServerConfig.TEST;
 	
 	public static final String FACEBOOK_NAMESPACE = "collabokaraoke_";
 	
