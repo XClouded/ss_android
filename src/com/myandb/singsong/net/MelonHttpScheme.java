@@ -28,7 +28,7 @@ public class MelonHttpScheme extends HttpScheme {
 	private String getUserAgent() {
 		return POC_CODE + "; "
 				+ BUILD_VERSION + "; "
-				+ App.APP_VERSION + "; "
+				+ App.getVersionName() + "; "
 				+ Build.MODEL;
 	}
 	

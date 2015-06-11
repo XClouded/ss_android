@@ -26,13 +26,15 @@ public class App extends Application {
 	public static final int NOTI_ID_PHOTO_UPLOAD = 1002;
 	public static final int NOTI_ID_PLAY_SONG = 1003;
 	
-	public static String APP_VERSION = "";
+	private static String versionName;
 	
 	private RequestQueue requestQueue;
 	
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		
+		initializeVersionName();
 		
 		ImageLoader.getInstance().init(ImageLoaderConfig.createDefault(this));
 		
@@ -42,14 +44,12 @@ public class App extends Application {
 		
 		SimpleFacebook.setConfiguration(FacebookConfig.getConfig());
 		
-		initializeAppVersion();
-		
 		startTokenValidationService();
 	}
 	
-	private void initializeAppVersion() {
+	private void initializeVersionName() {
 		try {
-			APP_VERSION = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+			versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -86,8 +86,15 @@ public class App extends Application {
 	}
 	
 	private void startTokenValidationService() {
-		Intent intent = new Intent(this, TokenValidationService.class);
-		startService(intent);
+		Intent service = new Intent(this, TokenValidationService.class);
+		startService(service);
+	}
+	
+	public static String getVersionName() {
+		if (versionName == null) {
+			versionName = "";
+		}
+		return versionName;
 	}
 
 }
