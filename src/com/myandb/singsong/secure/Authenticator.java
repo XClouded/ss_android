@@ -5,27 +5,19 @@ import java.util.UUID;
 import org.apache.commons.lang3.StringUtils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 
 import com.facebook.Session;
 import com.myandb.singsong.model.Model;
 import com.myandb.singsong.model.Profile;
 import com.myandb.singsong.model.User;
+import com.myandb.singsong.service.TokenValidationService;
 
 public class Authenticator {
 	
 	public static final String FILE_NAME = "_AUTHENTICATION_";
-	
-	public static final int LOGIN_TYPE_PASSWORD = 1;
-	public static final int LOGIN_TYPE_PASSWORD_EASY_LOGIN = 2;
-	public static final int LOGIN_TYPE_TOKEN_APP_RESTART = 3;
-	public static final int LOGIN_TYPE_TOKEN = 4;
-	
-	public static final int SINGSONG_LOGIN_TYPE_PASSWORD = 1;
-	public static final int SINGSONG_LOGIN_TYPE_FACEBOOK = 2;
-	
-	public static final int LOGIN_PURPOSE_LOGIN = 1;
-	public static final int LOGIN_PURPOSE_INTEGRATE = 2;
+	public static final int FILE_MODE = Context.MODE_PRIVATE;
 	
 	private static final String KEY_USER = "_USER_";
 	private static final String KEY_ACCESS_TOKEN = "_ACCESS_TOKEN_";
@@ -34,9 +26,11 @@ public class Authenticator {
 	private static SharedPreferences preferences;
 	
 	public static void initialize(Context context) {
-		preferences = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
+		preferences = context.getSharedPreferences(FILE_NAME, FILE_MODE);
 		
 		initializeDeviceUuid();
+		
+		startTokenValidationService(context);
 	}
 	
 	private static void initializeDeviceUuid() {
@@ -46,8 +40,9 @@ public class Authenticator {
 		}
 	}
 	
-	public static String getDeviceUuid() {
-		return preferences.getString(KEY_DEVICE_UUID, StringUtils.EMPTY);
+	private static void startTokenValidationService(Context context) {
+		Intent service = new Intent(context, TokenValidationService.class);
+		context.startService(service);
 	}
 
 	public void login(User user, String token) {
@@ -59,10 +54,10 @@ public class Authenticator {
 	
 	public void logout() {
 		preferences.edit().clear().commit();
-		logoutFacebookSession();
+		closeAndClearFacebookSession();
 	}
 	
-	private void logoutFacebookSession() {
+	private void closeAndClearFacebookSession() {
 		Session session = Session.getActiveSession();
 		if (session != null) {
 			session.closeAndClearTokenInformation();
@@ -105,23 +100,28 @@ public class Authenticator {
 	}
 	
 	public static String getUserInJson() {
-		try {
-			return preferences.getString(KEY_USER, StringUtils.EMPTY);
-		} catch (ClassCastException e) {
-			return StringUtils.EMPTY;
-		}
+		return getString(KEY_USER);
 	}
 	
 	public static String getAccessToken() {
-		try {
-			return preferences.getString(KEY_ACCESS_TOKEN, StringUtils.EMPTY);
-		} catch (ClassCastException e) {
-			return StringUtils.EMPTY;
-		}
+		return getString(KEY_ACCESS_TOKEN);
+	}
+	
+	public static String getDeviceUuid() {
+		return getString(KEY_DEVICE_UUID);
 	}
 	
 	private static void putString(String key, String value) {
 		preferences.edit().putString(key, value).commit();
+	}
+	
+	private static String getString(String key) {
+		try {
+			return preferences.getString(key, StringUtils.EMPTY);
+		} catch (ClassCastException e) {
+			e.printStackTrace();
+			return StringUtils.EMPTY;
+		}
 	}
 	
 }

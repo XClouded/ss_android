@@ -49,6 +49,17 @@ import android.widget.Toast;
 
 public class AuthenticationDialog extends BaseDialog {
 	
+	public static final int LOGIN_TYPE_PASSWORD = 1;
+	public static final int LOGIN_TYPE_PASSWORD_EASY_LOGIN = 2;
+	public static final int LOGIN_TYPE_TOKEN_APP_RESTART = 3;
+	public static final int LOGIN_TYPE_TOKEN = 4;
+	
+	public static final int SINGSONG_LOGIN_TYPE_PASSWORD = 1;
+	public static final int SINGSONG_LOGIN_TYPE_FACEBOOK = 2;
+	
+	public static final int LOGIN_PURPOSE_LOGIN = 1;
+	public static final int LOGIN_PURPOSE_INTEGRATE = 2;
+	
 	public enum AuthenticationType {
 		
 		MELON_EASY_LOGIN,
@@ -445,9 +456,9 @@ public class AuthenticationDialog extends BaseDialog {
 		try {
 			loggedInUsername = username;
 			
-			int loginType = Authenticator.LOGIN_TYPE_PASSWORD;
+			int loginType = LOGIN_TYPE_PASSWORD;
 			if (isEnabledAddEasyLogin()) {
-				loginType = Authenticator.LOGIN_TYPE_PASSWORD_EASY_LOGIN;
+				loginType = LOGIN_TYPE_PASSWORD_EASY_LOGIN;
 			}
 			
 			JSONObject message = new JSONObject();
@@ -468,7 +479,7 @@ public class AuthenticationDialog extends BaseDialog {
 			JSONObject message = new JSONObject();
 			message.put("memberId", username);
 			message.put("token", token);
-			message.put("loginType", Authenticator.LOGIN_TYPE_TOKEN);
+			message.put("loginType", LOGIN_TYPE_TOKEN);
 			login(message);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -478,7 +489,7 @@ public class AuthenticationDialog extends BaseDialog {
 	
 	private void login(JSONObject loginData) {
 		try {
-			loginData.put("purpose", Authenticator.LOGIN_PURPOSE_LOGIN);
+			loginData.put("purpose", LOGIN_PURPOSE_LOGIN);
 			JSONObjectRequest request = new JSONObjectRequest(
 					"melon/login/melon", null, loginData,
 					new JSONObjectSuccessListener(this, "onLoginSuccess"), 
@@ -605,7 +616,7 @@ public class AuthenticationDialog extends BaseDialog {
 			JSONObject message = new JSONObject();
 			message.put("memberId", username);
 			message.put("memberPwd", password);
-			message.put("loginType", Authenticator.SINGSONG_LOGIN_TYPE_PASSWORD);
+			message.put("loginType", SINGSONG_LOGIN_TYPE_PASSWORD);
 			authenticateSingSong(message);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -617,7 +628,7 @@ public class AuthenticationDialog extends BaseDialog {
 		try {
 			JSONObject message = new JSONObject();
 			message.put("facebook_token", facebookAccessToken);
-			message.put("loginType", Authenticator.SINGSONG_LOGIN_TYPE_FACEBOOK);
+			message.put("loginType", SINGSONG_LOGIN_TYPE_FACEBOOK);
 			authenticateSingSong(message);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -627,7 +638,7 @@ public class AuthenticationDialog extends BaseDialog {
 	
 	private void authenticateSingSong(JSONObject authenticateData) {
 		try {
-			authenticateData.put("purpose", Authenticator.LOGIN_PURPOSE_LOGIN);
+			authenticateData.put("purpose", LOGIN_PURPOSE_LOGIN);
 			JSONObjectRequest request = new JSONObjectRequest(
 					"melon/login/collabo", null, authenticateData,
 					new JSONObjectSuccessListener(this, "onAuthenticateSuccess"), 
@@ -676,8 +687,8 @@ public class AuthenticationDialog extends BaseDialog {
 			message.put("memberId", username);
 			message.put("memberPwd", password);
 			message.put("memberKey", Authenticator.getUser().getMelonId());
-			message.put("loginType", Authenticator.SINGSONG_LOGIN_TYPE_PASSWORD);
-			message.put("purpose", Authenticator.LOGIN_PURPOSE_INTEGRATE);
+			message.put("loginType", SINGSONG_LOGIN_TYPE_PASSWORD);
+			message.put("purpose", LOGIN_PURPOSE_INTEGRATE);
 			
 			JSONObjectRequest request = new JSONObjectRequest(
 					"melon/login/collabo", null, message,
@@ -696,8 +707,8 @@ public class AuthenticationDialog extends BaseDialog {
 			message.put("memberId", Authenticator.getUser().getMelonUsername());
 			message.put("token", Authenticator.getAccessToken());
 			message.put("facebook_token", facebookAccessToken);
-			message.put("loginType", Authenticator.LOGIN_TYPE_TOKEN);
-			message.put("purpose", Authenticator.LOGIN_PURPOSE_INTEGRATE);
+			message.put("loginType", LOGIN_TYPE_TOKEN);
+			message.put("purpose", LOGIN_PURPOSE_INTEGRATE);
 			
 			Logger.log(message.toString());
 			
@@ -718,8 +729,8 @@ public class AuthenticationDialog extends BaseDialog {
 			message.put("memberId", username);
 			message.put("memberPwd", password);
 			message.put("collaboKey", authenticatedSingSongUser.getId());
-			message.put("loginType", Authenticator.LOGIN_TYPE_PASSWORD);
-			message.put("purpose", Authenticator.LOGIN_PURPOSE_INTEGRATE);
+			message.put("loginType", LOGIN_TYPE_PASSWORD);
+			message.put("purpose", LOGIN_PURPOSE_INTEGRATE);
 			
 			JSONObjectRequest request = new JSONObjectRequest(
 					"melon/login/melon", null, message,
