@@ -12,14 +12,11 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.sromku.simple.fb.SimpleFacebook;
 
 import android.app.Application;
-import android.content.Context;
 import android.content.Intent;
 
 public class App extends Application {
 	
 	public static final ServerConfig SERVER_CONFIG = ServerConfig.TEST;
-	
-	public static final String AUTH_PREFERENCE_FILE = "_SSaS_";
 	
 	public static final int NOTI_ID_GCM = 1000;
 	public static final int NOTI_ID_SONG_UPLOAD = 1001;
@@ -36,9 +33,9 @@ public class App extends Application {
 		
 		initializeVersionName();
 		
-		ImageLoader.getInstance().init(ImageLoaderConfig.getConfig(this));
+		Authenticator.initialize(this);
 		
-		Authenticator.initialize(getSharedPreferences(AUTH_PREFERENCE_FILE, Context.MODE_PRIVATE));
+		ImageLoader.getInstance().init(ImageLoaderConfig.getConfig(this));
 		
 		StringFormatter.initialize(getResources());
 		

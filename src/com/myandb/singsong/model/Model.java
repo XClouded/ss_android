@@ -2,6 +2,8 @@ package com.myandb.singsong.model;
 
 import java.util.Date;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.myandb.singsong.util.StringFormatter;
 import com.myandb.singsong.util.Utility;
 
@@ -61,6 +63,13 @@ public abstract class Model {
 	@Override
 	public String toString() {
 		return Utility.getGsonInstance().toJson(this, getClass());
+	}
+	
+	public static final <T> T fromJson(String json, Class<T> clazz) {
+		if (!StringUtils.EMPTY.equals(json)) {
+			return Utility.getGsonInstance().fromJson(json, clazz);
+		}
+		return null;
 	}
 
 }

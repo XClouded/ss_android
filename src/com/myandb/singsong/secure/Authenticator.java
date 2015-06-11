@@ -2,15 +2,19 @@ package com.myandb.singsong.secure;
 
 import java.util.UUID;
 
+import org.apache.commons.lang3.StringUtils;
+
+import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.facebook.Session;
-import com.google.gson.Gson;
+import com.myandb.singsong.model.Model;
 import com.myandb.singsong.model.Profile;
 import com.myandb.singsong.model.User;
-import com.myandb.singsong.util.Utility;
 
 public class Authenticator {
+	
+	public static final String FILE_NAME = "_AUTHENTICATION_";
 	
 	public static final int LOGIN_TYPE_PASSWORD = 1;
 	public static final int LOGIN_TYPE_PASSWORD_EASY_LOGIN = 2;
@@ -23,16 +27,32 @@ public class Authenticator {
 	public static final int LOGIN_PURPOSE_LOGIN = 1;
 	public static final int LOGIN_PURPOSE_INTEGRATE = 2;
 	
-	private static final String KEY_USER = "_useru_";
-	private static final String KEY_ACCESS_TOKEN = "_token_";
-	private static final String KEY_DEVICE_UUID = "_uuid_";
+	private static final String KEY_USER = "_USER_";
+	private static final String KEY_ACCESS_TOKEN = "_ACCESS_TOKEN_";
+	private static final String KEY_DEVICE_UUID = "_UUID_";
 	
 	private static SharedPreferences preferences;
+	
+	public static void initialize(Context context) {
+		preferences = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
+		
+		initializeDeviceUuid();
+	}
+	
+	private static void initializeDeviceUuid() {
+		if (!preferences.contains(KEY_DEVICE_UUID)) {
+			String uuid = UUID.randomUUID().toString();
+			putString(KEY_DEVICE_UUID, uuid);
+		}
+	}
+	
+	public static String getDeviceUuid() {
+		return preferences.getString(KEY_DEVICE_UUID, StringUtils.EMPTY);
+	}
 
 	public void login(User user, String token) {
-		Gson gson = Utility.getGsonInstance();
 		preferences.edit()
-			.putString(KEY_USER, gson.toJson(user, User.class))
+			.putString(KEY_USER, user.toString())
 			.putString(KEY_ACCESS_TOKEN, token)
 			.commit();
 	}
@@ -65,34 +85,15 @@ public class Authenticator {
 					Profile profile = currentUser.getProfile();
 					user.setProfile(profile);
 				}
-				Gson gson = Utility.getGsonInstance();
-				preferences.edit().putString(KEY_USER, gson.toJson(user, User.class)).commit();
+				putString(KEY_USER, user.toString());
 			}
 		}
 	}
 	
 	public void update(String token) {
 		if (isLoggedIn()) {
-			preferences.edit().putString(KEY_ACCESS_TOKEN, token).commit();
+			putString(KEY_ACCESS_TOKEN, token);
 		}
-	}
-	
-	public static void initialize(SharedPreferences preferences) {
-		Authenticator.preferences = preferences;
-		
-		initializeUuid();
-	}
-	
-	private static void initializeUuid() {
-		if (preferences != null) {
-			if (!preferences.contains(KEY_DEVICE_UUID)) {
-				preferences.edit().putString(KEY_DEVICE_UUID, UUID.randomUUID().toString()).commit();
-			}
-		}
-	}
-	
-	public static String getDeviceUuid() {
-		return preferences.getString(KEY_DEVICE_UUID, "");
 	}
 	
 	public static boolean isLoggedIn() {
@@ -100,32 +101,27 @@ public class Authenticator {
 	}
 	
 	public static User getUser() {
-		String userInJson = getUserInJson();
-		if (!userInJson.equals("")) {
-			return Utility.getGsonInstance().fromJson(getUserInJson(), User.class);
-		} else {
-			return null;
-		}
+		return Model.fromJson(getUserInJson(), User.class);
 	}
 	
 	public static String getUserInJson() {
-		if (isLoggedIn()) {
-			try {
-				return preferences.getString(KEY_USER, "");
-			} catch (ClassCastException e) {
-				return "";
-			}
+		try {
+			return preferences.getString(KEY_USER, StringUtils.EMPTY);
+		} catch (ClassCastException e) {
+			return StringUtils.EMPTY;
 		}
-		
-		return "";
 	}
 	
 	public static String getAccessToken() {
 		try {
-			return preferences.getString(KEY_ACCESS_TOKEN, "");
+			return preferences.getString(KEY_ACCESS_TOKEN, StringUtils.EMPTY);
 		} catch (ClassCastException e) {
-			return "";
+			return StringUtils.EMPTY;
 		}
+	}
+	
+	private static void putString(String key, String value) {
+		preferences.edit().putString(key, value).commit();
 	}
 	
 }
