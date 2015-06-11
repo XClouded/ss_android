@@ -9,9 +9,7 @@ import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.service.TokenValidationService;
 import com.myandb.singsong.util.StringFormatter;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.sromku.simple.fb.Permission;
 import com.sromku.simple.fb.SimpleFacebook;
-import com.sromku.simple.fb.SimpleFacebookConfiguration;
 
 import android.app.Application;
 import android.content.Context;
@@ -20,8 +18,6 @@ import android.content.Intent;
 public class App extends Application {
 	
 	public static final ServerConfig SERVER_CONFIG = ServerConfig.TEST;
-	
-	public static final String FACEBOOK_NAMESPACE = "collabokaraoke_";
 	
 	public static final String AUTH_PREFERENCE_FILE = "_SSaS_";
 	
@@ -44,7 +40,7 @@ public class App extends Application {
 		
 		StringFormatter.initialize(getResources());
 		
-		initializeSimpleFacebook();
+		SimpleFacebook.setConfiguration(FacebookConfig.getConfig());
 		
 		initializeAppVersion();
 		
@@ -57,23 +53,6 @@ public class App extends Application {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-	
-	private void initializeSimpleFacebook() {
-		Permission[] permissions = new Permission[] {
-			Permission.PUBLIC_PROFILE,
-			Permission.EMAIL,
-			Permission.USER_FRIENDS,
-			Permission.PUBLISH_ACTION
-		};
-		
-		SimpleFacebookConfiguration config = new SimpleFacebookConfiguration.Builder()
-			.setAppId(getString(R.string.fb_app_id))
-			.setNamespace(FACEBOOK_NAMESPACE)
-			.setPermissions(permissions)
-			.build();
-		
-		SimpleFacebook.setConfiguration(config);
 	}
 	
 	private RequestQueue getQueueInstance() {
