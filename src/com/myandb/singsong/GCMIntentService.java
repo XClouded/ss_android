@@ -227,7 +227,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 		}
 		
 		NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-		manager.notify(App.NOTI_ID_GCM, builder.build());
+		manager.notify(NotificationType.GCM_PUSH.getId(), builder.build());
 	}
 	
 	private static class PushToast extends Toast {

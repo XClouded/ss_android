@@ -1,5 +1,7 @@
 package com.myandb.singsong;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -15,11 +17,6 @@ import android.app.Application;
 public class App extends Application {
 	
 	public static final ServerConfig SERVER_CONFIG = ServerConfig.TEST;
-	
-	public static final int NOTI_ID_GCM = 1000;
-	public static final int NOTI_ID_SONG_UPLOAD = 1001;
-	public static final int NOTI_ID_PHOTO_UPLOAD = 1002;
-	public static final int NOTI_ID_PLAY_SONG = 1003;
 	
 	private static String versionName;
 	
@@ -80,7 +77,7 @@ public class App extends Application {
 	
 	public static String getVersionName() {
 		if (versionName == null) {
-			versionName = "";
+			versionName = StringUtils.EMPTY;
 		}
 		return versionName;
 	}

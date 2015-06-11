@@ -2,7 +2,7 @@ package com.myandb.singsong.service;
 
 import java.io.File;
 
-import com.myandb.singsong.App;
+import com.myandb.singsong.NotificationType;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.audio.OnPlayEventListener;
@@ -205,7 +205,7 @@ public class PlayerService extends Service {
 	
 	private void submitNotification(Notification noti) {
 		this.notification = noti;
-		startForeground(App.NOTI_ID_PLAY_SONG, noti);
+		startForeground(NotificationType.PLAY_CONTENT.getId(), noti);
 	}
 	
 	private void prepareNotification() {

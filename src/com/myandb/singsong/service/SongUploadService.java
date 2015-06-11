@@ -12,6 +12,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.Response.ErrorListener;
 import com.google.gson.Gson;
 import com.myandb.singsong.App;
+import com.myandb.singsong.NotificationType;
 import com.myandb.singsong.R;
 import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.audio.Encoder;
@@ -343,7 +344,7 @@ public class SongUploadService extends Service {
 		noti.icon = R.drawable.ic_upload_list;
 		noti.iconLevel = 0;
 		
-		startForeground(App.NOTI_ID_SONG_UPLOAD, noti);
+		startForeground(NotificationType.CONTENT_UPLOAD.getId(), noti);
 	}
 	
 	private void errorNotification(String str) {
@@ -357,7 +358,7 @@ public class SongUploadService extends Service {
 			   .setTicker("업로드에 실패하였습니다.")
 			   .setContentIntent(pendingIntent);
 		
-		manager.notify(App.NOTI_ID_SONG_UPLOAD, builder.build());
+		manager.notify(NotificationType.CONTENT_UPLOAD.getId(), builder.build());
 		
 		isRunning = false;
 	}
@@ -366,7 +367,7 @@ public class SongUploadService extends Service {
 		noti.contentView.setTextViewText(R.id.tv_title, String.valueOf(progress) + "% " + str);
 		noti.contentView.setProgressBar(R.id.pb_status, 100, progress, false);
 		
-		startForeground(App.NOTI_ID_SONG_UPLOAD, noti);
+		startForeground(NotificationType.CONTENT_UPLOAD.getId(), noti);
 	}
 	
 	private void successNotification() {
@@ -382,7 +383,7 @@ public class SongUploadService extends Service {
 			   .setVibrate( new long[] { 300, 700 } )
 			   .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
 		
-		manager.notify(App.NOTI_ID_SONG_UPLOAD, builder.build());
+		manager.notify(NotificationType.CONTENT_UPLOAD.getId(), builder.build());
 		
 		isRunning = false;
 	}
