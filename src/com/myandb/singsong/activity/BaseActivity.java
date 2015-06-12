@@ -12,7 +12,6 @@ import com.myandb.singsong.R;
 import com.myandb.singsong.event.WeakRunnable;
 import com.myandb.singsong.service.PlayerService;
 import com.myandb.singsong.service.PlayerServiceConnection;
-import com.myandb.singsong.util.Logger;
 import com.sromku.simple.fb.SimpleFacebook;
 
 import android.annotation.SuppressLint;
@@ -163,7 +162,6 @@ public abstract class BaseActivity extends ActionBarActivity {
 	protected boolean isComponentOf(Intent intent, Class<?> clazz) {
 		ComponentName component = intent.getComponent();
 		if (component != null) {
-			Logger.log(component.getClassName());
 			return component.getClassName().equals(clazz.getName());
 		}
 		return false;

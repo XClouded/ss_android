@@ -25,7 +25,6 @@ import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.secure.MelOnAccountManager;
 import com.myandb.singsong.secure.MelOnAccountManager.EasyLoginAccount;
 import com.myandb.singsong.util.GsonUtils;
-import com.myandb.singsong.util.Logger;
 import com.sromku.simple.fb.Permission.Type;
 import com.sromku.simple.fb.listeners.OnLoginListener;
 
@@ -704,8 +703,6 @@ public class AuthenticationDialog extends BaseDialog {
 			message.put("facebook_token", facebookAccessToken);
 			message.put("loginType", LOGIN_TYPE_TOKEN);
 			message.put("purpose", LOGIN_PURPOSE_INTEGRATE);
-			
-			Logger.log(message.toString());
 			
 			JSONObjectRequest request = new JSONObjectRequest(
 					"melon/login/collabo", null, message,
