@@ -75,18 +75,26 @@ public class WebViewFragment extends BaseFragment {
 		webView = (WebView) view.findViewById(R.id.webview);
 	}
 
+	@SuppressLint("SetJavaScriptEnabled")
 	@Override
 	protected void initialize(Activity activity) {
 		CookieSyncManager.createInstance(activity);
 		CookieManager.getInstance().removeAllCookie();
 		
-		HttpScheme melonHttpScheme = new MelonHttpScheme();
+		MelonHttpScheme melonHttpScheme = new MelonHttpScheme();
 		headers = melonHttpScheme.getHeaders();
 		HttpScheme singSongHttpScheme = new SingSongHttpScheme();
 		headers = singSongHttpScheme.getHeaders(headers);
+		
+		WebSettings webSettings = webView.getSettings();
+		webSettings.setUserAgentString(melonHttpScheme.getUserAgent());
+		if (Build.VERSION.SDK_INT >= 19) {
+			webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+		}
+		webSettings.setJavaScriptEnabled(true); 
+		webView.setWebViewClient(new WebViewClientClass());
 	}
 
-	@SuppressLint("SetJavaScriptEnabled")
 	@Override
 	protected void setupViews(Bundle savedInstanceState) {
 		switch (type) {
@@ -99,11 +107,6 @@ public class WebViewFragment extends BaseFragment {
 		default:
 		case PA:
 		case IA:
-			if (Build.VERSION.SDK_INT >= 19) {
-		        webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
-		    }
-			webView.getSettings().setJavaScriptEnabled(true); 
-			webView.setWebViewClient(new WebViewClientClass());
 			loadUrl(url);
 			break;
 		}
