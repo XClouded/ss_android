@@ -83,6 +83,7 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	private LikingUserAdapter likingAdapter;
 	private boolean like;
 	private boolean initialized; 
+	private long expectedTime;
 
 	private TextView tvParentUserNickname;
 	private TextView tvThisUserNickname;
@@ -619,19 +620,39 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 	};
 	
 	public void onProgressUpdate() {
+		if (service == null) {
+			return;
+		}
+		
+		Song song = service.getSong();
+		if (song == null) {
+			return;
+		}
+		
 		StreamPlayer player = service.getPlayer();
-		if (player != null && player.isPlaying()) {
+		if (player == null) {
+			return;
+		}
+		
+		if (player.isPlaying()) {
 			tvPlayStartTime.setText(Utils.getColonFormatDuration(player.getCurrentPosition()));
 			sbPlay.setProgress(player.getCurrentPosition());
 			
+			PlayCounter.countAsync(getContext(), song);
+			
 			if (handler != null) {
+				int will = 1000;
+				if (expectedTime > 0) {
+					long currentTime = System.currentTimeMillis();
+					int delayed = (int) (currentTime - expectedTime);
+					will -= delayed;
+					
+				}
 				Runnable r = new WeakRunnable<SlidingPlayerLayout>(this, "onProgressUpdate");
-				handler.postDelayed(r, 1000);
+				handler.postDelayed(r, will);
+				
+				expectedTime = System.currentTimeMillis() + will;
 			}
-		}
-
-		if (service != null && service.getSong() != null) {
-			PlayCounter.countAsync(getContext(), service.getSong());
 		}
 	}
 	
@@ -740,6 +761,8 @@ public class SlidingPlayerLayout extends SlidingUpPanelLayout {
 		});
 		
 		showDefaultWindow();
+		
+		expectedTime = 0;
 	}
 	
 	private void setCollaboButtonFake(View view) {

@@ -91,6 +91,7 @@ public class KaraokeFragment extends BaseFragment {
 	private File recordPcmFile;
 	private File lyricFile;
 	private int lyricPart;
+	private long expectedTime;
 	
 	private HeadsetDialog headsetDialog;
 	private LoadingDialog loadingDialog;
@@ -542,6 +543,8 @@ public class KaraokeFragment extends BaseFragment {
 			recorder.stop();
 			stopAnimations();
 		}
+		
+		expectedTime = 0;
 	}
 	
 	private void stopAnimations() {
@@ -697,17 +700,35 @@ public class KaraokeFragment extends BaseFragment {
 	};
 	
 	public void updateAudioProgress() {
-		if (music != null) {
-			PlayCounter.countAsync(getActivity(), music);
+		if (music == null) {
+			return;
 		}
 		
-		if (player != null && player.isPlaying()) {
+		if (player == null) {
+			return;
+		}
+		
+		if (player.isPlaying()) {
 			int position = (int) player.getCurrentPosition();
 			tvStartTime.setText(Utils.getColonFormatDuration(position));
 			pbPlayProgress.setProgress(position);
 			
-			Runnable r = new WeakRunnable<KaraokeFragment>(this, "updateAudioProgress");
-			playHandler.postDelayed(r, 1000);
+			PlayCounter.countAsync(getActivity(), music);
+			
+			if (playHandler != null) {
+				int will = 1000;
+				if (expectedTime > 0) {
+					long currentTime = System.currentTimeMillis();
+					int delayed = (int) (currentTime - expectedTime);
+					will -= delayed;
+					
+				}
+				
+				Runnable r = new WeakRunnable<KaraokeFragment>(this, "updateAudioProgress");
+				playHandler.postDelayed(r, will);
+				
+				expectedTime = System.currentTimeMillis() + will;
+			}
 		}
 	}
 
