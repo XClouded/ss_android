@@ -32,6 +32,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -384,33 +385,87 @@ public class AuthenticationDialog extends BaseDialog {
 		public void onClick(View v) {
 			showProgressDialog();
 			
-			String username = etUsername.getText().toString();
-			String password = etPassword.getText().toString();
-			
-			switch (type) {
-			default:
-			case MELON_EASY_LOGIN:
+			try {
+				validateInput(type);
+				authenticate(type);
+			} catch (Exception e) {
+				e.printStackTrace();
 				dismissProgressDialog();
-				return;
-
-			case MELON_PASSWORD_LOGIN:
-				loginUsingPassword(username, password);
-				break;
 				
-			case MELON_LOGIN_SINGSONG_INTEGRATION:
-				mergeSingSongAccountIntoMelonAccount(username, password);
-				break;
-				
-			case SINGSONG_AUTHENTICATE:
-				authenticateSingSong(username, password);
-				break;
-				
-			case SINGSONG_AUTHENTICATE_MELON_INTEGRATION:
-				integrateSingSongAccountWithMelonAccount(username, password);
-				break;
+				AlertInfo info = new AlertInfo();
+				info.MESSAGE = e.getMessage();
+				MelonAlertDialog.show(getFragmentManager(), info);
 			}
 		}
 	};
+	
+	private void validateInput(AuthenticationType type) throws IllegalArgumentException {
+		switch (type) {
+		case MELON_PASSWORD_LOGIN:
+			validateMelonInput();
+			break;
+			
+		case MELON_LOGIN_SINGSONG_INTEGRATION:
+			validateSingSongInput();
+			break;
+			
+		case SINGSONG_AUTHENTICATE:
+			validateSingSongInput();
+			break;
+			
+		case SINGSONG_AUTHENTICATE_MELON_INTEGRATION:
+			validateMelonInput();
+			break;
+			
+		default:
+			return;
+		}
+	}
+	
+	private void validateMelonInput() throws IllegalArgumentException {
+		Editable username = etUsername.getText();
+		Editable password = etPassword.getText();
+		
+		if (username.length() == 0) {
+			throw new IllegalArgumentException("아이디를 입력해주세요.");
+		} else if (username.length() > 50) {
+			throw new IllegalArgumentException("아이디는 50자 이하로 입력해주세요.");
+		} else if (password.length() < 6) {
+			throw new IllegalArgumentException("비밀번호는 6자 이상으로 입력해주세요.");
+		} else if (password.length() > 20) {
+			throw new IllegalArgumentException("비밀번호는 20자 이하로 입력해주세요.");
+		}
+	}
+	
+	private void validateSingSongInput() throws IllegalArgumentException {
+		validateMelonInput();
+	}
+	
+	private void authenticate(AuthenticationType type) {
+		String username = etUsername.getText().toString();
+		String password = etPassword.getText().toString();
+		
+		switch (type) {
+		case MELON_PASSWORD_LOGIN:
+			loginUsingPassword(username, password);
+			break;
+			
+		case MELON_LOGIN_SINGSONG_INTEGRATION:
+			mergeSingSongAccountIntoMelonAccount(username, password);
+			break;
+			
+		case SINGSONG_AUTHENTICATE:
+			authenticateSingSong(username, password);
+			break;
+			
+		case SINGSONG_AUTHENTICATE_MELON_INTEGRATION:
+			integrateSingSongAccountWithMelonAccount(username, password);
+			break;
+			
+		default:
+			return;
+		}
+	}
 	
 	private boolean isEnabledAddEasyLogin() {
 		return addEasyLogin;
