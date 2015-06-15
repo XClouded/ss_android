@@ -28,6 +28,7 @@ import com.myandb.singsong.util.GsonUtils;
 import com.sromku.simple.fb.Permission.Type;
 import com.sromku.simple.fb.listeners.OnLoginListener;
 
+import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -505,6 +506,12 @@ public class AuthenticationDialog extends BaseDialog {
 	};
 	
 	private void loginUsingPassword(String username, String password) {
+		if (isEnabledAddEasyLogin()) {
+			if (!accountManger.canAddMelOnAccount(username)) {
+				throw new IllegalStateException("간편로그인은 3개까지 지원됩니다.");
+			}
+		}
+		
 		try {
 			loggedInUsername = username;
 			

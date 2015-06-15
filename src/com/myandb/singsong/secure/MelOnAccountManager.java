@@ -151,6 +151,18 @@ public class MelOnAccountManager  {
 		}
 	}
 	
+	public boolean canAddMelOnAccount(String userId) {
+		if (getMelOnAccounts().length < MAX_ACCOUNT_STORE_NUM) {
+			return true;
+		} else {
+			Account account = getMelOnAccount(userId);
+			if (account != null) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	/**
 	 * Removes an account from MelOnAccountManager
 	 * this method must not be used on the main thread.
