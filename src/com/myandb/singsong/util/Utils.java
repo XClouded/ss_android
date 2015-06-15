@@ -20,14 +20,22 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 
 public class Utils {
-
-	public static final String EMPTY = "";
 	
+	public static String EMPTY = "";
+
 	private static Calendar calendar = Calendar.getInstance(Locale.KOREA);
 	
 	private static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
 	
 	private Utils() {}
+	
+	public static boolean isEmpty(CharSequence charSequence) {
+		if (charSequence == null || charSequence.length() == 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 	
 	public static void recycleRecursive(View root) {
 		if (root == null) {

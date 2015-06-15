@@ -31,7 +31,7 @@ public class GsonUtils {
 	}
 	
 	public static final <T> T fromJson(String json, Class<T> clazz) {
-		if (!Utils.EMPTY.equals(json)) {
+		if (!Utils.isEmpty(json)) {
 			return getGsonInstance().fromJson(json, clazz);
 		}
 		return null;

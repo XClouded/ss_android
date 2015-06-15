@@ -79,7 +79,7 @@ public class DrawerFragment extends BaseFragment {
 		bundle.putBoolean(ListFragment.EXTRA_HORIZONTAL_PADDING, true);
 		bundle.putBoolean(ListFragment.EXTRA_VERTICAL_PADDING, true);
 		Intent intent = new Intent(getActivity(), RootActivity.class);
-		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, ArtistListFragment.class.getName());
+		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, HomeFragment.class.getName());
 		intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
 		return new GlobalMenu(R.string.fragment_artist_list_action_title, intent, R.drawable.ic_menu_artist);
 	}

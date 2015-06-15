@@ -10,7 +10,6 @@ import com.myandb.singsong.R;
 import com.myandb.singsong.activity.BaseActivity;
 import com.myandb.singsong.activity.RootActivity;
 import com.myandb.singsong.activity.UpActivity;
-import com.myandb.singsong.adapter.ArtistAdapter;
 import com.myandb.singsong.adapter.MusicAdapter;
 import com.myandb.singsong.adapter.SimpleChildrenSongAdapter;
 import com.myandb.singsong.adapter.SimpleSongNumAdapter;
@@ -48,7 +47,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -65,7 +63,6 @@ public class HomeFragment extends BaseFragment {
 	private TextView tvSongCollaboratedMore;
 	private TextView tvRecentMusicMore;
 	private TextView tvPopularMusicMore;
-	private TextView tvCollaboArtistMore;
 	private TextView tvSongWaitingMore;
 	private ImageView ivTop10FirstAlbumPhoto;
 	private ViewPager vpCollaboTop10;
@@ -77,12 +74,10 @@ public class HomeFragment extends BaseFragment {
 	private View content;
 	private View progressBar;
 	private View vtop10First;
-	private ViewGroup vgCollaboArtistContainer;
 	private PagerAdapter collaboTop10Adapter;
 	private PagerAdapter popularMusicAdapter;
 	private MusicAdapter recentMusicAdapter;
 	private SimpleChildrenSongAdapter waitingSongAdapter;
-	private ArtistAdapter collaboArtistAdapter;
 	private Song top10First;
 	private boolean needToShowLoginDialog;
 	
@@ -112,7 +107,6 @@ public class HomeFragment extends BaseFragment {
 		tvSongCollaboratedMore = (TextView) view.findViewById(R.id.tv_song_collaborated_more);
 		tvRecentMusicMore = (TextView) view.findViewById(R.id.tv_recent_music_more);
 		tvPopularMusicMore = (TextView) view.findViewById(R.id.tv_popular_music_more);
-		tvCollaboArtistMore = (TextView) view.findViewById(R.id.tv_collabo_artist_more);
 		tvSongWaitingMore = (TextView) view.findViewById(R.id.tv_song_waiting_more);
 		
 		vpCollaboTop10 = (ViewPager) view.findViewById(R.id.vp_collabo_top10);
@@ -126,7 +120,6 @@ public class HomeFragment extends BaseFragment {
 		content = view.findViewById(R.id.loadable_content);
 		progressBar = view.findViewById(R.id.progress_bar);
 		vtop10First = view.findViewById(R.id.fl_top10_first);
-		vgCollaboArtistContainer = (ViewGroup) view.findViewById(R.id.fl_collabo_artist_container);
 	}
 
 	@Override
@@ -146,27 +139,10 @@ public class HomeFragment extends BaseFragment {
 		
 		loadPopularMusic();
 		
-		loadCollaboArtist();
-		
 		loadWaitingTop10();
 		
 		stylePageIndicator(cpiCollaboTop10);
 		stylePageIndicator(cpiPopularMusic);
-		
-		tvCollaboArtistMore.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				Bundle bundle = new Bundle();
-				bundle.putString(BaseFragment.EXTRA_TITLE, getString(R.string.fragment_artist_list_action_title));
-				bundle.putBoolean(ListFragment.EXTRA_HORIZONTAL_PADDING, true);
-				bundle.putBoolean(ListFragment.EXTRA_VERTICAL_PADDING, true);
-				Intent intent = new Intent(getActivity(), RootActivity.class);
-				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_NAME, ArtistListFragment.class.getName());
-				intent.putExtra(BaseActivity.EXTRA_FRAGMENT_BUNDLE, bundle);
-				startFragment(intent);
-			}
-		});
 		
 		tvSongCollaboratedMore.setOnClickListener(songMoreClickListener);
 		tvSongWaitingMore.setOnClickListener(songMoreClickListener);
@@ -346,34 +322,6 @@ public class HomeFragment extends BaseFragment {
 			startFragment(intent);
 		}
 	};
-	
-	private void loadCollaboArtist() {
-		if (collaboArtistAdapter == null) {
-			collaboArtistAdapter = new ArtistAdapter();
-			final UrlBuilder urlBuilder = new UrlBuilder().s("artists").take(1);
-			final GradualLoader loader = new GradualLoader(getActivity());
-			loader.setUrlBuilder(urlBuilder);
-			loader.setOnLoadCompleteListener(new OnLoadCompleteListener() {
-				
-				@Override
-				public void onComplete(JSONArray response) {
-					collaboArtistAdapter.addAll(response);
-					addArtistView();
-				}
-			});
-			loader.load();
-		} else {
-			addArtistView();
-		}
-	}
-	
-	private void addArtistView() {
-		if (collaboArtistAdapter != null && collaboArtistAdapter.getCount() > 0) {
-			View child = collaboArtistAdapter.getView(0, null, vgCollaboArtistContainer);
-			child.setBackgroundResource(0);
-			vgCollaboArtistContainer.addView(child);
-		}
-	}
 	
 	private void loadWaitingTop10() {
 		if (waitingSongAdapter == null) {

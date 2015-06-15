@@ -38,6 +38,7 @@ import com.myandb.singsong.net.JustRequest;
 import com.myandb.singsong.net.DownloadManager;
 import com.myandb.singsong.secure.Authenticator;
 import com.myandb.singsong.util.GsonUtils;
+import com.myandb.singsong.util.Utils;
 
 public class GCMIntentService extends GCMBaseIntentService {
 	
@@ -55,21 +56,27 @@ public class GCMIntentService extends GCMBaseIntentService {
 		try {
 			GCMRegistrar.checkDevice(context);
 			GCMRegistrar.checkManifest(context);
-			final String registrationId = GCMRegistrar.getRegistrationId(context);
 			
-			if ("".equals(registrationId)) {
+			final String registrationId = GCMRegistrar.getRegistrationId(context);
+			if (Utils.isEmpty(registrationId)) {
 				GCMRegistrar.register(context, GCMIntentService.PROJECT_ID);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			// Device does not have package com.google.android.gsf
-			// This will not happened
+			// This can be ignored
 		}
 	}
 	
 	public static void unregister(Context context) {
-		if (GCMRegistrar.isRegistered(context)) {
-			GCMRegistrar.unregister(context);
+		try {
+			if (GCMRegistrar.isRegistered(context)) {
+				GCMRegistrar.unregister(context);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			// Device does not have package com.google.android.gsf
+			// This can be ignored
 		}
 	}
 	
@@ -77,6 +84,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 	protected void onMessage(Context context, Intent intent) {
 		if (Authenticator.isLoggedIn()) {
 			increaseNotificationCount();
+			
 			if (isEnabledNotification()) {
 				try {
 					notifyUser(intent);
@@ -267,7 +275,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 	@Override
 	protected void onUnregistered(Context context, String registrationId) {
-		updateRegistrationId("");
+		updateRegistrationId(Utils.EMPTY);
 	}
 	
 	private void updateRegistrationId(String registrationId) {
