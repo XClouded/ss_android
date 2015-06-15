@@ -138,7 +138,7 @@ public class DrawerFragment extends BaseFragment {
 			llDrawerLoginWrapper.setVisibility(View.GONE);
 			ImageHelper.displayPhoto(currentUser, ivDrawerUserPhoto);
 			tvDrawerUserNickname.setText(currentUser.getNickname());
-			tvDrawerUserUsername.setText(currentUser.getUsername());
+			tvDrawerUserUsername.setText(currentUser.getMelonUsername());
 			llDrawerUserWrapper.setOnClickListener(myProfileClickListener);
 		} else {
 			llDrawerUserWrapper.setVisibility(View.GONE);

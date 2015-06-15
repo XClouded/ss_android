@@ -75,6 +75,7 @@
 	            android:padding="0dp"
 	            android:layout_marginBottom="@dimen/margin_tiny"
 	            android:layout_toLeftOf="@id/logout"
+	            android:layout_width="match_parent"
 	            style="@style/TextViewSubtitleAlone" />
 	        
 	        <TextView

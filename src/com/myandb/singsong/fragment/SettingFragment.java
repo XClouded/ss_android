@@ -429,7 +429,7 @@ public class SettingFragment extends BaseFragment {
 	@Override
 	protected void onDataChanged() {
 		User user = Authenticator.getUser();
-		tvUserUsername.setText(user.getUsername());
+		tvUserUsername.setText(user.getMelonUsername());
 		tvUserNickname.setText(user.getNickname());
 		
 		updateFacebookActivatedView(user.isFacebookActivated());
