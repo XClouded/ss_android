@@ -439,7 +439,14 @@ public class AuthenticationDialog extends BaseDialog {
 	}
 	
 	private void validateSingSongInput() throws IllegalArgumentException {
-		validateMelonInput();
+		Editable username = etUsername.getText();
+		Editable password = etPassword.getText();
+		
+		if (username.length() == 0) {
+			throw new IllegalArgumentException("아이디를 입력해주세요.");
+		} else if (password.length() < 4) {
+			throw new IllegalArgumentException("비밀번호는 4자 이상으로 입력해주세요.");
+		}
 	}
 	
 	private void authenticate(AuthenticationType type) {
