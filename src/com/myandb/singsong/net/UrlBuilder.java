@@ -22,10 +22,7 @@ public class UrlBuilder {
 	}
 	
 	public UrlBuilder(ServerConfig config) {
-		if (config == null) {
-			this.config = App.SERVER_CONFIG;
-		}
-		
+		this.config = config != null ? config : App.SERVER_CONFIG;
 		this.segments = new ArrayList<String>();
 		this.parameters = new HashMap<String, String>();
 	}
